@@ -1,0 +1,35 @@
+/*!
+ * StyleFont Roboto
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: "softtion-thin";
+    src: url("Roboto-Thin.ttf") format("truetype");
+    font-weight: normal; }
+
+@font-face {
+    font-family: "softtion-light";
+    src: url("Roboto-Light.ttf") format("truetype");
+    font-weight: normal; }
+
+@font-face {
+    font-family: "softtion-regular";
+    src: url("Roboto-Regular.ttf") format("truetype");
+    font-weight: normal; }
+
+@font-face {
+    font-family: "softtion-medium";
+    src: url("Roboto-Medium.ttf") format("truetype");
+    font-weight: normal; }
+
+@font-face {
+    font-family: "softtion-bold";
+    src: url("Roboto-Bold.ttf") format("truetype");
+    font-weight: normal; }
+
+@font-face {
+    font-family: "softtion-black";
+    src: url("Roboto-Black.ttf") format("truetype");
+    font-weight: normal; }

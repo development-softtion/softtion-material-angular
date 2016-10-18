@@ -1,0 +1,17 @@
+/*!
+ * Softtion Material CSS
+ * @license MIT
+ *
+ * v1.0.0
+ * Author: Softtion Developers
+ * Development: Daniel Andres Castillo Pedroza
+ * Development: Fabian Andres Urrego Bohorquez
+ * Development: Julio de Jesus Trujillo de la Ossa
+ * 
+ * Updated: 15 de septiembre del 2016
+ */
+
+@import url("softtion-material-user-interface.css");
+@import url("softtion-material-theme.css");
+@import url("softtion-material-animate.css");
+@import url("softtion-material-colors.css");
