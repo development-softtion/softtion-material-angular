@@ -2046,7 +2046,6 @@
                 html: function () {
                     var $textArea = softtion.html("textarea").
                         addAttribute("ng-model","valueArea").
-                        addAttribute("maxlength","{{maxLength || -1}}").
                         addAttribute("ng-click","clickArea($event)").
                         addAttribute("ng-blur","blurArea()").
                         addAttribute("ng-focus","focusArea()").
@@ -2094,7 +2093,8 @@
                             var defineTextHidden = Material.components.TextArea.defineTextHidden,
                                 autoResize = Material.components.TextArea.autoResize,
                                 tempMinLength = parseInt($scope.minLength),
-                                minLength = (isNaN(tempMinLength)) ? -1 : tempMinLength;
+                                minLength = (isNaN(tempMinLength)) ? -1 : tempMinLength,
+                                maxLength = parseInt($scope.maxLength);
 
                             defineTextHidden(area, hidden); $scope.hideSpan = true;
                             $scope.valueArea = ""; // Valor inicial del Area
@@ -2147,6 +2147,12 @@
                                 });
 
                                 if (!validate) { ev.preventDefault(); } // Cancelando el evento
+                                
+                                if (!isNaN(maxLength)) {
+                                    if ($scope.valueArea.length === maxLength) {
+                                        ev.preventDefault();
+                                    } // Cancelando el evento
+                                } // Se definío numero correctamente
                             };
                             
                             $scope.keyupArea = function () { autoResize(area, hidden); };
@@ -2161,7 +2167,6 @@
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type","{{typeInput}}").
-                        addAttribute("maxlength","{{maxLength || -1}}").
                         addAttribute("ng-click","clickInput($event)").
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
@@ -2213,7 +2218,8 @@
 
                             // Atributos de control
                             var tempMinLength = parseInt($scope.minLength),
-                                minLength = (isNaN(tempMinLength)) ? -1 : tempMinLength;
+                                minLength = (isNaN(tempMinLength)) ? -1 : tempMinLength,
+                                maxLength = parseInt($scope.maxLength);
 
                             $scope.hideSpan = true; $scope.inputValue = "";
                             $scope.typeInput = Material.components.TextField.defineInput($scope.type);
@@ -2262,6 +2268,12 @@
                                 });
 
                                 if (!validate) { ev.preventDefault(); } // Cancelando el evento
+                                
+                                if (!isNaN(maxLength)) {
+                                    if ($scope.inputValue.length === maxLength) {
+                                        ev.preventDefault();
+                                    } // Cancelando el evento
+                                } // Se definío numero correctamente
                             };
                         }
                     };

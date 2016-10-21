@@ -1806,6 +1806,7 @@ button:focus > .focused {
     line-height: 32px;
     font-size: 13px;
     padding: 0 12px;
+    font-family: softtion-light;
     border-radius: 16px; }
 
 .chip > img, .chip > .avatar {
