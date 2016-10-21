@@ -2070,7 +2070,8 @@ button:focus > .focused {
 
 .datatable > table > thead > tr, .datatable > table > tbody > tr {
     padding: 0 16px; 
-    display: block;
+    display: flex;
+    overflow-y: auto;
     box-sizing: border-box; }
 
 .datatable > table > tbody {
@@ -2082,10 +2083,16 @@ button:focus > .focused {
     height: 48px; 
     line-height: 48px; }
 
-.datatable > table > thead > tr > th, .datatable > table > tbody > tr > td {
+.datatable > table > thead > tr > th, 
+.datatable > table > tbody > tr > td {
+    display: block;
+    float: left;
     font-size: 14px;
     padding: 0 8px;
-    text-align: left; }
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
 
 .datatable > table tbody tr {
     -moz-transition: background-color 0.30s var(--sharp-curve);
@@ -2102,7 +2109,14 @@ button:focus > .focused {
 .datatable > table > tbody > tr > td.checkbox-table > .checkbox-selection {
     width: 22px;
     height: 22px;
-    line-height: 22px; }
+    line-height: 22px; 
+    margin: 0px; }
+
+.datatable > table > thead > tr > th.checkbox-table > .checkbox-selection {
+    margin-top: 17px; }
+
+.datatable > table > tbody > tr > td.checkbox-table > .checkbox-selection {
+    margin-top: 13px; }
 
 /** DATEPICKER */
 
