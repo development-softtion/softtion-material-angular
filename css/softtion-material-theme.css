@@ -618,6 +618,9 @@ button.flat > .focused {
 .sidenav > .content > .banner > .detail {
     color: var(--primary-light-font); }
 
+.sidenav > .content > .list > .item-list > .options .subitem-list.active {
+    color: var(--primary-accent-font); }
+
 /** SNACKBAR */
 
 .snackbar {

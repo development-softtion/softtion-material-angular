@@ -1,4 +1,4 @@
-/* !
+/*
  * Angular Softtion Material v1.0.0
  * (c) 2016 Softtion Developers
  * License: MIT
@@ -1784,12 +1784,24 @@
                             var input = $element.find("input"),
                                 list = $element.find("ul"),
                                 icon = $element.find(".material-icon");
+                            
+                            $scope.getSuggestionDescription = function (suggestion) {
+                                if (softtion.is("string", suggestion)) {
+                                    return suggestion;
+                                } else if (softtion.is("string", $scope.keyDescription)) {
+                                    return softtion.findKey(suggestion, $scope.keyDescription);
+                                } else {
+                                    return JSON.stringify(suggestion);
+                                } // No se definido nada
+                            };
 
                             if (softtion.is("defined", $scope.select)) {
                                 $scope.valueInput = $scope.getSuggestionDescription($scope.select);
                             } // Hay un opcion seleccionada por defecto
 
-                            $scope.focusInput = function () { $element.addClass("active"); };
+                            $scope.focusInput = function () {
+                                if (!$element.hasClass("disabled")) { $element.addClass("active"); } 
+                            };
 
                             $scope.blurInput = function () { $element.removeClass("active"); };
 
@@ -1810,16 +1822,6 @@
                                 angular.element($event.currentTarget).addClass("active"); 
 
                                 list.removeClass("active"); // Ocultando lista
-                            };
-                            
-                            $scope.getSuggestionDescription = function (suggestion) {
-                                if (softtion.is("string", suggestion)) {
-                                    return suggestion;
-                                } else if (softtion.is("string", $scope.keyDescription)) {
-                                    return softtion.findKey(suggestion, $scope.keyDescription);
-                                } else {
-                                    return JSON.stringify(suggestion);
-                                } // No se definido nada
                             };
                         }
                     };
@@ -1932,7 +1934,7 @@
                             $scope.getSuggestionDescription = function (suggestion) {
                                 return !(softtion.is("string", $scope.keyDescription)) ?
                                     JSON.stringify(suggestion) :
-                                    softtion.findKey(suggestion, $scope.keyDescription);
+                                    softtion.findKey(suggestion, $scope.keyDescription); 
                             };
                         }
                     };
@@ -2030,12 +2032,10 @@
                 route: "softtion/template/textarea.html",
                 name: "textarea",
                 defineTextHidden: function (textarea, texthidden) {
-                    var $width = textarea.css("width"), 
-                        $fontFamily = textarea.css("font-family"),
+                    var $fontFamily = textarea.css("font-family"),
                         $fontSize = textarea.css("font-size"),
                         $lineHeight = textarea.css("line-height");
 
-                    texthidden.css("width",$width);
                     texthidden.css("font-family",$fontFamily);
                     texthidden.css("font-size",$fontSize);
                     texthidden.css("line-height",$lineHeight);
