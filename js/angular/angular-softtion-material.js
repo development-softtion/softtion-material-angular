@@ -372,18 +372,41 @@
                 directive: function () {
                     return {
                         restrict: "E",
+                        scope: {
+                            disableRipple: "=disableRipple"
+                        },
                         link: function ($scope, $element) {
-                            var effectFocus = angular.element("<div class='focused'></div>"),
-                                ripple = $element.find(".ripple-box");
+                            var focus, box, ripple; // Elementos de efecto
                             
-                            $element.focus(function () {
-                                effectFocus.css("height", parseInt($element.css("width")) + "px");
-                            });
+                            if (!$scope.disableRipple) {
+                                box = angular.element(softtion.html("div").addClass("ripple-box").create()); 
+                                ripple = angular.element(softtion.html("span").addClass("effect").create());
+
+                                box.append(ripple); $element.append(box);
+
+                                box.click(function (ev) {
+                                    if (box.parent().is(":disabled")) { return; }
+
+                                    if (box.hasClass("animated")) {
+                                        box.removeClass("animated");
+                                    } // Removiendo la clase para animar
+
+                                    var left = ev.pageX - box.offset().left, 
+                                        top = ev.pageY - box.offset().top;
+
+                                    ripple.css({ top: top, left: left }); box.addClass("animated"); 
+                                });
+                            } // Usuario no desea efecto ripple en el Botón
                             
                             if ($element.hasClass("raised") || $element.hasClass("flat")) {
-                                (ripple.exists()) ? 
-                                    effectFocus.insertBefore(ripple) : $element.append(effectFocus);
-                            } 
+                                focus = angular.element("<div class='focused'></div>");
+                                
+                                $element.focus(function () {
+                                    focus.css("height", parseInt($element.css("width")) + "px");
+                                });
+                                
+                                (!$scope.disableRipple) ? focus.insertBefore(box) : $element.append(focus);
+                            } // Botón no es floating, se necesita efecto Focus
                         }
                     };
                 }
@@ -1748,6 +1771,7 @@
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
+                        addAttribute("ng-click", "openSuggestions()").
                         addAttribute("value","{{valueInput}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -1947,7 +1971,8 @@
                     return {
                         restrict: "C",
                         scope: {
-                            body: "@body"
+                            body: "@body",
+                            disabledPositionStart: "=disabledPositionStart"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -1965,13 +1990,17 @@
                                     angular.element(option).data("position", index); index++;
                                 });
                                 
-                                var optionActive = $element.find(".active:first");
+                                var optionActive = $element.find(".option.active:first");
                                 
                                 if (!optionActive.exists()) {
                                     optionActive = angular.element(options[0]).addClass("active");
                                 } // No se establecio pestaña activa inicialmente
                                 
+                                var widthBar = optionActive.outerWidth(),
+                                    leftBar = optionActive.position().left;
+                                
                                 angular.element(optionActive.attr("tab")).addClass("active");
+                                bar.css({ width: widthBar, left: leftBar });
                                 
                                 options.click(function () {
                                     var option = angular.element(this);
@@ -1987,7 +2016,10 @@
                                     } // Este componente ya se encuentra activo
                                     
                                     options.removeClass("active"); option.addClass("active");
-                                    angular.element(window).scrollTop(0); 
+                                    
+                                    if (!$scope.disabledPositionStart) {
+                                        angular.element(window).scrollTop(0); 
+                                    } // No es necesario subir vista
                                     
                                     if (left < $element.scrollLeft()) {
                                         $element.animate({ scrollLeft: left }, 175, "standardCurve"); 

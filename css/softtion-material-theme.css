@@ -319,11 +319,11 @@ button.flat > .focused {
     background-color: var(--primary-background-base);
     color: var(--primary-light-font); }
 
-.chip > .close > i {
+.chip > .action > i {
     background-color: var(--dark-background-focus);
     color: var(--secondary-light-font); }
 
-.chip:hover > .close > i {
+.chip:hover > .action > i {
     background-color: var(--light-background);
     color: var(--primary-base-font); }
 
@@ -498,6 +498,18 @@ button.flat > .focused {
 
 /** LIST */
 
+.list > .item-list > .content > div.avatar {
+    background-color: var(--dark-background-inactive); }
+
+.list > .item-list > .content > div.avatar > i {
+    color: var(--primary-light-font); }
+
+.list > .item-list > .content > .detail {
+    border-bottom-color: transparent; }
+
+.list.bordered > .item-list > .content > .detail {
+    border-bottom-color: var(--light-background-divider); }
+
 .list > .item-list > .content > .detail > .title { 
     color: var(--primary-dark-font); }
 
@@ -507,6 +519,9 @@ button.flat > .focused {
 .list > .item-list > .content > .detail > .emphasis,
 .list > .item-list > .options > ul > .subitem-list {
     color: var(--secondary-dark-font); }
+
+.list > .item-list > .content > .detail > i.active {
+    color: var(--secondary-accent-font); }
 
 /** MENU */
 
@@ -733,7 +748,7 @@ button.flat > .focused {
 /** TOOLBAR */
 
 .toolbar {
-    background-color: var(--primary-background-dark); }
+    background-color: var(--primary-background-base); }
 
 .toolbar > .app-bar {
     color: var(--primary-light-font); }

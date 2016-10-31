@@ -69,44 +69,27 @@ body {
     overflow: hidden; }
 
 ::-webkit-scrollbar {
-    width: 0px; 
-    height: 0px; }
+    width: 6px; 
+    height: 6px;
+    background: transparent; }
 
 ::-webkit-scrollbar-button {
-    width: 0px; 
+    width:0px;
     height: 0px; }
 
 ::-webkit-scrollbar-track {
-    width: 0px; 
-    height: 0px; }
+    background:transparent; }
 
 ::-webkit-scrollbar-thumb {
-    width: 0px; 
-    height: 0px; }
-
-@media only screen and (min-width : 961px) {
-    ::-webkit-scrollbar {
-        width: 6px; 
-        height: 6px;
-        background: transparent; }
-
-    ::-webkit-scrollbar-button {
-        width:0px;
-        height: 0px; }
-
-    ::-webkit-scrollbar-track {
-        background:transparent; }
-
-    ::-webkit-scrollbar-thumb {
-        background: #cfd8dc;
-        -webkit-box-shadow: inset 0 1px 0 rgba(255,255,225,0.5), inset 1px 0 0 rgba(255,255,255,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
-        border-radius: 10px;
-        -webkit-border-radius: 10px; 
-    }
-}
+    background: #cfd8dc;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,225,0.5), inset 1px 0 0 rgba(255,255,255,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
+    border-radius: 10px;
+    -webkit-border-radius: 10px; }
 
 ul {
-    list-style-type: none; }
+    list-style-type: none; 
+    margin: 0px;
+    padding: 0px; }
 
 @font-face {
     font-family: "Material Icons";
@@ -1841,7 +1824,7 @@ button:focus > .focused {
     text-align: center;
     font-size: 16px; }
 
-.chip > .close {
+.chip > .action {
     position: relative;
     width: 16px;
     height: 32px;
@@ -1849,7 +1832,7 @@ button:focus > .focused {
     padding-left: 4px;
     float: right; }
 
-.chip > .close > i {
+.chip > .action > i {
     position: absolute;
     line-height: 16px;
     height: 16px;
@@ -2606,7 +2589,17 @@ button:focus > .focused {
     left: 16px;
     width: 32px;
     height: 32px;
+    line-height: 32px;
+    z-index: 2;
+    cursor: pointer;
     border-radius: 50%; }
+
+.list > .item-list > .content > div.avatar > i {
+    font-size: 20px;
+    text-align: center;
+    width: inherit;
+    height: inherit;
+    line-height: inherit; }
 
 .list > .item-list > .content > .action {
     position: absolute;
@@ -2623,10 +2616,16 @@ button:focus > .focused {
 .list.three-line > .item-list > .content > .avatar {
     width: 40px;
     top: 16px; 
-    height: 40px; }
+    height: 40px;
+    line-height: 40px; }
+
+.list.two-line > .item-list > .content > div.avatar > i,
+.list.three-line > .item-list > .content > div.avatar > i {
+    font-size: 24px; }
 
 .list > .item-list > .content > .detail {
-    border-bottom: 1px solid var(--light-background-divider);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     padding: 16px;
     box-sizing: border-box; }
 
