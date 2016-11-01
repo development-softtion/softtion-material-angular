@@ -1395,37 +1395,37 @@ button:focus > .focused {
     bottom: 0px;
     position: absolute; }
 
-.card > .rich-media > .content > .primary-text {
+.card > .rich-media > .content > .primary-title {
     overflow-y: auto;
     width: 100%;
     padding: 24px 16px 16px 16px; 
     box-sizing: border-box; }
 
-.card > .rich-media > .content > .primary-text > .detail {
+.card > .rich-media > .content > .primary-title > .detail {
     float: left;
     width: 100%;
     box-sizing: border-box; }
 
-.card > .rich-media > .content > .primary-text > .detail > .title,
-.card > .rich-media > .content > .primary-text > .detail > .subtitle {
+.card > .rich-media > .content > .primary-title > .detail > .title,
+.card > .rich-media > .content > .primary-title > .detail > .subtitle {
     display: block;
     width: 100%; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
 
-.card > .rich-media > .content > .primary-text > .detail > .title {
+.card > .rich-media > .content > .primary-title > .detail > .title {
     font-size: 24px; 
     height: 24px; }
 
-.card > .rich-media > .content > .primary-text > .detail > .subtitle + .title {
+.card > .rich-media > .content > .primary-title > .detail > .subtitle + .title {
     margin-top: 12px; }
 
-.card > .rich-media > .content > .primary-text > .detail > .subtitle {
+.card > .rich-media > .content > .primary-title > .detail > .subtitle {
     height: 14px;
     font-size: 14px; }
 
-.card > .rich-media > .content > .primary-text > .detail > .title + .subtitle {
+.card > .rich-media > .content > .primary-title > .detail > .title + .subtitle {
     margin-top: 12px; }
 
 .card > .rich-media > .content > .actions {
@@ -1453,91 +1453,91 @@ button:focus > .focused {
     margin-right: 0px;
     margin-left: 8px; }
 
-.card > .primary-text {
+.card > .primary-title {
     overflow-y: auto;
     width: 100%;
     padding: 16px 16px 24px 16px; 
     box-sizing: border-box; }
 
-.card > .primary-text > .detail {
+.card > .primary-title > .detail {
     float: left;
     width: 100%;
     padding-top: 8px;
     box-sizing: border-box; }
 
-.card > .primary-text > .detail > .title,
-.card > .primary-text > .detail > .subtitle {
+.card > .primary-title > .detail > .title,
+.card > .primary-title > .detail > .subtitle {
     display: block;
     width: 100%; 
     text-overflow: ellipsis;
     white-space: nowrap; }
 
-.card > .primary-text > .detail > .title {
+.card > .primary-title > .detail > .title {
     font-size: 24px; 
     height: 24px; }
 
-.card > .primary-text > .detail > .subtitle + .title {
+.card > .primary-title > .detail > .subtitle + .title {
     margin-top: 12px; }
 
-.card > .primary-text > .detail > .subtitle {
+.card > .primary-title > .detail > .subtitle {
     height: 14px;
     font-size: 14px; }
 
-.card > .primary-text > .detail > .title + .subtitle {
+.card > .primary-title > .detail > .title + .subtitle {
     margin-top: 12px; }
 
-.card > .primary-text > .media-area {
+.card > .primary-title > .media-area {
     position: relative;
     width: 80px;
     height: 80px;
     float: right; 
     overflow: hidden; }
 
-.card > .primary-text > .media-area.x150 {
+.card > .primary-title > .media-area.x150 {
     width: 120px;
     height: 120px; }
 
-.card > .primary-text > .media-area.x200 {
+.card > .primary-title > .media-area.x200 {
     width: 160px;
     height: 160px; }
 
-.card > .primary-text > .media-area > img {
+.card > .primary-title > .media-area > img {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); }
 
-.card > .primary-text > .media-area + .detail {
+.card > .primary-title > .media-area + .detail {
     padding-right: 8px;
     width: calc(100% - 80px); }
 
-.card > .primary-text > .media-area.x150 + .detail {
+.card > .primary-title > .media-area.x150 + .detail {
     padding-right: 8px;
     width: calc(100% - 120px); }
 
-.card > .primary-text > .media-area.x200 + .detail {
+.card > .primary-title > .media-area.x200 + .detail {
     padding-right: 8px;
     width: calc(100% - 160px); }
 
-.card > .avatar-text {
+.card > .optional-header {
     position: relative;
     box-sizing: border-box;
     width: 100%;
     padding: 16px; 
     overflow-y: auto; }
 
-.card > .avatar-text > .avatar {
+.card > .optional-header > .avatar {
     float: left;
     width: 36px;
     height: 36px;
     border-radius: 50%; }
 
-.card > .avatar-text > .detail {
+.card > .optional-header > .detail {
     float: left;
     box-sizing: border-box; }
 
-.card > .avatar-text > .detail > .title, 
-.card > .avatar-text > .detail > .subtitle {
+.card > .optional-header > .detail > .title, 
+.card > .optional-header > .detail > .subtitle {
     display: block;
     width: 100%;
     margin: 0px; 
@@ -1547,7 +1547,7 @@ button:focus > .focused {
     white-space: nowrap;
     font-family: softtion-medium; }
 
-.card > .avatar-text > .avatar ~ .detail {
+.card > .optional-header > .avatar ~ .detail {
     padding-left: 16px;
     width: calc(100% - 36px); }
 
@@ -1606,30 +1606,30 @@ button:focus > .focused {
 .card > .actions + .actions > i {
     margin-top: 0px; }
 
-.card > .avatar-text + .rich-media, .card > .primary-text + .rich-media,
+.card > .optional-header + .rich-media, .card > .primary-title + .rich-media,
 .card > .support-text + .rich-media, .card > .action + .rich-media {
     border-radius: 0px; }
 
-.card > .area-action ~ .primary-text, .card > .area-action ~ .actions, 
-.card > .area-action ~ .rich-media, .card > .area-action ~ .avatar-text,
+.card > .area-action ~ .primary-title, .card > .area-action ~ .actions, 
+.card > .area-action ~ .rich-media, .card > .area-action ~ .optional-header,
 .card > .area-action ~ .support-text {
     width: 70%; }
 
-.card > .area-action.left ~ .primary-text, .card > .area-action.left ~ .actions, 
-.card > .area-action.left ~ .rich-media, .card > .area-action.left ~ .avatar-text,
+.card > .area-action.left ~ .primary-title, .card > .area-action.left ~ .actions, 
+.card > .area-action.left ~ .rich-media, .card > .area-action.left ~ .optional-header,
 .card > .area-action.left ~ .support-text {
     margin-left: 30%; }
 
-.card > .rich-media + .primary-text, 
+.card > .rich-media + .primary-title, 
 .card > .rich-media + .support-text {
     padding-bottom: 16px; }
 
-.card > .primary-text + .support-text,
-.card > .avatar-text + .support-text {
+.card > .primary-title + .support-text,
+.card > .optional-header + .support-text {
     padding-top: 0px;
     padding-bottom: 16px; }
 
-.card > .primary-text + .divider + .support-text {
+.card > .primary-title + .divider + .support-text {
     padding-bottom: 16px; }
 
 /** CHECKBOX */

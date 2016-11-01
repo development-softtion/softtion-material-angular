@@ -223,7 +223,7 @@ button.flat > .focused {
     background-color: var(--light-background); }
 
 .card > .rich-media > .content > .actions,
-.card > .rich-media > .content > .primary-text {
+.card > .rich-media > .content > .primary-title {
     background-color: rgba(0, 0, 0, 0.38); }
 
 .card > .rich-media > .content > .actions > button.flat {
@@ -231,8 +231,8 @@ button.flat > .focused {
 
 .card > .rich-media > .description,
 .card > .rich-media > .content > .actions > button.flat,
-.card > .rich-media > .content > .primary-text > .detail > .subtitle,
-.card > .rich-media > .content > .primary-text > .detail > .title {
+.card > .rich-media > .content > .primary-title > .detail > .subtitle,
+.card > .rich-media > .content > .primary-title > .detail > .title {
     color: var(--primary-light-font); }
 
 .card > .actions > button.flat {
@@ -241,8 +241,8 @@ button.flat > .focused {
 .card > .actions > button.flat:disabled {
     color: var(--disabled-accent-font); }
 
-.card > .avatar-text > .detail > .subtitle,
-.card > .primary-text > .detail > .subtitle,
+.card > .optional-header > .detail > .subtitle,
+.card > .primary-title > .detail > .subtitle,
 .card > .actions > i {
     color: var(--secondary-dark-font); }
 
