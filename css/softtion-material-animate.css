@@ -57,11 +57,31 @@
 
 /** Ripple */
 
+@keyframes ripple-squarecenter {
+    0% {
+        transform: scale(0); }
+    20% {
+        transform: scale(1); }
+    100% {
+        opacity: 0;
+        transform: scale(1); }
+}
+
+@-webkit-keyframes ripple-squarecenter {
+    0% {
+        transform: scale(0); }
+    20% {
+        transform: scale(1); }
+    100% {
+        opacity: 0;
+        transform: scale(1); }
+}
+
 @keyframes ripple-all {
     0% {
         opacity: 0; }
     
-    30% {
+    70% {
         opacity: 1; }
     
     100% {
@@ -74,7 +94,7 @@
     0% {
         opacity: 0; }
     
-    30% {
+    70% {
         opacity: 1; }
     
     100% {
@@ -162,11 +182,11 @@
 }
 
 .ripple-box.animated > .effect {
-    -moz-animation-duration: 0.45s;
-    -webkit-animation-duration: 0.45s;
-    -o-animation-duration: 0.45s;
-    animation-duration: 0.45s;
-    -ms-animation-duration: 0.45s;
+    -moz-animation-duration: 0.325s;
+    -webkit-animation-duration: 0.325s;
+    -o-animation-duration: 0.325s;
+    animation-duration: 0.325s;
+    -ms-animation-duration: 0.325s;
     -moz-animation-name: ripple-all;
     -webkit-animation-name: ripple-all;
     -o-animation-name: ripple-all;
@@ -182,37 +202,15 @@
 
 @keyframes button-focus {
     0% {
-        width: calc(100% - 8px); }
-    
-    25% {
-        width: calc(100% - 16px); }
+        padding-left: calc(100% - 12px); }
     
     50% {
-        width: calc(100% - 24px); }
-    
-    75% {
-        width: calc(100% - 16px); }
+        padding-left: calc(100% - 24px); }
     
     100% {
-        width: calc(100% - 8px); }
+        padding-left: calc(100% - 12px); }
 }
 
-@-webkit-keyframes button-focus {
-    0% {
-        width: calc(100% - 8px); }
-    
-    25% {
-        width: calc(100% - 16px); }
-    
-    50% {
-        width: calc(100% - 24px); }
-    
-    75% {
-        width: calc(100% - 16px); }
-    
-    100% {
-        width: calc(100% - 8px); }
-}
 
 /** ButtonFocusContent */
 

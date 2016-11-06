@@ -91,6 +91,11 @@ ul {
     margin: 0px;
     padding: 0px; }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  margin: 0; 
+  -webkit-appearance: none; }
+
 @font-face {
     font-family: "Material Icons";
     font-style: normal;
@@ -1219,14 +1224,14 @@ ul {
 
 button {
     cursor: pointer;
-    font-family: softtion-bold;
-    font-size: 14px; }
+    font-family: softtion-medium;
+    font-size: 14px; 
+    transition: all 0.325s var(--standard-curve); }
 
 button.raised, button.flat {
     position: relative;
     overflow: hidden;
     border: none;
-    font-weight: 600;
     padding: 0 8px;
     height: 36px;
     line-height: 36px;
@@ -1270,39 +1275,71 @@ button.floating > i {
     width: 24px;
     height: 24px; }
 
-button.raised, button.floating {
+button.raised {
+    box-shadow: var(--shadow-2); }
+
+button.floating {
     box-shadow: var(--shadow-6); }
 
 button.raised:disabled, button.floating:disabled,
 button.raised:hover:disabled, button.floating:hover:disabled {
     box-shadow: none; }
 
-button.raised:hover, button.raised:focus,
-button.floating:hover, button.floating:focus {
+button.raised:hover {
+    box-shadow: var(--shadow-4); }
+
+button.floating:hover {
     box-shadow: var(--shadow-8); }
 
 button.raised:disabled, button.flat:disabled, button.floating:disabled {
     cursor: none; }
 
-button > .focused {
+button.raised:before, button.flat:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding-top: calc(100% - 12px);
+    padding-left: calc(100% - 12px);
+    margin-left: calc(-50% + 6px);
+    margin-top: calc(-50% + 6px);
+    border-radius: 50%;
+    opacity: 0.35;
+    transform: scale(0);
+    visibility: hidden; }
+
+button.raised:not(:active):before, button.flat:not(:active):before {
+    animation: ripple-squarecenter 1s var(--standard-curve); }
+
+button.raised:focus:before, button.flat:focus:before {
+    visibility: visible; }
+
+button.flat.disabled-ripple:focus:before,
+button.raised.disabled-ripple:focus:before {
+    visibility: hidden !important; }
+
+button.raised:after, button.flat:after {
     content: "";
     position: absolute; 
-    visibility: hidden;
     top: 50%; 
     left: 50%; 
-    width: calc(100% - 12px);
+    padding-top: calc(100% - 8px);
+    padding-left: calc(100% - 8px);
     transform: translate(-50%, -50%);
     border: none;
+    opacity: 0;
     border-radius: 50%;
-    outline: none; }
+    outline: none; 
+    visibility: hidden; }
 
-button:focus > .focused {
+button.raised:focus:after, button.flat:focus:after {
     visibility: visible;
-    -moz-animation: button-focus 2.5s infinite linear; 
-    -webkit-animation: button-focus 2.5s infinite linear; 
-    -o-animation: button-focus 2.5s infinite linear; 
-    animation: button-focus 2.5s infinite linear; 
-    -ms-animation: button-focus 2.5s infinite linear; }
+    -moz-animation: button-focus 2s infinite var(--sharp-curve);  
+    -webkit-animation: button-focus 2s infinite var(--sharp-curve); 
+    -o-animation: button-focus 2s infinite var(--sharp-curve); 
+    animation: button-focus 2s infinite var(--sharp-curve); 
+    -ms-animation: button-focus 2s infinite var(--sharp-curve); }
 
 /** CARD */
 
@@ -1651,31 +1688,13 @@ button:focus > .focused {
     display: inline-block;
     padding-left: 32px;
     height: 24px;
+    font-family: softtion-medium;
     line-height: 24px;
     font-size: 14px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -ms-user-select: none; }
-
-.checkbox > .checkbox-focused {
-    position: absolute; 
-    visibility: hidden;
-    top: -7px;
-    left: -7px;
-    width: 38px;
-    height: 38px;
-    z-index: 0;
-    opacity: 0.2;
-    border-radius: 50%;
-    -moz-transition: visibility 0.2s ease-in;
-    -webkit-transition: visibility 0.2s ease-in;
-    -o-transition: visibility 0.2s ease-in;
-    transition: visibility 0.2s ease-in; 
-    -ms-transition: visibility 0.2s ease-in; }
-
-.checkbox.flex-pd > .checkbox-focused { 
-    left: 1px; }
 
 .checkbox > label:before {
     position: absolute;
@@ -1717,11 +1736,29 @@ button:focus > .focused {
     -ms-transform: rotate(40deg);
     -webkit-backface-visibility: hidden; }
 
-.checkbox > input[type="checkbox"]:focus ~ .checkbox-focused {
-    visibility: visible; }
-
 .checkbox > input[type="checkbox"]:checked ~ label:before {
     visibility: visible; }
+
+.checkbox > .ripple-content {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    top: 50%;
+    left: -12px;
+    transform: translateY(-50%);
+    background: transparent; }
+
+.checkbox > .ripple-content > .box {
+    position: absolute;
+    opacity: 0.45;
+    padding-top: 48px;
+    padding-left: 48px;
+    border-radius: 50%;
+    transform: scale(0); }
+
+.checkbox > input[type="checkbox"]:focus ~ .ripple-content > .box {
+    animation: ripple-squarecenter 0.75s var(--standard-curve); }
 
 /** CHECKBOX SELECTION */
 
@@ -1811,7 +1848,11 @@ button:focus > .focused {
     font-size: 13px;
     padding: 0 12px;
     font-family: softtion-light;
-    border-radius: 16px; }
+    border-radius: 16px;
+    transition: box-shadow 0.225s var(--sharp-curve); }
+
+.chip.active {
+    box-shadow: var(--shadow-2); }
 
 .chip > img, .chip > .avatar {
     float: left;
@@ -2063,14 +2104,10 @@ button:focus > .focused {
 .datatable > table > thead, .datatable > table > tbody {
     display: block; }
 
-.datatable.selected > table > thead > tr,
-.datatable.card-table > table > thead > tr {
-    border-top: none; }
-
 .datatable > table > thead > tr > th {
     font-family: softtion-bold;
-    height: 56px; 
-    line-height: 56px; }
+    height: 54px; 
+    line-height: 54px; }
 
 .datatable > table > thead > tr, .datatable > table > tbody > tr {
     padding: 0 16px; 
@@ -2084,8 +2121,8 @@ button:focus > .focused {
 
 .datatable > table > tbody > tr > td {
     font-family: softtion-light;
-    height: 48px; 
-    line-height: 48px; }
+    height: 47px; 
+    line-height: 47px; }
 
 .datatable > table > thead > tr > th, 
 .datatable > table > tbody > tr > td {
@@ -2097,6 +2134,10 @@ button:focus > .focused {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap; }
+
+.datatable > table > thead > tr > th.col-number, 
+.datatable > table > tbody > tr > td.col-number {
+    text-align: right; }
 
 .datatable > table tbody tr {
     -moz-transition: background-color 0.30s var(--sharp-curve);
@@ -2964,7 +3005,7 @@ button:focus > .focused {
     margin: 0px;
     max-width: 0%;
     width: 100%;
-    max-height: 0rem;
+    max-height: 0px;
     overflow: hidden;
     overflow-y: auto;
     list-style-type: none;

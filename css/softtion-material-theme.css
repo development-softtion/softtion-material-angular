@@ -38,7 +38,7 @@
     --light-background-focus: #e0e0e0;                  /** 300 */
     --light-background-disabled: #9e9e9e;               /** 500 */
     --light-background-inactive: #757575;               /** 600 */
-    --light-ripple: rgba(255, 255, 255, 0.25);          /** Ripple */
+    --light-ripple: rgba(255, 255, 255, 0.45);          /** Ripple */
     --light-background-divider: rgba(0, 0, 0, 0.12);    /** Default */
     
     --dark-background: #000000;                             /** Black */
@@ -170,52 +170,82 @@ html, body ,input, button, textarea {
 /** BUTTON */
 
 button.raised { 
+    background-color: var(--light-background-hover);
+    color: var(--primary-dark-font); }
+
+button.raised.colored { 
     background-color: var(--primary-background-base);
     color: var(--primary-light-font); }
 
+button.raised:hover, button.raised:focus  {
+    background-color: var(--light-background-focus); }
+
+button.raised.colored:hover, button.raised.colored:focus  {
+    background-color: var(--primary-background-dark); }
+
+button.raised:disabled, button.raised:hover:disabled {
+    color: var(--disabled-dark-font);
+    background-color: var(--light-background-hover); }
+
+button.raised.colored:disabled, button.raised.colored:hover:disabled {
+    color: var(--disabled-light-font);
+    background-color: var(--primary-background-disabled); }
+
+button.flat {
+    background-color: transparent;
+    color: var(--primary-dark-font); }
+
+button.flat.colored {
+    color: var(--primary-base-font); }
+
+button.flat:hover {
+    background-color: var(--light-background-hover); } 
+
+button.flat:focus {
+    background-color: var(--light-background-focus); } 
+
+button.flat:disabled, button.flat:hover:disabled {
+    color: var(--disabled-dark-font); 
+    background-color: var(--light-background-hover); }
+
 button.floating { 
+    background-color: var(--light-background-hover);
+    color: var(--primary-dark-font); }
+
+button.floating.colored { 
     background-color: var(--secondary-background-base);
     color: var(--primary-light-font); }
 
-button.raised:hover, button.raised:focus  {
-    background-color: var(--primary-background-dark); }
-
 button.floating:hover, button.floating:focus  {
+    background-color: var(--light-background-focus); }
+
+button.floating.colored:hover, button.floating.colored:focus  {
     background-color: var(--secondary-background-dark); }
 
-button.raised:disabled, button.raised:hover:disabled {
-    background-color: var(--primary-background-disabled);
-    color: var(--disabled-light-font); }
-
 button.floating:disabled, button.floating:hover:disabled {
-    background-color: var(--secondary-background-disabled);
-    color: var(--disabled-light-font); }
+    color: var(--disabled-dark-font);
+    background-color: var(--light-background-hover); }
 
-button.flat {
-    background-color: var(--light-background);
-    color: var(--primary-base-font); }
+button.floating.colored:disabled, button.floating.colored:hover:disabled {
+    color: var(--disabled-light-font);
+    background-color: var(--secondary-background-disabled); }
 
-button.flat:hover, button.flat:focus {
-    background-color: var(--primary-background-hover); } 
+button.raised:before, button.flat:before {
+    background-color: var(--dark-ripple); }
 
-button.flat:disabled, button.flat:hover:disabled {
-    background-color: var(--light-background); 
-    color: var(--disabled-base-font); }
-
-button.raised > .ripple-box > .effect, 
-button.floating > .ripple-box > .effect {
+button.raised.colored:before {
     background-color: var(--light-ripple); }
 
-button.flat > .ripple-box > .effect {
-    background-color: var(--primary-ripple); }
+button.raised:after {
+    opacity: 0.4;
+    background-color: var(--light-background); }
 
-button.raised > .focused {
-    background-color: var(--light-background);
-    opacity: 0.2; }
+button.raised.colored:after {
+    opacity: 0.25; }
 
-button.flat > .focused {
-    background-color: var(--primary-background-light);
-    opacity: 0.2; }
+button.flat:after {
+    opacity: 0.4;
+    background-color: var(--light-background); }
 
 /** CARD */
 
@@ -273,11 +303,8 @@ button.flat > .focused {
     border-right: 2px solid var(--light-background);
     border-bottom: 2px solid var(--light-background); }
 
-.checkbox > .checkbox-focused {
+.checkbox > .ripple-content > .box {
     background-color: var(--light-background-inactive); }
-
-.checkbox > input[type="checkbox"]:checked ~ .checkbox-focused {
-    background-color: var(--primary-background-base); }
 
 /** CHECKBOX SELECTION */
 
@@ -677,6 +704,9 @@ button.flat > .focused {
 
 .textarea.active > textarea:focus ~ label > span {
     color: var(--primary-accent-font); }
+
+.textarea > textarea:disabled {
+    background-color: transparent; }
 
 .textarea > textarea::selection {
     color: var(--primary-light-font);

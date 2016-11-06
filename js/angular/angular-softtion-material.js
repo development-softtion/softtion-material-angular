@@ -165,7 +165,10 @@
                                         $element.removeClass("active");
                                     } // No ha seleccionado, ni digitado en el Componente
                                     
-                                    list.removeClass("active"); 
+                                    if (this.suggestionsFilter.length === 0) {
+                                        list.removeClass("active"); $scope.optionSelect = undefined;
+                                        $scope.clearSuggestion = true;
+                                    } // Cerrando lista, no existe opción posible
                                 }
                             };
 
@@ -373,40 +376,12 @@
                     return {
                         restrict: "E",
                         scope: {
-                            disableRipple: "=disableRipple"
+                            disableRipple: "=?disableRipple"
                         },
                         link: function ($scope, $element) {
-                            var focus, box, ripple; // Elementos de efecto
-                            
-                            if (!$scope.disableRipple) {
-                                box = angular.element(softtion.html("div").addClass("ripple-box").create()); 
-                                ripple = angular.element(softtion.html("span").addClass("effect").create());
-
-                                box.append(ripple); $element.append(box);
-
-                                box.click(function (ev) {
-                                    if (box.parent().is(":disabled")) { return; }
-
-                                    if (box.hasClass("animated")) {
-                                        box.removeClass("animated");
-                                    } // Removiendo la clase para animar
-
-                                    var left = ev.pageX - box.offset().left, 
-                                        top = ev.pageY - box.offset().top;
-
-                                    ripple.css({ top: top, left: left }); box.addClass("animated"); 
-                                });
+                            if ($scope.disableRipple) {
+                                $element.addClass("disabled-ripple");
                             } // Usuario no desea efecto ripple en el Botón
-                            
-                            if ($element.hasClass("raised") || $element.hasClass("flat")) {
-                                focus = angular.element("<div class='focused'></div>");
-                                
-                                $element.focus(function () {
-                                    focus.css("height", parseInt($element.css("width")) + "px");
-                                });
-                                
-                                (!$scope.disableRipple) ? focus.insertBefore(box) : $element.append(focus);
-                            } // Botón no es floating, se necesita efecto Focus
                         }
                     };
                 }
@@ -416,19 +391,22 @@
                 route: "softtion/template/checkbox.html",
                 name: "checkbox",
                 html: function () {
-                    var $input = softtion.html("input", false).
+                    var input = softtion.html("input", false).
                         addAttribute("type","checkbox").
                         addAttribute("ng-model","checked").
                         addAttribute("ng-disabled","ngDisabled");
 
-                    var $label = softtion.html("label").setText("{{label}}").
+                    var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-click","clickLabel()");
+                
+                    var ripple = softtion.html("div").addClass("ripple-content").
+                        addComponent(
+                            softtion.html("div").addClass("box")
+                        );
 
-                    var $focused = softtion.html("div").addClass("checkbox-focused");
-
-                    return $input + $label + $focused; // Checkbox
+                    return input + label + ripple; // Checkbox
                 },
-                directive: function () {
+                directive: ["$timeout", function ($timeout) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.CheckBox.route,
@@ -438,16 +416,16 @@
                             ngDisabled: "=ngDisabled"
                         },
                         link: function ($scope, $element) {
-                            var $input = $element.find("input");
+                            var input = $element.find("input[type='checkbox']");
 
                             $scope.clickLabel = function () { 
                                 if (!$scope.ngDisabled) {
-                                    $scope.checked = !$scope.checked; $input.focus(); 
+                                    $scope.checked = !$scope.checked; input.focus();
                                 } // No se permite el cambio de la Propiedad
                             };
                         }
                     };
-                }
+                }]
             },
             
             CheckBoxSelection: {
@@ -625,6 +603,7 @@
                     var content = softtion.html("div").addClass("content").
                         addComponent(
                             softtion.html("div").addClass("plate").
+                                addAttribute("ng-mousedown","mousedownPlate($event)").
                                 addComponent(
                                     softtion.html("div").addClass("canvas")
                                 ).
@@ -864,12 +843,12 @@
                             hours.find(".tick-" + $scope.hourSelect).addClass("active");
                             minutes.find(".tick-" + $scope.minuteSelect).addClass("active");
                             
-                            plate.on("mousedown", function (ev) {
-                                var offset = plate.offset(), isTouch = /^touch/.test(ev.type),
+                            $scope.mousedownPlate = function ($event) {
+                                var offset = plate.offset(), isTouch = /^touch/.test($event.type),
                                     startX = offset.left + attributes.dialRadius,
                                     startY = offset.top + attributes.dialRadius,
-                                    positionX = (isTouch ? ev.originalEvent.touches[0] : ev).pageX - startX,
-                                    positionY = (isTouch ? ev.originalEvent.touches[0] : ev).pageY - startY,
+                                    positionX = (isTouch ? $event.originalEvent.touches[0] : $event).pageX - startX,
+                                    positionY = (isTouch ? $event.originalEvent.touches[0] : $event).pageY - startY,
                                     circle = Math.sqrt(positionX * positionX + positionY * positionY);
 
                                     if (circle < attributes.radius - attributes.tickRadius || 
@@ -877,7 +856,7 @@
                                             return;
                                     } // No se presiona click sobre componente que definen hora o minutos
                                     
-                                ev.preventDefault();
+                                $event.preventDefault();
                                 
                                 var value = Material.components.Clockpicker.setHand(
                                     positionX, positionY, isHours, canvasComponent, attributes
@@ -894,7 +873,7 @@
                                     minutes.find(".tick").removeClass("active");
                                     minutes.find(".tick-" + value).addClass("active");
                                 }
-                            });
+                            };
                         }
                     };
                 }
@@ -975,13 +954,13 @@
                     return {
                         restrict: "C",
                         scope: {
-                            selectMultiple: "=selectMultiple",
-                            list: "=ngModel",
-                            selection: "=selection",
-                            selectAll: "=selectAll",
-                            clickSelectAll: "=clickSelectAll",
-                            clickSelect: "=clickSelect",
-                            countSelect: "=countSelect"
+                            selectMultiple: "=?selectMultiple",
+                            selection: "=?ngModel",
+                            list: "=rowsData",
+                            selectAll: "=?selectAll",
+                            clickSelectAll: "=?clickSelectAll",
+                            clickSelect: "=?clickSelect",
+                            countSelect: "=?countSelect"
                         },
                         link: function ($scope, $element) {
                             var selectedSimple = undefined; // Objeto seleccionado
