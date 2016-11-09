@@ -56,6 +56,9 @@ html, body ,input, textarea {
     font-size: 14px;
     -webkit-tap-highlight-color: transparent; }
 
+h1, h2, h3, h4, h5, h6, b {
+    font-family: softtion-bold; }
+
 body {
     margin: 0px; }
 
@@ -102,7 +105,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
-.material-icon {
+.material-icon, button > i, i.action-icon {
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
@@ -773,48 +776,47 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px; }
+    padding: 16px 0px 8px 0px; }
 
 .autocomplete > label {
     position: absolute;
-    top: 8px;
+    top: 40px;
     left: 0;
     width: 100%;
-    height: 14px;
-    line-height: 14px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.1s ease-out;
-    -webkit-transition: all 0.1s ease-out;
-    -o-transition: all 0.1s ease-out;
-    transition: all 0.1s ease-out;
-    -ms-transition: all 0.1s ease-out; }
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
 
 .autocomplete.active > label {
-    top: -14px;
-    height: 14px;
-    line-height: 12px;
     cursor: none;
+    top: 16px;
     font-size: 12px; }
 
 .autocomplete > input {
     width: 100%;
-    height: 30px;
-    line-height: 30px;
+    cursor: text;
+    height: 32px;
+    padding: 16px 0px 8px 0px;
+    font-size: 16px;
+    line-height: 24px;
     border: none;
     outline: none; 
     background-color: transparent; }
 
 .autocomplete > .line-shadow {
     position: absolute;
-    height: 1px;
     width: 100%;
     left: 0;
-    bottom: -1px; }
+    bottom: 7px; }
 
 .autocomplete > input:focus ~ .line-shadow {
-    height: 2px;
-    bottom: -2px; }
+    bottom: 6px; }
 
 .autocomplete > span {
     width: 100%;
@@ -837,19 +839,20 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete.flex-pd > span, .autocomplete.flex-pd-left > span {
     left: 8px; }
 
-.autocomplete > .clear {
+.autocomplete > .action-icon {
     position: absolute;
     width: 20px;
     height: 20px;
     line-height: 20px;
-    top: 5px;
+    top: 38px;
     cursor: pointer;
     right: 0px;
     font-size: 18px; 
-    font-weight: 800;
+    font-weight: 900;
     text-align: center; }
 
-.autocomplete.flex-pd > .clear, .autocomplete.flex-pd-right > .clear {
+.autocomplete.flex-pd > .action-icon, 
+.autocomplete.flex-pd-right > .action-icon {
     right: 8px; }
 
 .autocomplete > ul {
@@ -862,11 +865,11 @@ input[type=number]::-webkit-outer-spin-button {
     overflow-y: auto;
     list-style-type: none;
     padding: 0px;
-    top: 34px;
+    top: 74px;
     z-index: 4;
     box-shadow: var(--shadow-4); 
     -moz-transition: max-height 0.225s, max-width 0.225s;
-    -webkit-transition: max-height, max-width 0.35s;
+    -webkit-transition: max-height 0.225s, max-width 0.225s;
     -o-transition: max-height 0.225s, max-width 0.225s;
     transition: max-height 0.225s, max-width 0.225s;
     -ms-transition: max-height 0.225s, max-width 0.225s; }
@@ -879,10 +882,11 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 0px 16px;
     cursor: pointer;
     height: 48px;
+    font-size: 14px;
     line-height: 48px; }
 
 .autocomplete > ul > li > b { 
-    font-weight: 400; }
+    font-family: softtion-light; }
 
 .autocomplete > ul > li:focus {
     outline: none; }
@@ -1294,7 +1298,7 @@ button.floating:hover {
 button.raised:disabled, button.flat:disabled, button.floating:disabled {
     cursor: none; }
 
-button.raised:before, button.flat:before {
+button.raised:before, button.flat:before, button.floating:before {
     content: "";
     display: block;
     position: absolute;
@@ -1309,17 +1313,23 @@ button.raised:before, button.flat:before {
     transform: scale(0);
     visibility: hidden; }
 
-button.raised:not(:active):before, button.flat:not(:active):before {
+button.floating:before {
+    padding-top: calc(100% - 12px);
+    padding-left: calc(100% - 12px);
+    margin-left: calc(-50% + 6px);
+    margin-top: calc(-50% + 6px); }
+
+button.raised:not(:active):before, button.flat:not(:active):before, button.floating:not(:active):before {
     animation: ripple-squarecenter 1s var(--standard-curve); }
 
-button.raised:focus:before, button.flat:focus:before {
+button.raised:focus:before, button.flat:focus:before, button.floating:focus:before {
     visibility: visible; }
 
 button.flat.disabled-ripple:focus:before,
 button.raised.disabled-ripple:focus:before {
     visibility: hidden !important; }
 
-button.raised:after, button.flat:after {
+/*button.raised:after, button.flat:after {
     content: "";
     position: absolute; 
     top: 50%; 
@@ -1339,7 +1349,7 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-animation: button-focus 2s infinite var(--sharp-curve); 
     -o-animation: button-focus 2s infinite var(--sharp-curve); 
     animation: button-focus 2s infinite var(--sharp-curve); 
-    -ms-animation: button-focus 2s infinite var(--sharp-curve); }
+    -ms-animation: button-focus 2s infinite var(--sharp-curve); }*/
 
 /** CARD */
 
@@ -1697,20 +1707,21 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-user-select: none; }
 
 .checkbox > label:before {
-    position: absolute;
     content: "";
-    visibility: hidden;
+    position: absolute;
     top: 2px;
     left: 2px;
     width: 20px;
     height: 20px;
     z-index: 1;
     border-radius: 2px;
-    -moz-transition: background-color 0.2s ease-in;
-    -webkit-transition: background-color 0.2s ease-in;
-    -o-transition: background-color 0.2s ease-in;
-    transition: background-color 0.2s ease-in;
-    -ms-transition: background-color 0.2s ease-in; }
+    transform: scale(0);
+    transform-origin: 50% 50%;
+    -moz-transition: all 0.2s var(--standard-curve);
+    -webkit-transition: all 0.2s var(--standard-curve);
+    -o-transition: all 0.2s var(--standard-curve);
+    transition: all 0.2s var(--standard-curve);
+    -ms-transition: all 0.2s var(--standard-curve); }
 
 .checkbox > label:after {
     position: absolute;
@@ -1737,7 +1748,7 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-backface-visibility: hidden; }
 
 .checkbox > input[type="checkbox"]:checked ~ label:before {
-    visibility: visible; }
+    transform: scale(1); }
 
 .checkbox > .ripple-content {
     position: absolute;
@@ -1789,8 +1800,8 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-user-select: none; }
 
 .checkbox-selection > label:after {
-    position: absolute;
     content: "";
+    position: absolute;
     top: 50%;
     left: 50%;
     -moz-transform: translate(-50%, -50%);
@@ -1801,12 +1812,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: calc(100% - 8px);
     height: calc(100% - 8px);
     z-index: 1;
-    border-radius: 2px;
-    -moz-transition: transform 0.1s var(--standard-curve);
-    -webkit-transition: transform 0.1s var(--standard-curve);
-    -o-transition: transform 0.1s var(--standard-curve);
-    transition: transform 0.1s var(--standard-curve);
-    -ms-transition: transform 0.1s var(--standard-curve); }
+    border-radius: 2px; }
 
 .checkbox-selection > input[type="checkbox"]:checked + label:after {
     border-left: 2px solid transparent;
@@ -1821,23 +1827,24 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-backface-visibility: hidden; }
 
 .checkbox-selection > label:before {
+    content: "";
     position: relative;
     display: block;
     margin: 2px;
-    content: "";
-    visibility: hidden;
     width: calc(100% - 4px);
     height: calc(100% - 4px);
     z-index: 1;
     border-radius: 2px;
-    -moz-transition: background-color 0.2s ease-in;
-    -webkit-transition: background-color 0.2s ease-in;
-    -o-transition: background-color 0.2s ease-in;
-    transition: background-color 0.2s ease-in;
-    -ms-transition: background-color 0.2s ease-in; }
+    transform: scale(0);
+    transform-origin: 50% 50%;
+    -moz-transition: all 0.2s var(--standard-curve);
+    -webkit-transition: all 0.2s var(--standard-curve);
+    -o-transition: all 0.2s var(--standard-curve);
+    transition: all 0.2s var(--standard-curve);
+    -ms-transition: all 0.2s var(--standard-curve); }
 
 .checkbox-selection > input[type="checkbox"]:checked ~ label:before {
-    visibility: visible; }
+    transform: scale(1); }
 
 /** CHIP */
 
@@ -3415,28 +3422,26 @@ button.raised:focus:after, button.flat:focus:after {
 .textarea {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px;
-    padding-bottom: 8px !important; 
-    padding-top: 8px !important; }
+    padding: 16px 0px 16px 0px; }
 
 .textarea > label {
     position: absolute;
-    top: 4px;
+    top: 40px;
     left: 0px;
     width: 100%;
-    height: 14px;
+    height: 16px;
+    font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.1s ease-out;
-    -webkit-transition: all 0.1s ease-out;
-    -o-transition: all 0.1s ease-out;
-    transition: all 0.1s ease-out; 
-    -ms-transition: all 0.1s ease-out; }
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve); 
+    -ms-transition: all 0.1s var(--sharp-curve); }
 
 .textarea.active > label {
-    top: -14px;
-    height: 12px;
-    line-height: 12px;
+    top: 16px;
+    height: 16px;
+    line-height: 16px;
     cursor: none;
     font-size: 12px; }
 
@@ -3450,10 +3455,11 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     outline: none;
     resize: none;
-    line-height: 16px;
-    height: 16px;
-    min-height: 16px;
-    padding: 0px;
+    line-height: 18px;
+    height: 18px;
+    min-height: 18px;
+    font-size: 16px;
+    padding: 24px 0px 0px 0px;
     -moz-transition: all 0.175s ease-out;
     -webkit-transition: all 0.175s ease-out;
     -o-transition: all 0.175s ease-out;
@@ -3462,21 +3468,19 @@ button.raised:focus:after, button.flat:focus:after {
 
 .textarea > .line-shadow {
     position: absolute;
-    height: 1px;
     width: 100%;
     left: 0;
-    bottom: 1px; }
+    bottom: 7px; }
 
 .textarea.active > textarea:focus ~ .line-shadow {
-    height: 2px;
-    bottom: 0px; }
+    bottom: 6px; }
 
 .textarea > span {
     width: 100%;
     position: absolute;
     left: 0;
     font-size: 12px;
-    bottom: -19px; }
+    bottom: -12px; }
 
 .textarea.flex-pd > label, .textarea.flex-pd > span, 
 .textarea.flex-pd > .line-shadow {
@@ -3495,8 +3499,6 @@ button.raised:focus:after, button.flat:focus:after {
 .textarea > .textarea-hidden {
     display: none;
     width: 100%;
-    padding: 0px 10px;
-    box-sizing: border-box;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word; }
@@ -3506,29 +3508,41 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px; }
+    padding: 16px 0px 8px 0px; }
+
+.textfield.single-line {
+    padding-top: 8px; }
 
 .textfield > label {
     position: absolute;
-    top: 8px;
+    top: 40px;
     left: 0;
     width: 100%;
-    height: 14px;
-    line-height: 14px;
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
     cursor: text;
-    -moz-transition: all 0.1s ease-out;
-    -webkit-transition: all 0.1s ease-out;
-    -o-transition: all 0.1s ease-out;
-    transition: all 0.1s ease-out;
-    -ms-transition: all 0.1s ease-out; }
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
 
 .textfield.active > label {
-    top: -14px;
-    height: 14px;
-    line-height: 12px;
     cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
     font-size: 12px; }
+
+.textfield.single-line > label {
+    display: none; }
+
+.textfield.single-line > i {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 20px 12px 12px 12px; }
 
 .textfield > label > span {
     margin-left: 2px; }
@@ -3536,29 +3550,51 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield > input {
     width: 100%;
     cursor: text;
-    height: 30px;
-    line-height: 30px;
+    height: 32px;
+    padding: 16px 0px 8px 0px;
+    line-height: 32px;
+    font-size: 16px;
+    line-height: 24px;
     border: none;
     outline: none; 
     background-color: transparent; }
 
+.textfield > input::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textfield.single-line.icon-input > input {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
+
+.textfield.single-line > input::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textfield.single-line > input {
+    padding-top: 8px; }
+
 .textfield > .line-shadow {
     position: absolute;
-    height: 1px;
-    width: 100%;
     left: 0; 
-    bottom: -1px; }
+    bottom: 7px; 
+    width: 100%; }
+
+.textfield.single-line.icon-input > .line-shadow {
+    left: 72px;
+    width: calc(100% - 72px); }
 
 .textfield.active > input:focus ~ .line-shadow {
-    height: 2px;
-    bottom: -2px; }
+    bottom: 6px;  }
 
 .textfield > span {
     width: 100%;
     position: absolute;
     left: 0;
-    font-size: 12px;
-    bottom: -19px; }
+    bottom: -10px;
+    font-size: 12px; }
+
+.textfield.single-line.icon-input > span {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
 
 .textfield.flex-pd > label, .textfield.flex-pd > span, 
 .textfield.flex-pd > .line-shadow {
@@ -3622,9 +3658,9 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield-readonly.flex-pd > .line-shadow, .textfield-readonly.flex-pd-left > .line-shadow {
     left: 8px; }
 
-/** TOOLBAR */
+/** APP BAR */
 
-.toolbar {
+.app-bar {
     position: fixed;
     width: 100%;
     top: 0;
@@ -3635,48 +3671,53 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: var(--shadow-4); 
     transition: margin-top 0.525s var(--easing-out); }
 
-.toolbar.hide {
+.app-bar.hide {
     margin-top: -56px; }
 
-.toolbar > .app-bar {
-    width: 100%; 
-    height: 56px; }
+/** TOOLBAR */
 
-.toolbar > .app-bar > .nav-icon {
-    width: 40px;
-    height: 56px;
-    cursor: pointer;
+.toolbar {
+    width: 100%;
+    height: 56px; 
     line-height: 56px;
+    z-index: 8;
+    transition: margin-top 0.525s var(--easing-out); }
+
+.toolbar > .nav-icon {
+    width: 40px;
+    height: inherit;
+    cursor: pointer;
+    line-height: inherit;
     float: left;
     margin: 0px 16px 0px 4px; }
 
-.toolbar > .app-bar > .nav-icon > i {
+.toolbar > .nav-icon > i {
     text-align: center;
     margin-top: 4px;
     padding: 12px;
     line-height: 24px; }
 
-.toolbar > .app-bar > .title {
+.toolbar > .title {
     margin: 0px;
     margin-left: 16px;
     float: left;
     font-size: 20px;
-    line-height: 56px; }
+    line-height: inherit; }
 
-.toolbar.flexible-title > .app-bar > .title {
+.toolbar.flexible-title > .title {
     margin-top: 56px;
     height: 72px;
     line-height: 72px;
     font-size: 24px;
     transition: all 0.525s var(--easing-out); }
 
-.toolbar.flexible-title.hide-flexible-title > .app-bar > .title {
+.toolbar.flexible-title.hide-flexible-title > .title {
     margin-top: 0px;
     height: 56px;
     line-height: 56px;
     font-size: 20px; }
 
-.toolbar > .app-bar > .actions {
+.toolbar > .actions {
     display: flex;
     margin: 0px;
     padding: 0px;
@@ -3684,37 +3725,34 @@ button.raised:focus:after, button.flat:focus:after {
     height: 56px; 
     line-height: 56px; }
 
-.toolbar > .app-bar > .actions > i {
+.toolbar > .actions > i {
     cursor: pointer;
     line-height: 24px;
     padding: 12px;
     margin-top: 4px;
     margin-left: 1px; }
 
-.toolbar > .app-bar > .menu-icon {
+.toolbar > .menu-icon {
     width: 40px;
     height: 56px;
     line-height: 56px;
     float: right;
     margin: 0px 4px 0px 1px; }
 
-.toolbar > .app-bar > .menu-icon > i {
+.toolbar > .menu-icon > i {
     text-align: center;
     margin-top: 4px;
     padding: 12px 6px;
     line-height: 24px; }
 
-.toolbar.offscreen {
-    box-shadow: none;
-    position: absolute; }
-
 @media only screen and (min-width : 961px) {
     
-    .toolbar > .app-bar > .nav-icon {
-        display: none; }
+    .toolbar {
+        height: 64px;  
+        line-height: 64px; }
     
-    .toolbar > .app-bar {
-        width: calc(100% - 320px); }
+    .toolbar > .nav-icon {
+        display: none; }
 }
 
 /** TOOLTIP */

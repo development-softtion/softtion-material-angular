@@ -15,7 +15,38 @@
         TextType = softtion.get(softtion.TEXTCONTROL);
     
     var Material = {
-        components: {            
+        components: {
+            AppBar: {
+                name: "appBar",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            // Componentes y atributos
+                            var $window = angular.element(window), position = 0, hideClass = "hide";
+                            
+                            $window.scroll(function () {
+                                var positionNew = $window.scrollTop(); // Posicion actual
+
+                                hideClass = $element.hasClass("flexible-title") ?
+                                    "hide-flexible-title" : "hide";
+
+                                if (positionNew > 56) {
+                                    (position < positionNew) ?
+                                        $element.addClass(hideClass) : $element.removeClass(hideClass);
+                                } else if (positionNew === 0) {
+                                    $element.removeClass(hideClass); }
+
+                                position = positionNew; // Posici�n nueva del scroll
+                            });
+                            
+                            
+                            angular.element(".app-content").css("margin-top", $element.innerHeight());
+                        }
+                    };
+                }
+            },
+            
             AutoComplete: {
                 route: "softtion/template/autocomplete.html",
                 name: "autocomplete",
@@ -38,7 +69,7 @@
                         addAttribute("ng-hide","hideSpan");
                 
                     var buttonClear = softtion.html("i").
-                        addClass(["material-icon", "clear"]).setText("close").
+                        addClass(["action-icon"]).setText("close").
                         addAttribute("ng-hide","clearSuggestion").
                         addAttribute("ng-click","clearAutocomplet()");
 
@@ -168,7 +199,18 @@
                                     if (this.suggestionsFilter.length === 0) {
                                         list.removeClass("active"); $scope.optionSelect = undefined;
                                         $scope.clearSuggestion = true;
-                                    } // Cerrando lista, no existe opción posible
+                                    } else {
+                                        if (softtion.is("defined", $scope.optionSelect)) {
+                                            list.removeClass("active"); 
+                                            
+                                            if (typeof $scope.optionSelect === "string") {
+                                                $scope.valueInput = $scope.optionSelect;
+                                            } else {
+                                                $scope.valueInput = (!(filterDefined) ? $scope.optionSelect.toString() :
+                                                    softtion.findKey($scope.optionSelect, $scope.filter));
+                                            }
+                                        }
+                                    }
                                 }
                             };
 
@@ -432,15 +474,15 @@
                 route: "softtion/template/checkbox-selection.html",
                 name: "checkboxSelection",
                 html: function () {
-                    var $input = softtion.html("input", false).
+                    var input = softtion.html("input", false).
                         addAttribute("type","checkbox").
                         addAttribute("ng-model","checked").
                         addAttribute("ng-disabled","ngDisabled");
 
-                    var $label = softtion.html("label").
+                    var label = softtion.html("label").
                         addAttribute("ng-click","clickLabel($event)");
 
-                    return $input + $label; // CheckboxTable
+                    return input + label; // Checkbox control
                 },
                 directive: function () {
                     return {
@@ -452,13 +494,15 @@
                             stopPropagation: "=stopPropagation",
                             ngDisabled: "=ngDisabled"
                         },
-                        link: function ($scope) {
+                        link: function ($scope, $element) {
+                            var input = $element.find("input[type='checkbox']");
+                            
                             $scope.clickLabel = function ($event) { 
                                 if ($scope.preventDefault) {
                                     return;
                                 } // Se detendrá activación del evento
                                 
-                                $scope.checked = !$scope.checked; 
+                                $scope.checked = !$scope.checked; input.focus();
                                 
                                 if ($scope.stopPropagation) {
                                     $event.stopPropagation();
@@ -2116,7 +2160,7 @@
                                 autoResize(area, hidden); // Definiendo tamaño del Area
                             } // Se ha definido un valor
 
-                            $scope.clickLabel = function (ev) { 
+                            $scope.clickLabel = function (ev) {
                                 area.focus(); // Se activa el componente 
                                 
                                 if (softtion.is("function", $scope.clickEvent)) {
@@ -2184,7 +2228,8 @@
                         addAttribute("ng-keypress","keypressInput($event)").
                         addAttribute("ng-readonly","ngReadonly").
                         addAttribute("ng-model","inputValue").
-                        addAttribute("ng-disabled","ngDisabled");
+                        addAttribute("ng-disabled","ngDisabled").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -2221,11 +2266,18 @@
                             ngReadonly: "=ngReadonly",
                             minLength: "@minLength",
                             maxLength: "@maxLength",
-                            clickEvent: "=clickEvent"
+                            clickEvent: "=clickEvent",
+                            icon: "@icon",
+                            placeholder: "@placeholder"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input");
+                            
+                            if (softtion.is("string", $scope.icon) && $element.hasClass("single-line")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-input");
+                            } // Se debe insertar el icono antes del input
 
                             // Atributos de control
                             var tempMinLength = parseInt($scope.minLength),
@@ -2323,39 +2375,6 @@
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
-                        }
-                    };
-                }
-            },
-            
-            Toolbar: {
-                name: "toolbar",
-                directive: function () {
-                    return {
-                        restrict: "C",
-                        link: function ($scope, $element) {
-                            // Componentes
-                            var $window = angular.element(window),
-                                position = 0, classHide = "hide";
-                            
-                            if (!$element.hasClass("offscreen")) {
-                                $window.scroll(function () {
-                                    var positionNew = $window.scrollTop(); // Posicion actual
-
-                                    classHide = $element.hasClass("flexible-title") ?
-                                        "hide-flexible-title" : "hide";
-
-                                    if (positionNew > 56) {
-                                        (position < positionNew) ?
-                                            $element.addClass(classHide) : $element.removeClass(classHide);
-                                    } else if (positionNew === 0) {
-                                        $element.removeClass(classHide); }
-
-                                    position = positionNew; // Posición nueva del scroll
-                                });
-                            } // Toolbar esta fijo en la Pantalla de la App
-                            
-                            angular.element(".app-content").css("margin-top", $element.innerHeight());
                         }
                     };
                 }

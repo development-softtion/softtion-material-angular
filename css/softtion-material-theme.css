@@ -1,4 +1,4 @@
-/*!
+/*
  * Softtion Material Theme
  * @license MIT
 
@@ -13,68 +13,64 @@
 
 :root {
     /** BACKGROUND COLOR FRAMEWORK */
-    --primary-background-base: #455a64;                 /** 700 */
-    --primary-background-light: #607d8b;                /** 500 */
-    --primary-background-dark: #263238;                 /** 900 */    
-    --primary-background-active: #eceff1;               /** 50 */
-    --primary-background-hover: #cfd8dc;                /** 100 */
-    --primary-background-focus: #b0bec5;                /** 200 */
-    --primary-background-disabled: #90a4ae;             /** 300 */
-    --primary-background-inactive: #78909c;             /** 400 */
-    --primary-ripple: rgba(69, 90, 100, 0.25);          /** Ripple */
+    --primary-background-base: rgba(156, 39, 176, 1);
+    --primary-background-disabled: rgba(156, 39, 176, 0.5);
+    --primary-background-active: rgba(156, 39, 176, 0.65);
+    --primary-background-hover: rgba(156, 39, 176, 0.8);
+    --primary-background-focus: rgba(106, 27, 154, 1);
+    --primary-ripple: rgba(156, 39, 176, 0.45);
     
-    --secondary-background-base: #d32f2f;               /** 700 */
-    --secondary-background-light: #f44336;              /** 500 */
-    --secondary-background-dark: #b71c1c;               /** 900 */    
-    --secondary-background-active: #ffebee;             /** 50 */
-    --secondary-background-hover: #ffcdd2;              /** 100 */
-    --secondary-background-focus: #ef9a9a;              /** 200 */
-    --secondary-background-disabled: #e57373;           /** 300 */
-    --secondary-background-inactive: #ef5350;           /** 400 */
+    --secondary-background-base: rgba(245, 0, 87, 1);
+    --secondary-background-disabled: rgba(245, 0, 87, 0.5);
+    --secondary-background-active: rgba(245, 0, 87, 0.65);
+    --secondary-background-hover: rgba(245, 0, 87, 0.8);
+    --secondary-background-focus: rgba(197, 17, 98, 0.9);
+    --secondary-ripple: rgba(245, 0, 87, 0.45);
     
-    --light-background: #ffffff;                        /** White */
-    --light-background-active: #f5f5f5;                 /** 100 */
-    --light-background-hover: #eeeeee;                  /** 200 */
-    --light-background-focus: #e0e0e0;                  /** 300 */
-    --light-background-disabled: #9e9e9e;               /** 500 */
-    --light-background-inactive: #757575;               /** 600 */
-    --light-ripple: rgba(255, 255, 255, 0.45);          /** Ripple */
-    --light-background-divider: rgba(0, 0, 0, 0.12);    /** Default */
+    --light-background: rgba(255, 255, 255, 1);         
+    --light-background-disabled: rgba(0, 0, 0, 0.12);
+    --light-background-active: rgba(153, 153, 153, 0.1);
+    --light-background-hover: rgba(153, 153, 153, 0.25);
+    --light-background-focus: rgba(153, 153, 153, 0.4);
+    --light-ripple: rgba(255, 255, 255, 0.45);
+    --light-background-divider: rgba(0, 0, 0, 0.12);
     
-    --dark-background: #000000;                             /** Black */
-    --dark-background-active: #e0e0e0;                      /** 300 */
-    --dark-background-hover: #bdbdbd;                       /** 400 */
-    --dark-background-focus: #9e9e9e;                       /** 500 */
-    --dark-background-disabled: #757575;                    /** 600 */
-    --dark-background-inactive: #616161;                    /** 700 */
-    --dark-ripple: rgba(0, 0, 0, 0.25);                     /** Ripple */
-    --dark-background-divider: rgba(255, 255, 255, 0.12);   /** Default */
+    --dark-background: rgba(0, 0, 0, 0.87);
+    --dark-background-disabled: rgba(255, 255, 255, 0.12);
+    --dark-background-hover: rgba(204, 204, 204, 0.45);
+    --dark-background-focus: rgba(204, 204, 204, 0.25);
+    --dark-background-active: rgba(204, 204, 204, 0.15);
+    --dark-ripple: rgba(0, 0, 0, 0.25);
+    --dark-background-divider: rgba(255, 255, 255, 0.12);
     
-    /** FONT COLOR DARK */
-    --primary-dark-font: rgba(0, 0, 0, 0.87);
-    --secondary-dark-font: rgba(0, 0, 0, 0.54);
-    --disabled-dark-font: rgba(0, 0, 0, 0.38);
+    /** FONTS */
+    --dark-primary-font: rgba(0, 0, 0, 0.87);
+    --dark-secondary-font: rgba(0, 0, 0, 0.54);
+    --dark-disabled-font: rgba(0, 0, 0, 0.38);
     
-    /** FONT COLOR LIGHT */
-    --primary-light-font: rgba(255, 255, 255, 1);
-    --secondary-light-font: rgba(255, 255, 255, 0.7);
-    --disabled-light-font: rgba(255, 255, 255, 0.5);
+    --light-primary-font: rgba(255, 255, 255, 1);
+    --light-secondary-font: rgba(255, 255, 255, 0.7);
+    --light-disabled-font: rgba(255, 255, 255, 0.5);
     
-    /** FONT COLOR BASE */
-    --primary-base-font: rgba(69, 90, 100, 1);
-    --secondary-base-font: rgba(69, 90, 100, 0.7);
-    --disabled-base-font: rgba(69, 90, 100, 0.5);
+    --base-primary-font: rgba(156, 39, 176, 1);
+    --base-secondary-font: rgba(156, 39, 176, 0.7);
+    --base-disabled-font: rgba(156, 39, 176, 0.5);
     
-    /** FONT COLOR ACCENT */
-    --primary-accent-font: rgba(244, 67, 54, 1);
-    --secondary-accent-font: rgba(244, 67, 54, 0.7);
-    --disabled-accent-font: rgba(244, 67, 54, 0.5);
+    --accent-primary-font: rgba(245, 0, 87, 1);
+    --accent-secondary-font: rgba(245, 0, 87, 0.7);
+    --accent-disabled-font: rgba(245, 0, 87, 0.5);
 }
 
 /** COLOR FONT DEAFULT */
 
 html, body ,input, button, textarea {
-    color: var(--primary-dark-font); }
+    color: var(--dark-primary-font); }
+
+body.dark {
+    background-color: var(--dark-background); }
+
+html.dark, body.dark ,input.dark, button.dark, textarea.dark {
+    color: var(--light-primary-font); }
 
 /** COMPONENTS GLOBALS */
 
@@ -87,41 +83,53 @@ html, body ,input, button, textarea {
 /** AUTOCOMPLETE */
 
 .autocomplete > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
+
+.autocomplete > label {
+    color: var(--dark-secondary-font); }
 
 .autocomplete.active > input:focus ~ label {
     color: var(--primary-background-base); }
 
 .autocomplete > input::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .autocomplete > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
 
-.autocomplete > input:focus ~ .line-shadow {
-    background-color: var(--primary-background-base); }
+.autocomplete.dark > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.autocomplete.active > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--primary-background-base); }
+
+.autocomplete > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.autocomplete.dark > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 .autocomplete > span {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
-.autocomplete > .clear {
-    color: var(--secondary-dark-font); }
+.autocomplete > .action-icon {
+    color: var(--dark-secondary-font); }
 
 .autocomplete > ul { 
     background-color: var(--light-background); }
 
 .autocomplete > ul > li > b { 
-    color: var(--secondary-dark-font); }
+    color: var(--accent-secondary-font); }
 
 .autocomplete > ul > li:focus {
     background-color: var(--light-background-focus); }
 
 .autocomplete > ul > li:hover {
-    background-color: var(--primary-background-hover); }
+    background-color: var(--light-background-hover); }
 
 .autocomplete > ul > li.not-found {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 /** BOTTOM NAVIGATION */
 
@@ -129,7 +137,7 @@ html, body ,input, button, textarea {
     background-color: var(--light-background); }
 
 .bottom-navigation.default {
-    background-color: var(--primary-background-dark) !important ; }
+    background-color: var(--primary-background-base) !important ; }
 
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--primary-ripple); }
@@ -138,30 +146,30 @@ html, body ,input, button, textarea {
     background-color: var(--light-ripple); }
 
 .bottom-navigation > .tab > li > .content {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .bottom-navigation > .tab > li.active > .content {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 .bottom-navigation.shifting > .tab > li > .content {
-    color: var(--secondary-light-font); }
+    color: var(--light-secondary-font); }
 
 .bottom-navigation.shifting > .tab > li.active > .content {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 /** BOTTOM SHEET */
 
 .bottom-sheet > .content > .list-style-sheet > .header > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .bottom-sheet > .content > .list-style-sheet > .item > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .bottom-sheet > .content > .grid-style-sheet > .item > i.icon {
-    color: var(--dark-background-inactive); }
+    color: var(--dark-background-disabled); }
 
 .bottom-sheet > .content > .grid-style-sheet > .item > .detail {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .bottom-sheet > .content > .list-style-sheet, 
 .bottom-sheet > .content > .grid-style-sheet {
@@ -170,73 +178,167 @@ html, body ,input, button, textarea {
 /** BUTTON */
 
 button.raised { 
-    background-color: var(--light-background-hover);
-    color: var(--primary-dark-font); }
+    background-color: var(--light-background-active);
+    color: var(--dark-primary-font); }
 
-button.raised.colored { 
+button.raised.dark { 
+    background-color: var(--dark-background-active);
+    color: var(--light-primary-font); }
+
+button.raised.primary { 
     background-color: var(--primary-background-base);
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
-button.raised:hover, button.raised:focus  {
-    background-color: var(--light-background-focus); }
+button.raised.secondary { 
+    background-color: var(--secondary-background-base);
+    color: var(--light-primary-font); }
 
-button.raised.colored:hover, button.raised.colored:focus  {
-    background-color: var(--primary-background-dark); }
-
-button.raised:disabled, button.raised:hover:disabled {
-    color: var(--disabled-dark-font);
+button.raised:hover {
     background-color: var(--light-background-hover); }
 
-button.raised.colored:disabled, button.raised.colored:hover:disabled {
-    color: var(--disabled-light-font);
+button.raised:focus  {
+    background-color: var(--light-background-focus); }
+
+button.raised.dark:hover {
+    background-color: var(--dark-background-hover); }
+
+button.raised.dark:focus  {
+    background-color: var(--dark-background-focus); }
+
+button.raised.primary:hover {
+    background-color: var(--primary-background-hover); } 
+
+button.raised.primary:focus {
+    background-color: var(--primary-background-focus); }
+
+button.raised.secondary:hover {
+    background-color: var(--secondary-background-hover); }
+
+button.raised.secondary:focus {
+    background-color: var(--secondary-background-focus); }
+
+button.raised:disabled, button.raised:hover:disabled {
+    color: var(--dark-disabled-font);
+    background-color: var(--light-background-disabled); }
+
+button.raised.dark:disabled, button.raised.dark:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+button.raised.primary:disabled, button.raised.primary:hover:disabled {
+    color: var(--light-disabled-font);
     background-color: var(--primary-background-disabled); }
+
+button.raised.secondary:disabled, button.raised.secondary:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--secondary-background-disabled); }
 
 button.flat {
     background-color: transparent;
-    color: var(--primary-dark-font); }
+    color: var(--dark-primary-font); }
 
-button.flat.colored {
-    color: var(--primary-base-font); }
+button.flat.dark {
+    color: var(--light-primary-font); }
+
+button.flat.primary {
+    color: var(--base-primary-font); }
+
+button.flat.secondary {
+    color: var(--accent-primary-font); }
 
 button.flat:hover {
     background-color: var(--light-background-hover); } 
 
+button.flat.dark:hover {
+    background-color: var(--dark-background-hover); } 
+
 button.flat:focus {
     background-color: var(--light-background-focus); } 
 
+button.flat.dark:focus {
+    background-color: var(--dark-background-focus); } 
+
 button.flat:disabled, button.flat:hover:disabled {
-    color: var(--disabled-dark-font); 
-    background-color: var(--light-background-hover); }
+    background-color: transparent;
+    color: var(--dark-disabled-font); }
+
+button.flat.dark:disabled, button.flat.dark:hover:disabled {
+    background-color: transparent;
+    color: var(--light-disabled-font); }
+
+button.flat.primary:disabled, button.flat.primary:hover:disabled {
+    background-color: transparent;
+    color: var(--base-disabled-font); }
+
+button.flat.secondary:disabled, button.flat.secondary:hover:disabled {
+    background-color: transparent;
+    color: var(--accent-disabled-font); }
 
 button.floating { 
-    background-color: var(--light-background-hover);
-    color: var(--primary-dark-font); }
+    background-color: var(--light-background-active);
+    color: var(--dark-primary-font); }
 
-button.floating.colored { 
+button.floating.dark { 
+    background-color: var(--dark-background-active);
+    color: var(--light-primary-font); }
+
+button.floating.primary { 
+    background-color: var(--primary-background-base);
+    color: var(--light-primary-font); }
+
+button.floating.secondary { 
     background-color: var(--secondary-background-base);
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
-button.floating:hover, button.floating:focus  {
-    background-color: var(--light-background-focus); }
-
-button.floating.colored:hover, button.floating.colored:focus  {
-    background-color: var(--secondary-background-dark); }
-
-button.floating:disabled, button.floating:hover:disabled {
-    color: var(--disabled-dark-font);
+button.floating:hover {
     background-color: var(--light-background-hover); }
 
-button.floating.colored:disabled, button.floating.colored:hover:disabled {
-    color: var(--disabled-light-font);
+button.floating:focus  {
+    background-color: var(--light-background-focus); }
+
+button.floating.dark:hover {
+    background-color: var(--dark-background-hover); }
+
+button.floating.dark:focus  {
+    background-color: var(--dark-background-focus); }
+
+button.floating.primary:hover {
+    background-color: var(--primary-background-hover); } 
+
+button.floating.primary:focus {
+    background-color: var(--primary-background-focus); }
+
+button.floating.secondary:hover {
+    background-color: var(--secondary-background-hover); }
+
+button.floating.secondary:focus {
+    background-color: var(--secondary-background-focus); }
+
+button.floating:disabled, button.floating:hover:disabled {
+    color: var(--dark-disabled-font);
+    background-color: var(--light-background-disabled); }
+
+button.floating.dark:disabled, button.floating.dark:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+button.floating.primary:disabled, button.floating.primary:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--primary-background-disabled); }
+
+button.floating.secondary:disabled, button.floating.secondary:hover:disabled {
+    color: var(--light-disabled-font);
     background-color: var(--secondary-background-disabled); }
 
-button.raised:before, button.flat:before {
+button.raised:before, button.flat:before, button.floating:before {
     background-color: var(--dark-ripple); }
 
-button.raised.colored:before {
+button.raised.dark:before, button.flat.dark:before, button.floating.dark:before,
+button.raised.primary:before, button.raised.secondary:before,
+button.floating.primary:before, button.floating.secondary:before {
     background-color: var(--light-ripple); }
 
-button.raised:after {
+/*button.raised:after {
     opacity: 0.4;
     background-color: var(--light-background); }
 
@@ -245,7 +347,7 @@ button.raised.colored:after {
 
 button.flat:after {
     opacity: 0.4;
-    background-color: var(--light-background); }
+    background-color: var(--light-background); }*/
 
 /** CARD */
 
@@ -263,26 +365,29 @@ button.flat:after {
 .card > .rich-media > .content > .actions > button.flat,
 .card > .rich-media > .content > .primary-title > .detail > .subtitle,
 .card > .rich-media > .content > .primary-title > .detail > .title {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .card > .actions > button.flat {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 .card > .actions > button.flat:disabled {
-    color: var(--disabled-accent-font); }
+    color: var(--accent-disabled-font); }
 
 .card > .optional-header > .detail > .subtitle,
 .card > .primary-title > .detail > .subtitle,
 .card > .actions > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 /** CHECKBOX */
 
 .checkbox > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
+
+.checkbox.dark > label {
+    color: var(--light-secondary-font); }
 
 .checkbox > input[type="checkbox"]:disabled + label {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .checkbox > label:before {
     background-color: var(--primary-background-base); }
@@ -291,10 +396,10 @@ button.flat:after {
     background-color: var(--light-background-disabled); }
 
 .checkbox > label:after {
-    border: 2px solid var(--light-background-inactive); }
+    border: 2px solid rgba(0, 0, 0, 0.54); }
 
-.checkbox > input[type="checkbox"]:not:checked ~ .checkbox-focused {
-    background-color: var(--light-background-inactive); }
+.checkbox.dark > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.7); }
 
 .checkbox > input[type="checkbox"]:disabled + label:after {
     border: 2px solid var(--light-background-disabled); }
@@ -303,16 +408,26 @@ button.flat:after {
     border-right: 2px solid var(--light-background);
     border-bottom: 2px solid var(--light-background); }
 
-.checkbox > .ripple-content > .box {
-    background-color: var(--light-background-inactive); }
+.checkbox.dark > input[type="checkbox"]:checked + label:after {
+    border-right: 2px solid rgba(0, 0, 0, 0.54);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.54); }
+
+.checkbox > input[type="checkbox"]:checked ~ .ripple-content > .box {
+    background-color: var(--primary-ripple); }
+
+.checkbox > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--dark-ripple); }
+
+.checkbox.dark > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--light-ripple); }
 
 /** CHECKBOX SELECTION */
 
 .checkbox-selection > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .checkbox-selection > input[type="checkbox"]:disabled + label {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .checkbox-selection > label:before {
     background-color: var(--primary-background-base); }
@@ -321,7 +436,7 @@ button.flat:after {
     background-color: var(--light-background-disabled); }
 
 .checkbox-selection > label:after {
-    border: 2px solid var(--light-background-inactive); }
+    border: 2px solid rgba(0, 0, 0, 0.54); }
 
 .checkbox-selection > input[type="checkbox"]:disabled + label:after {
     border: 2px solid var(--light-background-disabled); }
@@ -330,40 +445,37 @@ button.flat:after {
     border-right: 2px solid var(--light-background);
     border-bottom: 2px solid var(--light-background); }
 
-.checkbox-selection > .checkbox-selection-focused {
-    background-color: var(--light-background-inactive); }
-
 /** CHIP */
 
 .chip {
-    background-color: var(--dark-background-active); }
+    background-color: var(--dark-background-focus); }
 
 .chip:hover {
     background-color: var(--primary-background-base);
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .chip > .avatar {
     background-color: var(--primary-background-base);
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .chip > .action > i {
-    background-color: var(--dark-background-focus);
-    color: var(--secondary-light-font); }
+    background-color: rgba(0, 0, 0, 0.37);
+    color: var(--light-secondary-font); }
 
 .chip:hover > .action > i {
     background-color: var(--light-background);
-    color: var(--primary-base-font); }
+    color: var(--base-primary-font); }
 
 /** CHIP INPUT */
 
 .chip-input > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .chip-input.active > input:focus ~ label {
-    color: var(--primary-base-font); }
+    color: var(--base-primary-font); }
 
 .chip-input > input::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .chip-input > .line-shadow {
@@ -384,7 +496,7 @@ button.flat:after {
 .clockpicker > .title > .time > .minute,
 .clockpicker > .title > .time > .am-pm > div.am,
 .clockpicker > .title > .time > .am-pm > div.pm {
-    color: var(--secondary-light-font); }
+    color: var(--light-secondary-font); }
 
 .clockpicker > .title > .time > .hour.active,
 .clockpicker > .title > .time > .minute.active, 
@@ -392,7 +504,7 @@ button.flat:after {
 .clockpicker > .title > .time > .am-pm > div.pm.active,
 .clockpicker > .content > .plate > .hours > .tick.active,
 .clockpicker > .content > .plate > .minutes > .tick.active {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .clockpicker > .content > .plate {
     background-color: var(--primary-background-active); }
@@ -419,14 +531,14 @@ button.flat:after {
     background-color: var(--secondary-background-active); }
 
 .datatable > .header > .title, .datatable > .header > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .datatable > table > thead > tr {
     border-bottom: 1px solid var(--light-background-divider); 
     border-top: 1px solid var(--light-background-divider); }
 
 .datatable > table > thead > tr > th {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .datatable > table > tbody > tr {
     border-bottom: 1px solid var(--light-background-divider); }
@@ -449,21 +561,21 @@ button.flat:after {
     background-color: var(--primary-background-base); }
 
 .datepicker > .title > .year, .datepicker > .title > .day {
-    color: var(--secondary-light-font); }
+    color: var(--light-secondary-font); }
 
 .datepicker > .title > .year.active, .datepicker > .title > .day.active {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .datepicker > .content > .month > .button-left.disabled,
 .datepicker > .content > .month > .button-right.disabled,
 .datepicker > .content > .days-month > tbody td.disabled {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .datepicker > .content > .days-month > thead th {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .datepicker > .content > .days-month > tbody td.active {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .datepicker > .content > .months > ul > li,
@@ -472,11 +584,11 @@ button.flat:after {
 
 .datepicker > .content > .months > ul > li.disabled,
 .datepicker > .content > .year > ul > li.disabled {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .datepicker > .content > .months > ul > li.active,
 .datepicker > .content > .year > ul > li.active {
-    color: var(--primary-base-font); }
+    color: var(--base-primary-font); }
 
 /** DIALOG */
 
@@ -484,13 +596,13 @@ button.flat:after {
     background-color: var(--light-background); }
 
 .dialog > .box > .content {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .dialog > .box > .actions > button.flat {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 .dialog > .box > .actions > button.flat:disabled {
-    color: var(--disabled-accent-font); }
+    color: var(--accent-disabled-font); }
 
 /** DROPDOWN */
 
@@ -504,7 +616,7 @@ button.flat:after {
 
 .expansion-panel > .header > .detail,
 .expansion-panel > .header > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .expansion-panel > .header {
     border-bottom: 1px solid var(--light-background-divider);
@@ -513,7 +625,7 @@ button.flat:after {
 /** GRIDLIST */
 
 .grid-list > .subheader {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .grid-list > .cell > .content {
     background-color: rgba(0, 0, 0, 0.38); }
@@ -521,15 +633,15 @@ button.flat:after {
 .grid-list > .cell > .content > .detail > .title,
 .grid-list > .cell > .content > i,
 .grid-list > .cell > .content > .detail > .subtitle {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 /** LIST */
 
 .list > .item-list > .content > div.avatar {
-    background-color: var(--dark-background-inactive); }
+    background-color: var(--dark-background-disabled); }
 
 .list > .item-list > .content > div.avatar > i {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .list > .item-list > .content > .detail {
     border-bottom-color: transparent; }
@@ -538,37 +650,37 @@ button.flat:after {
     border-bottom-color: var(--light-background-divider); }
 
 .list > .item-list > .content > .detail > .title { 
-    color: var(--primary-dark-font); }
+    color: var(--dark-primary-font); }
 
 .list > .subheader, .list > .item-list > .content > .action,
 .list > .item-list > .content > .detail > .subtitle, 
 .list > .item-list > .content > .detail > i,
 .list > .item-list > .content > .detail > .emphasis,
 .list > .item-list > .options > ul > .subitem-list {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .list > .item-list > .content > .detail > i.active {
-    color: var(--secondary-accent-font); }
+    color: var(--accent-secondary-font); }
 
 /** MENU */
 
 .menu > li.option {
-    color: var(--primary-dark-font); }
+    color: var(--dark-primary-font); }
 
 .menu > li.option > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .menu > li.option.disabled, .menu > li.option.disabled > i {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .menu > li.option:hover {
     background-color: var(--light-background-hover); }
 
 .menu > li.option.active {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 .menu > li.option.active > i {
-    color: var(--secondary-accent-font); }
+    color: var(--accent-secondary-font); }
 
 /** PROGRESS CIRCULAR */
 
@@ -581,19 +693,19 @@ button.flat:after {
     background-color: var(--light-background); }
 
 .search-box > input::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .search-box > .actions {
     background-color: var(--light-background); }
 
 .search-box > .icon-action, .search-box > .actions > i {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 /** SELECT */
 
 .select > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select.active > label {
     color: var(--primary-background-base); }
@@ -605,13 +717,13 @@ button.flat:after {
     background-color: var(--primary-background-base); }
 
 .select > i.material-icon {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select > ul { 
     background-color: var(--light-background); }
 
 .select > ul > li.active {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select > ul > li:focus {
     background-color: var(--light-background-focus); }
@@ -622,7 +734,7 @@ button.flat:after {
 /** SELECT MULTIPLE */
 
 .select-multiple > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select-multiple.active > label {
     color: var(--primary-background-base); }
@@ -635,13 +747,13 @@ button.flat:after {
 
 .select-multiple > i.material-icon {
     background-color: var(--light-background);
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select-multiple > ul { 
     background-color: var(--light-background); }
 
 .select-multiple > ul > li.active {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .select-multiple > ul > li:focus {
     background-color: var(--light-background-focus); }
@@ -658,10 +770,10 @@ button.flat:after {
     background-color: var(--light-background); }
 
 .sidenav > .content > .banner > .detail {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .sidenav > .content > .list > .item-list > .options .subitem-list.active {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 /** SNACKBAR */
 
@@ -669,18 +781,18 @@ button.flat:after {
     background: #323232; }
 
 .snackbar > .body { 
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .snackbar > .action > span {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 /** TAB */
 
 .tab > .option {
-    color: var(--primary-base-font); }
+    color: var(--base-primary-font); }
 
 .toolbar > .tab > .option {
-    color: var(--primary-light-font); }
+    color: var(--light-primary-font); }
 
 .toolbar > .tab > .option > .ripple-box > .effect {
     background-color: var(--light-ripple); }
@@ -694,79 +806,124 @@ button.flat:after {
 /** TEXTAREA */
 
 .textarea > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
+
+.textarea.dark > label {
+    color: var(--light-secondary-font); }
 
 .textarea.active > textarea:focus ~ label {
     color: var(--primary-background-base); }
 
 .textarea.error > label, .textarea.active.error > textarea:focus ~ label {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 .textarea.active > textarea:focus ~ label > span {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
-.textarea > textarea:disabled {
+.textarea > textarea {
     background-color: transparent; }
 
+.textarea.dark > textarea {
+    color: var(--light-primary-font); }
+
 .textarea > textarea::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .textarea > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.textarea.dark > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.textarea.active > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--primary-background-base); }
+
+.textarea > textarea:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.textarea.dark > textarea:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 .textarea.active > textarea:focus ~ .line-shadow {
     background-color: var(--primary-background-base); }
 
-.textarea.error > textarea:focus ~ .line-shadow {
-    background-color: var(--secondary-background-light); }
+.textarea.active.error > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--secondary-background-base); }
 
 .textarea > span {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 /** TEXTFIELD */
 
 .textfield > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
+
+.textfield.dark > label {
+    color: var(--light-secondary-font); }
 
 .textfield.active > input:focus ~ label {
-    color: var(--primary-base-font); }
-
-.textfield.active > input:focus ~ label > span {
-    color: var(--primary-accent-font); }
+    color: var(--base-primary-font); }
 
 .textfield.active.error > input:focus ~ label, .textfield.error > label {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
+
+.textfield.active > input:focus ~ label > span {
+    color: var(--accent-primary-font); }
+
+.textfield > i {
+    color: var(--dark-secondary-font); }
+
+.textfield.dark > i {
+    color: var(--light-secondary-font); }
+
+.textfield.active > input:focus ~ i {
+    color: var(--base-primary-font); }
+
+.textfield.active.error > input:focus ~ i, .textfield.error > i {
+    color: var(--accent-primary-font); }
+
+.textfield.dark > input {
+    color: var(--light-primary-font); }
 
 .textfield > input:disabled {
-    color: var(--disabled-dark-font); }
+    color: var(--dark-disabled-font); }
 
 .textfield > input::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .textfield > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.textfield.dark > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
 
 .textfield.active > input:focus ~ .line-shadow {
-    background-color: var(--primary-background-base); }
+    border-bottom: 2px solid var(--primary-background-base); }
+
+.textfield > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.textfield.dark > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 .textfield.active.error > input:focus ~ .line-shadow {
-    background-color: var(--secondary-background-light); }
+    border-bottom: 2px solid var(--secondary-background-base); }
 
 .textfield > span {
-    color: var(--primary-accent-font); }
+    color: var(--accent-primary-font); }
 
 /** TEXTFIELD READONLY */
 
 .textfield-readonly > label {
-    color: var(--secondary-dark-font); }
+    color: var(--dark-secondary-font); }
 
 .textfield-readonly > input:focus ~ label {
     color: var(--primary-background-base); }
 
 .textfield-readonly > input::selection {
-    color: var(--primary-light-font);
+    color: var(--light-primary-font);
     background-color: var(--primary-background-base); }
 
 .textfield-readonly > .line-shadow {
@@ -775,10 +932,12 @@ button.flat:after {
 .textfield-readonly > input:focus ~ .line-shadow {
     background-color: var(--primary-background-base); }
 
+/** */
+
+.app-bar {
+    background-color: var(--light-background); }
+
 /** TOOLBAR */
 
-.toolbar {
-    background-color: var(--primary-background-base); }
-
-.toolbar > .app-bar {
-    color: var(--primary-light-font); }
+.toolbar > .nav-icon {
+    color: var(--dark-secondary-font); }
