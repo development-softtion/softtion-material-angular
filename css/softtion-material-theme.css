@@ -13,21 +13,32 @@
 
 :root {
     /** BACKGROUND COLOR FRAMEWORK */
-    --primary-background-base: rgba(156, 39, 176, 1);
+    --primary-background-statusbar: rgba(74, 20, 140, 1);   /* #4a148c */
+    --primary-background-appbar: rgba(123, 31, 162, 1);
+    --primary-background: rgba(142, 36, 170, 1);
+    --primary-background-ui: rgba(156, 39, 176, 1);
     --primary-background-disabled: rgba(156, 39, 176, 0.5);
     --primary-background-active: rgba(156, 39, 176, 0.65);
     --primary-background-hover: rgba(156, 39, 176, 0.8);
     --primary-background-focus: rgba(106, 27, 154, 1);
     --primary-ripple: rgba(156, 39, 176, 0.45);
+    --primary-background-divider: rgba(156, 39, 176, 0.12);
     
-    --secondary-background-base: rgba(245, 0, 87, 1);
+    --secondary-background-statusbar: rgba(136, 14, 79, 1); /* #880e4f */
+    --secondary-background-appbar: rgba(173, 20, 87, 1);
+    --secondary-background: rgba(217, 27, 96, 1);
+    --secondary-background-ui: rgba(233, 30, 99, 1);
     --secondary-background-disabled: rgba(245, 0, 87, 0.5);
     --secondary-background-active: rgba(245, 0, 87, 0.65);
     --secondary-background-hover: rgba(245, 0, 87, 0.8);
     --secondary-background-focus: rgba(197, 17, 98, 0.9);
     --secondary-ripple: rgba(245, 0, 87, 0.45);
+    --secondary-background-divider: rgba(233, 30, 99, 0.12);
     
-    --light-background: rgba(255, 255, 255, 1);         
+    --light-background-statusbar: rgba(224, 224, 224, 1);   /* #e0e0e0 */
+    --light-background-appbar: rgba(245, 245, 245, 1);
+    --light-background: rgba(250, 250, 250, 1);
+    --light-background-ui: rgba(255, 255, 255, 1);
     --light-background-disabled: rgba(0, 0, 0, 0.12);
     --light-background-active: rgba(153, 153, 153, 0.1);
     --light-background-hover: rgba(153, 153, 153, 0.25);
@@ -35,7 +46,10 @@
     --light-ripple: rgba(255, 255, 255, 0.45);
     --light-background-divider: rgba(0, 0, 0, 0.12);
     
-    --dark-background: rgba(0, 0, 0, 0.87);
+    --dark-background-statusbar: rgba(0, 0, 0, 1);         /* #000000 */
+    --dark-background-appbar: rgba(33, 33, 33, 1);
+    --dark-background: rgba(48, 48, 48, 1);
+    --dark-background-ui: rgba(66, 66, 66, 1);
     --dark-background-disabled: rgba(255, 255, 255, 0.12);
     --dark-background-hover: rgba(204, 204, 204, 0.45);
     --dark-background-focus: rgba(204, 204, 204, 0.25);
@@ -59,6 +73,9 @@
     --accent-primary-font: rgba(245, 0, 87, 1);
     --accent-secondary-font: rgba(245, 0, 87, 0.7);
     --accent-disabled-font: rgba(245, 0, 87, 0.5);
+    
+    --light-error-font: #f8bbd0;
+    --error-font: #f44336;
 }
 
 /** COLOR FONT DEAFULT */
@@ -66,10 +83,21 @@
 html, body ,input, button, textarea {
     color: var(--dark-primary-font); }
 
+body {
+    background-color: var(--light-background); }
+
 body.dark {
     background-color: var(--dark-background); }
 
-html.dark, body.dark ,input.dark, button.dark, textarea.dark {
+body.primary {
+    background-color: var(--primary-background); }
+
+body.secondary {
+    background-color: var(--secondary-background); }
+
+html.primary, body.primary, input.primary, button.primary, textarea.primary,
+html.dark, body.dark, input.dark, button.dark, textarea.dark,
+html.secondary, body.secondary, input.secondary, button.secondary, textarea.secondary {
     color: var(--light-primary-font); }
 
 /** COMPONENTS GLOBALS */
@@ -80,34 +108,67 @@ html.dark, body.dark ,input.dark, button.dark, textarea.dark {
 .backdrop {
     background-color: rgba(0, 0, 0, 0.3); }
 
+/** APP BAR */
+
 /** AUTOCOMPLETE */
 
 .autocomplete > label {
     color: var(--dark-secondary-font); }
 
-.autocomplete > label {
-    color: var(--dark-secondary-font); }
+.autocomplete.dark > label, .autocomplete.primary > label,
+.autocomplete.secondary > label {
+    color: var(--light-secondary-font); }
 
 .autocomplete.active > input:focus ~ label {
-    color: var(--primary-background-base); }
+    color: var(--primary-background-ui); }
+
+.autocomplete.primary.active > input:focus ~ label,
+.autocomplete.secondary.active > input:focus ~ label {
+    color: var(--light-background-ui); }
+
+.autocomplete.dark > input, .autocomplete.primary > input,
+.autocomplete.secondary > input {
+    color: var(--light-primary-font); }
 
 .autocomplete > input::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
+
+.autocomplete.primary > input::selection, 
+.autocomplete.dark > input::selection,
+.autocomplete.secondary > input::selection {
+    background-color: var(--light-background-ui); }
+
+.autocomplete.dark > input::selection {
+    color: var(--dark-primary-font); }
+
+.autocomplete.primary > input::selection {
+    color: var(--base-primary-font); }
+
+.autocomplete.secondary > input::selection {
+    color: var(--accent-primary-font); }
 
 .autocomplete > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.autocomplete.dark > .line-shadow {
+.autocomplete.primary > .line-shadow, 
+.autocomplete.dark > .line-shadow, 
+.autocomplete.secondary > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
 .autocomplete.active > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--primary-background-base); }
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.autocomplete.primary.active > input:focus ~ .line-shadow,
+.autocomplete.secondary.active > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-background-ui); }
 
 .autocomplete > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.autocomplete.dark > input:disabled ~ .line-shadow {
+.autocomplete.primary > input:disabled ~ .line-shadow,
+.autocomplete.dark > input:disabled ~ .line-shadow,
+.autocomplete.secondary > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
 .autocomplete > span {
@@ -116,11 +177,36 @@ html.dark, body.dark ,input.dark, button.dark, textarea.dark {
 .autocomplete > .action-icon {
     color: var(--dark-secondary-font); }
 
+.autocomplete.primary > .action-icon,
+.autocomplete.dark > .action-icon,
+.autocomplete.secondary > .action-icon {
+    color: var(--light-primary-font); }
+
 .autocomplete > ul { 
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.autocomplete.dark > ul { 
+    background-color: var(--dark-background-ui); }
+
+.autocomplete.primary > ul { 
+    background-color: var(--primary-background-ui); }
+
+.autocomplete.secondary > ul { 
+    background-color: var(--secondary-background-ui); }
+
+.autocomplete > ul > li { 
+    color: var(--dark-secondary-font); }
+
+.autocomplete.dark > ul > li, .autocomplete.primary > ul > li,
+.autocomplete.secondary > ul > li { 
+    color: var(--light-primary-font); }
 
 .autocomplete > ul > li > b { 
     color: var(--accent-secondary-font); }
+
+.autocomplete.dark > ul > li > b, .autocomplete.primary > ul > li > b,
+.autocomplete.secondary > ul > li > b { 
+    color: var(--light-secondary-font); }
 
 .autocomplete > ul > li:focus {
     background-color: var(--light-background-focus); }
@@ -131,13 +217,18 @@ html.dark, body.dark ,input.dark, button.dark, textarea.dark {
 .autocomplete > ul > li.not-found {
     color: var(--accent-primary-font); }
 
+.autocomplete.primary > ul > li.not-found,
+.autocomplete.dark > ul > li.not-found,
+.autocomplete.secondary > ul > li.not-found {
+    color: var(--light-secondary-font); }
+
 /** BOTTOM NAVIGATION */
 
 .bottom-navigation {
     background-color: var(--light-background); }
 
 .bottom-navigation.default {
-    background-color: var(--primary-background-base) !important ; }
+    background-color: var(--primary-background-ui) !important ; }
 
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--primary-ripple); }
@@ -178,19 +269,19 @@ html.dark, body.dark ,input.dark, button.dark, textarea.dark {
 /** BUTTON */
 
 button.raised { 
-    background-color: var(--light-background-active);
+    background-color: var(--light-background);
     color: var(--dark-primary-font); }
 
 button.raised.dark { 
-    background-color: var(--dark-background-active);
+    background-color: var(--dark-background-ui);
     color: var(--light-primary-font); }
 
 button.raised.primary { 
-    background-color: var(--primary-background-base);
+    background-color: var(--primary-background-ui);
     color: var(--light-primary-font); }
 
 button.raised.secondary { 
-    background-color: var(--secondary-background-base);
+    background-color: var(--secondary-background-ui);
     color: var(--light-primary-font); }
 
 button.raised:hover {
@@ -275,19 +366,19 @@ button.flat.secondary:disabled, button.flat.secondary:hover:disabled {
     color: var(--accent-disabled-font); }
 
 button.floating { 
-    background-color: var(--light-background-active);
+    background-color: var(--light-background-appbar);
     color: var(--dark-primary-font); }
 
 button.floating.dark { 
-    background-color: var(--dark-background-active);
+    background-color: var(--dark-background-ui);
     color: var(--light-primary-font); }
 
 button.floating.primary { 
-    background-color: var(--primary-background-base);
+    background-color: var(--primary-background-ui);
     color: var(--light-primary-font); }
 
 button.floating.secondary { 
-    background-color: var(--secondary-background-base);
+    background-color: var(--secondary-background-ui);
     color: var(--light-primary-font); }
 
 button.floating:hover {
@@ -352,11 +443,20 @@ button.flat:after {
 /** CARD */
 
 .card {
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.card.dark {
+    background-color: var(--dark-background-ui); }
+
+.card.primary {
+    background-color: var(--primary-background-ui); }
+
+.card.secondary {
+    background-color: var(--secondary-background-ui); }
 
 .card > .rich-media > .content > .actions,
 .card > .rich-media > .content > .primary-title {
-    background-color: rgba(0, 0, 0, 0.38); }
+    background-color: rgba(0, 0, 0, 0.54); }
 
 .card > .rich-media > .content > .actions > button.flat {
     background-color: transparent; }
@@ -367,50 +467,87 @@ button.flat:after {
 .card > .rich-media > .content > .primary-title > .detail > .title {
     color: var(--light-primary-font); }
 
-.card > .actions > button.flat {
-    color: var(--accent-primary-font); }
-
-.card > .actions > button.flat:disabled {
-    color: var(--accent-disabled-font); }
-
 .card > .optional-header > .detail > .subtitle,
-.card > .primary-title > .detail > .subtitle,
-.card > .actions > i {
+.card > .primary-title > .detail > .subtitle, .card > .actions > i {
     color: var(--dark-secondary-font); }
+
+.card.dark > .optional-header > .detail > .title,
+.card.dark > .primary-title > .detail > .title {
+    color: var(--light-primary-font); }
+
+.card.dark > .optional-header > .detail > .subtitle,
+.card.dark > .primary-title > .detail > .subtitle, .card.dark > .actions > i {
+    color: var(--light-secondary-font); }
+
+.card > .rich-media > .content > .actions > button.flat:before {
+    background-color: var(--light-ripple); }
 
 /** CHECKBOX */
 
 .checkbox > label {
-    color: var(--dark-secondary-font); }
+    color: var(--dark-primary-font); }
 
-.checkbox.dark > label {
-    color: var(--light-secondary-font); }
+.checkbox.dark > label, .checkbox.primary > label,
+.checkbox.secondary > label {
+    color: var(--light-primary-font); }
 
 .checkbox > input[type="checkbox"]:disabled + label {
     color: var(--dark-disabled-font); }
 
-.checkbox > label:before {
-    background-color: var(--primary-background-base); }
+.checkbox.primary > input[type="checkbox"]:disabled + label,
+.checkbox.dark > input[type="checkbox"]:disabled + label,
+.checkbox.secondary > input[type="checkbox"]:disabled + label {
+    color: var(--light-disabled-font); }
 
-.checkbox > input[type="checkbox"]:disabled + label:before {
+.checkbox > label:before {
+    background-color: var(--primary-background-ui); }
+
+.checkbox.primary > label:before, .checkbox.secondary > label:before {
+    background-color: var(--light-background); }
+
+.checkbox.primary > input[type="checkbox"]:disabled + label:before,
+.checkbox > input[type="checkbox"]:disabled + label:before,
+.checkbox.secondary > input[type="checkbox"]:disabled + label:before {
     background-color: var(--light-background-disabled); }
+
+.checkbox.dark > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--dark-background-disabled); }
 
 .checkbox > label:after {
     border: 2px solid rgba(0, 0, 0, 0.54); }
 
-.checkbox.dark > label:after {
+.checkbox.dark > label:after, .checkbox.primary > label:after,
+.checkbox.secondary > label:after {
     border: 2px solid rgba(255, 255, 255, 0.7); }
 
-.checkbox > input[type="checkbox"]:disabled + label:after {
-    border: 2px solid var(--light-background-disabled); }
+.checkbox > input[type="checkbox"]:checked + label:after,
+.checkbox > input[type="checkbox"]:disabled:checked + label:after {
+    border-left: 2px solid transparent !important;
+    border-top: 2px solid transparent !important; }
 
 .checkbox > input[type="checkbox"]:checked + label:after {
-    border-right: 2px solid var(--light-background);
-    border-bottom: 2px solid var(--light-background); }
+    border: 2px solid var(--light-background); }
 
 .checkbox.dark > input[type="checkbox"]:checked + label:after {
-    border-right: 2px solid rgba(0, 0, 0, 0.54);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.54); }
+    border: 2px solid rgba(0, 0, 0, 0.54); }
+
+.checkbox.primary > input[type="checkbox"]:checked + label:after {
+    border: 2px solid rgba(74, 20, 140, 0.54); }
+
+.checkbox.secondary > input[type="checkbox"]:checked + label:after {
+    border: 2px solid rgba(136, 14, 79, 0.54); }
+
+.checkbox.primary > input[type="checkbox"]:not(:checked):disabled + label:after,
+.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after,
+.checkbox.secondary > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--light-background-disabled); }
+
+.checkbox.dark > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--dark-background-disabled); }
+
+.checkbox.primary > input[type="checkbox"]:checked:disabled + label:after,
+.checkbox.secondary > input[type="checkbox"]:checked:disabled + label:after {
+    border: 2px solid rgba(255, 255, 255, 0.38); }
 
 .checkbox > input[type="checkbox"]:checked ~ .ripple-content > .box {
     background-color: var(--primary-ripple); }
@@ -421,6 +558,14 @@ button.flat:after {
 .checkbox.dark > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
     background-color: var(--light-ripple); }
 
+.checkbox.primary > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.checkbox.secondary > input[type="checkbox"]:checked ~ .ripple-content > .box {
+    background-color: var(--light-ripple); }
+
+.checkbox.primary > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box,
+.checkbox.secondary > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--dark-ripple); }
+
 /** CHECKBOX SELECTION */
 
 .checkbox-selection > label {
@@ -430,7 +575,7 @@ button.flat:after {
     color: var(--dark-disabled-font); }
 
 .checkbox-selection > label:before {
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .checkbox-selection > input[type="checkbox"]:disabled + label:before {
     background-color: var(--light-background-disabled); }
@@ -448,23 +593,73 @@ button.flat:after {
 /** CHIP */
 
 .chip {
-    background-color: var(--dark-background-focus); }
+    background-color: rgba(0, 0, 0, 0.12); }
+    
+.chip.dark {
+    background-color: rgba(255, 255, 255, 0.12); }
 
-.chip:hover {
-    background-color: var(--primary-background-base);
+.chip.primary {
+    background-color: rgba(74, 20, 140, 0.38); }
+
+.chip.secondary {
+    background-color: rgba(136, 14, 79, 0.38); }
+
+.chip.dark, .chip.primary, .chip.secondary {
     color: var(--light-primary-font); }
 
+.chip:hover {
+    background-color: rgba(0, 0, 0, 0.54);
+    color: var(--light-primary-font); }
+
+.chip.dark:hover {
+    background-color: rgba(255, 255, 255, 0.54);
+    color: var(--dark-primary-font); }
+
+.chip.primary:hover {
+    background-color: rgba(74, 20, 140, 0.75); }
+
+.chip.secondary:hover {
+    background-color: rgba(136, 14, 79, 0.75); }
+
 .chip > .avatar {
-    background-color: var(--primary-background-base);
+    background-color: rgba(0, 0, 0, 0.54);
+    color: var(--light-primary-font); }
+
+.chip.dark > .avatar {
+    background-color: rgba(255, 255, 255, 0.54);
     color: var(--light-primary-font); }
 
 .chip > .action > i {
-    background-color: rgba(0, 0, 0, 0.37);
-    color: var(--light-secondary-font); }
+    background-color: rgba(0, 0, 0, 0.54);
+    color: var(--light-primary-font); }
+
+.chip.dark > .action > i {
+    background-color: rgba(255, 255, 255, 0.54);
+    color: var(--dark-primary-font); }
+
+.chip.primary > .action > i {
+    background-color: rgba(255, 255, 255, 0.87);
+    color: var(--base-primary-font); }
+
+.chip.secondary > .action > i {
+    background-color: rgba(255, 255, 255, 0.87);
+    color: var(--accent-primary-font); }
 
 .chip:hover > .action > i {
     background-color: var(--light-background);
-    color: var(--base-primary-font); }
+    color: var(--dark-secondary-font); }
+
+.chip.dark:hover > .action > i {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
+
+.chip.primary:hover > .action > i {
+    background-color: var(--primary-background);
+    color: var(--light-secondary-font); }
+
+.chip.secondary:hover > .action > i {
+    background-color: var(--secondary-background);
+    color: var(--light-secondary-font); }
 
 /** CHIP INPUT */
 
@@ -476,13 +671,13 @@ button.flat:after {
 
 .chip-input > input::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .chip-input > .line-shadow {
     background-color: var(--light-background-divider); }
 
 .chip-input.active > input:focus ~ .line-shadow {
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 /** CLOCKPICKER */
 
@@ -490,7 +685,7 @@ button.flat:after {
     background-color: var(--light-background); }
 
 .clockpicker > .title {
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .clockpicker > .title > .time > .hour,
 .clockpicker > .title > .time > .minute,
@@ -510,19 +705,19 @@ button.flat:after {
     background-color: var(--primary-background-active); }
 
 .clockpicker > .content > .plate > .canvas .bg {
-    fill: var(--primary-background-base); }
+    fill: var(--primary-background-ui); }
 
 .clockpicker > .content > .plate > .canvas .fg {
     fill: var(--primary-background-active);
     stroke: none; }
 
 .clockpicker > .content > .plate > .canvas line {
-    stroke: var(--primary-background-base);
+    stroke: var(--primary-background-ui);
     stroke-width: 3;
     stroke-linecap: round; }
 
 .clockpicker > .content > .plate > .canvas .bearing {
-    fill: var(--primary-background-base);
+    fill: var(--primary-background-ui);
     stroke-width: 1; }
 
 /** DATATABLE */
@@ -550,7 +745,7 @@ button.flat:after {
     background-color: var(--light-background-hover); }
 
 .datatable > table .checkbox-selection > label:before {
-    background-color: var(--secondary-background-base); }
+    background-color: var(--secondary-background-ui); }
 
 /** DATEPICKER */
 
@@ -558,7 +753,7 @@ button.flat:after {
     background-color: var(--light-background); }
 
 .datepicker > .title {
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .datepicker > .title > .year, .datepicker > .title > .day {
     color: var(--light-secondary-font); }
@@ -576,7 +771,7 @@ button.flat:after {
 
 .datepicker > .content > .days-month > tbody td.active {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .datepicker > .content > .months > ul > li,
 .datepicker > .content > .year > ul > li {
@@ -638,10 +833,16 @@ button.flat:after {
 /** LIST */
 
 .list > .item-list > .content > div.avatar {
-    background-color: var(--dark-background-disabled); }
+    background-color: var(--dark-secondary-font); }
+
+.list.dark > .item-list > .content > div.avatar {
+    background-color: var(--light-primary-font); }
 
 .list > .item-list > .content > div.avatar > i {
     color: var(--light-primary-font); }
+
+.list.dark > .item-list > .content > div.avatar > i {
+    color: var(--dark-secondary-font); }
 
 .list > .item-list > .content > .detail {
     border-bottom-color: transparent; }
@@ -649,18 +850,34 @@ button.flat:after {
 .list.bordered > .item-list > .content > .detail {
     border-bottom-color: var(--light-background-divider); }
 
+.list.dark.bordered > .item-list > .content > .detail {
+    border-bottom-color: var(--dark-background-divider); }
+
 .list > .item-list > .content > .detail > .title { 
     color: var(--dark-primary-font); }
 
+.list.dark > .item-list > .content > .detail > .title { 
+    color: var(--light-primary-font); }
+
 .list > .subheader, .list > .item-list > .content > .action,
-.list > .item-list > .content > .detail > .subtitle, 
+.list > .item-list > .content > .detail > .description, 
 .list > .item-list > .content > .detail > i,
 .list > .item-list > .content > .detail > .emphasis,
 .list > .item-list > .options > ul > .subitem-list {
     color: var(--dark-secondary-font); }
 
+.list.dark > .subheader, .list > .item-list > .content > .action,
+.list.dark > .item-list > .content > .detail > .description, 
+.list.dark > .item-list > .content > .detail > i,
+.list.dark > .item-list > .content > .detail > .emphasis,
+.list.dark > .item-list > .options > ul > .subitem-list {
+    color: var(--light-secondary-font); }
+
 .list > .item-list > .content > .detail > i.active {
     color: var(--accent-secondary-font); }
+
+.list.dark > .item-list > .content > .detail > i.active {
+    color: var(--accent-primary-font); }
 
 /** MENU */
 
@@ -685,7 +902,7 @@ button.flat:after {
 /** PROGRESS CIRCULAR */
 
 .progress-circular > svg > circle {
-    stroke: var(--primary-background-base); }
+    stroke: var(--primary-background-ui); }
 
 /** SEARCH BOX */
 
@@ -694,7 +911,7 @@ button.flat:after {
 
 .search-box > input::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .search-box > .actions {
     background-color: var(--light-background); }
@@ -707,62 +924,126 @@ button.flat:after {
 .select > label {
     color: var(--dark-secondary-font); }
 
-.select.active > label {
-    color: var(--primary-background-base); }
+.select.dark > label {
+    color: var(--light-secondary-font); }
+
+.select.dark > input {
+    color: var(--light-primary-font); }
+
+.select.active > input:focus ~ label {
+    color: var(--primary-background-ui); }
 
 .select > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
 
-.select.active > .line-shadow {
-    background-color: var(--primary-background-base); }
+.select.dark > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
 
-.select > i.material-icon {
+.select.active > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.select.disabled > .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.select.disabled.dark > .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
+
+.select > i.action-icon {
     color: var(--dark-secondary-font); }
 
+.select.disabled > i.action-icon {
+    color: var(--dark-disabled-font); }
+
+.select.dark > i.action-icon {
+    color: var(--light-primary-font); }
+
+.select.dark.disabled > i.action-icon {
+    color: var(--light-disabled-font); }
+
 .select > ul { 
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.select.dark > ul { 
+    background-color: var(--dark-background-ui); }
 
 .select > ul > li.active {
     color: var(--dark-secondary-font); }
+
+.select.dark > ul > li {
+    color: var(--light-primary-font); }
+
+.select.dark > ul > li.active {
+    color: var(--light-secondary-font); }
 
 .select > ul > li:focus {
     background-color: var(--light-background-focus); }
 
 .select > ul > li:hover {
-    background-color: var(--primary-background-hover); }
+    background-color: var(--light-background-hover); }
 
 /** SELECT MULTIPLE */
 
 .select-multiple > label {
     color: var(--dark-secondary-font); }
 
-.select-multiple.active > label {
-    color: var(--primary-background-base); }
+.select-multiple.dark > label {
+    color: var(--light-secondary-font); }
+
+.select-multiple.dark > input {
+    color: var(--light-primary-font); }
+
+.select-multiple.active > input:focus ~ label {
+    color: var(--primary-background-ui); }
 
 .select-multiple > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
 
-.select-multiple.active > .line-shadow {
-    background-color: var(--primary-background-base); }
+.select-multiple.dark > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.select-multiple.active > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.select-multiple.disabled > .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.select-multiple.disabled.dark > .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 .select-multiple > i.material-icon {
     background-color: var(--light-background);
     color: var(--dark-secondary-font); }
 
+.select-multiple.dark > i.material-icon {
+    background-color: var(--dark-background);
+    color: var(--light-primary-font); }
+
 .select-multiple > ul { 
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.select-multiple.dark > ul { 
+    background-color: var(--dark-background-ui); }
+
+.select-multiple.dark > ul > li {
+    color: var(--light-primary-font); }
 
 .select-multiple > ul > li.active {
     color: var(--dark-secondary-font); }
+
+.select-multiple.dark > ul > li.active {
+    color: var(--light-secondary-font); }
 
 .select-multiple > ul > li:focus {
     background-color: var(--light-background-focus); }
 
 .select-multiple > ul > li:hover {
-    background-color: var(--primary-background-hover); }
+    background-color: var(--light-background-hover); }
 
 .select-multiple > ul > li > .checkbox-selection > label:before {
-    background-color: var(--secondary-background-base); }
+    background-color: var(--secondary-background-ui); }
+
+.select-multiple.dark > ul > li > .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after {
+    border: 2px solid var(--light-background-ui); }
 
 /** SIDENAV */
 
@@ -798,7 +1079,7 @@ button.flat:after {
     background-color: var(--light-ripple); }
 
 .tab > .bar {
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .toolbar > .tab > .bar {
     background-color: var(--light-background); }
@@ -808,82 +1089,164 @@ button.flat:after {
 .textarea > label {
     color: var(--dark-secondary-font); }
 
-.textarea.dark > label {
+.dark .textarea > label, .primary .textarea > label,
+.secondary .textarea > label {
     color: var(--light-secondary-font); }
 
-.textarea.active > textarea:focus ~ label {
-    color: var(--primary-background-base); }
+.textarea.active > input:focus ~ label {
+    color: var(--base-primary-font); }
 
-.textarea.error > label, .textarea.active.error > textarea:focus ~ label {
-    color: var(--accent-primary-font); }
+.primary .textarea.active > textarea:focus ~ label,
+.secondary .textarea.active > textarea:focus ~ label {
+    color: var(--light-primary-font); }
 
+.textarea.active.error > textarea:focus ~ label, .textarea.error > label,
 .textarea.active > textarea:focus ~ label > span {
-    color: var(--accent-primary-font); }
+    color: var(--error-font); }
+
+.primary .textarea.error > label, .secondary .textarea.error > label,
+.primary .textarea.active.error > textarea:focus ~ label, 
+.secondary .textarea.active.error > textarea:focus ~ label,
+.primary .textarea.active > textarea:focus ~ label > span,
+.secondary .textarea.active > textarea:focus ~ label > span {
+    color: var(--light-error-font); }
+
+.textarea > i {
+    color: var(--dark-secondary-font); }
+
+.dark .textarea > i {
+    color: var(--light-secondary-font); }
+
+.primary .textarea > i, .secondary .textarea > i {
+    color: var(--light-primary-font); }
 
 .textarea > textarea {
     background-color: transparent; }
 
-.textarea.dark > textarea {
+.textarea.active > textarea:focus ~ i {
+    color: var(--base-primary-font); }
+
+.textarea .textfield.active > textarea:focus ~ i,
+.textarea .textfield.active > textarea:focus ~ i {
     color: var(--light-primary-font); }
+
+.textarea.active.error > textarea:focus ~ i, .textarea.error > i {
+    color: var(--error-font); }
+
+.primary .textarea.error > i, .secondary .textarea.error > i,
+.primary .textarea.active.error > textarea:focus ~ i, 
+.secondary .textarea.active.error > textarea:focus ~ i {
+    color: var(--light-error-font); }
+
+.dark .textarea > input, .primary .textarea > textarea,
+.secondary .textarea > textarea {
+    color: var(--light-primary-font); }
+
+.textarea > textarea:disabled {
+    color: var(--dark-disabled-font); }
 
 .textarea > textarea::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
+
+.primary .textarea > textarea::selection {
+    color: var(--base-primary-font);
+    background-color: var(--light-background-ui); }
+
+.secondary .textarea > textarea::selection {
+    color: var(--accent-primary-font);
+    background-color: var(--light-background-ui); }
 
 .textarea > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.textarea.dark > .line-shadow {
+.primary .textarea > .line-shadow, 
+.dark .textarea > .line-shadow,
+.secondary .textarea > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
 .textarea.active > textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--primary-background-base); }
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.primary .textarea.active > textarea:focus ~ .line-shadow,
+.secondary .textarea.active > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-background-ui); }
 
 .textarea > textarea:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.textarea.dark > textarea:disabled ~ .line-shadow {
+.primary .textarea > textarea:disabled ~ .line-shadow,
+.dark .textarea > textarea:disabled ~ .line-shadow,
+.secondary .textarea > textarea:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.textarea.active > textarea:focus ~ .line-shadow {
-    background-color: var(--primary-background-base); }
-
 .textarea.active.error > textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--secondary-background-base); }
+    border-bottom: 2px solid var(--error-font); }
+
+.primary .textarea.active.error > textarea:focus ~ .line-shadow,
+.secondary .textarea.active.error > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-error-font); }
 
 .textarea > span {
-    color: var(--accent-primary-font); }
+    color: var(--error-font); }
+
+.primary .textarea > span, .secondary .textarea > span {
+    color: var(--light-error-font); }
 
 /** TEXTFIELD */
 
 .textfield > label {
     color: var(--dark-secondary-font); }
 
-.textfield.dark > label {
+.dark .textfield > label, .primary .textfield > label,
+.secondary .textfield > label {
     color: var(--light-secondary-font); }
 
 .textfield.active > input:focus ~ label {
     color: var(--base-primary-font); }
 
-.textfield.active.error > input:focus ~ label, .textfield.error > label {
-    color: var(--accent-primary-font); }
+.primary .textfield.active > input:focus ~ label,
+.secondary .textfield.active > input:focus ~ label {
+    color: var(--light-primary-font); }
 
+.textfield.active.error > input:focus ~ label, 
+.textfield.error > label,
 .textfield.active > input:focus ~ label > span {
-    color: var(--accent-primary-font); }
+    color: var(--error-font); }
+
+.primary .textfield.error > label, .secondary .textfield.error > label,
+.primary .textfield.active.error > input:focus ~ label, 
+.secondary .textfield.active.error > input:focus ~ label,
+.primary .textfield.active > input:focus ~ label > span,
+.secondary .textfield.active > input:focus ~ label > span {
+    color: var(--light-error-font); }
 
 .textfield > i {
     color: var(--dark-secondary-font); }
 
-.textfield.dark > i {
+.dark .textfield > i {
     color: var(--light-secondary-font); }
+
+.primary .textfield > i, .secondary .textfield > i {
+    color: var(--light-primary-font); }
 
 .textfield.active > input:focus ~ i {
     color: var(--base-primary-font); }
 
-.textfield.active.error > input:focus ~ i, .textfield.error > i {
-    color: var(--accent-primary-font); }
+.primary .textfield.active > input:focus ~ i,
+.secondary .textfield.active > input:focus ~ i {
+    color: var(--light-primary-font); }
 
-.textfield.dark > input {
+.textfield.active.error > input:focus ~ i, .textfield.error > i {
+    color: var(--error-font); }
+
+.primary .textfield.error > i, .secondary .textfield.error > i,
+.primary .textfield.active.error > input:focus ~ i, 
+.secondary .textfield.active.error > input:focus ~ i {
+    color: var(--light-error-font); }
+
+.dark .textfield > input, .primary .textfield > input,
+.secondary .textfield > input {
     color: var(--light-primary-font); }
 
 .textfield > input:disabled {
@@ -891,28 +1254,51 @@ button.flat:after {
 
 .textfield > input::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
+
+.primary .textfield > input::selection {
+    color: var(--base-primary-font);
+    background-color: var(--light-background-ui); }
+
+.secondary .textfield > input::selection {
+    color: var(--accent-primary-font);
+    background-color: var(--light-background-ui); }
 
 .textfield > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.textfield.dark > .line-shadow {
+.primary .textfield > .line-shadow, 
+.dark .textfield > .line-shadow,
+.secondary .textfield > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
 .textfield.active > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--primary-background-base); }
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.primary .textfield.active > input:focus ~ .line-shadow,
+.secondary .textfield.active > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-background-ui); }
 
 .textfield > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.textfield.dark > input:disabled ~ .line-shadow {
+.primary .textfield > input:disabled ~ .line-shadow,
+.dark .textfield > input:disabled ~ .line-shadow,
+.secondary .textfield > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
 .textfield.active.error > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--secondary-background-base); }
+    border-bottom: 2px solid var(--error-font); }
+
+.primary .textfield.active.error > input:focus ~ .line-shadow,
+.secondary .textfield.active.error > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-error-font); }
 
 .textfield > span {
-    color: var(--accent-primary-font); }
+    color: var(--error-font); }
+
+.primary .textfield > span, .secondary .textfield > span {
+    color: var(--light-error-font); }
 
 /** TEXTFIELD READONLY */
 
@@ -920,24 +1306,36 @@ button.flat:after {
     color: var(--dark-secondary-font); }
 
 .textfield-readonly > input:focus ~ label {
-    color: var(--primary-background-base); }
+    color: var(--primary-background-ui); }
 
 .textfield-readonly > input::selection {
     color: var(--light-primary-font);
-    background-color: var(--primary-background-base); }
+    background-color: var(--primary-background-ui); }
 
 .textfield-readonly > .line-shadow {
     background-color: var(--light-background-divider); }
 
 .textfield-readonly > input:focus ~ .line-shadow {
-    background-color: var(--primary-background-base); }
-
-/** */
-
-.app-bar {
-    background-color: var(--light-background); }
+    background-color: var(--primary-background-ui); }
 
 /** TOOLBAR */
 
-.toolbar > .nav-icon {
+.toolbar, .app-bar > .toolbar {
+    background-color: var(--light-background-appbar); }
+
+.toolbar.dark, .app-bar.dark > .toolbar {
+    background-color: var(--dark-background-appbar); }
+
+.toolbar.primary, .app-bar.primary > .toolbar {
+    background-color: var(--primary-background-appbar); }
+
+.toolbar.secondary, .app-bar.secondary > .toolbar {
+    background-color: var(--secondary-background-appbar); }
+
+.toolbar > .nav-icon, .app-bar > .toolbar > .nav-icon {
     color: var(--dark-secondary-font); }
+
+.toolbar.primary > .nav-icon, .app-bar.primary > .toolbar > .nav-icon,
+.toolbar.dark > .nav-icon, .app-bar.dark > .toolbar > .nav-icon,
+.toolbar.secondary > .nav-icon, .app-bar.secondary > .toolbar > .nav-icon {
+    color: var(--light-primary-font); }

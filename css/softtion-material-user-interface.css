@@ -105,7 +105,10 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
-.material-icon, button > i, i.action-icon {
+.material-icon, 
+button > i, 
+i.action-icon,
+.chip > .action > i {
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
@@ -714,9 +717,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav-temporary-left .toolbar, 
+    .sidenav-temporary-left .app-bar, 
     .sidenav-temporary-left .app-content {
         margin-left: 320px; }
+    
+    .sidenav-temporary-left .app-bar {
+        width: calc(100% - 320px); }
     
     .sidenav-temporary-left .search-box {
         width: calc(100% - 336px);
@@ -753,7 +759,8 @@ input[type=number]::-webkit-outer-spin-button {
 /** COMPONENTS GLOBALS */
 
 .app-content {
-    padding-top: 8px; }
+    padding-top: 8px;
+    overflow: auto; }
 
 .backdrop {
     position: fixed;
@@ -793,7 +800,7 @@ input[type=number]::-webkit-outer-spin-button {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.autocomplete.active > label {
+.autocomplete > label.active {
     cursor: none;
     top: 16px;
     font-size: 12px; }
@@ -879,6 +886,7 @@ input[type=number]::-webkit-outer-spin-button {
     max-height: 240px; }
 
 .autocomplete > ul > li {
+    font-family: softtion-bold;
     padding: 0px 16px;
     cursor: pointer;
     height: 48px;
@@ -886,7 +894,8 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 48px; }
 
 .autocomplete > ul > li > b { 
-    font-family: softtion-light; }
+    font-family: softtion-bold;
+    font-weight: normal; }
 
 .autocomplete > ul > li:focus {
     outline: none; }
@@ -1385,6 +1394,9 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden; 
     border-radius: 2px 2px 0px 0px; }
 
+.card > .rich-media.only {
+    border-radius: 2px; }
+
 .card > .rich-media:before {
     display: block;
     content: "";
@@ -1424,19 +1436,6 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis; }
 
-.card > .rich-media > .media-area {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0; }
-
-.card > .rich-media > .media-area > img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); }
-
 .card > .rich-media > .content {
     width: 100%;
     bottom: 0px;
@@ -1463,17 +1462,19 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card > .rich-media > .content > .primary-title > .detail > .title {
     font-size: 24px; 
+    line-height: 20px;
     height: 24px; }
 
 .card > .rich-media > .content > .primary-title > .detail > .subtitle + .title {
-    margin-top: 12px; }
+    padding-top: 12px; }
 
 .card > .rich-media > .content > .primary-title > .detail > .subtitle {
     height: 14px;
+    line-height: 12px;
     font-size: 14px; }
 
 .card > .rich-media > .content > .primary-title > .detail > .title + .subtitle {
-    margin-top: 12px; }
+    padding-top: 12px; }
 
 .card > .rich-media > .content > .actions {
     overflow-y: auto;
@@ -1486,14 +1487,6 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 12px;
     margin: 0px;
     margin-right: 8px; }
-
-.card > .rich-media > .content > .actions > button.flat:focus > .focused {
-    visibility: visible;
-    -moz-animation: button-focus-content 2.5s infinite linear; 
-    -webkit-animation: button-focus-content 2.5s infinite linear; 
-    -o-animation: button-focus-content 2.5s infinite linear; 
-    animation: button-focus-content 2.5s infinite linear; 
-    -ms-animation: button-focus-content 2.5s infinite linear; }
 
 .card > .rich-media > .content > .actions > button.flat.right {
     float: right;
@@ -1515,19 +1508,22 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .primary-title > .detail > .title,
 .card > .primary-title > .detail > .subtitle {
     display: block;
+    overflow: hidden;
     width: 100%; 
     text-overflow: ellipsis;
     white-space: nowrap; }
 
 .card > .primary-title > .detail > .title {
     font-size: 24px; 
-    height: 24px; }
+    height: 24px; 
+    line-height: 20px; }
 
 .card > .primary-title > .detail > .subtitle + .title {
-    margin-top: 12px; }
+    padding-top: 12px; }
 
 .card > .primary-title > .detail > .subtitle {
     height: 14px;
+    line-height: 12px;
     font-size: 14px; }
 
 .card > .primary-title > .detail > .title + .subtitle {
@@ -1706,6 +1702,9 @@ button.raised:focus:after, button.flat:focus:after {
     -khtml-user-select: none;
     -ms-user-select: none; }
 
+.checkbox > input[type="checkbox"]:disabled + label {
+    cursor: none; }
+
 .checkbox > label:before {
     content: "";
     position: absolute;
@@ -1734,8 +1733,6 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px; }
 
 .checkbox > input[type="checkbox"]:checked + label:after {
-    border-left: 2px solid transparent;
-    border-top: 2px solid transparent;
     top: 2px;
     left: 7px;
     width: 5px;
@@ -1856,7 +1853,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0 12px;
     font-family: softtion-light;
     border-radius: 16px;
-    transition: box-shadow 0.225s var(--sharp-curve); }
+    transition: all 0.175s var(--sharp-curve); }
 
 .chip.active {
     box-shadow: var(--shadow-2); }
@@ -2417,7 +2414,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 280px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 4;
+    z-index: 12;
     box-shadow: var(--shadow-4);
     opacity: 0;
     transform: scale(0, 0);
@@ -2693,7 +2690,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 20px;
     line-height: 20px; }
 
-.list > .item-list > .content > .detail > .subtitle {
+.list > .item-list > .content > .detail > .description {
     display: -webkit-box;
     width: 100%;
     margin: 0px;
@@ -2706,13 +2703,13 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis; }
 
-.list.single-line > .item-list > .content > .detail > .subtitle {
+.list.single-line > .item-list > .content > .detail > .description {
     display: none; }
 
-.list.two-line > .item-list > .content > .detail > .subtitle {
+.list.two-line > .item-list > .content > .detail > .description {
     -webkit-line-clamp: 1; }
 
-.list.three-line > .item-list > .content > .detail > .subtitle {
+.list.three-line > .item-list > .content > .detail > .description {
     line-height: 18px; 
     margin: 0px;
     max-height: 36px; }
@@ -2757,7 +2754,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-left: 72px; }
 
 .list > .item-list > .content > .detail > i ~ .title,
-.list > .item-list > .content > .detail > i ~ .subtitle {
+.list > .item-list > .content > .detail > i ~ .description {
     width: calc(100% - 40px); }
 
 .list > .item-list > .content > .detail > .emphasis ~ i {
@@ -2955,37 +2952,46 @@ button.raised:focus:after, button.flat:focus:after {
 .select {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px; }
+    padding: 16px 0px 8px 0px; }
 
 .select > label {
     position: absolute;
-    font-size: 12px;
-    top: -14px;
+    font-size: 16px;
+    top: 40px;
     left: 0;
     width: 100%;
+    height: 16px;
+    line-height: 16px;
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
+
+.select.active > label {
+    cursor: none;
+    top: 16px;
     height: 14px;
-    line-height: 12px; }
+    line-height: 14px;
+    font-size: 12px; }
 
 .select > input {
-    width: 100%;
     cursor: pointer;
-    height: 30px;
-    line-height: 30px;
+    width: 100%;
+    height: 32px;
+    padding: 16px 0px 8px 0px;
     border: none;
     outline: none;
     background-color: transparent; }
 
 .select > .line-shadow {
     position: absolute;
-    height: 1px;
     width: 100%;
     left: 0;
-    bottom: -1px; }
+    bottom: 7px; }
 
 .select.active > .line-shadow {
-    height: 2px;
-    bottom: -2px; }
+    bottom: 8px; }
 
 .select.flex-pd > label, .select.flex-pd > .line-shadow {
     width: calc(100% - 16px); }
@@ -2998,10 +3004,10 @@ button.raised:focus:after, button.flat:focus:after {
 .select.flex-pd > .line-shadow, .select.flex-pd-left > .line-shadow {
     left: 8px; }
 
-.select > i.material-icon {
+.select > i.action-icon {
     position: absolute;
     right: 0;
-    top: 1px;
+    top: 38px;
     cursor: pointer; }
 
 .select.flex-pd > i.material-icon, .select.flex-pd-right > i.material-icon {
@@ -3009,6 +3015,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select > ul {
     position: absolute;
+    top: 72px;
     margin: 0px;
     max-width: 0%;
     width: 100%;
@@ -3017,7 +3024,6 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-y: auto;
     list-style-type: none;
     padding: 0px;
-    top: 34px;
     z-index: 4;
     box-shadow: var(--shadow-4); 
     -moz-transition: max-height 0.225s, max-width 0.225s;
@@ -3031,6 +3037,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: 192px; }
 
 .select > ul > li {
+    font-family: softtion-bold;
     padding: 0px 16px;
     cursor: pointer;
     height: 48px;
@@ -3050,23 +3057,34 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px; }
+    padding: 16px 0px 8px 0px; }
 
 .select-multiple > label {
     position: absolute;
-    font-size: 12px;
-    top: -14px;
+    font-size: 16px;
+    top: 40px;
     left: 0;
     width: 100%;
-    height: 12px;
-    line-height: 12px; }
+    height: 16px;
+    line-height: 16px;
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
+
+.select-multiple.active > label {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px; }
 
 .select-multiple > input {
     width: 100%;
     cursor: pointer;
-    height: 30px;
-    line-height: 30px;
+    height: 32px;
+    margin: 16px 0px 8px 0px;
     border: none;
     outline: none;
     padding-right: 24px;
@@ -3075,14 +3093,12 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select-multiple > .line-shadow {
     position: absolute;
-    height: 1px;
     width: 100%;
     left: 0;
-    bottom: -1px; }
+    bottom: 7px; }
 
 .select-multiple.active > .line-shadow {
-    height: 2px;
-    bottom: -2px; }
+    bottom: 8px; }
 
 .select-multiple.flex-pd > label, .select-multiple.flex-pd > .line-shadow {
     width: calc(100% - 16px); }
@@ -3098,7 +3114,7 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple > i.material-icon {
     position: absolute;
     right: 0;
-    top: 1px;
+    top: 38px;
     cursor: pointer; }
 
 .select-multiple.flex-pd > i.material-icon, .select-multiple.flex-pd-right > i.material-icon {
@@ -3106,6 +3122,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select-multiple > ul {
     position: absolute;
+    top: 72px;
     margin: 0px;
     max-width: 0%;
     width: 100%;
@@ -3114,7 +3131,6 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-y: auto;
     list-style-type: none;
     padding: 0px;
-    top: 34px;
     z-index: 4;
     box-shadow: var(--shadow-4); 
     -moz-transition: max-height 0.225s, max-width 0.225s;
@@ -3128,6 +3144,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: 192px; }
 
 .select-multiple > ul > li {
+    font-family: softtion-bold;
     padding: 0px 16px;
     cursor: pointer;
     height: 48px;
@@ -3687,8 +3704,8 @@ button.raised:focus:after, button.flat:focus:after {
     width: 40px;
     height: inherit;
     cursor: pointer;
-    line-height: inherit;
     float: left;
+    line-height: inherit;
     margin: 0px 16px 0px 4px; }
 
 .toolbar > .nav-icon > i {
@@ -3735,7 +3752,8 @@ button.raised:focus:after, button.flat:focus:after {
 .toolbar > .menu-icon {
     width: 40px;
     height: 56px;
-    line-height: 56px;
+    cursor: pointer;
+    line-height: inherit;
     float: right;
     margin: 0px 4px 0px 1px; }
 

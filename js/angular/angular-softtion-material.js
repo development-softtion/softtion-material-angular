@@ -103,7 +103,9 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var input = $element.find("input"), list = $element.find("ul");
+                            var input = $element.find("input"), 
+                                list = $element.find("ul"),
+                                label = $element.find("label");
                                 
                             // Atributos de control
                             var filterDefined = softtion.is("string", $scope.filter),
@@ -113,7 +115,9 @@
 
                             $scope.clickLabel = function () { input.focus(); };
 
-                            $scope.focusInput = function () { $element.addClass("active"); };
+                            $scope.focusInput = function () { 
+                                $element.addClass("active"); label.addClass("active"); 
+                            };
 
                             $scope.keyupInput = function (ev) {
                                 if ([13, 27, 35, 36, 37, 38, 39, 40].indexOf(ev.keyCode) !== -1) { 
@@ -193,7 +197,7 @@
                                 } else {
                                     if (softtion.is("undefined", $scope.optionSelect)
                                         && !softtion.is("string", $scope.valueInput)) {
-                                        $element.removeClass("active");
+                                        $element.removeClass("active"); label.removeClass("active");
                                     } // No ha seleccionado, ni digitado en el Componente
                                     
                                     if (this.suggestionsFilter.length === 0) {
@@ -209,7 +213,8 @@
                                                 $scope.valueInput = (!(filterDefined) ? $scope.optionSelect.toString() :
                                                     softtion.findKey($scope.optionSelect, $scope.filter));
                                             }
-                                        }
+                                        } else {
+                                            list.removeClass("active"); }
                                     }
                                 }
                             };
@@ -247,12 +252,13 @@
                             };
 
                             $scope.descriptionNotFoundResult = function () {
-                                return '"' + $scope.valueInput + '", no existen resultados.';
+                                return $scope.valueInput + ", no existen resultados.";
                             };
                             
                             $scope.clearAutocomplet = function () {
                                 $scope.optionSelect = undefined; $scope.valueInput = "";
                                 $scope.clearSuggestion = true; $element.removeClass("active");
+                                label.removeClass("active");
                             };
                         }
                     };
@@ -1794,16 +1800,16 @@
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
-                        addAttribute("ng-click", "openSuggestions()").
+                        addAttribute("ng-click", "viewSuggestions()").
                         addAttribute("value","{{valueInput}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
-                        addClass(["truncate","active"]);
+                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate","active"]);
 
-                    var icon = softtion.html("i").addClass("material-icon").
-                        setText("expand_more").addAttribute("ng-click","openSuggestions()");
+                    var icon = softtion.html("i").addClass("action-icon").
+                        setText("expand_more").addAttribute("ng-click","viewSuggestions()");
 
                     var list = softtion.html("ul").
                         addComponent(
@@ -1844,15 +1850,33 @@
 
                             if (softtion.is("defined", $scope.select)) {
                                 $scope.valueInput = $scope.getSuggestionDescription($scope.select);
+                                
+                                $element.addClass("active");
                             } // Hay un opcion seleccionada por defecto
+
+                            $scope.clickLabel = function (ev) { 
+                                if ($element.hasClass("active")) {
+                                    return;
+                                } // El componente se encuentra activo
+                                
+                                $scope.viewSuggestions();
+                                
+                                if (softtion.is("function", $scope.clickEvent)) {
+                                    $scope.clickEvent(ev);
+                                } // Se ha definido callback para Click
+                            };
 
                             $scope.focusInput = function () {
                                 if (!$element.hasClass("disabled")) { $element.addClass("active"); } 
                             };
 
-                            $scope.blurInput = function () { $element.removeClass("active"); };
+                            $scope.blurInput = function () {
+                                if (softtion.is("undefined", $scope.select)) {
+                                    $element.removeClass("active"); 
+                                } // No ha seleccionado ninguna de las opciones
+                            };
 
-                            $scope.openSuggestions = function () {
+                            $scope.viewSuggestions = function () {
                                 list.toggleClass("active"); // Cambiando estado
                                 
                                 if (list.hasClass("active")) {
@@ -1867,8 +1891,8 @@
                                 list.find("li").removeClass("active"); input.focus(); 
                                 $scope.valueInput = $scope.getSuggestionDescription(suggestion); 
                                 angular.element($event.currentTarget).addClass("active"); 
-
-                                list.removeClass("active"); // Ocultando lista
+                                
+                                list.removeClass("active"); // Ocultando lista de opciones
                             };
                         }
                     };
@@ -1890,7 +1914,7 @@
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
-                        addClass(["truncate","active"]);
+                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate","active"]);
 
                     var icon = softtion.html("i").addClass("material-icon").
                         setText("expand_more").addAttribute("ng-click","viewSuggestions()");
@@ -1950,11 +1974,31 @@
                                 } // Item ya esta seleccionado por defecto
                             });
                             
+                            if (Object.keys($scope.selects).length > 0) {
+                                $element.addClass("active"); 
+                            } // No ha seleccionado ninguna de las opciones
+                            
                             $scope.valueInput = valueSelects($scope.selects, $scope.keyDescription);
+
+                            $scope.clickLabel = function (ev) { 
+                                if ($element.hasClass("active")) {
+                                    return;
+                                } // El componente se encuentra activo
+                                
+                                $scope.viewSuggestions();
+                                
+                                if (softtion.is("function", $scope.clickEvent)) {
+                                    $scope.clickEvent(ev);
+                                } // Se ha definido callback para Click
+                            };
 
                             $scope.focusInput = function () { $element.addClass("active"); };
 
-                            $scope.blurInput = function () { $element.removeClass("active"); };
+                            $scope.blurInput = function () {
+                                if (Object.keys($scope.selects).length === 0) {
+                                    $element.removeClass("active"); 
+                                } // No ha seleccionado ninguna de las opciones
+                            };
 
                             $scope.viewSuggestions = function () {
                                 list.toggleClass("active"); // Cambiando estado
@@ -2688,7 +2732,7 @@
                         if ((posOriginX + widthDropdown) <= window.innerWidth) {
                             left = posOriginX; transformOrigin = transformOrigin + 1;
                         } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
-                            left = posOriginX + widthOrigin - widthDropdown; transformOrigin = transformOrigin + 3;
+                            left = posOriginX + widthOrigin - widthDropdown - 10; transformOrigin = transformOrigin + 3;
                         } else { 
                             left = window.innerWidth - widthDropdown - 10; transformOrigin = transformOrigin + 1; 
                         }
@@ -2700,7 +2744,7 @@
                             } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
                                 top = posOriginY + heightOrigin - heightDropdown; transformOrigin = transformOrigin + 7;
                             } else { 
-                                top = window.innerHeight - heightDropdown -10; transformOrigin = transformOrigin + 4; }
+                                top = window.innerHeight - heightDropdown - 10; transformOrigin = transformOrigin + 4; }
                         } else { 
                             if ((posOriginY + heightOrigin + heightDropdown) <= window.innerHeight) {
                                 top = posOriginY + heightOrigin; transformOrigin = transformOrigin + 4;
