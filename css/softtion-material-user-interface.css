@@ -2237,11 +2237,19 @@ button.raised:focus:after, button.flat:focus:after {
     display: block; }
 
 .datepicker > .content > .days-month > thead th {
+    font-family: softtion-bold; }
+
+.datepicker > .content > .days-month > thead th {
     padding: 0px;
     width: 40px;
     height: 40px; }
 
+.datepicker > .content > .days-month > tbody .week {
+    display: flex; 
+    padding: 2px 0px; }
+
 .datepicker > .content > .days-month > tbody td {
+    display: block;
     text-align: center;
     cursor: pointer;
     width: 40px;
@@ -2249,6 +2257,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 40px;
     padding: 0;
     border-radius: 50%; }
+
+.datepicker > .content > .days-month > tbody td.active {
+    font-family: softtion-bold; }
 
 .datepicker > .content > .months, .datepicker > .content > .year {
     position: relative;
@@ -2452,11 +2463,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel {
     box-shadow: var(--shadow-2);
-    -moz-transition: margin .35s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    -webkit-transition: margin .35s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    -o-transition: margin .35s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    transition: margin .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    -ms-transition: margin .35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    -moz-transition: margin 0.275s var(--sharp-curve);
+    -webkit-transition: margin 0.275s var(--sharp-curve);
+    -o-transition: margin 0.275s var(--sharp-curve);
+    transition: margin 0.275s var(--sharp-curve);
+    -ms-transition: margin 0.275s var(--sharp-curve); }
 
 .expansion-panel.active {
     box-shadow: var(--shadow-6);
@@ -2486,9 +2497,8 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     line-height: 48px; }
 
-.expansion-panel.active > .header,
-.expansion-panel:last-child > .header {
-    border-bottom: none; }
+.expansion-panel.active > .header, .expansion-panel:last-child > .header {
+    border-bottom: none !important; }
 
 .expansion-panel > .body {
     height: 0px;
@@ -2503,11 +2513,11 @@ button.raised:focus:after, button.flat:focus:after {
     margin-top: -100%; }
 
 .expansion-panel > .body.start > .content {
-    -moz-transition: margin-top 0.375s cubic-bezier(0.4, 0.0, 0.2, 1);
-    -webkit-transition: margin-top 0.375s cubic-bezier(0.4, 0.0, 0.2, 1);
-    -o-transition: margin-top 0.375s cubic-bezier(0.4, 0.0, 0.2, 1);
-    transition: margin-top 0.375s cubic-bezier(0.4, 0.0, 0.2, 1);
-    -ms-transition: margin-top 0.375s cubic-bezier(0.4, 0.0, 0.2, 1); }
+    -moz-transition: margin-top 0.375s var(--easing-out);
+    -webkit-transition: margin-top 0.375s var(--easing-out);
+    -o-transition: margin-top 0.375s var(--easing-out);
+    transition: margin-top 0.375s var(--easing-out);
+    -ms-transition: margin-top 0.375s var(--easing-out); }
 
 .expansion-panel.active > .body > .content {
     margin-top: 0% !important; }
@@ -2968,7 +2978,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.select.active > label {
+.select > label.active {
     cursor: none;
     top: 16px;
     height: 14px;
@@ -3042,6 +3052,10 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     height: 48px;
     line-height: 48px; }
+
+.select > ul > li.clear-suggestion {
+    box-sizing: border-box;
+    text-transform: uppercase; }
 
 .select > ul > li:focus {
     outline: none; }
@@ -3682,7 +3696,6 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     top: 0;
     left: 0;
-    min-height: 56px; 
     height: auto; 
     z-index: 8;
     box-shadow: var(--shadow-4); 
@@ -3695,14 +3708,18 @@ button.raised:focus:after, button.flat:focus:after {
 
 .toolbar {
     width: 100%;
-    height: 56px; 
+    min-height: 56px; 
+    max-height: 56px; 
     line-height: 56px;
     z-index: 8;
+    overflow-x: hidden;
+    overflow-y: auto;
     transition: margin-top 0.525s var(--easing-out); }
 
 .toolbar > .nav-icon {
     width: 40px;
-    height: inherit;
+    min-height: inherit; 
+    max-height: inherit; 
     cursor: pointer;
     float: left;
     line-height: inherit;
@@ -3710,9 +3727,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .toolbar > .nav-icon > i {
     text-align: center;
-    margin-top: 4px;
-    padding: 12px;
-    line-height: 24px; }
+    padding: 0px 12px;
+    line-height: inherit; }
 
 .toolbar > .title {
     margin: 0px;
@@ -3739,19 +3755,20 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px;
     padding: 0px;
     float: right;
-    height: 56px; 
-    line-height: 56px; }
+    min-height: inherit; 
+    max-height: inherit;
+    line-height: inherit; }
 
 .toolbar > .actions > i {
     cursor: pointer;
-    line-height: 24px;
-    padding: 12px;
-    margin-top: 4px;
+    line-height: inherit;
+    padding: 0px 12px;
     margin-left: 1px; }
 
 .toolbar > .menu-icon {
     width: 40px;
-    height: 56px;
+    min-height: inherit; 
+    max-height: inherit;
     cursor: pointer;
     line-height: inherit;
     float: right;
@@ -3759,17 +3776,17 @@ button.raised:focus:after, button.flat:focus:after {
 
 .toolbar > .menu-icon > i {
     text-align: center;
-    margin-top: 4px;
-    padding: 12px 6px;
-    line-height: 24px; }
+    padding: 0px 12px;
+    line-height: inherit; }
 
 @media only screen and (min-width : 961px) {
     
     .toolbar {
-        height: 64px;  
+        min-height: 64px; 
+        max-height: 64px;  
         line-height: 64px; }
     
-    .toolbar > .nav-icon {
+    .app-bar > .toolbar > .nav-icon {
         display: none; }
 }
 

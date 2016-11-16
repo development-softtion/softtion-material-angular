@@ -1801,17 +1801,24 @@
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-click", "viewSuggestions()").
+                        addAttribute("ng-disabled","ngDisabled").
                         addAttribute("value","{{valueInput}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
-                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate","active"]);
+                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
-                    var icon = softtion.html("i").addClass("action-icon").
-                        setText("expand_more").addAttribute("ng-click","viewSuggestions()");
+                    var icon = softtion.html("i").addClass("action-icon").setText("expand_more").
+                        addAttribute("ng-if", "!ngDisabled").addAttribute("ng-click","viewSuggestions()");
 
                     var list = softtion.html("ul").
+                        addComponent(
+                            softtion.html("li").addClass(["truncate", "clear-suggestion"]).
+                                addAttribute("ng-if","clearSuggestion").
+                                setText("Limpiar selección").
+                                addAttribute("ng-click","clear($event)")
+                        ).
                         addComponent(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
@@ -1830,11 +1837,14 @@
                             select: "=ngModel", 
                             label: "@label",
                             keyDescription: "@keyDescription",
-                            suggestions: "=suggestions"
+                            suggestions: "=suggestions",
+                            ngDisabled: "=ngDisabled",
+                            clearSuggestion: "=clearSuggestion"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var input = $element.find("input"),
+                            var label = $element.find("label"),
+                                input = $element.find("input"),
                                 list = $element.find("ul"),
                                 icon = $element.find(".material-icon");
                             
@@ -1850,11 +1860,10 @@
 
                             if (softtion.is("defined", $scope.select)) {
                                 $scope.valueInput = $scope.getSuggestionDescription($scope.select);
-                                
-                                $element.addClass("active");
+                                $element.addClass("active"); label.addClass("active");
                             } // Hay un opcion seleccionada por defecto
 
-                            $scope.clickLabel = function (ev) { 
+                            $scope.clickLabel = function ($event) { 
                                 if ($element.hasClass("active")) {
                                     return;
                                 } // El componente se encuentra activo
@@ -1862,12 +1871,12 @@
                                 $scope.viewSuggestions();
                                 
                                 if (softtion.is("function", $scope.clickEvent)) {
-                                    $scope.clickEvent(ev);
+                                    $scope.clickEvent($event);
                                 } // Se ha definido callback para Click
                             };
 
                             $scope.focusInput = function () {
-                                if (!$element.hasClass("disabled")) { $element.addClass("active"); } 
+                                $element.addClass("active"); label.addClass("active"); 
                             };
 
                             $scope.blurInput = function () {
@@ -1877,13 +1886,15 @@
                             };
 
                             $scope.viewSuggestions = function () {
-                                list.toggleClass("active"); // Cambiando estado
-                                
-                                if (list.hasClass("active")) {
-                                    icon.html("expand_less"); $element.addClass("active");
-                                } else {
-                                    icon.html("expand_more"); input.focus();
-                                }
+                                if (!$scope.ngDisabled) {
+                                    list.toggleClass("active"); input.focus();
+
+                                    if (list.hasClass("active")) {
+                                        icon.html("expand_less"); $element.addClass("active");
+                                    } else {
+                                        icon.html("expand_more"); 
+                                    }
+                                } // No esta desactivado el componente
                             };
 
                             $scope.selectSuggestion = function (suggestion, $event) {
@@ -1893,6 +1904,12 @@
                                 angular.element($event.currentTarget).addClass("active"); 
                                 
                                 list.removeClass("active"); // Ocultando lista de opciones
+                            };
+                            
+                            $scope.clear = function () {
+                                $scope.valueInput = undefined; label.removeClass("active");
+                                $scope.select = undefined; icon.html("expand_more"); 
+                                list.find("li").removeClass("active"); list.removeClass("active"); 
                             };
                         }
                     };
@@ -1909,6 +1926,7 @@
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
+                        addAttribute("ng-disabled","ngDisabled").
                         addAttribute("value","{{valueInput}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -1916,8 +1934,8 @@
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate","active"]);
 
-                    var icon = softtion.html("i").addClass("material-icon").
-                        setText("expand_more").addAttribute("ng-click","viewSuggestions()");
+                    var icon = softtion.html("i").addClass("material-icon").setText("expand_more").
+                        addAttribute("ng-if","!ngDisabled").addAttribute("ng-click","viewSuggestions()");
 
                     var list = softtion.html("ul").
                         addComponent(
@@ -1955,7 +1973,8 @@
                             selects: "=ngModel", 
                             label: "@label",
                             keyDescription: "@keyDescription",
-                            suggestions: "=suggestions"
+                            suggestions: "=suggestions",
+                            ngDisabled: "=ngDisabled"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2001,13 +2020,15 @@
                             };
 
                             $scope.viewSuggestions = function () {
-                                list.toggleClass("active"); // Cambiando estado
-                                
-                                if (list.hasClass("active")) {
-                                    icon.html("expand_less"); $element.addClass("active");
-                                } else {
-                                    icon.html("expand_more"); input.focus();
-                                } // Cerrando lista de Opciones
+                                if (!$scope.ngDisabled) {
+                                    list.toggleClass("active"); // Cambiando estado
+
+                                    if (list.hasClass("active")) {
+                                        icon.html("expand_less"); $element.addClass("active");
+                                    } else {
+                                        icon.html("expand_more"); input.focus();
+                                    } // Cerrando lista de Opciones
+                                }
                             };
 
                             $scope.selectSuggestion = function (suggestion, $index) {
