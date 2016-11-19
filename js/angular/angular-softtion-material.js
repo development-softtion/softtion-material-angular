@@ -1,7 +1,8 @@
 /*
  * Angular Softtion Material v1.0.0
- * (c) 2016 Softtion Developers
  * License: MIT
+ * (c) 2016 Softtion Developers
+ * Updated: 19/Nov/2016
  */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -39,7 +40,6 @@
 
                                 position = positionNew; // Posici�n nueva del scroll
                             });
-                            
                             
                             angular.element(".app-content").css("margin-top", $element.innerHeight());
                         }
@@ -1613,32 +1613,36 @@
             
             ExpansionPanel: {
                 name: "expansionPanel",
-                icon: function () {
-                    return softtion.html("i").addClass(["material-icon"]).setText("expand_more").create();
+                buttonAction: function () {
+                    return softtion.html("button").addClass(["action"]).
+                        addComponent(softtion.html("i").setText("expand_more")).create();
                 },
                 directive: function () {
                     return {
                         restrict: "C",
                         link: function ($scope, $element) {
-                            var panelHeader = $element.find(".header"),
-                                panelBody = $element.find(".body");
+                            var header = $element.find(".header"),
+                                body = $element.find(".body");
                             
-                            if (panelBody.exists()) {
-                                var content = panelBody.find(".content"),
-                                    icon = angular.element(Material.components.ExpansionPanel.icon());
+                            if (body.exists()) {
+                                var content = body.find(".content"),
+                                    button = angular.element(
+                                        Material.components.ExpansionPanel.buttonAction()
+                                    ),
+                                    icon = button.find("i");
                                 
-                                panelHeader.append(icon); // Agregando icono al Header
+                                header.append(button); // Agregando icono al Header
 
-                                panelHeader.click(function () {
+                                header.click(function () {
                                     var marginTop = (-1 * content.innerHeight()),
-                                        bodyStart = panelBody.hasClass("start");
+                                        bodyStart = body.hasClass("start");
                                     
                                     if (!bodyStart) {
-                                        content.css("margin-top", marginTop); panelBody.addClass("start");
+                                        content.css("margin-top", marginTop); body.addClass("start");
                                     } // Componente no se encuentra iniciado
                                     
                                     $element.siblings("li").removeClass("active");
-                                    $element.siblings("li").find("i").html("expand_more");
+                                    $element.siblings("li").find(".action").find("i").html("expand_more");
                                     $element.toggleClass("active"); // Cambiando estado
 
                                     if ($element.hasClass("active")) {
@@ -1655,8 +1659,9 @@
             
             ItemList: {
                 name: "itemList",
-                icon: function () {
-                    return softtion.html("i").addClass(["material-icon"]).setText("expand_more").create();
+                buttonAction: function () {
+                    return softtion.html("button").addClass(["action"]).
+                        addComponent(softtion.html("i").setText("expand_more")).create();
                 },
                 directive: function () {
                     return {
@@ -1667,10 +1672,13 @@
                             
                             if (options.exists()) {
                                 var ul = options.find("ul"), // Lista del submenu
-                                    icon = angular.element(Material.components.ItemList.icon());
+                                    button = angular.element(
+                                        Material.components.ItemList.buttonAction()
+                                    ),
+                                    icon = button.find("i");
                                 
                                 ul.css("margin-top", (ul[0].clientHeight * -1));
-                                $element.find(".detail").append(icon); // Agregando icono
+                                $element.find(".detail").append(button); // Agregando icono
 
                                 $element.find(".content").click(function () {
                                     var marginTop = (-1 * ul.innerHeight()), 

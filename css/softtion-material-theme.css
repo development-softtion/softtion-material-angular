@@ -1,14 +1,9 @@
 /*
  * Softtion Material Theme
- * @license MIT
-
  * v1.0.0
+ * @license MIT
  * Author: Softtion Developers
- * Development: Daniel Andres Castillo Pedroza
- * Development: Fabian Andres Urrego Bohorquez
- * Development: Julio de Jesus Trujillo de la Ossa
- *
- * Updated: 15 de octubre del 2016
+ * Updated: 11/Nov/2016
  */
 
 :root {
@@ -312,6 +307,9 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 
 /** BUTTON */
 
+button.action {
+    background-color: transparent; }
+
 button.flat {
     background-color: transparent;
     color: var(--dark-primary-font); }
@@ -366,10 +364,6 @@ button.flat.primary:disabled, button.flat.primary:hover:disabled {
 button.flat.secondary:disabled, button.flat.secondary:hover:disabled {
     background-color: transparent;
     color: var(--accent-disabled-font); }
-
-
-
-
 
 button.raised { 
     background-color: var(--light-background);
@@ -489,7 +483,8 @@ button.floating.secondary:disabled, button.floating.secondary:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--secondary-background-disabled); }
 
-button.raised:before, button.flat:before, button.floating:before {
+button.raised:before, button.flat:before, 
+button.floating:before, button.action:before {
     background-color: var(--dark-ripple); }
 
 .dark button.flat:before, button.flat.dark:before,
@@ -499,7 +494,10 @@ button.raised:before, button.flat:before, button.floating:before {
 .secondary button.raised:before, button.raised.secondary:before,
 .dark button.floating:before, button.floating.dark:before,
 .primary button.floating:before, button.floating.primary:before, 
-.secondary button.floating:before, button.floating.secondary:before {
+.secondary button.floating:before, button.floating.secondary:before,
+.primary button.action:before, button.action.primary:before,
+.dark button.action:before, button.action.dark:before,
+.secondary button.action:before, button.action.secondary:before {
     background-color: var(--light-ripple); }
 
 /*button.raised:after {
@@ -544,16 +542,19 @@ button.flat:after {
     color: var(--light-primary-font); }
 
 .card > .optional-header > .detail > .subtitle,
-.card > .primary-title > .detail > .subtitle, .card > .actions > i,
-.card.primary > .actions > i, .card.secondary > .actions > i {
+.card > .primary-title > .detail > .subtitle, .card > .actions > button.action,
+.card.primary > .actions > button.action, .card.secondary > .actions > button.action {
     color: var(--dark-secondary-font); }
 
 .card.primary > .optional-header > .detail > .subtitle,
+.card.primary > .actions > button.action,
 .card.primary > .primary-title > .detail > .subtitle, 
 .card.secondary > .optional-header > .detail > .subtitle, 
+.card.secondary > .actions > button.action,
 .card.secondary > .primary-title > .detail > .subtitle,
 .card.dark > .optional-header > .detail > .subtitle,
-.card.dark > .primary-title > .detail > .subtitle, .card.dark > .actions > i {
+.card.dark > .actions > button.action,
+.card.dark > .primary-title > .detail > .subtitle {
     color: var(--light-secondary-font); }
 
 .card.primary > .actions > button.flat,
@@ -667,12 +668,16 @@ button.flat:after {
 .checkbox-selection > label:after {
     border: 2px solid rgba(0, 0, 0, 0.54); }
 
+.checkbox-selection > input[type="checkbox"]:checked + label:after,
+.checkbox-selection > input[type="checkbox"]:disabled:checked + label:after {
+    border-left: 2px solid transparent !important;
+    border-top: 2px solid transparent !important; }
+
 .checkbox-selection > input[type="checkbox"]:disabled + label:after {
     border: 2px solid var(--light-background-disabled); }
 
 .checkbox-selection > input[type="checkbox"]:checked + label:after {
-    border-right: 2px solid var(--light-background);
-    border-bottom: 2px solid var(--light-background); }
+    border: 2px solid var(--light-background); }
 
 /** CHIP */
 
@@ -852,29 +857,87 @@ button.flat:after {
 /** DATATABLE */
 
 .datatable > .header {
-    background-color: var(--secondary-background-active); }
+    background-color: var(--light-background-appbar); }
 
-.datatable > .header > .title, .datatable > .header > i {
+.dark .datatable > .header {
+    background-color: var(--dark-background-appbar); }
+
+.primary .datatable > .header {
+    background-color: var(--primary-background-appbar); }
+
+.secondary .datatable > .header {
+    background-color: var(--secondary-background-appbar); }
+
+.datatable > .header > .title, .datatable > .header > button.action > i {
     color: var(--dark-secondary-font); }
+
+.dark .datatable > .header > .title,
+.dark .datatable > .header > button.action > i,
+.primary .datatable > .header > .title,
+.primary .datatable > .header > button.action > i,
+.secondary .datatable > .header > .title,
+.secondary .datatable > .header > button.action > i {
+    color: var(--light-secondary-font); }
 
 .datatable > table > thead > tr {
     border-bottom: 1px solid var(--light-background-divider); 
     border-top: 1px solid var(--light-background-divider); }
 
+.primary .datatable > table > thead > tr,
+.dark .datatable > table > thead > tr,
+.secondary .datatable > table > thead > tr {
+    border-bottom: 1px solid var(--dark-background-divider); 
+    border-top: 1px solid var(--dark-background-divider); }
+
 .datatable > table > thead > tr > th {
     color: var(--dark-secondary-font); }
+
+.primary .datatable > table > thead > tr > th,
+.dark .datatable > table > thead > tr > th,
+.secondary .datatable > table > thead > tr > th {
+    color: var(--light-secondary-font); }
 
 .datatable > table > tbody > tr {
     border-bottom: 1px solid var(--light-background-divider); }
 
+.primary .datatable > table > tbody > tr,
+.dark .datatable > table > tbody > tr,
+.secondary .datatable > table > tbody > tr {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
 .datatable > table > tbody > tr.active {
     background-color: var(--light-background-active); }
+
+.primary .datatable > table > tbody > tr.active,
+.dark .datatable > table > tbody > tr.active,
+.secondary .datatable > table > tbody > tr.active {
+    background-color: var(--dark-background-active); }
 
 .datatable > table > tbody > tr:hover {
     background-color: var(--light-background-hover); }
 
+.primary .datatable > table > tbody > tr:hover,
+.dark .datatable > table > tbody > tr:hover,
+.secondary .datatable > table > tbody > tr:hover {
+    background-color: var(--dark-background-hover); }
+
 .datatable > table .checkbox-selection > label:before {
     background-color: var(--secondary-background-ui); }
+
+.primary .datatable > table .checkbox-selection > label:before,
+.secondary .datatable > table .checkbox-selection > label:before {
+    background-color: var(--light-background-ui); }
+
+.primary .datatable > table .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after,
+.dark .datatable > table .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after,
+.secondary .datatable > table .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after {
+    border: 2px solid var(--light-background-ui); }
+
+.primary .checkbox-selection > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--primary-background); }
+
+.secondary .checkbox-selection > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--secondary-background); }
 
 /** DATEPICKER */
 
@@ -1009,12 +1072,18 @@ button.flat:after {
 .secondary .expansion-panel > .header:hover {
     background-color: #ec407a; /** pink-400 */ }
 
-.expansion-panel > .header > .detail, .expansion-panel > .header > i {
+.expansion-panel > .header > .detail,
+.expansion-panel > .header > button.action > i {
     color: var(--dark-secondary-font); }
 
-.primary .expansion-panel > .header > .detail, .primary .expansion-panel > .header > i,
-.dark .expansion-panel > .header > .detail, .dark .expansion-panel > .header > i,
-.secondary .expansion-panel > .header > .detail, .secondary .expansion-panel > .header > i {
+.primary .expansion-panel > .header > .detail, 
+.dark .expansion-panel > .header > .detail,
+.secondary .expansion-panel > .header > .detail {
+    color: var(--light-secondary-font); }
+
+.primary .expansion-panel > .header > button.action > i,
+.dark .expansion-panel > .header > button.action > i,
+.secondary .expansion-panel > .header > button.action > i {
     color: var(--light-primary-font); }
 
 .expansion-panel > .header {
@@ -1034,12 +1103,15 @@ button.flat:after {
     color: var(--light-secondary-font); }
 
 .grid-list > .cell > .content {
-    background-color: rgba(0, 0, 0, 0.38); }
+    background-color: rgba(0, 0, 0, 0.54); }
 
 .grid-list > .cell > .content > .detail > .title,
-.grid-list > .cell > .content > i,
+.grid-list > .cell > .content > button.action > i,
 .grid-list > .cell > .content > .detail > .subtitle {
     color: var(--light-primary-font); }
+
+.grid-list > .cell > .content > button.action:before {
+    background-color: var(--light-ripple); }
 
 /** LIST */
 
@@ -1086,24 +1158,24 @@ button.flat:after {
 
 .list > .subheader, .list > .item-list > .content > .action,
 .list > .item-list > .content > .detail > .description, 
-.list > .item-list > .content > .detail > i,
+.list > .item-list > .content > .detail > button.action > i,
 .list > .item-list > .content > .detail > .emphasis,
 .list > .item-list > .options > ul > .subitem-list {
     color: var(--dark-secondary-font); }
 
 .list.dark > .subheader, .list > .item-list > .content > .action,
 .list.dark > .item-list > .content > .detail > .description, 
-.list.dark > .item-list > .content > .detail > i,
+.list.dark > .item-list > .content > .detail > button.action > i,
 .list.dark > .item-list > .content > .detail > .emphasis,
 .list.dark > .item-list > .options > ul > .subitem-list,
 .list.primary > .subheader, .list > .item-list > .content > .action,
 .list.primary > .item-list > .content > .detail > .description, 
-.list.primary > .item-list > .content > .detail > i,
+.list.primary > .item-list > .content > .detail > button.action > i,
 .list.primary > .item-list > .content > .detail > .emphasis,
 .list.primary > .item-list > .options > ul > .subitem-list,
 .list.secondary > .subheader, .list > .item-list > .content > .action,
 .list.secondary > .item-list > .content > .detail > .description, 
-.list.secondary > .item-list > .content > .detail > i,
+.list.secondary > .item-list > .content > .detail > button.action > i,
 .list.secondary > .item-list > .content > .detail > .emphasis,
 .list.secondary > .item-list > .options > ul > .subitem-list {
     color: var(--light-secondary-font); }
@@ -1618,10 +1690,27 @@ button.flat:after {
     background-color: var(--primary-background-ui); }
 
 .textfield-readonly > .line-shadow {
-    background-color: var(--light-background-divider); }
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.primary .textfield-readonly > .line-shadow, 
+.dark .textfield-readonly > .line-shadow,
+.secondary .textfield-readonly > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
 
 .textfield-readonly > input:focus ~ .line-shadow {
-    background-color: var(--primary-background-ui); }
+    border-bottom: 2px solid var(--primary-background-ui); }
+
+.primary .textfield-readonly > input:focus ~ .line-shadow,
+.secondary .textfield-readonly > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--light-background-ui); }
+
+.textfield-readonly > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.primary .textfield-readonly > input:disabled ~ .line-shadow,
+.dark .textfield-readonly > input:disabled ~ .line-shadow,
+.secondary .textfield-readonly > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 /** TOOLBAR */
 
@@ -1637,18 +1726,25 @@ button.flat:after {
 .toolbar.secondary, .app-bar.secondary > .toolbar {
     background-color: var(--secondary-background-appbar); }
 
-.toolbar > .nav-icon, .app-bar > .toolbar > .nav-icon,
+.app-bar > .toolbar > .nav-icon > button.action,
+.toolbar > .nav-icon > button.action, 
 .toolbar > .menu-icon, .app-bar > .toolbar > .menu-icon,
-.toolbar > .actions, .app-bar > .toolbar > .actions {
+.toolbar > .actions > button, .app-bar > .toolbar > .actions > button {
     color: var(--dark-secondary-font); }
 
-.toolbar.primary > .nav-icon, .app-bar.primary > .toolbar > .nav-icon,
-.toolbar.dark > .nav-icon, .app-bar.dark > .toolbar > .nav-icon,
-.toolbar.secondary > .nav-icon, .app-bar.secondary > .toolbar > .nav-icon,
+.toolbar.primary > .nav-icon > button.action, 
+.app-bar.primary > .toolbar > .nav-icon > button.action,
+.toolbar.dark > .nav-icon > button.action,
+.app-bar.dark > .toolbar > .nav-icon > button.action,
+.toolbar.secondary > .nav-icon > button.action, 
+.app-bar.secondary > .toolbar > .nav-icon > button.action,
 .toolbar.primary > .menu-icon, .app-bar.primary > .toolbar > .menu-icon,
 .toolbar.dark > .menu-icon, .app-bar.dark > .toolbar > .menu-icon,
 .toolbar.secondary > .menu-icon, .app-bar.secondary > .toolbar > .menu-icon,
-.toolbar.primary > .actions, .app-bar.primary > .toolbar > .actions,
-.toolbar.dark > .actions, .app-bar.dark > .toolbar > .actions,
-.toolbar.secondary > .actions, .app-bar.secondary > .toolbar > .actions {
+.toolbar.primary > .actions > button, 
+.app-bar.primary > .toolbar > .actions > button,
+.toolbar.dark > .actions > button,
+.app-bar.dark > .toolbar > .actions > button,
+.toolbar.secondary > .actions > button,
+.app-bar.secondary > .toolbar > .actions > button {
     color: var(--light-primary-font); }

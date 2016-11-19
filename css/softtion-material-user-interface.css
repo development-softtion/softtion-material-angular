@@ -1,14 +1,9 @@
 /*!
  * Softtion Material UI
- * @license MIT
- *
  * v1.0.0
+ * @license MIT
  * Author: Softtion Developers
- * Development: Daniel Andres Castillo Pedroza
- * Development: Fabian Andres Urrego Bohorquez
- * Development: Julio de Jesus Trujillo de la Ossa
- * 
- * Updated: 15 de octubre del 2016
+ * Updated: 19/Nov/2016
  */
 
 @import url("fonts/roboto/StyleFont.css");
@@ -758,10 +753,6 @@ i.action-icon,
 
 /** COMPONENTS GLOBALS */
 
-.app-content {
-    padding-top: 8px;
-    overflow: auto; }
-
 .backdrop {
     position: fixed;
     top: 0;
@@ -777,6 +768,46 @@ i.action-icon,
 .container {
     overflow: auto; 
     padding: 4px; }
+
+/** APP BAR */
+
+.app-bar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: auto; 
+    z-index: 8;
+    box-shadow: var(--shadow-4); }
+
+.app-bar.hide > .toolbar {
+    margin-top: -56px; }
+
+.app-bar.hide > .toolbar.flexible-title {
+    margin-top: 0px; 
+    min-height: 56px;
+    max-height: 56px; }
+
+.app-bar.hide > .toolbar.flexible-title > .title {
+    margin-top: 0px;
+    height: inherit;
+    line-height: inherit;
+    font-size: 20px; }
+
+@media only screen and (min-width : 961px) {
+    .app-bar.hide > .toolbar {
+        margin-top: -64px; }
+
+    .app-bar.hide > .toolbar.flexible-title {
+        min-height: 64px;
+        max-height: 64px; }
+}
+
+/** APP CONTENT */
+
+.app-content {
+    padding-top: 8px;
+    overflow: auto; }
 
 /** AUTOCOMPLETE */
 
@@ -1253,6 +1284,9 @@ button.raised, button.flat {
     outline: none;
     text-transform: uppercase; }
 
+button.raised {
+    box-shadow: var(--shadow-2); }
+
 button.raised > span, button.flat > span {
     min-width: 64px;
     display: block;
@@ -1270,6 +1304,7 @@ button.floating {
     height: 56px;
     z-index: 6;
     border-radius: 50%; 
+    box-shadow: var(--shadow-6);
     -moz-transition: all 0.325s var(--standard-curve); 
     -webkit-transition: all 0.325s var(--standard-curve);
     -o-transition: all 0.325s var(--standard-curve);
@@ -1288,11 +1323,12 @@ button.floating > i {
     width: 24px;
     height: 24px; }
 
-button.raised {
-    box-shadow: var(--shadow-2); }
-
-button.floating {
-    box-shadow: var(--shadow-6); }
+button.action {
+    position: relative;
+    border: none;
+    outline: none; 
+    padding: 0px;
+    height: 24px; }
 
 button.raised:disabled, button.floating:disabled,
 button.raised:hover:disabled, button.floating:hover:disabled {
@@ -1322,16 +1358,27 @@ button.raised:before, button.flat:before, button.floating:before {
     transform: scale(0);
     visibility: hidden; }
 
-button.floating:before {
-    padding-top: calc(100% - 12px);
-    padding-left: calc(100% - 12px);
-    margin-left: calc(-50% + 6px);
-    margin-top: calc(-50% + 6px); }
+button.action:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding-top: calc(100% - 8px);
+    padding-left: calc(100% - 8px);
+    margin-left: calc(-50% + 4px);
+    margin-top: calc(-50% + 4px);
+    border-radius: 50%;
+    opacity: 0.35;
+    transform: scale(0);
+    visibility: hidden; }
 
-button.raised:not(:active):before, button.flat:not(:active):before, button.floating:not(:active):before {
+button.raised:not(:active):before, button.flat:not(:active):before,
+button.floating:not(:active):before, button.action:not(:active):before {
     animation: ripple-squarecenter 1s var(--standard-curve); }
 
-button.raised:focus:before, button.flat:focus:before, button.floating:focus:before {
+button.raised:focus:before, button.flat:focus:before, 
+button.floating:focus:before, button.action:focus:before {
     visibility: visible; }
 
 button.flat.disabled-ripple:focus:before,
@@ -1631,22 +1678,28 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .actions + .actions > button.flat {
     margin-top: 0px; }
 
-.card > .actions > i {
+.card > .actions > button.action {
     float: left;
     cursor: pointer;
     margin: 4px 0px;
     text-align: center;
-    margin-left: 8px;
-    width: 36px;
-    height: 36px;
-    line-height: 36px; }
+    box-sizing: content-box;
+    padding: 6px; }
 
-.card > .actions > i.right {
-    float: right;
-    margin-right: 8px;
-    margin-left: 0px; }
+.card > .actions > button.action + button.action {
+    margin-left: 8px; }
 
-.card > .actions + .actions > i {
+.card > .actions > button.action.right + button.action.right {
+    margin-left: 0px;
+    margin-right: 8px; }
+
+.card > .actions > button.action:not(:active):before {
+    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+
+.card > .actions > button.action.right {
+    float: right; }
+
+.card > .actions + .actions > button.action {
     margin-top: 0px; }
 
 .card > .optional-header + .rich-media, .card > .primary-title + .rich-media,
@@ -2079,6 +2132,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: var(--shadow-4); }
 
 .datatable > .header {
+    position: relative;
     width: 100%;
     padding: 0 24px;
     box-sizing: border-box;
@@ -2093,12 +2147,11 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     margin-right: 8px; }
 
-.datatable > .header > i {
-    height: inherit;
-    cursor: pointer;
-    line-height: 64px;
-    float: right;
-    margin-left: 8px; }
+.datatable > .header > button.action {
+    position: absolute;
+    right: 12px;
+    box-sizing: content-box;
+    padding: 20px 12px; }
 
 .datatable > table {
     width: 100%;
@@ -2474,6 +2527,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 16px 0; }
 
 .expansion-panel > .header {
+    display: flex;
     position: relative;
     cursor: pointer;
     height: 48px;
@@ -2487,15 +2541,19 @@ button.raised:focus:after, button.flat:focus:after {
     display: block;
     float: left;
     box-sizing: border-box;
-    padding-right: 16px;
     font-size: 15px;
     white-space: nowrap;
     line-height: 48px; }
 
-.expansion-panel > .header > i {
-    float: right;
-    height: 48px;
-    line-height: 48px; }
+.expansion-panel > .header > .title + .detail {
+    padding-left: 16px; }
+
+.expansion-panel > .header > button.action {
+    position: absolute;
+    right: 12px;
+    height: 24px;
+    box-sizing: content-box;
+    padding: 12px; }
 
 .expansion-panel.active > .header, .expansion-panel:last-child > .header {
     border-bottom: none !important; }
@@ -2510,6 +2568,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel > .body > .content {
     padding: 16px 24px;
+    line-height: 18px;
     margin-top: -100%; }
 
 .expansion-panel > .body.start > .content {
@@ -2562,15 +2621,19 @@ button.raised:focus:after, button.flat:focus:after {
     top: 2px;
     bottom: initial; }
 
-.grid-list > .cell > .content > i {
+.grid-list > .cell > .content > button.action {
     position: absolute;
     top: 50%; 
-    right: 8px;
+    left: initial;
+    right: 0px;
+    height: 24px;
+    padding: 12px;
+    box-sizing: content-box;
     cursor: pointer;
     transform: translateY(-50%); }
 
-.grid-list > .cell > .content > i.left {
-    left: 8px;
+.grid-list > .cell > .content > button.action.left {
+    left: 0px;
     right: initial; }
 
 .grid-list > .cell > .content > .detail {
@@ -2578,11 +2641,12 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     margin: 0px 8px; }
 
-.grid-list > .cell > .content > i + .detail {
+.grid-list > .cell > .content > button.action + .detail {
     width: calc(100% - 40px); }
 
-.grid-list > .cell > .content > i.left + .detail {
-    float: right; }
+.grid-list > .cell > .content > button.action.left + .detail {
+    float: right;
+    margin-right: 0px; }
 
 .grid-list > .cell > .content > .detail > .title {
     font-family: softtion-medium;
@@ -2724,16 +2788,17 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px;
     max-height: 36px; }
 
-.list > .item-list > .content > .detail > i {
+.list > .item-list > .content > .detail > button.action {
     position: absolute; 
     top: 12px;
-    right: 16px; 
+    right: 4px; 
+    padding: 0px 12px;
     cursor: pointer; }
 
-.list.two-line > .item-list > .content > .detail > i {
+.list.two-line > .item-list > .content > .detail > button.action {
     top: 24px !important; }
 
-.list.three-line > .item-list > .content > .detail > i {
+.list.three-line > .item-list > .content > .detail > button.action {
     top: 16px; }
 
 .list > .item-list > .content > .detail > .emphasis {
@@ -2763,11 +2828,11 @@ button.raised:focus:after, button.flat:focus:after {
     padding-left: 0px;
     margin-left: 72px; }
 
-.list > .item-list > .content > .detail > i ~ .title,
-.list > .item-list > .content > .detail > i ~ .description {
+.list > .item-list > .content > .detail > button.action ~ .title,
+.list > .item-list > .content > .detail > button.action ~ .description {
     width: calc(100% - 40px); }
 
-.list > .item-list > .content > .detail > .emphasis ~ i {
+.list > .item-list > .content > .detail > .emphasis ~ button.action {
     top: initial;
     bottom: 16px; }
 
@@ -3646,37 +3711,38 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield-readonly {
     position: relative;
     float: left;
-    margin-top: 16px;
-    margin-bottom: 24px; }
+    padding: 16px 0px 8px 0px; }
 
 .textfield-readonly > label {
     position: absolute;
-    top: -14px;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px;
     left: 0;
     width: 100%;
-    height: 14px;
-    line-height: 12px;
-    cursor: none;
-    font-size: 12px;  }
+    cursor: none; }
 
 .textfield-readonly > input {
     width: 100%;
-    height: 30px;
-    line-height: 30px;
+    cursor: text;
+    height: 32px;
+    padding: 16px 0px 8px 0px;
+    line-height: 32px;
+    font-size: 16px;
+    line-height: 24px;
     border: none;
     outline: none;
     background-color: transparent; }
 
 .textfield-readonly > .line-shadow {
     position: absolute;
-    height: 1px;
-    width: 100%;
     left: 0; 
-    bottom: -1px; }
+    bottom: 7px;
+    width: 100%; }
 
 .textfield-readonly > input:focus ~ .line-shadow {
-    height: 2px;
-    bottom: -2px; }
+    bottom: 6px; }
 
 .textfield-readonly.flex-pd > label, .textfield-readonly.flex-pd > .line-shadow {
     width: calc(100% - 16px); }
@@ -3689,21 +3755,6 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield-readonly.flex-pd > .line-shadow, .textfield-readonly.flex-pd-left > .line-shadow {
     left: 8px; }
 
-/** APP BAR */
-
-.app-bar {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    height: auto; 
-    z-index: 8;
-    box-shadow: var(--shadow-4); 
-    transition: margin-top 0.525s var(--easing-out); }
-
-.app-bar.hide {
-    margin-top: -56px; }
-
 /** TOOLBAR */
 
 .toolbar {
@@ -3714,7 +3765,16 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 8;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: margin-top 0.525s var(--easing-out); }
+    transition: all 0.525s var(--easing-out); }
+
+.toolbar::-webkit-scrollbar {
+    height: 0px;
+    width: 0px; 
+    background: transparent; }
+
+.toolbar.flexible-title {
+    min-height: 128px;
+    max-height: 128px; }
 
 .toolbar > .nav-icon {
     width: 40px;
@@ -3725,10 +3785,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: inherit;
     margin: 0px 16px 0px 4px; }
 
-.toolbar > .nav-icon > i {
-    text-align: center;
-    padding: 0px 12px;
-    line-height: inherit; }
+.toolbar > .nav-icon > button.action {
+    padding: 16px 12px;
+    box-sizing: content-box; }
 
 .toolbar > .title {
     margin: 0px;
@@ -3742,13 +3801,8 @@ button.raised:focus:after, button.flat:focus:after {
     height: 72px;
     line-height: 72px;
     font-size: 24px;
-    transition: all 0.525s var(--easing-out); }
-
-.toolbar.flexible-title.hide-flexible-title > .title {
-    margin-top: 0px;
-    height: 56px;
-    line-height: 56px;
-    font-size: 20px; }
+    transition: margin-top 0.525s var(--easing-out),
+        font-size 0.525s var(--easing-out); }
 
 .toolbar > .actions {
     display: flex;
@@ -3759,25 +3813,14 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: inherit;
     line-height: inherit; }
 
-.toolbar > .actions > i {
-    cursor: pointer;
-    line-height: inherit;
-    padding: 0px 12px;
-    margin-left: 1px; }
+.toolbar > .actions > button.action {
+    padding: 16px 12px;
+    box-sizing: content-box;
+    margin-right: 1px; }
 
-.toolbar > .menu-icon {
-    width: 40px;
-    min-height: inherit; 
-    max-height: inherit;
-    cursor: pointer;
-    line-height: inherit;
-    float: right;
-    margin: 0px 4px 0px 1px; }
-
-.toolbar > .menu-icon > i {
-    text-align: center;
-    padding: 0px 12px;
-    line-height: inherit; }
+.toolbar > .actions > button.action.menu-icon {
+    padding: 16px 8px;
+    margin-right: 0px; }
 
 @media only screen and (min-width : 961px) {
     
@@ -3785,6 +3828,22 @@ button.raised:focus:after, button.flat:focus:after {
         min-height: 64px; 
         max-height: 64px;  
         line-height: 64px; }
+    
+    .toolbar > .nav-icon > button.action {
+        padding: 20px 12px; }
+    
+    .toolbar.flexible-title {
+        min-height: 136px;
+        max-height: 136px; }
+    
+    .toolbar.flexible-title > .title {
+        margin-top: 64px; }
+    
+    .toolbar > .actions > button.action {
+        padding: 20px 12px; }
+    
+    .toolbar > .actions > button.action.menu-icon {
+        padding: 20px 8px; }
     
     .app-bar > .toolbar > .nav-icon {
         display: none; }

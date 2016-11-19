@@ -1,7 +1,8 @@
 /* !
  * Softtion v1.1.8
- * (c) 2015-2016 Softtion Developers
  * License: MIT
+ * (c) 2015-2016 Softtion Developers
+ * Update: 19/Nov/2016
  */
 
 /* global CryptoJS, Collection */

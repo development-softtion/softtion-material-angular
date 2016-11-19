@@ -1,14 +1,9 @@
 /*!
  * Softtion Material Animated
- * @license MIT
- *
  * v0.5.5
+ * @license MIT
  * Author: Softtion Developers
- * Development: Daniel Andres Castillo Pedroza
- * Development: Fabian Andres Urrego Bohorquez
- * Development: Julio de Jesus Trujillo de la Ossa
- * 
- * Updated: 12 de octubre del 2016
+ * Updated: 19/Nov/2016
  */
 
 /** Timing Effects Material */
@@ -75,6 +70,27 @@
     100% {
         opacity: 0;
         transform: scale(1); }
+}
+
+
+@keyframes ripple-squarecenter-high {
+    0% {
+        transform: scale(0); }
+    20% {
+        transform: scale(1.5); }
+    100% {
+        opacity: 0;
+        transform: scale(1.5); }
+}
+
+@-webkit-keyframes ripple-squarecenter-high {
+    0% {
+        transform: scale(0); }
+    20% {
+        transform: scale(1.5); }
+    100% {
+        opacity: 0;
+        transform: scale(1.5); }
 }
 
 @keyframes ripple-all {

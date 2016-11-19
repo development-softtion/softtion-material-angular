@@ -1,7 +1,8 @@
 /* !
  * Softtion WebSQL v1.1.5
- * (c) 2015-2016 Softtion Developers
  * License: MIT
+ * (c) 2015-2016 Softtion Developers
+ * Update: 19/Nov/2019
  */
 
 /* global Model */
