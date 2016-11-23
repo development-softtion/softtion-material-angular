@@ -2,7 +2,7 @@
  * Angular Softtion Material v1.0.0
  * License: MIT
  * (c) 2016 Softtion Developers
- * Updated: 19/Nov/2016
+ * Updated: 23/Nov/2016
  */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -267,20 +267,30 @@
             
             BottomNavigation: {
                 name: "bottomNavigation",
+                ripple: function () {
+                    return softtion.html("div").addClass("ripple-box").
+                        addComponent(
+                            softtion.html("span").addClass("effect")
+                        ).create();
+                },             
                 directive: function () {
                     return {
                         restrict: "C",
                         scope: {
-                            body: "@body"
+                            views: "@viewBox"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var rippleBox = $element.find(".ripple-box"),
-                                options = $element.find(".tab > li"),
-                                optionActive = $element.find(".tab > li.active:first"), 
+                            var rippleBox = angular.element(
+                                    Material.components.BottomNavigation.ripple()
+                                ),
+                                tabs = $element.find(".content > li"),
+                                tabActive = $element.find(".content > li.active:first"), 
                                 fab = angular.element("button.floating"),
-                                body = angular.element($scope.body),
+                                views = angular.element($scope.views),
                                 $window = angular.element(window), snackbar;
+                        
+                            $element.append(rippleBox); // Agregando ripple
                         
                             // Atributos
                             var classColor = "default", position = 0, classHide = "hide";
@@ -289,22 +299,23 @@
                                 fab.addClass("show-bottom-navigation");
                             } // Cambiando posición original
                             
-                            options.attr("tab-index","-1"); // Haciendo enfocables
-                            options.removeClass("active");  // Desactivando opciones
+                            tabs.attr("tab-index","-1"); // Haciendo enfocables
+                            tabs.removeClass("active");  // Desactivando opciones
                             
-                            if (!optionActive.exists()) {
-                                optionActive = angular.element(options[0]);
+                            if (!tabActive.exists()) {
+                                tabActive = angular.element(tabs[0]);
                             } // Se establece como activo primero de lista
                             
-                            optionActive.addClass("active");
+                            tabActive.addClass("active");
                             
-                            switch (options.length) {
-                                case (3): $element.addClass("three-options"); break;
-                                case (4): $element.addClass("four-options"); break;
-                                case (5): $element.addClass("five-options"); break; }
+                            switch (tabs.length) {
+                                default: $element.addClass("three-tabs"); break;
+                                case (4): $element.addClass("four-tabs"); break;
+                                case (5): $element.addClass("five-tabs"); break; 
+                            } // Estableciendo dimensión
                                 
                             if ($element.hasClass("shifting")) {
-                                var classColorOption = optionActive.attr("color");
+                                var classColorOption = tabActive.attr("color");
                                 
                                 if (softtion.is("string", classColorOption)) {
                                     classColor = classColorOption;
@@ -313,26 +324,26 @@
                                 $element.addClass(classColor); // Color
                             } // Se debe establecer color base del componente
                                 
-                            options.click(function () {
+                            tabs.click(function () {
                                 var option = angular.element(this); // Opción activada
                                 
                                 if (option.hasClass("active")) {
                                     return;
                                 } // La opción es la actualmente activa
                                 
-                                options.removeClass("active"); option.addClass("active");
+                                tabs.removeClass("active"); option.addClass("active");
                                 
-                                var bodyView = body.find(option.attr("tab"));
+                                var viewTab = views.find(option.attr("view-tab"));
                                 
-                                if (bodyView.exists() && !bodyView.hasClass("active")) {
+                                if (viewTab.exists() && !viewTab.hasClass("active")) {
                                     angular.element(window).scrollTop(0); 
-                                    var bodyActive = body.find(".content.active");
+                                    var viewActive = views.find(".content.active");
                                     
-                                    if (bodyActive.exists()) {
-                                        bodyActive.removeClass("opacity").removeClass("active");
+                                    if (viewActive.exists()) {
+                                        viewActive.removeClass("opacity").removeClass("active");
                                     } // Ocultando componente activo
                                     
-                                    bodyView.addClass("active").removeClass("slide-in-left").
+                                    viewTab.addClass("active").removeClass("slide-in-left").
                                         removeClass("slide-in-right").addClass("opacity-bottom");
                                 } // Componente exite y esta oculto
                                 
@@ -812,7 +823,7 @@
                             
                             // Atributos
                             var isPM = false, isHours = true, canvasComponent,
-                                touchSupported = "ontouchstart" in window,
+                                touchSupported = ("ontouchstart" in window),
                                 attributes = {
                                     dialRadius: 116, 
                                     radius: 96,
@@ -2062,56 +2073,60 @@
             },
             
             Tab: {
-                name: "tab",
+                name: "tabs",
                 directive: function () {
                     return {
                         restrict: "C",
                         scope: {
-                            body: "@body",
+                            view: "@viewBox",
                             disabledPositionStart: "=disabledPositionStart"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var body = angular.element($scope.body),
+                            var view = angular.element($scope.view),
                                 indexActive = 0, index = 0,
-                                options = $element.find(".option"),
-                                bar = angular.element(
-                                    softtion.html("div").addClass("bar").create()
+                                tabs = $element.find(".tab"),
+                                stripe = angular.element(
+                                    softtion.html("div").addClass("stripe").create()
                                 );
                             
-                            if (options.exists()) {
-                                options.attr("tabindex", "-1"); // Haciendo componentes enfocables
+                            if (tabs.exists()) {
+                                tabs.attr("tabindex", "-1"); // Haciendo componentes enfocables
+                                
+                                if ($element.hasClass("fixed")) {
+                                    tabs.css("width", (100 / tabs.length) +"%");
+                                }
 
-                                angular.forEach(options, function (option) { 
+                                angular.forEach(tabs, function (option) { 
                                     angular.element(option).data("position", index); index++;
                                 });
                                 
-                                var optionActive = $element.find(".option.active:first");
+                                var optionActive = $element.find(".tab.active:first");
                                 
                                 if (!optionActive.exists()) {
-                                    optionActive = angular.element(options[0]).addClass("active");
+                                    optionActive = angular.element(tabs[0]).addClass("active");
                                 } // No se establecio pestaña activa inicialmente
                                 
                                 var widthBar = optionActive.outerWidth(),
                                     leftBar = optionActive.position().left;
                                 
-                                angular.element(optionActive.attr("tab")).addClass("active");
-                                bar.css({ width: widthBar, left: leftBar });
+                                angular.element(optionActive.attr("view-tab")).addClass("active");
+                                stripe.css({ width: widthBar, left: leftBar });
                                 
-                                options.click(function () {
+                                tabs.click(function () {
                                     var option = angular.element(this);
                                     
                                     var position = option.data("position"),
                                         left = option[0].offsetLeft,
                                         width = option[0].clientWidth;
                                     
-                                    bar.css({ width: width, left: left });
+                                    stripe.css({ width: width, left: left });
                             
                                     if (option.hasClass("active")) {
                                         return;
                                     } // Este componente ya se encuentra activo
                                     
-                                    options.removeClass("active"); option.addClass("active");
+                                    tabs.removeClass("active"); option.addClass("active");
                                     
                                     if (!$scope.disabledPositionStart) {
                                         angular.element(window).scrollTop(0); 
@@ -2120,37 +2135,37 @@
                                     if (left < $element.scrollLeft()) {
                                         $element.animate({ scrollLeft: left }, 175, "standardCurve"); 
                                     } else {
-                                        var view = $element.scrollLeft() + window.innerWidth;
+                                        var viewTab = $element.scrollLeft() + window.innerWidth;
                                         
-                                        if (view < (left + width)) {
+                                        if (viewTab < (left + width)) {
                                             $element.animate({ scrollLeft: left }, 175, "standardCurve"); 
                                         }
                                     } // Reubicando vista del contenedor en pestaña
 
                                     var slideRight = (position > indexActive); indexActive = position;
 
-                                    var bodyView = body.find(option.attr("tab"));
+                                    var viewTab = view.find(option.attr("view-tab"));
                                     
-                                    if (!bodyView.hasClass("active")) {
-                                        var bodyActive = body.find(".content.active");
+                                    if (!viewTab.hasClass("active")) {
+                                        var viewActive = view.find(".content.active");
 
-                                        if (bodyActive.exists()) {
-                                            bodyActive.removeClass("active").removeClass("opacity-bottom"); 
+                                        if (viewActive.exists()) {
+                                            viewActive.removeClass("active").removeClass("opacity-bottom"); 
                                         } // Removiendo clase activa a la Opcion anterior
                                         
                                         (slideRight) ?
-                                            bodyView.addClass("active").
+                                            viewTab.addClass("active").
                                                 removeClass("slide-in-left").
                                                 addClass("slide-in-right") :
 
-                                            bodyView.addClass("active").
+                                            viewTab.addClass("active").
                                                 removeClass("slide-in-right").
                                                 addClass("slide-in-left");
                                     } // El componente actualmente esta oculto
                                 });
                             } // Exiten cabeceras en el componente
                     
-                            $element.append(bar); // Agregando componente selector
+                            $element.append(stripe); // Agregando componente selector
                         }
                     };
                 }
@@ -2675,9 +2690,9 @@
             BottomSheet: {
                 name: "$bottomSheet",
                 method: function () {
-                    var AttributesSheet = {
+                    var PropertiesSheet = {
                         id: undefined,
-                        bottomSheet: undefined,
+                        component: undefined,
                         content: undefined,
                         backdrop: undefined
                     };
@@ -2687,100 +2702,116 @@
                     BottomSheet.prototype.set = function (sheetID) {
                         var self = this; // Sidenav
                         
-                        if (AttributesSheet.id !== sheetID) {
-                            AttributesSheet.id = sheetID; AttributesSheet.bottomSheet = angular.element(sheetID);
+                        if (PropertiesSheet.id !== sheetID) {
+                            PropertiesSheet.id = sheetID; PropertiesSheet.component = angular.element(sheetID);
                         
-                            if (AttributesSheet.bottomSheet.exists()) {
-                                AttributesSheet.content = AttributesSheet.bottomSheet.find(".content");
-                                AttributesSheet.backdrop = AttributesSheet.bottomSheet.find(".backdrop");
+                            if (PropertiesSheet.component.exists()) {
+                                PropertiesSheet.content = PropertiesSheet.component.find(".content");
+                                PropertiesSheet.backdrop = PropertiesSheet.component.find(".backdrop");
                                 
-                                AttributesSheet.backdrop.click(function () { self.hide(); });
+                                PropertiesSheet.backdrop.click(function () { self.hide(); });
                             } // Sidenav existe en el Documento
                         }
                         
                         return this; // Retornando interfaz fluida
                     };
+                    
+                    BottomSheet.prototype.clear = function () {
+                        PropertiesSheet.component = undefined;
+                        PropertiesSheet.id = ""; return this;
+                    };
 
                     BottomSheet.prototype.show = function () {
-                        if (!AttributesSheet.bottomSheet.hasClass("active")) {
+                        if (!PropertiesSheet.component.hasClass("active")) {
                             angular.element(document.body).addClass("body-overflow-none");
                             
-                            AttributesSheet.content.addClass("show");
-                            AttributesSheet.backdrop.fadeIn(325, "standardCurve"); 
-                            AttributesSheet.bottomSheet.addClass("active"); 
+                            PropertiesSheet.content.addClass("show");
+                            PropertiesSheet.backdrop.fadeIn(325, "standardCurve"); 
+                            PropertiesSheet.component.addClass("active"); 
                         } // Sidenav no se encuentra activo
                     };
 
                     BottomSheet.prototype.hide = function () {
-                        if (AttributesSheet.bottomSheet.hasClass("active")) {
+                        if (PropertiesSheet.component.hasClass("active")) {
                             angular.element(document.body).removeClass("body-overflow-none");
                             
-                            var marginBottom = AttributesSheet.content.outerHeight();
-                            AttributesSheet.content.css("margin-bottom", (marginBottom * -1) - 1);
+                            var marginBottom = PropertiesSheet.content.outerHeight();
+                            PropertiesSheet.content.css("margin-bottom", (marginBottom * -1) - 1);
                             
-                            AttributesSheet.content.removeClass("show");
-                            AttributesSheet.backdrop.fadeOut(325, "standardCurve"); 
-                            AttributesSheet.bottomSheet.removeClass("active"); 
+                            PropertiesSheet.content.removeClass("show");
+                            PropertiesSheet.backdrop.fadeOut(325, "standardCurve"); 
+                            PropertiesSheet.component.removeClass("active"); 
                         } // Sidenav no se encuentra activo
                     };
                     
-                    var sidenav = new BottomSheet();
+                    var bottomSheet = new BottomSheet();
 
-                    this.$get = function () { return sidenav; };
+                    this.$get = function () { return bottomSheet; };
                 }
             },
             
             Dropdown: {
                 name: "$dropdown",
                 handler: {
-                    show: function (component) {
-                        Material.providers.Dropdown.handler.setPosition(component, false); 
-                        component.dropdown.addClass("active"); // Activando dropdown
-                    },
                     hide: function (dropdown) {
                         dropdown.removeClass("active"); 
                     },
-                    setPosition: function (component, isOpen) {
-                        (isOpen) ? component.dropdown.addClass("changed-position") :
-                            component.dropdown.removeClass("changed-position");
+                    show: function (properties) {
+                        properties.component.addClass("active"); // Activando dropdown
                         
-                        // Componentes
-                        var dropdown = component.dropdown, origin = component.origin;
+                        var dropdown = properties.component, origin = properties.origin;
                         
-                        var widthDropdown = dropdown.innerWidth(),
-                            heightDropdown = dropdown.innerHeight(),
-                            widthOrigin = (origin) ? origin.innerWidth() : 0,
+                        var heightDropdown = dropdown.innerHeight(),
+                            widthDropdown = dropdown.innerWidth(),
+                            
                             heightOrigin = (origin) ? origin.innerHeight() : 0, 
-                            posOriginY = (origin) ? origin.offset().top : 0,
-                            posOriginX = (origin) ? origin.offset().left : 0,
+                            widthOrigin = (origin) ? origin.innerWidth() : 0,
+                            
+                            posOriginY = (origin) ? (dropdown.hasClass("fixed")) ?
+                                origin.fixed().top : origin.offset().top : 0,
+                            posOriginX = (origin) ? (dropdown.hasClass("fixed")) ?
+                                origin.fixed().left : origin.offset().left : 0,
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
-                    
+                            
                         // Definiendo posicion eje X
-                        if ((posOriginX + widthDropdown) <= window.innerWidth) {
+                        if ((posOriginX + widthDropdown) <= (window.innerWidth + window.scrollX)) {
                             left = posOriginX; transformOrigin = transformOrigin + 1;
-                        } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
-                            left = posOriginX + widthOrigin - widthDropdown - 10; transformOrigin = transformOrigin + 3;
+                        } 
+                        else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
+                            transformOrigin = transformOrigin + 3;
+                            left = posOriginX + widthOrigin - widthDropdown - 10; 
                         } else { 
-                            left = window.innerWidth - widthDropdown - 10; transformOrigin = transformOrigin + 1; 
+                            transformOrigin = transformOrigin + 1; 
+                            left = window.innerWidth - widthDropdown - 10; 
                         }
 
                         // Definiendo posicion eje Y
-                        if (component.belowOrigin) { 
-                            if ((posOriginY + heightDropdown) <= window.innerHeight) {
+                        if (properties.belowOrigin) { 
+                            if ((posOriginY + heightDropdown) <= (window.innerHeight + window.scrollY)) {
                                 top = posOriginY; transformOrigin = transformOrigin + 4;
-                            } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
-                                top = posOriginY + heightOrigin - heightDropdown; transformOrigin = transformOrigin + 7;
-                            } else { 
-                                top = window.innerHeight - heightDropdown - 10; transformOrigin = transformOrigin + 4; }
+                            } 
+                            else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
+                                transformOrigin = transformOrigin + 7;
+                                top = posOriginY + heightOrigin - heightDropdown; 
+                            } 
+                            else { 
+                                transformOrigin = transformOrigin + 4;
+                                top = window.innerHeight - heightDropdown - 10;  
+                            }
                         } else { 
                             if ((posOriginY + heightOrigin + heightDropdown) <= window.innerHeight) {
                                 top = posOriginY + heightOrigin; transformOrigin = transformOrigin + 4;
-                            } else if ((posOriginY - heightDropdown) > 0) {
-                                top = posOriginY - heightDropdown; transformOrigin = transformOrigin + 7;
-                            } else { 
-                                top = window.innerHeight - heightDropdown - 10; transformOrigin = transformOrigin + 4; }
+                            } 
+                            else if ((posOriginY - heightDropdown) > 0) {
+                                top = posOriginY - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
+                            } 
+                            else { 
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;
+                            }
                         }
                         
                         switch (transformOrigin) {
@@ -2802,49 +2833,56 @@
                     }
                 },
                 method: function () {
-                    var Dropdown = function () {
-                        this.id = ""; this.belowOrigin = true;
+                    var DropdownProperties = {
+                        id: "", belowOrigin: true, component: undefined, origin: undefined
                     };
+                    
+                    var Dropdown = function () { };
 
                     Dropdown.prototype.set = function (dropdownID) { 
-                        if (this.id !== dropdownID) {
-                            this.dropdown = angular.element(dropdownID); this.id = dropdownID;
+                        if (DropdownProperties.id !== dropdownID) {
+                            DropdownProperties.id = dropdownID;
+                            DropdownProperties.component = angular.element(dropdownID); 
                         } // Se ha definido nuevo dropdown
                         
                         return this; // Retornando interfaz fluida
                     };
                     
+                    Dropdown.prototype.clear = function () {
+                        DropdownProperties.component = undefined;
+                        DropdownProperties.id = ""; return this;
+                    };
+                    
                     Dropdown.prototype.setBelowOrigin = function (belowOrigin) {
-                        this.belowOrigin = belowOrigin; return this;
+                        DropdownProperties.belowOrigin = belowOrigin; return this;
                     };
 
                     Dropdown.prototype.isActive = function () {
-                        if (softtion.is("defined", this.dropdown)) {
-                            return this.dropdown.hasClass("active");
+                        if (softtion.is("defined", DropdownProperties.component)) {
+                            return DropdownProperties.component.hasClass("active");
                         } // Esta definido el Id del Dropdown
 
                         return false; // Se desconoce el Componente
                     };
 
                     Dropdown.prototype.show = function (origin) {
-                        if (softtion.is("defined", this.dropdown)) {
-                            this.origin = origin; // Estableciendo origen
-                            
-                            (this.isActive()) ?
-                                Material.providers.Dropdown.handler.setPosition(this, true) : 
-                                Material.providers.Dropdown.handler.show(this); 
+                        if (softtion.is("defined", DropdownProperties.component)) {
+                            DropdownProperties.origin = origin; // Estableciendo origen
+                            Material.providers.Dropdown.handler.show(DropdownProperties); 
                         } // Esta definido el dropdown en el Provedor
                     };
 
                     Dropdown.prototype.hide = function () {
                         if (this.isActive()) { 
-                            Material.providers.Dropdown.handler.hide(this.dropdown); 
+                            Material.providers.Dropdown.handler.hide(DropdownProperties.component); 
                         } // Esta abierto el dropdown en el Provedor
                     };
                     
                     var dropdown = new Dropdown();
 
                     this.$get = function () { return dropdown; };
+                    
+                    this.clear = function () { dropdown.clear(); };
                 }
             },
             

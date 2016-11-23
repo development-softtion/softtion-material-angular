@@ -3,7 +3,7 @@
  * v1.0.0
  * @license MIT
  * Author: Softtion Developers
- * Updated: 19/Nov/2016
+ * Updated: 23/Nov/2016
  */
 
 @import url("fonts/roboto/StyleFont.css");
@@ -956,13 +956,8 @@ i.action-icon,
 .bottom-navigation.hide {
     margin-bottom: -56px; }
 
-.bottom-navigation > .ripple-box {
-    width: 0%; }
-
-.bottom-navigation > .ripple-box.show {
-    width: 100%; }
-
-.bottom-navigation > .tab {
+.bottom-navigation > .content {
+    display: flex;
     position: absolute;
     left: 50%;
     padding: 0;
@@ -970,19 +965,19 @@ i.action-icon,
     width: 100%;
     transform: translateX(-50%); }
 
-.bottom-navigation.three-options > .tab {
+.bottom-navigation.three-tabs > .content {
     min-width: 240px;
     max-width: 504px; }
 
-.bottom-navigation.four-options > .tab {
+.bottom-navigation.four-tabs > .content {
     min-width: 264px;
     max-width: 456px; }
 
-.bottom-navigation.five-options > .tab {
+.bottom-navigation.five-tabs > .content {
     min-width: 320px;
     max-width: 552px; }
 
-.bottom-navigation > .tab > li {
+.bottom-navigation > .content > li {
     cursor: pointer;
     min-width: 80px;
     max-width: 168px;
@@ -990,42 +985,42 @@ i.action-icon,
     box-sizing: border-box;
     text-transform: none; }
 
-.bottom-navigation.four-options > .tab > li,
-.bottom-navigation.five-options > .tab > li {
+.bottom-navigation.four-tabs > .content > li,
+.bottom-navigation.five-tabs > .content > li {
     padding: 0px;
     min-width: 56px;
     max-width: 96px; }
 
-.bottom-navigation.four-options > .tab > li.active,
-.bottom-navigation.five-options > .tab > li.active {
+.bottom-navigation.four-tabs > .content > li.active,
+.bottom-navigation.five-tabs > .content > li.active {
     min-width: 96px;
     max-width: 168px; }
 
-.bottom-navigation.three-options > .tab > li {
+.bottom-navigation.three-tabs > .content > li {
     width: 33.33%; }
 
-.bottom-navigation.four-options > .tab > li {
+.bottom-navigation.four-tabs > .content > li {
     width: 21%; }
 
-.bottom-navigation.four-options > .tab > li.active {
+.bottom-navigation.four-tabs > .content > li.active {
     width: 37%; }
 
-.bottom-navigation.five-options > .tab > li {
+.bottom-navigation.five-tabs > .content > li {
     width: 17.5%; }
 
-.bottom-navigation.five-options > .tab > li.active {
+.bottom-navigation.five-tabs > .content > li.active {
     width: 30%; }
 
-.bottom-navigation > .tab > li > .content {
+.bottom-navigation > .content > li > .content {
     position: relative;
     margin: 8px 0px;
     width: 100%;
     box-sizing: border-box; }
 
-.bottom-navigation > .tab > li.active > .content {
+.bottom-navigation > .content > li.active > .content {
     margin: 6px 0px 10px 0px; }
 
-.bottom-navigation > .tab > li > .content > .title {
+.bottom-navigation > .content > li > .content > .title {
     padding-top: 28px;
     margin: 0;
     text-align: center;
@@ -1036,37 +1031,37 @@ i.action-icon,
     text-overflow: ellipsis;
     transition: all 0.1s var(--standard-curve); }
 
-.bottom-navigation > .tab > li.active > .content > .title {
+.bottom-navigation > .content > li.active > .content > .title {
     padding-top: 26px;
     font-size: 14px;
     line-height: 14px; }
 
-.bottom-navigation.four-options > .tab > li > .content > .title,
-.bottom-navigation.five-options > .tab > li > .content > .title {
+.bottom-navigation.four-tabs > .content > li > .content > .title,
+.bottom-navigation.five-tabs > .content > li > .content > .title {
     opacity: 0;
     visibility: hidden; }
 
-.bottom-navigation.four-options > .tab > li.active > .content > .title,
-.bottom-navigation.five-options > .tab > li.active > .content > .title {
+.bottom-navigation.four-tabs > .content > li.active > .content > .title,
+.bottom-navigation.five-tabs > .content > li.active > .content > .title {
     opacity: 1;
     visibility: visible; }
 
-.bottom-navigation > .tab > li > .content > i {
+.bottom-navigation > .content > li > .content > i {
     position: absolute;
     top: 0px;
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.1s var(--standard-curve); }
 
-.bottom-navigation.four-options > .tab > li > .content > i,
-.bottom-navigation.five-options > .tab > li > .content > i {
+.bottom-navigation.four-tabs > .content > li > .content > i,
+.bottom-navigation.five-tabs > .content > li > .content > i {
     top: 8px; }
 
-.bottom-navigation.four-options > .tab > li.active > .content > i,
-.bottom-navigation.five-options > .tab > li.active > .content > i {
+.bottom-navigation.four-tabs > .content > li.active > .content > i,
+.bottom-navigation.five-tabs > .content > li.active > .content > i {
     top: 0px; }
 
-.bottom-navigation.three-options > .ripple-box.animated > .effect {
+.bottom-navigation.three-tabs > .ripple-box.animated > .effect {
     -moz-animation-name: ripple-33;
     -webkit-animation-name: ripple-33;
     -o-animation-name: ripple-33;
@@ -1078,7 +1073,7 @@ i.action-icon,
     animation-duration: 0.325s;
     -ms-animation-duration: 0.325s; }
 
-.bottom-navigation.four-options > .ripple-box.animated > .effect {
+.bottom-navigation.four-tabs > .ripple-box.animated > .effect {
     -moz-animation-name: ripple-25;
     -webkit-animation-name: ripple-25;
     -o-animation-name: ripple-25;
@@ -1090,7 +1085,7 @@ i.action-icon,
     animation-duration: 0.325s;
     -ms-animation-duration: 0.325s; }
 
-.bottom-navigation.five-options > .ripple-box.animated > .effect {
+.bottom-navigation.five-tabs > .ripple-box.animated > .effect {
     -moz-animation-name: ripple-20;
     -webkit-animation-name: ripple-20;
     -o-animation-name: ripple-20;
@@ -1121,21 +1116,28 @@ i.action-icon,
     animation: fadeIn 0.325s var(--easing-out);
     -ms-animation: fadeIn 0.325s var(--easing-out); }
 
+.bottom-navigation > .ripple-box {
+    width: 0%; 
+    opacity: 0.35; }
+
+.bottom-navigation > .ripple-box.show {
+    width: 100%; }
+
 @media only screen and (min-width : 504px) {
     
-    .bottom-navigation.three-options > .tab {
+    .bottom-navigation.three-tabs > .content {
         min-width: 504px; }
 }
 
 @media only screen and (min-width : 456px) {
     
-    .bottom-navigation.four-options > .tab {
+    .bottom-navigation.four-tabs > .content {
         min-width: 456px; }
 }
 
 @media only screen and (min-width : 552px) {
     
-    .bottom-navigation.five-options > .tab {
+    .bottom-navigation.five-tabs > .content {
         min-width: 552px; }
 }
 
@@ -2478,7 +2480,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 280px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 12;
+    z-index: 4;
     box-shadow: var(--shadow-4);
     opacity: 0;
     transform: scale(0, 0);
@@ -2487,18 +2489,15 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform-origin: 0 0;
     transform-origin: 0 0;
     -ms-transform-origin: 0 0;
-    -moz-transition: all 0.3s var(--standard-curve);
-    -webkit-transition: all 0.3s var(--standard-curve);
-    -o-transition: all 0.3s var(--standard-curve);
-    transition: all 0.3s var(--standard-curve);
-    -ms-transition: all 0.3s var(--standard-curve); }
+    -moz-transition: -moz-transform 0.3s var(--standard-curve);
+    -webkit-transition: -webkit-transform 0.3s var(--standard-curve);
+    -o-transition: -o-transform 0.3s var(--standard-curve);
+    transition: transform 0.3s var(--standard-curve);
+    -ms-transition: -ms-transform 0.3s var(--standard-curve); }
 
-.dropdown.changed-position {
-    -moz-transition: left 0.15s var(--standard-curve), top 0.15s var(--standard-curve);
-    -webkit-transition: left 0.15s var(--standard-curve), top 0.15s var(--standard-curve);
-    -o-transition: left 0.15s var(--standard-curve), top 0.15s var(--standard-curve);
-    transition: left 0.15s var(--standard-curve), top 0.15s var(--standard-curve);
-    -ms-transition: left 0.15s var(--standard-curve), top 0.15s var(--standard-curve); }
+.dropdown.fixed {
+    position: fixed; 
+    z-index: 12; }
 
 .dropdown.active {
     opacity: 1;
@@ -3474,9 +3473,9 @@ button.raised:focus:after, button.flat:focus:after {
         left: 30%; }
 }
 
-/** TAB */
+/** TABS */
 
-.tab {
+.tabs {
     position: relative;
     display: flex;
     box-sizing: border-box;
@@ -3485,7 +3484,15 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: auto; 
     overflow-y: hidden; }
 
-.tab > .option {
+.app-bar > .tabs {
+    transition: all 0.525s var(--easing-out); }
+
+.tabs::-webkit-scrollbar {
+    width: 0px; 
+    height: 0px;
+    background: transparent; }
+
+.tabs > .tab {
     position: relative;
     cursor: pointer;
     text-transform: uppercase;
@@ -3495,14 +3502,34 @@ button.raised:focus:after, button.flat:focus:after {
     height: 56px;
     line-height: 56px; }
 
-.tab > .option > .ripple-box > .effect {
-    -moz-animation-duration: 0.55s;
-    -webkit-animation-duration: 0.55s;
-    -o-animation-duration: 0.55s;
-    animation-duration: 0.55s;
-    -ms-animation-duration: 0.55s; }
+.tabs.fixed > .tab {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
 
-.tab > .bar {
+.tabs > .tab:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding-top: calc(100%);
+    padding-left: calc(100%);
+    margin-left: calc(-50%);
+    margin-top: calc(-50%);
+    border-radius: 50%;
+    opacity: 0.35;
+    transform: scale(0);
+    visibility: hidden; }
+
+.tabs > .tab:not(:active):before {
+    animation: ripple-tab 0.75s var(--standard-curve); }
+
+.tabs > .tab:focus:before {
+    visibility: visible; }
+
+.tabs > .stripe {
     position: absolute;
     left: 0;
     bottom: 0;

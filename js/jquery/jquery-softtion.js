@@ -1,7 +1,8 @@
 /* !
  * JQuery Softtion v1.0.0
- * (c) 2016 Softtion Developers
  * License: MIT
+ * (c) 2016 Softtion Developers
+ * Updated: 23/Nov/2016
  */
 (function (factory) {
     if (typeof jQuery === "function" && typeof window.softtion === "object") {
@@ -145,6 +146,22 @@
             var self = jQuery(this); // Componente a limpiar
             
             self.val(""); self.siblings("label").removeClass("active");
+        },
+        
+        fixed: function () {
+            var element = this[0], 
+                parent = element.offsetParent,
+                top = element.offsetTop,
+                left = element.offsetLeft;
+            
+            while (softtion.is("defined", parent)) {
+                top += parent.offsetTop;
+                left += parent.offsetLeft;
+                
+                parent = parent.offsetParent;
+            } // El elemento esta contenido en otro
+            
+            return { top: top, left: left };
         }
     });
     

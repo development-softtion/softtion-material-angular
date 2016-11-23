@@ -1,9 +1,9 @@
 /*!
  * Softtion Material Animated
- * v0.5.5
+ * v0.6.5
  * @license MIT
  * Author: Softtion Developers
- * Updated: 19/Nov/2016
+ * Updated: 20/Nov/2016
  */
 
 /** Timing Effects Material */
@@ -91,6 +91,26 @@
     100% {
         opacity: 0;
         transform: scale(1.5); }
+}
+
+@keyframes ripple-tab {
+    0% {
+        transform: scale(0); }
+    35% {
+        transform: scale(1); }
+    100% {
+        opacity: 0;
+        transform: scale(1); }
+}
+
+@-webkit-keyframes ripple-tab {
+    0% {
+        transform: scale(0); }
+    35% {
+        transform: scale(1); }
+    100% {
+        opacity: 0;
+        transform: scale(1); }
 }
 
 @keyframes ripple-all {

@@ -3,7 +3,7 @@
  * v1.0.0
  * @license MIT
  * Author: Softtion Developers
- * Updated: 11/Nov/2016
+ * Updated: 23/Nov/2016
  */
 
 :root {
@@ -141,6 +141,10 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 .divider {
     background-color: var(--light-background-divider); }
 
+.dark .divider, .primary .divider, 
+.secondary .divider {
+    background-color: var(--dark-background-divider); }
+
 .backdrop {
     background-color: rgba(0, 0, 0, 0.54); }
 
@@ -264,46 +268,94 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 /** BOTTOM NAVIGATION */
 
 .bottom-navigation {
-    background-color: var(--light-background); }
+    background-color: var(--light-background-appbar); }
+
+.dark .bottom-navigation {
+    background-color: var(--dark-background-appbar); }
+
+.primary .bottom-navigation {
+    background-color: var(--primary-background-appbar); }
+
+.secondary .bottom-navigation {
+    background-color: var(--secondary-background-appbar); }
 
 .bottom-navigation.default {
-    background-color: var(--primary-background-ui) !important ; }
+    background-color: var(--primary-background-appbar) !important ; }
+
+.bottom-navigation > .content > li > .content {
+    color: var(--dark-secondary-font); }
+
+.primary .bottom-navigation > .content > li > .content,
+.dark .bottom-navigation > .content > li > .content,
+.secondary .bottom-navigation > .content > li > .content {
+    color: var(--light-disabled-font); }
+
+.bottom-navigation > .content > li.active > .content {
+    color: var(--accent-primary-font); }
+
+.primary .bottom-navigation > .content > li.active > .content,
+.dark .bottom-navigation > .content > li.active > .content,
+.secondary .bottom-navigation > .content > li.active > .content {
+    color: var(--light-primary-font); }
+
+.bottom-navigation.shifting > .content > li > .content {
+    color: var(--light-secondary-font); }
+
+.bottom-navigation.shifting > .content > li.active > .content {
+    color: var(--light-primary-font); }
 
 .bottom-navigation > .ripple-box > .effect {
-    background-color: var(--primary-ripple); }
+    background-color: var(--dark-ripple); }
+
+.primary .bottom-navigation > .ripple-box > .effect,
+.dark .bottom-navigation > .ripple-box > .effect,
+.secondary .bottom-navigation > .ripple-box > .effect {
+    background-color: var(--light-ripple); }
 
 .bottom-navigation.shifting > .ripple-box > .effect {
     background-color: var(--light-ripple); }
 
-.bottom-navigation > .tab > li > .content {
-    color: var(--dark-secondary-font); }
-
-.bottom-navigation > .tab > li.active > .content {
-    color: var(--accent-primary-font); }
-
-.bottom-navigation.shifting > .tab > li > .content {
-    color: var(--light-secondary-font); }
-
-.bottom-navigation.shifting > .tab > li.active > .content {
-    color: var(--light-primary-font); }
-
 /** BOTTOM SHEET */
+
+.bottom-sheet > .content > .list-style-sheet, 
+.bottom-sheet > .content > .grid-style-sheet {
+    background-color: var(--light-background-ui); }
+
+.dark .bottom-sheet > .content > .list-style-sheet, 
+.dark .bottom-sheet > .content > .grid-style-sheet {
+    background-color: var(--dark-background-ui); }
+
+.primary .bottom-sheet > .content > .list-style-sheet, 
+.primary .bottom-sheet > .content > .grid-style-sheet {
+    background-color: var(--primary-background-ui); }
+
+.secondary .bottom-sheet > .content > .list-style-sheet, 
+.secondary .bottom-sheet > .content > .grid-style-sheet {
+    background-color: var(--secondary-background-ui); }
 
 .bottom-sheet > .content > .list-style-sheet > .header > label {
     color: var(--dark-secondary-font); }
 
-.bottom-sheet > .content > .list-style-sheet > .item > i {
-    color: var(--dark-secondary-font); }
+.primary .bottom-sheet > .content > .list-style-sheet > .header > label,
+.dark .bottom-sheet > .content > .list-style-sheet > .header > label,
+.secondary .bottom-sheet > .content > .list-style-sheet > .header > label {
+    color: var(--light-secondary-font); }
 
-.bottom-sheet > .content > .grid-style-sheet > .item > i.icon {
-    color: var(--dark-background-disabled); }
-
+.bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
+.bottom-sheet > .content > .list-style-sheet > .item > i,
 .bottom-sheet > .content > .grid-style-sheet > .item > .detail {
     color: var(--dark-secondary-font); }
 
-.bottom-sheet > .content > .list-style-sheet, 
-.bottom-sheet > .content > .grid-style-sheet {
-    background-color: var(--light-background); }
+.primary .bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
+.primary .bottom-sheet > .content > .list-style-sheet > .item > i,
+.primary .bottom-sheet > .content > .grid-style-sheet > .item > .detail,
+.dark .bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
+.dark .bottom-sheet > .content > .list-style-sheet > .item > i,
+.dark .bottom-sheet > .content > .grid-style-sheet > .item > .detail,
+.secondary .bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
+.secondary .bottom-sheet > .content > .list-style-sheet > .item > i,
+.secondary .bottom-sheet > .content > .grid-style-sheet > .item > .detail {
+    color: var(--light-primary-font); }
 
 /** BUTTON */
 
@@ -369,15 +421,15 @@ button.raised {
     background-color: var(--light-background);
     color: var(--dark-primary-font); }
 
-.dark button.raised, button.raised.dark { 
+.dark button.raised { 
     background-color: var(--dark-background-ui);
     color: var(--light-primary-font); }
 
-.primary button.raised, button.raised.primary { 
+.primary button.raised { 
     background-color: var(--primary-background-ui);
     color: var(--light-primary-font); }
 
-.secondary button.raised, button.raised.secondary { 
+.secondary button.raised { 
     background-color: var(--secondary-background-ui);
     color: var(--light-primary-font); }
 
@@ -387,39 +439,78 @@ button.raised:hover {
 button.raised:focus  {
     background-color: var(--light-background-focus); }
 
-.dark button.raised:hover, button.raised.dark:hover {
+.dark button.raised:hover {
     background-color: var(--dark-background-hover); }
 
-.dark button.raised:focus, button.raised.dark:focus  {
+.dark button.raised:focus  {
     background-color: var(--dark-background-focus); }
 
-.primary button.raised:hover, button.raised.primary:hover {
+.primary button.raised:hover {
     background-color: var(--primary-background-hover); } 
 
-.primary button.raised:focus, button.raised.primary:focus {
+.primary button.raised:focus {
     background-color: var(--primary-background-focus); }
 
-.secondary button.raised:hover, button.raised.secondary:hover {
+.secondary button.raised:hover {
     background-color: var(--secondary-background-hover); }
 
-.secondary button.raised:focus, button.raised.secondary:focus {
+.secondary button.raised:focus {
     background-color: var(--secondary-background-focus); }
 
 button.raised:disabled, button.raised:hover:disabled {
     color: var(--dark-disabled-font);
     background-color: var(--light-background-disabled); }
 
-.dark button.raised:disabled, .dark button.raised:hover:disabled,
+.dark button.raised:disabled, .dark button.raised:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+.primary button.raised:disabled, .primary button.raised:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+.secondary button.raised:disabled, .secondary button.raised:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+button.raised.dark { 
+    background-color: var(--dark-background-ui);
+    color: var(--light-primary-font); }
+
+button.raised.primary { 
+    background-color: var(--primary-background-ui);
+    color: var(--light-primary-font); }
+
+button.raised.secondary { 
+    background-color: var(--secondary-background-ui);
+    color: var(--light-primary-font); }
+
+button.raised.dark:hover {
+    background-color: var(--dark-background-hover); }
+
+button.raised.dark:focus  {
+    background-color: var(--dark-background-focus); }
+
+button.raised.primary:hover {
+    background-color: var(--primary-background-hover); } 
+
+button.raised.primary:focus {
+    background-color: var(--primary-background-focus); }
+
+button.raised.secondary:hover {
+    background-color: var(--secondary-background-hover); }
+
+button.raised.secondary:focus {
+    background-color: var(--secondary-background-focus); }
+
 button.raised.dark:disabled, button.raised.dark:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
 
-.primary button.raised:disabled, .primary button.raised:hover:disabled,
 button.raised.primary:disabled, button.raised.primary:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
 
-.secondary button.raised:disabled, .secondary button.raised:hover:disabled,
 button.raised.secondary:disabled, button.raised.secondary:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
@@ -428,15 +519,15 @@ button.floating {
     background-color: var(--light-background-appbar);
     color: var(--dark-primary-font); }
 
-.dark button.floating, button.floating.dark { 
+.dark button.floating { 
     background-color: var(--dark-background-ui);
     color: var(--light-primary-font); }
 
-.primary button.floating, button.floating.primary { 
+.primary button.floating { 
     background-color: var(--primary-background-ui);
     color: var(--light-primary-font); }
 
-.secondary button.floating, button.floating.secondary { 
+.secondary button.floating { 
     background-color: var(--secondary-background-ui);
     color: var(--light-primary-font); }
 
@@ -446,39 +537,78 @@ button.floating:hover {
 button.floating:focus  {
     background-color: var(--light-background-focus); }
 
-.dark button.floating:hover, button.floating.dark:hover {
+.dark button.floating:hover {
     background-color: var(--dark-background-hover); }
 
-.dark button.floating:focus, button.floating.dark:focus {
+.dark button.floating:focus {
     background-color: var(--dark-background-focus); }
 
-.primary button.floating:hover, button.floating.primary:hover {
+.primary button.floating:hover {
     background-color: var(--primary-background-hover); } 
 
-.primary button.floating:focus, button.floating.primary:focus {
+.primary button.floating:focus {
     background-color: var(--primary-background-focus); }
 
-.secondary button.floating:hover, button.floating.secondary:hover {
+.secondary button.floating:hover {
     background-color: var(--secondary-background-hover); }
 
-.secondary button.floating:focus, button.floating.secondary:focus {
+.secondary button.floating:focus {
     background-color: var(--secondary-background-focus); }
 
 button.floating:disabled, button.floating:hover:disabled {
     color: var(--dark-disabled-font);
     background-color: var(--light-background-disabled); }
 
-.dark button.floating:disabled, .dark button.floating:hover:disabled,
+.dark button.floating:disabled, .dark button.floating:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-background-disabled); }
+
+.primary button.floating:disabled, .primary button.floating:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--primary-background-disabled); }
+
+.secondary button.floating:disabled, .secondary button.floating:hover:disabled {
+    color: var(--light-disabled-font);
+    background-color: var(--secondary-background-disabled); }
+
+button.floating.dark { 
+    background-color: var(--dark-background-ui);
+    color: var(--light-primary-font); }
+
+button.floating.primary { 
+    background-color: var(--primary-background-ui);
+    color: var(--light-primary-font); }
+
+button.floating.secondary { 
+    background-color: var(--secondary-background-ui);
+    color: var(--light-primary-font); }
+
+button.floating.dark:hover {
+    background-color: var(--dark-background-hover); }
+
+button.floating.dark:focus {
+    background-color: var(--dark-background-focus); }
+
+button.floating.primary:hover {
+    background-color: var(--primary-background-hover); } 
+
+button.floating.primary:focus {
+    background-color: var(--primary-background-focus); }
+
+button.floating.secondary:hover {
+    background-color: var(--secondary-background-hover); }
+
+button.floating.secondary:focus {
+    background-color: var(--secondary-background-focus); }
+
 button.floating.dark:disabled, button.floating.dark:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
 
-.primary button.floating:disabled, .primary button.floating:hover:disabled,
 button.floating.primary:disabled, button.floating.primary:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--primary-background-disabled); }
 
-.secondary button.floating:disabled, .secondary button.floating:hover:disabled,
 button.floating.secondary:disabled, button.floating.secondary:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--secondary-background-disabled); }
@@ -1044,7 +1174,16 @@ button.flat:after {
 /** DROPDOWN */
 
 .dropdown { 
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.dark .dropdown { 
+    background-color: var(--dark-background-ui); }
+
+.primary .dropdown { 
+    background-color: var(--primary-background-ui); }
+
+.secondary .dropdown { 
+    background-color: var(--secondary-background-ui); }
 
 /** EXPANSION PANEL */
 
@@ -1185,11 +1324,27 @@ button.flat:after {
 .menu > li.option {
     color: var(--dark-primary-font); }
 
+.dark .menu > li.option, .primary .menu > li.option,
+.secondary .menu > li.option {
+    color: var(--light-primary-font); }
+
 .menu > li.option > i {
     color: var(--dark-secondary-font); }
 
+.dark .menu > li.option > i, .primary .menu > li.option > i,
+.secondary .menu > li.option > i {
+    color: var(--light-primary-font); }
+
 .menu > li.option.disabled, .menu > li.option.disabled > i {
     color: var(--dark-disabled-font); }
+
+.primary .menu > li.option.disabled, 
+.primary .menu > li.option.disabled > i,
+.dark .menu > li.option.disabled, 
+.dark .menu > li.option.disabled > i,
+.secondary .menu > li.option.disabled, 
+.secondary .menu > li.option.disabled > i {
+    color: var(--light-disabled-font); }
 
 .menu > li.option:hover {
     background-color: var(--light-background-hover); }
@@ -1430,22 +1585,40 @@ button.flat:after {
 .snackbar > .action > span {
     color: var(--accent-primary-font); }
 
-/** TAB */
+/** TABS */
 
-.tab > .option {
-    color: var(--base-primary-font); }
+.app-bar > .tabs {
+    background-color: var(--light-background-appbar); }
 
-.toolbar > .tab > .option {
+.app-bar.dark > .tabs {
+    background-color: var(--dark-background-appbar); }
+
+.app-bar.primary > .tabs {
+    background-color: var(--primary-background-appbar); }
+
+.app-bar.secondary > .tabs {
+    background-color: var(--secondary-background-appbar); }
+
+.tabs > .tab {
+    color: var(--dark-primary-font); }
+
+.dark .tabs > .tab, .primary .tabs > .tab,
+.secondary .tabs > .tab {
     color: var(--light-primary-font); }
 
-.toolbar > .tab > .option > .ripple-box > .effect {
+.tabs > .tab:before {
+    background-color: var(--dark-ripple); }
+
+.dark .tabs > .tab:before, .primary .tabs > .tab:before,
+.secondary .tabs > .tab:before {
     background-color: var(--light-ripple); }
 
-.tab > .bar {
-    background-color: var(--primary-background-ui); }
+.tabs > .stripe {
+    background-color: var(--dark-background-ui); }
 
-.toolbar > .tab > .bar {
-    background-color: var(--light-background); }
+.dark .tabs > .stripe, .primary .tabs > .stripe,
+.secondary .tabs > .stripe {
+    background-color: var(--light-background-ui); }
 
 /** TEXTAREA */
 
