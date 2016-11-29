@@ -1,9 +1,9 @@
 /*!
  * Softtion Material UI
- * v1.0.0
+ * v1.0.2
  * @license MIT
  * Author: Softtion Developers
- * Updated: 23/Nov/2016
+ * Updated: 28/Nov/2016
  */
 
 @import url("fonts/roboto/StyleFont.css");
@@ -708,29 +708,6 @@ i.action-icon,
         display: none; }
 }
 
-/** CONTENT APP */
-
-@media only screen and (min-width : 961px) {
-    
-    .sidenav-temporary-left .app-bar, 
-    .sidenav-temporary-left .app-content {
-        margin-left: 320px; }
-    
-    .sidenav-temporary-left .app-bar {
-        width: calc(100% - 320px); }
-    
-    .sidenav-temporary-left .search-box {
-        width: calc(100% - 336px);
-        left: calc(50% + 160px);
-    }
-    
-    .sidenav-temporary-left .snackbar {
-        margin-left: 160px; }
-    
-    .sidenav-temporary-left .bottom-navigation {
-        left: 320px; }
-}
-
 /** EFFECTS MATERIAL */
 
 .ripple-box {
@@ -801,6 +778,10 @@ i.action-icon,
     .app-bar.hide > .toolbar.flexible-title {
         min-height: 64px;
         max-height: 64px; }
+    
+    .sidenav-temporary .app-bar {
+        margin-left: 320px;
+        width: calc(100% - 320px); }
 }
 
 /** APP CONTENT */
@@ -808,6 +789,12 @@ i.action-icon,
 .app-content {
     padding-top: 8px;
     overflow: auto; }
+
+@media only screen and (min-width : 961px) {
+     
+    .sidenav-temporary .app-content {
+        margin-left: 320px; }
+}
 
 /** AUTOCOMPLETE */
 
@@ -1141,6 +1128,12 @@ i.action-icon,
         min-width: 552px; }
 }
 
+@media only screen and (min-width : 961px) {
+    
+    .sidenav-temporary .bottom-navigation {
+        left: 320px; }
+}
+
 /** BOTTOM SHEET */
 
 .bottom-sheet > .backdrop {
@@ -1262,7 +1255,7 @@ i.action-icon,
 
 @media only screen and (min-width : 961px) {
     
-    .bottom-sheet > .content {
+    .sidenav-temporary .bottom-sheet > .content {
         margin-left: 160px; }
 }
 
@@ -1541,6 +1534,26 @@ button.raised:focus:after, button.flat:focus:after {
     float: right;
     margin-right: 0px;
     margin-left: 8px; }
+
+.card > .rich-media > .content > .actions > button.action {
+    float: left;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: content-box;
+    padding: 6px; }
+
+.card > .rich-media > .content > .actions > button.action + button.action {
+    margin-left: 8px; }
+
+.card > .rich-media > .content > .actions > button.action.right + button.action.right {
+    margin-left: 0px;
+    margin-right: 8px; }
+
+.card > .rich-media > .content > .actions > button.action:not(:active):before {
+    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+
+.card > .rich-media > .content > .actions > button.action.right {
+    float: right; }
 
 .card > .primary-title {
     overflow-y: auto;
@@ -2910,15 +2923,6 @@ button.raised:focus:after, button.flat:focus:after {
     width: 32px;
     height: 32px; }
 
-.progress-circular > svg {
-    height: inherit; 
-    width: inherit;
-    -moz-animation: rotator 1.8s linear infinite;
-    -webkit-animation: rotator 1.8s linear infinite;
-    -o-animation: rotator 1.8s linear infinite;
-    animation: rotator 1.8s linear infinite;
-    -ms-animation: rotator 1.8s linear infinite; }
-
 @keyframes rotator {
     0% { 
         transform: rotate(0deg); }
@@ -2933,6 +2937,33 @@ button.raised:focus:after, button.flat:focus:after {
     
     100% { 
         transform: rotate(360deg); }
+}
+
+.progress-circular > svg {
+    height: inherit; 
+    width: inherit;
+    -moz-animation: rotator 1.8s linear infinite;
+    -webkit-animation: rotator 1.8s linear infinite;
+    -o-animation: rotator 1.8s linear infinite;
+    animation: rotator 1.8s linear infinite;
+    -ms-animation: rotator 1.8s linear infinite; }
+
+@keyframes dash {
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -150;
+    }
+}
+
+@-webkit-keyframes dash {
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -150;
+    }
 }
 
 .progress-circular > svg > circle {
@@ -2953,24 +2984,6 @@ button.raised:focus:after, button.flat:focus:after {
 
 .progress-circular.small > svg > circle {
     stroke-width: 6px; }
-
-@keyframes dash {
-    50% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: -150;
-    }
-}
-
-@-webkit-keyframes dash {
-    50% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: -150;
-    }
-}
 
 /** SEARCH BOX*/
 
@@ -3021,6 +3034,13 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     padding-left: 8px; }
 
+@media only screen and (min-width : 961px) {
+    
+    .sidenav-temporary .search-box {
+        left: calc(50% + 160px);
+        width: calc(100% - 336px); }
+}
+
 /** SELECT */
 
 .select {
@@ -3053,10 +3073,15 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     width: 100%;
     height: 32px;
-    padding: 16px 0px 8px 0px;
+    margin: 16px 0px 8px 0px;
     border: none;
     outline: none;
+    padding-right: 28px;
+    box-sizing: border-box;
     background-color: transparent; }
+
+.select > input:disabled {
+    cursor: none; }
 
 .select > .line-shadow {
     position: absolute;
@@ -3078,14 +3103,25 @@ button.raised:focus:after, button.flat:focus:after {
 .select.flex-pd > .line-shadow, .select.flex-pd-left > .line-shadow {
     left: 8px; }
 
-.select > i.action-icon {
+.select > button.action {
     position: absolute;
-    right: 0;
+    right: -4px;
     top: 38px;
+    padding: 0px 4px;
     cursor: pointer; }
 
-.select.flex-pd > i.material-icon, .select.flex-pd-right > i.material-icon {
-    right: 8px; }
+.select.flex-pd > button.action, .select.flex-pd-right > button.action {
+    right: 4px; }
+
+.select > button.action:not(:active):before {
+    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+
+.select > button.action > i {
+    transition: transform 0.325s var(--standard-curve);
+    transform: rotate(0deg); }
+
+.select > button.action > i.active {
+    transform: rotate(180deg); }
 
 .select > ul {
     position: absolute;
@@ -3151,7 +3187,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.select-multiple.active > label {
+.select-multiple > label.active {
     cursor: none;
     top: 16px;
     height: 14px;
@@ -3165,7 +3201,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 16px 0px 8px 0px;
     border: none;
     outline: none;
-    padding-right: 24px;
+    padding-right: 28px;
     box-sizing: border-box;
     background-color: transparent; }
 
@@ -3189,14 +3225,25 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple.flex-pd > .line-shadow, .select-multiple.flex-pd-left > .line-shadow {
     left: 8px; }
 
-.select-multiple > i.material-icon {
+.select-multiple > button.action {
     position: absolute;
-    right: 0;
+    right: -4px;
     top: 38px;
+    padding: 0px 4px;
     cursor: pointer; }
 
-.select-multiple.flex-pd > i.material-icon, .select-multiple.flex-pd-right > i.material-icon {
-    right: 8px; }
+.select-multiple.flex-pd > button.action, .select-multiple.flex-pd-right > button.action {
+    right: 4px; }
+
+.select-multiple > button.action:not(:active):before {
+    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+
+.select-multiple > button.action > i {
+    transition: transform 0.325s var(--standard-curve);
+    transform: rotate(0deg); }
+
+.select-multiple > button.action > i.active {
+    transform: rotate(180deg); }
 
 .select-multiple > ul {
     position: absolute;
@@ -3246,12 +3293,13 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** SIDENAV */
 
-.sidenav.temporary > .backdrop {
+.sidenav > .backdrop {
     z-index: 15; }
 
 .sidenav > .content {
     position: fixed;
     top: 0;
+    left: -105%;
     min-width: 240px;
     width: calc(100% - 56px);
     max-width: 320px;
@@ -3260,50 +3308,18 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 16;
     box-shadow: var(--shadow-16); }
 
-.sidenav.temporary.left > .content {
-    left: -105%; 
-    right: initial; }
+.sidenav > .content.show {
+    left: 0%; }
 
-.sidenav.temporary.right > .content {
-    right: -105%;
-    left: initial; }
+.sidenav > .content.hide {
+    left: -105%; }
 
-.sidenav.temporary.left > .content.show {
-    left: 0%; 
-    right: initial; }
-
-.sidenav.temporary.left > .content.hide {
-    left: -105%; 
-    right: initial; }
-
-.sidenav.temporary.right > .content.show {
-    right: 0%; 
-    left: initial; }
-
-.sidenav.temporary.right > .content.hide {
-    right: -105%;
-    left: initial; }
-
-.sidenav.temporary.left > .content.show, 
-.sidenav.temporary.left > .content.hide {
+.sidenav > .content.show, .sidenav > .content.hide {
     -moz-transition-property: left;
     -webkit-transition-property: left;
     -o-transition-property: left;
     transition-property: left;
     -ms-transition-property: left;
-    -moz-transition-duration: 0.3s; 
-    -webkit-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -ms-transition-duration: 0.3s; }
-
-.sidenav.temporary.right > .content.show,
-.sidenav.temporary.right > .content.hide {
-    -moz-transition-property: right;
-    -webkit-transition-property: right;
-    -o-transition-property: right;
-    transition-property: right;
-    -ms-transition-property: right;
     -moz-transition-duration: 0.3s; 
     -webkit-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
@@ -3388,21 +3404,24 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     border-bottom: none; }
 
+.sidenav > .content > .list .detail > button.action > i {
+    transform: rotate(0deg);
+    transition: transform 0.325s var(--standard-curve); }
+
+.sidenav > .content > .list .detail > button.action > i.active {
+    transform: rotate(180deg); }
+
 .sidenav > .content > .list .detail > label {
     cursor: pointer; }
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav.left > .content, .sidenav.right > .content {
+    .sidenav-temporary .sidenav > .content {
         box-shadow: var(--shadow-6); }
     
-    .sidenav.temporary.left > .content, 
-    .sidenav.temporary.left > .content.hide {
+    .sidenav-temporary .sidenav > .content, 
+    .sidenav-temporary .sidenav > .content.hide {
         left: 0%; }
-    
-    .sidenav.temporary.right > .content, 
-    .sidenav.temporary.right > .content.hide {
-        right: 0%; }
 }
 
 /** SNACKBAR */
@@ -3453,7 +3472,8 @@ button.raised:focus:after, button.flat:focus:after {
     top: 50%;
     cursor: pointer;
     transform: translateY(-50%);
-    font-family: softtion-bold; }
+    font-family: softtion-medium;
+    text-transform: uppercase; }
 
 .snackbar.show {
     margin-bottom: 0px !important; } 
@@ -3471,6 +3491,9 @@ button.raised:focus:after, button.flat:focus:after {
     .snackbar {
         width: 40%;
         left: 30%; }
+    
+    .sidenav-temporary .snackbar {
+        margin-left: 160px; }
 }
 
 /** TABS */
@@ -3872,7 +3895,7 @@ button.raised:focus:after, button.flat:focus:after {
     .toolbar > .actions > button.action.menu-icon {
         padding: 20px 8px; }
     
-    .app-bar > .toolbar > .nav-icon {
+    .sidenav-temporary .app-bar > .toolbar > .nav-icon {
         display: none; }
 }
 

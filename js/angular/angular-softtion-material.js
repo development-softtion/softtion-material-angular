@@ -1,8 +1,8 @@
 /*
- * Angular Softtion Material v1.0.0
+ * Angular Softtion Material v1.0.2
  * License: MIT
  * (c) 2016 Softtion Developers
- * Updated: 23/Nov/2016
+ * Updated: 28/Nov/2016
  */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -15,7 +15,7 @@
     var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize"]),
         TextType = softtion.get(softtion.TEXTCONTROL);
     
-    var Material = {
+    var Material = {        
         components: {
             AppBar: {
                 name: "appBar",
@@ -375,9 +375,7 @@
                                 }// BottomNavigation permite cambio de Color
                             });
                             
-                            $window.scroll(function () {
-                                var positionNew = $window.scrollTop(); // Posicion actual
-                                
+                            var scrollBottomNav = function () {
                                 if (softtion.is("undefined", snackbar) || !snackbar.exists()) {
                                     snackbar = angular.element(".snackbar");
                                 } // No se ha encontrado Snackbar en el documento
@@ -385,6 +383,14 @@
                                 if (softtion.is("undefined", fab) || !fab.exists()) {
                                     fab = angular.element("button.floating");
                                 } // No se ha encontrado Floating en el documento
+                                
+                                if (!angular.element(document).find(".bottom-navigation").exists()) {
+                                    snackbar.removeClass("show-bottom-navigation");
+                                    fab.removeClass("show-bottom-navigation");
+                                    $window.off("scroll.bottom-navigation", scrollBottomNav); return;
+                                } // No existe el bottom navigation en el documento
+                                
+                                var positionNew = $window.scrollTop(); // Posicion actual
                                                                 
                                 if (position < positionNew) {
                                     fab.removeClass("show-bottom-navigation");
@@ -397,7 +403,9 @@
                                 } // Se visualiza BottomNavigation oculto
                                 
                                 position = positionNew; // Posición nueva del scroll
-                            });
+                            };
+                            
+                            $window.on("scroll.bottom-navigation", scrollBottomNav);
                         }
                     };
                 }
@@ -1672,7 +1680,9 @@
                 name: "itemList",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(softtion.html("i").setText("expand_more")).create();
+                        addComponent(
+                            softtion.html("i").setText("expand_more")
+                        ).create();
                 },
                 directive: function () {
                     return {
@@ -1702,9 +1712,9 @@
                                     $element.toggleClass("active"); // Cambiando estado
 
                                     if ($element.hasClass("active")) {
-                                        icon.html("expand_less");
+                                        icon.addClass("active");
                                     } else {
-                                        icon.html("expand_more"); ul.css("margin-top", (-1 * ul.innerHeight()));
+                                        icon.removeClass("active"); ul.css("margin-top", (-1 * ul.innerHeight()));
                                     } // Cerrando content del Expansion
                                 });
                             } // El item contiene opciones
@@ -1819,34 +1829,38 @@
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
-                        addAttribute("ng-click", "viewSuggestions()").
+                        addAttribute("ng-click", "toggleSuggestions()").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("value","{{valueInput}}");
+                        addAttribute("value","{{inputValue}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
-                    var icon = softtion.html("i").addClass("action-icon").setText("expand_more").
-                        addAttribute("ng-if", "!ngDisabled").addAttribute("ng-click","viewSuggestions()");
+                    var button = softtion.html("button").addClass("action").
+                            addComponent(
+                                softtion.html("i").addClass("action-icon").setText("expand_more")
+                            ).addAttribute("ng-hide", "ngDisabled").
+                            addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
                         addComponent(
                             softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                                 addAttribute("ng-if","clearSuggestion").
                                 setText("Limpiar selección").
-                                addAttribute("ng-click","clear($event)")
+                                addAttribute("ng-hide", "!select").
+                                addAttribute("ng-click","clearSelection()")
                         ).
                         addComponent(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
-                                addAttribute("ng-click","selectSuggestion(suggestion, $event)").
+                                addAttribute("ng-click","setSelection(suggestion, $event)").
                                 setText("{{getSuggestionDescription(suggestion)}}")
                         );
 
-                    return input + lineShadow + label + icon + list; // Componente
+                    return input + lineShadow + label + button + list; // Componente
                 },        
                 directive: function () {
                     return {
@@ -1858,14 +1872,44 @@
                             keyDescription: "@keyDescription",
                             suggestions: "=suggestions",
                             ngDisabled: "=ngDisabled",
-                            clearSuggestion: "=clearSuggestion"
+                            clearSuggestion: "=clearSuggestion",
+                            disabledAutoclose: "=disabledAutoclose"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var label = $element.find("label"),
                                 input = $element.find("input"),
-                                list = $element.find("ul"),
-                                icon = $element.find(".material-icon");
+                                button = $element.find("button"),
+                                icon = button.find("i"),
+                                list = $element.find("ul");
+                                
+                            var showSuggestions = function () {
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).on("click.sm-select", closeSelect);
+                                } // No se permite cerrado automatico
+                                
+                                list.addClass("active"); icon.addClass("active"); 
+                                $element.addClass("active"); // Visualizando opciones
+                            };
+                            
+                            var hideSuggestions = function () {
+                                list.removeClass("active"); icon.removeClass("active"); 
+                                $element.removeClass("active"); // Ocultando opciones
+                                
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).off("click.sm-select", closeSelect);
+                                } // No se permite cerrado automatico
+                            };
+                            
+                            var closeSelect = function (ev) {
+                                if (label.is(ev.target) || input.is(ev.target) || 
+                                    button.is(ev.target) || icon.is(ev.target) ||
+                                    $element.is(ev.target) || list.is(ev.target)) {
+                                    return;
+                                } // Se ha realizado click sobre el componente de Selección
+                                
+                                hideSuggestions(); // Ocultando opciones
+                            };
                             
                             $scope.getSuggestionDescription = function (suggestion) {
                                 if (softtion.is("string", suggestion)) {
@@ -1878,7 +1922,7 @@
                             };
 
                             if (softtion.is("defined", $scope.select)) {
-                                $scope.valueInput = $scope.getSuggestionDescription($scope.select);
+                                $scope.inputValue = $scope.getSuggestionDescription($scope.select);
                                 $element.addClass("active"); label.addClass("active");
                             } // Hay un opcion seleccionada por defecto
 
@@ -1887,48 +1931,39 @@
                                     return;
                                 } // El componente se encuentra activo
                                 
-                                $scope.viewSuggestions();
+                                $scope.toggleSuggestions();
                                 
                                 if (softtion.is("function", $scope.clickEvent)) {
                                     $scope.clickEvent($event);
                                 } // Se ha definido callback para Click
                             };
 
-                            $scope.focusInput = function () {
-                                $element.addClass("active"); label.addClass("active"); 
-                            };
+                            $scope.focusInput = function () { $element.addClass("active"); };
 
                             $scope.blurInput = function () {
                                 if (softtion.is("undefined", $scope.select)) {
-                                    $element.removeClass("active"); 
+                                    $element.removeClass("active"); label.removeClass("active"); 
                                 } // No ha seleccionado ninguna de las opciones
                             };
 
-                            $scope.viewSuggestions = function () {
+                            $scope.toggleSuggestions = function () {
                                 if (!$scope.ngDisabled) {
-                                    list.toggleClass("active"); input.focus();
-
-                                    if (list.hasClass("active")) {
-                                        icon.html("expand_less"); $element.addClass("active");
-                                    } else {
-                                        icon.html("expand_more"); 
-                                    }
+                                    (list.hasClass("active")) ? hideSuggestions() : showSuggestions();
                                 } // No esta desactivado el componente
                             };
 
-                            $scope.selectSuggestion = function (suggestion, $event) {
-                                $scope.select = suggestion; icon.html("expand_more"); 
-                                list.find("li").removeClass("active"); input.focus(); 
-                                $scope.valueInput = $scope.getSuggestionDescription(suggestion); 
+                            $scope.setSelection = function (suggestion, $event) {
+                                label.addClass("active"); list.find("li").removeClass("active"); 
+                                $scope.inputValue = $scope.getSuggestionDescription(suggestion); 
                                 angular.element($event.currentTarget).addClass("active"); 
                                 
-                                list.removeClass("active"); // Ocultando lista de opciones
+                                $scope.select = suggestion; hideSuggestions(); // Ocultando opciones
                             };
                             
-                            $scope.clear = function () {
-                                $scope.valueInput = undefined; label.removeClass("active");
-                                $scope.select = undefined; icon.html("expand_more"); 
-                                list.find("li").removeClass("active"); list.removeClass("active"); 
+                            $scope.clearSelection = function () {
+                                label.removeClass("active"); $scope.select = undefined;  
+                                list.find("li").removeClass("active"); 
+                                $scope.inputValue = undefined; hideSuggestions();
                             };
                         }
                     };
@@ -1941,20 +1976,23 @@
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type","text").
-                        addAttribute("ng-click","viewSuggestions()").
+                        addAttribute("ng-click","toggleSuggestions()").
                         addAttribute("ng-blur","blurInput()").
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("value","{{valueInput}}");
+                        addAttribute("value","{{inputValue}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
-                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate","active"]);
+                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
-                    var icon = softtion.html("i").addClass("material-icon").setText("expand_more").
-                        addAttribute("ng-if","!ngDisabled").addAttribute("ng-click","viewSuggestions()");
+                    var button = softtion.html("button").addClass("action").
+                        addComponent(
+                            softtion.html("i").addClass("action-icon").setText("expand_more")
+                        ).addAttribute("ng-hide", "ngDisabled").
+                        addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
                         addComponent(
@@ -1962,7 +2000,7 @@
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-class", "{active: suggestion.checked}").
-                                addAttribute("ng-click","selectSuggestion(suggestion, $index)").
+                                addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
                                 setText("{{getSuggestionDescription(suggestion)}}").
                                 addComponent(
                                     softtion.html("div").addClass("checkbox-selection").
@@ -1971,7 +2009,7 @@
                                 )
                         );
 
-                    return input + lineShadow + label + icon + list; // Componente
+                    return input + lineShadow + label + button + list; // Componente
                 },
                 valueSelects: function (selects, keyDescription) {
                     var size = Object.keys(selects).length, count = 0,
@@ -1998,8 +2036,10 @@
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input"),
-                                list = $element.find("ul"),
-                                icon = $element.find(".material-icon");
+                                label = $element.find("label"),
+                                button = $element.find("button"),
+                                icon = button.find("i"),
+                                list = $element.find("ul");
                         
                             // Atributos
                             var valueSelects = Material.components.SelectMultiple.valueSelects;
@@ -2013,17 +2053,45 @@
                             });
                             
                             if (Object.keys($scope.selects).length > 0) {
-                                $element.addClass("active"); 
+                                label.addClass("active"); 
                             } // No ha seleccionado ninguna de las opciones
                             
-                            $scope.valueInput = valueSelects($scope.selects, $scope.keyDescription);
+                            $scope.inputValue = valueSelects($scope.selects, $scope.keyDescription);
+                            
+                            var showSuggestions = function () {
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).on("click.sm-select-multiple", closeSelect);
+                                } // No se permite cerrado automatico
+                                
+                                list.addClass("active"); icon.addClass("active"); 
+                                $element.addClass("active"); // Visualizando opciones
+                            };
+                            
+                            var hideSuggestions = function () {
+                                list.removeClass("active"); icon.removeClass("active"); 
+                                $element.removeClass("active"); // Ocultando opciones
+                                
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).off("click.sm-select-multiple", closeSelect);
+                                } // No se permite cerrado automatico
+                            };
+                            
+                            var closeSelect = function (ev) {
+                                if (label.is(ev.target) || input.is(ev.target) || 
+                                    button.is(ev.target) || icon.is(ev.target) ||
+                                    $element.is(ev.target) || list.is(ev.target)) {
+                                    return;
+                                } // Se ha realizado click sobre el componente de Selección
+                                
+                                hideSuggestions(); // Ocultando opciones
+                            };
 
                             $scope.clickLabel = function (ev) { 
                                 if ($element.hasClass("active")) {
                                     return;
                                 } // El componente se encuentra activo
                                 
-                                $scope.viewSuggestions();
+                                $scope.toggleSuggestions();
                                 
                                 if (softtion.is("function", $scope.clickEvent)) {
                                     $scope.clickEvent(ev);
@@ -2034,23 +2102,17 @@
 
                             $scope.blurInput = function () {
                                 if (Object.keys($scope.selects).length === 0) {
-                                    $element.removeClass("active"); 
+                                    $element.removeClass("active"); label.removeClass("active");
                                 } // No ha seleccionado ninguna de las opciones
                             };
 
-                            $scope.viewSuggestions = function () {
+                            $scope.toggleSuggestions = function () {
                                 if (!$scope.ngDisabled) {
-                                    list.toggleClass("active"); // Cambiando estado
-
-                                    if (list.hasClass("active")) {
-                                        icon.html("expand_less"); $element.addClass("active");
-                                    } else {
-                                        icon.html("expand_more"); input.focus();
-                                    } // Cerrando lista de Opciones
-                                }
+                                    (list.hasClass("active")) ? hideSuggestions() : showSuggestions();
+                                } // No esta desactivado el componente
                             };
 
-                            $scope.selectSuggestion = function (suggestion, $index) {
+                            $scope.checkedSuggestion = function (suggestion, $index, $event) {
                                 suggestion.checked = !suggestion.checked;
                                 
                                 if (suggestion.checked) {
@@ -2059,13 +2121,17 @@
                                     softtion.removeKey($scope.selects, $index);
                                 } // Eliminando opción
 
-                                $scope.valueInput = valueSelects($scope.selects, $scope.keyDescription);
+                                $scope.inputValue = valueSelects($scope.selects, $scope.keyDescription);
+                                
+                                (Object.keys($scope.selects).length > 0) ? 
+                                    label.addClass("active") : label.removeClass("active"); 
+                                    
+                                $event.stopPropagation();
                             };
                             
                             $scope.getSuggestionDescription = function (suggestion) {
                                 return !(softtion.is("string", $scope.keyDescription)) ?
-                                    JSON.stringify(suggestion) :
-                                    softtion.findKey(suggestion, $scope.keyDescription); 
+                                    JSON.stringify(suggestion) : softtion.findKey(suggestion, $scope.keyDescription); 
                             };
                         }
                     };
@@ -2188,7 +2254,7 @@
                 },
                 html: function () {
                     var $textArea = softtion.html("textarea").
-                        addAttribute("ng-model","valueArea").
+                        addAttribute("ng-model","areaValue").
                         addAttribute("ng-click","clickArea($event)").
                         addAttribute("ng-blur","blurArea()").
                         addAttribute("ng-focus","focusArea()").
@@ -2218,6 +2284,7 @@
                         templateUrl: Material.components.TextArea.route,
                         scope: {
                             value: "=ngModel", 
+                            areaValue: "=?ngValueArea", 
                             label: "@label", 
                             type: "@type",
                             required: "=required",
@@ -2240,10 +2307,10 @@
                                 maxLength = parseInt($scope.maxLength);
 
                             defineTextHidden(area, hidden); $scope.hideSpan = true;
-                            $scope.valueArea = ""; // Valor inicial del Area
+                            $scope.areaValue = ""; // Valor inicial del Area
 
                             if (softtion.is("string", $scope.value)) { 
-                                $element.addClass("active"); $scope.valueArea = $scope.value;
+                                $element.addClass("active"); $scope.areaValue = $scope.value;
                                 
                                 autoResize(area, hidden); // Definiendo tamaño del Area
                             } // Se ha definido un valor
@@ -2265,18 +2332,18 @@
                             $scope.focusArea = function () { $element.addClass("active"); };
 
                             $scope.blurArea = function () {
-                                if (!softtion.is("string", $scope.valueArea)) {
+                                if (!softtion.is("string", $scope.areaValue)) {
                                     $element.removeClass("active"); // Componente sin texto
 
                                     if ($scope.required) {
                                         area.siblings("span").html("Este campo es requerido"); 
                                         $scope.value = undefined; $element.addClass("error"); $scope.hideSpan = false;
                                     }
-                                } else if($scope.valueArea.length < minLength) {
+                                } else if($scope.areaValue.length < minLength) {
                                     area.siblings("span").html("Es campo requiere minimo " + minLength + " caracteres"); 
                                     $scope.value = undefined; $element.addClass("error"); $scope.hideSpan = false; 
                                 } else { 
-                                    $scope.value = $scope.valueArea; $scope.hideSpan = true; $element.removeClass("error"); 
+                                    $scope.value = $scope.areaValue; $scope.hideSpan = true; $element.removeClass("error"); 
                                 }
 
                                 autoResize(area, hidden); // Cambiando tamaño del componente
@@ -2286,13 +2353,13 @@
                                 var validate = softtion.validateCharacter({
                                     keyCode: ev.keyCode, 
                                     type: $scope.type, 
-                                    inputValue: $scope.valueArea
+                                    inputValue: $scope.areaValue
                                 });
 
                                 if (!validate) { ev.preventDefault(); } // Cancelando el evento
                                 
                                 if (!isNaN(maxLength)) {
-                                    if ($scope.valueArea.length === maxLength) {
+                                    if ($scope.areaValue.length === maxLength) {
                                         ev.preventDefault();
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
@@ -2347,6 +2414,7 @@
                         templateUrl: Material.components.TextField.route,
                         scope: {
                             value: "=ngModel", 
+                            inputValue: "=?ngValueInput", 
                             label: "@label", 
                             type: "@type",
                             required: "=required",
@@ -2516,8 +2584,8 @@
             Alert: {
                 name: "$alert",
                 method: function () {
-                    // Atributos del proveedor
-                    var AttributesAlert = {
+                    // Propiedades del proveedor
+                    var Properties = {
                         // Elementos
                         dialog: undefined, 
                         backdrop: undefined,
@@ -2525,160 +2593,166 @@
                         title: undefined, 
                         content: undefined,
                         actions: undefined,
-                        btnPositive: undefined,
-                        btnNegative: undefined,
+                        positiveButton: undefined,
+                        negativeButton: undefined,
                         
                         // Propiedades
-                        backdropClose: false,
-                        eventPositive: undefined,
-                        eventNegative: undefined
+                        backdropEnabled: false,
+                        positiveFunction: undefined,
+                        negativeEnabled: true,
+                        negativeFunction: undefined
                     };
                     
                     var Alert = function () {
                         var self = this; 
 
-                        AttributesAlert.dialog = angular.element(
+                        Properties.dialog = angular.element(
                             softtion.html("div").addClass("dialog").create()
                         );
 
-                        AttributesAlert.backdrop = angular.element(
+                        Properties.backdrop = angular.element(
                             softtion.html("div").addClass("backdrop").create()
                         );
 
-                        AttributesAlert.box = angular.element(
+                        Properties.box = angular.element(
                             softtion.html("div").addClass("box").create()
                         );
 
-                        AttributesAlert.title = angular.element(
+                        Properties.title = angular.element(
                             softtion.html("div").addClass("title").create()
                         );
 
-                        AttributesAlert.content = angular.element(
+                        Properties.content = angular.element(
                             softtion.html("div").addClass("content").create()
                         );
 
-                        AttributesAlert.actions = angular.element(
+                        Properties.actions = angular.element(
                             softtion.html("div").addClass("actions").create()
                         );
 
-                        AttributesAlert.btnPositive = angular.element(
+                        Properties.positiveButton = angular.element(
                             softtion.html("button").addClass(["flat","positive"]).create()
                         );
 
-                        AttributesAlert.btnNegative = angular.element(
+                        Properties.negativeButton = angular.element(
                             softtion.html("button").addClass(["flat","negative"]).create()
                         );
 
-                        AttributesAlert.dialog.append(AttributesAlert.backdrop);
-                        AttributesAlert.box.append(AttributesAlert.title);
-                        AttributesAlert.box.append(AttributesAlert.content);
-                        AttributesAlert.actions.append(AttributesAlert.btnPositive);
-                        AttributesAlert.actions.append(AttributesAlert.btnNegative);
-                        AttributesAlert.box.append(AttributesAlert.actions);
-                        AttributesAlert.dialog.append(AttributesAlert.box);
+                        Properties.dialog.append(Properties.backdrop);
+                        Properties.box.append(Properties.title);
+                        Properties.box.append(Properties.content);
+                        Properties.actions.append(Properties.positiveButton);
+                        Properties.actions.append(Properties.negativeButton);
+                        Properties.box.append(Properties.actions);
+                        Properties.dialog.append(Properties.box);
 
-                        AttributesAlert.backdrop.click(function () { 
-                            if (AttributesAlert.backdropClose) {
+                        Properties.backdrop.click(function () { 
+                            if (Properties.backdropEnabled) {
                                 self.hide(); 
                             } // Cerrando dialog con el Backdrop
                         });
 
-                        AttributesAlert.btnPositive.click(function () { 
+                        Properties.positiveButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.is("function", AttributesAlert.eventPositive)) {
-                                AttributesAlert.eventPositive(); 
+                            if (softtion.is("function", Properties.positiveFunction)) {
+                                Properties.positiveFunction(); 
                             } // Se establecío función para proceso Positivo
                         });
 
-                        AttributesAlert.btnNegative.click(function () { 
+                        Properties.negativeButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.is("function", AttributesAlert.eventNegative)) {
-                                AttributesAlert.eventNegative(); 
+                            if (softtion.is("function", Properties.negativeFunction)) {
+                                Properties.negativeFunction(); 
                             } // Se establecío función para proceso Negativo
                         });
 
-                        angular.element(document.body).append(AttributesAlert.dialog);
+                        angular.element(document.body).append(Properties.dialog);
                     };
 
                     Alert.prototype.title = function (title) {
                         if (softtion.is("string", title)) {
-                            AttributesAlert.title.html(title); 
-                            AttributesAlert.title.removeClass("hidden");
+                            Properties.title.html(title); 
+                            Properties.title.removeClass("hidden");
                         } else {
-                            AttributesAlert.title.addClass("hidden");
+                            Properties.title.addClass("hidden");
                         }
                         
                         return this; // Retornando interfaz fluida
                     };
 
                     Alert.prototype.content = function (content) {
-                        AttributesAlert.content.html(content); return this;
+                        Properties.content.html(content); return this;
                     };
 
-                    Alert.prototype.positiveText = function (text) {
-                        AttributesAlert.btnPositive.html(text); return this;
+                    Alert.prototype.positiveLabel = function (label) {
+                        Properties.positiveButton.html(label); return this;
                     };
 
-                    Alert.prototype.negativeText = function (text) {
-                        AttributesAlert.btnNegative.html(text); return this;
+                    Alert.prototype.negativeLabel = function (label) {
+                        Properties.negativeButton.html(label); return this;
+                    };
+                    
+                    Alert.prototype.negativeEnabled = function (enabled) {
+                        Properties.negativeEnabled = enabled; return this;
                     };
 
-                    Alert.prototype.enabledBackdrop = function (enabled) {
-                        AttributesAlert.backdropClose = enabled; return this;
+                    Alert.prototype.backdropEnabled = function (enabled) {
+                        Properties.backdropEnabled = enabled; return this;
                     };
 
-                    Alert.prototype.eventPositive = function (eventPositive) {
-                        AttributesAlert.eventPositive = eventPositive; return this;
+                    Alert.prototype.positiveFunction = function (positiveFunction) {
+                        Properties.positiveFunction = positiveFunction; return this;
                     };
 
-                    Alert.prototype.eventNegative = function (eventNegative) {
-                        AttributesAlert.eventNegative = eventNegative; return this;
+                    Alert.prototype.negativeFunction = function (negativeFunction) {
+                        Properties.negativeFunction = negativeFunction; return this;
                     };
 
                     Alert.prototype.settings = function (options) {
                         var $options = {
                             title: "", content: "",
-                            positiveText: "Aceptar",
-                            negativeText: "Cancelar",
+                            positiveLabel: "Aceptar",
+                            negativeLabel: "Cancelar",
                             enabledBackdrop: false,
-                            eventPositive: undefined,
-                            eventNegative: undefined
+                            positiveFunction: undefined,
+                            negativeFunction: undefined
                         };
                         
                         angular.extend($options, options); 
                         
                         this.title($options.title); this.content($options.content);
-                        this.positiveText($options.positiveText);
-                        this.negativeText($options.negativeText);
-                        this.enabledBackdrop($options.enabledBackdrop);
-                        this.eventPositive($options.eventPositive);
-                        this.eventNegative($options.eventNegative);
+                        this.positiveLabel($options.positiveLabel);
+                        this.negativeLabel($options.negativeLabel);
+                        this.backdropEnabled($options.enabledBackdrop);
+                        this.positiveFunction($options.positiveFunction);
+                        this.negativeFunction($options.negativeFunction);
 
                         return this; // Retornando interfaz fluida
                     };
 
                     Alert.prototype.show = function () {
-                        if (!AttributesAlert.dialog.hasClass("active")) {
+                        if (!Properties.dialog.hasClass("active")) {
                             angular.element(document.body).addClass("body-overflow-none");
                             
-                            AttributesAlert.dialog.addClass("active"); 
-                            AttributesAlert.backdrop.fadeIn(175);
+                            (Properties.negativeEnabled) ?
+                                Properties.negativeButton.removeClass("hidden") :
+                                Properties.negativeButton.addClass("hidden");
                             
-                            AttributesAlert.box.addClass("show");
+                            
+                            Properties.dialog.addClass("active"); 
+                            Properties.backdrop.fadeIn(175); Properties.box.addClass("show");
                         } // Dialog no se encuentra activo
                     };
 
                     Alert.prototype.hide = function () {
-                        if (AttributesAlert.dialog.hasClass("active")) {
+                        if (Properties.dialog.hasClass("active")) {
                             angular.element(document.body).removeClass("body-overflow-none");
                             
-                            AttributesAlert.dialog.removeClass("active"); 
-                            AttributesAlert.backdrop.fadeOut(175);
-                            
-                            AttributesAlert.box.removeClass("show");
-                        } // Dialog no se encuentra activo
+                            Properties.dialog.removeClass("active"); 
+                            Properties.backdrop.fadeOut(175); Properties.box.removeClass("show");
+                        } // Dialog se encuentra activo
                     };
                     
                     var alert = new Alert();
@@ -2886,131 +2960,6 @@
                 }
             },
             
-            Snackbar: {
-                name: "$snackbar",
-                moveButton: function (isShow, height) {
-                    var button = angular.element("button.floating");
-                        
-                    if (button.exists() && (window.innerWidth <= 640)) {
-                        (!isShow) ? button.css("margin-bottom", "0px") :
-                            button.css("margin-bottom", (height) + "px");
-                    } // Se debe cambiar posición del Botón en la Pantalla
-                },
-                method: function () {
-                    var AttributesSnackbar = {
-                            scope: undefined, box: undefined, 
-                            body: undefined, action: undefined
-                        };
-                    
-                    var SnackBar = function () { 
-                        AttributesSnackbar.body = angular.element(
-                            softtion.html("p").addClass(["body"]).create()
-                        );
-                
-                        AttributesSnackbar.action = angular.element(
-                            softtion.html("div").addClass(["action"]).create()
-                        );
-
-                        AttributesSnackbar.box = angular.element(
-                            softtion.html("div").addClass(["snackbar"]).create()
-                        );
-
-                        AttributesSnackbar.box.append(AttributesSnackbar.body); 
-                        AttributesSnackbar.box.append(AttributesSnackbar.action);
-                        
-                        angular.element(document.body).append(AttributesSnackbar.box);
-                    };
-
-                    SnackBar.prototype.show = function (text, actionProperty) {
-                        var heightBody, self = this; // Snackbar
-                        AttributesSnackbar.action.height(0);
-                        var bottomNavigation = angular.element(".bottom-navigation");
-
-                        if (!AttributesSnackbar.box.hasClass("active")) {
-                            AttributesSnackbar.body.html(text); // Estableciendo texto
-                            heightBody = parseInt(AttributesSnackbar.body.height());
-                            
-                            if (heightBody > 20) {
-                                AttributesSnackbar.body.addClass("two-line");
-                            } else {
-                                AttributesSnackbar.body.removeClass("two-line");
-                            } // Cuerpo es de una sola línea
-                            
-                            if (softtion.is("defined", actionProperty)) {
-                                var span = "<span>" + actionProperty.label + "</span>";
-                                AttributesSnackbar.action.html(span); // Texto de acción                                
-                                
-                                var widthAction = AttributesSnackbar.action.find("span").width(),
-                                    widthBody = "calc(100% - " + (widthAction + 30) + "px)";
-                                
-                                AttributesSnackbar.body.css("width", widthBody);
-                                AttributesSnackbar.body.css("padding-right", "24px");
-                                
-                                AttributesSnackbar.action.css("height", AttributesSnackbar.box.height());
-                                
-                                AttributesSnackbar.action.find("span").click(function () {
-                                    if (softtion.is("function", actionProperty.action)) {
-                                        actionProperty.action(); AttributesSnackbar.action.html(""); 
-
-                                        if (softtion.is("defined", self.hiddenSnackbar)) {
-                                            clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
-                                        } // Existe un cierre pendiente por realizar
-
-                                        Material.providers.Snackbar.moveButton(false); 
-                                        AttributesSnackbar.box.removeClass("show").removeClass("active"); 
-                                    } // Ejecutando acción establecida en el Controlador
-                                });
-                            } else {
-                                AttributesSnackbar.action.html("");
-                                AttributesSnackbar.body.css("padding-right", "0px");
-                                AttributesSnackbar.body.css("width", "100%");
-                            } // No e ha definido acción
-                            
-                            if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                AttributesSnackbar.box.addClass("show-bottom-navigation");
-                            } // Existe un bottom-navigation y esta visible en el documento
-                            
-                            AttributesSnackbar.box.addClass("active").addClass("show");
-                            Material.providers.Snackbar.moveButton(true, AttributesSnackbar.box.height()); 
-
-                            self.hiddenSnackbar = setTimeout(
-                                function () {
-                                    self.hiddenSnackbar = undefined; // Eliminando temporizador
-                                    
-                                    AttributesSnackbar.box.removeClass("show").removeClass("active");
-                                    Material.providers.Snackbar.moveButton(false); 
-                                },
-                                5000 // Tiempo de espera para ocultarse
-                            );
-                        } else {
-                            AttributesSnackbar.action.html(""); // Limpiando acción
-                            heightBody = parseInt(AttributesSnackbar.body.css("height"));
-                            
-                            if (softtion.is("defined", self.hiddenSnackbar)) {
-                                clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
-                            } // Existe un cierre pendiente por realizar
-                            
-                            Material.providers.Snackbar.moveButton(false); 
-                            AttributesSnackbar.box.removeClass("show").removeClass("active"); 
-                            
-                            setTimeout(
-                                function () { self.show(text, actionProperty); }, 350
-                            ); // Temporizador para visualizar
-                        }
-                    };
-
-                    var snackbar = new SnackBar();
-                    
-                    this.$get = function () { 
-                        return snackbar; 
-                    };
-                    
-                    this.scope = function (scope) { 
-                        AttributesSnackbar.scope = scope;
-                    };
-                }
-            },
-            
             Sidenav: {
                 name: "$sidenav",
                 method: function () {
@@ -3067,6 +3016,125 @@
                     var sidenav = new SideNav();
 
                     this.$get = function () { return sidenav; };
+                }
+            },
+            
+            Snackbar: {
+                name: "$snackbar",
+                moveButton: function (isShow, height) {
+                    var button = angular.element("button.floating");
+                        
+                    if (button.exists() && (window.innerWidth <= 640)) {
+                        (!isShow) ? button.css("margin-bottom", "0px") :
+                            button.css("margin-bottom", (height) + "px");
+                    } // Se debe cambiar posición del Botón en la Pantalla
+                },
+                method: function () {
+                    var PropertiesSnackbar = {
+                        scope: undefined, box: undefined, 
+                        body: undefined, action: undefined
+                    };
+                    
+                    var SnackBar = function () { 
+                        PropertiesSnackbar.body = angular.element(
+                            softtion.html("p").addClass(["body"]).create()
+                        );
+                
+                        PropertiesSnackbar.action = angular.element(
+                            softtion.html("div").addClass(["action"]).create()
+                        );
+
+                        PropertiesSnackbar.box = angular.element(
+                            softtion.html("div").addClass(["snackbar"]).create()
+                        );
+
+                        PropertiesSnackbar.box.append(PropertiesSnackbar.body); 
+                        PropertiesSnackbar.box.append(PropertiesSnackbar.action);
+                        
+                        angular.element(document.body).append(PropertiesSnackbar.box);
+                    };
+
+                    SnackBar.prototype.show = function (text, actionProperty) {
+                        var heightBody, self = this; // Snackbar
+                        PropertiesSnackbar.action.height(0);
+                        var bottomNavigation = angular.element(".bottom-navigation");
+
+                        if (!PropertiesSnackbar.box.hasClass("active")) {
+                            PropertiesSnackbar.body.html(text); // Estableciendo texto
+                            heightBody = parseInt(PropertiesSnackbar.body.height());
+                            
+                            if (heightBody > 20) {
+                                PropertiesSnackbar.body.addClass("two-line");
+                            } else {
+                                PropertiesSnackbar.body.removeClass("two-line");
+                            } // Cuerpo es de una sola línea
+                            
+                            if (softtion.is("defined", actionProperty)) {
+                                var span = "<span>" + actionProperty.label + "</span>";
+                                PropertiesSnackbar.action.html(span); // Texto de acción                                
+                                
+                                var widthAction = PropertiesSnackbar.action.find("span").width(),
+                                    widthBody = "calc(100% - " + (widthAction + 30) + "px)";
+                                
+                                PropertiesSnackbar.body.css("width", widthBody);
+                                PropertiesSnackbar.body.css("padding-right", "24px");
+                                
+                                PropertiesSnackbar.action.css("height", PropertiesSnackbar.box.height());
+                                
+                                PropertiesSnackbar.action.find("span").click(function () {
+                                    if (softtion.is("function", actionProperty.action)) {
+                                        actionProperty.action(); PropertiesSnackbar.action.html(""); 
+
+                                        if (softtion.is("defined", self.hiddenSnackbar)) {
+                                            clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
+                                        } // Existe un cierre pendiente por realizar
+
+                                        Material.providers.Snackbar.moveButton(false); 
+                                        PropertiesSnackbar.box.removeClass("show").removeClass("active"); 
+                                    } // Ejecutando acción establecida en el Controlador
+                                });
+                            } else {
+                                PropertiesSnackbar.action.html("");
+                                PropertiesSnackbar.body.css("padding-right", "0px");
+                                PropertiesSnackbar.body.css("width", "100%");
+                            } // No e ha definido acción
+                            
+                            if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
+                                PropertiesSnackbar.box.addClass("show-bottom-navigation");
+                            } // Existe un bottom-navigation y esta visible en el documento
+                            
+                            PropertiesSnackbar.box.addClass("active").addClass("show");
+                            Material.providers.Snackbar.moveButton(true, PropertiesSnackbar.box.height()); 
+
+                            self.hiddenSnackbar = setTimeout(
+                                function () {
+                                    self.hiddenSnackbar = undefined; // Eliminando temporizador
+                                    
+                                    PropertiesSnackbar.box.removeClass("show").removeClass("active");
+                                    Material.providers.Snackbar.moveButton(false); 
+                                },
+                                5000 // Tiempo de espera para ocultarse
+                            );
+                        } else {
+                            PropertiesSnackbar.action.html(""); // Limpiando acción
+                            heightBody = parseInt(PropertiesSnackbar.body.css("height"));
+                            
+                            if (softtion.is("defined", self.hiddenSnackbar)) {
+                                clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
+                            } // Existe un cierre pendiente por realizar
+                            
+                            Material.providers.Snackbar.moveButton(false); 
+                            PropertiesSnackbar.box.removeClass("show").removeClass("active"); 
+                            
+                            setTimeout(
+                                function () { self.show(text, actionProperty); }, 350
+                            ); // Temporizador para visualizar
+                        }
+                    };
+
+                    var snackbar = new SnackBar();
+                    
+                    this.$get = function () { return snackbar; };
                 }
             }
         }

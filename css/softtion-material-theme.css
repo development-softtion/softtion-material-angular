@@ -1,9 +1,9 @@
 /*
  * Softtion Material Theme
- * v1.0.0
+ * v1.0.2
  * @license MIT
  * Author: Softtion Developers
- * Updated: 23/Nov/2016
+ * Updated: 28/Nov/2016
  */
 
 :root {
@@ -667,6 +667,7 @@ button.flat:after {
 
 .card > .rich-media > .description,
 .card > .rich-media > .content > .actions > button.flat,
+.card > .rich-media > .content > .actions > button.action,
 .card > .rich-media > .content > .primary-title > .detail > .subtitle,
 .card > .rich-media > .content > .primary-title > .detail > .title {
     color: var(--light-primary-font); }
@@ -692,6 +693,7 @@ button.flat:after {
 .card.secondary > .actions > button.flat {
     color: var(--light-primary-font); }
 
+.card > .rich-media > .content > .actions > button.action:before,
 .card.primary > .actions > button.flat:before,
 .card.dark > .actions > button.flat:before,
 .card.secondary > .actions > button.flat:before {
@@ -1160,13 +1162,32 @@ button.flat:after {
 /** DIALOG */
 
 .dialog > .box {
-    background-color: var(--light-background); }
+    background-color: var(--light-background-ui); }
+
+.dark .dialog > .box {
+    background-color: var(--dark-background-ui); }
+
+.primary .dialog > .box {
+    background-color: var(--primary-background-ui); }
+
+.secondary .dialog > .box {
+    background-color: var(--secondary-background-ui); }
 
 .dialog > .box > .content {
     color: var(--dark-secondary-font); }
 
+.primary .dialog > .box > .content,
+.dark .dialog > .box > .content,
+.secondary .dialog > .box > .content {
+    color: var(--light-secondary-font); }
+
 .dialog > .box > .actions > button.flat {
     color: var(--accent-primary-font); }
+
+.primary .dialog > .box > .actions > button.flat,
+.dark .dialog > .box > .actions > button.flat,
+.secondary .dialog > .box > .actions > button.flat {
+    color: var(--light-primary-font); }
 
 .dialog > .box > .actions > button.flat:disabled {
     color: var(--accent-disabled-font); }
@@ -1384,7 +1405,13 @@ button.flat:after {
 .secondary .select > label {
     color: var(--light-secondary-font); }
 
-.dark .select > input, .primary .select > input,
+.select.active > label.active, .dark .select.active > label.active {
+    color: var(--base-primary-font); }
+
+.primary .select.active > label.active, .secondary .select.active > label.active {
+    color: var(--light-primary-font); }
+
+.dark .select > input, .primary .select > input, 
 .secondary .select > input {
     color: var(--light-primary-font); }
 
@@ -1395,11 +1422,11 @@ button.flat:after {
 .secondary .select > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.select.active > input:focus ~ .line-shadow {
+.select.active > .line-shadow {
     border-bottom: 2px solid var(--primary-background-ui); }
 
-.primary .select.active > input:focus ~ .line-shadow,
-.secondary .select.active > input:focus ~ .line-shadow {
+.primary .select.active > .line-shadow,
+.secondary .select.active > .line-shadow {
     border-bottom: 2px solid var(--light-background-ui); }
 
 .select > input:disabled ~ .line-shadow {
@@ -1410,12 +1437,19 @@ button.flat:after {
 .secondary .select > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.select > i.action-icon {
+.select > button.action {
     color: var(--dark-secondary-font); }
 
-.dark .select > i.action-icon, .primary .select > i.action-icon,
-.secondary .select > i.action-icon {
+.dark .select > button.action, .primary .select > button.action,
+.secondary .select > button.action {
     color: var(--light-primary-font); }
+
+.select > button.action:before {
+    background-color: var(--dark-ripple); }
+
+.dark .select > button.action:before, .primary .select > button.action:before,
+.secondary .select > button.action:before {
+    background-color: var(--light-ripple); }
 
 .select > ul { 
     background-color: var(--light-background-ui); }
@@ -1431,7 +1465,7 @@ button.flat:after {
 
 .select > ul > li.clear-suggestion {
     border-bottom: 1px solid var(--light-background-divider);
-    color: var(--dark-disabled-font); }
+    color: var(--accent-disabled-font); }
 
 .primary .select > ul > li.clear-suggestion,
 .dark .select > ul > li.clear-suggestion, 
@@ -1465,15 +1499,15 @@ button.flat:after {
 .secondary .select-multiple > label {
     color: var(--light-secondary-font); }
 
-.dark .select-multiple > input, .primary .select-multiple > input,
-.secondary .select-multiple > input {
+.select-multiple.active > label.active {
+    color: var(--base-primary-font); }
+
+.primary .select-multiple.active > label.active,
+.secondary .select-multiple.active > label.active {
     color: var(--light-primary-font); }
 
-.select-multiple.active > input:focus ~ label {
-    color: var(--primary-background-ui); }
-
-.primary .select-multiple.active > input:focus ~ label,
-.secondary .select-multiple.active > input:focus ~ label {
+.dark .select-multiple > input, .primary .select-multiple > input,
+.secondary .select-multiple > input {
     color: var(--light-primary-font); }
 
 .select-multiple > .line-shadow {
@@ -1483,11 +1517,11 @@ button.flat:after {
 .secondary .select-multiple > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.select-multiple.active > input:focus ~ .line-shadow {
+.select-multiple.active > .line-shadow {
     border-bottom: 2px solid var(--primary-background-ui); }
 
-.primary .select-multiple.active > input:focus ~ .line-shadow,
-.secondary .select-multiple.active > input:focus ~ .line-shadow {
+.primary .select-multiple.active > .line-shadow,
+.secondary .select-multiple.active > .line-shadow {
     border-bottom: 2px solid var(--light-background-ui); }
 
 .select-multiple > input:disabled ~ .line-shadow {
@@ -1498,23 +1532,31 @@ button.flat:after {
 .secondary .select-multiple > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.select-multiple > i.material-icon {
+.select-multiple > button.action {
     background-color: var(--light-background);
     color: var(--dark-secondary-font); }
 
-.primary .select-multiple > i.material-icon, 
-.dark .select-multiple > i.material-icon,
-.secondary .select-multiple > i.material-icon {
+.primary .select-multiple > button.action, 
+.dark .select-multiple > button.action,
+.secondary .select-multiple > button.action {
     color: var(--light-primary-font); }
 
-.dark .select-multiple > i.material-icon {
+.dark .select-multiple > button.action {
     background-color: var(--dark-background); }
 
-.primary .select-multiple > i.material-icon {
+.primary .select-multiple > button.action {
     background-color: var(--primary-background); }
 
-.secondary .select-multiple > i.material-icon {
+.secondary .select-multiple > button.action {
     background-color: var(--secondary-background); }
+
+.select-multiple > button.action:before {
+    background-color: var(--dark-ripple); }
+
+.primary .select-multiple > button.action:before,
+.dark .select-multiple > button.action:before,
+.secondary .select-multiple > button.action:before {
+    background-color: var(--light-ripple); }
 
 .select-multiple > ul { 
     background-color: var(--light-background-ui); }
@@ -1549,6 +1591,10 @@ button.flat:after {
 .select-multiple > ul > li > .checkbox-selection > label:before {
     background-color: var(--secondary-background-ui); }
 
+.primary .select-multiple > ul > li > .checkbox-selection > label:before,
+.secondary .select-multiple > ul > li > .checkbox-selection > label:before {
+    background-color: var(--light-background-ui); }
+
 .primary .select-multiple > ul > li > .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after,
 .dark .select-multiple > ul > li > .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after,
 .secondary .select-multiple > ul > li > .checkbox-selection > input[type="checkbox"]:not(:checked) + label:after {
@@ -1571,13 +1617,21 @@ button.flat:after {
 .sidenav > .content > .banner > .detail {
     color: var(--light-primary-font); }
 
-.sidenav > .content > .list > .item-list > .options .subitem-list.active {
+.sidenav > .content .options .subitem-list.active,
+.sidenav > .content.dark .options .subitem-list.active {
     color: var(--accent-primary-font); }
+
+.sidenav > .content.primary .options .subitem-list.active,
+.sidenav > .content.secondary .options .subitem-list.active {
+    color: var(--dark-secondary-font); }
 
 /** SNACKBAR */
 
 .snackbar {
     background: #323232; }
+
+.dark .snackbar {
+    background: var(--dark-background-ui); }
 
 .snackbar > .body { 
     color: var(--light-primary-font); }
