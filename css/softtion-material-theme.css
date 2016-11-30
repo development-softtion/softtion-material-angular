@@ -1032,6 +1032,9 @@ button.flat:after {
 .datatable > table > tbody > tr {
     border-bottom: 1px solid var(--light-background-divider); }
 
+.datatable.card-table > table > tbody > tr:last-child {
+    border-bottom: none; }
+
 .primary .datatable > table > tbody > tr,
 .dark .datatable > table > tbody > tr,
 .secondary .datatable > table > tbody > tr {
@@ -1319,25 +1322,21 @@ button.flat:after {
 .list > .subheader, .list > .item-list > .content > .action,
 .list > .item-list > .content > .detail > .description, 
 .list > .item-list > .content > .detail > button.action > i,
-.list > .item-list > .content > .detail > .emphasis,
-.list > .item-list > .options > ul > .subitem-list {
+.list > .item-list > .content > .detail > .emphasis {
     color: var(--dark-secondary-font); }
 
 .list.dark > .subheader, .list > .item-list > .content > .action,
 .list.dark > .item-list > .content > .detail > .description, 
 .list.dark > .item-list > .content > .detail > button.action > i,
 .list.dark > .item-list > .content > .detail > .emphasis,
-.list.dark > .item-list > .options > ul > .subitem-list,
 .list.primary > .subheader, .list > .item-list > .content > .action,
 .list.primary > .item-list > .content > .detail > .description, 
 .list.primary > .item-list > .content > .detail > button.action > i,
 .list.primary > .item-list > .content > .detail > .emphasis,
-.list.primary > .item-list > .options > ul > .subitem-list,
 .list.secondary > .subheader, .list > .item-list > .content > .action,
 .list.secondary > .item-list > .content > .detail > .description, 
 .list.secondary > .item-list > .content > .detail > button.action > i,
-.list.secondary > .item-list > .content > .detail > .emphasis,
-.list.secondary > .item-list > .options > ul > .subitem-list {
+.list.secondary > .item-list > .content > .detail > .emphasis {
     color: var(--light-secondary-font); }
 
 /** MENU */
@@ -1605,25 +1604,67 @@ button.flat:after {
 .sidenav > .content {
     background-color: var(--light-background); }
 
-.sidenav > .content.dark {
+.dark .sidenav > .content {
     background-color: var(--dark-background); }
 
-.sidenav > .content.primary {
+.primary .sidenav > .content {
     background-color: var(--primary-background); }
 
-.sidenav > .content.secondary {
+.secondary .sidenav > .content {
     background-color: var(--secondary-background); }
 
 .sidenav > .content > .banner > .detail {
     color: var(--light-primary-font); }
 
-.sidenav > .content .options .subitem-list.active,
-.sidenav > .content.dark .options .subitem-list.active {
+.sidenav > .content .sidenav-item > .detail > a {
+    color: var(--dark-primary-font); }
+
+.sidenav > .content .sidenav-item > .detail > a > button,
+.sidenav > .content .sidenav-item > .detail > a > i {
+    color: var(--dark-secondary-font); }
+
+.primary .sidenav > .content .sidenav-item > .detail > a,
+.dark .sidenav > .content .sidenav-item > .detail > a,
+.secondary .sidenav > .content .sidenav-item > .detail > a {
+    color: var(--light-primary-font); }
+
+.primary .sidenav > .content .sidenav-item > .detail > a > button,
+.dark .sidenav > .content .sidenav-item > .detail > a > button,
+.secondary .sidenav > .content .sidenav-item > .detail > a > button,
+.primary .sidenav > .content .sidenav-item > .detail > a > i,
+.dark .sidenav > .content .sidenav-item > .detail > a > i,
+.secondary .sidenav > .content .sidenav-item > .detail > a > i {
+    color: var(--light-secondary-font); }
+
+.sidenav > .content .sidenav-item > .detail > a > button:before {
+    background-color: var(--dark-ripple); }
+
+.primary .sidenav > .content .sidenav-item > .detail > a > button:before,
+.dark .sidenav > .content .sidenav-item > .detail > a > button:before,
+.secondary .sidenav > .content .sidenav-item > .detail > a > button:before {
+    background-color: var(--light-ripple); }
+
+.sidenav > .content .sidenav-item .options .item > a {
+    color: var(--dark-secondary-font); }
+
+.primary .sidenav > .content .sidenav-item .options .item > a,
+.dark .sidenav > .content .sidenav-item .options .item > a,
+.secondary .sidenav > .content .sidenav-item .options .item > a {
+    color: var(--light-secondary-font); }
+
+.sidenav > .content .sidenav-item .options .item > a.active {
     color: var(--accent-primary-font); }
 
-.sidenav > .content.primary .options .subitem-list.active,
-.sidenav > .content.secondary .options .subitem-list.active {
+.primary .sidenav > .content .sidenav-item .options .item > a.active,
+.secondary .sidenav > .content .sidenav-item .options .item > a.active {
     color: var(--dark-secondary-font); }
+
+.sidenav > .content .subheader {
+    color: var(--dark-secondary-font); }
+
+.dark .sidenav > .content .subheader, .primary .sidenav > .content .subheader,
+.secondary .sidenav > .content .subheader {
+    color: var(--light-secondary-font); }
 
 /** SNACKBAR */
 

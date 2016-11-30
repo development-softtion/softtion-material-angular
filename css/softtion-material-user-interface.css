@@ -101,7 +101,7 @@ input[type=number]::-webkit-outer-spin-button {
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
 .material-icon, 
-button > i, 
+button > i, a > i, 
 i.action-icon,
 .chip > .action > i {
     font-family: "Material Icons";
@@ -779,9 +779,13 @@ i.action-icon,
         min-height: 64px;
         max-height: 64px; }
     
-    .sidenav-temporary .app-bar {
+    .app-bar {
         margin-left: 320px;
         width: calc(100% - 320px); }
+    
+    .sidenav-temporary .app-bar {
+        width: 100%;
+        margin-left: 0px; }
 }
 
 /** APP CONTENT */
@@ -792,8 +796,11 @@ i.action-icon,
 
 @media only screen and (min-width : 961px) {
      
-    .sidenav-temporary .app-content {
+    .app-content {
         margin-left: 320px; }
+    
+    .sidenav-temporary .app-content {
+        margin-left: 0px; }
 }
 
 /** AUTOCOMPLETE */
@@ -1130,8 +1137,11 @@ i.action-icon,
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav-temporary .bottom-navigation {
+    .bottom-navigation {
         left: 320px; }
+    
+    .sidenav-temporary .bottom-navigation {
+        left: 0px; }
 }
 
 /** BOTTOM SHEET */
@@ -1255,8 +1265,11 @@ i.action-icon,
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav-temporary .bottom-sheet > .content {
+     .bottom-sheet > .content {
         margin-left: 160px; }
+    
+    .sidenav-temporary .bottom-sheet > .content {
+        margin-left: 0px; }
 }
 
 /** BUTTON */
@@ -2196,6 +2209,10 @@ button.raised:focus:after, button.flat:focus:after {
     height: 47px; 
     line-height: 47px; }
 
+.datatable.card-table > table > tbody > tr:last-child {
+    height: 48px; 
+    line-height: 48px; }
+
 .datatable > table > thead > tr > th, 
 .datatable > table > tbody > tr > td {
     display: block;
@@ -2212,11 +2229,11 @@ button.raised:focus:after, button.flat:focus:after {
     text-align: right; }
 
 .datatable > table tbody tr {
-    -moz-transition: background-color 0.30s var(--sharp-curve);
-    -webkit-transition: background-color 0.30s var(--sharp-curve);
-    -o-transition: background-color 0.30s var(--sharp-curve);
-    transition: background-color 0.30s var(--sharp-curve);
-    -ms-transition: background-color 0.30s var(--sharp-curve); }
+    -moz-transition: background-color 0.3s var(--sharp-curve);
+    -webkit-transition: background-color 0.3s var(--sharp-curve);
+    -o-transition: background-color 0.3s var(--sharp-curve);
+    transition: background-color 0.3s var(--sharp-curve);
+    -ms-transition: background-color 0.3s var(--sharp-curve); }
 
 .datatable > table > thead > tr > th.checkbox-table,
 .datatable > table > tbody > tr > td.checkbox-table {
@@ -2567,6 +2584,13 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: content-box;
     padding: 12px; }
 
+.expansion-panel > .header > button.action > i {
+    transform: rotate(0deg);
+    transition: transform 0.325s var(--standard-curve); }
+
+.expansion-panel > .header > button.action > i.active {
+    transform: rotate(180deg); }
+
 .expansion-panel.active > .header, .expansion-panel:last-child > .header {
     border-bottom: none !important; }
 
@@ -2848,30 +2872,6 @@ button.raised:focus:after, button.flat:focus:after {
     top: initial;
     bottom: 16px; }
 
-.list > .item-list > .options {
-    height: 0px;
-    box-sizing: border-box;
-    overflow: hidden; }
-
-.list > .item-list > .options.start {
-    height: auto; }
-
-.list > .item-list > .options > ul {
-    padding: 0px 16px 0px 32px;
-    -moz-transition: margin-top 0.375s var(--standard-curve);
-    -webkit-transition: margin-top 0.375s var(--standard-curve);
-    -o-transition: margin-top 0.375s var(--standard-curve);
-    transition: margin-top 0.375s var(--standard-curve);
-    -ms-transition: margin-top 0.375s var(--standard-curve); }
-
-.list > .item-list.active > .options > ul {
-    margin-top: 0% !important; }
-
-.list > .item-list > .options > ul > .subitem-list {
-    font-family: softtion-medium;
-    height: 48px;
-    line-height: 48px; }
-
 /** MENU */
 
 .menu {
@@ -3036,9 +3036,13 @@ button.raised:focus:after, button.flat:focus:after {
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav-temporary .search-box {
+    .search-box {
         left: calc(50% + 160px);
         width: calc(100% - 336px); }
+    
+    .sidenav-temporary .search-box {
+        left: 50%;
+        width: 100%; }
 }
 
 /** SELECT */
@@ -3357,7 +3361,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px; 
     font-family: softtion-medium; }
 
-.sidenav > .content > .banner > .detail > .email {
+.sidenav > .content > .banner > .detail > .description {
     width: 100%;
     margin: 0px;
     margin-top: 4px; }
@@ -3377,7 +3381,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%; 
     height: auto; }
 
-.sidenav > .content > .banner > .others {
+.sidenav > .content > .banner > .alternatives {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -3386,41 +3390,130 @@ button.raised:focus:after, button.flat:focus:after {
     height: 40px;
     overflow: hidden; }
 
-.sidenav > .content > .banner > .others > img {
+.sidenav > .content > .banner > .alternatives > img {
     float: left;
     margin-left: 16px;
     width: 40px; 
     height: 40px; 
     border-radius: 50%; }
 
-.sidenav > .content > .list {
+.sidenav > .content > .sidenav-menu {
+    width: 100%;
     padding: 8px 0px; }
 
-.sidenav > .content > .list .content, 
-.sidenav > .content > .list .options li {
-    cursor: pointer; }
+.sidenav > .content .sidenav-item > .detail {
+    position: relative; }
 
-.sidenav > .content > .list .detail {
+.sidenav > .content .sidenav-item > .detail > a {
+    display: block;
     cursor: pointer;
-    border-bottom: none; }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 16px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 16px;
+    font-family: softtion-medium; }
 
-.sidenav > .content > .list .detail > button.action > i {
-    transform: rotate(0deg);
-    transition: transform 0.325s var(--standard-curve); }
+.sidenav > .content .sidenav-item > .detail > a > i {
+    float: left;
+    padding-right: 32px;
+    height: 48px;
+    line-height: 48px; }
 
-.sidenav > .content > .list .detail > button.action > i.active {
+.sidenav > .content .sidenav-item > .detail > a > span {
+    display: block;
+    float: left;
+    width: calc(100% - 32px);
+    height: 48px;
+    line-height: 48px; }
+
+.sidenav > .content .sidenav-item > .detail > a > i + span {
+    width: calc(100% - 84px); }
+
+.sidenav > .content .sidenav-item > .detail > a > button.action {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0px 4px; }
+
+.sidenav > .content .sidenav-item > .detail > a > button.action:not(:active):before {
+    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+
+.sidenav > .content .sidenav-item > .detail > a > button.action > i {
+    transition: transform 0.325s var(--standard-curve);
+    transform: rotate(0deg); }
+
+.sidenav > .content .sidenav-item > .detail > a > button.action > i.active {
     transform: rotate(180deg); }
 
-.sidenav > .content > .list .detail > label {
-    cursor: pointer; }
+.sidenav > .content .sidenav-item > .options {
+    height: 0px;
+    box-sizing: border-box;
+    overflow: hidden; }
+
+.sidenav > .content .sidenav-item > .options.active {
+    height: auto; }
+
+.sidenav > .content .sidenav-item > .options > ul {
+    -moz-transition: margin-top 0.375s var(--standard-curve);
+    -webkit-transition: margin-top 0.375s var(--standard-curve);
+    -o-transition: margin-top 0.375s var(--standard-curve);
+    transition: margin-top 0.375s var(--standard-curve);
+    -ms-transition: margin-top 0.375s var(--standard-curve); }
+
+.sidenav > .content .sidenav-item.active > .options > ul {
+    margin-top: 0% !important; }
+
+.sidenav > .content .sidenav-item > .options > ul > li > a {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 16px 0px 32px;
+    height: 48px;
+    line-height: 48px;
+    font-family: softtion-medium;
+    text-decoration: none; }
+
+.sidenav > .content .divider {
+    margin: 8px 0px; }
+
+.sidenav > .content > .sidenav-menu > .divider {
+    margin-top: 0px; }
+
+.sidenav > .content .subheader {
+    width: 100%;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    height: 48px;
+    line-height: 48px;
+    font-size: 16px;
+    font-family: softtion-medium; }
 
 @media only screen and (min-width : 961px) {
     
-    .sidenav-temporary .sidenav > .content {
+    .sidenav > .content {
         box-shadow: var(--shadow-6); }
+    
+    .sidenav > .content, .sidenav > .content.hide {
+        left: 0%; }
+    
+    .sidenav-temporary .sidenav > .content {
+        box-shadow: none; }
     
     .sidenav-temporary .sidenav > .content, 
     .sidenav-temporary .sidenav > .content.hide {
+        left: -105%; }
+    
+    .sidenav-temporary .sidenav > .content.show {
         left: 0%; }
 }
 
@@ -3492,8 +3585,11 @@ button.raised:focus:after, button.flat:focus:after {
         width: 40%;
         left: 30%; }
     
-    .sidenav-temporary .snackbar {
+    .snackbar {
         margin-left: 160px; }
+    
+    .sidenav-temporary .snackbar {
+        margin-left: 0px; }
 }
 
 /** TABS */
@@ -3895,8 +3991,11 @@ button.raised:focus:after, button.flat:focus:after {
     .toolbar > .actions > button.action.menu-icon {
         padding: 20px 8px; }
     
-    .sidenav-temporary .app-bar > .toolbar > .nav-icon {
+    .app-bar > .toolbar > .nav-icon {
         display: none; }
+    
+    .sidenav-temporary .app-bar > .toolbar > .nav-icon {
+        display: block; }
 }
 
 /** TOOLTIP */

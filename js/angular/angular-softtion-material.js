@@ -1634,7 +1634,9 @@
                 name: "expansionPanel",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(softtion.html("i").setText("expand_more")).create();
+                        addComponent(
+                            softtion.html("i").setText("expand_more")
+                        ).create();
                 },
                 directive: function () {
                     return {
@@ -1661,63 +1663,16 @@
                                     } // Componente no se encuentra iniciado
                                     
                                     $element.siblings("li").removeClass("active");
-                                    $element.siblings("li").find(".action").find("i").html("expand_more");
-                                    $element.toggleClass("active"); // Cambiando estado
-
-                                    if ($element.hasClass("active")) {
-                                        icon.html("expand_less");
-                                    } else {
-                                        icon.html("expand_more"); content.css("margin-top", marginTop);
-                                    } // Cerrando content del Expansion
-                                });
-                            } // El componente no tiene contenedor
-                        }
-                    };
-                }
-            },
-            
-            ItemList: {
-                name: "itemList",
-                buttonAction: function () {
-                    return softtion.html("button").addClass(["action"]).
-                        addComponent(
-                            softtion.html("i").setText("expand_more")
-                        ).create();
-                },
-                directive: function () {
-                    return {
-                        restrict: "C",
-                        link: function ($scope, $element) {
-                            // Componentes
-                            var options = $element.find(".options");
-                            
-                            if (options.exists()) {
-                                var ul = options.find("ul"), // Lista del submenu
-                                    button = angular.element(
-                                        Material.components.ItemList.buttonAction()
-                                    ),
-                                    icon = button.find("i");
-                                
-                                ul.css("margin-top", (ul[0].clientHeight * -1));
-                                $element.find(".detail").append(button); // Agregando icono
-
-                                $element.find(".content").click(function () {
-                                    var marginTop = (-1 * ul.innerHeight()), 
-                                        isStart = options.hasClass("start");
-                                    
-                                    if (!isStart) {
-                                        ul.css("margin-top", marginTop); options.addClass("start");
-                                    } // Componente no se encuentra iniciado
-                                    
+                                    $element.siblings("li").find(".action").find("i").removeClass("active");
                                     $element.toggleClass("active"); // Cambiando estado
 
                                     if ($element.hasClass("active")) {
                                         icon.addClass("active");
                                     } else {
-                                        icon.removeClass("active"); ul.css("margin-top", (-1 * ul.innerHeight()));
+                                        icon.removeClass("active"); content.css("margin-top", marginTop);
                                     } // Cerrando content del Expansion
                                 });
-                            } // El item contiene opciones
+                            } // El componente no tiene contenedor
                         }
                     };
                 }
@@ -2133,6 +2088,52 @@
                                 return !(softtion.is("string", $scope.keyDescription)) ?
                                     JSON.stringify(suggestion) : softtion.findKey(suggestion, $scope.keyDescription); 
                             };
+                        }
+                    };
+                }
+            },
+            
+            SidenavItem: {
+                name: "sidenavItem",
+                buttonAction: function () {
+                    return softtion.html("button").addClass(["action"]).
+                        addComponent(
+                            softtion.html("i").setText("expand_more")
+                        ).create();
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            // Componentes
+                            var options = $element.find(".options");
+                            
+                            if (options.exists()) {
+                                var ul = options.find("ul"),
+                                    button = angular.element(
+                                        Material.components.SidenavItem.buttonAction()
+                                    ),
+                                    icon = button.find("i");
+                                
+                                ul.css("margin-top", (ul[0].clientHeight * -1));
+                                $element.find(".detail > a").append(button); // Agregando icono
+
+                                $element.find(".detail").click(function () {
+                                    var marginTop = (-1 * ul.innerHeight()), isStart = options.hasClass("active");
+                                    
+                                    if (!isStart) {
+                                        ul.css("margin-top", marginTop); options.addClass("active");
+                                    } // Componente no se encuentra iniciado
+                                    
+                                    $element.toggleClass("active"); // Cambiando estado
+
+                                    if ($element.hasClass("active")) {
+                                        icon.addClass("active");
+                                    } else {
+                                        icon.removeClass("active"); ul.css("margin-top", (-1 * ul.innerHeight()));
+                                    } // Cerrando content del Expansion
+                                });
+                            } // El item contiene opciones
                         }
                     };
                 }
