@@ -309,9 +309,9 @@
                             tabActive.addClass("active");
                             
                             switch (tabs.length) {
-                                default: $element.addClass("three-tabs"); break;
+                                default: $element.addClass("five-tabs"); break; 
+                                case (3): $element.addClass("three-tabs"); break;
                                 case (4): $element.addClass("four-tabs"); break;
-                                case (5): $element.addClass("five-tabs"); break; 
                             } // Estableciendo dimensión
                                 
                             if ($element.hasClass("shifting")) {

@@ -280,7 +280,16 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
     background-color: var(--secondary-background-appbar); }
 
 .bottom-navigation.default {
+    background-color: var(--light-background-appbar) !important ; }
+
+.dark .bottom-navigation.default {
+    background-color: var(--dark-background-appbar) !important ; }
+
+.primary .bottom-navigation.default {
     background-color: var(--primary-background-appbar) !important ; }
+
+.secondary .bottom-navigation.default {
+    background-color: var(--secondary-background-appbar) !important ; }
 
 .bottom-navigation > .content > li > .content {
     color: var(--dark-secondary-font); }
@@ -301,7 +310,23 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 .bottom-navigation.shifting > .content > li > .content {
     color: var(--light-secondary-font); }
 
+.bottom-navigation.shifting.default > .content > li > .content {
+    color: var(--dark-secondary-font); }
+
+.primary .bottom-navigation.shifting.default > .content > li > .content,
+.dark .bottom-navigation.shifting.default > .content > li > .content,
+.secondary .bottom-navigation.shifting.default > .content > li > .content {
+    color: var(--light-secondary-font); }
+
 .bottom-navigation.shifting > .content > li.active > .content {
+    color: var(--light-primary-font); }
+
+.bottom-navigation.shifting.default > .content > li.active > .content {
+    color: var(--accent-primary-font); }
+
+.primary .bottom-navigation.shifting.default > .content > li.active > .content,
+.dark .bottom-navigation.shifting.default > .content > li.active > .content,
+.secondary .bottom-navigation.shifting.default > .content > li.active > .content {
     color: var(--light-primary-font); }
 
 .bottom-navigation > .ripple-box > .effect {
@@ -313,6 +338,14 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
     background-color: var(--light-ripple); }
 
 .bottom-navigation.shifting > .ripple-box > .effect {
+    background-color: var(--light-ripple); }
+
+.bottom-navigation.shifting.default > .ripple-box > .effect {
+    background-color: var(--dark-ripple); }
+
+.primary .bottom-navigation.shifting.default > .ripple-box > .effect,
+.dark .bottom-navigation.shifting.default > .ripple-box > .effect,
+.secondary .bottom-navigation.shifting.default > .ripple-box > .effect {
     background-color: var(--light-ripple); }
 
 /** BOTTOM SHEET */

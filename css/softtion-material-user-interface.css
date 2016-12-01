@@ -979,6 +979,9 @@ i.action-icon,
     box-sizing: border-box;
     text-transform: none; }
 
+.bottom-navigation > .content > li:nth-child(5n + 1) {
+    display: none; }
+
 .bottom-navigation.four-tabs > .content > li,
 .bottom-navigation.five-tabs > .content > li {
     padding: 0px;
