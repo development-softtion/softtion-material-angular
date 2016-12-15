@@ -11,16 +11,16 @@
 /** WHITE AND BLACK */
 
 .black {
-    background-color: #000000; }
+    background-color: #000000 !important; }
 
 .black-font {
-    color: #000000; }
+    color: #000000 !important; }
 
 .white {
-    background-color: #ffffff; }
+    background-color: #ffffff !important; }
 
 .white-font {
-    color: #ffffff; }
+    color: #ffffff !important; }
 
 /** RED */
 

@@ -36,9 +36,10 @@
                                     (position < positionNew) ?
                                         $element.addClass(hideClass) : $element.removeClass(hideClass);
                                 } else if (positionNew === 0) {
-                                    $element.removeClass(hideClass); }
+                                    $element.removeClass(hideClass); 
+                                }
 
-                                position = positionNew; // Posici�n nueva del scroll
+                                position = positionNew; // Posición nueva del scroll
                             });
                             
                             angular.element(".app-content").css("margin-top", $element.innerHeight());
@@ -2431,7 +2432,7 @@
                             // Componentes
                             var input = $element.find("input");
                             
-                            if (softtion.is("string", $scope.icon) && $element.hasClass("single-line")) {
+                            if (softtion.is("defined", $scope.icon) && $element.hasClass("single-line")) {
                                 var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
                                 angular.element(icon.create()).insertAfter(input); $element.addClass("icon-input");
                             } // Se debe insertar el icono antes del input
@@ -2465,7 +2466,7 @@
                             $scope.focusInput = function () { $element.addClass("active"); };
 
                             $scope.blurInput = function () {
-                                if ($scope.inputValue === "") {
+                                if (!softtion.is("string", $scope.inputValue)) {
                                     $element.removeClass("active"); // Componente no tiene Texto
 
                                     if ($scope.required) {
@@ -2605,7 +2606,7 @@
                     };
                     
                     var Alert = function () {
-                        var self = this; 
+                        var self = this; // Objeto Alert
 
                         Properties.dialog = angular.element(
                             softtion.html("div").addClass("dialog").create()
@@ -2961,6 +2962,63 @@
                 }
             },
             
+            FormNavigation: {
+                name: "$formNavigation",
+                method: function () {
+                    var Properties = {
+                        form: undefined, backdrop: undefined, content: undefined
+                    };
+                    
+                    var FormNavigation = function () {};
+
+                    FormNavigation.prototype.set = function (idPaneForm) {
+                        var self = this; // Instancia del PaneForm
+                        
+                        Properties.form = angular.element(idPaneForm);
+
+                        if (Properties.form.exists()) {
+                            Properties.content = Properties.form.find(".content:first");
+                            Properties.backdrop = Properties.form.find(".backdrop");
+
+                            if (!Properties.backdrop.exists()) {
+                                Properties.backdrop = angular.element(
+                                    softtion.html("div").addClass("backdrop").create()
+                                );
+
+                                Properties.form.append(Properties.backdrop);
+                                Properties.backdrop.click(function () { self.hide(); });
+                            }
+                        } // Existe el PaneForm en el documento
+                        
+                        return this; // Retornando interfaz fluida
+                    };
+
+                    FormNavigation.prototype.show = function () {
+                        if (Properties.form.exists() && !Properties.form.hasClass("active")) {
+                            angular.element(document.body).addClass("body-overflow-none");
+                            
+                            Properties.content.removeClass("sharp-curve").removeClass("hide");
+                            Properties.content.addClass("easing-out").addClass("show");
+                            Properties.backdrop.fadeIn(300); Properties.form.addClass("active"); 
+                        } // Sidenav no se encuentra activo
+                    };
+
+                    FormNavigation.prototype.hide = function () {
+                        if (Properties.form.exists() && Properties.form.hasClass("active")) {
+                            angular.element(document.body).removeClass("body-overflow-none");
+                            
+                            Properties.content.removeClass("easing-out").removeClass("show");
+                            Properties.content.addClass("hide").addClass("sharp-curve");
+                            Properties.backdrop.fadeOut(300); Properties.form.removeClass("active"); 
+                        } // Sidenav no se encuentra activo
+                    };
+                    
+                    var formNavigation = new FormNavigation();
+
+                    this.$get = function () { return formNavigation; };
+                }
+            },
+            
             Sidenav: {
                 name: "$sidenav",
                 method: function () {
@@ -3031,101 +3089,101 @@
                     } // Se debe cambiar posición del Botón en la Pantalla
                 },
                 method: function () {
-                    var PropertiesSnackbar = {
+                    var Properties = {
                         scope: undefined, box: undefined, 
                         body: undefined, action: undefined
                     };
                     
                     var SnackBar = function () { 
-                        PropertiesSnackbar.body = angular.element(
+                        Properties.body = angular.element(
                             softtion.html("p").addClass(["body"]).create()
                         );
                 
-                        PropertiesSnackbar.action = angular.element(
+                        Properties.action = angular.element(
                             softtion.html("div").addClass(["action"]).create()
                         );
 
-                        PropertiesSnackbar.box = angular.element(
+                        Properties.box = angular.element(
                             softtion.html("div").addClass(["snackbar"]).create()
                         );
 
-                        PropertiesSnackbar.box.append(PropertiesSnackbar.body); 
-                        PropertiesSnackbar.box.append(PropertiesSnackbar.action);
+                        Properties.box.append(Properties.body); 
+                        Properties.box.append(Properties.action);
                         
-                        angular.element(document.body).append(PropertiesSnackbar.box);
+                        angular.element(document.body).append(Properties.box);
                     };
 
                     SnackBar.prototype.show = function (text, actionProperty) {
                         var heightBody, self = this; // Snackbar
-                        PropertiesSnackbar.action.height(0);
+                        Properties.action.height(0);
                         var bottomNavigation = angular.element(".bottom-navigation");
 
-                        if (!PropertiesSnackbar.box.hasClass("active")) {
-                            PropertiesSnackbar.body.html(text); // Estableciendo texto
-                            heightBody = parseInt(PropertiesSnackbar.body.height());
+                        if (!Properties.box.hasClass("active")) {
+                            Properties.body.html(text); // Estableciendo texto
+                            heightBody = parseInt(Properties.body.height());
                             
                             if (heightBody > 20) {
-                                PropertiesSnackbar.body.addClass("two-line");
+                                Properties.body.addClass("two-line");
                             } else {
-                                PropertiesSnackbar.body.removeClass("two-line");
+                                Properties.body.removeClass("two-line");
                             } // Cuerpo es de una sola línea
                             
                             if (softtion.is("defined", actionProperty)) {
                                 var span = "<span>" + actionProperty.label + "</span>";
-                                PropertiesSnackbar.action.html(span); // Texto de acción                                
+                                Properties.action.html(span); // Texto de acción                                
                                 
-                                var widthAction = PropertiesSnackbar.action.find("span").width(),
+                                var widthAction = Properties.action.find("span").width(),
                                     widthBody = "calc(100% - " + (widthAction + 30) + "px)";
                                 
-                                PropertiesSnackbar.body.css("width", widthBody);
-                                PropertiesSnackbar.body.css("padding-right", "24px");
+                                Properties.body.css("width", widthBody);
+                                Properties.body.css("padding-right", "24px");
                                 
-                                PropertiesSnackbar.action.css("height", PropertiesSnackbar.box.height());
+                                Properties.action.css("height", Properties.box.height());
                                 
-                                PropertiesSnackbar.action.find("span").click(function () {
+                                Properties.action.find("span").click(function () {
                                     if (softtion.is("function", actionProperty.action)) {
-                                        actionProperty.action(); PropertiesSnackbar.action.html(""); 
+                                        actionProperty.action(); Properties.action.html(""); 
 
                                         if (softtion.is("defined", self.hiddenSnackbar)) {
                                             clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                                         } // Existe un cierre pendiente por realizar
 
                                         Material.providers.Snackbar.moveButton(false); 
-                                        PropertiesSnackbar.box.removeClass("show").removeClass("active"); 
+                                        Properties.box.removeClass("show").removeClass("active"); 
                                     } // Ejecutando acción establecida en el Controlador
                                 });
                             } else {
-                                PropertiesSnackbar.action.html("");
-                                PropertiesSnackbar.body.css("padding-right", "0px");
-                                PropertiesSnackbar.body.css("width", "100%");
+                                Properties.action.html("");
+                                Properties.body.css("padding-right", "0px");
+                                Properties.body.css("width", "100%");
                             } // No e ha definido acción
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                PropertiesSnackbar.box.addClass("show-bottom-navigation");
+                                Properties.box.addClass("show-bottom-navigation");
                             } // Existe un bottom-navigation y esta visible en el documento
                             
-                            PropertiesSnackbar.box.addClass("active").addClass("show");
-                            Material.providers.Snackbar.moveButton(true, PropertiesSnackbar.box.height()); 
+                            Properties.box.addClass("active").addClass("show");
+                            Material.providers.Snackbar.moveButton(true, Properties.box.height()); 
 
                             self.hiddenSnackbar = setTimeout(
                                 function () {
                                     self.hiddenSnackbar = undefined; // Eliminando temporizador
                                     
-                                    PropertiesSnackbar.box.removeClass("show").removeClass("active");
+                                    Properties.box.removeClass("show").removeClass("active");
                                     Material.providers.Snackbar.moveButton(false); 
                                 },
                                 5000 // Tiempo de espera para ocultarse
                             );
                         } else {
-                            PropertiesSnackbar.action.html(""); // Limpiando acción
-                            heightBody = parseInt(PropertiesSnackbar.body.css("height"));
+                            Properties.action.html(""); // Limpiando acción
+                            heightBody = parseInt(Properties.body.css("height"));
                             
                             if (softtion.is("defined", self.hiddenSnackbar)) {
                                 clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                             } // Existe un cierre pendiente por realizar
                             
                             Material.providers.Snackbar.moveButton(false); 
-                            PropertiesSnackbar.box.removeClass("show").removeClass("active"); 
+                            Properties.box.removeClass("show").removeClass("active"); 
                             
                             setTimeout(
                                 function () { self.show(text, actionProperty); }, 350
@@ -3134,6 +3192,64 @@
                     };
 
                     var snackbar = new SnackBar();
+                    
+                    this.$get = function () { return snackbar; };
+                }
+            },
+            
+            Toast: {
+                name: "$toast",
+                method: function () {
+                    var Properties = {
+                        box: undefined, body: undefined
+                    };
+                    
+                    var Toast = function () { 
+                        Properties.body = angular.element(
+                            softtion.html("p").addClass(["body"]).create()
+                        );
+
+                        Properties.box = angular.element(
+                            softtion.html("div").addClass(["toast"]).create()
+                        );
+
+                        Properties.box.append(Properties.body);
+                        
+                        angular.element(document.body).append(Properties.box);
+                    };
+
+                    Toast.prototype.show = function (text) {
+                        var heightBox, self = this; // Instancia Toast
+
+                        if (!Properties.box.hasClass("active")) {
+                            Properties.body.html(text); // Estableciendo texto
+                            heightBox = parseInt(Properties.box.innerHeight());
+                            
+                            Properties.box.css("margin-bottom", "-" + heightBox + "px");
+                            Properties.box.addClass("active").addClass("show");
+
+                            self.hiddenToast = setTimeout(
+                                function () {
+                                    self.hiddenToast = undefined; // Eliminando temporizador
+                                    Properties.box.removeClass("show").removeClass("active");
+                                },
+                                5000 // Tiempo de espera para ocultarse
+                            );
+                        } else {
+                            heightBox = parseInt(Properties.box.innerHeight());
+                            Properties.box.css("margin-bottom", "-" + heightBox + "px");
+                            
+                            if (softtion.is("defined", self.hiddenToast)) {
+                                clearTimeout(self.hiddenToast); self.hiddenToast = undefined;
+                            } // Existe un cierre pendiente por realizar
+                            
+                            Properties.box.removeClass("show").removeClass("active"); 
+                            
+                            setTimeout(function () { self.show(text); }, 350); // Temporizador
+                        }
+                    };
+
+                    var snackbar = new Toast();
                     
                     this.$get = function () { return snackbar; };
                 }

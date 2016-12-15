@@ -158,60 +158,60 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 .autocomplete > label {
     color: var(--dark-secondary-font); }
 
-.autocomplete.dark > label, .autocomplete.primary > label,
-.autocomplete.secondary > label {
+.dark .autocomplete > label, .primary .autocomplete> label,
+.secondary .autocomplete > label {
     color: var(--light-secondary-font); }
 
 .autocomplete.active > input:focus ~ label {
     color: var(--primary-background-ui); }
 
-.autocomplete.primary.active > input:focus ~ label,
-.autocomplete.secondary.active > input:focus ~ label {
+.primary .autocomplete.active > input:focus ~ label,
+.secondary .autocomplete.active > input:focus ~ label {
     color: var(--light-background-ui); }
 
-.autocomplete.dark > input, .autocomplete.primary > input,
-.autocomplete.secondary > input {
+.dark .autocomplete > input, .primary .autocomplete > input,
+.secondary .autocomplete > input {
     color: var(--light-primary-font); }
 
 .autocomplete > input::selection {
     color: var(--light-primary-font);
     background-color: var(--primary-background-ui); }
 
-.autocomplete.primary > input::selection, 
-.autocomplete.dark > input::selection,
-.autocomplete.secondary > input::selection {
+.primary .autocomplete > input::selection, 
+.dark .autocomplete > input::selection,
+.secondary .autocomplete > input::selection {
     background-color: var(--light-background-ui); }
 
-.autocomplete.dark > input::selection {
+.dark .autocomplete > input::selection {
     color: var(--dark-primary-font); }
 
-.autocomplete.primary > input::selection {
+.primary .autocomplete > input::selection {
     color: var(--base-primary-font); }
 
-.autocomplete.secondary > input::selection {
+.secondary .autocomplete > input::selection {
     color: var(--accent-primary-font); }
 
 .autocomplete > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.autocomplete.primary > .line-shadow, 
-.autocomplete.dark > .line-shadow, 
-.autocomplete.secondary > .line-shadow {
+.primary .autocomplete > .line-shadow, 
+.dark .autocomplete > .line-shadow, 
+.secondary .autocomplete > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
 .autocomplete.active > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--primary-background-ui); }
 
-.autocomplete.primary.active > input:focus ~ .line-shadow,
-.autocomplete.secondary.active > input:focus ~ .line-shadow {
+.primary .autocomplete.active > input:focus ~ .line-shadow,
+.secondary .autocomplete.active > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--light-background-ui); }
 
 .autocomplete > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.autocomplete.primary > input:disabled ~ .line-shadow,
-.autocomplete.dark > input:disabled ~ .line-shadow,
-.autocomplete.secondary > input:disabled ~ .line-shadow {
+.primary .autocomplete > input:disabled ~ .line-shadow,
+.dark .autocomplete> input:disabled ~ .line-shadow,
+.secondary .autocomplete > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
 .autocomplete > span {
@@ -220,35 +220,35 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 .autocomplete > .action-icon {
     color: var(--dark-secondary-font); }
 
-.autocomplete.primary > .action-icon,
-.autocomplete.dark > .action-icon,
-.autocomplete.secondary > .action-icon {
+.primary .autocomplete > .action-icon,
+.dark .autocomplete > .action-icon,
+.secondary .autocomplete > .action-icon {
     color: var(--light-primary-font); }
 
 .autocomplete > ul { 
     background-color: var(--light-background-ui); }
 
-.autocomplete.dark > ul { 
+.dark .autocomplete > ul { 
     background-color: var(--dark-background-ui); }
 
-.autocomplete.primary > ul { 
+.primary .autocomplete > ul { 
     background-color: var(--primary-background-ui); }
 
-.autocomplete.secondary > ul { 
+.secondary .autocomplete > ul { 
     background-color: var(--secondary-background-ui); }
 
 .autocomplete > ul > li { 
     color: var(--dark-secondary-font); }
 
-.autocomplete.dark > ul > li, .autocomplete.primary > ul > li,
-.autocomplete.secondary > ul > li { 
+.dark .autocomplete > ul > li, .primary .autocomplete > ul > li,
+.secondary .autocomplete > ul > li { 
     color: var(--light-primary-font); }
 
 .autocomplete > ul > li > b { 
     color: var(--accent-secondary-font); }
 
-.autocomplete.dark > ul > li > b, .autocomplete.primary > ul > li > b,
-.autocomplete.secondary > ul > li > b { 
+.dark .autocomplete > ul > li > b, .primary .autocomplete > ul > li > b,
+.secondary .autocomplete > ul > li > b { 
     color: var(--light-secondary-font); }
 
 .autocomplete > ul > li:focus {
@@ -260,9 +260,9 @@ html.secondary, body.secondary, input.secondary, textarea.secondary {
 .autocomplete > ul > li.not-found {
     color: var(--accent-primary-font); }
 
-.autocomplete.primary > ul > li.not-found,
-.autocomplete.dark > ul > li.not-found,
-.autocomplete.secondary > ul > li.not-found {
+.primary .autocomplete > ul > li.not-found,
+.dark .autocomplete > ul > li.not-found,
+.secondary .autocomplete > ul > li.not-found {
     color: var(--light-secondary-font); }
 
 /** BOTTOM NAVIGATION */
@@ -1289,6 +1289,20 @@ button.flat:after {
 .secondary .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-divider); }
 
+/** FORM NAVIGATION */
+
+.form-navigation > .content {
+    background-color: var(--light-background); }
+
+.dark .form-navigation > .content {
+    background-color: var(--dark-background); }
+
+.primary .form-navigation > .content {
+    background-color: var(--primary-background); }
+
+.secondary .form-navigation > .content {
+    background-color: var(--secondary-background); }
+
 /** GRIDLIST */
 
 .grid-list > .subheader {
@@ -2012,6 +2026,15 @@ button.flat:after {
 .dark .textfield-readonly > input:disabled ~ .line-shadow,
 .secondary .textfield-readonly > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
+
+/** TOAST */
+
+.toast > .body { 
+    color: var(--light-primary-font);
+    background: #323232; }
+
+.dark .toast > body {
+    background: var(--dark-background-ui); }
 
 /** TOOLBAR */
 

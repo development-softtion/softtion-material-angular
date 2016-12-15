@@ -54,35 +54,39 @@ html, body ,input, textarea {
 h1, h2, h3, h4, h5, h6, b {
     font-family: softtion-bold; }
 
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px; }
+
 body {
     margin: 0px; }
 
 .body-material {
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
     right: 0; }
 
 .body-overflow-none {
     overflow: hidden; }
 
-::-webkit-scrollbar {
-    width: 6px; 
-    height: 6px;
-    background: transparent; }
+@media only screen and (min-width : 361px) {
 
-::-webkit-scrollbar-button {
-    width:0px;
-    height: 0px; }
+    ::-webkit-scrollbar {
+        background: transparent; 
+        width: 6px; 
+        height: 6px; }
 
-::-webkit-scrollbar-track {
-    background:transparent; }
+    ::-webkit-scrollbar-button {
+        width: 0px;
+        height: 0px; }
 
-::-webkit-scrollbar-thumb {
-    background: #cfd8dc;
-    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,225,0.5), inset 1px 0 0 rgba(255,255,255,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
-    border-radius: 10px;
-    -webkit-border-radius: 10px; }
+    ::-webkit-scrollbar-track {
+        background: transparent; }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.25); }
+}
 
 ul {
     list-style-type: none; 
@@ -791,8 +795,11 @@ i.action-icon,
 /** APP CONTENT */
 
 .app-content {
-    padding-top: 8px;
-    overflow: auto; }
+    padding-top: 8px; }
+
+.block {
+    padding: 0px 16px;
+    box-sizing: border-box; }
 
 @media only screen and (min-width : 961px) {
      
@@ -1417,6 +1424,16 @@ button.raised:focus:after, button.flat:focus:after {
     -o-animation: button-focus 2s infinite var(--sharp-curve); 
     animation: button-focus 2s infinite var(--sharp-curve); 
     -ms-animation: button-focus 2s infinite var(--sharp-curve); }*/
+
+.button-group {
+    position: relative;
+    float: left;
+    padding: 24px 8px 8px 8px;
+    overflow: auto;
+    box-sizing: border-box; }
+
+.button-group > button.right {
+    float: right; }
 
 /** CARD */
 
@@ -2160,7 +2177,7 @@ button.raised:focus:after, button.flat:focus:after {
 /** DATATABLE */
 
 .datatable.card-table {
-    box-shadow: var(--shadow-4); }
+    box-shadow: var(--shadow-2); }
 
 .datatable > .header {
     position: relative;
@@ -2619,6 +2636,35 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel.active > .body > .content {
     margin-top: 0% !important; }
+
+/** FORM NAVIGATION */
+
+.form-navigation > .backdrop {
+    z-index: 15; }
+
+.form-navigation > .content {
+    position: fixed;
+    top: 0;
+    right: -105%;
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 16;
+    box-shadow: var(--shadow-16); }
+
+.form-navigation > .content.show {
+    right: 0%; }
+
+.form-navigation > .content.hide {
+    right: -105%; }
+
+.form-navigation > .content.show, .form-navigation > .content.hide {
+    -moz-transition: right 0.3s var(--standard-curve); 
+    -webkit-transition: right 0.3s var(--standard-curve); 
+    -o-transition: right 0.3s var(--standard-curve); 
+    transition: right 0.3s var(--standard-curve); 
+    -ms-transition: right 0.3s var(--standard-curve); }
 
 /** GRID LIST */
 
@@ -3903,6 +3949,34 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield-readonly.flex-pd > label, .textfield-readonly.flex-pd-left > label,
 .textfield-readonly.flex-pd > .line-shadow, .textfield-readonly.flex-pd-left > .line-shadow {
     left: 8px; }
+
+/** TOAST */
+
+.toast {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    max-width: 320px;
+    z-index: 24;
+    padding: 16px;
+    box-sizing: border-box;
+    margin-bottom: -100%;
+    -moz-transition: margin-bottom 0.325s var(--standard-curve);
+    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
+    -o-transition: margin-bottom 0.325s var(--standard-curve);
+    transition: margin-bottom 0.325s var(--standard-curve);
+    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+
+.toast > .body {
+    display: block;
+    font-size: 12px;
+    margin: 0px;
+    padding: 12px;
+    line-height: 16px; }
+
+.toast.show {
+    margin-bottom: 0px !important; } 
 
 /** TOOLBAR */
 
