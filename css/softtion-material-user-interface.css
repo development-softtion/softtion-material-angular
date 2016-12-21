@@ -71,11 +71,9 @@ body {
     overflow: hidden; }
 
 @media only screen and (min-width : 361px) {
-
     ::-webkit-scrollbar {
         background: transparent; 
-        width: 6px; 
-        height: 6px; }
+        width: 5px; }
 
     ::-webkit-scrollbar-button {
         width: 0px;
@@ -986,7 +984,7 @@ i.action-icon,
     box-sizing: border-box;
     text-transform: none; }
 
-.bottom-navigation > .content > li:nth-child(5n + 1) {
+.bottom-navigation > .content > li:nth-child(n + 6) {
     display: none; }
 
 .bottom-navigation.four-tabs > .content > li,
