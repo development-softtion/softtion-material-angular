@@ -2,7 +2,7 @@
  * Angular Softtion Material v1.0.2
  * License: MIT
  * (c) 2016 Softtion Developers
- * Updated: 28/Nov/2016
+ * Updated: 23/Dic/2016
  */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -22,27 +22,41 @@
                 directive: function () {
                     return {
                         restrict: "C",
+                        scope: {
+                            fixed: "="
+                        },
                         link: function ($scope, $element) {
                             // Componentes y atributos
-                            var $window = angular.element(window), position = 0, hideClass = "hide";
+                            var appContent = angular.element(".app-content"),
+                                position = 0, hideClass = "hide",
+                                heightElement = $element.innerHeight(),
+                                $window = angular.element(window);
                             
-                            $window.scroll(function () {
-                                var positionNew = $window.scrollTop(); // Posicion actual
+                            if (!$scope.fixed) {
+                                appContent.scroll(function () {
+                                    var heightMin = (($window.width() > 960) ? 64 : 56),
+                                        positionNew = appContent.scrollTop();
 
-                                hideClass = $element.hasClass("flexible-title") ?
-                                    "hide-flexible-title" : "hide";
+                                    hideClass = $element.hasClass("flexible-title") ? "hide-flexible-title" : "hide";
 
-                                if (positionNew > 56) {
-                                    (position < positionNew) ?
-                                        $element.addClass(hideClass) : $element.removeClass(hideClass);
-                                } else if (positionNew === 0) {
-                                    $element.removeClass(hideClass); 
-                                }
+                                    if (positionNew > heightMin) {
+                                        if (position < positionNew) {
+                                            $element.addClass(hideClass); 
+                                            appContent.css("padding-top", "16px");
+                                        } else {
+                                            $element.removeClass(hideClass); 
+                                            appContent.css("padding-top", heightElement + 16);
+                                        }
+                                    } else if (positionNew === 0) {
+                                        $element.removeClass(hideClass); 
+                                        appContent.css("padding-top", heightElement + 16);
+                                    } 
 
-                                position = positionNew; // Posición nueva del scroll
-                            });
+                                    position = positionNew; // Posición nueva del scroll
+                                });
+                            }                            
                             
-                            angular.element(".app-content").css("margin-top", $element.innerHeight());
+                            appContent.css("padding-top", heightElement + 16).addClass("animated");
                         }
                     };
                 }
@@ -288,10 +302,11 @@
                                 tabs = $element.find(".content > li"),
                                 tabActive = $element.find(".content > li.active:first"), 
                                 fab = angular.element("button.floating"),
-                                views = angular.element($scope.views),
-                                $window = angular.element(window), snackbar;
+                                views = angular.element($scope.views), toast,
+                                appContent = angular.element(".app-content"), snackbar;
                         
                             $element.append(rippleBox); // Agregando ripple
+                            appContent.css("padding-bottom", "32px");
                         
                             // Atributos
                             var classColor = "default", position = 0, classHide = "hide";
@@ -337,7 +352,7 @@
                                 var viewTab = views.find(option.attr("view-tab"));
                                 
                                 if (viewTab.exists() && !viewTab.hasClass("active")) {
-                                    angular.element(window).scrollTop(0); 
+                                    appContent.scrollTop(0); // Posición inicial
                                     var viewActive = views.find(".content.active");
                                     
                                     if (viewActive.exists()) {
@@ -381,32 +396,39 @@
                                     snackbar = angular.element(".snackbar");
                                 } // No se ha encontrado Snackbar en el documento
                                 
+                                if (softtion.is("undefined", toast) || !toast.exists()) {
+                                    toast = angular.element(".toast");
+                                } // No se ha encontrado Toast en el documento
+                                
                                 if (softtion.is("undefined", fab) || !fab.exists()) {
                                     fab = angular.element("button.floating");
                                 } // No se ha encontrado Floating en el documento
                                 
                                 if (!angular.element(document).find(".bottom-navigation").exists()) {
+                                    toast.removeClass("show-bottom-navigation");
                                     snackbar.removeClass("show-bottom-navigation");
                                     fab.removeClass("show-bottom-navigation");
-                                    $window.off("scroll.bottom-navigation", scrollBottomNav); return;
+                                    appContent.off("scroll.bottom-navigation", scrollBottomNav); return;
                                 } // No existe el bottom navigation en el documento
                                 
-                                var positionNew = $window.scrollTop(); // Posicion actual
+                                var positionNew = appContent.scrollTop(); // Posicion actual
                                                                 
                                 if (position < positionNew) {
                                     fab.removeClass("show-bottom-navigation");
                                     snackbar.removeClass("show-bottom-navigation");
+                                    toast.removeClass("show-bottom-navigation");
                                     $element.addClass(classHide);
                                 } else {
                                     fab.addClass("show-bottom-navigation");
                                     snackbar.addClass("show-bottom-navigation");
+                                    toast.addClass("show-bottom-navigation");
                                     $element.removeClass(classHide);
                                 } // Se visualiza BottomNavigation oculto
                                 
                                 position = positionNew; // Posición nueva del scroll
                             };
                             
-                            $window.on("scroll.bottom-navigation", scrollBottomNav);
+                            appContent.on("scroll.bottom-navigation", scrollBottomNav);
                         }
                     };
                 }
@@ -2197,7 +2219,7 @@
                                     tabs.removeClass("active"); option.addClass("active");
                                     
                                     if (!$scope.disabledPositionStart) {
-                                        angular.element(window).scrollTop(0); 
+                                        angular.element(".app-content").scrollTop(0); 
                                     } // No es necesario subir vista
                                     
                                     if (left < $element.scrollLeft()) {
@@ -2766,58 +2788,73 @@
             BottomSheet: {
                 name: "$bottomSheet",
                 method: function () {
-                    var PropertiesSheet = {
-                        id: undefined,
-                        component: undefined,
-                        content: undefined,
-                        backdrop: undefined
+                    var Properties = {
+                        component: undefined, content: undefined, backdrop: undefined
                     };
                     
                     var BottomSheet = function () {};
 
                     BottomSheet.prototype.set = function (sheetID) {
-                        var self = this; // Sidenav
+                        var self = this; // Componente
                         
-                        if (PropertiesSheet.id !== sheetID) {
-                            PropertiesSheet.id = sheetID; PropertiesSheet.component = angular.element(sheetID);
+                        Properties.component = angular.element(sheetID);
                         
-                            if (PropertiesSheet.component.exists()) {
-                                PropertiesSheet.content = PropertiesSheet.component.find(".content");
-                                PropertiesSheet.backdrop = PropertiesSheet.component.find(".backdrop");
-                                
-                                PropertiesSheet.backdrop.click(function () { self.hide(); });
-                            } // Sidenav existe en el Documento
-                        }
+                        if (Properties.component.exists()) {
+                            Properties.content = Properties.component.find(".content");
+                            Properties.backdrop = Properties.component.find(".backdrop");
+
+                            Properties.backdrop.click(function () { self.hide(); });
+                        } // Componente existe en el Documento
                         
                         return this; // Retornando interfaz fluida
                     };
                     
-                    BottomSheet.prototype.clear = function () {
-                        PropertiesSheet.component = undefined;
-                        PropertiesSheet.id = ""; return this;
-                    };
-
                     BottomSheet.prototype.show = function () {
-                        if (!PropertiesSheet.component.hasClass("active")) {
-                            angular.element(document.body).addClass("body-overflow-none");
+                        if (Properties.component.exists()) {
+                            var appContent = Properties.component.parents(".app-content");
                             
-                            PropertiesSheet.content.addClass("show");
-                            PropertiesSheet.backdrop.fadeIn(325, "standardCurve"); 
-                            PropertiesSheet.component.addClass("active"); 
-                        } // Sidenav no se encuentra activo
+                            var isContent = (appContent.exists()) ? true : false,
+                                content = (appContent.exists()) ? appContent :  
+                                    angular.element(document.body);
+                            
+                            if (!Properties.component.hasClass("active")) {
+                                content.addClass("overflow-none");
+                                
+                                if (isContent) {
+                                    Properties.content.addClass("show");
+                                } else {
+                                    Properties.content.addClass("show-content");
+                                    Properties.content.css("margin-bottom", content.scrollTop());
+                                }
+                                
+                                Properties.component.addClass("active"); 
+                                Properties.backdrop.fadeIn(325, "standardCurve"); 
+                            } // Componente no se encuentra activo en la Aplicación
+                        }
                     };
 
                     BottomSheet.prototype.hide = function () {
-                        if (PropertiesSheet.component.hasClass("active")) {
-                            angular.element(document.body).removeClass("body-overflow-none");
+                        if (Properties.component.exists()) {
+                            var appContent = Properties.component.parents(".app-content");
                             
-                            var marginBottom = PropertiesSheet.content.outerHeight();
-                            PropertiesSheet.content.css("margin-bottom", (marginBottom * -1) - 1);
+                            var isContent = (appContent.exists()) ? true : false,
+                                content = (appContent.exists()) ? appContent :  
+                                    angular.element(document.body);
                             
-                            PropertiesSheet.content.removeClass("show");
-                            PropertiesSheet.backdrop.fadeOut(325, "standardCurve"); 
-                            PropertiesSheet.component.removeClass("active"); 
-                        } // Sidenav no se encuentra activo
+                            if (Properties.component.hasClass("active")) {
+                                content.removeClass("overflow-none");
+
+                                (isContent) ?
+                                    Properties.content.removeClass("show") :
+                                    Properties.content.removeClass("show-content");
+
+                                var marginBottom = Properties.content.outerHeight();
+                                Properties.content.css("margin-bottom", (marginBottom * -1) - 1);
+
+                                Properties.component.removeClass("active"); 
+                                Properties.backdrop.fadeOut(325, "standardCurve"); 
+                            } // Componente se encuentra activo en la Aplicación
+                        }
                     };
                     
                     var bottomSheet = new BottomSheet();
@@ -3110,13 +3147,14 @@
                         Properties.box.append(Properties.body); 
                         Properties.box.append(Properties.action);
                         
-                        angular.element(document.body).append(Properties.box);
+                        angular.element(".app-body").append(Properties.box);
                     };
 
-                    SnackBar.prototype.show = function (text, actionProperty) {
-                        var heightBody, self = this; // Snackbar
-                        Properties.action.height(0);
-                        var bottomNavigation = angular.element(".bottom-navigation");
+                    SnackBar.prototype.show = function (text, optionsAction) {
+                        var heightBody, self = this, // Snackbar
+                            bottomNavigation = angular.element(".bottom-navigation");
+                            
+                        Properties.action.height(0); // Ocultando acción
 
                         if (!Properties.box.hasClass("active")) {
                             Properties.body.html(text); // Estableciendo texto
@@ -3128,8 +3166,8 @@
                                 Properties.body.removeClass("two-line");
                             } // Cuerpo es de una sola línea
                             
-                            if (softtion.is("defined", actionProperty)) {
-                                var span = "<span>" + actionProperty.label + "</span>";
+                            if (softtion.is("defined", optionsAction)) {
+                                var span = "<span>" + optionsAction.label + "</span>";
                                 Properties.action.html(span); // Texto de acción                                
                                 
                                 var widthAction = Properties.action.find("span").width(),
@@ -3141,8 +3179,8 @@
                                 Properties.action.css("height", Properties.box.height());
                                 
                                 Properties.action.find("span").click(function () {
-                                    if (softtion.is("function", actionProperty.action)) {
-                                        actionProperty.action(); Properties.action.html(""); 
+                                    if (softtion.is("function", optionsAction.action)) {
+                                        optionsAction.action(); Properties.action.html(""); 
 
                                         if (softtion.is("defined", self.hiddenSnackbar)) {
                                             clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
@@ -3156,7 +3194,7 @@
                                 Properties.action.html("");
                                 Properties.body.css("padding-right", "0px");
                                 Properties.body.css("width", "100%");
-                            } // No e ha definido acción
+                            } // No se ha definido acción para disparar en el componente
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
                                 Properties.box.addClass("show-bottom-navigation");
@@ -3186,7 +3224,7 @@
                             Properties.box.removeClass("show").removeClass("active"); 
                             
                             setTimeout(
-                                function () { self.show(text, actionProperty); }, 350
+                                function () { self.show(text, optionsAction); }, 350
                             ); // Temporizador para visualizar
                         }
                     };
@@ -3199,12 +3237,20 @@
             
             Toast: {
                 name: "$toast",
+                moveButton: function (isShow, height) {
+                    var button = angular.element("button.floating");
+                        
+                    if (button.exists() && (window.innerWidth <= 640)) {
+                        (!isShow) ? button.css("margin-bottom", "0px") :
+                            button.css("margin-bottom", (height - 16) + "px");
+                    } // Se debe cambiar posición del Botón en la Pantalla
+                },
                 method: function () {
                     var Properties = {
-                        box: undefined, body: undefined
+                        scope: undefined, box: undefined, body: undefined
                     };
                     
-                    var Toast = function () { 
+                    var SnackBar = function () { 
                         Properties.body = angular.element(
                             softtion.html("p").addClass(["body"]).create()
                         );
@@ -3213,43 +3259,52 @@
                             softtion.html("div").addClass(["toast"]).create()
                         );
 
-                        Properties.box.append(Properties.body);
+                        Properties.box.append(Properties.body); 
                         
-                        angular.element(document.body).append(Properties.box);
+                        angular.element(".app-body").append(Properties.box);
                     };
 
-                    Toast.prototype.show = function (text) {
-                        var heightBox, self = this; // Instancia Toast
+                    SnackBar.prototype.show = function (text) {
+                        var heightBody, self = this, // Toast
+                            bottomNavigation = angular.element(".bottom-navigation");
 
                         if (!Properties.box.hasClass("active")) {
                             Properties.body.html(text); // Estableciendo texto
-                            heightBox = parseInt(Properties.box.innerHeight());
+                            heightBody = parseInt(Properties.body.height());
                             
-                            Properties.box.css("margin-bottom", "-" + heightBox + "px");
+                            if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
+                                Properties.box.addClass("show-bottom-navigation");
+                            } // Existe un bottom-navigation y esta visible en el documento
+                            
                             Properties.box.addClass("active").addClass("show");
+                            Material.providers.Toast.moveButton(true, Properties.box.innerHeight()); 
 
                             self.hiddenToast = setTimeout(
                                 function () {
                                     self.hiddenToast = undefined; // Eliminando temporizador
+                                    
                                     Properties.box.removeClass("show").removeClass("active");
+                                    Material.providers.Toast.moveButton(false); 
                                 },
                                 5000 // Tiempo de espera para ocultarse
                             );
                         } else {
-                            heightBox = parseInt(Properties.box.innerHeight());
-                            Properties.box.css("margin-bottom", "-" + heightBox + "px");
+                            heightBody = parseInt(Properties.body.css("height"));
                             
                             if (softtion.is("defined", self.hiddenToast)) {
                                 clearTimeout(self.hiddenToast); self.hiddenToast = undefined;
                             } // Existe un cierre pendiente por realizar
                             
+                            Material.providers.Snackbar.moveButton(false); 
                             Properties.box.removeClass("show").removeClass("active"); 
                             
-                            setTimeout(function () { self.show(text); }, 350); // Temporizador
+                            setTimeout(
+                                function () { self.show(text); }, 350
+                            ); // Temporizador para visualizar
                         }
                     };
 
-                    var snackbar = new Toast();
+                    var snackbar = new SnackBar();
                     
                     this.$get = function () { return snackbar; };
                 }
