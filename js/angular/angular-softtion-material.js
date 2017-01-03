@@ -1,9 +1,9 @@
 /*
- * Angular Softtion Material v1.0.2
- * License: MIT
- * (c) 2016 Softtion Developers
- * Updated: 23/Dic/2016
- */
+ Angular Softtion Material v1.0.2
+ (c) 2016 Softtion Developers, http://material.softtion.com.co
+ License: MIT
+ Updated: 23/Dic/2016
+*/
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular);
@@ -123,7 +123,7 @@
                                 label = $element.find("label");
                                 
                             // Atributos de control
-                            var filterDefined = softtion.is("string", $scope.filter),
+                            var filterDefined = softtion.isString($scope.filter),
                                 focusLi = false, searchStart = false;
 
                             $scope.suggestionsFilter = []; $scope.clearSuggestion = true;
@@ -139,7 +139,7 @@
                                     return;
                                 } // Estos caracteres no mejoran el patrón de busqueda
                                 
-                                if (!softtion.is("string", $scope.valueInput)) {
+                                if (!softtion.isString($scope.valueInput)) {
                                     return;
                                 } // No hay nada digitado en el Componente de texto
                                 
@@ -210,8 +210,8 @@
                                 if (focusLi) {
                                     focusLi = false; // Se ha enfocado Lista
                                 } else {
-                                    if (softtion.is("undefined", $scope.optionSelect)
-                                        && !softtion.is("string", $scope.valueInput)) {
+                                    if (softtion.isUndefined($scope.optionSelect)
+                                        && !softtion.isString($scope.valueInput)) {
                                         $element.removeClass("active"); label.removeClass("active");
                                     } // No ha seleccionado, ni digitado en el Componente
                                     
@@ -219,7 +219,7 @@
                                         list.removeClass("active"); $scope.optionSelect = undefined;
                                         $scope.clearSuggestion = true;
                                     } else {
-                                        if (softtion.is("defined", $scope.optionSelect)) {
+                                        if (softtion.isDefined($scope.optionSelect)) {
                                             list.removeClass("active"); 
                                             
                                             if (typeof $scope.optionSelect === "string") {
@@ -262,7 +262,7 @@
 
                             $scope.notFoundResult = function () {
                                 if (this.suggestionsFilter.length === 0) {
-                                    return (searchStart && softtion.is("string", $scope.valueInput));
+                                    return (searchStart && softtion.isString($scope.valueInput));
                                 } else { return false; }
                             };
 
@@ -333,7 +333,7 @@
                             if ($element.hasClass("shifting")) {
                                 var classColorOption = tabActive.attr("color");
                                 
-                                if (softtion.is("string", classColorOption)) {
+                                if (softtion.isString(classColorOption)) {
                                     classColor = classColorOption;
                                 } // La opción tiene un color establecido
                                 
@@ -378,7 +378,7 @@
                                     
                                     $element.removeClass(classColor);
                                 
-                                    classColor = (softtion.is("string", classColorOption)) ? 
+                                    classColor = (softtion.isString(classColorOption)) ? 
                                             classColorOption : "default";
                                 
                                     $element.addClass(classColor); // Color
@@ -392,15 +392,15 @@
                             });
                             
                             var scrollBottomNav = function () {
-                                if (softtion.is("undefined", snackbar) || !snackbar.exists()) {
+                                if (softtion.isUndefined(snackbar) || !snackbar.exists()) {
                                     snackbar = angular.element(".snackbar");
                                 } // No se ha encontrado Snackbar en el documento
                                 
-                                if (softtion.is("undefined", toast) || !toast.exists()) {
+                                if (softtion.isUndefined(toast) || !toast.exists()) {
                                     toast = angular.element(".toast");
                                 } // No se ha encontrado Toast en el documento
                                 
-                                if (softtion.is("undefined", fab) || !fab.exists()) {
+                                if (softtion.isUndefined(fab) || !fab.exists()) {
                                     fab = angular.element("button.floating");
                                 } // No se ha encontrado Floating en el documento
                                 
@@ -600,13 +600,13 @@
                         scope: {
                             listValue: "=ngModel", 
                             label: "@label", 
-                            clickEvent: "=clickEvent",
+                            clickEvent: "@clickEvent",
                             maxCountDefined: "=maxCount"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input");
                         
-                            $scope.listValue = $scope.listValue || new Collection();
+                            $scope.listValue = $scope.listValue || new Array();
                             $scope.maxCount = $scope.maxCountDefined || -1;
                             
                             if ($scope.listValue.length > 0) { $element.addClass("active"); }
@@ -614,7 +614,7 @@
                             $element.click(function (ev) { 
                                 $element.removeClass("hide-input"); input.focus();
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             });
@@ -622,13 +622,13 @@
                             $scope.clickLabel = function (ev) {
                                 $element.removeClass("hide-input"); input.focus();
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
                             
                             $scope.clickInput = function (ev) {
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
@@ -645,7 +645,7 @@
                             
                             $scope.keypressInput = function (ev) {
                                 if (ev.keyCode === 13) {
-                                    if (!softtion.is("string", $scope.valueInput)) {
+                                    if (!softtion.isString($scope.valueInput)) {
                                         return;
                                     } // No ha escrito nada en el Componente
                                     
@@ -663,7 +663,6 @@
                         }
                     };
                 }
-                
             },
             
             Clockpicker: {
@@ -910,7 +909,7 @@
                                 
                                 this.setSelection(true); // Seleccion de hora
                                 
-                                if (softtion.is("function", $scope.setTimeSelect)) {
+                                if (softtion.isFunction($scope.setTimeSelect)) {
                                     $scope.setTimeSelect($scope.time);
                                 } // Función que se llama cuando se selecciona Fecha
                             };
@@ -918,7 +917,7 @@
                             $scope.cancel = function () {
                                 this.setSelection(true); // Seleccion de hora
                                 
-                                if (softtion.is("function", $scope.cancelSelect)) {
+                                if (softtion.isFunction($scope.cancelSelect)) {
                                     $scope.cancelSelect($scope.time);
                                 } // Función que se llama cuando se cancela Selección
                             };
@@ -1011,7 +1010,7 @@
                                 box = dialog.find(".box"),
                                 backdrop = dialog.find(".backdrop");
                             
-                            if (softtion.is("date", $scope.time)) {
+                            if (softtion.isDate($scope.time)) {
                                 $scope.text = $scope.time.getFormat("hz:ii zz");
                             } else if ($scope.autoStart) {
                                 $scope.time = new Date(); // Tiempo del dispositivo
@@ -1101,7 +1100,7 @@
                                         row.siblings("tr").removeClass("active"); row.addClass("active"); 
                                         $scope.selection = {}; $scope.selection[$index] = object;
                                         
-                                        if (softtion.is("defined", selectedSimple)) {
+                                        if (softtion.isDefined(selectedSimple)) {
                                             selectedSimple.checked = false; selectedSimple = object;
                                         } else { selectedSimple = object; }
                                     } else {
@@ -1267,7 +1266,7 @@
                         stop = (countDay > daysOfMonth); // Verificando
                     }
                     
-                    if (!softtion.is("arrayEmpty", week)) {
+                    if (!softtion.isArrayEmpty(week)) {
                         calendarMonth.push(week);
                     } // Agregando semana pendiente por completar
 
@@ -1351,10 +1350,10 @@
                                 { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
                             ];
                     
-                            $scope.minDate = (softtion.is("date", $scope.minDate)) ?
+                            $scope.minDate = (softtion.isDate($scope.minDate)) ?
                                 $scope.minDate.normalize("date") : undefined;
                     
-                            $scope.maxDate = (softtion.is("date", $scope.maxDate)) ?
+                            $scope.maxDate = (softtion.isDate($scope.maxDate)) ?
                                 $scope.maxDate.normalize("date") : undefined;
                             
                             // Eventos para controlar años
@@ -1392,7 +1391,7 @@
                              
                             // Eventos para controlar meses
                             $scope.prevMonthEnabled = function () {
-                                if (softtion.is("defined", $scope.minDate)) {
+                                if (softtion.isDefined($scope.minDate)) {
                                     var month = $scope.month - 1, year = $scope.year;
                                     
                                     if (month < 0) { 
@@ -1410,7 +1409,7 @@
                             };
                             
                             $scope.nextMonthEnabled = function () {
-                                if (softtion.is("defined", $scope.maxDate)) {
+                                if (softtion.isDefined($scope.maxDate)) {
                                     var month = $scope.month + 1, year = $scope.year;
                                     
                                     if (month > 12) { 
@@ -1437,12 +1436,12 @@
                             };
                             
                             $scope.monthListEnabled = function (month) {
-                                if (softtion.is("undefined", $scope.minDate) &&
-                                    softtion.is("undefined", $scope.maxDate)) {
+                                if (softtion.isUndefined($scope.minDate) &&
+                                    softtion.isUndefined($scope.maxDate)) {
                                     return false;
                                 } // Se permite todos los meses
                                 
-                                if (softtion.is("defined", $scope.minDate)) {
+                                if (softtion.isDefined($scope.minDate)) {
                                     var minYear = $scope.minDate.getFullYear(),
                                         minMonth = $scope.minDate.getMonth();
                                     
@@ -1453,7 +1452,7 @@
                                     }
                                 } // Comparando con la fecha mínima
                                 
-                                if (softtion.is("defined", $scope.maxDate)) {
+                                if (softtion.isDefined($scope.maxDate)) {
                                     var maxYear = $scope.maxDate.getFullYear(),
                                         maxMonth = $scope.maxDate.getMonth();
                                     
@@ -1515,7 +1514,7 @@
                             
                             // Eventos para controlar dias
                             $scope.describeDaySelect = function () {
-                                var dateDescribe = (softtion.is("date", $scope.date)) ?
+                                var dateDescribe = (softtion.isDate($scope.date)) ?
                                     $scope.date : new Date().normalize("date");
                                 
                                 var describe = nameDaysWeek[dateDescribe.getDay()];
@@ -1527,12 +1526,12 @@
                             };
                             
                             $scope.dayDisabled = function (day) {
-                                if (softtion.is("undefined", day)) {
+                                if (softtion.isUndefined(day)) {
                                     return true;
                                 } // El dia del componente es inválido
                                 
-                                if (softtion.is("undefined", $scope.minDate) && 
-                                    softtion.is("undefined", $scope.maxDate)) {
+                                if (softtion.isUndefined($scope.minDate) && 
+                                    softtion.isUndefined($scope.maxDate)) {
                                     return false;
                                 } // Todos los dias están permitidos en el Componente
                                 
@@ -1564,13 +1563,13 @@
                             $scope.setDate = function () {
                                 $scope.date = new Date($scope.year, $scope.month, $scope.day);
                                 
-                                if (softtion.is("function", $scope.dateSelect)) {
+                                if (softtion.isFunction($scope.dateSelect)) {
                                     $scope.dateSelect($scope.date);
                                 } // Se ha establecido metodo para seleccionar Fecha
                             };
                             
                             $scope.cancel = function () {
-                                if (softtion.is("function", $scope.cancelSelect)) {
+                                if (softtion.isFunction($scope.cancelSelect)) {
                                     $scope.cancelSelect($scope.date);
                                 } // Se ha establecido metodo para cancelar Selección
                             };
@@ -1624,7 +1623,7 @@
                                 box = dialog.find(".box"),
                                 backdrop = dialog.find(".backdrop");
                             
-                            if (softtion.is("date", $scope.date)) {
+                            if (softtion.isDate($scope.date)) {
                                 $scope.text = $scope.date.getFormat("ww, dd del mn de aa");
                             } else if ($scope.autoStart) {
                                 $scope.date = new Date(); // Tiempo del dispositivo
@@ -1890,16 +1889,16 @@
                             };
                             
                             $scope.getSuggestionDescription = function (suggestion) {
-                                if (softtion.is("string", suggestion)) {
+                                if (softtion.isString(suggestion)) {
                                     return suggestion;
-                                } else if (softtion.is("string", $scope.keyDescription)) {
+                                } else if (softtion.isString($scope.keyDescription)) {
                                     return softtion.findKey(suggestion, $scope.keyDescription);
                                 } else {
                                     return JSON.stringify(suggestion);
                                 } // No se definido nada
                             };
 
-                            if (softtion.is("defined", $scope.select)) {
+                            if (softtion.isDefined($scope.select)) {
                                 $scope.inputValue = $scope.getSuggestionDescription($scope.select);
                                 $element.addClass("active"); label.addClass("active");
                             } // Hay un opcion seleccionada por defecto
@@ -1911,7 +1910,7 @@
                                 
                                 $scope.toggleSuggestions();
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent($event);
                                 } // Se ha definido callback para Click
                             };
@@ -1919,7 +1918,7 @@
                             $scope.focusInput = function () { $element.addClass("active"); };
 
                             $scope.blurInput = function () {
-                                if (softtion.is("undefined", $scope.select)) {
+                                if (softtion.isUndefined($scope.select)) {
                                     $element.removeClass("active"); label.removeClass("active"); 
                                 } // No ha seleccionado ninguna de las opciones
                             };
@@ -2071,7 +2070,7 @@
                                 
                                 $scope.toggleSuggestions();
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
@@ -2108,7 +2107,7 @@
                             };
                             
                             $scope.getSuggestionDescription = function (suggestion) {
-                                return !(softtion.is("string", $scope.keyDescription)) ?
+                                return !(softtion.isString($scope.keyDescription)) ?
                                     JSON.stringify(suggestion) : softtion.findKey(suggestion, $scope.keyDescription); 
                             };
                         }
@@ -2333,7 +2332,7 @@
                             defineTextHidden(area, hidden); $scope.hideSpan = true;
                             $scope.areaValue = ""; // Valor inicial del Area
 
-                            if (softtion.is("string", $scope.value)) { 
+                            if (softtion.isString($scope.value)) { 
                                 $element.addClass("active"); $scope.areaValue = $scope.value;
                                 
                                 autoResize(area, hidden); // Definiendo tamaño del Area
@@ -2342,13 +2341,13 @@
                             $scope.clickLabel = function (ev) {
                                 area.focus(); // Se activa el componente 
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
                             
                             $scope.clickArea = function (ev) {
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
@@ -2356,7 +2355,7 @@
                             $scope.focusArea = function () { $element.addClass("active"); };
 
                             $scope.blurArea = function () {
-                                if (!softtion.is("string", $scope.areaValue)) {
+                                if (!softtion.isString($scope.areaValue)) {
                                     $element.removeClass("active"); // Componente sin texto
 
                                     if ($scope.required) {
@@ -2454,7 +2453,7 @@
                             // Componentes
                             var input = $element.find("input");
                             
-                            if (softtion.is("defined", $scope.icon) && $element.hasClass("single-line")) {
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("single-line")) {
                                 var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
                                 angular.element(icon.create()).insertAfter(input); $element.addClass("icon-input");
                             } // Se debe insertar el icono antes del input
@@ -2467,20 +2466,20 @@
                             $scope.hideSpan = true; $scope.inputValue = "";
                             $scope.typeInput = Material.components.TextField.defineInput($scope.type);
 
-                            if (softtion.is("string", $scope.value)) { 
+                            if (softtion.isString($scope.value)) { 
                                 $element.addClass("active"); $scope.inputValue = $scope.value;
                             } // Se ha definido un valor
 
                             $scope.clickLabel = function (ev) { 
                                 input.focus(); // Enfocando el input
                                 
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
                             
                             $scope.clickInput = function (ev) {
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
@@ -2488,7 +2487,7 @@
                             $scope.focusInput = function () { $element.addClass("active"); };
 
                             $scope.blurInput = function () {
-                                if (!softtion.is("string", $scope.inputValue)) {
+                                if (!softtion.isString($scope.inputValue)) {
                                     $element.removeClass("active"); // Componente no tiene Texto
 
                                     if ($scope.required) {
@@ -2551,7 +2550,7 @@
                         },
                         link: function ($scope) {
                             $scope.clickInput = function (ev) {
-                                if (softtion.is("function", $scope.clickEvent)) {
+                                if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
                                 } // Se ha definido callback para Click
                             };
@@ -2679,7 +2678,7 @@
                         Properties.positiveButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.is("function", Properties.positiveFunction)) {
+                            if (softtion.isFunction(Properties.positiveFunction)) {
                                 Properties.positiveFunction(); 
                             } // Se establecío función para proceso Positivo
                         });
@@ -2687,7 +2686,7 @@
                         Properties.negativeButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.is("function", Properties.negativeFunction)) {
+                            if (softtion.isFunction(Properties.negativeFunction)) {
                                 Properties.negativeFunction(); 
                             } // Se establecío función para proceso Negativo
                         });
@@ -2696,7 +2695,7 @@
                     };
 
                     Alert.prototype.title = function (title) {
-                        if (softtion.is("string", title)) {
+                        if (softtion.isString(title)) {
                             Properties.title.html(title); 
                             Properties.title.removeClass("hidden");
                         } else {
@@ -2971,7 +2970,7 @@
                     };
 
                     Dropdown.prototype.isActive = function () {
-                        if (softtion.is("defined", DropdownProperties.component)) {
+                        if (softtion.isDefined(DropdownProperties.component)) {
                             return DropdownProperties.component.hasClass("active");
                         } // Esta definido el Id del Dropdown
 
@@ -2979,7 +2978,7 @@
                     };
 
                     Dropdown.prototype.show = function (origin) {
-                        if (softtion.is("defined", DropdownProperties.component)) {
+                        if (softtion.isDefined(DropdownProperties.component)) {
                             DropdownProperties.origin = origin; // Estableciendo origen
                             Material.providers.Dropdown.handler.show(DropdownProperties); 
                         } // Esta definido el dropdown en el Provedor
@@ -3166,7 +3165,7 @@
                                 Properties.body.removeClass("two-line");
                             } // Cuerpo es de una sola línea
                             
-                            if (softtion.is("defined", optionsAction)) {
+                            if (softtion.isDefined(optionsAction)) {
                                 var span = "<span>" + optionsAction.label + "</span>";
                                 Properties.action.html(span); // Texto de acción                                
                                 
@@ -3179,10 +3178,10 @@
                                 Properties.action.css("height", Properties.box.height());
                                 
                                 Properties.action.find("span").click(function () {
-                                    if (softtion.is("function", optionsAction.action)) {
+                                    if (softtion.isFunction(optionsAction.action)) {
                                         optionsAction.action(); Properties.action.html(""); 
 
-                                        if (softtion.is("defined", self.hiddenSnackbar)) {
+                                        if (softtion.isDefined(self.hiddenSnackbar)) {
                                             clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                                         } // Existe un cierre pendiente por realizar
 
@@ -3216,7 +3215,7 @@
                             Properties.action.html(""); // Limpiando acción
                             heightBody = parseInt(Properties.body.css("height"));
                             
-                            if (softtion.is("defined", self.hiddenSnackbar)) {
+                            if (softtion.isDefined(self.hiddenSnackbar)) {
                                 clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                             } // Existe un cierre pendiente por realizar
                             
@@ -3291,7 +3290,7 @@
                         } else {
                             heightBody = parseInt(Properties.body.css("height"));
                             
-                            if (softtion.is("defined", self.hiddenToast)) {
+                            if (softtion.isDefined(self.hiddenToast)) {
                                 clearTimeout(self.hiddenToast); self.hiddenToast = undefined;
                             } // Existe un cierre pendiente por realizar
                             
@@ -3322,7 +3321,7 @@
     
     ngMaterial.run(["$templateCache", function ($templateCache) {
         angular.forEach(Material.components, function (component) {
-            if (softtion.is("defined", component["route"])) {
+            if (softtion.isDefined(component["route"])) {
                 $templateCache.put(component.route, component.html());
             }
         });

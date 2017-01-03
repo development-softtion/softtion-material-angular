@@ -1,8 +1,8 @@
 /* !
- * JQuery Softtion v1.0.0
- * License: MIT
- * (c) 2016 Softtion Developers
- * Updated: 23/Nov/2016
+ jQuery Softtion v1.0.0
+ (c) 2016 Softtion Developers, http://jquery.softtion.com.co
+ License: MIT
+ Updated: 23/Nov/2016
  */
 (function (factory) {
     if (typeof jQuery === "function" && typeof window.softtion === "object") {
@@ -12,33 +12,31 @@
     } // No se ha cargado jQuery y Softtion
 })(function (jQuery, softtion) {
     
-    var jQuerySofttion = {
+    var Module = {
         getKeyJson: function (attributes, object, defaultValue) {
-            if (softtion.is("undefined", object)) {
+            if (softtion.isUndefined(object)) {
                 return defaultValue; 
             } // El objeto no fue definido o no encontrado
 
-            var $value = "", $attributes = softtion.parseCollection(attributes.split(" "));
+            var value = ""; attributes = attributes.split(" ");
 
-            $attributes.for(function (attribute) {
-                var $valueAttribute = object[attribute]; // Valor del atributo
-                $value += softtion.is("undefined", $valueAttribute) ? $valueAttribute + " " : "";
+            attributes.for(function (attribute) {
+                var valueAttribute = object[attribute]; // Valor del atributo
+                value += softtion.isUndefined(valueAttribute) ? valueAttribute + " " : "";
             });
 
-            return (softtion.is("string", $value)) ? $value.trim() :
-                (softtion.is("defined", defaultValue)) ? defaultValue : "N/D";
+            return (softtion.isString(value)) ? value.trim() :
+                (softtion.isDefined(defaultValue)) ? defaultValue : "N/D";
         }
     };
     
     jQuery.fn.extend({
-        // Verifica si existe un elemento tras la selección
         exists: function () { 
             return (jQuery(this).length > 0);
         },
         
-        // Retorna la etiqueta del elemento seleccionado
         tagName: function () {
-            return jQuery(this).prop('tagName'); 
+            return jQuery(this).prop("tagName"); 
         },
         
         enter: function (functionEnter) {
@@ -47,7 +45,7 @@
             if (component.tagName() === "INPUT") {
                 component.keyup(function (ev) {
                     if (ev.which === 13) { 
-                        if (softtion.is("function", functionEnter)) { functionEnter(component); }
+                        if (softtion.isFunction(functionEnter)) { functionEnter(component); }
                     } // Presiono la tecla ENTER
                 });
             } // Componente es un INPUT
@@ -74,25 +72,25 @@
                 dataType: "html",
                 async: true,
                 success: function (data) {
-                    if (softtion.is("function", $options.before)) {
+                    if (softtion.isFunction($options.before)) {
                         $options.before($component); 
                     } // Ejecutando función antes de cargar
                     
                     $component.empty(); // Limpiando componente
                     
-                    if (softtion.is("defined", $options.animated)) {
+                    if (softtion.isDefined($options.animated)) {
                         $component.html(data); $component.animated($options.animated);
                     } else { 
                         $component.html(data); 
                     } // Cargando html en el componente, sin animación
                     
-                    if (softtion.is("function", $options.after)) { 
+                    if (softtion.isFunction($options.after)) { 
                         $options.after($component); 
                     } // Ejecutando función desoues de cargar
                 },
                 
                 error: function (jqXHR) {
-                    if (softtion.is("function", $options.failed)) { 
+                    if (softtion.isFunction($options.failed)) { 
                         $options.failed(jqXHR, $component); 
                     } // Ejecutando función error al cargar Componente
                 } 
@@ -100,42 +98,42 @@
         },
         
         createJSON: function () {
-            var $jsonCreated = {}; // Objeto para crear
+            var jsonCreated = {}; // Objeto para crear
             
             jQuery(this).each(function () {
                 var $nameKeyData = jQuery(this).data("keyjson");
                 
-                if (softtion.is("string", $nameKeyData)) {
-                    $jsonCreated[$nameKeyData] = jQuery(this).val();
+                if (softtion.isString($nameKeyData)) {
+                    jsonCreated[$nameKeyData] = jQuery(this).val();
                 }
             });
             
-            return $jsonCreated; // Retornando objeto creado
+            return jsonCreated; // Retornando objeto creado
         },
         
         valueJSON: function (object, defaultValue) {
             jQuery(this).each(function () {
-                var $component = jQuery(this), $keyJson = $component.data("keyvalue");
+                var component = jQuery(this), keyJson = component.data("keyvalue");
                 
-                if (softtion.is("string", $keyJson)) {
-                    var $keysJson = softtion.parseCollection($keyJson.split("."));
+                if (softtion.isString(keyJson)) {
+                    var keysJson = keyJson.split(".");
                     
-                    if ($keysJson.has(1)) {
-                        $component.value(
-                            jQuerySofttion.getKeyJson($keysJson[0], object, defaultValue)
+                    if (keysJson.has(1)) {
+                        component.value(
+                            Module.getKeyJson(keysJson[0], object, defaultValue)
                         );
                     } else {
-                        var $object = undefined, $size = $keysJson.length - 1;
+                        object = undefined; var size = keysJson.length - 1;
 
-                        for (var $index = 0; $index < $size; $index++) {
-                            $object = softtion.is("undefined", $object) ? 
-                                object[$keysJson[$index]] : $object[$keysJson[$index]];
+                        for (var index = 0; index < size; index++) {
+                            object = softtion.isUndefined(object) ? 
+                                object[keysJson[index]] : object[keysJson[index]];
 
-                            if (softtion.is("undefined", $object)) { break; }
+                            if (softtion.isUndefined(object)) { break; }
                         }
 
-                        $component.value(
-                            jQuerySofttion.getKeyJson($keysJson[$size], $object, defaultValue)
+                        component.value(
+                            Module.getKeyJson(keysJson[size], object, defaultValue)
                         );
                     }
                 }
@@ -149,14 +147,11 @@
         },
         
         fixed: function () {
-            var element = this[0], 
-                parent = element.offsetParent,
-                top = element.offsetTop,
-                left = element.offsetLeft;
+            var element = this[0], parent = element.offsetParent,
+                top = element.offsetTop, left = element.offsetLeft;
             
-            while (softtion.is("defined", parent)) {
-                top += parent.offsetTop;
-                left += parent.offsetLeft;
+            while (softtion.isDefined(parent)) {
+                top += parent.offsetTop; left += parent.offsetLeft;
                 
                 parent = parent.offsetParent;
             } // El elemento esta contenido en otro
@@ -192,9 +187,7 @@
                             while (++i < 14) {
                                 z = bezCoOrd(x, 0) - t;
                                 
-                                if (Math.abs(z) < 1e-3) { 
-                                    break; 
-                                }
+                                if (Math.abs(z) < 1e-3) { break; }
                                 
                                 x -= z / xDeriv(x);
                             }

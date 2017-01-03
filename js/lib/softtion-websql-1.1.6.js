@@ -1,8 +1,8 @@
 /* !
- * Softtion WebSQL v1.1.5
+ * Softtion WebSQL v1.1.6
  * License: MIT
- * (c) 2015-2016 Softtion Developers
- * Update: 19/Nov/2019
+ * (c) 2015-2017 Softtion Developers
+ * Update: 03/Enero/2017
  */
 
 /* global Model */
@@ -19,10 +19,10 @@
         is: function (type, object) {
             switch (type) {
                 case ("filter"):
-                    return (softtion.is("defined", object) && object instanceof IFilter);
+                    return (softtion.isDefined(object) && object instanceof IFilter);
                     
                 case ("relation"):
-                    return (softtion.is("defined", object) && object instanceof Relation);
+                    return (softtion.isDefined(object) && object instanceof Relation);
                 
                 default: return false;
             }
@@ -33,7 +33,7 @@
         },
         
         callback: function (callbackResult, value) {
-            if (softtion.is("function", callbackResult)) { 
+            if (softtion.isFunction(callbackResult)) { 
                 callbackResult(value); 
             } // Se ha definido funcion para enviar resultado
         },
@@ -147,7 +147,7 @@
     };
 
     Condition.prototype.getValues = function () { 
-        return softtion.parseCollection(this.value);
+        return softtion.parseArray(this.value);
     };
 
     // Clase Like
@@ -166,7 +166,7 @@
     };
 
     Like.prototype.getValues = function () {
-        return softtion.parseCollection(this.value);
+        return softtion.parseArray(this.value);
     };
     
     // Clase In
@@ -189,7 +189,7 @@
     };
 
     In.prototype.getValues = function () { 
-        return softtion.parseCollection(this.value); 
+        return softtion.parseArray(this.value); 
     };
     
     // Clase Between
@@ -209,7 +209,7 @@
     };
 
     Between.prototype.getValues = function () { 
-        return softtion.parseCollection([this.since, this.until]); 
+        return softtion.parseArray([this.since, this.until]); 
     };
     
     // Clase IsNull
@@ -227,13 +227,13 @@
     };
 
     IsNull.prototype.getValues = function () { 
-        return new Collection(); 
+        return new Array(); 
     };
 
     // Clase Filters
 
     var Filters = function () {
-        this.filters = new Collection(); // Lista de condiciones
+        this.filters = new Array(); // Lista de condiciones
     };
 
     Filters.prototype = new IFilter();
@@ -259,10 +259,10 @@
         } else {
             this.filters.forEach(function (filterJson) { 
                 var $operator = ($index === 1) ? "" :
-                    (!softtion.is("defined", filterJson.operatorLogic))
+                    (!softtion.isDefined(filterJson.operatorLogic))
                     ? (" " + filterJson.operatorLogic + " ") : "";
                 
-                if (softtion.is("defined", filterJson.condition)) {
+                if (softtion.isDefined(filterJson.condition)) {
                     $filter += $operator + filterJson.filter.getDescription(); $index++;
                 }
             }); // Recorriendo la lista de condiciones para clausula Where
@@ -272,7 +272,7 @@
     };
     
     Filters.prototype.getValues = function () {
-        var $values = new Collection(); // Valores
+        var $values = new Array(); // Valores
         
         this.filters.forEach(function (conditionJson) {
             $values = $values.concat(conditionJson.condition.getValues());
@@ -291,7 +291,7 @@
     // Clase Where
     
     var Where = function () { 
-        this.filters = new Collection(); // Lista de filtros para clausula
+        this.filters = new Array(); // Lista de filtros para clausula
     };
 
     Where.prototype = new IClause();
@@ -325,10 +325,10 @@
         } else {
             this.filters.forEach(function (filterWhere) { 
                 var $operator = ($index === 1) ? "" :
-                    (softtion.is("defined", filterWhere.operatorLogic))
+                    (softtion.isDefined(filterWhere.operatorLogic))
                     ? (" " + filterWhere.operatorLogic + " ") : "";
 
-                if (softtion.is("defined", filterWhere.filter)) {
+                if (softtion.isDefined(filterWhere.filter)) {
                     $clause += $operator + filterWhere.filter.getDescription(); $index++; 
                 }
             }); // Recorriendo lista de filtros de la clausula Where
@@ -338,13 +338,13 @@
     };
 
     Where.prototype.getValues = function () {
-        var $values = new Collection(); // Valores
+        var values = new Array(); // Valores
 
         this.filters.forEach(function (filterWhere) {
-            $values = $values.concat(filterWhere.filter.getValues());
+            values = values.concat(filterWhere.filter.getValues());
         });
 
-        return $values; // Retornando valores de la claúsula
+        return values; // Retornando valores de la claúsula
     };
     
     // Clase GroupBy
@@ -361,7 +361,7 @@
     };
     
     GroupBy.prototype.getDescription = function () {
-        if (softtion.is("undefined", this.column)) { 
+        if (softtion.isUndefined(this.column)) { 
             return null;
         } // No se han definido columna para clausula GroupBy
         
@@ -371,14 +371,14 @@
     // Clase OrderBy
     
     var OrderBy = function () {
-        this.columns = new Collection(); // Lista de columnas para Ordenar
+        this.columns = new Array(); // Lista de columnas para Ordenar
     };
 
     OrderBy.prototype = new IClause();
     OrderBy.prototype.constructor = OrderBy;
     
     OrderBy.prototype.addColumn = function (columnName, operatorOrder) {
-        if (softtion.is("defined", columnName)) {
+        if (softtion.isDefined(columnName)) {
             this.columns.push({ name : columnName, operatorOrder : operatorOrder });
         } // Agregando columnas para la clausula OrderBy
 
@@ -511,8 +511,8 @@
     var Insert = function (options) { 
         var $defaults = { 
             table : undefined,
-            columns : new Collection(), 
-            values : new Collection(), 
+            columns : new Array(), 
+            values : new Array(), 
             connection : undefined 
         };
         
@@ -527,7 +527,7 @@
             $columns = this.options.columns,
             $values = this.options.values;
         
-        if (softtion.is("undefined", $table) || softtion.is("undefined", $values)) {
+        if (softtion.isUndefined($table) || softtion.isUndefined($values)) {
             return null;
         } // Comando no tiene tabla, ni valores definidos
 
@@ -583,8 +583,8 @@
         var $defaults = { 
             connection : undefined,  
             table : undefined, 
-            columns : new Collection(), 
-            values : new Collection(),
+            columns : new Array(), 
+            values : new Array(),
             where : undefined
         };
         
@@ -599,7 +599,7 @@
             $columns = this.options.columns,
             $where = this.options.where;
         
-        if (softtion.is("undefined", $table) || $columns.isEmpty()) {
+        if (softtion.isUndefined($table) || $columns.isEmpty()) {
             return null;
         } // Comando no tiene tabla, ni columnas definidas
 
@@ -611,7 +611,7 @@
         
         $command += $columns.last() + "=?";
 
-        if (softtion.is("defined", $where)) { 
+        if (softtion.isDefined($where)) { 
             $command += " " + $where.getDescription();
         }
 
@@ -665,13 +665,13 @@
     Delete.prototype.getCommand = function () {
         var $table = this.options.table, $where = this.options.where;
         
-        if (softtion.is("undefined", $table)) {
+        if (softtion.isUndefined($table)) {
             return null;
         } // Comando no tiene tabla definida
 
         var $command = "DELETE FROM " + $table; // Iniciando 
         
-        if (softtion.is("defined", $where)) { 
+        if (softtion.isDefined($where)) { 
             $command += " " + $where.getDescription(); 
         }
         
@@ -711,15 +711,15 @@
 
     var Select = function (options) { 
         var $defaults = { 
-            tables: new Collection(),   // Lista de tablas
-            columns: new Collection(),  // Columnas para filtrar
-            values: new Collection(),   // Valores
+            tables: new Array(),   // Lista de tablas
+            columns: new Array(),  // Columnas para filtrar
+            values: new Array(),   // Valores
             connection: undefined,      // Conexión base de Datos
             distinct: false,            // Distinct
             where: undefined,           // Clausula Where
             groupBy: undefined,         // Clausula GroupBy
             orderBy: undefined,         // Clausula OrderBy
-            relations: new Collection() // Relaciones entre Tablas
+            relations: new Array() // Relaciones entre Tablas
         };
         
         this.options = jQuery.extend({}, $defaults, options);
@@ -780,13 +780,13 @@
             $groupBy = this.options.groupBy,
             $orderBy = this.options.orderBy;
         
-        if (softtion.is("collectionEmpty", $tables)) {
+        if (softtion.isArrayEmpty($tables)) {
             return null;
         } // El comando no tiene tablas definidas
 
         var $command = "SELECT" + (($distinct) ? " DISTINCT " : " ");
         
-        if (softtion.is("collectionEmpty", $columns)) {
+        if (softtion.isArrayEmpty($columns)) {
             $command += "*"; // No definío columnas, se establece el comodín
         } else {
             for (var $i = 0; $i < ($columns.length - 1); $i++) {
@@ -804,15 +804,15 @@
             
         $command += $tables.last();
 
-        if (softtion.is("defined", $where)) {
+        if (softtion.isDefined($where)) {
             $command += " " + $where.getDescription();
         } // Where definido
         
-        if (softtion.is("defined", $groupBy)) { 
+        if (softtion.isDefined($groupBy)) { 
             $command += " " + $groupBy.getDescription();
         } // GroupBy definido
         
-        if (softtion.is("defined", $orderBy)) { 
+        if (softtion.isDefined($orderBy)) { 
             $command += " " + $orderBy.getDescription(); 
         } // OrderBy definido
 
@@ -832,7 +832,7 @@
             this.options.connection.transaction(function (sqlTransaction) {
                 sqlTransaction.executeSql($command, $values,
                     function (sqlTransaccion, sqlResultSet) { 
-                        var $objects = new Collection(); // Objetos resultante
+                        var $objects = new Array(); // Objetos resultante
 
                         if (sqlResultSet.rows.length !== 0) {
                             jQuery.each(sqlResultSet.rows, function (key, object) {
@@ -840,7 +840,7 @@
                             });
                         } // Se encontraron resultados en la Consulta
 
-                        if (!$objects.isEmpty() && !softtion.is("collectionEmpty", $relations)) {
+                        if (!$objects.isEmpty() && !softtion.isArrayEmpty($relations)) {
                             WebSQL.createRelation($select, $objects, 0, 0, callbackResult);
                         } else { 
                             WebSQL.callback(callbackResult, { success: true, data: $objects });
@@ -950,14 +950,14 @@
         new Insert({
             table: $self.get('table'), 
             connection: $self.get('connection'),
-            columns: columns || new Collection(), 
+            columns: columns || new Array(), 
             values: values
         }).execute(callback);
     };
     
     Model.prototype.insertJson = function (objectJson, callback) {
-        var $columns = new Collection(), 
-            $values = new Collection(), $self = this; 
+        var $columns = new Array(), 
+            $values = new Array(), $self = this; 
         
         jQuery.each(objectJson, function (key, value) { 
             $columns.push(key); $values.push(value); 
@@ -982,8 +982,8 @@
     };
     
     Model.prototype.updateJson = function (objectJson) {
-        var $columns = new Collection(), 
-            $values = new Collection(), $self = this; 
+        var $columns = new Array(), 
+            $values = new Array(), $self = this; 
         
         jQuery.each(objectJson, function (key, value) { 
             $columns.push(key); $values.push(value); 
@@ -1041,8 +1041,8 @@
             case ("select") :
                 new Select({
                     connection: this.get("connection"),
-                    tables: softtion.parseCollection(this.get("table")),
-                    columns: this.get("columns") || new Collection(),
+                    tables: softtion.parseArray(this.get("table")),
+                    columns: this.get("columns") || new Array(),
                     where: this.whereModel,
                     groupBy: this.groupByModel,
                     orderBy: this.orderByModel
@@ -1056,7 +1056,7 @@
                     connection: this.get("connection"),
                     table: this.get("table"),
                     values: this.get("values"),
-                    columns: this.get("columns") || new Collection(),
+                    columns: this.get("columns") || new Array(),
                     where: this.whereModel
                 }).execute(callback);
             break;
@@ -1078,12 +1078,12 @@
     };
     
     Model.prototype.find = function (value, callback) {
-        var $primaryKey = this.get("primaryKey");
+        var primaryKey = this.get("primaryKey");
         
-        if (softtion.is("string", $primaryKey)) {
-            this.where($primaryKey,'=',value).resultSet(callback);
+        if (softtion.isString(primaryKey)) {
+            this.where(primaryKey, "=", value).resultSet(callback);
         } else {
-            callback({ success: false, data: "No ha definido primaryKey" });
+            callback({ success: false, data: "No ha definido PRIMARY KEY" });
         } // No se ha definido llave primaria
     };
 });

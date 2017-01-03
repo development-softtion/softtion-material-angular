@@ -1,9 +1,10 @@
-/* !
- * Angular Softtion v0.0.5
- * License: MIT
- * (c) 2016 Softtion Developers
- * Updated: 19/Nov/2016
- */
+/*
+ Angular Softtion v0.0.5
+ (c) 2016 Softtion Developers, http://angular.softtion.com.co
+ License: MIT
+ Updated: 19/Nov/2016
+*/
+
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular, jQuery);

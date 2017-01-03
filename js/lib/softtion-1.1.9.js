@@ -1,11 +1,11 @@
 /* !
- * Softtion v1.1.8
- * License: MIT
- * (c) 2015-2016 Softtion Developers
- * Update: 19/Nov/2016
+ Softtion v1.1.9
+ (c) 2015-2017 Softtion Developers, http://www.softtion.com.co
+ License: MIT
+ Update: 03/Ene/2017
  */
 
-/* global CryptoJS, Collection */
+/* global CryptoJS */
 
 (function (factory) {
     if (typeof jQuery === "function") {
@@ -15,7 +15,7 @@
     } // No se ha cargado jQuery
 })(function (window, jQuery) {
     
-    var Softtion = function () { }; // Definiendo Clase Softtion
+    var Softtion = function () { }; // Clase Softtion
     
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
@@ -26,9 +26,9 @@
     Softtion.prototype.TEXTCONTROL = "TEXTCONTROL";
     
     Softtion.prototype.get = function (option) {
-        var $option = option || "nothing"; // Estableciendo opcion
+        option = option || "nothing"; // Estableciendo opcion
         
-        switch ($option) {
+        switch (option) {
             case (this.DAYS_OF_WEEK):
                 return ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
                 
@@ -62,41 +62,36 @@
         }
     };
     
-    Softtion.prototype.is = function (type, object) {
-        switch (type) {
-            case ("defined"):
-                return ((typeof object !== "undefined") && (object !== null));
-                
-            case ("undefined"):
-                return ((typeof object === "undefined") || (object === null));
-                
-            case ("array"):
-                return ((this.is("defined", object)) && (object instanceof Array));
-                
-            case ("collection"):
-                return ((this.is("defined", object)) && (object instanceof Collection));
-                
-            case ("function"):
-                return ((this.is("defined", object)) && (typeof object === "function"));
-                
-            case ("date"):
-                return ((this.is("defined", object)) && (object instanceof Date));
-                
-            case ("string"):
-                return ((this.is("defined", object)) && (typeof object === "string") && (object !== ""));
-                
-            case ("arrayEmpty"):
-                return ((this.is("array", object)) && (object.length === 0));
-                
-            case ("collectionEmpty"):
-                return ((this.is("collection", object)) && (object.isEmpty()));
-            
-            default: return false; // Validación incorrecta
-        }
+    Softtion.prototype.isDefined = function (object) {
+        return ((typeof object !== "undefined") && (object !== null));
+    };
+    
+    Softtion.prototype.isUndefined = function (object) {
+        return !this.isDefined(object);
+    };
+    
+    Softtion.prototype.isArray = function (array) {
+        return ((this.isDefined(array)) && (array instanceof Array));
+    };
+    
+    Softtion.prototype.isArrayEmpty = function (array) {
+        return ((this.isArray(array)) && (array.isEmpty()));
+    };
+    
+    Softtion.prototype.isFunction = function (func) {
+        return ((this.isDefined(func)) && (typeof func === "function"));
+    };
+    
+    Softtion.prototype.isDate = function (date) {
+        return ((this.isDefined(date)) && (date instanceof Date));
+    };
+    
+    Softtion.prototype.isString = function (string) {
+        return ((this.isDefined(string)) && (typeof string === "string") && (string !== ""));
     };
     
     Softtion.prototype.parseBoolean = function (value) {
-        if (this.is("defined", value)) {
+        if (this.isDefined(value)) {
             switch (value) {
                 case ("true"): return true;
                 case ("false"): return false;
@@ -111,84 +106,68 @@
         } // El objeto no esta definido en la función
     };
     
-    Softtion.prototype.parseCollection = function (object) {
-        if (this.is("undefined", object)) {
-            return undefined;
-        } // El objeto no se puede parsear
-        
-        var collection = new Collection();
-        
-        if (object instanceof Array) {
-            object.forEach(function (item) { collection.push(item); });
-        } else { 
-            collection.push(object); 
-        } // Agregando objeto a la coleccion
-        
-        return collection; // Coleccion generada
-    };
-    
     Softtion.prototype.findKey = function (object, keys) {
-        var $self = this; // Objeto Softtion
+        var self = this; // Objeto Softtion
         
-        if (this.is("undefined", object) || !this.is("string", keys)) { 
+        if (this.isUndefined(object) || !this.isString(keys)) { 
             return undefined; 
         } // No se establecieron atributos para busqueda
 
-        var $keys = $self.parseCollection(keys.split('.'));
+        var arrayKeys = keys.split('.');
         
-        if ($keys.has(1)) { 
-            return object[$keys.first()]; 
+        if (arrayKeys.has(1)) { 
+            return object[arrayKeys.first()]; 
         } else {
-            var $value = undefined, $object = object;
+            var value = undefined, object = object;
             
-            jQuery.each($keys, function (index, key) { 
-                $value = $object[key];
+            jQuery.each(arrayKeys, function (index, key) { 
+                value = object[key];
                 
-                if ($self.is("defined", $value)) {
-                    $object = $value; 
+                if (self.isDefined(value)) {
+                    object = value; 
                 } else {
-                    $value = undefined; return false; 
+                    value = undefined; return false; 
                 } // Objeto no fue encontrado
             });
             
-            return $value; // Retornando objeto encontrado
+            return value; // Retornando objeto encontrado
         }
     };
     
     Softtion.prototype.removeKey = function (object, key) {
-        if (this.is("undefined", object) || this.is("undefined", key)) { return; }
+        if (this.isUndefined(object) || this.isUndefined(key)) { return; }
         
         delete object[key]; // Eliminando parametro del objeto
     };
     
     Softtion.prototype.required = function (object, attributes) {
-        if (this.is("collection", attributes) || this.is("array", attributes)) {
-            var $success = true, $self = this; // Objeto Softtion
+        if (this.isArray(attributes)) {
+            var success = true, self = this; // Objeto Softtion
             
             attributes.forEach(function (key) {
-                $success = $success && $self.is("defined", $self.findKey(object, key));
+                success = success && self.isDefined(self.findKey(object, key));
             });
             
-            return $success; // Resultado de la validación
+            return success; // Resultado de la validación
         } else {
-            return this.is("defined", this.findKey(object, attributes)); }
+            return this.isDefined(this.findKey(object, attributes)); }
     };
     
     Softtion.prototype.leadingChar = function (word, character, size, option) {
-        var $option = option || 'before', $word = String(word);
+        word = String(word); option = option || "before";
         
-        switch ($option) {
-            case ('before') :
-                for (var $i = $word.length; $i < size; $i++) { 
-                    $word = character + $word; }
+        switch (option) {
+            case ("before") :
+                for (var i = word.length; i < size; i++) { 
+                    word = character + word; }
                 
-                return $word; // Retornando nueva Palabra
+                return word; // Retornando nueva Palabra
                 
-            case ('after') :
-                for (var $i = $word.length; $i < size; $i++) { 
-                    $word = $word + character; }
+            case ("after") :
+                for (var i = word.length; i < size; i++) { 
+                    word = word + character; }
                 
-                return $word; // Retornando nueva Palabra
+                return word; // Retornando nueva Palabra
                 
             default : return word;
         }
@@ -346,32 +325,27 @@
     
     (function (softtion) {
         
-        Collection = function () { }; // Clase Collection
-        
-        Collection.prototype = new Array();
-        Collection.prototype.constructor = Collection;
-        
-        Collection.prototype.isEmpty = function () { 
+        Array.prototype.isEmpty = function () { 
             return (this.length === 0); 
         };
 
-        Collection.prototype.first = function () { 
+        Array.prototype.first = function () { 
             return this.isEmpty() ? null : this[0]; 
         };
 
-        Collection.prototype.last = function () {
+        Array.prototype.last = function () {
             return this.isEmpty() ? null : this[this.length - 1];
         };
         
-        Collection.prototype.has = function (count) { 
+        Array.prototype.has = function (count) { 
             return (this.length === count); 
         };
         
-        Collection.prototype.contains = function (count) { 
+        Array.prototype.contains = function (count) { 
             return (this.length >= count); 
         };
 
-        Collection.prototype.remove = function (index) {
+        Array.prototype.remove = function (index) {
             if (this.contains(index + 1)) { 
                 this.splice(index,1); 
             } // Contiene el index a remover
@@ -379,22 +353,22 @@
             return this; // Retornando interfaz fluida
         };
         
-        Collection.prototype.concat = function (object) {
+        Array.prototype.concat = function (object) {
             var $self = this; // Objeto collection
             
-            if (softtion.is("array", object)) {
+            if (softtion.isArray(object)) {
                 object.forEach(function (item) { $self.push(item); });
-            } else if (softtion.is("defined", object)) { $self.push(object); }
+            } else if (softtion.isDefined(object)) { $self.push(object); }
             
             return $self; // Retornando interfaz fluida
         };
         
-        Collection.prototype.filter = function (callbackFilter) {
-            var collectionFilter = new Collection(), index = 0;
+        Array.prototype.filter = function (functionFilter) {
+            var collectionFilter = new Array(), index = 0;
             
-            if (softtion.is("function", callbackFilter)) {
+            if (softtion.isFunction(functionFilter)) {
                 this.forEach(function (item) {
-                    if (callbackFilter(item)) { 
+                    if (functionFilter(item)) { 
                         collectionFilter.push(item, index); 
                     }
                     
@@ -405,13 +379,13 @@
             return collectionFilter; // Retornando coleccion filtrada
         };
         
-        Collection.prototype.for = function (callbackFor) {
-            if (softtion.is("function", callbackFor)) {
+        Array.prototype.for = function (callbackFor) {
+            if (softtion.isFunction(callbackFor)) {
                 var notStop = true, index = 0;
 
                 while ((notStop) && (index < this.length)) {
                     var $resultFor = callbackFor(this[index], index); index++;
-                    notStop = softtion.is("defined", $resultFor) ? $resultFor : true; 
+                    notStop = softtion.isDefined($resultFor) ? $resultFor : true; 
                 }
             }
         };
@@ -492,10 +466,10 @@
         };
 
         Date.prototype.equals = function (date, option) {
-            if (softtion.is("date", date)) {
-                var $option = option || "date"; // Estableciendo opción
+            if (softtion.isDate(date)) {
+                option = option || "date"; // Estableciendo opción
 
-                switch ($option) {
+                switch (option) {
                     case ("date") :
                         if (this.getDate() !== date.getDate()) {
                             return false; } // Comparando dias de las fechas
@@ -523,7 +497,7 @@
         };
 
         Date.prototype.merge = function (date, option) {
-            if (softtion.is("date", date)) {
+            if (softtion.isDate(date)) {
                 var $option = option || "time"; // Estableciendo opción
 
                 switch ($option) {
@@ -611,23 +585,23 @@
         };
 
         HtmlAttribute.prototype.isCorrect = function () {
-            return (softtion.is("defined", this.name) && this.name !== "");
+            return (softtion.isDefined(this.name) && this.name !== "");
         };
 
         // Class HtmlElement
         var HtmlElement = function (tag, isClosed) {
             this.tag = tag; this.id = undefined;        
-            this.classes = new Collection();       
-            this.attributes = new Collection();
-            this.text = ""; this.components = new Collection();
+            this.classes = new Array();       
+            this.attributes = new Array();
+            this.text = ""; this.components = new Array();
 
             this.closed = (isClosed !== undefined) ? isClosed : true; 
         };
 
         HtmlElement.prototype.clean = function () {
-            this.id = undefined; this.classes = new Collection();
-            this.attributes = new Collection(); 
-            this.text = ""; this.components = new Collection();
+            this.id = undefined; this.classes = new Array();
+            this.attributes = new Array(); 
+            this.text = ""; this.components = new Array();
             
             return this; // Retornando componente para Fluent
         };
@@ -645,7 +619,7 @@
         };
 
         HtmlElement.prototype.addClass = function (newClass) { 
-            if (softtion.is("array", newClass)) {
+            if (softtion.isArray(newClass)) {
                 this.classes = this.classes.concat(newClass); return this;
             } // Cargando lista Atributos
 
@@ -654,7 +628,7 @@
 
         HtmlElement.prototype.addAttribute = function (attribute, value) {
             try {
-                if (softtion.is("undefined", attribute)) {
+                if (softtion.isUndefined(attribute)) {
                     throw 'el atributo establecido no esta definido ó instanciado.';
                 } // Objeto undefined
 
@@ -684,7 +658,7 @@
 
         HtmlElement.prototype.addComponent = function (component) {
             try {
-                if (softtion.is("undefined", component)) {
+                if (softtion.isUndefined(component)) {
                     throw 'El componente establecido no esta definido ó instanciado.';
                 } // Objeto undefined
 
@@ -706,36 +680,36 @@
                     throw 'No ha establecido el tipo de etiqueta del Componente.';
                 } // No definio correctamente la etiqueta
 
-                var $component = "<" + this.tag; // Iniciando etiqueta de configuración
+                var component = "<" + this.tag; // Iniciando etiqueta de configuración
 
-                if (this.id) $component += " id='" + this.id + "'"; // Se estableció identificador de Componente
+                if (this.id) component += " id='" + this.id + "'"; // Se estableció identificador de Componente
 
                 if (!this.classes.isEmpty()) {
-                    $component += " class='"; // Iniciando definicion de Clases
-                    this.classes.forEach(function (newClass) { $component += newClass + " "; });
+                    component += " class='"; // Iniciando definicion de Clases
+                    this.classes.forEach(function (newClass) { component += newClass + " "; });
 
-                    $component = $component.trim() + "'"; 
+                    component = component.trim() + "'"; 
                 } // Se establecieron clases para el Componente
 
                 if (!this.attributes.isEmpty()) {
                     this.attributes.forEach(function (attribute) { 
                         if (attribute.isCorrect()) {
-                            $component += " " + attribute.getName() + "='" + attribute.getValue() + "'";
+                            component += " " + attribute.getName() + "='" + attribute.getValue() + "'";
                         }
                     });
                 } // Se establecieron atributos para el Componente
 
-                $component += ">"; // Cerrando etiqueta de configuración
+                component += ">"; // Cerrando etiqueta de configuración
 
-                if (this.text) $component += this.text; // Se estableció texto de Componente
+                if (this.text) component += this.text; // Se estableció texto de Componente
 
                 if (!this.components.isEmpty()) {
-                    this.components.forEach(function (component) { $component += component.create(); });
+                    this.components.forEach(function (component) { component += component.create(); });
                 } // Se establecieron componentes hijos en el Componente */
 
-                if (this.closed) $component +=  "</" + this.tag + ">"; // Cerrando su etiqueta
+                if (this.closed) component +=  "</" + this.tag + ">"; // Cerrando su etiqueta
 
-                return $component; // Retornando configuración del componente
+                return component; // Retornando configuración del componente
             } 
 
             catch (err) { 
