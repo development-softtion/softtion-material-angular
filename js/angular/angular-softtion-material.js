@@ -23,7 +23,7 @@
                     return {
                         restrict: "C",
                         scope: {
-                            fixed: "="
+                            fixed: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes y atributos
@@ -89,14 +89,14 @@
                         addAttribute("ng-click","clearAutocomplet()");
 
                     var listAutocomplete = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","option in suggestionsFilter").
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-click","selectOption(option)").
                                 addAttribute("ng-keydown","keydownOption($event, option)").
                                 addAttribute("ng-bind-html","renderOption(option)")
-                        ).addComponent(
+                        ).addChildren(
                             softtion.html("li").addClass(["truncate","not-found"]).
                                 addAttribute("ng-if","notFoundResult()").
                                 setText("{{descriptionNotFoundResult()}}")
@@ -110,11 +110,11 @@
                         templateUrl: Material.components.AutoComplete.route,
                         scope: {
                             optionSelect: "=ngModel",
-                            required: "=required",
+                            required: "@required",
                             filter: "@filter",
                             label: "@label",
-                            ngDisabled: "=ngDisabled",
-                            suggestions: "=suggestions"
+                            ngDisabled: "@ngDisabled",
+                            suggestions: "@suggestions"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -284,7 +284,7 @@
                 name: "bottomNavigation",
                 ripple: function () {
                     return softtion.html("div").addClass("ripple-box").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").addClass("effect")
                         ).create();
                 },             
@@ -490,7 +490,7 @@
                         addAttribute("ng-click","clickLabel()");
                 
                     var ripple = softtion.html("div").addClass("ripple-content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box")
                         );
 
@@ -503,7 +503,7 @@
                         scope: {
                             checked: "=ngModel",
                             label: "@label",
-                            ngDisabled: "=ngDisabled"
+                            ngDisabled: "@ngDisabled"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -538,9 +538,9 @@
                         templateUrl: Material.components.CheckBoxSelection.route,
                         scope: {
                             checked: "=ngModel",
-                            preventDefault: "=preventDefault",
-                            stopPropagation: "=stopPropagation",
-                            ngDisabled: "=ngDisabled"
+                            preventDefault: "@preventDefault",
+                            stopPropagation: "@stopPropagation",
+                            ngDisabled: "@ngDisabled"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -568,9 +568,9 @@
                     var chips = softtion.html("div").addClass("chip").
                         addAttribute("ng-repeat", "item in listValue").
                         setText("{{item}}").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("close").
-                                addComponent(
+                                addChildren(
                                     softtion.html("i").addClass("material-icon").
                                         setText("close").
                                         addAttribute("ng-click", "removeItem($index)")
@@ -601,7 +601,7 @@
                             listValue: "=ngModel", 
                             label: "@label", 
                             clickEvent: "@clickEvent",
-                            maxCountDefined: "=maxCount"
+                            maxCountDefined: "@maxCount"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input");
@@ -670,50 +670,50 @@
                 name: "clockpicker",
                 html: function () {
                     var title = softtion.html("div").addClass("title").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("time").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("am-pm").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("div").addClass("am").setText("AM").
                                                 addAttribute("ng-click","setZone(false)")
                                         ).
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("div").addClass("pm").setText("PM").
                                                 addAttribute("ng-click","setZone(true)")
                                         )
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("div").addClass("minute").setText(":{{leadingClock(minuteSelect)}}").
                                         addAttribute("ng-click","setSelection(false)")
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("div").addClass(["hour"]).setText("{{hourSelect}}").
                                         addAttribute("ng-click","setSelection(true)")
                                 )
                         );
                     
                     var content = softtion.html("div").addClass("content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("plate").
                                 addAttribute("ng-mousedown","mousedownPlate($event)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("canvas")
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass(["hours"])
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("minutes")
                                 )
                         );
                         
                     var footer = softtion.html("div").addClass("actions").
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Ok").
                                 addAttribute("ng-click","setTime()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Cancelar").
@@ -834,8 +834,8 @@
                         templateUrl: Material.components.Clockpicker.route,
                         scope: {
                             time: "=ngModel", 
-                            setTimeSelect: "=timeSelect",
-                            cancelSelect: "=cancelSelect"
+                            setTimeSelect: "@timeSelect",
+                            cancelSelect: "@cancelSelect"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -980,12 +980,12 @@
                         addAttribute("click-event","clickEvent");
                     
                     var dialog = softtion.html("div").addClass("dialog").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("clockpicker").
                                         addAttribute("ng-model","timePicker").
                                         addAttribute("time-select","timeSelect").
@@ -1001,9 +1001,9 @@
                         restrict: "C",
                         templateUrl: Material.components.ClockpickerInput.route,
                         scope: {
-                            label: "@label",
                             time: "=ngModel",
-                            autoStart: "=autoStart"
+                            label: "@label",
+                            autoStart: "@autoStart"
                         },
                         controller: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
@@ -1045,13 +1045,13 @@
                     return {
                         restrict: "C",
                         scope: {
-                            selectMultiple: "=?selectMultiple",
+                            selectMultiple: "@?selectMultiple",
                             selection: "=?ngModel",
-                            list: "=rowsData",
-                            selectAll: "=?selectAll",
-                            clickSelectAll: "=?clickSelectAll",
-                            clickSelect: "=?clickSelect",
-                            countSelect: "=?countSelect"
+                            list: "@rowsData",
+                            selectAll: "@?selectAll",
+                            clickSelectAll: "@?clickSelectAll",
+                            clickSelect: "@?clickSelect",
+                            countSelect: "@?countSelect"
                         },
                         link: function ($scope, $element) {
                             var selectedSimple = undefined; // Objeto seleccionado
@@ -1126,13 +1126,13 @@
                 name: "datepicker",
                 html: function() {
                     var title = softtion.html("div").addClass("title").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("year").
                                 setText("{{year}}").
                                 addAttribute("ng-class","{active : enabledSelectYear}").
                                 addAttribute("ng-click","activeYear(true)")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("day").
                                 setText("{{describeDaySelect()}}").
                                 addAttribute("ng-class","{active : !enabledSelectYear}").
@@ -1140,47 +1140,47 @@
                         );
                 
                     var content = softtion.html("div").addClass("content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("month").
                                 addAttribute("ng-hide","(enabledSelectYear || enabledSelectMonth)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("button-left").
                                         addAttribute("ng-class", "{disabled: prevMonthEnabled()}").
                                         addAttribute("ng-click", "changedMonth(false)").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("i").addClass("material-icon").
                                                 setText("chevron_left")
                                         )
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("button-right").
                                         addAttribute("ng-class", "{disabled: nextMonthEnabled()}").
                                         addAttribute("ng-click", "changedMonth(true)").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("i").addClass("material-icon").
                                                 setText("chevron_right")
                                         )
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("name").
                                         addAttribute("ng-click", "activeMonth(true)").
                                         setText("{{monthText}}")
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("table").addClass(["days-month", "animate", "easing-out"]).
                                 addAttribute("ng-hide","(enabledSelectYear || enabledSelectMonth)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("thead").append("<th>Do</th>").
                                         append("<th>Lu</th>").append("<th>Ma</th>").
                                         append("<th>Mi</th>").append("<th>Ju</th>").
                                         append("<th>Vi</th>").append("<th>Sa</th>")
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("tbody").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("tr").addClass("week").
                                                 addAttribute("ng-repeat", "week in daysMonth").
-                                                addComponent(
+                                                addChildren(
                                                     softtion.html("td").addClass("day").
                                                         addAttribute("ng-class","{disabled : dayDisabled(day.value)}").
                                                         addAttribute("ng-repeat", "day in week").
@@ -1190,11 +1190,11 @@
                                         )
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("months").addAttribute("ng-hide","!enabledSelectMonth").
-                                addComponent(
+                                addChildren(
                                     softtion.html("ul").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("li").
                                                 addAttribute("ng-repeat","month in months").
                                                 setText("{{month.name}}").
@@ -1205,11 +1205,11 @@
                                         )
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("year").addAttribute("ng-hide","!enabledSelectYear").
-                                addComponent(
+                                addChildren(
                                     softtion.html("ul").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("li").
                                                 addAttribute("ng-repeat","year in years").
                                                 setText("{{year}}").
@@ -1220,13 +1220,13 @@
                         );
                         
                     var actions = softtion.html("div").addClass("actions").
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Ok").
                                 addAttribute("ng-click","setDate()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Cancelar").
@@ -1300,10 +1300,10 @@
                         templateUrl: Material.components.Datepicker.route,
                         scope: {
                             date: "=ngModel",
-                            dateSelect: "=dateSelect",
-                            cancelSelect: "=cancelSelect",
-                            minDate: "=minDate",
-                            maxDate: "=maxDate",
+                            dateSelect: "@dateSelect",
+                            cancelSelect: "@cancelSelect",
+                            minDate: "@minDate",
+                            maxDate: "@maxDate",
                             yearRange: "@yearRange"
                         },
                         link: function ($scope, $elememt) {
@@ -1588,12 +1588,12 @@
                         addAttribute("click-event","clickEvent");
                     
                     var dialog = softtion.html("div").addClass("dialog").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("datepicker").
                                         addAttribute("ng-model","datePicker").
                                         addAttribute("date-select","dateSelect").
@@ -1613,9 +1613,9 @@
                         scope: {
                             label: "@label",
                             date: "=ngModel",
-                            autoStart: "=autoStart",
-                            minDate: "=minDate",
-                            maxDate: "=maxDate",
+                            autoStart: "@autoStart",
+                            minDate: "@minDate",
+                            maxDate: "@maxDate",
                             yearRange: "@yearRange"
                         },
                         link: function ($scope, $element) {
@@ -1656,7 +1656,7 @@
                 name: "expansionPanel",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(
+                        addChildren(
                             softtion.html("i").setText("expand_more")
                         ).create();
                 },
@@ -1712,7 +1712,8 @@
                                 var density = img[0].height / img[0].width;
                                 
                                 (density >= 1)  ? // Ancho es mayor igual a alto
-                                    img.css("width", "100%") : img.css("height", "100%");                            }
+                                    img.css("width", "100%") : img.css("height", "100%");
+                            }
                         }
                     };
                 }
@@ -1723,7 +1724,7 @@
                 name: "progressCircular",
                 html: function () {
                     return softtion.html("svg").addAttribute("viewBox","0 0 66 66").
-                        addComponent(softtion.html("circle")).create();
+                        addChildren(softtion.html("circle")).create();
                 },
                 directive: function () {
                     return {
@@ -1816,20 +1817,20 @@
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
                     var button = softtion.html("button").addClass("action").
-                            addComponent(
+                            addChildren(
                                 softtion.html("i").addClass("action-icon").setText("expand_more")
                             ).addAttribute("ng-hide", "ngDisabled").
                             addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                                 addAttribute("ng-if","clearSuggestion").
                                 setText("Limpiar selección").
                                 addAttribute("ng-hide", "!select").
                                 addAttribute("ng-click","clearSelection()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
@@ -1847,10 +1848,10 @@
                             select: "=ngModel", 
                             label: "@label",
                             keyDescription: "@keyDescription",
-                            suggestions: "=suggestions",
-                            ngDisabled: "=ngDisabled",
-                            clearSuggestion: "=clearSuggestion",
-                            disabledAutoclose: "=disabledAutoclose"
+                            suggestions: "@suggestions",
+                            ngDisabled: "@ngDisabled",
+                            clearSuggestion: "@clearSuggestion",
+                            disabledAutoclose: "@disabledAutoclose"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -1966,20 +1967,20 @@
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
                     var button = softtion.html("button").addClass("action").
-                        addComponent(
+                        addChildren(
                             softtion.html("i").addClass("action-icon").setText("expand_more")
                         ).addAttribute("ng-hide", "ngDisabled").
                         addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-class", "{active: suggestion.checked}").
                                 addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
                                 setText("{{getSuggestionDescription(suggestion)}}").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("checkbox-selection").
                                         addAttribute("prevent-default", "true").
                                         addAttribute("ng-model", "suggestion.checked")
@@ -2007,8 +2008,8 @@
                             selects: "=ngModel", 
                             label: "@label",
                             keyDescription: "@keyDescription",
-                            suggestions: "=suggestions",
-                            ngDisabled: "=ngDisabled"
+                            suggestions: "@suggestions",
+                            ngDisabled: "@ngDisabled"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2119,7 +2120,7 @@
                 name: "sidenavItem",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(
+                        addChildren(
                             softtion.html("i").setText("expand_more")
                         ).create();
                 },
@@ -2168,7 +2169,7 @@
                         restrict: "C",
                         scope: {
                             view: "@viewBox",
-                            disabledPositionStart: "=disabledPositionStart"
+                            disabledPositionStart: "@disabledPositionStart"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2290,7 +2291,7 @@
 
                     var $label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-click","clickLabel($event)").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
@@ -2310,12 +2311,12 @@
                             areaValue: "=?ngValueArea", 
                             label: "@label", 
                             type: "@type",
-                            required: "=required",
-                            ngDisabled: "=ngDisabled",
-                            ngReadonly: "=ngReadonly",
+                            required: "@required",
+                            ngDisabled: "@ngDisabled",
+                            ngReadonly: "@ngReadonly",
                             minLength: "@minLength",
                             maxLength: "@maxLength",
-                            clickEvent: "=clickEvent"
+                            clickEvent: "@clickEvent"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2414,7 +2415,7 @@
                     var label = softtion.html("label").
                         setText("{{label}}").addClass("truncate").
                         addAttribute("ng-click","clickLabel($event)").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
@@ -2440,12 +2441,12 @@
                             inputValue: "=?ngValueInput", 
                             label: "@label", 
                             type: "@type",
-                            required: "=required",
-                            ngDisabled: "=ngDisabled",
-                            ngReadonly: "=ngReadonly",
+                            required: "@required",
+                            ngDisabled: "@ngDisabled",
+                            ngReadonly: "@ngReadonly",
                             minLength: "@minLength",
                             maxLength: "@maxLength",
-                            clickEvent: "=clickEvent",
+                            clickEvent: "@clickEvent",
                             icon: "@icon",
                             placeholder: "@placeholder"
                         },
@@ -2546,7 +2547,7 @@
                         scope: {
                             value: "=ngModel", 
                             label: "@label", 
-                            clickEvent: "=clickEvent"
+                            clickEvent: "@clickEvent"
                         },
                         link: function ($scope) {
                             $scope.clickInput = function (ev) {
