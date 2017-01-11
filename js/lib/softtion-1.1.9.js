@@ -154,22 +154,22 @@
     };
     
     Softtion.prototype.leadingChar = function (word, character, size, option) {
-        word = String(word); option = option || "before";
+        var $word = String(word); option = option || "before";
         
         switch (option) {
             case ("before") :
-                for (var i = word.length; i < size; i++) { 
-                    word = character + word; }
+                for (var i = $word.length; i < size; i++) { 
+                    $word = character + $word; }
                 
-                return word; // Retornando nueva Palabra
+                return $word; // Retornando nueva Palabra
                 
             case ("after") :
-                for (var i = word.length; i < size; i++) { 
-                    word = word + character; }
+                for (var i = $word.length; i < size; i++) { 
+                    $word = $word + character; }
                 
-                return word; // Retornando nueva Palabra
+                return $word; // Retornando nueva Palabra
                 
-            default : return word;
+            default : return $word;
         }
     };
         
@@ -354,29 +354,29 @@
         };
         
         Array.prototype.concat = function (object) {
-            var $self = this; // Objeto collection
+            var self = this; // Objeto collection
             
             if (softtion.isArray(object)) {
-                object.forEach(function (item) { $self.push(item); });
-            } else if (softtion.isDefined(object)) { $self.push(object); }
+                object.forEach(function (item) { self.push(item); });
+            } else if (softtion.isDefined(object)) { self.push(object); }
             
-            return $self; // Retornando interfaz fluida
+            return self; // Retornando interfaz fluida
         };
         
         Array.prototype.filter = function (functionFilter) {
-            var collectionFilter = new Array(), index = 0;
+            var arrayFilter = new Array(), index = 0;
             
             if (softtion.isFunction(functionFilter)) {
                 this.forEach(function (item) {
                     if (functionFilter(item)) { 
-                        collectionFilter.push(item, index); 
+                        arrayFilter.push(item, index); 
                     }
                     
                     index++; // Aumentando index del item
                 });
             } // Se ha definido función para filtrar
             
-            return collectionFilter; // Retornando coleccion filtrada
+            return arrayFilter; // Retornando array filtrado
         };
         
         Array.prototype.for = function (callbackFor) {
@@ -384,8 +384,8 @@
                 var notStop = true, index = 0;
 
                 while ((notStop) && (index < this.length)) {
-                    var $resultFor = callbackFor(this[index], index); index++;
-                    notStop = softtion.isDefined($resultFor) ? $resultFor : true; 
+                    var result = callbackFor(this[index], index); index++;
+                    notStop = softtion.isDefined(result) ? result : true; 
                 }
             }
         };
