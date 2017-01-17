@@ -225,6 +225,10 @@
         return objectClone; // Objeto clonado
     };
     
+    Softtion.prototype.isInPage = function (node) {
+        return (node === document.body) ? false : document.body.contains(node);
+    };
+    
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     Softtion.prototype.encrypt = function (value, keyPassword) {
@@ -593,7 +597,7 @@
             this.tag = tag; this.id = undefined;        
             this.classes = new Array();       
             this.attributes = new Array();
-            this.text = ""; this.components = new Array();
+            this.text = ""; this.childrens = new Array();
 
             this.closed = (isClosed !== undefined) ? isClosed : true; 
         };
@@ -601,7 +605,7 @@
         HtmlElement.prototype.clean = function () {
             this.id = undefined; this.classes = new Array();
             this.attributes = new Array(); 
-            this.text = ""; this.components = new Array();
+            this.text = ""; this.childrens = new Array();
             
             return this; // Retornando componente para Fluent
         };
@@ -656,7 +660,7 @@
             this.text += text; return this; 
         };
 
-        HtmlElement.prototype.addComponent = function (component) {
+        HtmlElement.prototype.addChildren = function (component) {
             try {
                 if (softtion.isUndefined(component)) {
                     throw 'El componente establecido no esta definido ó instanciado.';
@@ -666,7 +670,7 @@
                     throw 'El componente establecido no es de tipo HtmlElement.';
                 } // Objeto no es de tipo HtmlComponent
 
-                this.components.push(component); return this;
+                this.childrens.push(component); return this;
             } 
 
             catch (err) { 
@@ -677,39 +681,41 @@
         HtmlElement.prototype.create = function () {
             try {
                 if (!this.tag) {
-                    throw 'No ha establecido el tipo de etiqueta del Componente.';
+                    throw "No ha establecido el tipo de etiqueta del Componente.";
                 } // No definio correctamente la etiqueta
 
-                var component = "<" + this.tag; // Iniciando etiqueta de configuración
+                var element = "<" + this.tag; // Iniciando etiqueta de configuración
 
-                if (this.id) component += " id='" + this.id + "'"; // Se estableció identificador de Componente
+                if (this.id) element += " id='" + this.id + "'"; // Se estableció identificador de Componente
 
                 if (!this.classes.isEmpty()) {
-                    component += " class='"; // Iniciando definicion de Clases
-                    this.classes.forEach(function (newClass) { component += newClass + " "; });
+                    element += " class='"; // Iniciando definicion de Clases
+                    this.classes.forEach(function (newClass) { element += newClass + " "; });
 
-                    component = component.trim() + "'"; 
+                    element = element.trim() + "'"; 
                 } // Se establecieron clases para el Componente
 
                 if (!this.attributes.isEmpty()) {
                     this.attributes.forEach(function (attribute) { 
                         if (attribute.isCorrect()) {
-                            component += " " + attribute.getName() + "='" + attribute.getValue() + "'";
+                            element += " " + attribute.getName() + "='" + attribute.getValue() + "'";
                         }
                     });
                 } // Se establecieron atributos para el Componente
 
-                component += ">"; // Cerrando etiqueta de configuración
+                element += ">"; // Cerrando etiqueta de configuración
 
-                if (this.text) component += this.text; // Se estableció texto de Componente
+                if (this.text) element += this.text; // Se estableció texto de Componente
 
-                if (!this.components.isEmpty()) {
-                    this.components.forEach(function (component) { component += component.create(); });
+                if (!this.childrens.isEmpty()) {
+                    this.childrens.forEach(function (children) { 
+                        element += children.create(); 
+                    });
                 } // Se establecieron componentes hijos en el Componente */
 
-                if (this.closed) component +=  "</" + this.tag + ">"; // Cerrando su etiqueta
+                if (this.closed) element +=  "</" + this.tag + ">"; // Cerrando su etiqueta
 
-                return component; // Retornando configuración del componente
+                return element; // Retornando configuración del componente
             } 
 
             catch (err) { 

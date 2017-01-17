@@ -23,7 +23,7 @@
                     return {
                         restrict: "C",
                         scope: {
-                            fixed: "="
+                            fixed: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes y atributos
@@ -42,21 +42,18 @@
                                     if (positionNew > heightMin) {
                                         if (position < positionNew) {
                                             $element.addClass(hideClass); 
-                                            appContent.css("padding-top", "16px");
                                         } else {
                                             $element.removeClass(hideClass); 
-                                            appContent.css("padding-top", heightElement + 16);
                                         }
                                     } else if (positionNew === 0) {
                                         $element.removeClass(hideClass); 
-                                        appContent.css("padding-top", heightElement + 16);
                                     } 
 
                                     position = positionNew; // Posición nueva del scroll
                                 });
                             }                            
                             
-                            appContent.css("padding-top", heightElement + 16).addClass("animated");
+                            appContent.css("padding-top", heightElement + 16);
                         }
                     };
                 }
@@ -73,7 +70,8 @@
                         addAttribute("ng-keyup","keyupInput($event)").
                         addAttribute("ng-keydown","keydownInput($event)").
                         addAttribute("ng-blur","blurInput()").
-                        addAttribute("ng-disabled","ngDisabled");
+                        addAttribute("ng-disabled","ngDisabled").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -89,14 +87,14 @@
                         addAttribute("ng-click","clearAutocomplet()");
 
                     var listAutocomplete = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
-                                addAttribute("ng-repeat","option in suggestionsFilter").
+                                addAttribute("ng-repeat","option in suggestionsFilter track by $index").
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-click","selectOption(option)").
                                 addAttribute("ng-keydown","keydownOption($event, option)").
                                 addAttribute("ng-bind-html","renderOption(option)")
-                        ).addComponent(
+                        ).addChildren(
                             softtion.html("li").addClass(["truncate","not-found"]).
                                 addAttribute("ng-if","notFoundResult()").
                                 setText("{{descriptionNotFoundResult()}}")
@@ -110,17 +108,24 @@
                         templateUrl: Material.components.AutoComplete.route,
                         scope: {
                             optionSelect: "=ngModel",
-                            required: "=required",
-                            filter: "@filter",
-                            label: "@label",
-                            ngDisabled: "=ngDisabled",
-                            suggestions: "=suggestions"
+                            required: "@",
+                            filter: "@",
+                            label: "@",
+                            ngDisabled: "@",
+                            suggestions: "=",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input"), 
                                 list = $element.find("ul"),
                                 label = $element.find("label");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
                                 
                             // Atributos de control
                             var filterDefined = softtion.isString($scope.filter),
@@ -150,6 +155,7 @@
                                 angular.forEach($scope.suggestions, function (suggestion) {
                                     if (typeof suggestion === "string") {
                                         if (~suggestion.toLowerCase().indexOf(filter)) { 
+                                            
                                             suggestionsFilter.push(suggestion); 
                                         } // Se encontro coincidencia, se agregara opción
                                     } else {
@@ -249,15 +255,15 @@
 
                             $scope.renderOption = function (option) {
                                 // Texto a mostrar en la lista
-                                var $value = option.labelAutoComplete || option;
+                                var value = option.labelAutoComplete || option;
 
                                 // Valor digitado para filtrar
-                                var $filter = $scope.valueInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                                var filter = $scope.valueInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
                                 // Expresión RegExp
-                                var $expReg = new RegExp("(" + $filter.split(' ').join('|') + ")", "gi");
+                                var expReg = new RegExp("(" + filter.split(' ').join('|') + ")", "gi");
 
-                                return $value.replace($expReg, "<b>$1</b>"); // Valor final
+                                return value.replace(expReg, "<b>$1</b>"); // Valor final
                             };
 
                             $scope.notFoundResult = function () {
@@ -271,9 +277,9 @@
                             };
                             
                             $scope.clearAutocomplet = function () {
-                                $scope.optionSelect = undefined; $scope.valueInput = "";
-                                $scope.clearSuggestion = true; $element.removeClass("active");
-                                label.removeClass("active");
+                                $scope.optionSelect = undefined; $scope.valueInput = ""; 
+                                $scope.clearSuggestion = true; // Ocultar botón
+                                $element.removeClass("active"); label.removeClass("active");
                             };
                         }
                     };
@@ -284,7 +290,7 @@
                 name: "bottomNavigation",
                 ripple: function () {
                     return softtion.html("div").addClass("ripple-box").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").addClass("effect")
                         ).create();
                 },             
@@ -466,7 +472,7 @@
                     return {
                         restrict: "E",
                         scope: {
-                            disableRipple: "=?disableRipple"
+                            disableRipple: "@"
                         },
                         link: function ($scope, $element) {
                             if ($scope.disableRipple) {
@@ -475,6 +481,122 @@
                         }
                     };
                 }
+            },
+            
+            Carousel: {
+                route: "softtion/template/carousel.html",
+                name: "carousel",
+                html: function () {
+                    var content = softtion.html("div").
+                        addClass("slide").addAttribute("ng-repeat", "slide in slides").
+                        addAttribute(
+                            "ng-class", "{active: slideActive($index), before: slideBefore($index), after: slideAfter($index)}"
+                        ).addChildren(
+                            softtion.html("img", false).addAttribute("src", "{{slide.img}}")
+                        );
+
+                    content.addChildren(
+                        softtion.html("div").addClass("detail").
+                            addChildren(
+                                softtion.html("label").addClass("title").setText("{{slide.title}}")
+                            ).
+                            addChildren(
+                                softtion.html("h2").addClass("subtitle").setText("{{slide.subTitle}}")
+                            )
+                    );
+
+                    var buttonPrev = softtion.html("a").addClass(["arrow", "prev"]).
+                        addAttribute("ng-click", "prev()").
+                        addChildren(
+                            softtion.html("i").addClass("material-icon").setText("chevron_left")
+                        );
+
+                    var buttonNext = softtion.html("a").addClass(["arrow", "next"]).
+                        addAttribute("ng-click", "next()").
+                        addChildren(
+                            softtion.html("i").addClass("material-icon").setText("chevron_right")
+                        );
+                
+                    return content + buttonPrev + buttonNext;
+                },
+                directive: ["$interval", function ($interval) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Carousel.route,
+                        scope: {
+                            slides: "=",
+                            disabledAuto: "@",
+                            time: "@",
+                            height: "@"
+                        },
+                        link: function ($scope, $element) {
+                            var intervalCarousel = undefined; $scope.index = 0; 
+                            $scope.time = $scope.time || 4000;
+                            
+                            $element.height($scope.height || "inherit");
+
+                            $scope.slideActive = function (index) {
+                                return $scope.index === index;
+                            };
+
+                            $scope.slideBefore = function (index) {
+                                var before = $scope.index - 1;
+
+                                if (before < 0) {
+                                    before = $scope.slides.length - 1;
+                                } // Slide before es el ultimo
+
+                                return before === (index);
+                            };
+
+                            $scope.slideAfter = function (index) {
+                                var after = $scope.index + 1;
+
+                                if (after === $scope.slides.length) {
+                                    after = 0;
+                                } // Slide after es el primero
+
+                                return after === (index);
+                            };
+
+                            function prev() {
+                                $scope.index--; // Index para slide anterior
+
+                                if ($scope.index < 0)  {
+                                    $scope.index = $scope.slides.length - 1;
+                                } // Se salio del rango inferior de la lista
+                            };
+
+                            function next() {
+                                $scope.index++; // Index para slide siguiente
+
+                                if ($scope.index === $scope.slides.length) {
+                                    $scope.index = 0;
+                                } // Se alcanzo la cantidad de slides
+                            };
+
+                            function startInterval() {
+                                if (!$scope.disabledAuto) {
+                                    if (softtion.isInPage($element[0])) {
+                                        intervalCarousel = $interval(next, $scope.time);
+                                    } else {
+                                        $interval.cancel(intervalCarousel);
+                                    } // Ya no se encuentra en el documento
+                                }
+                            };
+
+                            $scope.next = function () {
+                                $interval.cancel(intervalCarousel); next(); startInterval();
+                            };
+
+                            $scope.prev = function () {
+                                $interval.cancel(intervalCarousel); prev(); startInterval();
+                            };
+
+                            startInterval(); // Inicializando el interval
+                        }
+                    };
+                }]
             },
             
             CheckBox: {
@@ -490,7 +612,7 @@
                         addAttribute("ng-click","clickLabel()");
                 
                     var ripple = softtion.html("div").addClass("ripple-content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box")
                         );
 
@@ -503,7 +625,7 @@
                         scope: {
                             checked: "=ngModel",
                             label: "@label",
-                            ngDisabled: "=ngDisabled"
+                            ngDisabled: "@ngDisabled"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -538,9 +660,9 @@
                         templateUrl: Material.components.CheckBoxSelection.route,
                         scope: {
                             checked: "=ngModel",
-                            preventDefault: "=preventDefault",
-                            stopPropagation: "=stopPropagation",
-                            ngDisabled: "=ngDisabled"
+                            preventDefault: "@preventDefault",
+                            stopPropagation: "@stopPropagation",
+                            ngDisabled: "@ngDisabled"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -565,17 +687,18 @@
                 route: "softtion/template/chip-input.html",
                 name: "chipInput",
                 html: function () {
-                    var chips = softtion.html("div").addClass("chip").
-                        addAttribute("ng-repeat", "item in listValue").
-                        setText("{{item}}").
-                        addComponent(
-                            softtion.html("div").addClass("close").
-                                addComponent(
-                                    softtion.html("i").addClass("material-icon").
-                                        setText("close").
-                                        addAttribute("ng-click", "removeItem($index)")
+                    var chips = softtion.html("div").addClass("chips").
+                        addChildren(
+                            softtion.html("div").addClass("chip").
+                                addAttribute("ng-repeat", "item in listValue").setText("{{item}}").
+                                addChildren(
+                                    softtion.html("div").addClass("action").
+                                        addChildren(
+                                            softtion.html("i").setText("close").
+                                                addAttribute("ng-click", "removeItem($index)")
+                                        )
                                 )
-                        );
+                    );
                     
                     var input = softtion.html("input", false).
                         addAttribute("type","text").
@@ -583,7 +706,9 @@
                         addAttribute("ng-keypress","keypressInput($event)").
                         addAttribute("ng-blur","blurInput($event)").
                         addAttribute("ng-focus","focusInput($event)").
-                        addAttribute("ng-model","valueInput");
+                        addAttribute("ng-model","valueInput").
+                        addAttribute("ng-disabled","{{ngDisabled}}").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -599,12 +724,21 @@
                         templateUrl: Material.components.ChipInput.route,
                         scope: {
                             listValue: "=ngModel", 
-                            label: "@label", 
-                            clickEvent: "@clickEvent",
-                            maxCountDefined: "=maxCount"
+                            label: "@", 
+                            clickEvent: "=?",
+                            maxCountDefined: "@maxCount",
+                            ngDisabled: "@",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
+                            // Componentes
                             var input = $element.find("input");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
                         
                             $scope.listValue = $scope.listValue || new Array();
                             $scope.maxCount = $scope.maxCountDefined || -1;
@@ -670,50 +804,50 @@
                 name: "clockpicker",
                 html: function () {
                     var title = softtion.html("div").addClass("title").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("time").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("am-pm").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("div").addClass("am").setText("AM").
                                                 addAttribute("ng-click","setZone(false)")
                                         ).
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("div").addClass("pm").setText("PM").
                                                 addAttribute("ng-click","setZone(true)")
                                         )
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("div").addClass("minute").setText(":{{leadingClock(minuteSelect)}}").
                                         addAttribute("ng-click","setSelection(false)")
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("div").addClass(["hour"]).setText("{{hourSelect}}").
                                         addAttribute("ng-click","setSelection(true)")
                                 )
                         );
                     
                     var content = softtion.html("div").addClass("content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("plate").
                                 addAttribute("ng-mousedown","mousedownPlate($event)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("canvas")
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass(["hours"])
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("minutes")
                                 )
                         );
                         
                     var footer = softtion.html("div").addClass("actions").
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Ok").
                                 addAttribute("ng-click","setTime()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Cancelar").
@@ -834,8 +968,8 @@
                         templateUrl: Material.components.Clockpicker.route,
                         scope: {
                             time: "=ngModel", 
-                            setTimeSelect: "=timeSelect",
-                            cancelSelect: "=cancelSelect"
+                            setTimeSelect: "=?timeSelect",
+                            cancelSelect: "=?cancelSelect"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -980,12 +1114,12 @@
                         addAttribute("click-event","clickEvent");
                     
                     var dialog = softtion.html("div").addClass("dialog").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("clockpicker").
                                         addAttribute("ng-model","timePicker").
                                         addAttribute("time-select","timeSelect").
@@ -1001,9 +1135,9 @@
                         restrict: "C",
                         templateUrl: Material.components.ClockpickerInput.route,
                         scope: {
-                            label: "@label",
                             time: "=ngModel",
-                            autoStart: "=autoStart"
+                            label: "@",
+                            autoStart: "@"
                         },
                         controller: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
@@ -1045,7 +1179,7 @@
                     return {
                         restrict: "C",
                         scope: {
-                            selectMultiple: "=?selectMultiple",
+                            selectMultiple: "@?selectMultiple",
                             selection: "=?ngModel",
                             list: "=rowsData",
                             selectAll: "=?selectAll",
@@ -1126,13 +1260,13 @@
                 name: "datepicker",
                 html: function() {
                     var title = softtion.html("div").addClass("title").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("year").
                                 setText("{{year}}").
                                 addAttribute("ng-class","{active : enabledSelectYear}").
                                 addAttribute("ng-click","activeYear(true)")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("day").
                                 setText("{{describeDaySelect()}}").
                                 addAttribute("ng-class","{active : !enabledSelectYear}").
@@ -1140,47 +1274,47 @@
                         );
                 
                     var content = softtion.html("div").addClass("content").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("month").
                                 addAttribute("ng-hide","(enabledSelectYear || enabledSelectMonth)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("button-left").
                                         addAttribute("ng-class", "{disabled: prevMonthEnabled()}").
                                         addAttribute("ng-click", "changedMonth(false)").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("i").addClass("material-icon").
                                                 setText("chevron_left")
                                         )
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("button-right").
                                         addAttribute("ng-class", "{disabled: nextMonthEnabled()}").
                                         addAttribute("ng-click", "changedMonth(true)").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("i").addClass("material-icon").
                                                 setText("chevron_right")
                                         )
                                 ).
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("name").
                                         addAttribute("ng-click", "activeMonth(true)").
                                         setText("{{monthText}}")
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("table").addClass(["days-month", "animate", "easing-out"]).
                                 addAttribute("ng-hide","(enabledSelectYear || enabledSelectMonth)").
-                                addComponent(
+                                addChildren(
                                     softtion.html("thead").append("<th>Do</th>").
                                         append("<th>Lu</th>").append("<th>Ma</th>").
                                         append("<th>Mi</th>").append("<th>Ju</th>").
                                         append("<th>Vi</th>").append("<th>Sa</th>")
-                                ).addComponent(
+                                ).addChildren(
                                     softtion.html("tbody").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("tr").addClass("week").
                                                 addAttribute("ng-repeat", "week in daysMonth").
-                                                addComponent(
+                                                addChildren(
                                                     softtion.html("td").addClass("day").
                                                         addAttribute("ng-class","{disabled : dayDisabled(day.value)}").
                                                         addAttribute("ng-repeat", "day in week").
@@ -1190,11 +1324,11 @@
                                         )
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("months").addAttribute("ng-hide","!enabledSelectMonth").
-                                addComponent(
+                                addChildren(
                                     softtion.html("ul").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("li").
                                                 addAttribute("ng-repeat","month in months").
                                                 setText("{{month.name}}").
@@ -1205,11 +1339,11 @@
                                         )
                                 )
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("year").addAttribute("ng-hide","!enabledSelectYear").
-                                addComponent(
+                                addChildren(
                                     softtion.html("ul").
-                                        addComponent(
+                                        addChildren(
                                             softtion.html("li").
                                                 addAttribute("ng-repeat","year in years").
                                                 setText("{{year}}").
@@ -1220,13 +1354,13 @@
                         );
                         
                     var actions = softtion.html("div").addClass("actions").
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Ok").
                                 addAttribute("ng-click","setDate()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("button").
                                 addClass(["flat", "ripple"]).
                                 setText("Cancelar").
@@ -1300,11 +1434,11 @@
                         templateUrl: Material.components.Datepicker.route,
                         scope: {
                             date: "=ngModel",
-                            dateSelect: "=dateSelect",
-                            cancelSelect: "=cancelSelect",
-                            minDate: "=minDate",
-                            maxDate: "=maxDate",
-                            yearRange: "@yearRange"
+                            dateSelect: "=?",
+                            cancelSelect: "=?",
+                            minDate: "@",
+                            maxDate: "@",
+                            yearRange: "@"
                         },
                         link: function ($scope, $elememt) {
                             // Componentes
@@ -1335,10 +1469,7 @@
                             $scope.monthText = nameMonths[$scope.month];
                             
                             $scope.daysMonth = createCalendar(
-                                $scope.year, 
-                                $scope.month, 
-                                dateDayStart.getDay(), 
-                                countDaysMonths[$scope.month]
+                                $scope.year, $scope.month, dateDayStart.getDay(), countDaysMonths[$scope.month]
                             );
                     
                             $scope.months = [
@@ -1391,7 +1522,7 @@
                              
                             // Eventos para controlar meses
                             $scope.prevMonthEnabled = function () {
-                                if (softtion.isDefined($scope.minDate)) {
+                                if (softtion.isDate($scope.minDate)) {
                                     var month = $scope.month - 1, year = $scope.year;
                                     
                                     if (month < 0) { 
@@ -1409,7 +1540,7 @@
                             };
                             
                             $scope.nextMonthEnabled = function () {
-                                if (softtion.isDefined($scope.maxDate)) {
+                                if (softtion.isDate($scope.maxDate)) {
                                     var month = $scope.month + 1, year = $scope.year;
                                     
                                     if (month > 12) { 
@@ -1441,7 +1572,7 @@
                                     return false;
                                 } // Se permite todos los meses
                                 
-                                if (softtion.isDefined($scope.minDate)) {
+                                if (softtion.isDate($scope.minDate)) {
                                     var minYear = $scope.minDate.getFullYear(),
                                         minMonth = $scope.minDate.getMonth();
                                     
@@ -1452,7 +1583,7 @@
                                     }
                                 } // Comparando con la fecha mínima
                                 
-                                if (softtion.isDefined($scope.maxDate)) {
+                                if (softtion.isDate($scope.maxDate)) {
                                     var maxYear = $scope.maxDate.getFullYear(),
                                         maxMonth = $scope.maxDate.getMonth();
                                     
@@ -1530,8 +1661,8 @@
                                     return true;
                                 } // El dia del componente es inválido
                                 
-                                if (softtion.isUndefined($scope.minDate) && 
-                                    softtion.isUndefined($scope.maxDate)) {
+                                if (!softtion.isDate($scope.minDate) && 
+                                    !softtion.isDate($scope.maxDate)) {
                                     return false;
                                 } // Todos los dias están permitidos en el Componente
                                 
@@ -1585,21 +1716,23 @@
                     var input = softtion.html("div").addClass(["textfield-readonly", "low"]).
                         addAttribute("label","{{label}}").
                         addAttribute("ng-model","text").
-                        addAttribute("click-event","clickEvent");
+                        addAttribute("click-event","clickEvent").
+                        addAttribute("icon","{{icon}}").
+                        addAttribute("placeholder","{{placeholder}}");
                     
                     var dialog = softtion.html("div").addClass("dialog").
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("div").addClass("box").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("datepicker").
                                         addAttribute("ng-model","datePicker").
                                         addAttribute("date-select","dateSelect").
                                         addAttribute("cancel-select","cancelSelect").
-                                        addAttribute("min-date","minDate").
-                                        addAttribute("max-date","maxDate").
+                                        addAttribute("min-date","{{minDate}}").
+                                        addAttribute("max-date","{{maxDate}}").
                                         addAttribute("year-range","{{yearRange}}")
                                 )
                         );
@@ -1613,10 +1746,12 @@
                         scope: {
                             label: "@label",
                             date: "=ngModel",
-                            autoStart: "=autoStart",
-                            minDate: "=minDate",
-                            maxDate: "=maxDate",
-                            yearRange: "@yearRange"
+                            autoStart: "@autoStart",
+                            minDate: "@",
+                            maxDate: "@",
+                            yearRange: "@",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
@@ -1625,7 +1760,7 @@
                             
                             if (softtion.isDate($scope.date)) {
                                 $scope.text = $scope.date.getFormat("ww, dd del mn de aa");
-                            } else if ($scope.autoStart) {
+                            } else if (softtion.parseBoolean($scope.autoStart)) {
                                 $scope.date = new Date(); // Tiempo del dispositivo
                                 $scope.text = $scope.date.getFormat("ww, dd del mn de aa");
                             }
@@ -1656,7 +1791,7 @@
                 name: "expansionPanel",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(
+                        addChildren(
                             softtion.html("i").setText("expand_more")
                         ).create();
                 },
@@ -1712,7 +1847,8 @@
                                 var density = img[0].height / img[0].width;
                                 
                                 (density >= 1)  ? // Ancho es mayor igual a alto
-                                    img.css("width", "100%") : img.css("height", "100%");                            }
+                                    img.css("width", "100%") : img.css("height", "100%");
+                            }
                         }
                     };
                 }
@@ -1723,7 +1859,7 @@
                 name: "progressCircular",
                 html: function () {
                     return softtion.html("svg").addAttribute("viewBox","0 0 66 66").
-                        addComponent(softtion.html("circle")).create();
+                        addChildren(softtion.html("circle")).create();
                 },
                 directive: function () {
                     return {
@@ -1768,35 +1904,6 @@
                 }
             },
             
-            SearchBox: {
-                name: "searchBox",
-                directive: function () {
-                    return {
-                        restrict: "C",
-                        link: function ($scope, $element) {
-                            angular.element(".app-content").css("margin-top", 64);
-                            
-                            var $window = angular.element(window),
-                                position = 0, classHide = "hide";
-                            
-                            if (!$element.hasClass("offscreen")) {
-                                $window.scroll(function () {
-                                    var positionNew = $window.scrollTop();
-
-                                    if (positionNew > 64) {
-                                        (position < positionNew) ?
-                                            $element.addClass(classHide) : $element.removeClass(classHide);
-                                    } else if (positionNew === 0) {
-                                        $element.removeClass(classHide); }
-
-                                    position = positionNew; // Posición nueva del scroll
-                                });
-                            } // Toolbar esta fijo en la Pantalla de la App
-                        }
-                    };
-                }
-            },
-            
             Select: {
                 route: "softtion/template/select.html",
                 name: "select",
@@ -1808,7 +1915,8 @@
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-click", "toggleSuggestions()").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("value","{{inputValue}}");
+                        addAttribute("value","{{inputValue}}").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -1816,20 +1924,22 @@
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
                     var button = softtion.html("button").addClass("action").
-                            addComponent(
+                            addChildren(
                                 softtion.html("i").addClass("action-icon").setText("expand_more")
-                            ).addAttribute("ng-hide", "ngDisabled").
+                            ).
+                            addAttribute("ng-hide", "ngDisabled").
+                            addAttribute("tabindex","-1").
                             addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                                 addAttribute("ng-if","clearSuggestion").
-                                setText("Limpiar selección").
+                                setText("Remover selección").
                                 addAttribute("ng-hide", "!select").
                                 addAttribute("ng-click","clearSelection()")
                         ).
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
@@ -1845,32 +1955,39 @@
                         templateUrl: Material.components.Select.route,
                         scope: {
                             select: "=ngModel", 
-                            label: "@label",
-                            keyDescription: "@keyDescription",
-                            suggestions: "=suggestions",
-                            ngDisabled: "=ngDisabled",
-                            clearSuggestion: "=clearSuggestion",
-                            disabledAutoclose: "=disabledAutoclose"
+                            label: "@",
+                            keyDescription: "@",
+                            suggestions: "=",
+                            ngDisabled: "@",
+                            clearSuggestion: "@",
+                            disabledAutoclose: "@",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var label = $element.find("label"),
                                 input = $element.find("input"),
                                 button = $element.find("button"),
-                                icon = button.find("i"),
+                                buttonIcon = button.find("i"),
                                 list = $element.find("ul");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
                                 
                             var showSuggestions = function () {
                                 if (!$scope.disabledAutoclose) {
                                     angular.element(document).on("click.sm-select", closeSelect);
                                 } // No se permite cerrado automatico
                                 
-                                list.addClass("active"); icon.addClass("active"); 
+                                list.addClass("active"); buttonIcon.addClass("active"); 
                                 $element.addClass("active"); // Visualizando opciones
                             };
                             
                             var hideSuggestions = function () {
-                                list.removeClass("active"); icon.removeClass("active"); 
+                                list.removeClass("active"); buttonIcon.removeClass("active"); 
                                 $element.removeClass("active"); // Ocultando opciones
                                 
                                 if (!$scope.disabledAutoclose) {
@@ -1880,7 +1997,7 @@
                             
                             var closeSelect = function (ev) {
                                 if (label.is(ev.target) || input.is(ev.target) || 
-                                    button.is(ev.target) || icon.is(ev.target) ||
+                                    button.is(ev.target) || buttonIcon.is(ev.target) ||
                                     $element.is(ev.target) || list.is(ev.target)) {
                                     return;
                                 } // Se ha realizado click sobre el componente de Selección
@@ -1958,7 +2075,8 @@
                         addAttribute("ng-focus","focusInput()").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("value","{{inputValue}}");
+                        addAttribute("value","{{inputValue}}").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -1966,20 +2084,20 @@
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
 
                     var button = softtion.html("button").addClass("action").
-                        addComponent(
+                        addChildren(
                             softtion.html("i").addClass("action-icon").setText("expand_more")
                         ).addAttribute("ng-hide", "ngDisabled").
                         addAttribute("ng-click","toggleSuggestions()");
 
                     var list = softtion.html("ul").
-                        addComponent(
+                        addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-class", "{active: suggestion.checked}").
                                 addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
                                 setText("{{getSuggestionDescription(suggestion)}}").
-                                addComponent(
+                                addChildren(
                                     softtion.html("div").addClass("checkbox-selection").
                                         addAttribute("prevent-default", "true").
                                         addAttribute("ng-model", "suggestion.checked")
@@ -2005,18 +2123,25 @@
                         templateUrl: Material.components.SelectMultiple.route,
                         scope: {
                             selects: "=ngModel", 
-                            label: "@label",
-                            keyDescription: "@keyDescription",
-                            suggestions: "=suggestions",
-                            ngDisabled: "=ngDisabled"
+                            label: "@",
+                            ngDisabled: "@",
+                            keyDescription: "@",
+                            suggestions: "=",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input"),
                                 label = $element.find("label"),
                                 button = $element.find("button"),
-                                icon = button.find("i"),
+                                buttonIcon = button.find("i"),
                                 list = $element.find("ul");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
                         
                             // Atributos
                             var valueSelects = Material.components.SelectMultiple.valueSelects;
@@ -2040,12 +2165,12 @@
                                     angular.element(document).on("click.sm-select-multiple", closeSelect);
                                 } // No se permite cerrado automatico
                                 
-                                list.addClass("active"); icon.addClass("active"); 
+                                list.addClass("active"); buttonIcon.addClass("active"); 
                                 $element.addClass("active"); // Visualizando opciones
                             };
                             
                             var hideSuggestions = function () {
-                                list.removeClass("active"); icon.removeClass("active"); 
+                                list.removeClass("active"); buttonIcon.removeClass("active"); 
                                 $element.removeClass("active"); // Ocultando opciones
                                 
                                 if (!$scope.disabledAutoclose) {
@@ -2055,7 +2180,7 @@
                             
                             var closeSelect = function (ev) {
                                 if (label.is(ev.target) || input.is(ev.target) || 
-                                    button.is(ev.target) || icon.is(ev.target) ||
+                                    button.is(ev.target) || buttonIcon.is(ev.target) ||
                                     $element.is(ev.target) || list.is(ev.target)) {
                                     return;
                                 } // Se ha realizado click sobre el componente de Selección
@@ -2119,7 +2244,7 @@
                 name: "sidenavItem",
                 buttonAction: function () {
                     return softtion.html("button").addClass(["action"]).
-                        addComponent(
+                        addChildren(
                             softtion.html("i").setText("expand_more")
                         ).create();
                 },
@@ -2168,7 +2293,7 @@
                         restrict: "C",
                         scope: {
                             view: "@viewBox",
-                            disabledPositionStart: "=disabledPositionStart"
+                            disabledPositionStart: "@disabledPositionStart"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2284,13 +2409,14 @@
                         addAttribute("ng-keypress","keypressArea($event)").
                         addAttribute("ng-keyup","keyupArea($event)").
                         addAttribute("ng-readonly","ngReadonly").
-                        addAttribute("ng-disabled","ngDisabled");
+                        addAttribute("ng-disabled","ngDisabled").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var $lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var $label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-click","clickLabel($event)").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
@@ -2308,19 +2434,26 @@
                         scope: {
                             value: "=ngModel", 
                             areaValue: "=?ngValueArea", 
-                            label: "@label", 
-                            type: "@type",
-                            required: "=required",
-                            ngDisabled: "=ngDisabled",
-                            ngReadonly: "=ngReadonly",
-                            minLength: "@minLength",
-                            maxLength: "@maxLength",
-                            clickEvent: "=clickEvent"
+                            label: "@", 
+                            type: "@",
+                            required: "@",
+                            ngDisabled: "@",
+                            ngReadonly: "@",
+                            minLength: "@",
+                            maxLength: "@",
+                            clickEvent: "=?",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var hidden = $element.find(".textarea-hidden"),
                                 area = $element.find("textarea");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(area); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
 
                             // Atributos de control
                             var defineTextHidden = Material.components.TextArea.defineTextHidden,
@@ -2414,7 +2547,7 @@
                     var label = softtion.html("label").
                         setText("{{label}}").addClass("truncate").
                         addAttribute("ng-click","clickLabel($event)").
-                        addComponent(
+                        addChildren(
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
@@ -2438,24 +2571,24 @@
                         scope: {
                             value: "=ngModel", 
                             inputValue: "=?ngValueInput", 
-                            label: "@label", 
-                            type: "@type",
-                            required: "=required",
-                            ngDisabled: "=ngDisabled",
-                            ngReadonly: "=ngReadonly",
-                            minLength: "@minLength",
-                            maxLength: "@maxLength",
-                            clickEvent: "=clickEvent",
-                            icon: "@icon",
-                            placeholder: "@placeholder"
+                            label: "@", 
+                            type: "@",
+                            required: "@",
+                            ngDisabled: "@",
+                            ngReadonly: "@",
+                            minLength: "@",
+                            maxLength: "@",
+                            clickEvent: "=?",
+                            icon: "@",
+                            placeholder: "@"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input");
                             
-                            if (softtion.isDefined($scope.icon) && $element.hasClass("single-line")) {
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
                                 var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
-                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-input");
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
                             } // Se debe insertar el icono antes del input
 
                             // Atributos de control
@@ -2530,7 +2663,8 @@
                         addAttribute("type","text").
                         addAttribute("ng-click","clickInput($event)").
                         addAttribute("ng-readonly","true").
-                        addAttribute("ng-model","value");
+                        addAttribute("ng-model","value").
+                        addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -2545,10 +2679,19 @@
                         templateUrl: Material.components.TextFieldReadOnly.route,
                         scope: {
                             value: "=ngModel", 
-                            label: "@label", 
-                            clickEvent: "=clickEvent"
+                            label: "@", 
+                            clickEvent: "=?",
+                            icon: "@",
+                            placeholder: "@"
                         },
-                        link: function ($scope) {
+                        link: function ($scope, $element) {
+                            var input = $element.find("input");
+                            
+                            if (softtion.isDefined($scope.icon) && $element.hasClass("icon-label")) {
+                                var icon = softtion.html("i").addClass("material-icon").setText($scope.icon);
+                                angular.element(icon.create()).insertAfter(input); $element.addClass("icon-active");
+                            } // Se debe insertar el icono antes del input
+                            
                             $scope.clickInput = function (ev) {
                                 if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent(ev);
