@@ -104,10 +104,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
-.material-icon, 
-button > i, a > i, 
-i.action-icon,
-.chip > .action > i {
+.material-icon, button > i, a > i, i.action-icon, .chip > .action > i {
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
@@ -1327,6 +1324,41 @@ i.action-icon,
         width: 25%; }
 }
 
+/** BREADCUMB */
+
+.breadcumb {
+    padding: 0px 16px;
+    width: 100%;
+    min-height: 56px; 
+    max-height: 56px; 
+    line-height: 56px;
+    box-sizing: border-box; }
+
+.breadcumb > label {
+    display: block;
+    height: inherit;
+    float: left; 
+    font-size: 16px;
+    font-family: softtion-medium; }
+
+.breadcumb > label:before {
+    content: 'navigate_next';
+    vertical-align: top;
+    display: inline-block;
+    margin: 0px 8px;
+    font-family: 'Material Icons';
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased; }
+
+.breadcumb > label:first-child:before {
+    display: none; }
+
+.breadcumb > label > a {
+    cursor: pointer;
+    display: inline-block; }
+
 /** BUTTON */
 
 button {
@@ -2000,7 +2032,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** CHECKBOX SELECTION */
 
-.checkbox-selection {
+.checkbox-control {
     position: relative;
     float: left;
     width: 24px;
@@ -2008,12 +2040,12 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 24px;
     margin: 8px 0; }
 
-.checkbox-selection > input[type="checkbox"] {
+.checkbox-control > input[type="checkbox"] {
     position: absolute;
     width: 0px;
     height: 0px; }
 
-.checkbox-selection > label {
+.checkbox-control > label {
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
@@ -2026,7 +2058,7 @@ button.raised:focus:after, button.flat:focus:after {
     -khtml-user-select: none;
     -ms-user-select: none; }
 
-.checkbox-selection > label:after {
+.checkbox-control > label:after {
     content: "";
     position: absolute;
     top: 50%;
@@ -2041,7 +2073,7 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 1;
     border-radius: 2px; }
 
-.checkbox-selection > input[type="checkbox"]:checked + label:after {
+.checkbox-control > input[type="checkbox"]:checked + label:after {
     border-left: 2px solid transparent;
     border-top: 2px solid transparent;
     width: 20%;
@@ -2053,7 +2085,7 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transform: translate(-50%, -65%) rotate(40deg);
     -webkit-backface-visibility: hidden; }
 
-.checkbox-selection > label:before {
+.checkbox-control > label:before {
     content: "";
     position: relative;
     display: block;
@@ -2070,7 +2102,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.2s var(--standard-curve);
     -ms-transition: all 0.2s var(--standard-curve); }
 
-.checkbox-selection > input[type="checkbox"]:checked ~ label:before {
+.checkbox-control > input[type="checkbox"]:checked ~ label:before {
     transform: scale(1); }
 
 /** CHIP */
@@ -2441,17 +2473,17 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > table > tbody > tr > td.checkbox-table {
     padding-right: 16px; }
 
-.datatable > table > thead > tr > th.checkbox-table > .checkbox-selection,
-.datatable > table > tbody > tr > td.checkbox-table > .checkbox-selection {
+.datatable > table > thead > tr > th.checkbox-table > .checkbox-control,
+.datatable > table > tbody > tr > td.checkbox-table > .checkbox-control {
     width: 22px;
     height: 22px;
     line-height: 22px; 
     margin: 0px; }
 
-.datatable > table > thead > tr > th.checkbox-table > .checkbox-selection {
+.datatable > table > thead > tr > th.checkbox-table > .checkbox-control {
     margin-top: 17px; }
 
-.datatable > table > tbody > tr > td.checkbox-table > .checkbox-selection {
+.datatable > table > tbody > tr > td.checkbox-table > .checkbox-control {
     margin-top: 13px; }
 
 /** DATEPICKER */
@@ -3062,10 +3094,26 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 12px;
     cursor: pointer; }
 
-.list.two-line > .item-list > .content > .detail > button.action {
+.list > .item-list > .content > .detail > .checkbox-control {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.list > .item-list > .content > .detail > .switch {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.list.two-line > .item-list > .content > .detail > button.action,
+.list.two-line > .item-list > .content > .detail > .checkbox-control,
+.list.two-line > .item-list > .content > .detail > .switch {
     top: 24px !important; }
 
-.list.three-line > .item-list > .content > .detail > button.action {
+.list.three-line > .item-list > .content > .detail > button.action,
+.list.three-line > .item-list > .content > .detail > .checkbox-control,
+.list.three-line > .item-list > .content > .detail > .switch {
     top: 16px; }
 
 .list > .item-list > .content > .detail > .emphasis {
@@ -3096,8 +3144,14 @@ button.raised:focus:after, button.flat:focus:after {
     margin-left: 72px; }
 
 .list > .item-list > .content > .detail > button.action ~ .title,
-.list > .item-list > .content > .detail > button.action ~ .description {
+.list > .item-list > .content > .detail > button.action ~ .description,
+.list > .item-list > .content > .detail > .checkbox-control ~ .title,
+.list > .item-list > .content > .detail > .checkbox-control ~ .description {
     width: calc(100% - 40px); }
+
+.list > .item-list > .content > .detail > .switch ~ .title,
+.list > .item-list > .content > .detail > .switch ~ .description {
+    width: calc(100% - 56px); }
 
 .list > .item-list > .content > .detail > .emphasis ~ button.action {
     top: initial;
@@ -3215,6 +3269,87 @@ button.raised:focus:after, button.flat:focus:after {
 
 .progress-circular.small > svg > circle {
     stroke-width: 6px; }
+
+/** RADIOBUTTON */
+
+.radiobutton {
+    position: relative;
+    float: left;
+    margin: 8px 0; }
+
+.radiobutton > input[type="radio"] {
+    position: absolute;
+    width: 0px;
+    height: 0px; }
+
+.radiobutton > label {
+    position: relative;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    padding-left: 32px;
+    height: 24px;
+    font-family: softtion-medium;
+    line-height: 24px;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none; }
+
+.radiobutton > input[type="radio"]:disabled + label {
+    cursor: none; }
+
+.radiobutton > label:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+    border-radius: 50%;
+    transform: scale(0);
+    transform-origin: 50% 50%;
+    -moz-transition: all 0.2s var(--standard-curve);
+    -webkit-transition: all 0.2s var(--standard-curve);
+    -o-transition: all 0.2s var(--standard-curve);
+    transition: all 0.2s var(--standard-curve);
+    -ms-transition: all 0.2s var(--standard-curve); }
+
+.radiobutton > label:after {
+    position: absolute;
+    content: "";
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+    border-radius: 50%; }
+
+.radiobutton > input[type="radio"]:checked ~ label:before {
+    transform: scale(0.5); }
+
+.radiobutton > .ripple-content {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    top: 50%;
+    left: -12px;
+    transform: translateY(-50%);
+    background: transparent; }
+
+.radiobutton > .ripple-content > .box {
+    position: absolute;
+    opacity: 0.45;
+    padding-top: 48px;
+    padding-left: 48px;
+    border-radius: 50%;
+    transform: scale(0); }
+
+.radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
+    animation: ripple-squarecenter 0.75s var(--standard-curve); }
 
 /** SEARCH BOX*/
 
@@ -3591,7 +3726,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     line-height: 48px; }
 
-.select-multiple > ul > li > .checkbox-selection {
+.select-multiple > ul > li > .checkbox-control {
     width: 20px;
     height: 20px;
     line-height: 20px;
@@ -3878,6 +4013,66 @@ button.raised:focus:after, button.flat:focus:after {
         width: 40%;
         left: 30%; }
 }
+
+/** SWICTH */
+
+.switch {
+    position: relative;
+    float: left;
+    width: 40px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none; }
+
+.switch > label {
+    display: block;
+    position: relative;
+    width: 48px;
+    height: 24px;
+    cursor: pointer; }
+
+.switch > label > input[type=checkbox] {
+    opacity: 0;
+    width: 0;
+    height: 0; }
+
+.switch > label > .track:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 4px;
+    width: 40px;
+    height: 16px;
+    z-index: 1;
+    border-radius: 16px;
+    transition: background 0.325s var(--standard-curve); }
+
+.switch > label > .track:after { 
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.38);
+    transition: left 0.325s var(--standard-curve),
+        box-shadow 0.01s var(--standard-curve), 
+        background 0.325s var(--standard-curve); }
+
+.switch > label > input[type=checkbox]:checked + .track:after {
+    left: 16px; }
+
+.switch > label > input[type=checkbox]:checked:not(:disabled) ~ .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(38, 166, 154, 0.1); }
+
+.switch > label > input[type=checkbox]:not(:disabled) ~ .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(0, 0, 0, 0.08); }
 
 /** TABS */
 

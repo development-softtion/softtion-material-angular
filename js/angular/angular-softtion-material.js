@@ -1,8 +1,8 @@
 /*
- Angular Softtion Material v1.0.2
+ Angular Softtion Material v1.0.4
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 23/Dic/2016
+ Updated: 24/Ene/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -640,9 +640,9 @@
                 }]
             },
             
-            CheckBoxSelection: {
-                route: "softtion/template/checkbox-selection.html",
-                name: "checkboxSelection",
+            CheckBoxControl: {
+                route: "softtion/template/checkbox-control.html",
+                name: "checkboxControl",
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type","checkbox").
@@ -657,12 +657,12 @@
                 directive: function () {
                     return {
                         restrict: "C",
-                        templateUrl: Material.components.CheckBoxSelection.route,
+                        templateUrl: Material.components.CheckBoxControl.route,
                         scope: {
                             checked: "=ngModel",
-                            preventDefault: "@preventDefault",
-                            stopPropagation: "@stopPropagation",
-                            ngDisabled: "@ngDisabled"
+                            ngDisabled: "@",
+                            preventDefault: "@",
+                            stopPropagation: "@"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -1870,6 +1870,51 @@
                 }
             },
             
+            RadioButton: {
+                route: "softtion/template/radiobutton.html",
+                name: "radiobutton",
+                html: function () {
+                    var input = softtion.html("input", false).
+                        addAttribute("type","radio").
+                        addAttribute("ng-model","model").
+                        addAttribute("ng-value","value").
+                        addAttribute("name","{{name}}").
+                        addAttribute("ng-disabled","ngDisabled");
+
+                    var label = softtion.html("label").setText("{{label}}").
+                        addAttribute("ng-click","clickLabel()");
+                
+                    var ripple = softtion.html("div").addClass("ripple-content").
+                        addChildren(
+                            softtion.html("div").addClass("box")
+                        );
+
+                    return input + label + ripple; // RadioButton
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.RadioButton.route,
+                        scope: {
+                            model: "=ngModel",
+                            value: "=ngValue",
+                            name: "@",
+                            label: "@",
+                            ngDisabled: "@"
+                        },
+                        link: function ($scope, $element) {
+                            var input = $element.find("input[type='radio']");
+
+                            $scope.clickLabel = function () { 
+                                if (!$scope.ngDisabled) {
+                                    $scope.model = $scope.value; input.focus();
+                                } // No se permite el cambio de la Propiedad
+                            };
+                        }
+                    };
+                }
+            },
+            
             Ripple: {
                 name: "ripple",
                 box: function () {
@@ -2098,7 +2143,7 @@
                                 addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
                                 setText("{{getSuggestionDescription(suggestion)}}").
                                 addChildren(
-                                    softtion.html("div").addClass("checkbox-selection").
+                                    softtion.html("div").addClass("checkbox-control").
                                         addAttribute("prevent-default", "true").
                                         addAttribute("ng-model", "suggestion.checked")
                                 )
@@ -2281,6 +2326,36 @@
                                     } // Cerrando content del Expansion
                                 });
                             } // El item contiene opciones
+                        }
+                    };
+                }
+            },
+            
+            Switch: {
+                route: "softtion/template/switch.html",
+                name: "switch",
+                html: function () {
+                    var label = softtion.html("label").
+                        addChildren(
+                            softtion.html("input", false).addAttribute("type","checkbox").
+                                addAttribute("ng-model","checked").
+                                addAttribute("ng-disabled","ngDisabled")
+                        ).addChildren(
+                            softtion.html("span").addClass("track")
+                        );                   
+
+                    return label.create(); // Switch
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Switch.route,
+                        scope: {
+                            checked: "=ngModel",
+                            ngDisabled: "@"
+                        },
+                        link: function ($scope, $element) {
+                            
                         }
                     };
                 }
