@@ -927,6 +927,26 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-divider); }
 
+/** FLEXIBLE TEXT */
+
+.flexible-box > .banner > .toolbar {
+    background-color: rgba(156, 39, 176, 0); }
+
+.flexible-box > .banner > .toolbar > .nav-icon > button,
+.flexible-box > .banner > .toolbar > .title,
+.flexible-box > .banner > .toolbar > .actions > button {
+    color: var(--light-primary-font); }
+
+.flexible-box > .banner > .toolbar > .actions > button::before,
+.flexible-box > .banner > .toolbar > .nav-icon > button::before {
+    background-color: var(--light-ripple); }
+
+.flexible-box > .box {
+    background-color: var(--light-background-component); }
+
+.dark .flexible-box > .box {
+    background-color: var(--dark-background-component); }
+
 /** FORM NAVIGATION */
 
 .form-navigation > .content {
@@ -1226,12 +1246,11 @@ button.raised.primary:before, button.floating.primary:before {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
 .select-multiple > button.action {
-    background-color: var(--light-background);
+    background-color: transparent;
     color: var(--dark-secondary-font); }
 
 .dark .select-multiple > button.action {
-    color: var(--light-primary-font);
-    background-color: var(--dark-background); }
+    color: var(--light-primary-font); }
 
 .select-multiple > button.action:before {
     background-color: var(--dark-ripple); }
@@ -1273,6 +1292,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .sidenav > .content {
     background-color: var(--dark-background); }
+
+.sidenav > .content > .logo {
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.dark .sidenav > .content > .logo {
+    border-bottom: 1px solid var(--dark-background-divider); }
 
 .sidenav > .content > .banner > .detail {
     color: var(--light-primary-font); }
@@ -1571,6 +1596,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .toast > body {
     background: var(--dark-background-component); }
+
+/** TOOLTIP */
+
+.tooltip-element {
+    background-color: rgba(97, 97, 97, 0.9);
+    color: #ffffff; }
 
 /** TOOLBAR */
 

@@ -1835,6 +1835,40 @@
                 }
             },
             
+            FlexibleBox: {
+                name: "flexibleBox",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            var banner = $element.children(".banner"),
+                                box = $element.children(".box"),
+                                toolbar = banner.children(".toolbar"),
+                                title = toolbar.children(".title");
+                        
+                            var height = banner.height();
+
+                            box.scroll(function () {
+                                var scroll = angular.element(this).scrollTop();
+
+                                var opacity = scroll / height, margin = height - scroll - 56,
+                                    heightBanner = height - scroll;
+
+                                heightBanner = (heightBanner < 56) ? 56 : heightBanner;
+                                margin = (margin < 0) ? 0 : margin;
+                                opacity = (heightBanner === 56) ? 1 : (opacity > 1) ? 1 : opacity;
+
+                                var fontSize = 28 - (opacity * 8); banner.css("height", heightBanner);
+
+                                toolbar.css("background-color", "rgba(156, 39, 176, " + opacity + ")");
+
+                                title.css({marginTop: margin, fontSize: fontSize});
+                            });
+                        }
+                    };
+                }
+            },
+            
             MediaArea: {
                 name: "mediaArea",
                 directive: function () {
@@ -2782,6 +2816,9 @@
                 container: function () {
                     return softtion.html("div").addClass("tooltip-container").create();
                 },
+                element: function () {
+                    return softtion.html("div").addClass("tooltip-element").create();
+                },
                 directive: function () {
                     return {
                         restrict: "A",
@@ -2790,31 +2827,33 @@
                                 container = body.find(".tooltip-container");
                             
                             if (!container.exists()) {
-                                container = angular.element(
-                                    Material.components.Tooltip.container()
-                                );
+                                container = angular.element(Material.components.Tooltip.container());
                         
-                                body.append(container);
-                            } // Contenedor tooltip no se encuentra ingresado
+                                body.append(container); // Agegando contenedor
+                            } // Contenedor tooltip no se encuentra creado en el documento
+                            
+                            var tooltip = angular.element(Material.components.Tooltip.element());
+                            
+                            tooltip.html($attrs.tooltip); container.append(tooltip); // Agregando
                             
                             $element.mouseenter(function () {
-                                container.html($attrs.tooltip);
+                                //container.html($attrs.tooltip);
                                 
-                                var widthContainer = container.innerWidth(),
+                                var widthContainer = tooltip.innerWidth(),
                                     heightElement = $element.innerHeight(),
                                     positionX = $element.offset().left,
                                     positionY = $element.offset().top,
                                     widthElement = $element.innerWidth();
-                                
-                                container.css({
-                                    left: (widthElement / 2) - (widthContainer / 2) + positionX,
-                                    top: positionY + heightElement + 10
-                                });
                                     
-                                container.fadeIn(375);
+                                var left = (widthElement / 2) - (widthContainer / 2) + positionX,
+                                    top = positionY + heightElement;
+                                    
+                                if (left < 8) { left = 8; }
+                                
+                                tooltip.css({ left: left, top: top, display: "block" }).addClass("show");
                             });
                             
-                            $element.mouseout(function () { container.fadeOut(0); });
+                            $element.mouseout(function () { tooltip.css({ display: "none" }).removeClass("show"); });
                         }
                     };
                 }
@@ -3017,8 +3056,8 @@
                         Properties.component = angular.element(sheetID);
                         
                         if (Properties.component.exists()) {
-                            Properties.content = Properties.component.find(".content");
-                            Properties.backdrop = Properties.component.find(".backdrop");
+                            Properties.content = Properties.component.children(".content:first");
+                            Properties.backdrop = Properties.component.children(".backdrop");
 
                             Properties.backdrop.click(function () { self.hide(); });
                         } // Componente existe en el Documento
@@ -3231,8 +3270,8 @@
                         Properties.form = angular.element(idPaneForm);
 
                         if (Properties.form.exists()) {
-                            Properties.content = Properties.form.find(".content:first");
-                            Properties.backdrop = Properties.form.find(".backdrop");
+                            Properties.content = Properties.form.children(".content:first");
+                            Properties.backdrop = Properties.form.children(".backdrop");
 
                             if (!Properties.backdrop.exists()) {
                                 Properties.backdrop = angular.element(
@@ -3285,8 +3324,8 @@
                             self.id = sidenavID; self.sidenav = angular.element(sidenavID);
                         
                             if (self.sidenav.exists()) {
-                                self.content = self.sidenav.find(".content:first");
-                                self.backdrop = self.sidenav.find(".backdrop");
+                                self.content = self.sidenav.children(".content:first");
+                                self.backdrop = self.sidenav.children(".backdrop");
 
                                 if (!self.backdrop.exists()) {
                                     self.backdrop = angular.element(

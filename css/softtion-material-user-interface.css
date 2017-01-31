@@ -104,7 +104,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
-.material-icon, button > i, a > i, i.action-icon, .chip > .action > i {
+.material-icon, button > i, a > i, i.action-icon, .chip > .action > i, .tab > i {
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
@@ -812,7 +812,7 @@ input[type=number]::-webkit-outer-spin-button {
     position: absolute;
     top: 0px;
     left: 0px;
-    padding: 16px 0px 8px 0px;
+    padding: 0px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -1772,6 +1772,10 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     overflow: auto;
     padding: 16px 16px 24px 16px; }
+
+.card > .box {
+    position: relative;
+    overflow: auto; }
 
 .card > .actions {
     overflow-y: auto;
@@ -2851,6 +2855,71 @@ button.raised:focus:after, button.flat:focus:after {
 .expansion-panel.active > .body > .content {
     margin-top: 0% !important; }
 
+/** FLEXIBLE BOX */
+
+.flexible-box {
+    position: relative;
+    width: 100%;
+    float: left; }
+
+.bottom-sheet > .content > .flexible-box {
+    height: 100vh; }
+
+.flexible-box > .banner {
+    position: relative;
+    width: 100%;
+    z-index: 2; 
+    overflow: hidden; }
+
+.flexible-box > .banner::before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 56.25%; }
+
+.flexible-box.square > .banner::before {
+    padding-top: 100%; }
+
+.flexible-box > .banner > .toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1;
+    max-height: initial; }
+
+.flexible-box > .banner > .toolbar > .nav-icon,
+.flexible-box > .banner > .toolbar > .title, 
+.flexible-box > .banner > .toolbar > .actions {
+    height: 56px; }
+
+.flexible-box > .banner > .toolbar > .title {
+    font-size: 24px;
+    margin-top: calc(56.25% - 56px); }
+
+.flexible-box.square > .banner > .toolbar > .title {
+    margin-top: calc(100% - 56px); }
+
+.flexible-box > .banner > .background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+
+.flexible-box > .box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100vh;
+    padding-top: 56.25%;
+    box-sizing: border-box;
+    z-index: 1;
+    overflow: auto; }
+
+.flexible-box.square > .box {
+    padding-top: 100%; }
+
 /** FORM NAVIGATION */
 
 .form-navigation > .backdrop {
@@ -3777,6 +3846,24 @@ button.raised:focus:after, button.flat:focus:after {
     transition-duration: 0.3s;
     -ms-transition-duration: 0.3s; }
 
+.sidenav > .content > .logo {
+    position: relative;
+    width: 100%;
+    height: 56px; 
+    overflow: hidden; }
+
+@media only screen and (min-width : 961px) {
+    .sidenav > .content > .logo {
+        height: 64px; }
+}
+
+.sidenav > .content > .logo > img {
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 56px; }
+
 .sidenav > .content > .banner {
     position: relative;
     width: 100%; 
@@ -4584,20 +4671,34 @@ button.raised:focus:after, button.flat:focus:after {
 
 .tooltip-container {
     position: fixed;
+    z-index: 24; }
+
+.tooltip-element {
+    position: fixed;
     left: 50%;
     top: 50%;
+    opacity: 0;
+    font-family: softtion-medium;
+    height: 32px;
+    line-height: 32px;
     z-index: 24;
-    padding: 0.75rem;
-    background: red;
-    display: none;
-    border-radius: 3px; }
+    padding: 0px 16px;
+    margin-top: 16px;
+    border-radius: 3px; 
+    transition: opacity 0.2s var(--easing-out); }
 
-.tooltip-container {
-    color: #ffffff;
-    background-color: #424242; }
+.tooltip-element.show {
+    opacity: 1; }
 
-.tooltip-container.active {
-    display: block; }
+@media only screen and (min-width : 641px) {
+    
+    .tooltip-element {
+        font-size: 11px;
+        padding: 0px 8px;
+        height: 24px;
+        line-height: 24px;
+        margin-top: 10px; }
+}
 
 /** VIEWS */
 
