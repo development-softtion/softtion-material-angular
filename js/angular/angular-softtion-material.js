@@ -1837,6 +1837,9 @@
             
             FlexibleBox: {
                 name: "flexibleBox",
+                backgroundColor: function () {
+                    return softtion.html("div").addClass("background-color").create();
+                },
                 directive: function () {
                     return {
                         restrict: "C",
@@ -1844,9 +1847,14 @@
                             var banner = $element.children(".banner"),
                                 box = $element.children(".box"),
                                 toolbar = banner.children(".toolbar"),
-                                title = toolbar.children(".title");
+                                title = toolbar.children(".title"),
+                                detail = toolbar.children(".detail");
                         
                             var height = banner.height();
+                            
+                            var background = angular.element(
+                                Material.components.FlexibleBox.backgroundColor()
+                            ).insertBefore(toolbar);
 
                             box.scroll(function () {
                                 var scroll = angular.element(this).scrollTop();
@@ -1858,11 +1866,17 @@
                                 margin = (margin < 0) ? 0 : margin;
                                 opacity = (heightBanner === 56) ? 1 : (opacity > 1) ? 1 : opacity;
 
-                                var fontSize = 28 - (opacity * 8); banner.css("height", heightBanner);
+                                var fontSizeTitle = 28 - (opacity * 8),
+                                    fontSizeDetailSubTitle = 16 - (opacity * 4),
+                                    fontSizeDetailTitle = 24 - (opacity * 6);
+                                
+                                banner.css("height", heightBanner); background.css("opacity", opacity);
 
-                                toolbar.css("background-color", "rgba(156, 39, 176, " + opacity + ")");
-
-                                title.css({marginTop: margin, fontSize: fontSize});
+                                title.css({ marginTop: margin, fontSize: fontSizeTitle }); 
+                                
+                                detail.css({ marginTop: margin }); // Margin del detail
+                                detail.children(".subtitle").css("font-size", fontSizeDetailSubTitle);
+                                detail.children(".title").css("font-size", fontSizeDetailTitle);
                             });
                         }
                     };

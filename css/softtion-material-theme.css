@@ -929,11 +929,16 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** FLEXIBLE TEXT */
 
+.flexible-box > .banner > .background-color {
+    background-color: var(--theme-background-dark); }
+
 .flexible-box > .banner > .toolbar {
-    background-color: rgba(156, 39, 176, 0); }
+    background-color: transparent; }
 
 .flexible-box > .banner > .toolbar > .nav-icon > button,
 .flexible-box > .banner > .toolbar > .title,
+.flexible-box > .banner > .toolbar > .detail > .title,
+.flexible-box > .banner > .toolbar > .detail > .subtitle,
 .flexible-box > .banner > .toolbar > .actions > button {
     color: var(--light-primary-font); }
 
@@ -1614,7 +1619,8 @@ button.raised.primary:before, button.floating.primary:before {
 .app-bar.primary > .toolbar, .toolbar.primary {
     background-color: var(--theme-background-dark); }
 
-.toolbar > .title, .app-bar > .toolbar > .title {
+.toolbar > .title, .app-bar > .toolbar > .title,
+.toolbar > .detail, .app-bar > .toolbar > .detail {
     color: var(--dark-primary-font); }
 
 .app-bar > .toolbar > .nav-icon > button.action,
@@ -1625,12 +1631,16 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--dark-secondary-font); }
 
 .dark .app-bar > .toolbar > .title,
+.dark .app-bar > .toolbar > .detail > .title,
+.dark .app-bar > .toolbar > .detail > .subtitle,
 .dark .app-bar > .toolbar > .nav-icon > button.action,
 .dark .app-bar > .toolbar > .menu-icon,
 .dark .app-bar > .toolbar > .actions > button,
 .dark .toolbar > .title, .dark .toolbar > .nav-icon > button.action,
 .dark .toolbar > .menu-icon, .dark .toolbar > .actions > button,
 .app-bar.primary > .toolbar > .title,
+.app-bar.primary > .toolbar > .detail > .title,
+.app-bar.primary > .toolbar > .detail > .subtitle,
 .app-bar.primary > .toolbar > .nav-icon > button.action,
 .app-bar.primary > .toolbar > .menu-icon,
 .app-bar.primary > .toolbar > .actions > button,

@@ -2880,6 +2880,18 @@ button.raised:focus:after, button.flat:focus:after {
 .flexible-box.square > .banner::before {
     padding-top: 100%; }
 
+.flexible-box > .banner > .background-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    z-index: 1;
+    padding-top: 56.25%; }
+
+.flexible-box.square > .banner > .background-color {
+    padding-top: 100%; }
+
 .flexible-box > .banner > .toolbar {
     position: absolute;
     top: 0;
@@ -2890,6 +2902,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .flexible-box > .banner > .toolbar > .nav-icon,
 .flexible-box > .banner > .toolbar > .title, 
+.flexible-box > .banner > .toolbar > .detail,
 .flexible-box > .banner > .toolbar > .actions {
     height: 56px; }
 
@@ -2898,6 +2911,18 @@ button.raised:focus:after, button.flat:focus:after {
     margin-top: calc(56.25% - 56px); }
 
 .flexible-box.square > .banner > .toolbar > .title {
+    margin-top: calc(100% - 56px); }
+
+.flexible-box > .banner > .toolbar > .detail > .title {
+    font-size: 24px; }
+
+.flexible-box > .banner > .toolbar > .detail > .subtitle {
+    font-size: 16px; }
+
+.flexible-box > .banner > .toolbar > .detail {
+    margin-top: calc(56.25% - 56px); }
+
+.flexible-box.square > .banner > .toolbar > .detail {
     margin-top: calc(100% - 56px); }
 
 .flexible-box > .banner > .background {
@@ -3068,7 +3093,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .list > .item-list > .content, .list > .item-list > .content > .detail {
     position: relative;
-    overflow-y: auto; }
+    overflow-y: auto;
+    overflow-x: hidden; }
 
 .list > .item-list > .content > .avatar {
     position: absolute;
@@ -4624,6 +4650,36 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 24px;
     transition: margin-top 0.525s var(--easing-out),
         font-size 0.525s var(--easing-out); }
+
+.toolbar > .detail {
+    margin: 0px;
+    margin-left: 16px;
+    min-height: inherit; 
+    max-height: inherit; 
+    float: left;
+    line-height: inherit; }
+
+.toolbar > .detail > .title, .toolbar > .detail > .subtitle {
+    display: block; }
+
+.toolbar > .detail > .title {
+    margin-top: 7px;
+    font-size: 18px;
+    height: 24px;
+    font-family: softtion-medium;
+    line-height: 24px;
+    transition: margin 0.325s var(--standard-curve); }
+
+.toolbar > .detail.hide-subtitle > .title {
+    margin-top: 16px; }
+
+.toolbar > .detail > .subtitle {
+    font-size: 12px;
+    height: 18px;
+    line-height: 22px; }
+
+.toolbar > .detail.hide-subtitle > .subtitle {
+    display: none; }
 
 .toolbar > .actions {
     display: flex;
