@@ -1868,7 +1868,7 @@
 
                                 var fontSizeTitle = 28 - (opacity * 8),
                                     fontSizeDetailSubTitle = 16 - (opacity * 4),
-                                    fontSizeDetailTitle = 24 - (opacity * 6);
+                                    fontSizeDetailTitle = 30 - (opacity * 12);
                                 
                                 banner.css("height", heightBanner); background.css("opacity", opacity);
 

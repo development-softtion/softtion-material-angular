@@ -2914,7 +2914,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-top: calc(100% - 56px); }
 
 .flexible-box > .banner > .toolbar > .detail > .title {
-    font-size: 24px; }
+    font-size: 30px; }
 
 .flexible-box > .banner > .toolbar > .detail > .subtitle {
     font-size: 16px; }
