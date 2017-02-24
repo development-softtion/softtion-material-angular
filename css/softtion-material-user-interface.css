@@ -838,7 +838,7 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     padding: 16px 0px 8px 0px; }
 
-.autocomplete.icon-label {
+.autocomplete.label-hidden {
     padding-top: 8px; }
 
 .autocomplete > label {
@@ -856,10 +856,10 @@ input[type=number]::-webkit-outer-spin-button {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.autocomplete.icon-label > label {
+.autocomplete.label-hidden > label {
     display: none; }
 
-.autocomplete.icon-label > i {
+.autocomplete.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -884,14 +884,14 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.autocomplete.icon-label.icon-active > input {
+.autocomplete.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.autocomplete.icon-label > input::-webkit-input-placeholder {
+.autocomplete.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.autocomplete.icon-label > input {
+.autocomplete.label-hidden > input {
     padding-top: 8px; }
 
 .autocomplete > .line-shadow {
@@ -900,7 +900,7 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     bottom: 7px; }
 
-.autocomplete.icon-label.icon-active > .line-shadow {
+.autocomplete.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -928,7 +928,7 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete.flex-pd > span, .autocomplete.flex-pd-left > span {
     left: 8px; }
 
-.autocomplete > .action-icon, .autocomplete.icon-label > .action-icon {
+.autocomplete > .action-icon, .autocomplete.label-hidden > .action-icon {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -940,14 +940,14 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 900;
     text-align: center; }
 
-.autocomplete.icon-label > .action-icon {
+.autocomplete.label-hidden > .action-icon {
     top: 4px;
     left: initial; }
 
 .autocomplete.flex-pd > .action-icon, 
-.autocomplete.icon-label.flex-pd > .action-icon
+.autocomplete.label-hidden.flex-pd > .action-icon
 .autocomplete.flex-pd-right > .action-icon,
-.autocomplete.icon-label.flex-pd-right > .action-icon {
+.autocomplete.label-hidden.flex-pd-right > .action-icon {
     right: 8px; }
 
 .autocomplete > ul {
@@ -969,7 +969,10 @@ input[type=number]::-webkit-outer-spin-button {
     transition: max-height 0.225s, max-width 0.225s;
     -ms-transition: max-height 0.225s, max-width 0.225s; }
 
-.autocomplete.icon-label.icon-active > ul {
+.autocomplete.label-hidden > ul {
+    top: 58px; }
+
+.autocomplete.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
     top: 58px;
     left: 72px; }
@@ -2173,11 +2176,11 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 32px 0px 16px 0px; }
 
-.chip-input.icon-label {
+.chip-input.label-hidden {
     padding-top: 14px;
     padding-bottom: 18px; }
 
-.chip-input.icon-label.icon-active {
+.chip-input.label-hidden.icon-active {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
@@ -2203,10 +2206,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 14px;
     font-size: 12px; }
 
-.chip-input.icon-label > label {
+.chip-input.label-hidden > label {
     display: none; }
 
-.chip-input.icon-label > i {
+.chip-input.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -2227,10 +2230,10 @@ button.raised:focus:after, button.flat:focus:after {
 .chip-input > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.chip-input.icon-label.icon-active > input {
+.chip-input.label-hidden.icon-active > input {
     width: 60%; }
 
-.chip-input.icon-label > input::-webkit-input-placeholder {
+.chip-input.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
 .chip-input.hide-input > input {
@@ -2242,7 +2245,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     bottom: 7px; }
 
-.chip-input.icon-label.icon-active > .line-shadow {
+.chip-input.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -2265,7 +2268,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: auto;
     margin-right: 8px; }
 
-.chip-input.icon-label.icon-active > .chips {
+.chip-input.label-hidden.icon-active > .chips {
     width: 100%; }
 
 .chip-input > .chips > .chip {
@@ -3532,7 +3535,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 16px 0px 8px 0px; }
 
-.select.icon-label {
+.select.label-hidden {
     padding-top: 8px; }
 
 .select > label {
@@ -3556,10 +3559,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 14px;
     font-size: 12px; }
 
-.select.icon-label > label {
+.select.label-hidden > label {
     display: none; }
 
-.select.icon-label > i {
+.select.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -3582,14 +3585,14 @@ button.raised:focus:after, button.flat:focus:after {
 .select > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.select.icon-label.icon-active > input {
+.select.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.select.icon-label > input::-webkit-input-placeholder {
+.select.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.select.icon-label > input {
+.select.label-hidden > input {
     padding-top: 8px; }
 
 .select > .line-shadow {
@@ -3598,7 +3601,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0;
     bottom: 7px; }
 
-.select.icon-label.icon-active > .line-shadow {
+.select.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -3623,7 +3626,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 4px;
     cursor: pointer; }
 
-.select.icon-label > button.action {
+.select.label-hidden > button.action {
     top: 22px; }
 
 .select.flex-pd > button.action, .select.flex-pd-right > button.action {
@@ -3658,7 +3661,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: max-height 0.225s, max-width 0.225s;
     -ms-transition: max-height 0.225s, max-width 0.225s; }
 
-.select.icon-label.icon-active > ul {
+.select.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
     top: 56px;
     left: 72px; }
@@ -3693,7 +3696,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 16px 0px 8px 0px; }
 
-.select-multiple.icon-label {
+.select-multiple.label-hidden {
     padding-top: 8px; }
 
 .select-multiple > label {
@@ -3710,10 +3713,10 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.select-multiple.icon-label > label {
+.select-multiple.label-hidden > label {
     display: none; }
 
-.select-multiple.icon-label > i {
+.select-multiple.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -3740,14 +3743,14 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.select-multiple.icon-label.icon-active > input {
+.select-multiple.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.select-multiple.icon-label > input::-webkit-input-placeholder {
+.select-multiple.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.select-multiple.icon-label > input {
+.select-multiple.label-hidden > input {
     padding-top: 8px; }
 
 .select-multiple > .line-shadow {
@@ -3756,7 +3759,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0;
     bottom: 7px; }
 
-.select-multiple.icon-label.icon-active > .line-shadow {
+.select-multiple.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -3781,7 +3784,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 4px;
     cursor: pointer; }
 
-.select-multiple.icon-label > button.action {
+.select-multiple.label-hidden > button.action {
     top: 22px; }
 
 .select-multiple.flex-pd > button.action, .select-multiple.flex-pd-right > button.action {
@@ -3816,7 +3819,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: max-height 0.225s, max-width 0.225s;
     -ms-transition: max-height 0.225s, max-width 0.225s; }
 
-.select-multiple.icon-label.icon-active > ul {
+.select-multiple.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
     top: 56px;
     left: 72px; }
@@ -4281,7 +4284,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 16px 0px 16px 0px; }
 
-.textarea.icon-label {
+.textarea.label-hidden {
     padding-top: 8px; }
 
 .textarea > label {
@@ -4305,10 +4308,10 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: none;
     font-size: 12px; }
 
-.textarea.icon-label > label {
+.textarea.label-hidden > label {
     display: none; }
 
-.textarea.icon-label > i {
+.textarea.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -4338,14 +4341,14 @@ button.raised:focus:after, button.flat:focus:after {
 .textarea > textarea::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textarea.icon-label.icon-active > textarea {
+.textarea.label-hidden.icon-active > textarea {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.textarea.icon-label > textarea::-webkit-input-placeholder {
+.textarea.label-hidden > textarea::-webkit-input-placeholder {
     visibility: visible; }
 
-.textarea.icon-label > textarea {
+.textarea.label-hidden > textarea {
     padding-top: 8px; }
 
 .textarea > .line-shadow {
@@ -4354,7 +4357,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0;
     bottom: 7px; }
 
-.textarea.icon-label.icon-active > .line-shadow {
+.textarea.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -4389,7 +4392,7 @@ button.raised:focus:after, button.flat:focus:after {
     word-wrap: break-word;
     overflow-wrap: break-word; }
 
-.textarea.icon-label.icon-active > .textarea-hidden {
+.textarea.label-hidden.icon-active > .textarea-hidden {
     width: calc(100% - 72px); }
 
 /** TEXTFIELD */
@@ -4399,7 +4402,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 16px 0px 8px 0px; }
 
-.textfield.icon-label {
+.textfield.label-hidden {
     padding-top: 8px; }
 
 .textfield > label {
@@ -4424,10 +4427,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 14px;
     font-size: 12px; }
 
-.textfield.icon-label > label {
+.textfield.label-hidden > label {
     display: none; }
 
-.textfield.icon-label > i {
+.textfield.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -4451,14 +4454,14 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textfield.icon-label.icon-active > input {
+.textfield.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.textfield.icon-label > input::-webkit-input-placeholder {
+.textfield.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.textfield.icon-label > input {
+.textfield.label-hidden > input {
     padding-top: 8px; }
 
 .textfield > .line-shadow {
@@ -4467,7 +4470,7 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 7px; 
     width: 100%; }
 
-.textfield.icon-label.icon-active > .line-shadow {
+.textfield.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -4481,7 +4484,7 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: -10px;
     font-size: 12px; }
 
-.textfield.icon-label.icon-active > span {
+.textfield.label-hidden.icon-active > span {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
@@ -4506,7 +4509,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 16px 0px 8px 0px; }
 
-.textfield-readonly.icon-label {
+.textfield-readonly.label-hidden {
     padding-top: 8px; }
 
 .textfield-readonly > label {
@@ -4519,10 +4522,10 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     cursor: none; }
 
-.textfield-readonly.icon-label > label {
+.textfield-readonly.label-hidden > label {
     display: none; }
 
-.textfield-readonly.icon-label > i {
+.textfield-readonly.label-hidden > i {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -4543,14 +4546,14 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield-readonly > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textfield-readonly.icon-label.icon-active > input {
+.textfield-readonly.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.textfield-readonly.icon-label > input::-webkit-input-placeholder {
+.textfield-readonly.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.textfield-readonly.icon-label > input {
+.textfield-readonly.label-hidden > input {
     padding-top: 8px; }
 
 .textfield-readonly > .line-shadow {
@@ -4559,7 +4562,7 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 7px;
     width: 100%; }
 
-.textfield-readonly.icon-label.icon-active > .line-shadow {
+.textfield-readonly.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
 
@@ -4779,15 +4782,14 @@ button.raised:focus:after, button.flat:focus:after {
 /** VIEWS */
 
 .views {
+    display: table;
     position: relative;
     width: 100%;
-    overflow-y: auto;
     overflow-x: hidden; }
 
 .views > .content {
     display: none;
     width: 100%;
-    overflow-y: auto;
     -moz-animation-duration: 0.255s;
     -webkit-animation-duration: 0.255s;
     -o-animation-duration: 0.255s;
