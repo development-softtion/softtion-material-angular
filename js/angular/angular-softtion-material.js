@@ -267,7 +267,7 @@
                             $scope.selectSuggestion = function (suggestion) {
                                 $scope.suggestionTemp = $scope.suggestionSelect; // Cambio de selección
                                 $scope.suggestionSelect = suggestion; $scope.clearSuggestion = false;
-
+                                
                                 if (typeof suggestion === "string") {
                                     $scope.valueInput = suggestion;
                                 } else {
@@ -279,7 +279,7 @@
                                 
                                 if ($scope.suggestionTemp !== $scope.suggestionSelect) {
                                     if (softtion.isFunction($scope.changedEvent)) {
-                                        $scope.changedEvent("changed", $scope.suggestionTemp);
+                                        $scope.changedEvent("changed", $scope.suggestionSelect, $scope.suggestionTemp);
                                     } // Evento cambio de selección
                                 } // La selección realizada es diferente a la anterior
                             };
@@ -314,7 +314,7 @@
                                 $element.removeClass("active"); label.removeClass("active");
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
-                                    $scope.changedEvent("clear", $scope.suggestionTemp);
+                                    $scope.changedEvent("clear", $scope.suggestionSelect, $scope.suggestionTemp);
                                 } // Evento cambio de selección de sugerencia
                             };
                         }
@@ -1258,35 +1258,35 @@
                         scope: {
                             selectMultiple: "=?",
                             selection: "=?ngModel",
-                            list: "=rowsData",
+                            rowsData: "=",
                             selectAll: "=?selectAll",
                             clickSelectAll: "=?",
                             clickSelect: "=?",
                             countSelect: "=?"
                         },
                         link: function ($scope, $element) {
-                            var selectedSimple = undefined; // Objeto seleccionado
+                            var selectedTemp = undefined; // Objeto seleccionado
                         
-                            $scope.selection = $scope.selection || {};
+                            $scope.selection = ($scope.selectMultiple) ? [] : undefined;
                             
                             $scope.clickSelectAll = function () {
                                 if ($scope.selectMultiple) {
                                     if (!$scope.selectAll) {
                                         $element.find("tbody tr.active").removeClass("active");
-                                        $scope.selection = {}; $element.removeClass("selected"); 
+                                        $scope.selection = []; $element.removeClass("selected"); 
                                         $scope.countSelect = 0; // No existen filas seleccionadas
                                         
-                                        angular.forEach($scope.list, 
+                                        angular.forEach($scope.rowsData, 
                                             function (object) { object.checked = false; }
                                         );
                                     } else {
                                         $element.find("tbody tr").addClass("active"); // Activando filas
                                         
-                                        angular.forEach($scope.list, function (object, key) {
-                                            $scope.selection[key] = object; object.checked = true;
+                                        angular.forEach($scope.rowsData, function (object, key) {
+                                            $scope.selection.push(object); object.checked = true;
                                         });
                                         
-                                        $scope.countSelect = $scope.list.length; $element.addClass("selected"); 
+                                        $scope.countSelect = $scope.selection.length; $element.addClass("selected"); 
                                     }
                                 } else {
                                     $scope.selectAll = false;
@@ -1302,30 +1302,34 @@
                                     row.toggleClass("active"); // Cambiando estado
                                     
                                     if (object.checked) {
-                                        $scope.selection[$index] = object;
+                                        $scope.selection.push(object);
                                     } else {
-                                        softtion.removeKey($scope.selection, $index);
+                                        $scope.selection.remove($scope.selection.indexOf(object)); 
                                     } // Ya estaba seleccionado la fila
+                                    
+                                    $scope.countSelect = $scope.selection.length;
                                 } else {
                                     if (object.checked) {
-                                        row.siblings("tr").removeClass("active"); row.addClass("active"); 
-                                        $scope.selection = {}; $scope.selection[$index] = object;
+                                        row.siblings("tr").removeClass("active");
+                                        row.addClass("active"); $scope.selection = object;
                                         
-                                        if (softtion.isDefined(selectedSimple)) {
-                                            selectedSimple.checked = false; selectedSimple = object;
-                                        } else { selectedSimple = object; }
+                                        $scope.countSelect = 1; // Hay selección
+                                        
+                                        if (softtion.isDefined(selectedTemp)) {
+                                            selectedTemp.checked = false; selectedTemp = object;
+                                        } else { 
+                                            selectedTemp = object; 
+                                        } // Activando el nuevo objeto
                                     } else {
-                                        $scope.selection = {}; row.removeClass("active"); 
-                                        selectedSimple = undefined; // Sin objeto seleccionado
+                                        $scope.selection = undefined; row.removeClass("active"); 
+                                        selectedTemp = undefined; $scope.countSelect = 0;
                                     } // Ya estaba seleccionado la fila
                                 }
-                                
-                                $scope.countSelect = Object.keys($scope.selection).length;
                                 
                                 ($scope.countSelect > 0) ?
                                     $element.addClass("selected") : $element.removeClass("selected");
                                 
-                                $scope.selectAll = $scope.countSelect === $scope.list.length;
+                                $scope.selectAll = ($scope.countSelect === $scope.rowsData.length);
                             };
                         }
                     };
@@ -1874,8 +1878,8 @@
                     return {
                         restrict: "C",
                         link: function ($scope, $element) {
-                            var header = $element.find(".header"),
-                                body = $element.find(".body");
+                            var header = $element.children(".header"),
+                                body = $element.children(".body");
                             
                             if (body.exists()) {
                                 var content = body.find(".content"),
@@ -2248,7 +2252,7 @@
                                 $scope.select = suggestion; hideSuggestions(); // Ocultando opciones
                                 
                                 if (softtion.isFunction($scope.changeEvent)) {
-                                    $scope.changeEvent("select", $scope.selectTemp); 
+                                    $scope.changeEvent("select", $scope.select, $scope.selectTemp); 
                                 } // Evento change sobre el componente
                             };
                             
@@ -2258,7 +2262,7 @@
                                 $scope.inputValue = undefined; hideSuggestions();
                                 
                                 if (softtion.isFunction($scope.changeEvent)) {
-                                    $scope.changeEvent("clear", $scope.selectTemp); 
+                                    $scope.changeEvent("clear", $scope.select, $scope.selectTemp); 
                                 } // Evento change sobre el componente
                             };
                         }
@@ -3175,7 +3179,7 @@
                     };
 
                     Alert.prototype.settings = function (options) {
-                        var $options = {
+                        var optionsDefault = {
                             title: "", content: "",
                             positiveLabel: "Aceptar",
                             negativeLabel: "Cancelar",
@@ -3184,14 +3188,15 @@
                             negativeFunction: undefined
                         };
                         
-                        angular.extend($options, options); 
+                        angular.extend(optionsDefault, options); 
                         
-                        this.title($options.title); this.content($options.content);
-                        this.positiveLabel($options.positiveLabel);
-                        this.negativeLabel($options.negativeLabel);
-                        this.backdropEnabled($options.enabledBackdrop);
-                        this.positiveFunction($options.positiveFunction);
-                        this.negativeFunction($options.negativeFunction);
+                        this.title(optionsDefault.title); 
+                        this.content(optionsDefault.content);
+                        this.positiveLabel(optionsDefault.positiveLabel);
+                        this.negativeLabel(optionsDefault.negativeLabel);
+                        this.backdropEnabled(optionsDefault.enabledBackdrop);
+                        this.positiveFunction(optionsDefault.positiveFunction);
+                        this.negativeFunction(optionsDefault.negativeFunction);
 
                         return this; // Retornando interfaz fluida
                     };
