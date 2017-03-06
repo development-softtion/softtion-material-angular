@@ -4365,11 +4365,15 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 6px; }
 
 .textarea > span {
+    display: none;
     width: 100%;
     position: absolute;
     left: 0;
     font-size: 12px;
     bottom: -12px; }
+
+.textarea.error > span {
+    display: block; }
 
 .textarea.flex-pd > label, .textarea.flex-pd > span, 
 .textarea.flex-pd > .line-shadow {
@@ -4478,11 +4482,15 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 6px;  }
 
 .textfield > span {
+    display: none;
     width: 100%;
     position: absolute;
     left: 0;
     bottom: -10px;
     font-size: 12px; }
+
+.textfield.error > span {
+    display: block; }
 
 .textfield.label-hidden.icon-active > span {
     padding-left: 72px;

@@ -2653,13 +2653,13 @@
                 route: "softtion/template/textarea.html",
                 name: "textarea",
                 defineTextHidden: function (textarea, texthidden) {
-                    var $fontFamily = textarea.css("font-family"),
-                        $fontSize = textarea.css("font-size"),
-                        $lineHeight = textarea.css("line-height");
+                    var fontFamily = textarea.css("font-family"),
+                        fontSize = textarea.css("font-size"),
+                        lineHeight = textarea.css("line-height");
 
-                    texthidden.css("font-family",$fontFamily);
-                    texthidden.css("font-size",$fontSize);
-                    texthidden.css("line-height",$lineHeight);
+                    texthidden.css("font-family", fontFamily);
+                    texthidden.css("font-size", fontSize);
+                    texthidden.css("line-height", lineHeight);
                 },
                 autoResize: function (textarea, texthidden) {
                     texthidden.html(textarea.val()); textarea.css('height', texthidden.height());
@@ -2684,8 +2684,7 @@
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
-                    var $span = softtion.html("span").addClass("truncate").
-                        addAttribute("ng-hide","hideSpan");
+                    var $span = softtion.html("span").addClass("truncate");
 
                     var $textHidden = softtion.html("div").addClass("textarea-hidden");
 
@@ -2701,6 +2700,7 @@
                             label: "@", 
                             type: "@",
                             required: "=?",
+                            trim: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",
                             minLength: "=?",
@@ -2726,8 +2726,7 @@
                         
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
-                            defineTextHidden(area, hidden); $scope.hideSpan = true;
-                            $scope.areaValue = ""; // Valor inicial del Area
+                            defineTextHidden(area, hidden); $scope.areaValue = ""; 
 
                             if (softtion.isString($scope.value)) { 
                                 $element.addClass("active"); $scope.areaValue = $scope.value;
@@ -2763,13 +2762,17 @@
 
                                     if ($scope.required) {
                                         area.siblings("span").html("Este campo es requerido"); 
-                                        $scope.value = undefined; $element.addClass("error"); $scope.hideSpan = false;
+                                        $scope.value = undefined; $element.addClass("error");
                                     }
                                 } else if($scope.areaValue.length < $scope.minLength) {
                                     area.siblings("span").html("Es campo requiere minimo " + $scope.minLength + " caracteres"); 
-                                    $scope.value = undefined; $element.addClass("error"); $scope.hideSpan = false; 
+                                    $scope.value = undefined; $element.addClass("error"); 
                                 } else { 
-                                    $scope.value = $scope.areaValue; $scope.hideSpan = true; $element.removeClass("error"); 
+                                    if ($scope.trim) {
+                                        $scope.areaValue = $scope.areaValue.trim();
+                                    } // Se desea limpiar espacios digitado
+                                    
+                                    $scope.value = $scope.areaValue; $element.removeClass("error"); 
                                 }
 
                                 autoResize(area, hidden); // Cambiando tamaño del componente
@@ -2825,8 +2828,7 @@
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
-                    var span = softtion.html("span").addClass("truncate").
-                        addAttribute("ng-hide", "hideSpan");
+                    var span = softtion.html("span").addClass("truncate");
 
                     return input + lineShadow + label + span; // Componente
                 },        
@@ -2848,6 +2850,7 @@
                             label: "@", 
                             type: "@",
                             required: "=?",
+                            trim: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",
                             minLength: "=?",
@@ -2863,16 +2866,25 @@
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input"); activeIconLabel($scope, $element, input);
+                            var regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
-                            $scope.hideSpan = true; $scope.inputValue = "";
+                            $scope.inputValue = ""; $scope.type = $scope.type || "text";
                             $scope.typeInput = Material.components.TextField.defineInput($scope.type);
 
                             if (softtion.isString($scope.value)) { 
                                 $element.addClass("active"); $scope.inputValue = $scope.value;
                             } // Se ha definido un valor
+                            
+                            $scope.successInput = function (value) {
+                                $scope.value = value; $element.removeClass("error");
+                            };
+                            
+                            $scope.errorInput = function (message) {
+                                input.siblings("span").html(message); $scope.value = undefined; $element.addClass("error"); 
+                            };
 
                             $scope.clickLabel = function ($event) { 
                                 input.focus(); // Enfocando el input
@@ -2901,15 +2913,37 @@
                                     $element.removeClass("active"); // Componente no tiene Texto
 
                                     if ($scope.required) {
-                                        input.siblings("span").html("Este campo es requerido"); 
-                                        $scope.value = undefined; $element.addClass("error"); $scope.hideSpan = false;
-                                    }
+                                        $scope.errorInput("Este campo es requerido"); 
+                                    } // Texto es requerido
                                 } else if($scope.inputValue.length < $scope.minLength) {
-                                    input.siblings("span").html("Es campo requiere minimo " + $scope.minLength + " caracteres");
-                                    $element.addClass("error"); $scope.hideSpan = false; $scope.value = undefined;
+                                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
                                 } else { 
-                                    $scope.value = $scope.inputValue; $scope.hideSpan = true; $element.removeClass("error"); 
-                                }
+                                    if ($scope.trim) {
+                                        $scope.inputValue = $scope.inputValue.trim();
+                                    } // Se desea limpiar espacios digitado
+                                    
+                                    switch ($scope.type) {
+                                        case (TextType.NUMBER):
+                                            $scope.successInput(parseInt($scope.inputValue));
+                                        break;
+                                            
+                                        case (TextType.DECIMAL): 
+                                            $scope.successInput(parseFloat($scope.inputValue)); 
+                                        break;
+                                            
+                                        case (TextType.EMAIL):
+                                            if (regexEmail.test($scope.inputValue)) {
+                                                $scope.successInput($scope.inputValue);
+                                            } else {
+                                                $scope.errorInput("Texto digitado no es email");
+                                            } // Error en el correo
+                                        break;
+                                            
+                                        default: 
+                                            $scope.successInput($scope.inputValue);
+                                        break;
+                                    } // Definiendo tipo de dato del modelo
+                                } // Todo esta correcto
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
                                     $scope.blurEvent($event);

@@ -55,7 +55,8 @@
                     ALPHANUMBERSPACE: "alphanumberspace",
                     DECIMAL: "decimal",
                     SYMBOL: "symbol",
-                    PASSWORD: "password"
+                    PASSWORD: "password",
+                    EMAIL: "email"
                 };
                 
             default: return null;
@@ -290,6 +291,16 @@
             return this.alphanumeric(keyCode) || this.symbol(keyCode);
         },
         
+        email: function (keyCode, inputValue) { 
+            if (keyCode === 64) {
+                return (inputValue.indexOf('@') === -1);
+            } else if (keyCode === 32) {
+                return false;
+            } else {
+                return true;
+            } // Todo es valido para el email
+        },
+        
         settings: window.softtion.get(window.softtion.TEXTCONTROL)
     };
     
@@ -318,6 +329,9 @@
                 
             case (TypeCharacter.settings.PASSWORD): 
                 return TypeCharacter.password(options.keyCode); 
+                
+            case (TypeCharacter.settings.EMAIL): 
+                return TypeCharacter.email(options.keyCode, options.inputValue); 
                 
             case (TypeCharacter.settings.NOTHING): return false; // No quiere ningun caracter
 
