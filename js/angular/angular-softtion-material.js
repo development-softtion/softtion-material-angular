@@ -120,7 +120,7 @@
                             suggestionSelect: "=ngModel",
                             ngDisabled: "=?",
                             required: "=?",
-                            filter: "@",
+                            keyDescription: "@",
                             label: "@",
                             suggestions: "=",
                             icon: "@",
@@ -140,8 +140,7 @@
                             activeIconLabel($scope, $element, input); // IconLabel
                                 
                             // Atributos de control
-                            var filterDefined = softtion.isString($scope.filter),
-                                focusLi = false, searchStart = false;
+                            var focusLi = false, searchStart = false;
 
                             $scope.suggestionsFilter = []; $scope.clearSuggestion = true;
                             $scope.suggestionTemp = undefined; $scope.valueInput = "";
@@ -171,8 +170,8 @@
                                             suggestionsFilter.push(suggestion); 
                                         } // Se encontro coincidencia, se agregara opción
                                     } else {
-                                        var value = !(filterDefined) ? suggestion.toString() :
-                                            softtion.findKey(suggestion, $scope.filter);
+                                        var value = !(softtion.isString($scope.keyDescription)) ? 
+                                            suggestion.toString() : softtion.findKey(suggestion, $scope.keyDescription);
 
                                         if (~value.toLowerCase().indexOf(filter)) { 
                                             suggestionsFilter.push(suggestion); 
@@ -252,8 +251,8 @@
                                             if (typeof $scope.suggestionSelect === "string") {
                                                 $scope.valueInput = $scope.suggestionSelect;
                                             } else {
-                                                $scope.valueInput = (!(filterDefined) ? $scope.suggestionSelect.toString() :
-                                                    softtion.findKey($scope.suggestionSelect, $scope.filter));
+                                                $scope.valueInput = (!(softtion.isString($scope.keyDescription)) ? $scope.suggestionSelect.toString() :
+                                                    softtion.findKey($scope.suggestionSelect, $scope.keyDescription));
                                             }
                                         } else { list.removeClass("active"); }
                                     }
@@ -271,8 +270,8 @@
                                 if (typeof suggestion === "string") {
                                     $scope.valueInput = suggestion;
                                 } else {
-                                    $scope.valueInput = (!(filterDefined) ? suggestion.toString() :
-                                        softtion.findKey(suggestion, $scope.filter));
+                                    $scope.valueInput = (!(softtion.isString($scope.keyDescription)) ? suggestion.toString() :
+                                        softtion.findKey(suggestion, $scope.keyDescription));
                                 }
 
                                 list.removeClass("active"); // Ocultando lista
@@ -286,8 +285,8 @@
 
                             $scope.renderSuggestion = function (suggestion) {
                                 // Texto a mostrar en la lista
-                                var value = !(filterDefined) ? suggestion :
-                                    softtion.findKey(suggestion, $scope.filter);
+                                var value = !(softtion.isString($scope.keyDescription)) ? suggestion :
+                                    softtion.findKey(suggestion, $scope.keyDescription);
 
                                 // Valor digitado para filtrar
                                 var filter = $scope.valueInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
