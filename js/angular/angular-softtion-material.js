@@ -2701,6 +2701,7 @@
                             type: "@",
                             required: "=?",
                             trim: "=?",
+                            uppercase: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",
                             minLength: "=?",
@@ -2771,6 +2772,10 @@
                                     if ($scope.trim) {
                                         $scope.areaValue = $scope.areaValue.trim();
                                     } // Se desea limpiar espacios digitado
+                                    
+                                    if ($scope.uppercase) {
+                                        $scope.areaValue = $scope.areaValue.toUpperCase();
+                                    } // Se desea el texto en mayusculas
                                     
                                     $scope.value = $scope.areaValue; $element.removeClass("error"); 
                                 }
@@ -2851,6 +2856,7 @@
                             type: "@",
                             required: "=?",
                             trim: "=?",
+                            uppercase: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",
                             minLength: "=?",
@@ -2861,7 +2867,8 @@
                             // Eventos
                             clickEvent: "=?",
                             blurEvent: "=?",
-                            focusEvent: "=?"
+                            focusEvent: "=?",
+                            enterEvent: "=?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2922,8 +2929,12 @@
                                         $scope.inputValue = $scope.inputValue.trim();
                                     } // Se desea limpiar espacios digitado
                                     
+                                    if ($scope.uppercase) {
+                                        $scope.inputValue = $scope.inputValue.toUpperCase();
+                                    } // Se desea texto en mayuscula
+                                    
                                     switch ($scope.type) {
-                                        case (TextType.NUMBER):
+                                        case (TextType.MONEY):
                                             $scope.successInput(parseInt($scope.inputValue));
                                         break;
                                             
@@ -2964,6 +2975,12 @@
                                         $event.preventDefault();
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
+                                
+                                if ($event.keyCode === 13) {
+                                    if (softtion.isFunction($scope.enterEvent)) {
+                                        $scope.enterEvent($event, $scope.inputValue);
+                                    } // Evento enter sobre el componente
+                                } // Se presiono tecla 'Enter' en el componente
                             };
                         }
                     };

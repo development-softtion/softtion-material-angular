@@ -46,17 +46,18 @@
                 
             case (this.TEXTCONTROL):
                 return {
+                    ALL: "text",
                     ALPHABETIC: "alphabetic",
                     NUMBER: "number",
-                    ALL: "text",
+                    MONEY: "money",
                     NOTHING: "nothing",
                     ALPHANUMBER: "alphanumber",
                     ALPHASPACE: "alphaspace",
                     ALPHANUMBERSPACE: "alphanumberspace",
                     DECIMAL: "decimal",
+                    EMAIL: "email",
                     SYMBOL: "symbol",
-                    PASSWORD: "password",
-                    EMAIL: "email"
+                    PASSWORD: "password"
                 };
                 
             default: return null;
@@ -155,22 +156,22 @@
     };
     
     Softtion.prototype.leadingChar = function (word, character, size, option) {
-        var $word = String(word); option = option || "before";
+        var newWord = String(word); option = option || "before";
         
         switch (option) {
             case ("before") :
-                for (var i = $word.length; i < size; i++) { 
-                    $word = character + $word; }
+                for (var i = newWord.length; i < size; i++) { 
+                    newWord = character + newWord; }
                 
-                return $word; // Retornando nueva Palabra
+                return newWord; // Retornando nueva Palabra
                 
             case ("after") :
-                for (var i = $word.length; i < size; i++) { 
-                    $word = $word + character; }
+                for (var i = newWord.length; i < size; i++) { 
+                    newWord = newWord + character; }
                 
-                return $word; // Retornando nueva Palabra
+                return newWord; // Retornando nueva Palabra
                 
-            default : return $word;
+            default : return newWord; // No se definio tipo de Agregación
         }
     };
         
@@ -310,6 +311,9 @@
                 return TypeCharacter.alphabetic(options.keyCode); 
                 
             case (TypeCharacter.settings.NUMBER):  
+                return TypeCharacter.numeric(options.keyCode);
+                
+            case (TypeCharacter.settings.MONEY):  
                 return TypeCharacter.numeric(options.keyCode);
                 
             case (TypeCharacter.settings.ALPHANUMBER): 

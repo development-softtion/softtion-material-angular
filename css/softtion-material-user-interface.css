@@ -152,7 +152,8 @@ input[type=number]::-webkit-outer-spin-button {
     box-sizing: border-box; }
  
  .row .flex-pd {
-    padding: 0 8px; }
+    padding-left: 8px;
+    padding-right: 8px; }
  
  .row .flex-pd-right {
     padding-right: 8px; }
@@ -160,133 +161,133 @@ input[type=number]::-webkit-outer-spin-button {
  .row .flex-pd-left {
     padding-left: 8px; }
 
-.low-5 {
+.small-5 {
     width: 5%; }
 
-.low-10 {
+.small-10 {
     width: 10%; }
 
-.low-15 {
+.small-15 {
     width: 15%; }
 
-.low-20 {
+.small-20 {
     width: 20%; }
 
-.low-25 {
+.small-25 {
     width: 25%; }
 
-.low-30 {
+.small-30 {
     width: 30%; }
 
-.low-33 {
+.small-33 {
     width: 33.33%; }
 
-.low-35 {
+.small-35 {
     width: 35%; }
 
-.low-40 {
+.small-40 {
     width: 40%; }
 
-.low-45 {
+.small-45 {
     width: 45%; }
 
-.low-50 {
+.small-50 {
     width: 50%; }
 
-.low-55 {
+.small-55 {
     width: 55%; }
 
-.low-60 {
+.small-60 {
     width: 60%; }
 
-.low-65 {
+.small-65 {
     width: 65%; }
 
-.low-66 {
+.small-66 {
     width: 66.66%; }
 
-.low-70 {
+.small-70 {
     width: 70%; }
 
-.low-75 {
+.small-75 {
     width: 75%; }
 
-.low-80 {
+.small-80 {
     width: 80%; }
 
-.low-85 {
+.small-85 {
     width: 85%; }
 
-.low-90 {
+.small-90 {
     width: 90%; }
 
-.low-95 {
+.small-95 {
     width: 95%; }
 
-.low {
+.small {
     width: 100%; }
 
-.offset-low-5 {
+.offset-small-5 {
     margin-left: 5% !important; }
 
-.offset-low-10 {
+.offset-small-10 {
     margin-left: 10% !important; }
 
-.offset-low-15 {
+.offset-small-15 {
     margin-left: 15% !important; }
 
-.offset-low-20 {
+.offset-small-20 {
     margin-left: 20% !important; }
 
-.offset-low-25 {
+.offset-small-25 {
     margin-left: 25% !important; }
 
-.offset-low-30 {
+.offset-small-30 {
     margin-left: 30% !important; }
 
-.offset-low-33 {
+.offset-small-33 {
     margin-left: 33.33% !important; }
 
-.offset-low-35 {
+.offset-small-35 {
     margin-left: 35% !important; }
 
-.offset-low-40 {
+.offset-small-40 {
     margin-left: 40% !important; }
 
-.offset-low-45 {
+.offset-small-45 {
     margin-left: 45% !important; }
 
-.offset-low-50 {
+.offset-small-50 {
     margin-left: 50% !important; }
 
-.offset-low-55 {
+.offset-small-55 {
     margin-left: 55% !important; }
 
-.offset-low-60 {
+.offset-small-60 {
     margin-left: 60% !important; }
 
-.offset-low-65 {
+.offset-small-65 {
     margin-left: 65% !important; }
 
-.offset-low-66 {
+.offset-small-66 {
     margin-left: 66.66% !important; }
 
-.offset-low-70 {
+.offset-small-70 {
     margin-left: 70% !important; }
 
-.offset-low-75 {
+.offset-small-75 {
     margin-left: 75% !important; }
 
-.offset-low-80 {
+.offset-small-80 {
     margin-left: 80% !important; }
 
-.offset-low-85 {
+.offset-small-85 {
     margin-left: 85% !important; }
 
-.offset-low-90 {
+.offset-small-90 {
     margin-left: 90% !important; }
 
-.offset-low-95 {
+.offset-small-95 {
     margin-left: 95% !important; }
 
 @media only screen and (min-width : 361px) {
@@ -421,264 +422,264 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 @media only screen and (min-width : 641px) {
-    .high-5 {
+    .large-5 {
         width: 5%; }
 
-    .high-10 {
+    .large-10 {
         width: 10%; }
 
-    .high-15 {
+    .large-15 {
         width: 15%; }
 
-    .high-20 {
+    .large-20 {
         width: 20%; }
 
-    .high-25 {
+    .large-25 {
         width: 25%; }
 
-    .high-30 {
+    .large-30 {
         width: 30%; }
 
-    .high-33 {
+    .large-33 {
         width: 33.33%; }
 
-    .high-35 {
+    .large-35 {
         width: 35%; }
 
-    .high-40 {
+    .large-40 {
         width: 40%; }
 
-    .high-45 {
+    .large-45 {
         width: 45%; }
 
-    .high-50 {
+    .large-50 {
         width: 50%; }
 
-    .high-55 {
+    .large-55 {
         width: 55%; }
 
-    .high-60 {
+    .large-60 {
         width: 60%; }
 
-    .high-65 {
+    .large-65 {
         width: 65%; }
 
-    .high-66 {
+    .large-66 {
         width: 66.66%; }
 
-    .high-70 {
+    .large-70 {
         width: 70%; }
 
-    .high-75 {
+    .large-75 {
         width: 75%; }
 
-    .high-80 {
+    .large-80 {
         width: 80%; }
 
-    .high-85 {
+    .large-85 {
         width: 85%; }
 
-    .high-90 {
+    .large-90 {
         width: 90%; }
 
-    .high-95 {
+    .large-95 {
         width: 95%; }
 
-    .high {
+    .large {
         width: 100%; }
 
-    .offset-high-5 {
+    .offset-large-5 {
         margin-left: 5% !important; }
 
-    .offset-high-10 {
+    .offset-large-10 {
         margin-left: 10% !important; }
 
-    .offset-high-15 {
+    .offset-large-15 {
         margin-left: 15% !important; }
 
-    .offset-high-20 {
+    .offset-large-20 {
         margin-left: 20% !important; }
 
-    .offset-high-25 {
+    .offset-large-25 {
         margin-left: 25% !important; }
 
-    .offset-high-30 {
+    .offset-large-30 {
         margin-left: 30% !important; }
 
-    .offset-high-33 {
+    .offset-large-33 {
         margin-left: 33.33% !important; }
 
-    .offset-high-35 {
+    .offset-large-35 {
         margin-left: 35% !important; }
 
-    .offset-high-40 {
+    .offset-large-40 {
         margin-left: 40% !important; }
 
-    .offset-high-45 {
+    .offset-large-45 {
         margin-left: 45% !important; }
 
-    .offset-high-50 {
+    .offset-large-50 {
         margin-left: 50% !important; }
 
-    .offset-high-55 {
+    .offset-large-55 {
         margin-left: 55% !important; }
 
-    .offset-high-60 {
+    .offset-large-60 {
         margin-left: 60% !important; }
 
-    .offset-high-65 {
+    .offset-large-65 {
         margin-left: 65% !important; }
 
-    .offset-high-66 {
+    .offset-large-66 {
         margin-left: 66.66% !important; }
 
-    .offset-high-70 {
+    .offset-large-70 {
         margin-left: 70% !important; }
 
-    .offset-high-75 {
+    .offset-large-75 {
         margin-left: 75% !important; }
 
-    .offset-high-80 {
+    .offset-large-80 {
         margin-left: 80% !important; }
 
-    .offset-high-85 {
+    .offset-large-85 {
         margin-left: 85% !important; }
 
-    .offset-high-90 {
+    .offset-large-90 {
         margin-left: 90% !important; }
 
-    .offset-high-95 {
+    .offset-large-95 {
         margin-left: 95% !important; }
 }
 
 @media only screen and (min-width : 961px) {
-    .extrahigh-5 {
+    .extralarge-5 {
         width: 5%; }
 
-    .extrahigh-10 {
+    .extralarge-10 {
         width: 10%; }
 
-    .extrahigh-15 {
+    .extralarge-15 {
         width: 15%; }
 
-    .extrahigh-20 {
+    .extralarge-20 {
         width: 20%; }
 
-    .extrahigh-25 {
+    .extralarge-25 {
         width: 25%; }
 
-    .extrahigh-30 {
+    .extralarge-30 {
         width: 30%; }
 
-    .extrahigh-33 {
+    .extralarge-33 {
         width: 33.33%; }
 
-    .extrahigh-35 {
+    .extralarge-35 {
         width: 35%; }
 
-    .extrahigh-40 {
+    .extralarge-40 {
         width: 40%; }
 
-    .extrahigh-45 {
+    .extralarge-45 {
         width: 45%; }
 
-    .extrahigh-50 {
+    .extralarge-50 {
         width: 50%; }
 
-    .extrahigh-55 {
+    .extralarge-55 {
         width: 55%; }
 
-    .extrahigh-60 {
+    .extralarge-60 {
         width: 60%; }
 
-    .extrahigh-66 {
+    .extralarge-66 {
         width: 66.66%; }
 
-    .extrahigh-65 {
+    .extralarge-65 {
         width: 65%; }
 
-    .extrahigh-70 {
+    .extralarge-70 {
         width: 70%; }
 
-    .extrahigh-75 {
+    .extralarge-75 {
         width: 75%; }
 
-    .extrahigh-80 {
+    .extralarge-80 {
         width: 80%; }
 
-    .extrahigh-85 {
+    .extralarge-85 {
         width: 85%; }
 
-    .extrahigh-90 {
+    .extralarge-90 {
         width: 90%; }
 
-    .extrahigh-95 {
+    .extralarge-95 {
         width: 95%; }
 
-    .extrahigh {
+    .extralarge {
         width: 100%; }
 
-    .offset-extrahigh-5 {
+    .offset-extralarge-5 {
         margin-left: 5% !important; }
 
-    .offset-extrahigh-10 {
+    .offset-extralarge-10 {
         margin-left: 10% !important; }
 
-    .offset-extrahigh-15 {
+    .offset-extralarge-15 {
         margin-left: 15% !important; }
 
-    .offset-extrahigh-20 {
+    .offset-extralarge-20 {
         margin-left: 20% !important; }
 
-    .offset-extrahigh-25 {
+    .offset-extralarge-25 {
         margin-left: 25% !important; }
 
-    .offset-extrahigh-30 {
+    .offset-extralarge-30 {
         margin-left: 30% !important; }
 
-    .offset-extrahigh-33 {
+    .offset-extralarge-33 {
         margin-left: 33.33% !important; }
 
-    .offset-extrahigh-35 {
+    .offset-extralarge-35 {
         margin-left: 35% !important; }
 
-    .offset-extrahigh-40 {
+    .offset-extralarge-40 {
         margin-left: 40% !important; }
 
-    .offset-extrahigh-45 {
+    .offset-extralarge-45 {
         margin-left: 45% !important; }
 
-    .offset-extrahigh-50 {
+    .offset-extralarge-50 {
         margin-left: 50% !important; }
 
-    .offset-extrahigh-55 {
+    .offset-extralarge-55 {
         margin-left: 55% !important; }
 
-    .offset-extrahigh-60 {
+    .offset-extralarge-60 {
         margin-left: 60% !important; }
 
-    .offset-extrahigh-65 {
+    .offset-extralarge-65 {
         margin-left: 65% !important; }
 
-    .offset-extrahigh-66 {
+    .offset-extralarge-66 {
         margin-left: 66.66% !important; }
 
-    .offset-extrahigh-70 {
+    .offset-extralarge-70 {
         margin-left: 70% !important; }
 
-    .offset-extrahigh-75 {
+    .offset-extralarge-75 {
         margin-left: 75% !important; }
 
-    .offset-extrahigh-80 {
+    .offset-extralarge-80 {
         margin-left: 80% !important; }
 
-    .offset-extrahigh-85 {
+    .offset-extralarge-85 {
         margin-left: 85% !important; }
 
-    .offset-extrahigh-90 {
+    .offset-extralarge-90 {
         margin-left: 90% !important; }
 
-    .offset-extrahigh-95 {
+    .offset-extralarge-95 {
         margin-left: 95% !important; }
 }
 
@@ -2475,6 +2476,10 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     white-space: nowrap; }
 
+.datatable > table > thead > tr > th.center, 
+.datatable > table > tbody > tr > td.center {
+    text-align: center; }
+
 .datatable > table > thead > tr > th.col-number, 
 .datatable > table > tbody > tr > td.col-number {
     text-align: right; }
@@ -3900,7 +3905,8 @@ button.raised:focus:after, button.flat:focus:after {
 @media only screen and (min-width : 961px) {
     
     .sidenav-full > .sidenav > .content {
-        left: 0px; }
+        left: 0px; 
+        box-shadow: var(--shadow-4); }
     
     .sidenav > .content > .logo {
         height: 64px; }
