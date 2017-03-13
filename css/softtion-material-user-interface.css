@@ -2480,8 +2480,12 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > table > tbody > tr > td.center {
     text-align: center; }
 
-.datatable > table > thead > tr > th.col-number, 
-.datatable > table > tbody > tr > td.col-number {
+.datatable > table > thead > tr > th.left, 
+.datatable > table > tbody > tr > td.left {
+    text-align: left; }
+
+.datatable > table > thead > tr > th.right, 
+.datatable > table > tbody > tr > td.right {
     text-align: right; }
 
 .datatable > table tbody tr {
@@ -2490,6 +2494,11 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: background-color 0.3s var(--sharp-curve);
     transition: background-color 0.3s var(--sharp-curve);
     -ms-transition: background-color 0.3s var(--sharp-curve); }
+
+.datatable > table > thead > tr > th > button.action,
+.datatable > table > tbody > tr > td > button.action {
+    padding: 12px;
+    box-sizing: content-box; }
 
 .datatable > table > thead > tr > th.checkbox-table,
 .datatable > table > tbody > tr > td.checkbox-table {

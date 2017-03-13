@@ -3441,48 +3441,62 @@
                     }
                 },
                 method: function () {
-                    var DropdownProperties = {
-                        id: "", belowOrigin: true, component: undefined, origin: undefined
+                    var Properties = {
+                        id: "", 
+                        belowOrigin: true, 
+                        component: undefined, 
+                        origin: undefined
                     };
                     
                     var Dropdown = function () { };
 
                     Dropdown.prototype.set = function (dropdownID) { 
-                        if (DropdownProperties.id !== dropdownID) {
-                            DropdownProperties.id = dropdownID;
-                            DropdownProperties.component = angular.element(dropdownID); 
+                        if (Properties.id !== dropdownID) {
+                            Properties.id = dropdownID;
+                            Properties.component = angular.element(dropdownID); 
                         } // Se ha definido nuevo dropdown
                         
                         return this; // Retornando interfaz fluida
                     };
                     
                     Dropdown.prototype.clear = function () {
-                        DropdownProperties.component = undefined;
-                        DropdownProperties.id = ""; return this;
+                        Properties.component = undefined; Properties.id = ""; return this;
                     };
                     
                     Dropdown.prototype.setBelowOrigin = function (belowOrigin) {
-                        DropdownProperties.belowOrigin = belowOrigin; return this;
+                        Properties.belowOrigin = belowOrigin; return this;
                     };
 
                     Dropdown.prototype.isActive = function () {
-                        if (softtion.isDefined(DropdownProperties.component)) {
-                            return DropdownProperties.component.hasClass("active");
+                        if (softtion.isDefined(Properties.component)) {
+                            return Properties.component.hasClass("active");
                         } // Esta definido el Id del Dropdown
 
                         return false; // Se desconoce el Componente
                     };
 
-                    Dropdown.prototype.show = function (origin) {
-                        if (softtion.isDefined(DropdownProperties.component)) {
-                            DropdownProperties.origin = origin; // Estableciendo origen
-                            Material.providers.Dropdown.handler.show(DropdownProperties); 
+                    Dropdown.prototype.show = function (origin, autoclose) {
+                        var self = this; // Objeto dropdown
+                        
+                        if (softtion.isDefined(Properties.component)) {
+                            Properties.origin = origin; // Estableciendo origen
+                            Material.providers.Dropdown.handler.show(Properties); 
+                            
+                            if (autoclose) {
+                                var $body = angular.element(document.body); // Documento
+                                
+                                $body.on("click.hidedropdown", function (ev) {
+                                    if (Properties.component.find(ev.target).length === 0) {
+                                        self.hide(); $body.off("click.hidedropdown");
+                                    } // Se debe cerrar el dropdown de manera automatica
+                                });
+                            }
                         } // Esta definido el dropdown en el Provedor
                     };
 
                     Dropdown.prototype.hide = function () {
                         if (this.isActive()) { 
-                            Material.providers.Dropdown.handler.hide(DropdownProperties.component); 
+                            Material.providers.Dropdown.handler.hide(Properties.component); 
                         } // Esta abierto el dropdown en el Provedor
                     };
                     
