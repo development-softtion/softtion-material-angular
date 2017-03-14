@@ -3454,7 +3454,9 @@
                         if (Properties.id !== dropdownID) {
                             Properties.id = dropdownID;
                             Properties.component = angular.element(dropdownID); 
-                        } // Se ha definido nuevo dropdown
+                        } else if (!softtion.isInPage(Properties.component[0])) {
+                            Properties.component = angular.element(dropdownID); 
+                        } // Se reasigna el componente
                         
                         return this; // Retornando interfaz fluida
                     };
@@ -3719,7 +3721,7 @@
                                     Properties.box.removeClass("show").removeClass("active");
                                     Material.providers.Snackbar.moveButton(false); 
                                 },
-                                5000 // Tiempo de espera para ocultarse
+                                3500 // Tiempo de espera para ocultarse
                             );
                         } else {
                             Properties.action.html(""); // Limpiando acción
@@ -3795,7 +3797,7 @@
                                     Properties.box.removeClass("show").removeClass("active");
                                     Material.providers.Toast.moveButton(false); 
                                 },
-                                5000 // Tiempo de espera para ocultarse
+                                3500 // Tiempo de espera para ocultarse
                             );
                         } else {
                             heightBody = parseInt(Properties.body.css("height"));

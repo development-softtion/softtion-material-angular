@@ -746,11 +746,17 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
 
-.datatable > .header > .title, .datatable > .header > button.action > i {
+.datatable > .header > .title, .datatable > .header > .actions > button.action > i {
     color: var(--dark-secondary-font); }
 
 .dark .datatable > .header > .title, .dark .datatable > .header > button.action > i {
     color: var(--light-secondary-font); }
+
+.datatable > .header > .actions > button.action:disabled > i {
+    color: var(--dark-disabled-font); }
+
+.dark .datatable > .header > button.action:disabled > i {
+    color: var(--light-disabled-font); }
 
 .datatable > table > thead > tr {
     border-bottom: 1px solid var(--light-background-divider); 
@@ -789,6 +795,22 @@ button.raised.primary:before, button.floating.primary:before {
 
 .datatable > table .checkbox-control > label:before {
     background-color: var(--theme-background); }
+
+.datatable > table > thead > tr > th > button.action > i, 
+.datatable > table > tbody > tr > td > button.action > i {
+    color: var(--dark-secondary-font); }
+
+.dark .datatable > table > thead > tr > th > button.action > i, 
+.dark .datatable > table > tbody > tr > td > button.action > i {
+    color: var(--light-secondary-font); }
+
+.datatable > table > thead > tr > th > button.action:disabled > i, 
+.datatable > table > tbody > tr > td > button.action:disabled > i {
+    color: var(--dark-disabled-font); }
+
+.dark .datatable > table > thead > tr > th > button.action:disabled > i, 
+.dark .datatable > table > tbody > tr > td > button.action:disabled > i {
+    color: var(--light-disabled-font); }
 
 .dark .datatable > table .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
     border: 2px solid var(--light-background-component); }

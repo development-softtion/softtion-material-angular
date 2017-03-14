@@ -1448,9 +1448,6 @@ button.raised:hover {
 button.floating:hover {
     box-shadow: var(--shadow-8); }
 
-button.raised:disabled, button.flat:disabled, button.floating:disabled {
-    cursor: none; }
-
 button.raised:before, button.flat:before, button.floating:before {
     content: "";
     display: block;
@@ -1492,6 +1489,10 @@ button.floating:focus:before, button.action:focus:before {
 button.flat.disabled-ripple:focus:before,
 button.raised.disabled-ripple:focus:before {
     visibility: hidden !important; }
+
+button.raised:disabled, button.flat:disabled, 
+button.floating:disabled, button.action:disabled {
+    cursor: none; }
 
 /*button.raised:after, button.flat:after {
     content: "";
@@ -2427,11 +2428,17 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     margin-right: 8px; }
 
-.datatable > .header > button.action {
+.datatable > .header > .actions {
     position: absolute;
     right: 12px;
+    display: flex;
+    margin: 0px;
+    padding: 0px; }
+
+.datatable > .header > .actions > button.action {
+    padding: 20px 12px;
     box-sizing: content-box;
-    padding: 20px 12px; }
+    margin-right: 1px; }
 
 .datatable > table {
     width: 100%;
@@ -4105,7 +4112,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-bottom: -84px;
     width: 100%;
     height: auto;
-    z-index: 6;
+    z-index: 24;
     padding: 0px 24px;
     box-sizing: border-box;
     -moz-transition: margin-bottom 0.325s var(--standard-curve);
@@ -4609,7 +4616,7 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     bottom: 0px;
     right: 0px;
-    z-index: 6;
+    z-index: 24;
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
