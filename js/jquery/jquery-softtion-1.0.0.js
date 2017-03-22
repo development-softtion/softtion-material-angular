@@ -140,12 +140,8 @@
             });
         },
         
-        cleanTextMaterial: function () {
-            var self = jQuery(this); // Componente a limpiar
-            
-            self.removeClass("error").removeClass("active");
-            self.children("input").val(""); // Limpiando Input
-            self.children("textarea").val(""); // Limpiando Textarea
+        cleanInput: function () {
+            jQuery(this).removeClass("error").removeClass("active");
         },
         
         fixed: function () {

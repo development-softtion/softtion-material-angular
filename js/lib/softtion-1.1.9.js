@@ -155,6 +155,10 @@
             return this.isDefined(this.findKey(object, attributes)); }
     };
     
+    Softtion.prototype.cleanValues = function (object) {
+        jQuery.each(object, function (key) { object[key] = undefined; });
+    };
+    
     Softtion.prototype.leadingChar = function (word, character, size, option) {
         var newWord = String(word); option = option || "before";
         

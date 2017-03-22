@@ -2696,7 +2696,7 @@
                         templateUrl: Material.components.TextArea.route,
                         scope: {
                             value: "=ngModel", 
-                            areaValue: "=?ngValueArea", 
+                            areaValue: "=?ngValue", 
                             label: "@", 
                             type: "@",
                             required: "=?",
@@ -2851,7 +2851,7 @@
                         templateUrl: Material.components.TextField.route,
                         scope: {
                             value: "=ngModel", 
-                            inputValue: "=?ngValueInput", 
+                            inputValue: "=?ngValue", 
                             label: "@", 
                             type: "@",
                             required: "=?",
