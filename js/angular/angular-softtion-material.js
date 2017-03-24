@@ -81,19 +81,26 @@
                         addAttribute("ng-keydown", "keydownInput($event)").
                         addAttribute("ng-blur", "blurInput($event)").
                         addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-class", "{hide: !hideValue}").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
+                        addAttribute("ng-class", "isActiveLabel()").
                         addClass("truncate").addAttribute("ng-click", "clickLabel()");
+
+                    var value = softtion.html("p").addClass(["value"]).
+                        setText("{{getValueModel()}}").
+                        addAttribute("ng-hide", "hideValue").
+                        addAttribute("ng-click", "clickLabel()");
 
                     var span = softtion.html("span").addClass("truncate").
                         addAttribute("ng-hide","hideSpan");
                 
                     var buttonClear = softtion.html("i").
                         addClass(["action-icon"]).setText("close").
-                        addAttribute("ng-hide", "clearSuggestion").
+                        addAttribute("ng-hide", "isActiveClear()").
                         addAttribute("ng-click", "clearAutocomplet()");
 
                     var listAutocomplete = softtion.html("ul").
@@ -110,7 +117,7 @@
                                 setText("{{descriptionNotFoundResult()}}")
                         );
 
-                    return input + lineShadow + label + span + buttonClear + listAutocomplete;
+                    return input + lineShadow + label + span + value + buttonClear + listAutocomplete;
                 },
                 directive: function () {
                     return {
@@ -134,27 +141,47 @@
                         link: function ($scope, $element) {
                             // Componentes
                             var input = $element.find("input"), 
-                                list = $element.find("ul"),
-                                label = $element.find("label");
+                                list = $element.find("ul");
                             
                             activeIconLabel($scope, $element, input); // IconLabel
                                 
                             // Atributos de control
                             var focusLi = false, searchStart = false;
 
-                            $scope.suggestionsFilter = []; $scope.clearSuggestion = true;
-                            $scope.suggestionTemp = undefined; $scope.valueInput = "";
+                            $scope.describeSuggestion = function (suggestion) {
+                                if (typeof suggestion === "string") {
+                                    return suggestion;
+                                } else {
+                                    return (!(softtion.isString($scope.keyDescription)) ? suggestion.toString() :
+                                        softtion.findKey(suggestion, $scope.keyDescription));
+                                }
+                            };
+
+                            $scope.suggestionsFilter = []; $scope.suggestionTemp = undefined; 
+                            $scope.clearSuggestion = true; $scope.hideValue = false; 
+                            
+                            $scope.valueInput = (softtion.isDefined($scope.suggestionSelect)) ?
+                                $scope.describeSuggestion($scope.suggestionSelect) : "";
 
                             $scope.clickLabel = function () { input.focus(); };
+                            
+                            $scope.isActiveLabel = function () {
+                                return ($scope.hideValue || softtion.isString($scope.valueInput)
+                                    || softtion.isDefined($scope.suggestionSelect)) ? "active" : "";
+                            };
 
-                            $scope.focusInput = function ($event) { 
-                                $element.addClass("active"); label.addClass("active"); 
+                            $scope.focusInput = function ($event) {
+                                if (softtion.isDefined($scope.suggestionSelect)) {
+                                    $scope.valueInput = $scope.describeSuggestion($scope.suggestionSelect);
+                                } // Cambiando valor del texto en el Input
+                                
+                                $scope.hideValue = true; $element.addClass("active"); 
                                 
                                 // Buscar sugerencias con el filtro establecido
                                 $scope.searchSuggestions($scope.valueInput.toLowerCase());
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event);
+                                    $scope.focusEvent($event, $scope.suggestionSelect);
                                 } // Evento focus sobre el inpur en el componente
                             };
                             
@@ -184,8 +211,8 @@
                                 if (!list.hasClass("active")) { list.addClass("active"); }
                             };
 
-                            $scope.keyupInput = function (ev) {
-                                if ([13, 27, 35, 36, 37, 38, 39, 40].indexOf(ev.keyCode) !== -1) { 
+                            $scope.keyupInput = function ($event) {
+                                if ([13, 27, 35, 36, 37, 38, 39, 40].indexOf($event.keyCode) !== -1) { 
                                     return;
                                 } // Estos caracteres no mejoran el patrón de busqueda
                                 
@@ -197,8 +224,8 @@
                                 $scope.searchSuggestions($scope.valueInput.toLowerCase()); 
                             };
 
-                            $scope.keydownInput = function (ev) {
-                                switch (ev.keyCode) {
+                            $scope.keydownInput = function ($event) {
+                                switch ($event.keyCode) {
                                     case (27): // ESC
                                         if (list.hasClass("active")) { list.removeClass("active"); }
                                     break;
@@ -213,8 +240,8 @@
                                 }
                             };
 
-                            $scope.keydownSuggestion = function (ev, suggestion) {
-                                switch (ev.keyCode) {
+                            $scope.keydownSuggestion = function ($event, suggestion) {
+                                switch ($event.keyCode) {
                                     case (13): // ENTER
                                         this.selectSuggestion(suggestion);
                                     break;
@@ -224,12 +251,12 @@
                                     break;
 
                                     case (38): // FLECHA ARRIBA
-                                        var $option = angular.element(ev.currentTarget);
+                                        var $option = angular.element($event.currentTarget);
                                         ($option.prev().length) ? $option.prev().focus() : input.focus();
                                     break;
 
                                     case (40): // FLECHA ABAJO
-                                        var $option = angular.element(ev.currentTarget);
+                                        var $option = angular.element($event.currentTarget);
                                         if ($option.next().length) { $option.next().focus(); }
                                     break;
                                 }
@@ -240,7 +267,7 @@
                                     focusLi = false; // Se ha enfocado Lista
                                 } else {
                                     if (softtion.isUndefined($scope.suggestionSelect) && !softtion.isString($scope.valueInput)) {
-                                        $element.removeClass("active"); label.removeClass("active"); 
+                                        $element.removeClass("active"); 
                                     } else if (this.suggestionsFilter.length === 0) {
                                         list.removeClass("active"); $scope.suggestionSelect = undefined;
                                         $scope.clearSuggestion = true;
@@ -256,23 +283,20 @@
                                             }
                                         } else { list.removeClass("active"); }
                                     }
+                                    
+                                    $scope.hideValue = false; // Activando vista del componente
 
                                     if (softtion.isFunction($scope.blurEvent)) {
-                                        $scope.blurEvent($event);
+                                        $scope.blurEvent($event, $scope.suggestionSelect);
                                     } // Evento 'focus' sobre el inpur en el componente
                                 }
                             };
 
                             $scope.selectSuggestion = function (suggestion) {
-                                $scope.suggestionTemp = $scope.suggestionSelect; // Cambio de selección
+                                $scope.suggestionTemp = $scope.suggestionSelect; $scope.hideValue = false;
                                 $scope.suggestionSelect = suggestion; $scope.clearSuggestion = false;
                                 
-                                if (typeof suggestion === "string") {
-                                    $scope.valueInput = suggestion;
-                                } else {
-                                    $scope.valueInput = (!(softtion.isString($scope.keyDescription)) ? suggestion.toString() :
-                                        softtion.findKey(suggestion, $scope.keyDescription));
-                                }
+                                $scope.valueInput = $scope.describeSuggestion(suggestion);
 
                                 list.removeClass("active"); // Ocultando lista
                                 
@@ -307,14 +331,25 @@
                                 return $scope.valueInput + ", no existen resultados.";
                             };
                             
+                            $scope.isActiveClear = function () {
+                                return !softtion.isDefined($scope.suggestionSelect);
+                            };
+                            
                             $scope.clearAutocomplet = function () {
                                 $scope.suggestionSelect = undefined; $scope.valueInput = ""; 
-                                $scope.clearSuggestion = true; // Ocultar botón
-                                $element.removeClass("active"); label.removeClass("active");
+                                $scope.clearSuggestion = true; $element.removeClass("active"); 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent("clear", $scope.suggestionSelect, $scope.suggestionTemp);
                                 } // Evento cambio de selección de sugerencia
+                            };
+                            
+                            $scope.getValueModel = function () {
+                                if (softtion.isDefined($scope.suggestionSelect)) {
+                                    return $scope.describeSuggestion($scope.suggestionSelect);
+                                } else {
+                                    return $scope.valueInput;
+                                }
                             };
                         }
                     };
@@ -2088,28 +2123,35 @@
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type", "text").
+                        addAttribute("ng-model", "valueInput").
                         addAttribute("ng-blur", "blurInput($event)").
                         addAttribute("ng-focus", "focusInput($event)").
                         addAttribute("ng-readonly", "true").
                         addAttribute("ng-click", "toggleSuggestions()").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("value", "{{inputValue}}").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
+                        addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]);
+
+                    var value = softtion.html("p").addClass(["value", "truncate"]).
+                        setText("{{getValueModel()}}").
+                        addAttribute("ng-click", "clickLabel($event)");
 
                     var button = softtion.html("button").addClass("action").
                             addChildren(
-                                softtion.html("i").addClass("action-icon").setText("expand_more")
+                                softtion.html("i").addClass("action-icon").setText("expand_more").
+                                    addAttribute("ng-class", "{active: hideValue}")
                             ).
                             addAttribute("ng-hide", "ngDisabled").
                             addAttribute("tabindex", "-1").
                             addAttribute("ng-click", "toggleSuggestions()");
 
                     var list = softtion.html("ul").
+                        addAttribute("ng-class", "{active: hideValue}").
                         addChildren(
                             softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                                 addAttribute("ng-if", "clearSuggestion").
@@ -2122,10 +2164,10 @@
                                 addAttribute("ng-repeat", "suggestion in suggestions").
                                 addAttribute("tabindex", "-1").
                                 addAttribute("ng-click", "setSelection(suggestion, $event)").
-                                setText("{{getSuggestionDescription(suggestion)}}")
+                                setText("{{describeSuggestion(suggestion)}}")
                         );
 
-                    return input + lineShadow + label + button + list; // Componente
+                    return input + lineShadow + label + value + button + list; // Componente
                 },        
                 directive: function () {
                     return {
@@ -2150,45 +2192,45 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var label = $element.find("label"),
-                                input = $element.find("input"),
-                                button = $element.find("button"),
-                                buttonIcon = button.find("i"),
+                            var label = $element.find("label"), input = $element.find("input"),
+                                button = $element.find("button"), buttonIcon = button.find("i"),
                                 list = $element.find("ul");
                             
                             activeIconLabel($scope, $element, input);
-                                
-                            var showSuggestions = function () {
-                                if (!$scope.disabledAutoclose) {
-                                    angular.element(document).on("click.sm-select", closeSelect);
-                                } // No se permite cerrado automatico
-                                
-                                list.addClass("active"); buttonIcon.addClass("active"); 
-                                $element.addClass("active"); // Visualizando opciones
-                            };
                             
-                            var hideSuggestions = function () {
-                                list.removeClass("active"); buttonIcon.removeClass("active"); 
-                                $element.removeClass("active"); // Ocultando opciones
-                                
-                                if (!$scope.disabledAutoclose) {
-                                    angular.element(document).off("click.sm-select", closeSelect);
-                                } // No se permite cerrado automatico
-                            };
-                            
-                            var closeSelect = function (ev) {
-                                if (label.is(ev.target) || input.is(ev.target) || 
-                                    button.is(ev.target) || buttonIcon.is(ev.target) ||
-                                    $element.is(ev.target) || list.is(ev.target)) {
+                            var closeSelect = function ($event) {
+                                if (label.is($event.target) || input.is($event.target) || 
+                                    button.is($event.target) || buttonIcon.is($event.target) ||
+                                    $element.is($event.target) || list.is($event.target)) {
                                     return;
                                 } // Se ha realizado click sobre el componente de Selección
                                 
                                 hideSuggestions(); // Ocultando opciones
                             };
                             
-                            $scope.selectTemp = undefined; // Selección anterior
+                            var showSuggestions = function () {
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).on("click.sm-select", closeSelect);
+                                } // No se permite cerrado automatico
+                                
+                                if (softtion.isDefined($scope.select)) {
+                                    $scope.valueInput = $scope.describeSuggestion($scope.select);
+                                } // Cambiando valor del texto en el Input
+                                
+                                $scope.hideValue = true; $element.addClass("active"); 
+                            };
                             
-                            $scope.getSuggestionDescription = function (suggestion) {
+                            var hideSuggestions = function () {
+                                $scope.hideValue = false; $element.removeClass("active"); 
+                                
+                                if (!$scope.disabledAutoclose) {
+                                    angular.element(document).off("click.sm-select", closeSelect);
+                                } // No se permite cerrado automatico
+                            };
+                            
+                            $scope.selectTemp = undefined; $scope.hideValue = false; 
+                            
+                            $scope.describeSuggestion = function (suggestion) {
                                 if (softtion.isString(suggestion)) {
                                     return suggestion;
                                 } else if (softtion.isString($scope.keyDescription)) {
@@ -2198,11 +2240,6 @@
                                 } // No se definido nada
                             };
 
-                            if (softtion.isDefined($scope.select)) {
-                                $scope.inputValue = $scope.getSuggestionDescription($scope.select);
-                                $element.addClass("active"); label.addClass("active");
-                            } // Hay un opcion seleccionada por defecto
-
                             $scope.clickLabel = function ($event) { 
                                 if ($element.hasClass("active")) {
                                     return;
@@ -2211,27 +2248,29 @@
                                 $scope.toggleSuggestions();
                                 
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event); 
+                                    $scope.clickEvent($event, $scope.select); 
                                 } // Evento click sobre el componente
                                 
                                 $event.stopPropagation(); // Deteniendo propagación
                             };
+                            
+                            $scope.isActiveLabel = function () {
+                                return (softtion.isDefined($scope.select)) ? "active" : "";
+                            };
 
                             $scope.focusInput = function ($event) { 
-                                $element.addClass("active"); 
+                                $element.addClass("active"); // Activando
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event); 
+                                    $scope.focusEvent($event, $scope.select); 
                                 } // Evento focus sobre el componente
                             };
 
                             $scope.blurInput = function ($event) {
-                                if (softtion.isUndefined($scope.select)) {
-                                    $element.removeClass("active"); label.removeClass("active"); 
-                                } // No ha seleccionado ninguna de las opciones
+                                $element.removeClass("active"); // Desactivando
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event); 
+                                    $scope.blurEvent($event, $scope.select); 
                                 } // Evento blur sobre el componente
                             };
 
@@ -2244,8 +2283,7 @@
                             $scope.setSelection = function (suggestion, $event) {
                                 $scope.selectTemp = $scope.select; // Guardando selección
                                 
-                                label.addClass("active"); list.find("li").removeClass("active"); 
-                                $scope.inputValue = $scope.getSuggestionDescription(suggestion); 
+                                list.find("li").removeClass("active"); 
                                 angular.element($event.currentTarget).addClass("active"); 
                                 
                                 $scope.select = suggestion; hideSuggestions(); // Ocultando opciones
@@ -2256,13 +2294,16 @@
                             };
                             
                             $scope.clearSelection = function () {
-                                label.removeClass("active"); $scope.select = undefined;  
+                                $scope.select = undefined; hideSuggestions();
                                 list.find("li").removeClass("active"); 
-                                $scope.inputValue = undefined; hideSuggestions();
                                 
                                 if (softtion.isFunction($scope.changeEvent)) {
                                     $scope.changeEvent("clear", $scope.select, $scope.selectTemp); 
                                 } // Evento change sobre el componente
+                            };
+                            
+                            $scope.getValueModel = function () {
+                                return (softtion.isDefined($scope.select)) ? $scope.describeSuggestion($scope.select) : "";
                             };
                         }
                     };
@@ -2275,18 +2316,24 @@
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type","text").
+                        addAttribute("ng-model","valueInput").
                         addAttribute("ng-click","toggleSuggestions()").
                         addAttribute("ng-blur","blurInput($event)").
                         addAttribute("ng-focus","focusInput($event)").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("value","{{inputValue}}").
                         addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").setText("{{label}}").
+                        addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
+
+                    var value = softtion.html("p").addClass(["value", "truncate"]).
+                        setText("{{getValueModel()}}").
+                        addAttribute("ng-hide", "hideValue").
+                        addAttribute("ng-click", "clickLabel($event)");
 
                     var button = softtion.html("button").addClass("action").
                         addChildren(
@@ -2301,15 +2348,15 @@
                                 addAttribute("tabindex","-1").
                                 addAttribute("ng-class", "{active: suggestion.checked}").
                                 addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
-                                setText("{{getSuggestionDescription(suggestion)}}").
+                                setText("{{describeSuggestion(suggestion)}}").
                                 addChildren(
                                     softtion.html("div").addClass("checkbox-control").
                                         addAttribute("prevent-default", "true").
-                                        addAttribute("ng-model", "suggestion.checked")
+                                        addAttribute("ng-model", "checkeds[$index]")
                                 )
                         );
 
-                    return input + lineShadow + label + button + list; // Componente
+                    return input + lineShadow + label + value + button + list; // Componente
                 },
                 valueSelects: function (selects, keyDescription) {
                     var size = Object.keys(selects).length, count = 0,
@@ -2337,15 +2384,14 @@
                             
                             // Eventos
                             clickEvent: "=?",
+                            changedEvent: "=?",
                             blurEvent: "=?",
                             focusEvent: "=?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var input = $element.find("input"),
-                                label = $element.find("label"),
-                                button = $element.find("button"),
-                                buttonIcon = button.find("i"),
+                            var input = $element.find("input"), label = $element.find("label"),
+                                button = $element.find("button"), buttonIcon = button.find("i"),
                                 list = $element.find("ul");
                         
                             activeIconLabel($scope, $element, input);
@@ -2353,19 +2399,17 @@
                             // Atributos
                             var valueSelects = Material.components.SelectMultiple.valueSelects;
                         
-                            $scope.selects = $scope.selects || {};
-
-                            angular.forEach($scope.suggestions, function (item, index) {
-                                if (item.checked) {
-                                    $scope.selects[index] = item;
-                                } // Item ya esta seleccionado por defecto
-                            });
+                            var temp = []; $scope.checkeds = []; $scope.selects = $scope.selects || [];
                             
-                            if (Object.keys($scope.selects).length > 0) {
-                                label.addClass("active"); 
-                            } // No ha seleccionado ninguna de las opciones
+                            $scope.selects.forEach(function (select) {
+                                var index = $scope.suggestions.indexOf(select);
+                                
+                                if (index !== -1 && temp.indexOf(select) === -1) { 
+                                    temp.push(select); $scope.checkeds[index] = true;
+                                } 
+                            }); // Verificando la lista de items
                             
-                            $scope.inputValue = valueSelects($scope.selects, $scope.keyDescription);
+                            $scope.selects = temp; // Lista de objetos
                             
                             var showSuggestions = function () {
                                 if (!$scope.disabledAutoclose) {
@@ -2385,10 +2429,10 @@
                                 } // No se permite cerrado automatico
                             };
                             
-                            var closeSelect = function (ev) {
-                                if (label.is(ev.target) || input.is(ev.target) || 
-                                    button.is(ev.target) || buttonIcon.is(ev.target) ||
-                                    $element.is(ev.target) || list.is(ev.target)) {
+                            var closeSelect = function ($event) {
+                                if (label.is($event.target) || input.is($event.target) || 
+                                    button.is($event.target) || buttonIcon.is($event.target) ||
+                                    $element.is($event.target) || list.is($event.target)) {
                                     return;
                                 } // Se ha realizado click sobre el componente de Selección
                                 
@@ -2403,25 +2447,27 @@
                                 $scope.toggleSuggestions();
                                 
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event); 
+                                    $scope.clickEvent($event, $scope.selects); 
                                 } // Evento click sobre el componente
+                            };
+                            
+                            $scope.isActiveLabel = function () {
+                                return ($scope.selects.length > 0) ? "active" : "";
                             };
 
                             $scope.focusInput = function ($event) { 
-                                $element.addClass("active"); 
+                                $element.addClass("active"); // Activando
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event); 
+                                    $scope.focusEvent($event, $scope.selects); 
                                 } // Evento focus sobre el componente
                             };
 
                             $scope.blurInput = function ($event) {
-                                if (Object.keys($scope.selects).length === 0) {
-                                    $element.removeClass("active"); label.removeClass("active");
-                                } // No ha seleccionado ninguna de las opciones
+                                $element.removeClass("active"); // Desactivando
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event); 
+                                    $scope.blurEvent($event, $scope.selects); 
                                 } // Evento blur sobre el componente
                             };
 
@@ -2432,25 +2478,25 @@
                             };
 
                             $scope.checkedSuggestion = function (suggestion, $index, $event) {
-                                suggestion.checked = !suggestion.checked;
+                                $scope.checkeds[$index] = !$scope.checkeds[$index];
                                 
-                                if (suggestion.checked) {
-                                    $scope.selects[$index] = suggestion;
-                                } else {
-                                    softtion.removeKey($scope.selects, $index);
-                                } // Eliminando opción
-
-                                $scope.inputValue = valueSelects($scope.selects, $scope.keyDescription);
+                                ($scope.checkeds[$index]) ? $scope.selects.push(suggestion) :
+                                    $scope.selects.remove($scope.selects.indexOf(suggestion));
                                 
-                                (Object.keys($scope.selects).length > 0) ? 
-                                    label.addClass("active") : label.removeClass("active"); 
+                                if (softtion.isFunction($scope.changeEvent)) {
+                                    $scope.changeEvent("select", $scope.selects); 
+                                } // Evento change sobre el componente
                                     
-                                $event.stopPropagation();
+                                $event.stopPropagation(); // Deteniendo propagación
                             };
                             
-                            $scope.getSuggestionDescription = function (suggestion) {
+                            $scope.describeSuggestion = function (suggestion) {
                                 return !(softtion.isString($scope.keyDescription)) ?
                                     JSON.stringify(suggestion) : softtion.findKey(suggestion, $scope.keyDescription); 
+                            };
+                            
+                            $scope.getValueModel = function () {
+                                return valueSelects($scope.selects, $scope.keyDescription);
                             };
                         }
                     };
@@ -2822,6 +2868,8 @@
                         addAttribute("ng-readonly", "ngReadonly").
                         addAttribute("ng-model", "inputValue").
                         addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-trim", "ngTrim").
+                        addAttribute("ng-change", "ngChange").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -2855,7 +2903,8 @@
                             label: "@", 
                             type: "@",
                             required: "=?",
-                            trim: "=?",
+                            ngTrim: "=?",
+                            ngChange: "=?",
                             uppercase: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",

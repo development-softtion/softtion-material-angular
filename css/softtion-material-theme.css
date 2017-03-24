@@ -1167,7 +1167,11 @@ button.raised.primary:before, button.floating.primary:before {
 .select.active.error > i, .select.error > i {
     color: var(--error-primary-font); }
 
-.dark .select > input {
+.select > input {
+    color: transparent; }
+
+.select > .value::selection {
+    background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
 .select > .line-shadow {
