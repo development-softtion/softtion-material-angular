@@ -47,12 +47,12 @@
 }
 
 html, body ,input, textarea {
-    font-family: softtion-regular; 
+    font-family: softtion-material; 
     font-size: 14px;
     -webkit-tap-highlight-color: transparent; }
 
 h1, h2, h3, h4, h5, h6, b {
-    font-family: softtion-bold; }
+    font-weight: 700; }
 
 h1, h2, h3, h4, h5, h6 {
     margin: 0px; }
@@ -690,24 +690,47 @@ input[type=number]::-webkit-outer-spin-button {
     text-overflow: ellipsis; }
 
 .disabled {
-    pointer-events : none !important; }
+    pointer-events: none !important; }
 
 .hidden {
     display: none !important; }
 
+.hidden-small, .hidden-medium, .hidden-large, .hidden-extralarge {
+    display: block; }
+
+.view-small, .view-medium, .view-large, .view-extralarge {
+    display: none; }
+
 @media only screen and (max-width : 360px) {
-    .view-medium {
-        display: none; }
+    .hidden-small {
+        display: none !important; }
+    
+    .view-small {
+        display: block !important; }
 }
 
 @media only screen and (max-width : 640px) {
-    .view-high {
-        display: none; }
+    .hidden-medium {
+        display: none !important; }
+    
+    .view-medium {
+        display: block !important; }
 }
 
 @media only screen and (max-width : 960px) {
-    .view-extrahigh {
-        display: none; }
+    .hidden-large {
+        display: none !important; }
+    
+    .view-large {
+        display: block !important; }
+}
+
+@media only screen and (min-width : 960px) {
+    .hidden-extralarge {
+        display: none !important; }
+    
+    .view-extralarge {
+        display: block !important; }
 }
 
 /** EFFECTS MATERIAL */
@@ -942,8 +965,9 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center; }
 
 .autocomplete.label-hidden > .action-icon {
-    top: 4px;
-    left: initial; }
+    left: initial;
+    top: 24px;
+    padding: 0px; }
 
 .autocomplete.flex-pd > .action-icon, 
 .autocomplete.label-hidden.flex-pd > .action-icon
@@ -990,8 +1014,8 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 48px; }
 
 .autocomplete > ul > li > b { 
-    font-weight: normal;
-    font-family: softtion-regular; }
+    font-weight: 400;
+    font-family: softtion-material; }
 
 .autocomplete > ul > li:focus {
     outline: none; }
@@ -1259,7 +1283,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 24px;
     line-height: 24px;
     font-size: 16px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .bottom-sheet > .content > .list-style-sheet > .item {
     position: relative;
@@ -1287,7 +1311,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 16px;
     line-height: 16px;
     font-size: 16px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .bottom-sheet > .content > .list-style-sheet > .divider {
     margin-top: 7px;
@@ -1353,7 +1377,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: inherit;
     float: left; 
     font-size: 16px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .breadcumb > label:before {
     content: 'navigate_next';
@@ -1377,7 +1401,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 button {
     cursor: pointer;
-    font-family: softtion-medium;
+    font-weight: 500;
     font-size: 14px; 
     transition: all 0.325s var(--standard-curve); }
 
@@ -1776,7 +1800,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .card > .optional-header > .avatar ~ .detail {
     padding-left: 16px;
@@ -1925,11 +1949,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .carousel > .slide > .detail > .title {
     font-size: 36px;
-    font-family: softtion-bold; }
+    font-weight: 700; }
 
 .carousel > .slide > .detail > .subtitle {
     font-size: 16px;
-    font-family: softtion-thin; }
+    font-weight: 100; }
 
 .carousel > .arrow {
     position: absolute;
@@ -1975,7 +1999,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: inline-block;
     padding-left: 32px;
     height: 24px;
-    font-family: softtion-medium;
+    font-weight: 500;
     line-height: 24px;
     font-size: 14px;
     -webkit-user-select: none;
@@ -2132,7 +2156,7 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 32px;
     font-size: 13px;
     padding: 0 12px;
-    font-family: softtion-light;
+    font-weight: 300;
     border-radius: 16px;
     transition: all 0.175s var(--sharp-curve); }
 
@@ -2317,7 +2341,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 14px;
     line-height: 14px;
     cursor: pointer;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .clockpicker > .title > .time > .am-pm > div.am {
     top: 10px; }
@@ -2353,7 +2377,7 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     line-height: 28px;
     text-align: center;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .clockpicker > .actions {
     overflow-y: auto;
@@ -2422,7 +2446,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .header > .title {
     font-size: 16px;
-    font-family: softtion-medium;
+    font-weight: 500;
     height: inherit;
     line-height: 64px;
     float: left;
@@ -2449,7 +2473,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: block; }
 
 .datatable > table > thead > tr > th {
-    font-family: softtion-bold;
+    font-weight: 700;
     height: 54px; 
     line-height: 54px; }
 
@@ -2464,7 +2488,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-y: auto; }
 
 .datatable > table > tbody > tr > td {
-    font-family: softtion-light;
+    font-weight: 300;
     height: 47px; 
     line-height: 47px; }
 
@@ -2540,7 +2564,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 16px;
     cursor: pointer;
     line-height: 16px;
-    font-family: softtion-bold; }
+    font-weight: 700; }
 
 .datepicker > .title > .day {
     padding-top: 4px;
@@ -2548,7 +2572,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 20px;
     height: 20px;
     line-height: 20px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .datepicker > .content {
     overflow-x: hidden;
@@ -2584,7 +2608,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 28px;
     line-height: 28px;
     font-size: 15px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .datepicker > .content > .days-month {
     width: 100%; }
@@ -2594,7 +2618,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: block; }
 
 .datepicker > .content > .days-month > thead th {
-    font-family: softtion-bold; }
+    font-weight: 700; }
 
 .datepicker > .content > .days-month > thead th {
     padding: 0px;
@@ -2616,7 +2640,7 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 50%; }
 
 .datepicker > .content > .days-month > tbody td.active {
-    font-family: softtion-bold; }
+    font-weight: 700; }
 
 .datepicker > .content > .months, .datepicker > .content > .year {
     position: relative;
@@ -2637,7 +2661,7 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker > .content > .months > ul > li.active,
 .datepicker > .content > .year > ul > li.active {
     font-size: 24px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .datepicker > .actions {
     overflow-y: auto;
@@ -2721,7 +2745,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 24px 20px 24px;
     font-size: 20px;
     opacity: 0; 
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .dialog > .box > .content {
     font-size: 15px;
@@ -2838,7 +2862,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel > .header > .title, 
 .expansion-panel > .header > .detail {
-    font-family: softtion-medium;
+    font-weight: 500;
     display: block;
     float: left;
     box-sizing: border-box;
@@ -3018,7 +3042,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box; }
 
 .grid-list > .subheader {
-    font-family: softtion-bold;
+    font-weight: 700;
     display: flex;
     width: 100%;
     padding: 0px 16px;
@@ -3076,7 +3100,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 0px; }
 
 .grid-list > .cell > .content > .detail > .title {
-    font-family: softtion-medium;
+    font-weight: 500;
     font-size: 15px;
     white-space: nowrap;
     display: block;
@@ -3112,7 +3136,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px; }
 
 .list > .subheader {
-    font-family: softtion-bold;
+    font-weight: 700;
     width: 100%;
     padding: 0px 16px;
     height: 48px;
@@ -3181,7 +3205,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
      text-overflow: ellipsis; 
     white-space: nowrap;
-    font-family: softtion-medium;
+    font-weight: 500;
     width: 100%;
     font-size: 16px;
     height: 16px;
@@ -3293,7 +3317,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px; }
 
 .menu > li.option {
-    font-family: softtion-medium;
+    font-weight: 500;
     cursor: pointer;
     height: 48px;
     line-height: 48px;
@@ -3418,7 +3442,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: inline-block;
     padding-left: 32px;
     height: 24px;
-    font-family: softtion-medium;
+    font-weight: 500;
     line-height: 24px;
     font-size: 14px;
     -webkit-user-select: none;
@@ -3520,7 +3544,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 8px;
     float: left;
     font-size: 16px;
-    font-family: softtion-medium;
+    font-weight: 500;
     border: none;
     outline: none;
     box-sizing: border-box; }
@@ -3964,7 +3988,7 @@ button.raised:focus:after, button.flat:focus:after {
 .sidenav > .content > .banner > .detail > .name {
     width: 100%;
     margin: 0px; 
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .sidenav > .content > .banner > .detail > .description {
     width: 100%;
@@ -4021,7 +4045,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     line-height: 48px;
     font-size: 16px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 .sidenav > .content .sidenav-item > .detail > a > i {
     float: left;
@@ -4085,7 +4109,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 16px 0px 32px;
     height: 48px;
     line-height: 48px;
-    font-family: softtion-medium;
+    font-weight: 500;
     text-decoration: none; }
 
 .sidenav > .content .divider {
@@ -4101,7 +4125,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     line-height: 48px;
     font-size: 16px;
-    font-family: softtion-medium; }
+    font-weight: 500; }
 
 /** SNACKBAR */
 
@@ -4151,7 +4175,7 @@ button.raised:focus:after, button.flat:focus:after {
     top: 50%;
     cursor: pointer;
     transform: translateY(-50%);
-    font-family: softtion-medium;
+    font-weight: 500;
     text-transform: uppercase; }
 
 .snackbar.show {
@@ -4256,7 +4280,7 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     text-transform: uppercase;
     outline: none;
-    font-family: softtion-medium;
+    font-weight: 500;
     padding: 0px 12px;
     height: 56px;
     line-height: 56px; }
@@ -4719,7 +4743,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-top: 7px;
     font-size: 18px;
     height: 24px;
-    font-family: softtion-medium;
+    font-weight: 500;
     line-height: 24px;
     transition: margin 0.325s var(--standard-curve); }
 
@@ -4787,7 +4811,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%;
     top: 50%;
     opacity: 0;
-    font-family: softtion-medium;
+    font-weight: 500;
     height: 32px;
     line-height: 32px;
     z-index: 24;
