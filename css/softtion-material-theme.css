@@ -1258,8 +1258,8 @@ button.raised.primary:before, button.floating.primary:before {
 .select-multiple.active.error > i, .select-multiple.error > i {
     color: var(--error-primary-font); }
 
-.dark .select-multiple > input {
-    color: var(--light-primary-font); }
+.select-multiple > input {
+    color: transparent; }
 
 .select-multiple > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
@@ -1527,10 +1527,10 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .textfield > label {
     color: var(--light-secondary-font); }
 
-.textfield.active > input:focus ~ label {
+.textfield > input:focus ~ label.active {
     color: var(--accent-primary-font); }
 
-.textfield.active.error > input:focus ~ label, .textfield.error > label,
+.textfield.error > input:focus ~ label.active, .textfield.error > label,
 .textfield.active > input:focus ~ label > span {
     color: var(--error-primary-font); }
 
