@@ -909,11 +909,11 @@ input[type=number]::-webkit-outer-spin-button {
     outline: none; 
     background-color: transparent; }
 
-.autocomplete > input::-webkit-input-placeholder {
-    visibility: hidden; }
-
 .autocomplete > input.hide {
     color: transparent; }
+
+.autocomplete > input::-webkit-input-placeholder {
+    visibility: hidden; }
 
 .autocomplete.label-hidden > input {
     padding-top: 8px; }
@@ -924,6 +924,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
+
+.autocomplete > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
 
 .autocomplete > .value {
     position: absolute;
@@ -1425,6 +1428,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 button {
     cursor: pointer;
+    font-family: softtion-material;
     font-weight: 700;
     font-size: 14px; 
     transition: all 0.325s var(--standard-curve); }
@@ -1540,7 +1544,7 @@ button.raised.disabled-ripple:focus:before {
 
 button.raised:disabled, button.flat:disabled, 
 button.floating:disabled, button.action:disabled {
-    cursor: none; }
+    cursor: not-allowed; }
 
 /*button.raised:after, button.flat:after {
     content: "";
@@ -3664,6 +3668,9 @@ button.raised:focus:after, button.flat:focus:after {
 .select.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
+.select > input.hide::-webkit-input-placeholder {
+    visibility: hidden; }
+
 .select.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 108px); }
@@ -3781,6 +3788,9 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transition: max-height 0.225s var(--easing-out), 
         max-width 0.225s var(--easing-out); }
 
+.select.label-hidden > ul {
+    top: 8px; }
+
 .select > ul.show {
     -moz-transition: none;
     -webkit-transition: none;
@@ -3795,7 +3805,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
-    top: 56px;
+    top: 8px;
     left: 72px; }
 
 .select > ul.active {
@@ -3877,6 +3887,9 @@ button.raised:focus:after, button.flat:focus:after {
     outline: none;
     background-color: transparent; }
 
+.select-multiple > input:disabled {
+    width: 100%; }
+
 .select-multiple > input::-webkit-input-placeholder {
     visibility: hidden; }
 
@@ -3884,8 +3897,14 @@ button.raised:focus:after, button.flat:focus:after {
     padding-left: 72px;
     width: calc(100% - 108px); }
 
+.select-multiple.label-hidden.icon-active > input:disabled {
+    width: calc(100% - 72px); }
+
 .select-multiple.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
+
+.select-multiple > input.hide::-webkit-input-placeholder {
+    visibility: hidden; }
 
 .select-multiple.label-hidden > input {
     padding-top: 8px; }
@@ -3900,8 +3919,14 @@ button.raised:focus:after, button.flat:focus:after {
     width: calc(100% - 36px);
     overflow: hidden; }
 
+.select-multiple > input:disabled ~ .value {
+    width: 100%; }
+
 .select-multiple.label-hidden > .value {
     top: 17px; }
+
+.select-multiple.label-hidden.icon-active > input:disabled ~ .value {
+    width: calc(100% - 72px); }
 
 .select-multiple.label-hidden.icon-active > .value {
     padding-left: 72px;
@@ -3991,10 +4016,12 @@ button.raised:focus:after, button.flat:focus:after {
     animation: close-select 0.225s var(--easing-in); 
     -ms-animation: close-select 0.225s var(--easing-in); }
 
+.select-multiple.label-hidden > ul {
+    top: 56px; }
+
 .select-multiple.label-hidden.icon-active > ul {
-    width: calc(100% - 72px);
-    top: 56px;
-    left: 72px; }
+    left: 72px; 
+    width: calc(100% - 72px); }
 
 .select-multiple > ul.active {
     max-width: 100%;
@@ -4525,6 +4552,9 @@ button.raised:focus:after, button.flat:focus:after {
 .textarea.label-hidden > textarea::-webkit-input-placeholder {
     visibility: visible; }
 
+.textarea > textarea.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
 .textarea.label-hidden > textarea {
     padding-top: 8px; }
 
@@ -4541,7 +4571,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-wrap: break-word; }
 
 .textarea.label-hidden > .value {
-    top: 24px; }
+    top: 16px; }
 
 .textarea.label-hidden.icon-active > .value {
     padding-left: 72px;
@@ -4662,6 +4692,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .textfield.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
+
+.textfield > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
 
 .textfield.label-hidden.icon-active > input {
     padding-left: 72px;

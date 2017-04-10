@@ -81,7 +81,7 @@
                         addAttribute("ng-keydown", "keydownInput($event)").
                         addAttribute("ng-blur", "blurInput($event)").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("ng-class", "{hide: !hideValue}").
+                        addAttribute("ng-class", "{hide: !hideValue, holderhide: isHaveSelection()}").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -168,6 +168,10 @@
                             $scope.isActiveLabel = function () {
                                 return ($scope.hideValue || softtion.isString($scope.valueInput)
                                     || softtion.isDefined($scope.suggestionSelect)) ? "active" : "";
+                            };
+                            
+                            $scope.isHaveSelection = function () {
+                                return softtion.isString($scope.valueInput) || softtion.isDefined($scope.suggestionSelect);
                             };
 
                             $scope.focusInput = function ($event) {
@@ -2154,6 +2158,7 @@
                         addAttribute("ng-readonly", "true").
                         addAttribute("ng-click", "toggleSuggestions()").
                         addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-class", "{hide: valueSelect}").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -2256,7 +2261,8 @@
                                 } // No se permite cerrado automatico
                             };
                             
-                            $scope.selectTemp = undefined; $scope.showList = false; $scope.startShow = false;
+                            $scope.selectTemp = undefined; $scope.showList = false; 
+                            $scope.startShow = false; $scope.valueSelect = false; 
                             
                             $scope.describeSuggestion = function (suggestion) {
                                 if (softtion.isString(suggestion)) {
@@ -2313,7 +2319,7 @@
                                 
                                 list.animate({ scrollTop: item[0].offsetTop }, 175, "standardCurve"); 
                                 
-                                $scope.selectTemp = $scope.select; // Guardando selección
+                                $scope.selectTemp = $scope.select; $scope.valueSelect = true;
                                 
                                 list.find("li").removeClass("active"); item.addClass("active"); 
                                 
@@ -2326,7 +2332,7 @@
                             
                             $scope.clearSelection = function () {
                                 $scope.select = undefined; $scope.hideSuggestions();
-                                list.find("li").removeClass("active"); 
+                                list.find("li").removeClass("active"); $scope.valueSelect = false;
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent("clear", $scope.select, $scope.selectTemp); 
@@ -2353,6 +2359,7 @@
                         addAttribute("ng-focus","focusInput($event)").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-disabled","ngDisabled").
+                        addAttribute("ng-class", "{hide: valueSelect}").
                         addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -2392,12 +2399,13 @@
                     return input + lineShadow + label + value + button + list; // Componente
                 },
                 describeValues: function (selects, keyDescription) {
-                    var size = Object.keys(selects).length, count = 0,
-                        valueInput = ""; // Inicializando variable
+                    var size = Object.keys(selects).length, count = 0, valueInput = ""; 
                                 
                     angular.forEach(selects, function (item) {
-                        valueInput += softtion.findKey(item, keyDescription); count++;
-                        valueInput += (count === size) ? "" : ", "; // Verificando final
+                        valueInput += softtion.isString(item) ? item :
+                            softtion.findKey(item, keyDescription); 
+                        
+                        count++; valueInput += (count === size) ? "" : ", ";
                     });
                     
                     return valueInput.trim(); // Valores seleccionados
@@ -2432,7 +2440,8 @@
                             // Atributos
                             var describeValues = Material.components.SelectMultiple.describeValues;
                         
-                            var temp = []; $scope.checkeds = []; $scope.selects = $scope.selects || [];
+                            var temp = []; $scope.selects = $scope.selects || [];
+                            $scope.checkeds = []; $scope.valueSelect = false;
                             
                             $scope.selects.forEach(function (select) {
                                 var index = $scope.suggestions.indexOf(select);
@@ -2442,7 +2451,7 @@
                                 } 
                             }); // Verificando la lista de items
                             
-                            $scope.selects = temp; // Lista de objetos
+                            $scope.selects = temp; $scope.valueSelect = ($scope.selects.length > 0);
                             
                             var clickComponent = function (target) {
                                 return (label.is(target) || input.is(target) || value.is(target) || list.is(target))
@@ -2522,13 +2531,17 @@
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent("select", $scope.selects); 
                                 } // Evento change sobre el componente
+                                
+                                $scope.valueSelect = ($scope.selects.length > 0);
                                     
                                 $event.stopPropagation(); // Deteniendo propagación
                             };
                             
                             $scope.describeSuggestion = function (suggestion) {
-                                return !(softtion.isString($scope.keyDescription)) ?
-                                    JSON.stringify(suggestion) : softtion.findKey(suggestion, $scope.keyDescription); 
+                                return (softtion.isString(suggestion)) ? suggestion :
+                                    !(softtion.isString($scope.keyDescription)) ?
+                                        JSON.stringify(suggestion) : 
+                                        softtion.findKey(suggestion, $scope.keyDescription); 
                             };
                             
                             $scope.getValueModel = function () {
@@ -2752,7 +2765,7 @@
                         addAttribute("ng-keypress","keypressArea($event)").
                         addAttribute("ng-readonly","ngReadonly").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("ng-class", "{hide: !hideValue}").
+                        addAttribute("ng-class", "{hide: !hideValue, holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
                         addAttribute("ng-change", "ngChange").
                         addAttribute("style", "{{heightStyle()}}").
@@ -2786,7 +2799,6 @@
                             value: "=ngModel", 
                             valueArea: "=?value", 
                             label: "@", 
-                            type: "@",
                             required: "=?",
                             ngTrim: "=?",
                             ngChange: "=?",
@@ -2840,6 +2852,10 @@
                                     || softtion.isDefined($scope.value)) ? "active" : "";
                             };
                             
+                            $scope.isHaveText = function () {
+                                return softtion.isString($scope.valueArea) || softtion.isDefined($scope.value);
+                            };
+                            
                             $scope.clickArea = function ($event) {
                                 if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent($event);
@@ -2855,7 +2871,7 @@
                                 $element.addClass("active"); 
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.value);
+                                    $scope.focusEvent($event, $scope.valueArea);
                                 } // Evento focus sobre el componente
                             };
 
@@ -2887,7 +2903,7 @@
                                 } // Limpiando texto en textarea del componente
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.value);
+                                    $scope.blurEvent($event, $scope.value, $scope.valueArea);
                                 } // Evento blur sobre el componente
                             };
 
@@ -2928,7 +2944,7 @@
                         addAttribute("ng-keypress", "keypressInput($event)").
                         addAttribute("ng-readonly", "ngReadonly").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("ng-class", "{hide: !hideValue}").
+                        addAttribute("ng-class", "{hide: !hideValue, holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
                         addAttribute("ng-change", "ngChange").
                         addAttribute("placeholder", "{{placeholder}}");
@@ -3015,6 +3031,10 @@
                                 return ($scope.hideValue || softtion.isString($scope.valueInput)
                                     || softtion.isDefined($scope.value)) ? "active" : "";
                             };
+                            
+                            $scope.isHaveText = function () {
+                                return softtion.isString($scope.valueInput) || softtion.isDefined($scope.value);
+                            };
 
                             $scope.clickLabel = function ($event) { 
                                 input.focus(); // Enfocando el input
@@ -3038,7 +3058,7 @@
                                 $element.addClass("active"); $scope.hideValue = true; 
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event);
+                                    $scope.focusEvent($event, $scope.valueInput);
                                 } // Evento focus sobre el componente
                             };
 
@@ -3088,7 +3108,7 @@
                                 } // Limpiando texto en input del componente
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.value);
+                                    $scope.blurEvent($event, $scope.value, $scope.valueInput);
                                 } // Evento blur sobre el componente
                             };
 

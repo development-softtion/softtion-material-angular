@@ -1339,6 +1339,12 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .sidenav > .content .sidenav-item > .detail > a {
     color: var(--light-primary-font); }
 
+.sidenav > .content .sidenav-item > .detail > a:hover {
+    background-color: var(--light-background-hover); }
+
+.dark .sidenav > .content .sidenav-item > .detail > a:hover {
+    background-color: var(--dark-background-hover); }
+
 .sidenav > .content .sidenav-item > .detail > a > button,
 .sidenav > .content .sidenav-item > .detail > a > i {
     color: var(--dark-secondary-font); }
@@ -1358,6 +1364,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .sidenav > .content .sidenav-item .options .item > a {
     color: var(--light-secondary-font); }
+
+.sidenav > .content .sidenav-item .options .item > a:hover {
+    background-color: var(--light-background-hover); }
+
+.dark .sidenav > .content .sidenav-item .options .item > a:hover {
+    background-color: var(--dark-background-hover); }
 
 .sidenav > .content .sidenav-item .options .item > a.active {
     color: var(--accent-primary-font); }
