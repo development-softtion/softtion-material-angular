@@ -2,7 +2,7 @@
  Angular Softtion Material v1.0.8
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 24/Feb/2017
+ Updated: 10/Abr/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -701,7 +701,7 @@
                         templateUrl: Material.components.CheckBox.route,
                         scope: {
                             checked: "=ngModel",
-                            label: "@label",
+                            label: "@",
                             ngDisabled: "=?",
                             
                             // Eventos
@@ -1290,25 +1290,29 @@
                     return {
                         restrict: "C",
                         scope: {
-                            selectMultiple: "=?",
                             selection: "=?ngModel",
                             rowsData: "=",
-                            selectAll: "=?selectAll",
+                            countSelect: "=?",
+                            selectMultiple: "=?",
+                            selectAll: "=?",
                             clickSelectAll: "=?",
                             clickSelect: "=?",
-                            countSelect: "=?"
+                            
+                            // Eventos
+                            selectEvent: "=?"
                         },
                         link: function ($scope, $element) {
-                            var selectedTemp = undefined; // Objeto seleccionado
+                            var selectedBefore = undefined; // Objeto seleccionado
                         
                             $scope.selection = ($scope.selectMultiple) ? [] : undefined;
                             
                             $scope.clickSelectAll = function () {
                                 if ($scope.selectMultiple) {
+                                    $scope.selection = []; // Reiniciando lista de selección
+                                    
                                     if (!$scope.selectAll) {
                                         $element.find("tbody tr.active").removeClass("active");
-                                        $scope.selection = []; $element.removeClass("selected"); 
-                                        $scope.countSelect = 0; // No existen filas seleccionadas
+                                        $element.removeClass("selected"); $scope.countSelect = 0; 
                                         
                                         angular.forEach($scope.rowsData, 
                                             function (object) { object.checked = false; }
@@ -1316,18 +1320,23 @@
                                     } else {
                                         $element.find("tbody tr").addClass("active"); // Activando filas
                                         
-                                        angular.forEach($scope.rowsData, function (object, key) {
+                                        angular.forEach($scope.rowsData, function (object) {
                                             $scope.selection.push(object); object.checked = true;
                                         });
                                         
-                                        $scope.countSelect = $scope.selection.length; $element.addClass("selected"); 
+                                        $scope.countSelect = $scope.selection.length; 
+                                        $element.addClass("selected"); 
                                     }
+                                    
+                                    if (softtion.isFunction($scope.selectEvent)) {
+                                        $scope.selectEvent("all", $scope.selection);
+                                    } // Se definio escuchador cuando se realize selección
                                 } else {
                                     $scope.selectAll = false;
                                 } // No se permite la selección multiple
                             };
                             
-                            $scope.clickSelect = function (object, $index, $event) {
+                            $scope.clickSelect = function (object, $event) {
                                 object.checked = !object.checked;
                                 
                                 var row = angular.element($event.currentTarget); 
@@ -1337,8 +1346,16 @@
                                     
                                     if (object.checked) {
                                         $scope.selection.push(object);
+                                        
+                                        if (softtion.isFunction($scope.selectEvent)) {
+                                            $scope.selectEvent("checked", object);
+                                        } // Se definio escuchador cuando se realize selección
                                     } else {
                                         $scope.selection.remove($scope.selection.indexOf(object)); 
+                                        
+                                        if (softtion.isFunction($scope.selectEvent)) {
+                                            $scope.selectEvent("unchecked", object);
+                                        } // Se definio escuchador cuando se realize selección
                                     } // Ya estaba seleccionado la fila
                                     
                                     $scope.countSelect = $scope.selection.length;
@@ -1349,14 +1366,22 @@
                                         
                                         $scope.countSelect = 1; // Hay selección
                                         
-                                        if (softtion.isDefined(selectedTemp)) {
-                                            selectedTemp.checked = false; selectedTemp = object;
+                                        if (softtion.isDefined(selectedBefore)) {
+                                            selectedBefore.checked = false; selectedBefore = object;
                                         } else { 
-                                            selectedTemp = object; 
+                                            selectedBefore = object; 
                                         } // Activando el nuevo objeto
+                                        
+                                        if (softtion.isFunction($scope.selectEvent)) {
+                                            $scope.selectEvent("checked", object);
+                                        } // Se definio escuchador cuando se realize selección
                                     } else {
                                         $scope.selection = undefined; row.removeClass("active"); 
-                                        selectedTemp = undefined; $scope.countSelect = 0;
+                                        selectedBefore = undefined; $scope.countSelect = 0;
+                                        
+                                        if (softtion.isFunction($scope.selectEvent)) {
+                                            $scope.selectEvent("unchecked", object);
+                                        } // Se definio escuchador cuando se realize selecciónS
                                     } // Ya estaba seleccionado la fila
                                 }
                                 
@@ -2294,8 +2319,8 @@
                                 
                                 $scope.select = suggestion; $scope.hideSuggestions(); // Ocultando opciones
                                 
-                                if (softtion.isFunction($scope.changeEvent)) {
-                                    $scope.changeEvent("select", $scope.select, $scope.selectTemp); 
+                                if (softtion.isFunction($scope.changedEvent)) {
+                                    $scope.changedEvent("select", $scope.select, $scope.selectTemp); 
                                 } // Evento change sobre el componente
                             };
                             
@@ -2303,8 +2328,8 @@
                                 $scope.select = undefined; $scope.hideSuggestions();
                                 list.find("li").removeClass("active"); 
                                 
-                                if (softtion.isFunction($scope.changeEvent)) {
-                                    $scope.changeEvent("clear", $scope.select, $scope.selectTemp); 
+                                if (softtion.isFunction($scope.changedEvent)) {
+                                    $scope.changedEvent("clear", $scope.select, $scope.selectTemp); 
                                 } // Evento change sobre el componente
                             };
                             
@@ -2494,8 +2519,8 @@
                                 ($scope.checkeds[$index]) ? $scope.selects.push(suggestion) :
                                     $scope.selects.remove($scope.selects.indexOf(suggestion));
                                 
-                                if (softtion.isFunction($scope.changeEvent)) {
-                                    $scope.changeEvent("select", $scope.selects); 
+                                if (softtion.isFunction($scope.changedEvent)) {
+                                    $scope.changedEvent("select", $scope.selects); 
                                 } // Evento change sobre el componente
                                     
                                 $event.stopPropagation(); // Deteniendo propagación
@@ -3208,7 +3233,7 @@
             }
         },
         
-        operations: {
+        properties: {
             BottomNavigation: {
                 name: "bottomNavigation",
                 directive: ["$bottomNavigation", function ($bottomNavigation) {
@@ -4015,7 +4040,7 @@
     });
     
     // Directivas de proveedores de SofttionMaterial
-    angular.forEach(Material.operations, function (operation) {
-        ngMaterial.directive(operation.name, operation.directive);
+    angular.forEach(Material.properties, function (property) {
+        ngMaterial.directive(property.name, property.directive);
     });
 });
