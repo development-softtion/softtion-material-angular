@@ -883,7 +883,11 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete.label-hidden > label {
     display: none; }
 
+.autocomplete > i {
+    display: none; }
+
 .autocomplete.label-hidden > i {
+    display: block;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -895,7 +899,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 12px; }
 
 .autocomplete > input {
-    width: 100%;
+    width: calc(100% - 28px);
     cursor: text;
     height: 32px;
     padding: 16px 0px 8px 0px;
@@ -908,15 +912,35 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete > input::-webkit-input-placeholder {
     visibility: hidden; }
 
+.autocomplete > input.hide {
+    color: transparent; }
+
+.autocomplete.label-hidden > input {
+    padding-top: 8px; }
+
 .autocomplete.label-hidden.icon-active > input {
     padding-left: 72px;
-    width: calc(100% - 72px); }
+    width: calc(100% - 100px); }
 
 .autocomplete.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.autocomplete.label-hidden > input {
-    padding-top: 8px; }
+.autocomplete > .value {
+    position: absolute;
+    top: 33px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: calc(100% - 28px);
+    overflow: hidden; }
+
+.autocomplete.label-hidden > .value {
+    top: 17px; }
+
+.autocomplete.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 100px); }
 
 .autocomplete > .line-shadow {
     position: absolute;
@@ -3607,15 +3631,19 @@ button.raised:focus:after, button.flat:focus:after {
 .select.label-hidden > label {
     display: none; }
 
+.select > i {
+    display: none; }
+
 .select.label-hidden > i {
+    display: block;
     position: absolute;
     top: 0px;
     left: 0px;
     padding: 20px 12px 12px 12px; }
 
 .select > input {
+    width: calc(100% - 36px);
     cursor: pointer;
-    width: 100%;
     height: 32px;
     padding: 16px 0px 8px 0px;
     font-size: 16px;
@@ -3630,15 +3658,32 @@ button.raised:focus:after, button.flat:focus:after {
 .select > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.select.label-hidden.icon-active > input {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
+.select.label-hidden > input {
+    padding-top: 8px; }
 
 .select.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.select.label-hidden > input {
-    padding-top: 8px; }
+.select.label-hidden.icon-active > input {
+    padding-left: 72px;
+    width: calc(100% - 108px); }
+
+.select > .value {
+    position: absolute;
+    top: 33px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: calc(100% - 36px);
+    overflow: hidden; }
+
+.select.label-hidden > .value {
+    top: 17px; }
+
+.select.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 108px); }
 
 .select > .line-shadow {
     position: absolute;
@@ -3687,9 +3732,33 @@ button.raised:focus:after, button.flat:focus:after {
 .select > button.action > i.active {
     transform: rotate(180deg); }
 
+@keyframes close-select {
+    0% {
+        max-width: 100%;
+        max-height: 216px; 
+        opacity: 1; }
+    
+    100% {
+        max-width: 100%;
+        max-height: 216px;  
+        opacity: 0; }
+}
+
+@-webkit-keyframes close-select {
+    0% {
+        max-width: 100%;
+        max-height: 216px; 
+        opacity: 1; }
+    
+    100% {
+        max-width: 100%;
+        max-height: 216px;  
+        opacity: 0; }
+}
+
 .select > ul {
     position: absolute;
-    top: 72px;
+    top: 36px;
     margin: 0px;
     max-width: 0%;
     width: 100%;
@@ -3697,14 +3766,32 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     overflow-y: auto;
     list-style-type: none;
+    opacity: 0;
     padding: 0px;
     z-index: 4;
     box-shadow: var(--shadow-4); 
-    -moz-transition: max-height 0.225s, max-width 0.225s;
-    -webkit-transition: max-height, max-width 0.35s;
-    -o-transition: max-height 0.225s, max-width 0.225s;
-    transition: max-height 0.225s, max-width 0.225s;
-    -ms-transition: max-height 0.225s, max-width 0.225s; }
+    -moz-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -webkit-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -o-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -ms-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out); }
+
+.select > ul.show {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none;
+    -ms-transition: none;
+    -moz-animation: close-select 0.225s var(--easing-in); 
+    -webkit-animation: close-select 0.225s var(--easing-in); 
+    -o-animation: close-select 0.225s var(--easing-in); 
+    animation: close-select 0.225s var(--easing-in); 
+    -ms-animation: close-select 0.225s var(--easing-in); }
 
 .select.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
@@ -3713,7 +3800,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select > ul.active {
     max-width: 100%;
-    max-height: 192px; }
+    max-height: 216px; 
+    opacity: 1; }
 
 .select > ul > li {
     padding: 0px 16px;
@@ -3761,7 +3849,11 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple.label-hidden > label {
     display: none; }
 
+.select-multiple > i {
+    display: none; }
+
 .select-multiple.label-hidden > i {
+    display: block;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -3775,7 +3867,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 12px; }
 
 .select-multiple > input {
-    width: 100%;
+    width: calc(100% - 36px);
     cursor: pointer;
     height: 32px;
     padding: 16px 0px 8px 0px;
@@ -3790,13 +3882,30 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select-multiple.label-hidden.icon-active > input {
     padding-left: 72px;
-    width: calc(100% - 72px); }
+    width: calc(100% - 108px); }
 
 .select-multiple.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
 .select-multiple.label-hidden > input {
     padding-top: 8px; }
+
+.select-multiple > .value {
+    position: absolute;
+    top: 33px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: calc(100% - 36px);
+    overflow: hidden; }
+
+.select-multiple.label-hidden > .value {
+    top: 17px; }
+
+.select-multiple.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 108px); }
 
 .select-multiple > .line-shadow {
     position: absolute;
@@ -3858,11 +3967,29 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px;
     z-index: 4;
     box-shadow: var(--shadow-4); 
-    -moz-transition: max-height 0.225s, max-width 0.225s;
-    -webkit-transition: max-height, max-width 0.35s;
-    -o-transition: max-height 0.225s, max-width 0.225s;
-    transition: max-height 0.225s, max-width 0.225s;
-    -ms-transition: max-height 0.225s, max-width 0.225s; }
+    box-shadow: var(--shadow-4); 
+    -moz-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -webkit-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -o-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out);
+    -ms-transition: max-height 0.225s var(--easing-out), 
+        max-width 0.225s var(--easing-out); }
+
+.select-multiple > ul.show {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none;
+    -ms-transition: none;
+    -moz-animation: close-select 0.225s var(--easing-in); 
+    -webkit-animation: close-select 0.225s var(--easing-in); 
+    -o-animation: close-select 0.225s var(--easing-in); 
+    animation: close-select 0.225s var(--easing-in); 
+    -ms-animation: close-select 0.225s var(--easing-in); }
 
 .select-multiple.label-hidden.icon-active > ul {
     width: calc(100% - 72px);
@@ -3871,7 +3998,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select-multiple > ul.active {
     max-width: 100%;
-    max-height: 216px; }
+    max-height: 216px;
+    opacity: 1; }
 
 .select-multiple > ul > li {
     padding: 0px 16px;
@@ -4136,7 +4264,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-bottom: -84px;
     width: 100%;
     height: auto;
-    z-index: 24;
+    z-index: 6;
     padding: 0px 24px;
     box-sizing: border-box;
     -moz-transition: margin-bottom 0.325s var(--standard-curve);
@@ -4347,7 +4475,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s var(--sharp-curve); 
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.textarea.active > label {
+.textarea > label.active {
     top: 16px;
     height: 16px;
     line-height: 16px;
@@ -4378,11 +4506,14 @@ button.raised:focus:after, button.flat:focus:after {
     min-height: 18px;
     font-size: 16px;
     padding: 24px 0px 0px 0px;
-    -moz-transition: all 0.175s ease-out;
-    -webkit-transition: all 0.175s ease-out;
-    -o-transition: all 0.175s ease-out;
-    transition: all 0.175s ease-out;
-    -ms-transition: all 0.175s ease-out; }
+    -moz-transition: height 0.175s ease-out;
+    -webkit-transition: height 0.175s ease-out;
+    -o-transition: height 0.175s ease-out;
+    transition: height 0.175s ease-out;
+    -ms-transition: height 0.175s ease-out; }
+
+.textarea > textarea.hide {
+    color: transparent; }
 
 .textarea > textarea::-webkit-input-placeholder {
     visibility: hidden; }
@@ -4396,6 +4527,25 @@ button.raised:focus:after, button.flat:focus:after {
 
 .textarea.label-hidden > textarea {
     padding-top: 8px; }
+
+.textarea > .value {
+    position: absolute;
+    top: 40px;
+    margin: 0px;
+    line-height: 18px;
+    font-size: 16px;
+    width: 100%;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word; }
+
+.textarea.label-hidden > .value {
+    top: 24px; }
+
+.textarea.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
 
 .textarea > .line-shadow {
     position: absolute;
@@ -4470,7 +4620,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
-.textfield.active > label {
+.textfield > label.active {
     cursor: none;
     top: 16px;
     height: 14px;
@@ -4501,18 +4651,39 @@ button.raised:focus:after, button.flat:focus:after {
     outline: none; 
     background-color: transparent; }
 
+.textfield > input.hide {
+    color: transparent; }
+
 .textfield > input::-webkit-input-placeholder {
     visibility: hidden; }
+
+.textfield.label-hidden > input {
+    padding-top: 8px; }
+
+.textfield.label-hidden > input::-webkit-input-placeholder {
+    visibility: visible; }
 
 .textfield.label-hidden.icon-active > input {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
-.textfield.label-hidden > input::-webkit-input-placeholder {
-    visibility: visible; }
+.textfield > .value {
+    position: absolute;
+    top: 33px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: 100%;
+    overflow: hidden; 
+    white-space: nowrap; }
 
-.textfield.label-hidden > input {
-    padding-top: 8px; }
+.textfield.label-hidden > .value {
+    top: 17px; }
+
+.textfield.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
 
 .textfield > .line-shadow {
     position: absolute;
@@ -4640,7 +4811,7 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     bottom: 0px;
     right: 0px;
-    z-index: 24;
+    z-index: 6;
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
