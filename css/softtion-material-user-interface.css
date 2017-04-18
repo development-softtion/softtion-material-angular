@@ -2253,7 +2253,7 @@ button.raised:focus:after, button.flat:focus:after {
     transition: all 0.1s ease-out;
     -ms-transition: all 0.1s ease-out; }
 
-.chip-input.active > label {
+.chip-input > label.active {
     cursor: none;
     top: 16px;
     height: 14px;
@@ -2280,6 +2280,9 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     padding: 0px;
     background-color: transparent; }
+
+.chip-input > input:disabled {
+    display: none; }
 
 .chip-input > input::-webkit-input-placeholder {
     visibility: hidden; }
