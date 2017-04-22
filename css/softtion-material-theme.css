@@ -1003,16 +1003,24 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** LIST */
 
+.list > .item-list:hover {
+    background-color: var(--light-background-active); }
+
+.dark .list > .item-list:hover {
+    background-color: var(--dark-background-active); }
+
 .list > .item-list > .content > div.avatar {
     background-color: var(--dark-secondary-font); }
 
 .dark .list > .item-list > .content > div.avatar {
     background-color: var(--light-secondary-font); }
 
-.list > .item-list > .content > div.avatar > i {
+.list > .item-list > .content > div.avatar > i,
+.list > .item-list > .content > div.avatar > span {
     color: var(--light-primary-font); }
 
-.dark .list > .item-list > .content > div.avatar > i {
+.dark .list > .item-list > .content > div.avatar > i,
+.dark .list > .item-list > .content > div.avatar > span {
     color: var(--dark-secondary-font); }
 
 .list > .item-list > .content > .detail {
@@ -1340,10 +1348,10 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-primary-font); }
 
 .sidenav > .content .sidenav-item > .detail > a:hover {
-    background-color: var(--light-background-hover); }
+    background-color: var(--light-background-active); }
 
 .dark .sidenav > .content .sidenav-item > .detail > a:hover {
-    background-color: var(--dark-background-hover); }
+    background-color: var(--dark-background-active); }
 
 .sidenav > .content .sidenav-item > .detail > a > button,
 .sidenav > .content .sidenav-item > .detail > a > i {

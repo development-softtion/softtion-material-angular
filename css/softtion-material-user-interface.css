@@ -104,7 +104,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
-.material-icon, button > i, a > i, i.action-icon, .chip > .action > i, .tab > i {
+.material-icon, i {
     font-family: "Material Icons";
     font-weight: normal;
     font-style: normal;
@@ -880,6 +880,11 @@ input[type=number]::-webkit-outer-spin-button {
     transition: all 0.1s var(--sharp-curve);
     -ms-transition: all 0.1s var(--sharp-curve); }
 
+.autocomplete > label.active {
+    cursor: none;
+    top: 16px;
+    font-size: 12px; }
+
 .autocomplete.label-hidden > label {
     display: none; }
 
@@ -893,10 +898,8 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0px;
     padding: 20px 12px 12px 12px; }
 
-.autocomplete > label.active {
-    cursor: none;
-    top: 16px;
-    font-size: 12px; }
+.autocomplete.flex-pd.label-hidden > i {
+    left: 8px; }
 
 .autocomplete > input {
     width: calc(100% - 28px);
@@ -955,6 +958,10 @@ input[type=number]::-webkit-outer-spin-button {
     left: 72px;
     width: calc(100% - 72px); }
 
+.autocomplete.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
+
 .autocomplete > input:focus ~ .line-shadow {
     bottom: 6px; }
 
@@ -992,7 +999,7 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center; }
 
 .autocomplete.label-hidden > .action-icon {
-    left: initial;
+    left: initial !important;
     top: 24px;
     padding: 0px; }
 
@@ -1000,7 +1007,7 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete.label-hidden.flex-pd > .action-icon
 .autocomplete.flex-pd-right > .action-icon,
 .autocomplete.label-hidden.flex-pd-right > .action-icon {
-    right: 8px; }
+    right: 8px !important; }
 
 .autocomplete > ul {
     position: absolute;
@@ -1028,6 +1035,10 @@ input[type=number]::-webkit-outer-spin-button {
     width: calc(100% - 72px);
     top: 58px;
     left: 72px; }
+
+.autocomplete.flex-pd.label-hidden.icon-active > ul {
+    left: 80px;
+    width: calc(100% - 88px); }
 
 .autocomplete > ul.active {
     max-width: 100%;
@@ -1585,7 +1596,15 @@ button.raised:focus:after, button.flat:focus:after {
     margin-bottom: 8px;
     border-radius: 2px;
     z-index: 4;
-    box-shadow: var(--shadow-4); }
+    box-shadow: var(--shadow-2); 
+    -moz-transition: box-shadow 0.325s var(--sharp-curve);
+    -webkit-transition: box-shadow 0.325s var(--sharp-curve);
+    -o-transition: box-shadow 0.325s var(--sharp-curve);
+    transition: box-shadow 0.325s var(--sharp-curve);
+    -ms-transition: box-shadow 0.325s var(--sharp-curve); }
+
+.card.elevation {
+    box-shadow: var(--shadow-8); }
 
 .card > .area-action {
     position: absolute;
@@ -2238,6 +2257,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
+.chip-input.flex-pd.label-hidden.icon-active {
+    width: 100%; }
+
 .chip-input > label {
     position: absolute;
     top: 40px;
@@ -2268,6 +2290,9 @@ button.raised:focus:after, button.flat:focus:after {
     top: 0px;
     left: 0px;
     padding: 20px 12px 12px 12px; }
+
+.chip-input.flex-pd.label-hidden > i {
+    left: 8px; }
 
 .chip-input > input {
     display: inline-block;
@@ -2305,6 +2330,9 @@ button.raised:focus:after, button.flat:focus:after {
 .chip-input.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
+
+.chip-input.flex-pd.label-hidden.icon-active > .line-shadow {
+    width: calc(100% - 80px); }
 
 .chip-input.active > input:focus ~ .line-shadow {
     bottom: 6px; }
@@ -3203,6 +3231,17 @@ button.raised:focus:after, button.flat:focus:after {
     height: inherit;
     line-height: inherit; }
 
+.list > .item-list > .content > div.avatar > span {
+    display: block;
+    width: inherit;
+    height: inherit;
+    font-size: 20px;
+    text-align: center; }
+
+.list.two-line > .item-list > .content > div.avatar > span,
+.list.three-line > .item-list > .content > div.avatar > span {
+    font-size: 28px; }
+
 .list > .item-list > .content > .action {
     position: absolute;
     top: 12px; 
@@ -3216,10 +3255,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .list.two-line > .item-list > .content > .avatar,
 .list.three-line > .item-list > .content > .avatar {
-    width: 40px;
-    top: 16px; 
-    height: 40px;
-    line-height: 40px; }
+    width: 48px;
+    top: 12px; 
+    left: 12px;
+    height: 48px;
+    line-height: 48px; }
 
 .list.two-line > .item-list > .content > div.avatar > i,
 .list.three-line > .item-list > .content > div.avatar > i {
@@ -3234,7 +3274,7 @@ button.raised:focus:after, button.flat:focus:after {
 .list > .item-list > .content > .detail > .title {
     display: block;
     overflow: hidden;
-     text-overflow: ellipsis; 
+    text-overflow: ellipsis; 
     white-space: nowrap;
     font-weight: 500;
     width: 100%;
@@ -3648,6 +3688,9 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0px;
     padding: 20px 12px 12px 12px; }
 
+.select.flex-pd.label-hidden > i {
+    left: 8px; }
+
 .select > input {
     width: calc(100% - 36px);
     cursor: pointer;
@@ -3705,6 +3748,10 @@ button.raised:focus:after, button.flat:focus:after {
     left: 72px;
     width: calc(100% - 72px); }
 
+.select.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
+
 .select.active > .line-shadow {
     bottom: 8px; }
 
@@ -3721,7 +3768,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select > button.action {
     position: absolute;
-    right: 4px;
+    right: -4px;
     top: 38px;
     padding: 0px 4px;
     cursor: pointer; }
@@ -3811,6 +3858,10 @@ button.raised:focus:after, button.flat:focus:after {
     top: 8px;
     left: 72px; }
 
+.select.flex-pd.label-hidden.icon-active > ul {
+    left: 80px;
+    width: calc(100% - 88px); }
+
 .select > ul.active {
     max-width: 100%;
     max-height: 216px; 
@@ -3862,6 +3913,13 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple.label-hidden > label {
     display: none; }
 
+.select-multiple > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px; }
+
 .select-multiple > i {
     display: none; }
 
@@ -3872,12 +3930,8 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0px;
     padding: 20px 12px 12px 12px; }
 
-.select-multiple > label.active {
-    cursor: none;
-    top: 16px;
-    height: 14px;
-    line-height: 14px;
-    font-size: 12px; }
+.select-multiple.flex-pd.label-hidden > i {
+    left: 8px; }
 
 .select-multiple > input {
     width: calc(100% - 36px);
@@ -3945,6 +3999,10 @@ button.raised:focus:after, button.flat:focus:after {
     left: 72px;
     width: calc(100% - 72px); }
 
+.select-multiple.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
+
 .select-multiple.active > .line-shadow {
     bottom: 8px; }
 
@@ -3961,7 +4019,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .select-multiple > button.action {
     position: absolute;
-    right: 4px;
+    right: -4px;
     top: 38px;
     padding: 0px 4px;
     cursor: pointer; }
@@ -4025,6 +4083,10 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple.label-hidden.icon-active > ul {
     left: 72px; 
     width: calc(100% - 72px); }
+
+.select-multiple.flex-pd.label-hidden.icon-active > ul {
+    left: 80px;
+    width: calc(100% - 88px); }
 
 .select-multiple > ul.active {
     max-width: 100%;
@@ -4521,6 +4583,9 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0px;
     padding: 20px 12px 12px 12px; }
 
+.textarea.flex-pd.label-hidden > i {
+    left: 8px; }
+
 .textarea > label > span {
     margin-left: 2px; }
 
@@ -4580,6 +4645,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
+.textarea.flex-pd.label-hidden.icon-active > .value {
+    width: calc(100% - 88px); }
+
 .textarea > .line-shadow {
     position: absolute;
     width: 100%;
@@ -4589,6 +4657,10 @@ button.raised:focus:after, button.flat:focus:after {
 .textarea.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
+
+.textarea.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
 
 .textarea.active > textarea:focus ~ .line-shadow {
     bottom: 6px; }
@@ -4627,6 +4699,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .textarea.label-hidden.icon-active > .textarea-hidden {
     width: calc(100% - 72px); }
+
+.textarea.flex-pd.label-hidden.icon-active > .textarea-hidden {
+    width: calc(100% - 88px); }
 
 /** TEXTFIELD */
 
@@ -4668,6 +4743,9 @@ button.raised:focus:after, button.flat:focus:after {
     top: 0px;
     left: 0px;
     padding: 20px 12px 12px 12px; }
+
+.textfield.flex-pd.label-hidden > i {
+    left: 8px; }
 
 .textfield > label > span {
     margin-left: 2px; }
@@ -4721,6 +4799,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding-left: 72px;
     width: calc(100% - 72px); }
 
+.textfield.flex-pd.label-hidden.icon-active > .value {
+    width: calc(100% - 88px); }
+
 .textfield > .line-shadow {
     position: absolute;
     left: 0; 
@@ -4730,6 +4811,10 @@ button.raised:focus:after, button.flat:focus:after {
 .textfield.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
+
+.textfield.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
 
 .textfield.active > input:focus ~ .line-shadow {
     bottom: 6px;  }
