@@ -689,9 +689,6 @@ input[type=number]::-webkit-outer-spin-button {
     overflow: hidden;
     text-overflow: ellipsis; }
 
-.disabled {
-    pointer-events: none !important; }
-
 .hidden {
     display: none !important; }
 
@@ -887,6 +884,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete.label-hidden > label {
     display: none; }
+
+.autocomplete > i.action-icon {
+    display: block; }
 
 .autocomplete > i {
     display: none; }
@@ -2456,11 +2456,101 @@ button.raised:focus:after, button.flat:focus:after {
     animation: button-focus-content 2.5s infinite linear; 
     -ms-animation: button-focus-content 2.5s infinite linear; }
 
+.clockpicker-input {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 16px 0px 8px 0px; }
+
+.clockpicker-input.label-hidden {
+    padding-top: 8px; }
+
+.clockpicker-input > label {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
+    cursor: pointer;
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
+
+.clockpicker-input > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px; }
+
+.clockpicker-input.label-hidden > label {
+    display: none; }
+
+.clockpicker-input.label-hidden > i {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    padding: 20px 12px 12px 12px; }
+
+.clockpicker-input.flex-pd.label-hidden > i {
+    left: 8px; }
+
+.clockpicker-input > i.action {
+    cursor: pointer; }
+
+.clockpicker-input > .value {
+    padding: 16px 0px 8px 0px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden; 
+    white-space: nowrap; }
+
+.clockpicker-input > .value.disabled {
+    cursor: not-allowed; }
+
+.clockpicker-input.label-hidden > .value {
+    top: 17px; }
+
+.clockpicker-input.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
+
+.clockpicker-input > .line-shadow {
+    position: absolute;
+    left: 0; 
+    bottom: 7px; 
+    width: 100%; }
+
+.clockpicker-input.label-hidden.icon-active > .line-shadow {
+    left: 72px;
+    width: calc(100% - 72px); }
+
+.clockpicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
+ 
+.clockpicker-input.flex-pd-left > .line-shadow, 
+.clockpicker-input.flex-pd-left > label, 
+.clockpicker-input.flex-pd-right > label,
+.clockpicker-input.flex-pd-right > .line-shadow {
+    width: calc(100% - 8px); }
+
+.clockpicker-input.flex-pd > .line-shadow, 
+.clockpicker-input.flex-pd > label, 
+.clockpicker-input.flex-pd-left > label,
+.clockpicker-input.flex-pd-left > .line-shadow {
+    left: 8px; }
+
 .clockpicker-input > .dialog > .backdrop {
     z-index: 23; }
-
-.clockpicker-input > .textfield-readonly > input {
-    cursor: pointer; }
 
 .clockpicker-input > .dialog > .box {
     position: fixed;
@@ -2740,8 +2830,98 @@ button.raised:focus:after, button.flat:focus:after {
     animation: button-focus-content 2.5s infinite linear; 
     -ms-animation: button-focus-content 2.5s infinite linear; }
 
-.datepicker-input > .textfield-readonly > input {
+.datepicker-input {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 16px 0px 8px 0px; }
+
+.datepicker-input.label-hidden {
+    padding-top: 8px; }
+
+.datepicker-input > label {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
+    cursor: pointer;
+    -moz-transition: all 0.1s var(--sharp-curve);
+    -webkit-transition: all 0.1s var(--sharp-curve);
+    -o-transition: all 0.1s var(--sharp-curve);
+    transition: all 0.1s var(--sharp-curve);
+    -ms-transition: all 0.1s var(--sharp-curve); }
+
+.datepicker-input > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px; }
+
+.datepicker-input.label-hidden > label {
+    display: none; }
+
+.datepicker-input.label-hidden > i {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    padding: 20px 12px 12px 12px; }
+
+.datepicker-input.flex-pd.label-hidden > i {
+    left: 8px; }
+
+.datepicker-input > i.action {
     cursor: pointer; }
+
+.datepicker-input > .value {
+    padding: 16px 0px 8px 0px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden; 
+    white-space: nowrap; }
+
+.datepicker-input > .value.disabled {
+    cursor: not-allowed; }
+
+.datepicker-input.label-hidden > .value {
+    top: 17px; }
+
+.datepicker-input.label-hidden.icon-active > .value {
+    padding-left: 72px;
+    width: calc(100% - 72px); }
+
+.datepicker-input > .line-shadow {
+    position: absolute;
+    left: 0; 
+    bottom: 7px; 
+    width: 100%; }
+
+.datepicker-input.label-hidden.icon-active > .line-shadow {
+    left: 72px;
+    width: calc(100% - 72px); }
+
+.datepicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
+    left: 80px;
+    width: calc(100% - 88px); }
+ 
+.datepicker-input.flex-pd-left > .line-shadow, 
+.datepicker-input.flex-pd-left > label, 
+.datepicker-input.flex-pd-right > label,
+.datepicker-input.flex-pd-right > .line-shadow {
+    width: calc(100% - 8px); }
+
+.datepicker-input.flex-pd > .line-shadow, 
+.datepicker-input.flex-pd > label, 
+.datepicker-input.flex-pd-left > label,
+.datepicker-input.flex-pd-left > .line-shadow {
+    left: 8px; }
 
 .datepicker-input > .dialog > .backdrop {
     z-index: 23; }

@@ -141,6 +141,12 @@ body.dark {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
+.autocomplete > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .autocomplete > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
 .autocomplete > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
@@ -735,6 +741,42 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .clockpicker > .content > .plate > .canvas .bearing {
     fill: var(--light-background-focus); }
 
+.clockpicker-input > label {
+    color: var(--dark-secondary-font); }
+
+.dark .clockpicker-input > label {
+    color: var(--light-secondary-font); }
+
+.clockpicker-input > i {
+    color: var(--dark-secondary-font); }
+
+.dark .clockpicker-input > i {
+    color: var(--light-secondary-font); }
+
+.clockpicker-input > i {
+    color: var(--dark-secondary-font); }
+
+.dark .clockpicker-input > i {
+    color: var(--light-secondary-font); }
+
+.clockpicker-input > .value.disabled {
+    color: var(--dark-disabled-font); }
+
+.dark .clockpicker-input > .value.disabled {
+    color: var(--light-disabled-font); }
+
+.clockpicker-input > .line-shadow {
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.dark .clockpicker-input > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.clockpicker-input > .line-shadow.disabled {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.dark .clockpicker-input > .line-shadow.disabled {
+    border-bottom: 1px dashed var(--dark-background-divider); }
+
 .clockpicker-input > .dialog > .box {
     background-color: transparent !important; }
 
@@ -878,6 +920,42 @@ button.raised.primary:before, button.floating.primary:before {
 .datepicker > .content > .months > ul > li.active,
 .datepicker > .content > .year > ul > li.active {
     color: var(--base-primary-font); }
+
+.datepicker-input > label {
+    color: var(--dark-secondary-font); }
+
+.dark .datepicker-input > label {
+    color: var(--light-secondary-font); }
+
+.datepicker-input > i {
+    color: var(--dark-secondary-font); }
+
+.dark .datepicker-input > i {
+    color: var(--light-secondary-font); }
+
+.datepicker-input > i {
+    color: var(--dark-secondary-font); }
+
+.dark .datepicker-input > i {
+    color: var(--light-secondary-font); }
+
+.datepicker-input > .value.disabled {
+    color: var(--dark-disabled-font); }
+
+.dark .datepicker-input > .value.disabled {
+    color: var(--light-disabled-font); }
+
+.datepicker-input > .line-shadow {
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.dark .datepicker-input > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.datepicker-input > .line-shadow.disabled {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.dark .datepicker-input > .line-shadow.disabled {
+    border-bottom: 1px dashed var(--dark-background-divider); }
 
 .datepicker-input > .dialog > .box {
     background-color: transparent !important; }
@@ -1182,6 +1260,12 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
+.select > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .select > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
 .select > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
@@ -1268,6 +1352,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .select-multiple > input {
     color: transparent; }
+
+.select-multiple > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .select-multiple > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
 
 .select-multiple > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
@@ -1518,6 +1608,12 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
+.textarea > textarea:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textarea > textarea:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
 .textarea > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
@@ -1571,6 +1667,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .textfield > input:disabled {
     color: var(--dark-disabled-font); }
+
+.textfield > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
 
 .textfield > input::selection { 
     background-color: var(--theme-background-accent); 
