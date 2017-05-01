@@ -5307,25 +5307,19 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** VIEWS */
 
-.views {
-    display: table;
-    position: relative;
+.views-content-tab {
     width: 100%;
     overflow-x: hidden; }
 
-.views > .content {
-    display: none;
-    width: 100%;
-    -moz-animation-duration: 0.255s;
-    -webkit-animation-duration: 0.255s;
-    -o-animation-duration: 0.255s;
-    animation-duration: 0.255s; 
-    -ms-animation-duration: 0.255s;
-    -moz-animation-timing-function: var(--sharp-curve);
-    -webkit-animation-timing-function: var(--sharp-curve);
-    -o-animation-timing-function: var(--sharp-curve);
-    animation-timing-function: var(--sharp-curve);
-    -ms-animation-timing-function: var(--sharp-curve); }
+.views-content-tab > .views-tab {
+    display: flex;
+    left: 0%;
+    position: relative;
+    overflow-y: auto; }
 
-.views > .content.active {
-    display: block; }
+.views-content-tab > .views-tab.transition {
+    transition: left 0.475s var(--standard-curve); }
+
+.views-content-tab > .views-tab > .view {
+    width: 100%; 
+    height: 100%; }

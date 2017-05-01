@@ -23,7 +23,7 @@
             
             icon.insertAfter(component); $element.addClass("icon-active");
             
-            return icon;
+            return icon; // Icono generado en el componente
         } // IconLabel activado, se debe insertar el icono antes del input
     };
     
@@ -2778,7 +2778,7 @@
                     return {
                         restrict: "C",
                         scope: {
-                            view: "@viewBox",
+                            views: "@",
                             disabledPositionStart: "=?",
                             
                             // Eventos
@@ -2786,8 +2786,7 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var view = angular.element($scope.view),
-                                indexActive = 0, index = 0,
+                            var views = angular.element($scope.views), index = 0,
                                 tabs = $element.find(".tab"),
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
@@ -2800,36 +2799,44 @@
                                     tabs.css("width", (100 / tabs.length) +"%");
                                 }
 
-                                angular.forEach(tabs, function (option) { 
-                                    angular.element(option).data("position", index); index++;
+                                angular.forEach(tabs, function (tab) { 
+                                    angular.element(tab).data("position", index); index++;
                                 });
                                 
-                                var optionActive = $element.find(".tab.active:first");
+                                var tabActive = $element.find(".tab.active:first");
                                 
-                                if (!optionActive.exists()) {
-                                    optionActive = angular.element(tabs[0]).addClass("active");
+                                if (!tabActive.exists()) {
+                                    tabActive = angular.element(tabs[0]);
                                 } // No se establecio pestaña activa inicialmente
                                 
-                                var widthBar = optionActive.outerWidth(),
-                                    leftBar = optionActive.position().left;
+                                tabs.removeClass("active"); tabActive.addClass("active");
                                 
-                                angular.element(optionActive.attr("view-tab")).addClass("active");
+                                var widthBar = tabActive.outerWidth(),
+                                    leftBar = tabActive.position().left;
+                                
                                 stripe.css({ width: widthBar, left: leftBar });
                                 
+                                var position = tabActive.data("position");
+                                views.css("left", (position * -100) + "%");
+                                
                                 tabs.click(function ($event) {
-                                    var option = angular.element(this);
+                                    if (!views.hasClass("transition")) {
+                                        views.addClass("transition");
+                                    } // Agregando la clase transition al componente
                                     
-                                    var position = option.data("position"),
-                                        left = option[0].offsetLeft,
-                                        width = option[0].clientWidth;
+                                    var itemTab = angular.element(this);
+                                    
+                                    var position = itemTab.data("position"),
+                                        left = itemTab[0].offsetLeft,
+                                        width = itemTab[0].clientWidth;
                                     
                                     stripe.css({ width: width, left: left });
                             
-                                    if (option.hasClass("active")) {
+                                    if (itemTab.hasClass("active")) {
                                         return;
                                     } // Este componente ya se encuentra activo
                                     
-                                    tabs.removeClass("active"); option.addClass("active");
+                                    tabs.removeClass("active"); itemTab.addClass("active");
                                     
                                     if (!$scope.disabledPositionStart) {
                                         angular.element(".app-content").scrollTop(0); 
@@ -2837,40 +2844,15 @@
                                     
                                     if (left < $element.scrollLeft()) {
                                         $element.animate({ scrollLeft: left }, 175, "standardCurve"); 
-                                    } else {
-                                        var viewTab = $element.scrollLeft() + window.innerWidth;
-                                        
-                                        if (viewTab < (left + width)) {
-                                            $element.animate({ scrollLeft: left }, 175, "standardCurve"); 
-                                        }
                                     } // Reubicando vista del contenedor en pestaña
-
-                                    var slideRight = (position > indexActive); indexActive = position;
-
-                                    var viewTab = view.find(option.attr("view-tab"));
                                     
-                                    if (!viewTab.hasClass("active")) {
-                                        var viewActive = view.find(".content.active");
-
-                                        if (viewActive.exists()) {
-                                            viewActive.removeClass("active").removeClass("opacity-bottom"); 
-                                        } // Removiendo clase activa a la Opcion anterior
-                                        
-                                        (slideRight) ?
-                                            viewTab.addClass("active").
-                                                removeClass("slide-in-left").
-                                                addClass("slide-in-right") :
-
-                                            viewTab.addClass("active").
-                                                removeClass("slide-in-right").
-                                                addClass("slide-in-left");
-                                    } // El componente actualmente esta oculto
+                                    views.css("left", (position * -100) + "%");
                                     
                                     if (softtion.isFunction($scope.viewEvent)) {
                                         $scope.viewEvent($event);
-                                    } // Evento 'view' cuando hay un cambio de vista
+                                    } // Evento view cuando hay un cambio de vista
                                 });
-                            } // Exiten cabeceras en el componente
+                            } // Exiten pestañas en el componente
                     
                             $element.append(stripe); // Agregando componente selector
                         }
@@ -3381,6 +3363,20 @@
                             });
                             
                             $element.mouseout(function () { tooltip.css({ display: "none" }).removeClass("show"); });
+                        }
+                    };
+                }
+            },
+            
+            ViewsTabs: {
+                name: "viewsTab",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            var countContent = $element.find(".view").length;
+                            
+                            $element.css("width", (countContent * 100) + "%");
                         }
                     };
                 }
