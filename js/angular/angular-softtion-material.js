@@ -585,7 +585,7 @@
                         );
 
                     content.addChildren(
-                        softtion.html("div").addClass("detail").
+                        softtion.html("div").addClass(["detail", "{{positionContent}}"]).
                             addChildren(
                                 softtion.html("label").addClass("title").setText("{{slide.title}}")
                             ).
@@ -594,16 +594,16 @@
                             )
                     );
 
-                    var buttonPrev = softtion.html("a").addClass(["arrow", "prev"]).
+                    var buttonPrev = softtion.html("a").addClass(["arrow", "prev", "{{positionContent}}"]).
                         addAttribute("ng-click", "prev()").
                         addChildren(
-                            softtion.html("i").addClass("material-icon").setText("chevron_left")
+                            softtion.html("i").setText("chevron_left")
                         );
 
-                    var buttonNext = softtion.html("a").addClass(["arrow", "next"]).
+                    var buttonNext = softtion.html("a").addClass(["arrow", "next", "{{positionContent}}"]).
                         addAttribute("ng-click", "next()").
                         addChildren(
-                            softtion.html("i").addClass("material-icon").setText("chevron_right")
+                            softtion.html("i").setText("chevron_right")
                         );
                 
                     return content + buttonPrev + buttonNext;
@@ -614,15 +614,16 @@
                         templateUrl: Material.components.Carousel.route,
                         scope: {
                             slides: "=",
-                            disabledAuto: "=?",
+                            disabledInterval: "=?",
                             time: "=?",
-                            height: "@"
+                            height: "@",
+                            positionContent: "@"
                         },
                         link: function ($scope, $element) {
                             var intervalCarousel = undefined; $scope.index = 0; 
-                            $scope.time = $scope.time || 4000;
+                            $scope.time = isNaN($scope.time) ? 4000 : $scope.time;
                             
-                            $element.height($scope.height || "inherit");
+                            $element.css("padding-top", $scope.height || "56.6%");
 
                             $scope.slideActive = function (index) {
                                 return $scope.index === index;
@@ -665,7 +666,7 @@
                             };
 
                             function startInterval() {
-                                if (!$scope.disabledAuto) {
+                                if (!$scope.disabledInterval) {
                                     if (softtion.isInPage($element[0])) {
                                         intervalCarousel = $interval(next, $scope.time);
                                     } else {
@@ -2085,7 +2086,7 @@
                                     ),
                                     icon = button.find("i");
                                 
-                                header.append(button); // Agregando icono al Header
+                                button.insertAfter(header.find(".title")); // Agregando icono
 
                                 header.click(function () {
                                     var marginTop = (-1 * content.innerHeight()),
@@ -3071,6 +3072,11 @@
                         setText("{{getValueModel()}}").
                         addAttribute("ng-hide", "hideValue").
                         addAttribute("ng-click", "clickLabel($event)");
+                
+                    var iconPassword = softtion.html("i").addClass("password").
+                        addAttribute("ng-if", "isPasswordActive()").
+                        addAttribute("ng-click", "clickPassword()").
+                        setText("{{viewPassword ? 'visibility' : 'visibility_off'}}");
 
                     var label = softtion.html("label").
                         setText("{{label}}").addClass("truncate").
@@ -3082,7 +3088,7 @@
 
                     var span = softtion.html("span").addClass("truncate");
 
-                    return input + lineShadow + value + label + span; // Componente
+                    return input + lineShadow + value + iconPassword + label + span; // Componente
                 },        
                 defineInput: function (typeInput) {
                     switch (typeInput) {
@@ -3127,7 +3133,7 @@
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
                             $scope.typeInput = Material.components.TextField.defineInput($scope.type || "text");
-                            $scope.valueInput = ""; $scope.hideValue = false; 
+                            $scope.valueInput = ""; $scope.hideValue = false; $scope.viewPassword = false;
 
                             if (softtion.isString($scope.value)) { 
                                 $element.addClass("active"); $scope.valueInput = $scope.value;
@@ -3141,6 +3147,10 @@
                                 $element.addClass("error"); // Se ha generado un error
                                 
                                 input.siblings("span").html(message); $scope.value = undefined; 
+                            };
+                            
+                            $scope.isPasswordActive = function () {
+                                return ($scope.type === "password");
                             };
                             
                             $scope.isActiveLabel = function () {
@@ -3164,6 +3174,12 @@
                                 if (softtion.isFunction($scope.clickEvent)) {
                                     $scope.clickEvent($event);
                                 } // Evento click sobre el componente
+                            };
+                            
+                            $scope.clickPassword = function () {
+                                $scope.viewPassword = !$scope.viewPassword; // Password
+                                
+                                $scope.typeInput = $scope.viewPassword ? "text" : "password";
                             };
 
                             $scope.focusInput = function ($event) {
@@ -3251,7 +3267,16 @@
                             };
                             
                             $scope.getValueModel = function () {
-                                return (softtion.isDefined($scope.value)) ? $scope.value : $scope.valueInput;
+                                var value = (softtion.isDefined($scope.value)) ? 
+                                    $scope.value : $scope.valueInput;                                    
+                                    
+                                if (($scope.type === "password") && !$scope.viewPassword) {
+                                    var length = value.length; value = "";
+                                    
+                                    for (var i = 0; i < length; i++) { value += "•"; }
+                                } // Contenido del input es tipo password
+                                
+                                return value; // Retornando el valor a mostrar
                             };
                         }
                     };

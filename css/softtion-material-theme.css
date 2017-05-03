@@ -483,6 +483,17 @@ button.raised.primary:before, button.floating.primary:before {
 .card > .rich-media > .content > .actions > button.action:before {
     background-color: var(--light-ripple); }
 
+/** CAROUSEL */
+
+.carousel > .slide > .detail {
+    color: var(--light-primary-font); }
+
+.carousel > .arrow:hover {
+    background-color: rgba(255, 255, 255, 0.2); }
+
+.carousel > .arrow > i {
+    color: rgba(255, 255, 255, 0.5); }
+
 /** CHECKBOX */
 
 .checkbox > label {
@@ -787,6 +798,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
+
+.datatable > table {
+    background: var(--light-background-component); }
+
+.dark .datatable > table {
+    background: var(--dark-background-component); }
 
 .datatable > .header > .title, .datatable > .header > .actions > button.action > i {
     color: var(--dark-secondary-font); }

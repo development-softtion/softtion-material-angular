@@ -378,6 +378,10 @@
 
             return this; // Retornando interfaz fluida
         };
+
+        Array.prototype.removeObject = function (object) {
+            return this.remove(this.indexOf(object)); // Retornando interfaz fluida
+        };
         
         Array.prototype.concat = function (object) {
             var self = this; // Objeto collection
