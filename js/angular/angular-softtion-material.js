@@ -12,7 +12,7 @@
     } // No se ha cargado Softtion y Angular
 })(function (softtion, angular) {
     
-    var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize"]),
+    var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]),
         TextType = softtion.get(softtion.TEXTCONTROL);
 
     var activeIconLabel = function ($scope, $element, component) {
@@ -581,7 +581,7 @@
                         addAttribute(
                             "ng-class", "{active: slideActive($index), before: slideBefore($index), after: slideAfter($index)}"
                         ).addChildren(
-                            softtion.html("img", false).addAttribute("src", "{{slide.img}}")
+                            softtion.html("img", false).addAttribute("ng-src", "{{slide.img}}")
                         );
 
                     content.addChildren(
@@ -2112,6 +2112,191 @@
                 }
             },
             
+            FileChooserMultiple: {
+                route: "softtion/template/file-chooser-multiple.html",
+                name: "fileChooserMultiple",
+                html: function () {
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "file");
+                    
+                    var button = softtion.html("button").addClass(["floating", "static"]).
+                        addAttribute("ng-click", "selectFile()").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addChildren(softtion.html("i").setText("{{iconButton}}"));
+                
+                    var content = softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("select-file").
+                                addAttribute("ng-hide", "(files.length > 0)").
+                                addChildren(
+                                    softtion.html("i").setText("file_upload").
+                                        addAttribute("ng-class", "{disabled: ngDisabled}")
+                                ).addChildren(
+                                    softtion.html("p").setText("Seleccione archivos a procesar").
+                                        addAttribute("ng-class", "{disabled: ngDisabled}")
+                                )
+                        ).addChildren(
+                            softtion.html("div").addClass(["file", "{{responsive}}"]).
+                                addAttribute("ng-repeat", "file in files").
+                                addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
+                                addAttribute("ng-clickright", "fileRight(file, $event, $index)").
+                                addAttribute("tabindex", "-1").
+                                addChildren(
+                                    softtion.html("div").addClass("content").
+                                        addChildren(
+                                            softtion.html("div").addClass("view-preview").
+                                                addChildren(
+                                                    softtion.html("div").addClass("icon").
+                                                        addAttribute("ng-bind-html", "getIconComponent(file.type)").
+                                                        addAttribute("ng-if", "!isImageFile(file.type)")
+                                                ).
+                                                addChildren(
+                                                    softtion.html("img", false).
+                                                        addAttribute("ng-if", "isImageFile(file.type)").
+                                                        addAttribute("ng-src", "{{file.base64}}")
+                                                )
+                                        ).
+                                    
+                                        addChildren(
+                                            softtion.html("div").addClass("detail").
+                                                addChildren(
+                                                    softtion.html("div").addClass("avatar").
+                                                        addChildren(
+                                                            softtion.html("i").setText("{{getIconFile(file.type)}}")
+                                                        )
+                                                ).
+                                                addChildren(
+                                                    softtion.html("label").addClass("name").setText("{{file.name}}")
+                                                )
+                                        )
+                                )
+                        );
+                    
+                    return input + content + button;
+                },
+                directive: ["$timeout", function ($timeout) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.FileChooserMultiple.route,
+                        scope: {
+                            responsive: "@",
+                            height: "=?",
+                            files: "=ngModel",
+                            iconButton: "@",
+                            multiple: "=?",
+                            ngDisabled: "=?",
+                            
+                            eventHold: "=?",
+                            eventClickright: "=?"
+                        },
+                        link: function ($scope, $element) {
+                            var fileInput = $element.find("input[type=file]"),
+                                imageFormats = [
+                                    "image/jpeg", "image/png", "image/jpg", "image/gif"
+                                ];
+                            
+                            $scope.height = $scope.height || "320px"; 
+                            $element.css("height", $scope.height);
+                            
+                            $scope.iconButton = $scope.iconButton || "attachment";
+                            
+                            $scope.files = []; // Lista de archivos seleccionados
+                            
+                            if ($scope.multiple) {
+                                fileInput.attr("multiple", "");
+                            } // Se pueden seleccionar multiples archivos
+                            
+                            var processFile = function (file) {
+                                var reader = new FileReader();
+                                
+                                reader.onloadstart = function ($event) {
+                                    // En Inicio
+                                };  
+        
+                                reader.onprogress = function ($event) {
+                                    // En progreso
+                                };
+        
+                                reader.onload = function ($event) {
+                                    $scope.$apply(function () {
+                                        var fileResult = $event.target.result; 
+                                        file["base64"] = fileResult; $scope.files.push(file);
+                                    });
+                                };
+                                
+                                reader.onerror = function (event) {
+                                    // Error
+                                };
+
+                                reader.onabort = function (event) {
+                                    // Cancelar
+                                };
+                                
+                                $timeout(function () { reader.readAsDataURL(file); }, 250);
+        
+                                return reader; // Retornando procesador de Archivo
+                            };
+                            
+                            fileInput.change(function ($event) {
+                                var files = fileInput[0].files; // Archivos
+                                
+                                if (files.length) {
+                                    angular.forEach(files, function (file) {
+                                        console.log(file.type); processFile(file);
+                                    });
+                                } // Se cambio archivo a seleccionar
+                            });
+                            
+                            $scope.selectFile = function () { fileInput.click(); };
+                            
+                            $scope.isImageFile = function (typeFile) {
+                                return (imageFormats.indexOf(typeFile) !== -1);
+                            };
+                            
+                            $scope.getIconFile = function (typeFile) {
+                                switch (typeFile) {
+                                    case ("image/jpeg"): return "image";
+                                    case ("image/jpg"): return "image";
+                                    case ("image/png"): return "image";
+                                    case ("image/gif"): return "gif";
+                                    case ("application/x-zip-compressed"): return "archive";
+                                    case ("text/plain"): return "format_align_center";
+                                    default: return "insert_drive_file";
+                                }
+                            };
+                            
+                            var createIcon = function (typeFile) {
+                                return softtion.html("i").setText($scope.getIconFile(typeFile)).create();
+                            };
+                            
+                            var createImage = function (classImg) {
+                                return softtion.html("div").addClass(["svg-icon", classImg, "cover"]).create();
+                            };
+                            
+                            $scope.getIconComponent = function (typeFile) {
+                                switch (typeFile) {
+                                    case ("application/pdf"): return createImage("pdf"); 
+                                    case ("application/x-zip-compressed"): return createImage("zip");
+                                    default: return createIcon(typeFile);
+                                }
+                            };
+                            
+                            $scope.fileHold = function (file, $event, $index) {
+                                if (softtion.isFunction($scope.eventHold)) {
+                                    $scope.eventHold(file, $event, $index);
+                                } // Se ha definido evento Hold en el componente
+                            };
+                            
+                            $scope.fileRight = function (file, $event, $index) {
+                                if (softtion.isFunction($scope.eventClickright)) {
+                                    $scope.eventClickright(file, $event, $index);
+                                } // Se ha definido evento Click derecho en el componente
+                            };
+                        }
+                    };
+                }]
+            },
+            
             FlexibleBox: {
                 name: "flexibleBox",
                 backgroundColor: function () {
@@ -2293,7 +2478,7 @@
                         addAttribute("ng-readonly", "true").
                         addAttribute("ng-click", "toggleSuggestions()").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("ng-class", "{hide: valueSelect}").
+                        addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -2382,7 +2567,7 @@
                                 } // No se permite cerrado automatico
                                 
                                 if (softtion.isDefined($scope.select)) {
-                                    $scope.valueInput = $scope.describeSuggestion($scope.select);
+                                    //S$scope.valueInput = $scope.describeSuggestion($scope.select);
                                 } // Cambiando valor del texto en el Input
                                 
                                 $scope.startShow = true; $scope.showList = true; $element.addClass("active"); 
@@ -2396,8 +2581,7 @@
                                 } // No se permite cerrado automatico
                             };
                             
-                            $scope.selectTemp = undefined; $scope.showList = false; 
-                            $scope.startShow = false; $scope.valueSelect = false; 
+                            $scope.selectTemp = undefined; $scope.showList = false; $scope.startShow = false; 
                             
                             $scope.describeSuggestion = function (suggestion) {
                                 if (softtion.isString(suggestion)) {
@@ -2407,6 +2591,10 @@
                                 } else {
                                     return JSON.stringify(suggestion);
                                 } // No se definido nada
+                            };
+                            
+                            $scope.isHaveText = function () {
+                                return softtion.isDefined($scope.select);
                             };
 
                             $scope.clickLabel = function ($event) { 
@@ -2454,7 +2642,7 @@
                                 
                                 list.animate({ scrollTop: item[0].offsetTop }, 175, "standardCurve"); 
                                 
-                                $scope.selectTemp = $scope.select; $scope.valueSelect = true;
+                                $scope.selectTemp = $scope.select; 
                                 
                                 list.find("li").removeClass("active"); item.addClass("active"); 
                                 
@@ -2467,7 +2655,7 @@
                             
                             $scope.clearSelection = function () {
                                 $scope.select = undefined; $scope.hideSuggestions();
-                                list.find("li").removeClass("active"); $scope.valueSelect = false;
+                                list.find("li").removeClass("active"); 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent("clear", $scope.select, $scope.selectTemp); 
@@ -2494,7 +2682,7 @@
                         addAttribute("ng-focus","focusInput($event)").
                         addAttribute("ng-readonly","true").
                         addAttribute("ng-disabled","ngDisabled").
-                        addAttribute("ng-class", "{hide: valueSelect}").
+                        addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("placeholder","{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -2521,7 +2709,7 @@
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
-                                addAttribute("ng-class", "{active: suggestion.checked}").
+                                addAttribute("ng-class", "{active: checkeds[$index]}").
                                 addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
                                 setText("{{describeSuggestion(suggestion)}}").
                                 addChildren(
@@ -2575,8 +2763,7 @@
                             // Atributos
                             var describeValues = Material.components.SelectMultiple.describeValues;
                         
-                            var temp = []; $scope.selects = $scope.selects || [];
-                            $scope.checkeds = []; $scope.valueSelect = false;
+                            var temp = []; $scope.selects = $scope.selects || []; $scope.checkeds = []; 
                             
                             $scope.selects.forEach(function (select) {
                                 var index = $scope.suggestions.indexOf(select);
@@ -2586,7 +2773,7 @@
                                 } 
                             }); // Verificando la lista de items
                             
-                            $scope.selects = temp; $scope.valueSelect = ($scope.selects.length > 0);
+                            $scope.selects = temp; // Cargando lista de activos
                             
                             var clickComponent = function (target) {
                                 return (label.is(target) || input.is(target) || value.is(target) || list.is(target))
@@ -2599,6 +2786,10 @@
                                         $scope.hideSuggestions(); // Ocultando opciones
                                     } // Se ha realizado click sobre el componente de Selección
                                 });
+                            };
+                            
+                            $scope.isHaveText = function () {
+                                return ($scope.selects.length > 0);
                             };
                             
                             $scope.showSuggestions = function () {
@@ -2666,8 +2857,6 @@
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent("select", $scope.selects); 
                                 } // Evento change sobre el componente
-                                
-                                $scope.valueSelect = ($scope.selects.length > 0);
                                     
                                 $event.stopPropagation(); // Deteniendo propagación
                             };
@@ -3758,8 +3947,7 @@
                         // Definiendo posicion eje X
                         if ((posOriginX + widthDropdown) <= (window.innerWidth + window.scrollX)) {
                             left = posOriginX; transformOrigin = transformOrigin + 1;
-                        } 
-                        else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
+                        } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
                             transformOrigin = transformOrigin + 3;
                             left = posOriginX + widthOrigin - widthDropdown - 10; 
                         } else { 
@@ -3800,7 +3988,67 @@
                             case (8): originEffect = "0 100%"; break;
                             case (10): originEffect = "100% 100%"; break;
                             default: originEffect = "0 0"; break;
-                        } // Definiiendo inicio del efecto
+                        } // Definiendo inicio del efecto
+                        
+                        dropdown.css({ 
+                            left: left, top: top, 
+                            "-moz-transform-origin": originEffect,
+                            "-webkit-transform-origin": originEffect,
+                            "-o-transform-origin": originEffect,
+                            "transform-origin": originEffect,
+                            "-ms-transform-origin": originEffect
+                         }); 
+                    },
+                    
+                    showXY: function (properties, left, top) {
+                        var dropdown = properties.component;
+                        dropdown.addClass("active"); // Activando dropdown
+                        
+                        var heightDropdown = dropdown.innerHeight(),
+                            widthDropdown = dropdown.innerWidth(),
+                            transformOrigin = 0, originEffect;
+                        
+                        // Definiendo posicion eje X
+                        if ((left + widthDropdown) <= (window.innerWidth + window.scrollX)) {
+                            transformOrigin = transformOrigin + 1;
+                        } else if ((left - widthDropdown) > 0) {
+                            transformOrigin = transformOrigin + 3;
+                            left = left - widthDropdown - 10; 
+                        } else { 
+                            transformOrigin = transformOrigin + 1; 
+                            left = window.innerWidth - widthDropdown - 10; 
+                        }
+
+                        // Definiendo posicion eje Y
+                        if (properties.belowOrigin) { 
+                            if ((top + heightDropdown) <= (window.innerHeight + window.scrollY)) {
+                                transformOrigin = transformOrigin + 4;
+                            } else if ((top - heightDropdown) > 0) {
+                                transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; 
+                            } else { 
+                                transformOrigin = transformOrigin + 4;
+                                top = window.innerHeight - heightDropdown - 10;  
+                            }
+                        } else { 
+                            if ((top + heightDropdown) <= window.innerHeight) {
+                                transformOrigin = transformOrigin + 4;
+                            } else if ((top - heightDropdown) > 0) {
+                                top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
+                            } else { 
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;
+                            }
+                        }
+                        
+                        switch (transformOrigin) {
+                            case (5): originEffect = "0 0"; break;
+                            case (7): originEffect = "100% 0"; break;
+                            case (8): originEffect = "0 100%"; break;
+                            case (10): originEffect = "100% 100%"; break;
+                            default: originEffect = "0 0"; break;
+                        } // Definiendo inicio del efecto
                         
                         dropdown.css({ 
                             left: left, top: top, 
@@ -3855,6 +4103,24 @@
                         if (softtion.isDefined(Properties.component)) {
                             Properties.origin = origin; // Estableciendo origen
                             Material.providers.Dropdown.handler.show(Properties); 
+                            
+                            if (autoclose) {
+                                var $body = angular.element(document.body); // Documento
+                                
+                                $body.on("click.hidedropdown", function (ev) {
+                                    if (Properties.component.find(ev.target).length === 0) {
+                                        self.hide(); $body.off("click.hidedropdown");
+                                    } // Se debe cerrar el dropdown de manera automatica
+                                });
+                            }
+                        } // Esta definido el dropdown en el Provedor
+                    };
+                    
+                    Dropdown.prototype.showXY = function (left, top, autoclose) {
+                        var self = this; // Objeto dropdown
+                        
+                        if (softtion.isDefined(Properties.component)) {
+                            Material.providers.Dropdown.handler.showXY(Properties, left, top); 
                             
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
@@ -4003,7 +4269,7 @@
                 moveButton: function (isShow, height) {
                     var button = angular.element("button.floating");
                         
-                    if (button.exists() && (window.innerWidth <= 640)) {
+                    if (button.exists() && (window.innerWidth <= 640) && !button.hasClass("static")) {
                         (!isShow) ? button.css("margin-bottom", "0px") :
                             button.css("margin-bottom", (height) + "px");
                     } // Se debe cambiar posición del Botón en la Pantalla
@@ -4123,7 +4389,7 @@
                 moveButton: function (isShow, height) {
                     var button = angular.element("button.floating");
                         
-                    if (button.exists() && (window.innerWidth <= 640)) {
+                    if (button.exists() && (window.innerWidth <= 640) && !button.hasClass("static")) {
                         (!isShow) ? button.css("margin-bottom", "0px") :
                             button.css("margin-bottom", (height - 16) + "px");
                     } // Se debe cambiar posición del Botón en la Pantalla

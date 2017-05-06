@@ -39,20 +39,6 @@
             return jQuery(this).prop("tagName"); 
         },
         
-        enter: function (functionEnter) {
-            var component = jQuery(this); // Componente
-            
-            if (component.tagName() === "INPUT") {
-                component.keyup(function (ev) {
-                    if (ev.which === 13) { 
-                        if (softtion.isFunction(functionEnter)) { functionEnter(component); }
-                    } // Presiono la tecla ENTER
-                });
-            } // Componente es un INPUT
-            
-            return component; // Retornando interfaz fluida
-        },
-        
         deployHtml: function (options) {
             var $default = {
                 before: undefined,     // Proceso antes de cargar HTML
@@ -140,10 +126,6 @@
             });
         },
         
-        cleanInput: function () {
-            jQuery(this).removeClass("error").removeClass("active");
-        },
-        
         fixed: function () {
             var element = this[0], parent = element.offsetParent,
                 top = element.offsetTop, left = element.offsetLeft;
@@ -155,6 +137,148 @@
             } // El elemento esta contenido en otro
             
             return { top: top, left: left };
+        },
+        
+        // Eventos
+        
+        enter: function (callback) {
+            var component = jQuery(this); // Componente
+            
+            if (component.tagName() === "INPUT") {
+                component.keyup(function (ev) {
+                    if (ev.which === 13) { 
+                        if (softtion.isFunction(callback)) { callback(component); }
+                    } // Presiono la tecla ENTER
+                });
+            } // Componente es un INPUT
+            
+            return component; // Retornando interfaz fluida
+        },
+        
+        mousehold: function (callback, time) {
+            time = isNaN(time) ? 1000 : time;
+            
+            var component = jQuery(this), // Componente para evento
+                timeout = undefined;
+                
+            component.mousedown(function (event) {
+                timeout = setTimeout(function () { callback(event); }, time);
+            });
+            
+            component.mouseup(function () { clearTimeout(timeout); });
+            
+            component.mousemove(function () { clearTimeout(timeout); });
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        touchstart: function (callback) {
+            var component = jQuery(this); // Componente para evento
+            
+            if ("ontouchstart" in window) {
+                component[0].addEventListener("touchstart", callback, false);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        touchmove: function (callback) {
+            var component = jQuery(this); // Componente para evento
+            
+            if ("ontouchstart" in window) {
+                component[0].addEventListener("touchmove", callback, false);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        touchcancel: function (callback) {
+            var component = jQuery(this); // Componente para evento
+            
+            if ("ontouchstart" in window) {
+                component[0].addEventListener("touchcancel", callback, false);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        touchend: function (callback) {
+            var component = jQuery(this); // Componente para evento
+            
+            if ("ontouchstart" in window) {
+                component[0].addEventListener("touchend", callback, false);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        touchhold: function (callback, time) {
+            time = isNaN(time) ? 1000 : time;
+            
+            var component = jQuery(this), // Componente para evento
+                timeout = undefined;
+                
+            component.touchstart(function (event) {
+                timeout = setTimeout(function () { callback(event); }, time);
+            });
+            
+            component.touchend(function () { clearTimeout(timeout); });
+            
+            component.touchmove(function () { clearTimeout(timeout); });
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        pointerdown: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                fn = function (event) { callback(event); };
+            
+            if (!("ontouchstart" in window)) {
+                component.mousedown(fn);
+            } else {
+                component.touchstart(fn);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        pointermove: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                fn = function (event) { callback(event); };
+            
+            if (!("ontouchstart" in window)) {
+                component.mousemove(fn);
+            } else {
+                component.touchmove(fn);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        pointerup: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                fn = function (event) { callback(event); };
+            
+            if (!("ontouchstart" in window)) {
+                component.mouseup(fn);
+            } else {
+                component.touchend(fn);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        pointerhold: function (callback, time) {
+            var component = jQuery(this), // Componente para evento
+                fn = function (event) { callback(event); };
+            
+            if (!("ontouchstart" in window)) {
+                component.mousehold(fn, time);
+            } else {
+                component.touchhold(fn, time);
+            } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
         }
     });
     
@@ -208,8 +332,8 @@
     });
     
     // Registrando funciones Cubic Biezer de Material Design
-    jQuery.registerCubicBiezer("standardCurve",[0.4, 0.2, 0, 1]);
-    jQuery.registerCubicBiezer("easingOut",[0, 0, 0.2, 1]);
-    jQuery.registerCubicBiezer("easingIn",[0.4, 0, 0, 1]);
-    jQuery.registerCubicBiezer("sharpCurve",[0.4, 0, 0.6, 1]);
+    jQuery.registerCubicBiezer("standardCurve", [0.4, 0.2, 0, 1]);
+    jQuery.registerCubicBiezer("easingOut", [0, 0, 0.2, 1]);
+    jQuery.registerCubicBiezer("easingIn", [0.4, 0, 0, 1]);
+    jQuery.registerCubicBiezer("sharpCurve", [0.4, 0, 0.6, 1]);
 });

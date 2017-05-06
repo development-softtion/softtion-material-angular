@@ -135,6 +135,24 @@ input[type=number]::-webkit-outer-spin-button {
 .material-icon.mi-400 { 
     font-size: 56px; }
 
+/** SVG-ICONS */
+
+.svg-icon {
+    width: 56px;
+    height: 56px; }
+
+.svg-icon.pdf {
+    -webkit-mask: url(icons/file-pdf.svg) no-repeat 50% 50%;
+    mask: url(icons/file-pdf.svg) no-repeat 50% 50%; }
+
+.svg-icon.zip {
+    -webkit-mask: url(icons/zip-box.svg) no-repeat 50% 50%;
+    mask: url(icons/zip-box.svg) no-repeat 50% 50%; }
+
+.svg-icon.cover {
+    -webkit-mask-size: cover;
+    mask-size: cover; }
+
 /** LAYOUTS, DIMENSIONS, TOOLS */
 
 .row {
@@ -1534,6 +1552,9 @@ button.raised:hover {
 
 button.floating:hover {
     box-shadow: var(--shadow-8); }
+
+button.floating:hover:disabled {
+    box-shadow: var(--shadow-6); }
 
 button.raised:before, button.flat:before, button.floating:before {
     content: "";
@@ -3218,6 +3239,181 @@ button.raised:focus:after, button.flat:focus:after {
 .expansion-panel.active > .body > .content {
     margin-top: 0% !important; }
 
+/** FILECHOOSER MULTIPLE */
+
+.file-chooser-multiple {
+    position: relative;
+    float: left;
+    width: 100%;
+    margin: 8px 0px;
+    overflow: hidden; }
+
+.file-chooser-multiple > input[type=file] {
+    position: absolute;
+    width: 0%;
+    height: 0%;
+    visibility: hidden; }
+
+.file-chooser-multiple > .content {
+    width: 100%;
+    height: calc(100% - 78px);
+    padding: 8px;
+    box-sizing: border-box;
+    overflow: scroll;
+    border-radius: 4px; }
+
+.file-chooser-multiple > .content > .select-file > i {
+    width: 100%;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    font-size: 60px;
+    margin-top: 16px; }
+
+.file-chooser-multiple > .content > .select-file > p {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 8px; }
+
+.file-chooser-multiple > .content > .select-file > p.disabled {
+    text-decoration: line-through; }
+
+.file-chooser-multiple > .content > .file {
+    position: relative;
+    float: left;
+    padding: 4px;
+    box-sizing: border-box;
+    cursor: pointer; 
+    outline: none; }
+
+.file-chooser-multiple > .content > .file::before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-top: 100%; }
+
+.file-chooser-multiple > .content > .file > .content {
+    position: absolute;
+    top: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    box-sizing: border-box;
+    box-shadow: var(--shadow-1);
+    border-radius: 2px; }
+
+.file-chooser-multiple > .content > .file > .content:hover {
+    box-shadow: var(--shadow-4); }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 48px);
+    overflow: hidden;
+    border-radius: 2px 2px 0px 0px; }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > .icon {
+    height: 100%; }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 56px;
+    width: 56px;
+    line-height: 56px;
+    text-align: center;
+    font-size: 56px;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > img {
+    position: absolute;
+    top: 50%;
+    width: 100%; 
+    -moz-transform: translateY(-50%); 
+    -webkit-transform: translateY(-50%); 
+    transform: translateY(-50%); 
+    -o-transform: translateY(-50%); 
+    -ms-transform: translateY(-50%); }
+
+.file-chooser-multiple > .content > .file > .content > .detail {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    padding: 8px;
+    height: 48px;
+    line-height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box; }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .avatar {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    line-height: 32px; }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .avatar > i {
+    height: inherit;
+    line-height: inherit;
+    width: inherit; 
+    text-align: center; }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .name {
+    display: block;
+    width: calc(100% - 40px);
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.file-chooser-multiple > .content > .file > .content > button.action {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 8px;
+    height: 24px;
+    box-sizing: content-box; }
+
+.file-chooser-multiple > button.floating {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    z-index: 1;
+    box-shadow: var(--shadow-2);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%); }
+
+.file-chooser-multiple > button.floating:hover {
+    box-shadow: var(--shadow-4); }
+
+.file-chooser-multiple > button.floating:hover:disabled {
+    box-shadow: var(--shadow-2); }
+
 /** FLEXIBLE BOX */
 
 .flexible-box {
@@ -3960,7 +4156,7 @@ button.raised:focus:after, button.flat:focus:after {
 .select.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.select > input.hide::-webkit-input-placeholder {
+.select > input.holderhide::-webkit-input-placeholder {
     visibility: hidden; }
 
 .select.label-hidden.icon-active > input {
@@ -4206,7 +4402,7 @@ button.raised:focus:after, button.flat:focus:after {
 .select-multiple.label-hidden > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.select-multiple > input.hide::-webkit-input-placeholder {
+.select-multiple > input.holderhide::-webkit-input-placeholder {
     visibility: hidden; }
 
 .select-multiple.label-hidden > input {

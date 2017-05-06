@@ -25,6 +25,7 @@
     --light-background-active: rgba(189, 189, 189, 0.2);
     --light-background-hover: rgba(189, 189, 189, 0.38);
     --light-background-focus: rgba(189, 189, 189, 0.54);
+    --light-background-border: rgba(117, 117, 117, 0.58);
     /** #ffffff: white */
     --light-ripple: rgba(255, 255, 255, 0.5);
     
@@ -45,6 +46,7 @@
     --dark-background-active: rgba(224, 224, 224, 0.2);
     --dark-background-hover: rgba(224, 224, 224, 0.54);
     --dark-background-focus: rgba(224, 224, 224, 0.38);
+    --dark-background-border: rgba(224, 224, 224, 0.68);
     /** #000000: black */
     --dark-ripple: rgba(0, 0, 0, 0.38);
     
@@ -392,7 +394,7 @@ button.raised.primary:disabled, button.raised.primary:disabled:hover {
 
 button.floating { 
     background-color: var(--light-background-component);
-    color: var(--dark-primary-font); }
+    color: var(--dark-secondary-font); }
 
 .dark button.floating { 
     background-color: var(--dark-background-component);
@@ -1044,7 +1046,87 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-/** FLEXIBLE TEXT */
+/** FILECHOOSER MULTIPLE */
+
+.file-chooser-multiple > .content {
+    background: var(--light-background);
+    border: 2px dashed var(--light-background-border); }
+
+.dark .file-chooser-multiple > .content {
+    background: var(--dark-background);
+    border: 2px dashed var(--light-background-border); }
+
+.file-chooser-multiple > .content > .select-file > i,
+.file-chooser-multiple > .content > .select-file > p {
+    color: var(--dark-secondary-font); }
+
+.dark .file-chooser-multiple > .content > .select-file > i,
+.dark .file-chooser-multiple > .content > .select-file > p {
+    color: var(--light-primary-font); }
+
+.file-chooser-multiple > .content > .select-file > i.disabled,
+.file-chooser-multiple > .content > .select-file > p.disabled {
+    color: var(--dark-disabled-font); }
+
+.dark .file-chooser-multiple > .content > .select-file > i.disabled,
+.dark .file-chooser-multiple > .content > .select-file > p.disabled {
+    color: var(--light-disabled-font); }
+
+.file-chooser-multiple > .content > .select-file > p.disabled {
+    text-decoration-color: var(--dark-disabled-font); }
+
+.dark .file-chooser-multiple > .content > .select-file > p.disabled {
+    text-decoration-color: var(--light-disabled-font); }
+
+.file-chooser-multiple > .content > .file > .content { 
+    background: var(--light-background-component); }
+
+.dark .file-chooser-multiple > .content > .file > .content { 
+    background: var(--dark-background-component); }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > .svg-icon {
+    background: var(--dark-secondary-font); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .view-preview > .icon > .svg-icon {
+    background: var(--light-primary-font); }
+
+.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > i {
+    color: var(--dark-secondary-font); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .view-preview > .icon > i {
+    color: var(--light-primary-font); }
+
+.file-chooser-multiple > .content > .file > .content > .detail {
+    background: var(--light-background-component); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .detail {
+    background: var(--dark-background-component); }
+
+.file-chooser-multiple > .content > .file:focus > .content > .detail {
+    background: var(--theme-background); }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .name {
+    color: var(--dark-secondary-font); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .detail > .name {
+    color: var(--light-primary-font); }
+
+.file-chooser-multiple > .content > .file:focus > .content > .detail > .name {
+    color: var(--light-primary-font); }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .avatar {
+    background: var(--light-background-component); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .detail > .avatar {
+    background: var(--dark-background-component); }
+
+.file-chooser-multiple > .content > .file > .content > .detail > .avatar > i { 
+    color: var(--dark-secondary-font); }
+
+.dark .file-chooser-multiple > .content > .file > .content > .detail > .avatar > i { 
+    color: var(--light-primary-font); }
+
+/** FLEXIBLE BOX */
 
 .flexible-box > .banner > .background-color {
     background-color: var(--theme-background-dark); }
