@@ -379,7 +379,7 @@
                     return {
                         restrict: "C",
                         scope: {
-                            views: "@viewBox",
+                            views: "@",
                             
                             // Eventos
                             viewEvent: "=?"
@@ -389,8 +389,8 @@
                             var rippleBox = angular.element(
                                     Material.components.BottomNavigation.ripple()
                                 ),
-                                tabs = $element.find(".content > li"),
-                                tabActive = $element.find(".content > li.active:first"), 
+                                items = $element.find(".content > li"),
+                                itemActive = $element.find(".content > li.active:first"), 
                                 fab = angular.element("button.floating"),
                                 views = angular.element($scope.views), toast,
                                 appContent = angular.element(".app-content"), snackbar;
@@ -407,23 +407,25 @@
                                 fab.addClass("show-bottom-navigation");
                             } // Cambiando posición original
                             
-                            tabs.attr("tab-index","-1"); // Haciendo enfocables
-                            tabs.removeClass("active");  // Desactivando opciones
+                            items.attr("tab-index","-1"); items.removeClass("active"); 
                             
-                            if (!tabActive.exists()) {
-                                tabActive = angular.element(tabs[0]);
+                            if (!itemActive.exists()) {
+                                itemActive = angular.element(items[0]);
                             } // Se establece como activo primero de lista
                             
-                            tabActive.addClass("active");
+                            itemActive.addClass("active");
                             
-                            switch (tabs.length) {
+                            var viewStart = views.find(itemActive.attr("view"));
+                            viewStart.addClass("active"); // Activando vista
+                            
+                            switch (items.length) {
                                 default: $element.addClass("five-tabs"); break; 
                                 case (3): $element.addClass("three-tabs"); break;
                                 case (4): $element.addClass("four-tabs"); break;
                             } // Estableciendo dimensión
                                 
                             if ($element.hasClass("shifting")) {
-                                var classColorOption = tabActive.attr("color");
+                                var classColorOption = itemActive.attr("color");
                                 
                                 if (softtion.isString(classColorOption)) {
                                     classColor = classColorOption;
@@ -432,18 +434,18 @@
                                 $element.addClass(classColor); // Color
                             } // Se debe establecer color base del componente
                                 
-                            tabs.click(function (event) {
-                                var option = angular.element(this); // Opción activada
+                            items.click(function (event) {
+                                var item = angular.element(this); // Opción activada
                                 
-                                if (option.hasClass("active")) {
+                                if (item.hasClass("active")) {
                                     return;
                                 } // La opción es la actualmente activa
                                 
-                                tabs.removeClass("active"); option.addClass("active");
+                                items.removeClass("active"); item.addClass("active");
                                 
-                                var viewTab = views.find(option.attr("view-tab"));
+                                var view = views.find(item.attr("view"));
                                 
-                                if (viewTab.exists() && !viewTab.hasClass("active")) {
+                                if (view.exists() && !view.hasClass("active")) {
                                     appContent.scrollTop(0); // Posición inicial
                                     var viewActive = views.find(".content.active");
                                     
@@ -451,22 +453,20 @@
                                         viewActive.removeClass("opacity").removeClass("active");
                                     } // Ocultando componente activo
                                     
-                                    viewTab.addClass("active").removeClass("slide-in-left").
-                                        removeClass("slide-in-right").addClass("opacity-bottom");
+                                    view.addClass("active").addClass("opacity-bottom");
                                 } // Componente exite y esta oculto
                                 
-                                var effect = rippleBox.find(".effect"); 
-                                rippleBox.addClass("show"); // Visualizando el ripple
+                                var effect = rippleBox.find(".effect"); rippleBox.addClass("show"); 
                                 
                                 if (rippleBox.hasClass("animated")) {
                                     rippleBox.removeClass("animated");
                                 } // Removiendo animación ripple
                                 
-                                var top = (option.height() / 2), left = option.offset().left; 
-                                    left += (option.outerWidth() / 2) - $element.offset().left;
+                                var top = (item.height() / 2), left = item.offset().left; 
+                                    left += (item.outerWidth() / 2) - $element.offset().left;
                                     
                                 if ($element.hasClass("shifting")) {
-                                    var classColorOption = option.attr("color");
+                                    var classColorOption = item.attr("color");
                                     
                                     $element.removeClass(classColor);
                                 
@@ -3606,14 +3606,14 @@
         },
         
         properties: {
-            BottomNavigation: {
-                name: "bottomNavigation",
-                directive: ["$bottomNavigation", function ($bottomNavigation) {
+            BottomSheet: {
+                name: "bottomSheet",
+                directive: ["$bottomSheet", function ($bottomSheet) {
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
                             $element.click(function (event) {
-                                $bottomNavigation.set($attrs.bottomNavigation).show();
+                                $bottomSheet.set($attrs.bottomNavigation).show();
                             });
                         }
                     };
