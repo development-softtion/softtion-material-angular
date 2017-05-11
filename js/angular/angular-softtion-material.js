@@ -65,7 +65,7 @@
                                 });
                             }                            
                             
-                            appContent.css("padding-top", heightElement);
+                            appContent.css("top", heightElement); appContent.css("padding-bottom", heightElement);
                         }
                     };
                 }
@@ -130,6 +130,7 @@
                             ngDisabled: "=?",
                             required: "=?",
                             keyDescription: "@",
+                            functionDescription: "=?",
                             label: "@",
                             suggestions: "=",
                             icon: "@",
@@ -273,22 +274,15 @@
                                 if (focusLi) {
                                     focusLi = false; // Se ha enfocado Lista
                                 } else {
-                                    if (softtion.isUndefined($scope.suggestionSelect) && !softtion.isString($scope.valueInput)) {
+                                    if ($scope.valueInput === "") {
+                                        $element.removeClass("active"); list.removeClass("active");
+                                    } else if (softtion.isUndefined($scope.suggestionSelect) && !softtion.isString($scope.valueInput)) {
                                         $element.removeClass("active"); 
                                     } else if (this.suggestionsFilter.length === 0) {
                                         list.removeClass("active"); $scope.suggestionSelect = undefined;
                                         $scope.clearSuggestion = true;
                                     } else {
-                                        if (softtion.isDefined($scope.suggestionSelect)) {
-                                            list.removeClass("active"); 
-                                            
-                                            if (typeof $scope.suggestionSelect === "string") {
-                                                $scope.valueInput = $scope.suggestionSelect;
-                                            } else {
-                                                $scope.valueInput = (!(softtion.isString($scope.keyDescription)) ? $scope.suggestionSelect.toString() :
-                                                    softtion.findKey($scope.suggestionSelect, $scope.keyDescription));
-                                            }
-                                        } else { list.removeClass("active"); }
+                                        list.removeClass("active"); 
                                     }
                                     
                                     $scope.hideValue = false; // Activando vista del componente
@@ -315,9 +309,14 @@
                             };
 
                             $scope.renderSuggestion = function (suggestion) {
-                                // Texto a mostrar en la lista
-                                var value = !(softtion.isString($scope.keyDescription)) ? suggestion :
-                                    softtion.findKey(suggestion, $scope.keyDescription);
+                                var value; // Texto a mostrar en la lista
+                                
+                                if (softtion.isFunction($scope.functionDescription)) {
+                                    value = $scope.functionDescription(suggestion);
+                                } else {
+                                    value = !(softtion.isString($scope.keyDescription)) ? suggestion :
+                                        softtion.findKey(suggestion, $scope.keyDescription);
+                                } // Se ha definido función para describir contenido
 
                                 // Valor digitado para filtrar
                                 var filter = $scope.valueInput.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -397,7 +396,9 @@
                                 appContent = angular.element(".app-content"), snackbar;
                         
                             $element.append(rippleBox); // Agregando ripple
-                            appContent.css("padding-bottom", "32px");
+                            
+                            var paddingBottom = parseInt(appContent.css("padding-bottom"));
+                            appContent.css("padding-bottom", (paddingBottom + 32) + "px");
                         
                             // Atributos
                             var classColor = "default", position = 0, classHide = "hide";
@@ -1391,6 +1392,10 @@
                         
                             $scope.selection = ($scope.selectMultiple) ? [] : undefined;
                             
+                            if (softtion.isDefined($scope.rowsData)) {
+                                
+                            } // Se han definido lista de datos a manipular
+                            
                             $scope.clickSelectAll = function () {
                                 if ($scope.selectMultiple) {
                                     $scope.selection = []; // Reiniciando lista de selección
@@ -2312,25 +2317,32 @@
                                 title = toolbar.children(".title"),
                                 detail = toolbar.children(".detail");
                         
-                            var height = banner.height();
+                            var height = banner.height(),
+                                background = angular.element(
+                                    Material.components.FlexibleBox.backgroundColor()
+                                );
                             
-                            var background = angular.element(
-                                Material.components.FlexibleBox.backgroundColor()
-                            ).insertBefore(toolbar);
+                            if (toolbar.exists()) {
+                                background.insertBefore(toolbar);
+                            } else {
+                                banner.append(background); 
+                            } // No existe un Toolbar en el banner
 
                             box.scroll(function () {
+                                var heightToolbar = (window.innerWidth > 960) ? 64 : 56;
+                                
                                 var scroll = angular.element(this).scrollTop();
 
-                                var opacity = scroll / height, margin = height - scroll - 56,
+                                var opacity = scroll / height, margin = height - scroll - heightToolbar,
                                     heightBanner = height - scroll;
 
-                                heightBanner = (heightBanner < 56) ? 56 : heightBanner;
+                                heightBanner = (heightBanner < heightToolbar) ? heightToolbar : heightBanner;
                                 margin = (margin < 0) ? 0 : margin;
-                                opacity = (heightBanner === 56) ? 1 : (opacity > 1) ? 1 : opacity;
+                                opacity = (heightBanner === heightToolbar) ? 1 : (opacity > 1) ? 1 : opacity;
 
                                 var fontSizeTitle = 28 - (opacity * 8),
-                                    fontSizeDetailSubTitle = 16 - (opacity * 4),
-                                    fontSizeDetailTitle = 30 - (opacity * 12);
+                                    fontSizeDetailSubTitle = 14 - (opacity * 2),
+                                    fontSizeDetailTitle = 24 - (opacity * 6);
                                 
                                 banner.css("height", heightBanner); background.css("opacity", opacity);
 
@@ -2493,7 +2505,7 @@
 
                     var button = softtion.html("button").addClass("action").
                             addChildren(
-                                softtion.html("i").addClass("action-icon").setText("expand_more").
+                                softtion.html("i").addClass("action-icon").setText("arrow_drop_down").
                                     addAttribute("ng-class", "{active: showList}")
                             ).
                             addAttribute("ng-hide", "ngDisabled").
@@ -2698,7 +2710,7 @@
 
                     var button = softtion.html("button").addClass("action").
                         addChildren(
-                            softtion.html("i").addClass("action-icon").setText("expand_more").
+                            softtion.html("i").addClass("action-icon").setText("arrow_drop_down").
                                 addAttribute("ng-class", "{active: showList}")
                         ).addAttribute("ng-hide", "ngDisabled").
                         addAttribute("ng-click","toggleSuggestions()");
@@ -2984,10 +2996,6 @@
                             
                             if (tabs.exists()) {
                                 tabs.attr("tabindex", "-1"); // Haciendo componentes enfocables
-                                
-                                if ($element.hasClass("fixed")) {
-                                    tabs.css("width", (100 / tabs.length) +"%");
-                                }
 
                                 angular.forEach(tabs, function (tab) { 
                                     angular.element(tab).data("position", index); index++;
@@ -3929,6 +3937,8 @@
                         properties.component.addClass("active"); // Activando dropdown
                         
                         var dropdown = properties.component, origin = properties.origin;
+                        var topContent = parseInt(angular.element(".app-content").css("top"));
+                        var leftBody = parseInt(angular.element(".app-body").css("left"));
                         
                         var heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
@@ -3936,10 +3946,8 @@
                             heightOrigin = (origin) ? origin.innerHeight() : 0, 
                             widthOrigin = (origin) ? origin.innerWidth() : 0,
                             
-                            posOriginY = (origin) ? (dropdown.hasClass("fixed")) ?
-                                origin.fixed().top : origin.offset().top : 0,
-                            posOriginX = (origin) ? (dropdown.hasClass("fixed")) ?
-                                origin.fixed().left : origin.offset().left : 0,
+                            posOriginY = (origin) ? origin.fixed().top : 0,
+                            posOriginX = (origin) ? origin.fixed().left : 0,
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
@@ -3990,8 +3998,12 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
+                        if (!dropdown.hasClass(".fixed")) {
+                            left = left - leftBody; top = top - topContent;
+                        } // Componente no ignora a sus contenedores
+                        
                         dropdown.css({ 
-                            left: left, top: top, 
+                            left: left, top: top,
                             "-moz-transform-origin": originEffect,
                             "-webkit-transform-origin": originEffect,
                             "-o-transform-origin": originEffect,
@@ -4012,11 +4024,9 @@
                         if ((left + widthDropdown) <= (window.innerWidth + window.scrollX)) {
                             transformOrigin = transformOrigin + 1;
                         } else if ((left - widthDropdown) > 0) {
-                            transformOrigin = transformOrigin + 3;
-                            left = left - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 3; left = left - widthDropdown - 10; 
                         } else { 
-                            transformOrigin = transformOrigin + 1; 
-                            left = window.innerWidth - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 1; left = window.innerWidth - widthDropdown - 10; 
                         }
 
                         // Definiendo posicion eje Y
@@ -4024,21 +4034,17 @@
                             if ((top + heightDropdown) <= (window.innerHeight + window.scrollY)) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                transformOrigin = transformOrigin + 7;
-                                top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7; top = top - heightDropdown; 
                             } else { 
-                                transformOrigin = transformOrigin + 4;
-                                top = window.innerHeight - heightDropdown - 10;  
+                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;  
                             }
                         } else { 
                             if ((top + heightDropdown) <= window.innerHeight) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                top = top - heightDropdown; 
-                                transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; transformOrigin = transformOrigin + 7;
                             } else { 
-                                transformOrigin = transformOrigin + 4; 
-                                top = window.innerHeight - heightDropdown - 10;
+                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;
                             }
                         }
                         
@@ -4062,10 +4068,8 @@
                 },
                 method: function () {
                     var Properties = {
-                        id: "", 
-                        belowOrigin: true, 
-                        component: undefined, 
-                        origin: undefined
+                        id: "", belowOrigin: true, 
+                        component: undefined, origin: undefined
                     };
                     
                     var Dropdown = function () { };
@@ -4107,8 +4111,8 @@
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
                                 
-                                $body.on("click.hidedropdown", function (ev) {
-                                    if (Properties.component.find(ev.target).length === 0) {
+                                $body.on("click.hidedropdown", function (event) {
+                                    if (Properties.component.find(event.target).length === 0) {
                                         self.hide(); $body.off("click.hidedropdown");
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
@@ -4468,6 +4472,10 @@
     
     // Rutas virtuales de los componentes SofttionMaterial
     ngMaterial.run(["$templateCache", function ($templateCache) {
+        if (!("ontouchstart" in window)) {
+            angular.element("body").addClass("not-touch");
+        } // No soporta eventos Touch
+        
         angular.forEach(Material.components, function (component) {
             if (softtion.isDefined(component["route"])) {
                 $templateCache.put(component.route, component.html());

@@ -72,21 +72,44 @@ body {
 .body-overflow-none {
     overflow: hidden; }
 
-@media only screen and (min-width : 361px) {
-    ::-webkit-scrollbar {
-        background: transparent; 
-        width: 5px; }
+/** SCROLLBAR */
 
-    ::-webkit-scrollbar-button {
-        width: 0px;
-        height: 0px; }
+body.not-touch *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; }
 
-    ::-webkit-scrollbar-track {
-        background: transparent; }
+body.not-touch *::-webkit-scrollbar-track {
+    background-color: transparent; }
 
-    ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.25); }
-}
+body.not-touch *:hover::-webkit-scrollbar-track {
+    background-color: #eeeeee; }
+
+body.dark.not-touch *:hover::-webkit-scrollbar-track {
+    background-color: #757575; }
+
+body.not-touch *:hover::-webkit-scrollbar-track:vertical {
+    border-left: 1px solid #bdbdbd; }
+
+body.dark.not-touch *:hover::-webkit-scrollbar-track:vertical {
+    border-left: 1px solid #9e9e9e; }
+
+body.not-touch *:hover::-webkit-scrollbar-track:horizontal {
+    border-top: 1px solid #bdbdbd; }
+
+body.dark.not-touch *:hover::-webkit-scrollbar-track:horizontal {
+    border-top: 1px solid #9e9e9e; }
+
+body.not-touch *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); }
+
+body.dark.not-touch *::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.38); }
+
+body.not-touch *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.38); }
+
+body.dark.not-touch *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.65); }
 
 ul {
     list-style-type: none; 
@@ -870,7 +893,9 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 0;
     margin: 0;     
     width: 100%; 
-    height: 100%; }
+    height: 100%;
+    transition: left 0.3s var(--easing-in), width 0.3s var(--easing-in);
+}
 
 @media only screen and (min-width : 961px) {
 
@@ -2102,10 +2127,10 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px; }
 
 .carousel > .arrow.prev {
-    left: 16px; }
+    left: 8px; }
 
 .carousel > .arrow.next {
-    right: 16px; }
+    right: 8px; }
 
 /** CHECKBOX */
 
@@ -2123,7 +2148,10 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
-    display: inline-block;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     padding-left: 32px;
     height: 24px;
     font-weight: 500;
@@ -2693,40 +2721,43 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: content-box;
     margin-right: 1px; }
 
-.datatable > table {
+.datatable > .content {
+    overflow-x: auto; }
+
+.datatable > .content > table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0; }
 
-.datatable > table > thead, .datatable > table > tbody {
+.datatable > .content > table > thead, .datatable > .content > table > tbody {
     display: block; }
 
-.datatable > table > thead > tr > th {
+.datatable > .content > table > thead > tr > th {
     font-weight: 700;
     height: 54px; 
     line-height: 54px; }
 
-.datatable > table > thead > tr, .datatable > table > tbody > tr {
+.datatable > .content > table > thead > tr, .datatable > .content > table > tbody > tr {
     padding: 0 16px; 
     display: flex;
     overflow-y: auto;
     box-sizing: border-box; }
 
-.datatable > table > tbody {
+.datatable > .content > table > tbody {
     overflow-x: hidden;
     overflow-y: auto; }
 
-.datatable > table > tbody > tr > td {
+.datatable > .content > table > tbody > tr > td {
     font-weight: 300;
     height: 47px; 
     line-height: 47px; }
 
-.datatable.card-table > table > tbody > tr:last-child {
+.datatable.card-table > .content > table > tbody > tr:last-child {
     height: 48px; 
     line-height: 48px; }
 
-.datatable > table > thead > tr > th, 
-.datatable > table > tbody > tr > td {
+.datatable > .content > table > thead > tr > th, 
+.datatable > .content > table > tbody > tr > td {
     display: block;
     float: left;
     font-size: 14px;
@@ -2736,45 +2767,45 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     white-space: nowrap; }
 
-.datatable > table > thead > tr > th.center, 
-.datatable > table > tbody > tr > td.center {
+.datatable > .content > table > thead > tr > th.center, 
+.datatable > .content > table > tbody > tr > td.center {
     text-align: center; }
 
-.datatable > table > thead > tr > th.left, 
-.datatable > table > tbody > tr > td.left {
+.datatable > .content > table > thead > tr > th.left, 
+.datatable > .content > table > tbody > tr > td.left {
     text-align: left; }
 
-.datatable > table > thead > tr > th.right, 
-.datatable > table > tbody > tr > td.right {
+.datatable > .content > table > thead > tr > th.right, 
+.datatable > .content > table > tbody > tr > td.right {
     text-align: right; }
 
-.datatable > table tbody tr {
+.datatable > .content > table tbody tr {
     -moz-transition: background-color 0.3s var(--sharp-curve);
     -webkit-transition: background-color 0.3s var(--sharp-curve);
     -o-transition: background-color 0.3s var(--sharp-curve);
     transition: background-color 0.3s var(--sharp-curve);
     -ms-transition: background-color 0.3s var(--sharp-curve); }
 
-.datatable > table > thead > tr > th > button.action,
-.datatable > table > tbody > tr > td > button.action {
+.datatable > .content > table > thead > tr > th > button.action,
+.datatable > .content > table > tbody > tr > td > button.action {
     padding: 12px;
     box-sizing: content-box; }
 
-.datatable > table > thead > tr > th.checkbox-table,
-.datatable > table > tbody > tr > td.checkbox-table {
+.datatable > .content > table > thead > tr > th.checkbox-table,
+.datatable > .content > table > tbody > tr > td.checkbox-table {
     padding-right: 16px; }
 
-.datatable > table > thead > tr > th.checkbox-table > .checkbox-control,
-.datatable > table > tbody > tr > td.checkbox-table > .checkbox-control {
+.datatable > .content > table > thead > tr > th.checkbox-table > .checkbox-control,
+.datatable > .content > table > tbody > tr > td.checkbox-table > .checkbox-control {
     width: 22px;
     height: 22px;
     line-height: 22px; 
     margin: 0px; }
 
-.datatable > table > thead > tr > th.checkbox-table > .checkbox-control {
+.datatable > .content > table > thead > tr > th.checkbox-table > .checkbox-control {
     margin-top: 17px; }
 
-.datatable > table > tbody > tr > td.checkbox-table > .checkbox-control {
+.datatable > .content > table > tbody > tr > td.checkbox-table > .checkbox-control {
     margin-top: 13px; }
 
 /** DATEPICKER */
@@ -3472,14 +3503,14 @@ button.raised:focus:after, button.flat:focus:after {
 .flexible-box.square > .banner > .toolbar > .title {
     margin-top: calc(100% - 56px); }
 
-.flexible-box > .banner > .toolbar > .detail > .title {
-    font-size: 30px; }
-
-.flexible-box > .banner > .toolbar > .detail > .subtitle {
-    font-size: 16px; }
-
 .flexible-box > .banner > .toolbar > .detail {
     margin-top: calc(56.25% - 56px); }
+
+.flexible-box > .banner > .toolbar > .detail > .title {
+    font-size: 24px; }
+
+.flexible-box > .banner > .toolbar > .detail > .subtitle {
+    font-size: 14px; }
 
 .flexible-box.square > .banner > .toolbar > .detail {
     margin-top: calc(100% - 56px); }
@@ -3503,6 +3534,12 @@ button.raised:focus:after, button.flat:focus:after {
 
 .flexible-box.square > .box {
     padding-top: 100%; }
+
+@media only screen and (min-width : 961px) {
+    
+    .flexible-box > .banner > .toolbar > .detail {
+        margin-top: calc(56.25% - 64px); }
+}
 
 /** FORM NAVIGATION */
 
@@ -3822,6 +3859,14 @@ button.raised:focus:after, button.flat:focus:after {
 .list > .item-list > .content > .detail > .emphasis ~ button.action {
     top: initial;
     bottom: 16px; }
+
+.list.two-line > .divider, .list.three-line > .divider {
+    width: calc(100% - 72px);
+    margin-left: 72px; }
+
+.list.two-line > .subheader, .list.three-line > .subheader {
+    width: calc(100% - 56px);
+    margin-left: 56px; }
 
 /** MENU */
 
@@ -4572,13 +4617,20 @@ button.raised:focus:after, button.flat:focus:after {
     height: 100%;
     overflow-y: auto;
     z-index: 16;
-    box-shadow: var(--shadow-16); }
+    box-shadow: var(--shadow-16); 
+    -moz-transition: left 0.3s var(--easing-in);
+    -webkit-transition: left 0.3s var(--easing-in);
+    transition: left 0.3s var(--easing-in);
+    -o-transition: left 0.3s var(--easing-in);
+    -ms-transition: left 0.3s var(--easing-in); }
 
 .sidenav > .content.show {
-    left: 0%; }
+    left: 0%;
+    box-shadow: var(--shadow-16); }
 
 .sidenav > .content.hide {
-    left: -105%; }
+    left: -100%;
+    box-shadow: none; }
 
 .sidenav > .content.show, .sidenav > .content.hide {
     -moz-transition-property: left;
@@ -4593,10 +4645,18 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transition-duration: 0.3s; }
 
 .sidenav > .content.show {
-    transition-timing-function: var(--easing-out); }
+    -moz-transition-timing-function: var(--easing-out);
+    -webkit-transition-timing-function: var(--easing-out);
+    transition-timing-function: var(--easing-out);
+    -o-transition-timing-function: var(--easing-out);
+    -ms-transition-timing-function: var(--easing-out); }
 
 .sidenav > .content.hide {
-    transition-timing-function: var(--easing-in); }
+    -moz-transition-timing-function: var(--easing-in);
+    -webkit-transition-timing-function: var(--easing-in);
+    transition-timing-function: var(--easing-in);
+    -o-transition-timing-function: var(--easing-in);
+    -ms-transition-timing-function: var(--easing-in); }
 
 .sidenav > .content > .logo {
     position: relative;
@@ -4929,13 +4989,15 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: auto; 
     overflow-y: hidden; }
 
+.tabs.fixed {
+    display: flex; }
+
 .app-bar > .tabs {
     transition: all 0.525s var(--easing-out); }
 
-.tabs::-webkit-scrollbar {
+body.not-touch .tabs::-webkit-scrollbar {
     width: 0px; 
-    height: 0px;
-    background: transparent; }
+    height: 0px; }
 
 .tabs > .tab {
     position: relative;
@@ -4948,6 +5010,7 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 56px; }
 
 .tabs.fixed > .tab {
+    width: 100%;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
@@ -5538,6 +5601,12 @@ button.raised:focus:after, button.flat:focus:after {
     
     .toolbar.flexible-title > .title {
         margin-top: 64px; }
+
+    .toolbar > .detail > .title {
+        margin-top: 11px; }
+
+    .toolbar > .detail.hide-subtitle > .title {
+        margin-top: 20px; }
     
     .toolbar > .actions > button.action {
         padding: 20px 12px; }
@@ -5579,7 +5648,7 @@ button.raised:focus:after, button.flat:focus:after {
         margin-top: 10px; }
 }
 
-/** VIEWS */
+/** VIEWS TAB */
 
 .views-content-tab {
     width: 100%;
@@ -5601,3 +5670,29 @@ button.raised:focus:after, button.flat:focus:after {
 .views-content-tab > .views-tab > .view {
     width: 100%; 
     height: 100%; }
+
+/** VIEWS BOTTOM NAVIGATION */
+
+.views-bottom-navigation {
+    position: relative;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden; }
+
+.views-bottom-navigation > .content {
+    display: none;
+    width: 100%;
+    overflow-y: auto;
+    -moz-animation-duration: 0.255s;
+    -webkit-animation-duration: 0.255s;
+    -o-animation-duration: 0.255s;
+    animation-duration: 0.255s; 
+    -ms-animation-duration: 0.255s;
+    -moz-animation-timing-function: var(--sharp-curve);
+    -webkit-animation-timing-function: var(--sharp-curve);
+    -o-animation-timing-function: var(--sharp-curve);
+    animation-timing-function: var(--sharp-curve);
+    -ms-animation-timing-function: var(--sharp-curve); }
+
+.views-bottom-navigation > .content.active {
+    display: block; }

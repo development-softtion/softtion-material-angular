@@ -801,10 +801,10 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
 
-.datatable > table {
+.datatable > .content > table {
     background: var(--light-background-component); }
 
-.dark .datatable > table {
+.dark .datatable > .content > table {
     background: var(--dark-background-component); }
 
 .datatable > .header > .title, .datatable > .header > .actions > button.action > i {
@@ -819,61 +819,61 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .datatable > .header > button.action:disabled > i {
     color: var(--light-disabled-font); }
 
-.datatable > table > thead > tr {
+.datatable > .content > table > thead > tr {
     border-bottom: 1px solid var(--light-background-divider); 
     border-top: 1px solid var(--light-background-divider); }
 
-.dark .datatable > table > thead > tr {
+.dark .datatable > .content > table > thead > tr {
     border-bottom: 1px solid var(--dark-background-divider); 
     border-top: 1px solid var(--dark-background-divider); }
 
-.datatable > table > thead > tr > th {
+.datatable > .content > table > thead > tr > th {
     color: var(--dark-secondary-font); }
 
-.dark .datatable > table > thead > tr > th {
+.dark .datatable > .content > table > thead > tr > th {
     color: var(--light-secondary-font); }
 
-.datatable > table > tbody > tr {
+.datatable > .content > table > tbody > tr {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .datatable > table > tbody > tr {
+.dark .datatable > .content > table > tbody > tr {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.datatable.card-table > table > tbody > tr:last-child {
+.datatable.card-table > .content > table > tbody > tr:last-child {
     border-bottom: none; }
 
-.datatable > table > tbody > tr.active {
+.datatable > .content > table > tbody > tr.active {
     background-color: var(--light-background-active); }
 
-.dark .datatable > table > tbody > tr.active {
+.dark .datatable > .content > table > tbody > tr.active {
     background-color: var(--dark-background-active); }
 
-.datatable > table > tbody > tr:hover {
+.datatable > .content > table > tbody > tr:hover {
     background-color: var(--light-background-hover); }
 
-.dark .datatable > table > tbody > tr:hover {
+.dark .datatable > .content > table > tbody > tr:hover {
     background-color: var(--dark-background-hover); }
 
-.datatable > table .checkbox-control > label:before {
+.datatable > .content > table .checkbox-control > label:before {
     background-color: var(--theme-background); }
 
-.datatable > table > thead > tr > th > button.action > i, 
-.datatable > table > tbody > tr > td > button.action > i {
+.datatable > .content > table > thead > tr > th > button.action > i, 
+.datatable > .content > table > tbody > tr > td > button.action > i {
     color: var(--dark-secondary-font); }
 
-.dark .datatable > table > thead > tr > th > button.action > i, 
-.dark .datatable > table > tbody > tr > td > button.action > i {
+.dark .datatable > .content > table > thead > tr > th > button.action > i, 
+.dark .datatable > .content > table > tbody > tr > td > button.action > i {
     color: var(--light-secondary-font); }
 
-.datatable > table > thead > tr > th > button.action:disabled > i, 
-.datatable > table > tbody > tr > td > button.action:disabled > i {
+.datatable > .content > table > thead > tr > th > button.action:disabled > i, 
+.datatable > .content > table > tbody > tr > td > button.action:disabled > i {
     color: var(--dark-disabled-font); }
 
-.dark .datatable > table > thead > tr > th > button.action:disabled > i, 
-.dark .datatable > table > tbody > tr > td > button.action:disabled > i {
+.dark .datatable > .content > table > thead > tr > th > button.action:disabled > i, 
+.dark .datatable > .content > table > tbody > tr > td > button.action:disabled > i {
     color: var(--light-disabled-font); }
 
-.dark .datatable > table .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
+.dark .datatable > .content > table .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
     border: 2px solid var(--light-background-component); }
 
 /** DATEPICKER */
@@ -1149,7 +1149,7 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--light-background-component); }
 
 .dark .flexible-box > .box {
-    background-color: var(--dark-background-component); }
+    background-color: var(--dark-background); }
 
 /** FORM NAVIGATION */
 
@@ -1192,6 +1192,9 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .list > .item-list > .content > div.avatar {
     background-color: var(--light-secondary-font); }
 
+.list > .item-list > .content > div.avatar.transparent {
+    background-color: transparent; }
+
 .list > .item-list > .content > div.avatar > i,
 .list > .item-list > .content > div.avatar > span {
     color: var(--light-primary-font); }
@@ -1199,6 +1202,14 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .list > .item-list > .content > div.avatar > i,
 .dark .list > .item-list > .content > div.avatar > span {
     color: var(--dark-secondary-font); }
+
+.list > .item-list > .content > div.avatar.transparent > i,
+.list > .item-list > .content > div.avatar.transparent > span {
+    color: var(--dark-secondary-font); }
+
+.dark .list > .item-list > .content > div.avatar.transparent > i,
+.dark .list > .item-list > .content > div.avatar.transparent > span {
+    color: var(--light-primary-font); }
 
 .list > .item-list > .content > .detail {
     border-bottom-color: transparent; }
@@ -1221,11 +1232,13 @@ button.raised.primary:before, button.floating.primary:before {
 .list > .item-list > .content > .detail > .emphasis {
     color: var(--dark-secondary-font); }
 
-.dark .list > .subheader, .list > .item-list > .content > .action,
-.dark .list > .item-list > .content > .detail > .description, 
-.dark .list > .item-list > .content > .detail > button.action > i,
-.dark .list > .item-list > .content > .detail > .emphasis {
+.dark .list > .subheader, .list > .item-list > .content > .action, 
+.dark .list > .item-list > .content > .detail > .emphasis,
+.dark .list > .item-list > .content > .detail > .description {
     color: var(--light-secondary-font); }
+
+.dark .list > .item-list > .content > .detail > button.action > i {
+    color: var(--light-primary-font); }
 
 /** MENU */
 
