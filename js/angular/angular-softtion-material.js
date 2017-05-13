@@ -162,10 +162,7 @@
                             };
 
                             $scope.suggestionsFilter = []; $scope.suggestionTemp = undefined; 
-                            $scope.clearSuggestion = true; $scope.hideValue = false; 
-                            
-                            $scope.valueInput = (softtion.isDefined($scope.suggestionSelect)) ?
-                                $scope.describeSuggestion($scope.suggestionSelect) : "";
+                            $scope.clearSuggestion = true; $scope.hideValue = false; $scope.valueInput = "";
 
                             $scope.clickLabel = function () { input.focus(); };
                             
@@ -535,10 +532,17 @@
                 directive: function () {
                     return {
                         restrict: "C",
+                        scope: {
+                            maxWidth: "@",
+                            marginTop: "@"
+                        },
                         link: function ($scope, $element) {
                             var backdrop = $element.find(".backdrop"),
-                                content = $element.find(".content");
+                                content = $element.children(".content");
                         
+                            $scope.maxWidth = $scope.maxWidth || "480px";
+                            $scope.marginTop = $scope.marginTop || "0px";
+                                                    
                             if (!backdrop.exists()) {
                                 backdrop = angular.element(
                                     softtion.html("div").addClass("backdrop").create()
@@ -549,6 +553,8 @@
                             
                             var marginBottom = content.outerHeight();
                             content.css("margin-bottom", (marginBottom * -1) - 1);
+                            content.css("max-width", $scope.maxWidth);
+                            content.css("max-height", "calc(100% - " + $scope.marginTop + ")");
                             
                             content.addClass("start"); // Componente inicializado
                         }
@@ -3149,9 +3155,8 @@
                                 hidden.html(value); return "height: " + hidden.height() + "px;";
                             };
 
-                            if (softtion.isString($scope.value)) { 
-                                $element.addClass("active"); $scope.valueArea = $scope.value;
-                            } // Se ha definido un valor
+                            // Se ha definido un valor
+                            if (softtion.isString($scope.value)) { $element.addClass("active"); } 
 
                             $scope.clickLabel = function ($event) {
                                 area.focus(); // Se activa el componente 
@@ -3332,9 +3337,8 @@
                             $scope.typeInput = Material.components.TextField.defineInput($scope.type || "text");
                             $scope.valueInput = ""; $scope.hideValue = false; $scope.viewPassword = false;
 
-                            if (softtion.isString($scope.value)) { 
-                                $element.addClass("active"); $scope.valueInput = $scope.value;
-                            } // Se ha definido un valor
+                            // Se ha definido un valor
+                            if (softtion.isString($scope.value)) { $element.addClass("active"); } 
                             
                             $scope.successInput = function (value) {
                                 $scope.value = value; $element.removeClass("error");

@@ -203,19 +203,36 @@ body.dark {
 
 /** BOTTOM SHEET */
 
-.bottom-sheet > .content > .list-style-sheet, 
+.bottom-sheet > .content, .bottom-sheet > .content > .list-style-sheet, 
 .bottom-sheet > .content > .grid-style-sheet {
     background-color: var(--light-background-component); }
 
 .dark .bottom-sheet > .content > .list-style-sheet, 
+.dark .bottom-sheet > .content, 
 .dark .bottom-sheet > .content > .grid-style-sheet {
     background-color: var(--dark-background-component); }
 
-.bottom-sheet > .content > .list-style-sheet > .header > label {
+.bottom-sheet > .content > .list-style-sheet > .subheader {
     color: var(--dark-secondary-font); }
 
-.dark .bottom-sheet > .content > .list-style-sheet > .header > label {
+.dark .bottom-sheet > .content > .list-style-sheet > .subheader {
     color: var(--light-secondary-font); }
+
+.bottom-sheet > .content > .list-style-sheet > .item:hover {
+    background-color: var(--dark-background-hover); }
+
+.dark .bottom-sheet > .content > .list-style-sheet > .item:hover {
+    background-color: var(--light-background-hover); }
+
+.bottom-sheet > .content > .grid-style-sheet > .item > i:hover + label,
+.bottom-sheet > .content > .grid-style-sheet > .item > label:hover,
+.bottom-sheet > .content > .grid-style-sheet > .item > img:hover + label {
+    background-color: var(--dark-background-hover); }
+
+.dark .bottom-sheet > .content > .grid-style-sheet > .item > i:hover + label,
+.dark .bottom-sheet > .content > .grid-style-sheet > .item > label:hover,
+.dark .bottom-sheet > .content > .grid-style-sheet > .item > img:hover + label {
+    background-color: var(--light-background-hover); }
 
 .bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
 .bottom-sheet > .content > .list-style-sheet > .item > i,
@@ -1322,7 +1339,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .search-box > .nav-icon > button.action,
 .dark .search-box > .actions > button.action {
-    color: var(--light-secondary-font); }
+    color: var(--light-primary-font); }
 
 .search-box > .nav-icon > button.action:before,
 .search-box > .actions > button.action:before {
@@ -1334,6 +1351,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .search-box > input {
     background-color: transparent; }
+
+.search-box > input::-webkit-input-placeholder {
+    color: var(--dark-secondary-font); }
+
+.dark .search-box > input::-webkit-input-placeholder {
+    color: var(--light-secondary-font); }
 
 .search-box > input::selection {
     background-color: var(--theme-background-accent);

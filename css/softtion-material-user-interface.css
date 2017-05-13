@@ -1350,18 +1350,20 @@ input[type=number]::-webkit-outer-spin-button {
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 480px;
-    max-height: 100%;
     z-index: 16;
     visibility: hidden;
     overflow-y: auto;
     box-shadow: var(--shadow-16-inv); }
 
-.app-content .bottom-sheet > .backdrop {
-    position: fixed; }
-
+.app-content .bottom-sheet > .backdrop, 
 .app-content .bottom-sheet > .content {
     position: fixed; }
+
+@media only screen and (min-width : 960px) {
+
+    .sidenav-full .app-content .bottom-sheet > .content {
+        left: calc(50% + 160px); }
+}
 
 .bottom-sheet > .content.start {
     transition: all 0.325s var(--standard-curve); }
@@ -1377,18 +1379,14 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 8px 0px;
     overflow-y: auto; }
 
-.bottom-sheet > .content > .list-style-sheet > .header {
+.bottom-sheet > .content > .list-style-sheet > .subheader {
+    height: 48px;
     padding: 8px 16px 16px 16px;
     width: 100%;
     float: left;
-    box-sizing: border-box; }
-
-.bottom-sheet > .content > .list-style-sheet > .header > label {
-    display: block;
-    height: 24px;
-    line-height: 24px;
     font-size: 16px;
-    font-weight: 500; }
+    font-weight: 500;
+    box-sizing: border-box; }
 
 .bottom-sheet > .content > .list-style-sheet > .item {
     position: relative;
