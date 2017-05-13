@@ -2693,6 +2693,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .header {
     position: relative;
+    display: flex;
     width: 100%;
     padding: 0 24px;
     box-sizing: border-box;
@@ -2718,6 +2719,19 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 20px 12px;
     box-sizing: content-box;
     margin-right: 1px; }
+
+.datatable > .header > .search-box {
+    max-width: 50%;
+    margin-top: 8px; }
+
+.datatable > .header > .title ~ .search-box {
+    margin-left: 8px; }
+
+.datatable > .header > .search-box.right {
+    position: absolute;
+    top: 8px;
+    right: 24px;
+    margin: 0px; }
 
 .datatable > .content {
     overflow-x: auto; }
