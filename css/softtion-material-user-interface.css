@@ -111,6 +111,10 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 body.dark.not-touch *::-webkit-scrollbar-thumb:hover {
     background-color: rgba(255, 255, 255, 0.65); }
 
+.body-overflow-none.not-touch *::-webkit-scrollbar {
+    width: 0px;
+    height: 0px; }
+
 ul {
     list-style-type: none; 
     margin: 0px;
@@ -850,7 +854,7 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     height: auto; 
     z-index: 8;
-    box-shadow: var(--shadow-4); }
+    box-shadow: var(--shadow-2); }
 
 .app-bar.hide > .toolbar {
     margin-top: -56px; }
@@ -880,7 +884,13 @@ input[type=number]::-webkit-outer-spin-button {
     .app-bar.hide > .search-box:first-child {
         margin-top: -64px; }
     
-    .sidenav-full > .app-body > .app-bar > .toolbar > .nav-icon {
+    .sidenav-permanent > .app-body > .app-bar > .toolbar > .nav-icon {
+        display: none; }
+}
+
+@media only screen and (min-width : 641px) {
+    
+    .sidenav-persistent > .app-body > .app-bar > .toolbar > .nav-icon {
         display: none; }
 }
 
@@ -899,7 +909,14 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media only screen and (min-width : 961px) {
 
-    .sidenav-full .app-body {
+    .sidenav-permanent .app-body {
+        left: 320px;
+        width: calc(100% - 320px); } 
+}
+
+@media only screen and (min-width : 641px) {
+
+    .sidenav-persistent .app-body {
         left: 320px;
         width: calc(100% - 320px); } 
 }
@@ -917,7 +934,15 @@ input[type=number]::-webkit-outer-spin-button {
     overflow: auto; }
 
 .app-content.animated {
-    transition: margin-top 0.525s var(--easing-out); }
+    -moz-transition: margin-top 0.525s var(--easing-out);
+    -webkit-transition: margin-top 0.525s var(--easing-out);
+    transition: margin-top 0.525s var(--easing-out);
+    -o-transition: margin-top 0.525s var(--easing-out);
+    -ms-transition: margin-top 0.525s var(--easing-out); }
+
+.app-body > .sidenav ~ .app-content {
+    left: 320px; 
+    width: calc(100% - 320px); }
 
 /** AUTOCOMPLETE */
 
@@ -1361,7 +1386,13 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media only screen and (min-width : 960px) {
 
-    .sidenav-full .app-content .bottom-sheet > .content {
+    .sidenav-permanent .app-content .bottom-sheet > .content {
+        left: calc(50% + 160px); }
+}
+
+@media only screen and (min-width : 641px) {
+
+    .sidenav-persistent .app-content .bottom-sheet > .content {
         left: calc(50% + 160px); }
 }
 
@@ -1465,9 +1496,9 @@ input[type=number]::-webkit-outer-spin-button {
         width: 25%; }
 }
 
-/** BREADCUMB */
+/** BREADCRUMB */
 
-.breadcumb {
+.breadcrumb {
     padding: 0px 16px;
     width: 100%;
     min-height: 56px; 
@@ -1475,14 +1506,14 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 56px;
     box-sizing: border-box; }
 
-.breadcumb > label {
+.breadcrumb > label {
     display: block;
     height: inherit;
     float: left; 
     font-size: 16px;
     font-weight: 500; }
 
-.breadcumb > label:before {
+.breadcrumb > label:before {
     content: 'navigate_next';
     vertical-align: top;
     display: inline-block;
@@ -1493,10 +1524,10 @@ input[type=number]::-webkit-outer-spin-button {
     font-style: normal;
     -webkit-font-smoothing: antialiased; }
 
-.breadcumb > label:first-child:before {
+.breadcrumb > label:first-child:before {
     display: none; }
 
-.breadcumb > label > a {
+.breadcrumb > label > a {
     cursor: pointer;
     display: inline-block; }
 
@@ -2722,7 +2753,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .header > .search-box {
     max-width: 50%;
-    margin-top: 8px; }
+    margin-top: 8px; 
+    box-shadow: none; }
 
 .datatable > .header > .title ~ .search-box {
     margin-left: 8px; }
@@ -4617,7 +4649,20 @@ button.raised:focus:after, button.flat:focus:after {
 /** SIDENAV */
 
 .sidenav > .backdrop {
-    z-index: 15; }
+    display: block;
+    z-index: 15;
+    bottom: initial;
+    opacity: 0;
+    transition: opacity 0.3s var(--easing-in); }
+
+.sidenav.active > .backdrop {
+    bottom: 0;
+    opacity: 1; }
+
+.app-body > .sidenav > .content {
+    position: absolute;
+    left: 0px;
+    box-shadow: none; }
 
 .sidenav > .content {
     position: fixed;
@@ -4676,22 +4721,37 @@ button.raised:focus:after, button.flat:focus:after {
     height: 56px; 
     overflow: hidden; }
 
-@media only screen and (min-width : 961px) {
-    
-    .sidenav-full > .sidenav > .content {
-        left: 0px; 
-        box-shadow: var(--shadow-4); }
-    
-    .sidenav > .content > .logo {
-        height: 64px; }
-}
-
 .sidenav > .content > .logo > img {
     position: absolute;
     left: 0px;
     top: 50%;
     transform: translateY(-50%);
     max-height: 56px; }
+
+@media only screen and (min-width : 961px) {
+    
+    .sidenav-permanent > .sidenav > .backdrop {
+        opacity: 0;
+        bottom: initial; }
+    
+    .sidenav-permanent > .sidenav > .content {
+        left: 0px; 
+        box-shadow: none; }
+    
+    .sidenav > .content > .logo {
+        height: 64px; }
+}
+
+@media only screen and (min-width : 641px) {
+    
+    .sidenav-persistent > .sidenav > .backdrop {
+        opacity: 0;
+        bottom: initial; }
+    
+    .sidenav-persistent > .sidenav > .content {
+        left: 0px; 
+        box-shadow: none; }
+}
 
 .sidenav > .content > .banner {
     position: relative;
@@ -4848,9 +4908,6 @@ button.raised:focus:after, button.flat:focus:after {
 
 .sidenav > .content .divider {
     margin: 8px 0px; }
-
-.sidenav > .content > .sidenav-menu > .divider {
-    margin-top: 0px; }
 
 .sidenav > .content .subheader {
     width: 100%;
@@ -5673,11 +5730,11 @@ body.not-touch .tabs::-webkit-scrollbar {
     overflow-y: auto; }
 
 .views-content-tab > .views-tab.transition {
-    -moz-transition: left 0.475s var(--standard-curve);
-    -webkit-transition: left 0.475s var(--standard-curve);
-    transition: left 0.475s var(--standard-curve);
-    -o-transition: left 0.475s var(--standard-curve);
-    -ms-transition: left 0.475s var(--standard-curve); }
+    -moz-transition: left 0.275s var(--standard-curve);
+    -webkit-transition: left 0.275s var(--standard-curve);
+    transition: left 0.275s var(--standard-curve);
+    -o-transition: left 0.275s var(--standard-curve);
+    -ms-transition: left 0.275s var(--standard-curve); }
 
 .views-content-tab > .views-tab > .view {
     width: 100%; 

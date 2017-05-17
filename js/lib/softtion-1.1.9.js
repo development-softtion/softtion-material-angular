@@ -218,17 +218,11 @@
     };
     
     Softtion.prototype.clone = function (object) {
-        if (object === null || typeof object !== "object") { 
-            return object;
-        } // El objeto es un dato primitivo
- 
-        var objectClone = object.constructor();
-        
-        for (var key in object) {
-            objectClone[key] = this.clone(object[key]);
-        }
- 
-        return objectClone; // Objeto clonado
+        return jQuery.extend(true, {}, object);
+    };
+    
+    Softtion.prototype.cloneArray = function (array) {
+        return jQuery.extend(true, [], array);
     };
     
     Softtion.prototype.isInPage = function (node) {

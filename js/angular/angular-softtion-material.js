@@ -39,7 +39,9 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes y atributos
-                            var appContent = angular.element(".app-content"),
+                            var appBody = angular.element(".app-body"),
+                                appContent = angular.element(".app-content"),
+                                sidenav = appBody.children(".sidenav"),
                                 position = 0, hideClass = "hide",
                                 heightElement = $element.innerHeight(),
                                 $window = angular.element(window);
@@ -65,7 +67,17 @@
                                 });
                             }                            
                             
-                            appContent.css("top", heightElement); appContent.css("padding-bottom", heightElement);
+                            appContent.css("top", heightElement);
+                            sidenav.children(".content").css("top", heightElement); 
+                            appContent.css("padding-bottom", heightElement);
+                            
+                            $window.resize(function () {
+                                var heightElement = $element.innerHeight();
+                                
+                                appContent.css("top", heightElement);
+                                sidenav.children(".content").css("top", heightElement); 
+                                appContent.css("padding-bottom", heightElement);
+                            });
                         }
                     };
                 }
@@ -1316,7 +1328,9 @@
                                 if (softtion.isFunction($scope.iconEvent)) {
                                     icon.addClass("action"); // Se definio evento en el icono
                                     
-                                    icon.click(function ($event) { $scope.iconEvent($event); });
+                                    icon.click(function ($event) { 
+                                        $scope.$apply(function () { $scope.iconEvent($event); });
+                                    });
                                 }
                             } // IconLabel activado, se debe insertar el icono antes del input
                             
@@ -2017,7 +2031,9 @@
                                 if (softtion.isDefined(icon)) {
                                     icon.addClass("action"); // Se definio evento en el icono
 
-                                    icon.click(function ($event) { $scope.iconEvent($event); }); 
+                                    icon.click(function ($event) { 
+                                        $scope.$apply(function () { $scope.iconEvent($event); });
+                                    }); 
                                 }
                             }
                             
@@ -4246,11 +4262,16 @@
                         var self = this; // Sidenav
 
                         if (!self.sidenav.hasClass("active")) {
-                            angular.element(document.body).addClass("body-overflow-none");
+                            var $body = angular.element(document.body);
                             
-                            self.content.removeClass("sharp-curve").removeClass("hide");
-                            self.content.addClass("easing-out").addClass("show");
-                            self.backdrop.fadeIn(300); self.sidenav.addClass("active"); 
+                            $body.addClass("body-overflow-none"); // Body no scroll
+                            
+                            self.content.removeClass("hide").addClass("show");
+                            self.sidenav.addClass("active"); // Se activa el Sidenav
+                            
+                            if (self.sidenav.hasClass("persistent")) {
+                                $body.addClass("sidenav-persistent");
+                            } // Componente es persistente en el documento
                         } // Sidenav no se encuentra activo
                     };
 
@@ -4258,11 +4279,16 @@
                         var self = this; // Sidenav
 
                         if (self.sidenav.hasClass("active")) {
-                            angular.element(document.body).removeClass("body-overflow-none");
+                            var $body = angular.element(document.body);
                             
-                            self.content.removeClass("easing-out").removeClass("show");
-                            self.content.addClass("hide").addClass("sharp-curve");
-                            self.backdrop.fadeOut(300); self.sidenav.removeClass("active"); 
+                            $body.removeClass("body-overflow-none"); // Body scroll
+                            
+                            self.content.removeClass("show").addClass("hide");
+                            self.sidenav.removeClass("active"); // Se desactiva el Sidenav
+                            
+                            if (self.content.hasClass("persistent")) {
+                                $body.removeClass("sidenav-persistent");
+                            } // Componente es persistente en el documento
                         } // Sidenav no se encuentra activo
                     };
                     

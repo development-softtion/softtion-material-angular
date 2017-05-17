@@ -309,6 +309,31 @@
     animation-name: fadeIn; 
     -ms-animation-name: fadeIn; }
 
+/** FadeOut */
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1; }
+
+    100% {
+        opacity: 0; }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1; }
+
+    100% {
+        opacity: 0; }
+}
+
+.fade-out {
+    -moz-animation-name: fadeOut;
+    -webkit-animation-name: fadeOut;
+    -o-animation-name: fadeOut;
+    animation-name: fadeOut; 
+    -ms-animation-name: fadeOut; }
+
 /** SlideInRight */
 
 @-webkit-keyframes slideInRight {

@@ -25,7 +25,7 @@
     --light-background-active: rgba(189, 189, 189, 0.2);
     --light-background-hover: rgba(189, 189, 189, 0.38);
     --light-background-focus: rgba(189, 189, 189, 0.54);
-    --light-background-border: rgba(117, 117, 117, 0.58);
+    --light-background-border: rgba(0, 0, 0, 0.12);
     /** #ffffff: white */
     --light-ripple: rgba(255, 255, 255, 0.5);
     
@@ -46,7 +46,7 @@
     --dark-background-active: rgba(224, 224, 224, 0.2);
     --dark-background-hover: rgba(224, 224, 224, 0.54);
     --dark-background-focus: rgba(224, 224, 224, 0.38);
-    --dark-background-border: rgba(224, 224, 224, 0.68);
+    --dark-background-border: rgba(255, 255, 255, 0.12);
     /** #000000: black */
     --dark-ripple: rgba(0, 0, 0, 0.38);
     
@@ -244,18 +244,18 @@ body.dark {
 .dark .bottom-sheet > .content > .grid-style-sheet > .item > .detail {
     color: var(--light-primary-font); }
 
-/** BREADCUMB */
+/** BREADCRUMB */
 
-.breadcumb {
+.breadcrumb {
     background-color: var(--light-background-appbar); }
 
-.dark .breadcumb {
+.dark .breadcrumb {
     background-color: var(--dark-background-appbar); }
 
-.app-bar.primary > .breadcumb, .breadcumb.primary {
+.app-bar.primary > .breadcrumb, .breadcrumb.primary {
     background-color: var(--theme-background-dark); }
 
-.app-bar.primary > .breadcumb > label {
+.app-bar.primary > .breadcrumb > label {
     color: var(--light-primary-font); }
 
 /** BOTTOM NAVIGATION */
@@ -818,6 +818,12 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
 
+.datatable > .header > .search-box {
+    border: 1px solid var(--light-background-border); }
+
+.dark .datatable > .header > .search-box {
+    border: 1px solid var(--dark-background-border); }
+
 .datatable > .content > table {
     background: var(--light-background-component); }
 
@@ -1071,7 +1077,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .file-chooser-multiple > .content {
     background: var(--dark-background);
-    border: 2px dashed var(--light-background-border); }
+    border: 2px dashed var(--dark-background-border); }
 
 .file-chooser-multiple > .content > .select-file > i,
 .file-chooser-multiple > .content > .select-file > p {
@@ -1604,14 +1610,47 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .sidenav > .content .sidenav-item .options .item > a:hover {
     background-color: var(--dark-background-hover); }
 
-.sidenav > .content .sidenav-item .options .item > a.active {
+.sidenav > .content .sidenav-item .detail.active > a > i {
     color: var(--accent-primary-font); }
+
+.sidenav > .content .sidenav-item .detail.active > a, 
+.sidenav > .content .sidenav-item .options .item.active > a {
+    color: var(--accent-primary-font);
+    background-color: var(--light-background-active); }
+
+.dark .sidenav > .content .sidenav-item .detail.active > a, 
+.dark .sidenav > .content .sidenav-item .options .item.active > a {
+    background-color: var(--dark-background-active); }
 
 .sidenav > .content .subheader {
     color: var(--dark-secondary-font); }
 
 .dark .sidenav > .content .subheader {
     color: var(--light-secondary-font); }
+
+@media only screen and (min-width : 961px) {
+    
+    .sidenav-permanent > .sidenav > .content {
+        border-right: 1px solid var(--light-background-border); }
+    
+    .dark.sidenav-permanent > .sidenav > .content {
+        border-right: 1px solid var(--dark-background-border); }
+}
+
+@media only screen and (min-width : 641px) {
+    
+    .sidenav-persistent > .sidenav > .content {
+        border-right: 1px solid var(--light-background-border); }
+    
+    .dark.sidenav-persistent > .sidenav > .content {
+        border-right: 1px solid var(--dark-background-border); }
+}
+
+.app-body > .sidenav > .content {
+    border-right: 1px solid var(--light-background-border); }
+
+.dark .app-body > .sidenav > .content {
+    border-right: 1px solid var(--dark-background-border); }
 
 /** SNACKBAR */
 
