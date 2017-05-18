@@ -2673,6 +2673,9 @@ button.raised:focus:after, button.flat:focus:after {
 .clockpicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
     left: 80px;
     width: calc(100% - 88px); }
+
+.clockpicker-input.flex-pd > label, .clockpicker-input.flex-pd > .line-shadow {
+    width: calc(100% - 16px); }
  
 .clockpicker-input.flex-pd-left > .line-shadow, 
 .clockpicker-input.flex-pd-left > label, 
@@ -3061,6 +3064,9 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker-input.label-hidden.icon-active > .line-shadow {
     left: 72px;
     width: calc(100% - 72px); }
+
+.datepicker-input.flex-pd > label, .datepicker-input.flex-pd > .line-shadow {
+    width: calc(100% - 16px); }
 
 .datepicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
     left: 80px;
