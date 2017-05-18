@@ -65,7 +65,7 @@
 
                                     position = positionNew; // Posición nueva del scroll
                                 });
-                            }                            
+                            }                        
                             
                             appContent.css("top", heightElement);
                             sidenav.children(".content").css("top", heightElement); 
@@ -2037,7 +2037,7 @@
                                 }
                             }
                             
-                            $scope.show = false; $scope.format = $scope.format || "ww, dd del mn de aa";
+                            $scope.show = false; $scope.format = $scope.format || "ww, dd de mn del aa";
                             
                             if (softtion.isUndefined($scope.date) && $scope.autoStart) {
                                 $scope.date = new Date(); 
@@ -2377,6 +2377,149 @@
                         }
                     };
                 }
+            },
+            
+            ItemList: {
+                name: "itemList",
+                slideAction: function (itemList) {
+                    var slideAction = softtion.html("div", true).
+                        addClass("slide-action").tojQuery();
+                    
+                    itemList.append(slideAction); return slideAction;
+                },
+                elementSlideAction: function (slideAction, slideIcon, slideLabel) {
+                    var icon = softtion.html("i").setText(slideIcon).tojQuery();
+
+                    var button = softtion.html("button").setText(slideLabel).
+                        addClass(["confirm-button", "flat"]).tojQuery();
+
+                    slideAction.append(icon); slideAction.append(button); 
+                    
+                    return { icon: icon, button: button }; // Retornando elementos
+                },
+                directive: ["$parse", function ($parse) {
+                    return {
+                        restrict: "C",
+                        compile: function ($element, $attrs) {
+                            var fn = $parse($attrs["ngSlide"]), // Función al completar Slide
+                                slideActive = softtion.parseBoolean($attrs.slideActive),
+                                slideConfirmable = softtion.parseBoolean($attrs.slideConfirmable),
+                                slideIcon = $attrs.slideIcon, slideLabel = $attrs.slideLabel;
+                                
+                            var fnItemList = Material.components.ItemList;
+                            
+                            return function ($scope, $element) {
+                                function slideEvent($element, $event) {
+                                    if (ejecuteEvent) {
+                                        $element.css("height", "0"); // Ocultando elemento
+                                        
+                                        var callback = function () {
+                                            fn($scope, { $element: $element, $event: $event });
+                                        };
+
+                                        $scope.$apply(callback); // Disparando evento
+                                    }
+                                }
+                                
+                                var content = $element.children(".content"),
+                                    slideAction, icon, confirmButton, ejecuteEvent = false,
+                                    initialPosition, finalPosition, slided = 0,
+                                    posInitialX, posFinalX, moveActive = false;
+
+                                if (!$element.children(".slide-action").exists()) {
+                                    slideAction = fnItemList.slideAction($element);
+                                } // Insertando contenedor slideAction en el componente
+
+                                if (slideConfirmable) {
+                                    var elements = fnItemList.elementSlideAction(slideAction, slideIcon, slideLabel);
+
+                                    icon = elements.icon; confirmButton = elements.button;
+                                    
+                                    confirmButton.on("click.confirmButton", function (event) {
+                                        ejecuteEvent = true; slideEvent($element, event); event.stopPropagation();
+                                    });
+
+                                    slideAction.on("click.slideAction", function () {
+                                        content.css({left: "0px"}); $element.css("height", "auto"); 
+                                    });
+                                } // Insertando elementos en slideAction del componente
+
+                                function start(event) {
+                                    var typeEvent = event.type; moveActive = true;
+
+                                    initialPosition = content.position(); finalPosition = content.position();
+
+                                    content.transition("none"); slided = 0;
+
+                                    posInitialX = (typeEvent === "touchstart") ?
+                                        event.changedTouches[0].clientX : event.clientX;
+
+                                    slideAction.css("height", content.height() + "px");
+                                    $element.css("height", content.height() + "px");
+                                } // Función cuando se presiona el componente
+
+                                function move(event) {
+                                    if (!moveActive) { return; } // No esta activo el evento
+
+                                    var typeEvent = event.type; // Tipo de evento
+
+                                    if (typeEvent === "mouseleave") {
+                                        finish(event); event.stopPropagation(); return false;
+                                    } // Se ha salido del componente
+
+                                    finalPosition = content.position();
+
+                                    posFinalX = (typeEvent === "touchmove") ?
+                                            event.changedTouches[0].clientX : event.clientX;
+
+                                    slided = (slideActive) ? posFinalX - posInitialX : 
+                                            (posFinalX - posInitialX) / 8;
+
+                                    if (slideConfirmable) {
+                                        icon.css({left: "initial", right: "initial"});
+                                        confirmButton.css({left: "initial", right: "initial"});
+
+                                        var floatElement = (slided > 0) ?
+                                            {alert: "left", button: "right"} :
+                                            {alert: "right", button: "left"};
+
+                                        icon.css(floatElement.alert, "20px"); 
+                                        confirmButton.css(floatElement.button, "20px");
+                                    }
+                                    
+                                    content.css({left: slided + "px", top: initialPosition.top + "px"});
+                                } // Función cuando se mueve el componente
+
+                                function finish() {
+                                    moveActive = false; // Fin del arrastre del slide
+
+                                    content.transition("left 0.325s var(--standard-curve)");
+
+                                    var width = content.width() / 2,
+                                        traslation = finalPosition.left - initialPosition.left,
+                                        left = (traslation > 0) ? "100%" : "-100%";
+
+                                    if (slideActive) {
+                                        if (Math.abs(traslation) >= width) {
+                                            content.css({left: left}); 
+                                            
+                                            if (!slideConfirmable) { ejecuteEvent = true; }
+                                        } else {
+                                            content.css({left: initialPosition.left});
+                                        }
+                                    } else {
+                                        content.css({left: "0px"}); $element.css("height", "auto");
+                                    }
+                                } // Función cuando se suelta el componente
+                                            
+                                content.transitionend(function (event) { slideEvent($element, event); });
+
+                                content.pointermove(move); content.mouseleave(move);
+                                content.pointerdown(start); content.pointerup(finish);
+                            };
+                        }
+                    };
+                }]
             },
             
             MediaArea: {
@@ -3944,6 +4087,76 @@
                     var bottomSheet = new BottomSheet();
 
                     this.$get = function () { return bottomSheet; };
+                }
+            },
+            
+            Dialog: {
+                name: "$dialog",
+                method: function () {
+                    var Properties = {
+                        id: undefined,
+                        dialog: undefined,
+                        box: undefined,
+                        backdrop: undefined,
+                        persistent: false
+                    };
+                    
+                    var Dialog = function () { this.id = ""; };
+
+                    Dialog.prototype.set = function (dialogID) {
+                        var self = this; // Sidenav
+                        
+                        if (Properties.id !== dialogID) {
+                            Properties.id = dialogID; Properties.dialog = angular.element(dialogID);
+                        
+                            if (Properties.dialog.exists()) {
+                                Properties.box = Properties.dialog.children(".box");
+                                Properties.backdrop = Properties.dialog.children(".backdrop");
+
+                                if (!Properties.backdrop.exists()) {
+                                    Properties.backdrop = angular.element(
+                                        softtion.html("div").addClass("backdrop").create()
+                                    );
+
+                                    Properties.dialog.append(Properties.backdrop);
+                                    
+                                    Properties.backdrop.click(function () { 
+                                        if (!Properties.persistent) { self.hide(); }
+                                    });
+                                }
+                            } // Sidenav existe en el Documento
+                        }
+                        
+                        return this; // Retornando interfaz fluida
+                    };
+
+                    Dialog.prototype.show = function (persistent) {
+                        if (!Properties.dialog.hasClass("active")) {
+                            Properties.persistent = persistent;
+                            
+                            var $body = angular.element(document.body);
+                            
+                            $body.addClass("body-overflow-none"); // Body no scroll
+                            
+                            Properties.box.removeClass("hide").addClass("show");
+                            Properties.dialog.addClass("active"); // Se activa el Sidenav
+                        } // Sidenav no se encuentra activo
+                    };
+
+                    Dialog.prototype.hide = function () {
+                        if (Properties.dialog.hasClass("active")) {
+                            var $body = angular.element(document.body);
+                            
+                            $body.removeClass("body-overflow-none"); // Body scroll
+                            
+                            Properties.box.removeClass("show").addClass("hide");
+                            Properties.dialog.removeClass("active"); // Se desactiva el Sidenav
+                        } // Sidenav no se encuentra activo
+                    };
+                    
+                    var dialog = new Dialog();
+
+                    this.$get = function () { return dialog; };
                 }
             },
             

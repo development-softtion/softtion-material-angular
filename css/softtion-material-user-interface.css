@@ -3111,7 +3111,15 @@ button.raised:focus:after, button.flat:focus:after {
 /** DIALOG */
 
 .dialog > .backdrop {
-    z-index: 23; }
+    display: block;
+    z-index: 23;
+    bottom: initial;
+    opacity: 0;
+    transition: opacity 0.3s var(--easing-in); }
+
+.dialog.active > .backdrop {
+    bottom: 0;
+    opacity: 1; }
 
 .dialog > .box {
     position: fixed;
@@ -3144,6 +3152,7 @@ button.raised:focus:after, button.flat:focus:after {
 .dialog > .box > .content {
     font-size: 15px;
     opacity: 0; 
+    overflow: auto;
     padding: 0px 24px 24px 24px; }
 
 .dialog > .box > .actions {
@@ -3729,7 +3738,21 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 4px 0px; }
 
 .list > .item-list {
-    box-sizing: border-box; }
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    box-sizing: border-box;
+    -moz-transition: height 0.325s var(--standard-curve);
+    -webkit-transition: height 0.325s var(--standard-curve);
+    transition: height 0.352s var(--standard-curve);
+    -o-transition: height 0.325s var(--standard-curve);
+    -ms-transition: height 0.325s var(--standard-curve); }
+
+.list.slide > .item-list {
+    cursor: pointer; }
+
+.list > .item-list > .content {
+    z-index: 2; }
 
 .list > .item-list > .content, .list > .item-list > .content > .detail {
     position: relative;
@@ -3911,6 +3934,30 @@ button.raised:focus:after, button.flat:focus:after {
 .list.two-line > .subheader, .list.three-line > .subheader {
     width: calc(100% - 56px);
     margin-left: 56px; }
+
+.list > .item-list > .slide-action {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    z-index: 1; }
+
+.list > .item-list > .slide-action > i {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(0, -50%);
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    line-height: inherit; }
+
+.list > .item-list > .slide-action > .confirm-button {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(0, -50%); }
 
 /** MENU */
 

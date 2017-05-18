@@ -27,6 +27,46 @@
 
             return (softtion.isString(value)) ? value.trim() :
                 (softtion.isDefined(defaultValue)) ? defaultValue : "N/D";
+        },
+        
+        whichTransition: function (element, transitionEnd) {
+            var transitions = (transitionEnd) ? {
+                estandar: "transitionend",
+                opera: "oTransitionEnd",
+                mozilla: "mozTransitionEnd",
+                WebkitTransition: "webkitTransitionEnd"
+            } : {
+                estandar: "transitionstart",
+                opera: "oTransitionStart",
+                mozilla: "mozTransitionStart",
+                WebkitTransition: "webkitTransitionStart"
+            };
+
+            for (var keyTransition in transitions) {
+                if (element.style[keyTransition] !== undefined) {
+                    return transitions[keyTransition];
+                }
+            }
+        },
+        
+        whichAnimation: function (element, animationEnd) {
+            var animations = (animationEnd) ? {
+                estandar: "animationend",
+                opera: "oAnimationEnd",
+                mozilla: "mozAnimationEnd",
+                WebkitTransition: "webkitAnimationEnd"
+            } : {
+                estandar: "animationstart",
+                opera: "oAnimationStart",
+                mozilla: "mozAnimationStart",
+                WebkitTransition: "webkitAnimationStart"
+            };
+
+            for (var keyTransition in animations) {
+                if (element.style[keyTransition] !== undefined) {
+                    return animations[keyTransition];
+                }
+            }
         }
     };
     
@@ -277,6 +317,58 @@
             } else {
                 component.touchhold(fn, time);
             } // Dispositivo soporta TouchEvent
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        transition: function (properties) {
+            jQuery(this).css("-moz-transition", properties);
+            jQuery(this).css("-webkit-transition", properties);
+            jQuery(this).css("transition", properties);
+            jQuery(this).css("-o-transition", properties);
+            jQuery(this).css("-ms-transition", properties);
+        },
+        
+        animation: function (properties) {
+            jQuery(this).css("-moz-animation", properties);
+            jQuery(this).css("-webkit-animation", properties);
+            jQuery(this).css("animation", properties);
+            jQuery(this).css("-o-animation", properties);
+            jQuery(this).css("-ms-animation", properties);
+        },
+        
+        transitionstart: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                transition = Module.whichTransition(this[0], false);
+            
+            component.on(transition, callback);
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        transitionend: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                transition = Module.whichTransition(this[0], true);
+            
+            component.on(transition, callback);
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        animationstart: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                transition = Module.whichAnimation(this[0], false);
+            
+            component.on(transition, callback);
+            
+            return component; // Retornando para interfaz fluida
+        },
+        
+        animationend: function (callback) {
+            var component = jQuery(this), // Componente para evento
+                transition = Module.whichAnimation(this[0], true);
+            
+            component.on(transition, callback);
             
             return component; // Retornando para interfaz fluida
         }

@@ -252,6 +252,15 @@ body.dark {
 .dark .breadcrumb {
     background-color: var(--dark-background-appbar); }
 
+.breadcrumb > label:hover > a {
+    background-color: var(--light-background-hover); }
+
+.dark .breadcrumb > label:hover > a {
+    background-color: var(--dark-background-hover); }
+
+.breadcrumb > label.active > a {
+    color: var(--accent-primary-font); }
+
 .app-bar.primary > .breadcrumb, .breadcrumb.primary {
     background-color: var(--theme-background-dark); }
 
@@ -1203,11 +1212,23 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** LIST */
 
+.list {
+    background-color: var(--light-background-component); }
+
+.dark .list {
+    background-color: var(--dark-background-component); }
+
 .list > .item-list:hover {
     background-color: var(--light-background-active); }
 
 .dark .list > .item-list:hover {
     background-color: var(--dark-background-active); }
+
+.list > .item-list > .content {
+    background-color: var(--light-background-component); }
+
+.dark .list > .item-list > .content {
+    background-color: var(--dark-background-component); }
 
 .list > .item-list > .content > div.avatar {
     background-color: var(--dark-secondary-font); }
@@ -1262,6 +1283,24 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .list > .item-list > .content > .detail > button.action > i {
     color: var(--light-primary-font); }
+
+.list > .item-list > .slide-action {
+    background-color: var(--light-background-appbar); }
+
+.dark .list > .item-list > .slide-action {
+    background-color: var(--dark-background-appbar); }
+
+.list > .item-list > .slide-action > i {
+    color: var(--dark-secondary-font); }
+
+.dark .list > .item-list > .slide-action > i {
+    color: var(--light-primary-font); }
+
+.list > .item-list + .subheader {
+    border-top: 1px solid var(--light-background-divider); }
+
+.dark .list > .item-list + .subheader {
+    border-top: 1px solid var(--dark-background-divider); }
 
 /** MENU */
 

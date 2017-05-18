@@ -19,8 +19,8 @@
     ngSofttionEvents.directive("ngEnter", ["$parse", function ($parse) {
         return {
             restrict: "A",
-            compile: function ($element, attrs) {
-                var fn = $parse(attrs["ngEnter"]);
+            compile: function ($element, $attrs) {
+                var fn = $parse($attrs["ngEnter"]);
 
                 return function ($scope, $element) {
                     if (($element.tagName() === "INPUT") || $element.tagName() === "TEXTAREA") {
@@ -43,9 +43,9 @@
     ngSofttionEvents.directive("ngClickright", ["$parse", function ($parse) {
         return {
             restrict: "A",
-            compile: function ($element, attrs) {
-                var fn = $parse(attrs["ngClickright"]);
-
+            compile: function ($element, $attrs) {
+                var fn = $parse($attrs["ngClickright"]);
+                
                 return function ($scope, $element) {
                     $element.on("contextmenu", function () { return false; });
                     
@@ -58,7 +58,6 @@
                             $scope.$apply(callback); // Disparando evento
                         } // Presiono la tecla ENTER
                     });
-                    
                 };
             }
         };
@@ -69,8 +68,8 @@
         ["$parse", "$timeout", function ($parse, $timeout) {
             return {
                 restrict: "A",
-                compile: function ($element, attrs) {
-                    var fn = $parse(attrs["ngMousehold"]), promise;
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs["ngMousehold"]), promise;
                     
                     return function ($scope, $element) {
                         $element.on("mousedown", function ($event) {
@@ -103,8 +102,8 @@
         ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
             return {
                 restrict: "A",
-                compile: function ($element, attrs) {
-                    var fn = $parse(attrs[directive.name]);
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs[directive.name]);
 
                     return function ($scope, $element) {
                         if ("ontouchstart" in window && softtion.isFunction(fn)) {
@@ -127,8 +126,8 @@
         ["$parse", "$timeout", function ($parse, $timeout) {
             return {
                 restrict: "A",
-                compile: function ($element, attrs) {
-                    var fn = $parse(attrs["ngTouchhold"]), promise;
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs["ngTouchhold"]), promise;
                     
                     return function ($scope, $element) {
                         if ("ontouchstart" in window && softtion.isFunction(fn)) {
@@ -161,8 +160,8 @@
         ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
             return {
                 restrict: "A",
-                compile: function ($element, attrs) {
-                    var fn = $parse(attrs[directive.name]);
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs[directive.name]);
 
                     return function ($scope, $element) {
                         var fnEvent = function ($event) {
@@ -189,8 +188,8 @@
         ["$parse", "$timeout", function ($parse, $timeout) {
             return {
                 restrict: "A",
-                compile: function ($element, attrs) {
-                    var fn = $parse(attrs["ngPointerhold"]), promise;
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs["ngPointerhold"]), promise;
                     
                     return function ($scope, $element) {
                         var fnPromise = function ($event) {
