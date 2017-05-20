@@ -806,6 +806,45 @@
                 }
             },
             
+            CheckBoxSelect: {
+                route: "softtion/template/checkbox-select.html",
+                name: "checkboxSelect",
+                html: function () {
+                    var label = softtion.html("label").
+                        addAttribute("ng-click","clickLabel($event)");
+
+                    return label.create(); // Checkbox select
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.CheckBoxSelect.route,
+                        scope: {
+                            preventDefault: "=?",
+                            stopPropagation: "=?",
+                            
+                            // Eventos
+                            clickEvent: "=?"
+                        },
+                        link: function ($scope) {
+                            $scope.clickLabel = function ($event) { 
+                                if ($scope.preventDefault) {
+                                    return;
+                                } // Se detendrá activación del evento
+                                
+                                if (softtion.isFunction($scope.clickEvent)) {
+                                    $scope.clickEvent($event);
+                                } // Evento click sobre el componente
+                                
+                                if ($scope.stopPropagation) {
+                                    $event.stopPropagation();
+                                } // Se detendrá propagación de Evento
+                            };
+                        }
+                    };
+                }
+            },
+            
             ChipInput: {
                 route: "softtion/template/chip-input.html",
                 name: "chipInput",
@@ -2886,13 +2925,13 @@
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
                                 addAttribute("tabindex","-1").
-                                addAttribute("ng-class", "{active: checkeds[$index]}").
-                                addAttribute("ng-click","checkedSuggestion(suggestion, $index, $event)").
+                                addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
+                                addAttribute("ng-click","checkedSuggestion(suggestion, $event)").
                                 setText("{{describeSuggestion(suggestion)}}").
                                 addChildren(
-                                    softtion.html("div").addClass("checkbox-control").
-                                        addAttribute("prevent-default", "true").
-                                        addAttribute("ng-model", "checkeds[$index]")
+                                    softtion.html("div").addClass("checkbox-select").
+                                        addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
+                                        addAttribute("prevent-default", "true")
                                 )
                         );
 
@@ -2940,17 +2979,13 @@
                             // Atributos
                             var describeValues = Material.components.SelectMultiple.describeValues;
                         
-                            var temp = []; $scope.selects = $scope.selects || []; $scope.checkeds = []; 
+                            var temp = []; $scope.selects = $scope.selects || [];
                             
                             $scope.selects.forEach(function (select) {
-                                var index = $scope.suggestions.indexOf(select);
-                                
-                                if (index !== -1 && temp.indexOf(select) === -1) { 
-                                    temp.push(select); $scope.checkeds[index] = true;
-                                } 
+                                if (temp.indexOf(select) === -1) { temp.push(select); } 
                             }); // Verificando la lista de items
                             
-                            $scope.selects = temp; // Cargando lista de activos
+                            $scope.selects = temp; // Cargando lista real
                             
                             var clickComponent = function (target) {
                                 return (label.is(target) || input.is(target) || value.is(target) || list.is(target))
@@ -3025,10 +3060,8 @@
                                 } // No esta desactivado el componente
                             };
 
-                            $scope.checkedSuggestion = function (suggestion, $index, $event) {
-                                $scope.checkeds[$index] = !$scope.checkeds[$index];
-                                
-                                ($scope.checkeds[$index]) ? $scope.selects.push(suggestion) :
+                            $scope.checkedSuggestion = function (suggestion, $event) {
+                                (!$scope.isItemChecked(suggestion)) ? $scope.selects.push(suggestion) :
                                     $scope.selects.remove($scope.selects.indexOf(suggestion));
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
@@ -3047,6 +3080,10 @@
                             
                             $scope.getValueModel = function () {
                                 return describeValues($scope.selects, $scope.keyDescription);
+                            };
+                            
+                            $scope.isItemChecked = function (suggestion) {
+                                return ($scope.selects.indexOf(suggestion) !== -1);
                             };
                         }
                     };
@@ -3783,6 +3820,20 @@
                 }]
             },
             
+            Dialog: {
+                name: "dialog",
+                directive: ["$dialog", function ($dialog) {
+                    return {
+                        restrict: "A",
+                        link: function ($scope, $element, $attrs) {
+                            $element.click(function () {
+                                $dialog.set($attrs.dialog).show();
+                            });
+                        }
+                    };
+                }]
+            },
+            
             Dropdown: {
                 name: "dropdown",
                 directive: ["$dropdown", function ($dropdown) {
@@ -3857,7 +3908,7 @@
                         var self = this; // Objeto Alert
 
                         Properties.dialog = angular.element(
-                            softtion.html("div").addClass("dialog").create()
+                            softtion.html("div").addClass(["dialog", "alert"]).create()
                         );
 
                         Properties.backdrop = angular.element(
@@ -3991,9 +4042,7 @@
                                 Properties.negativeButton.removeClass("hidden") :
                                 Properties.negativeButton.addClass("hidden");
                             
-                            
-                            Properties.dialog.addClass("active"); 
-                            Properties.backdrop.fadeIn(175); Properties.box.addClass("show");
+                            Properties.dialog.addClass("active"); Properties.box.addClass("show");
                         } // Dialog no se encuentra activo
                     };
 
@@ -4001,8 +4050,7 @@
                         if (Properties.dialog.hasClass("active")) {
                             angular.element(document.body).removeClass("body-overflow-none");
                             
-                            Properties.dialog.removeClass("active"); 
-                            Properties.backdrop.fadeOut(175); Properties.box.removeClass("show");
+                            Properties.dialog.removeClass("active"); Properties.box.removeClass("show");
                         } // Dialog se encuentra activo
                     };
                     

@@ -82,36 +82,36 @@ body.not-touch *::-webkit-scrollbar-track {
     background-color: transparent; }
 
 body.not-touch *:hover::-webkit-scrollbar-track {
-    background-color: #eeeeee; }
+    background-color: rgba(245, 245, 245, 1); }
 
 body.dark.not-touch *:hover::-webkit-scrollbar-track {
-    background-color: #757575; }
+    background-color: rgba(48, 48, 48, 1); }
 
 body.not-touch *:hover::-webkit-scrollbar-track:vertical {
-    border-left: 1px solid #bdbdbd; }
+    border-left: 1px solid rgba(0, 0, 0, 0.12); }
 
 body.dark.not-touch *:hover::-webkit-scrollbar-track:vertical {
-    border-left: 1px solid #9e9e9e; }
+    border-left: 1px solid rgba(255, 255, 255, 0.12); }
 
 body.not-touch *:hover::-webkit-scrollbar-track:horizontal {
-    border-top: 1px solid #bdbdbd; }
+    border-top: 1px solid rgba(0, 0, 0, 0.12); }
 
 body.dark.not-touch *:hover::-webkit-scrollbar-track:horizontal {
-    border-top: 1px solid #9e9e9e; }
+    border-top: 1px solid rgba(255, 255, 255, 0.12); }
 
 body.not-touch *::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2); }
+    background-color: rgba(66, 66, 66, 0.25); }
 
 body.dark.not-touch *::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.38); }
+    background-color: rgba(255, 255, 255, 0.25); }
 
 body.not-touch *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.38); }
+    background-color: rgba(66, 66, 66, 0.32); }
 
 body.dark.not-touch *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.65); }
+    background-color: rgba(255, 255, 255, 0.32); }
 
-.body-overflow-none.not-touch *::-webkit-scrollbar {
+.body-overflow-none.not-touch .app-content::-webkit-scrollbar {
     width: 0px;
     height: 0px; }
 
@@ -122,8 +122,8 @@ ul {
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
-  margin: 0; 
-  -webkit-appearance: none; }
+    margin: 0; 
+    -webkit-appearance: none; }
 
 @font-face {
     font-family: "Material Icons";
@@ -2257,7 +2257,7 @@ button.raised:focus:after, button.flat:focus:after {
 .checkbox > input[type="checkbox"]:focus ~ .ripple-content > .box {
     animation: ripple-squarecenter 0.75s var(--standard-curve); }
 
-/** CHECKBOX SELECTION */
+/** CHECKBOX CONTROL */
 
 .checkbox-control {
     position: relative;
@@ -2330,6 +2330,76 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transition: all 0.2s var(--standard-curve); }
 
 .checkbox-control > input[type="checkbox"]:checked ~ label:before {
+    transform: scale(1); }
+
+/** CHECKBOX SELECT */
+
+.checkbox-select {
+    position: relative;
+    float: left;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    margin: 8px 0; }
+
+.checkbox-select > label {
+    position: relative;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none; }
+
+.checkbox-select > label:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    z-index: 1;
+    border-radius: 2px; }
+
+.checkbox-select.active > label:after {
+    border-left: 2px solid transparent;
+    border-top: 2px solid transparent;
+    width: 20%;
+    height: 50%;
+    -moz-transform: translate(-50%, -65%) rotate(40deg);
+    -webkit-transform: translate(-50%, -65%) rotate(40deg);
+    -o-transform: translate(-50%, -65%) rotate(40deg);
+    transform: translate(-50%, -65%) rotate(40deg);
+    -ms-transform: translate(-50%, -65%) rotate(40deg);
+    -webkit-backface-visibility: hidden; }
+
+.checkbox-select > label:before {
+    content: "";
+    position: relative;
+    display: block;
+    margin: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    z-index: 1;
+    border-radius: 2px;
+    transform: scale(0);
+    transform-origin: 50% 50%;
+    -moz-transition: all 0.2s var(--standard-curve);
+    -webkit-transition: all 0.2s var(--standard-curve);
+    -o-transition: all 0.2s var(--standard-curve);
+    transition: all 0.2s var(--standard-curve);
+    -ms-transition: all 0.2s var(--standard-curve); }
+
+.checkbox-select.active > label:before {
     transform: scale(1); }
 
 /** CHIP */
@@ -3129,10 +3199,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dialog > .box {
     position: fixed;
-    top: calc(50% + 8px);
-    left: 10%;
-    padding-top: 24px;
-    transform: scale(0.25) translateY(-50%);
+    top: 50%;
+    left: 50%;
     visibility: hidden;
     opacity: 0;
     width: 80%;
@@ -3140,14 +3208,34 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 24;
     border-radius: 36px;
     box-shadow: var(--shadow-24);
-    transition: all 0.175s var(--standard-curve); }
+    -moz-transition: all 0.175s var(--standard-curve);
+    -webkit-transition: all 0.175s var(--standard-curve);
+    transition: all 0.175s var(--standard-curve);
+    -o-transition: all 0.175s var(--standard-curve);
+    -ms-transition: all 0.175s var(--standard-curve);
+    -moz-transform: scale(0.25) translate(-50%, -50%);
+    -webkit-transform: scale(0.25) translate(-50%, -50%);
+    transform: scale(0.25) translate(-50%, -50%);
+    -o-transform: scale(0.25) translate(-50%, -50%);
+    -ms-transform: scale(0.25) translate(-50%, -50%);
+    -moz-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -ms-transform-origin: 0 0; }
+
+.dialog.alert > .box {
+    padding-top: 24px; }
 
 .dialog > .box.show {
     border-radius: 2px;
-    transform: scale(1) translateY(-50%);
-    top: 50%;
     visibility: visible;
-    opacity: 1; }
+    opacity: 1;
+    -moz-transform: scale(1) translate(-50%, -50%);
+    -webkit-transform: scale(1) translate(-50%, -50%);
+    transform: scale(1) translate(-50%, -50%);
+    -o-transform: scale(1) translate(-50%, -50%);
+    -ms-transform: scale(1) translate(-50%, -50%); }
 
 .dialog > .box > .title {
     padding: 0px 24px 20px 24px;
@@ -3187,22 +3275,19 @@ button.raised:focus:after, button.flat:focus:after {
 @media only screen and (min-width : 361px) {
     
     .dialog > .box {
-        width: 70%;
-        left: 15%; }
+        width: 70%; }
 }
 
 @media only screen and (min-width : 641px) {
     
     .dialog > .box {
-        width: 60%;
-        left: 20%; }
+        width: 60%; }
 }
 
 @media only screen and (min-width : 961px) {
     
     .dialog > .box {
-        width: 50%;
-        left: 25%; }
+        width: 50%; }
 }
 
 /** DROPDOWN */
@@ -3818,10 +3903,13 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 24px; }
 
 .list > .item-list > .content > .detail {
-    border-bottom-width: 1px;
+    border-bottom-width: 0px;
     border-bottom-style: solid;
     padding: 16px;
     box-sizing: border-box; }
+
+.list.bordered > .item-list > .content > .detail {
+    border-bottom-width: 1px; }
 
 .list > .item-list > .content > .detail > .title {
     display: block;
@@ -3980,7 +4068,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     box-sizing: border-box; }
 
-.menu.single-text > li.option {
+.menu.text-only > li.option {
     padding: 0px 16px; }
 
 .menu > li.option > span {
@@ -3990,7 +4078,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     white-space: nowrap; }
 
-.menu.single-text > li.option > span, .menu > li.option > i + span {
+.menu.text-only > li.option > span, .menu > li.option > i + span {
     padding-left: 0px; }
 
 .menu > li.option > i {
@@ -4000,7 +4088,7 @@ button.raised:focus:after, button.flat:focus:after {
     text-align: left;
     margin-right: 16px; }
 
-.menu.single-text > li.option > i {
+.menu.text-only > li.option > i {
     display: none; }
 
 .menu > li.divider {
@@ -4683,7 +4771,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 48px;
     line-height: 48px; }
 
-.select-multiple > ul > li > .checkbox-control {
+.select-multiple > ul > li > .checkbox-select {
     width: 20px;
     height: 20px;
     line-height: 20px;

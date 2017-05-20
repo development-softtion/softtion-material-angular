@@ -573,7 +573,7 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .checkbox > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
     background-color: var(--light-ripple); }
 
-/** CHECKBOX SELECTION */
+/** CHECKBOX CONTROL */
 
 .checkbox-control > label {
     color: var(--dark-secondary-font); }
@@ -608,6 +608,36 @@ button.raised.primary:before, button.floating.primary:before {
     border: 2px solid var(--light-background); }
 
 .dark .checkbox-control > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--dark-background); }
+
+/** CHECKBOX SELECT */
+
+.checkbox-select > label:before {
+    background-color: var(--theme-background); }
+
+.checkbox-select.disabled > label:before {
+    background-color: var(--light-background-disabled); }
+
+.checkbox-select > label:after {
+    border: 2px solid rgba(0, 0, 0, 0.54); }
+
+.dark .checkbox-select > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.7); }
+
+.checkbox-select.active > label:after, .checkbox-select.active.disabled > label:after {
+    border-left: 2px solid transparent !important;
+    border-top: 2px solid transparent !important; }
+
+.checkbox-select.disabled > label:after {
+    border: 2px solid var(--light-background-disabled); }
+
+.dark .checkbox-select.disabled > label:after {
+    border: 2px solid var(--dark-background-disabled); }
+
+.checkbox-select.active > label:after {
+    border: 2px solid var(--light-background); }
+
+.dark .checkbox-select.active > label:after {
     border: 2px solid var(--dark-background); }
 
 /** CHIP */
@@ -1588,10 +1618,10 @@ button.raised.primary:before, button.floating.primary:before {
 .select-multiple > ul > li:hover {
     background-color: var(--light-background-hover); }
 
-.select-multiple > ul > li > .checkbox-control > label:before {
+.select-multiple > ul > li > .checkbox-select > label:before {
     background-color: var(--theme-background); }
 
-.dark .select-multiple > ul > li > .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
+.dark .select-multiple > ul > li > .checkbox-select > label:after {
     border: 2px solid var(--light-background-component); }
 
 /** SIDENAV */
