@@ -1,5 +1,5 @@
 /*
- Angular Softtion v1.0.0
+ Angular Softtion Middleware v1.0.0
  (c) 2016 Softtion Developers, http://angular.softtion.com.co
  License: MIT
  Updated: 05/Ene/2016

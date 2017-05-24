@@ -1503,6 +1503,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     min-height: 56px; 
     max-height: 56px; 
+    overflow: hidden;
     line-height: 56px;
     box-sizing: border-box; }
 
@@ -4097,12 +4098,16 @@ button.raised:focus:after, button.flat:focus:after {
 /** PROGRESS CIRCULAR */
 
 .progress-circular {
-    width: 64px;
-    height: 64px; }
+    width: 24px;
+    height: 24px; }
 
-.progress-circular.small {
-    width: 32px;
-    height: 32px; }
+.progress-circular.x150 {
+    width: 36px;
+    height: 36px; }
+
+.progress-circular.x200 {
+    width: 48px;
+    height: 48px; }
 
 @keyframes rotator {
     0% { 
@@ -4155,7 +4160,7 @@ button.raised:focus:after, button.flat:focus:after {
     stroke-linecap: round;
     stroke-dasharray: 150;
     stroke-dashoffset: 150;
-    stroke-width: 4px;
+    stroke-width: 6px;
     transform-origin: center;
     -moz-animation: dash 1.8s var(--standard-curve) infinite;
     -webkit-animation: dash 1.8s var(--standard-curve) infinite;
@@ -4163,8 +4168,11 @@ button.raised:focus:after, button.flat:focus:after {
     animation: dash 1.8s var(--standard-curve) infinite;
     -ms-animation: dash 1.8s var(--standard-curve) infinite; }
 
-.progress-circular.small > svg > circle {
-    stroke-width: 6px; }
+.progress-circular.x150 > svg > circle {
+    stroke-width: 5px; }
+
+.progress-circular.x200 > svg > circle {
+    stroke-width: 4px; }
 
 /** RADIOBUTTON */
 
@@ -5833,29 +5841,34 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .tooltip-element {
     position: fixed;
-    left: 50%;
-    top: 50%;
     opacity: 0;
     font-weight: 500;
-    height: 32px;
+    height: 0px;
     line-height: 32px;
-    z-index: 24;
+    margin-top: 12px;
     padding: 0px 16px;
-    margin-top: 16px;
     border-radius: 3px; 
-    transition: opacity 0.2s var(--easing-out); }
+    z-index: 24;
+    -moz-transition: opacity 0.225s var(--easing-out);
+    -webkit-transition: opacity 0.225s var(--easing-out);
+    transition: opacity 0.225s var(--easing-out);
+    -o-transition: opacity 0.225s var(--easing-out);
+    -ms-transition: opacity 0.225s var(--easing-out); }
 
 .tooltip-element.show {
-    opacity: 1; }
+    opacity: 1; 
+    height: 32px; }
 
 @media only screen and (min-width : 641px) {
     
     .tooltip-element {
         font-size: 11px;
-        padding: 0px 8px;
-        height: 24px;
         line-height: 24px;
-        margin-top: 10px; }
+        margin-top: 8px;
+        padding: 0px 8px; }
+    
+    .tooltip-element.show {
+        height: 24px; }
 }
 
 /** VIEWS TAB */

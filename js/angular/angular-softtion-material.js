@@ -3767,24 +3767,22 @@
                             
                             tooltip.html($attrs.tooltip); container.append(tooltip); // Agregando
                             
-                            $element.mouseenter(function () {
-                                //container.html($attrs.tooltip);
-                                
-                                var widthContainer = tooltip.innerWidth(),
+                            $element.on("mouseenter", function () {
+                                var widthTooltip = tooltip.innerWidth(),
                                     heightElement = $element.innerHeight(),
                                     positionX = $element.offset().left,
                                     positionY = $element.offset().top,
                                     widthElement = $element.innerWidth();
                                     
-                                var left = (widthElement / 2) - (widthContainer / 2) + positionX,
+                                var left = (widthElement / 2) - (widthTooltip / 2) + positionX,
                                     top = positionY + heightElement;
                                     
                                 if (left < 8) { left = 8; }
                                 
-                                tooltip.css({ left: left, top: top, display: "block" }).addClass("show");
+                                tooltip.css({ left: left, top: top }).addClass("show");
                             });
                             
-                            $element.mouseout(function () { tooltip.css({ display: "none" }).removeClass("show"); });
+                            $element.on("mouseout", function () { tooltip.removeClass("show"); });
                         }
                     };
                 }
