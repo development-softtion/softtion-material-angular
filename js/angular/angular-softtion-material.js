@@ -38,32 +38,65 @@
                             fixed: "=?"
                         },
                         link: function ($scope, $element) {
-                            // Componentes y atributos
+                                // Componentes
                             var appBody = angular.element(".app-body"),
                                 appContent = angular.element(".app-content"),
                                 sidenav = appBody.children(".sidenav"),
+                                $window = angular.element(window),
+                                toolbar = $element.children(".toolbar"),
+                                
+                                // Atributos
                                 position = 0, hideClass = "hide",
                                 heightElement = $element.innerHeight(),
-                                $window = angular.element(window);
+                                
+                               // Funciones
+                               changeStatus = function (event, value) {
+                                   var nowStatus = (event === "show") ?
+                                       $element.hasClass(hideClass) :
+                                       !$element.hasClass(hideClass);
+                                   
+                                   if (nowStatus) {
+                                       (event === "hide") ?
+                                           $element.addClass(hideClass) :
+                                           $element.removeClass(hideClass);
+
+                                       appContent.css("top", value); 
+                                       appContent.css("padding-bottom", value);
+                                   } // Validando estado del Appbar
+                               };
                             
                             if (!$scope.fixed) {
                                 appContent.scroll(function () {
                                     var heightMin = (($window.width() > 960) ? 64 : 56),
+                                        newTop = heightElement - heightMin,
                                         positionNew = appContent.scrollTop();
 
-                                    hideClass = $element.hasClass("flexible-title") ? "hide-flexible-title" : "hide";
+                                    hideClass = toolbar.hasClass("flexible-title") ? 
+                                        "hide-flexible-title" : "hide";
 
-                                    if (positionNew > heightMin) {
+                                    if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            $element.addClass(hideClass); 
+                                            var heightWindow = $window.height(), heightContent = 0;
+                                                
+                                            angular.forEach(appContent.children(), function (children) {
+                                                var element = angular.element(children);
+                                                
+                                                if (!element.hasClass("content-progress-circular")) {
+                                                    heightContent += element.height();
+                                                } // Evitando componentes que no tienen tamaño
+                                            });
+                                            
+                                            if (heightContent > (heightWindow + heightMin)) { 
+                                                changeStatus("hide", newTop); 
+                                            } // Alcanza los requisitos para ocultarse
                                         } else {
-                                            $element.removeClass(hideClass); 
-                                        }
+                                            changeStatus("show", heightElement);
+                                        } // Revelando componente
                                     } else if (positionNew === 0) {
-                                        $element.removeClass(hideClass); 
-                                    } 
+                                        changeStatus("show", heightElement);
+                                    } // Revelando componente, se llego al inicio
 
-                                    position = positionNew; // Posición nueva del scroll
+                                    position = positionNew; // Nueva posición del scroll
                                 });
                             }                        
                             
@@ -71,12 +104,18 @@
                             sidenav.children(".content").css("top", heightElement); 
                             appContent.css("padding-bottom", heightElement);
                             
+                            setTimeout(function () { appContent.addClass("transition"); }, 500);
+                            
                             $window.resize(function () {
-                                var heightElement = $element.innerHeight();
+                                var newHeightElement = $element.height();
                                 
-                                appContent.css("top", heightElement);
-                                sidenav.children(".content").css("top", heightElement); 
-                                appContent.css("padding-bottom", heightElement);
+                                if (!$element.hasClass(hideClass)) {
+                                    heightElement = newHeightElement;
+                                } // Componente no esta oculto
+                                
+                                appContent.css("top", newHeightElement);
+                                sidenav.children(".content").css("top", newHeightElement); 
+                                appContent.css("padding-bottom", newHeightElement);
                             });
                         }
                     };
@@ -2178,9 +2217,9 @@
                 }
             },
             
-            FileChooserMultiple: {
-                route: "softtion/template/file-chooser-multiple.html",
-                name: "fileChooserMultiple",
+            FilechooserMultiple: {
+                route: "softtion/template/filechooser-multiple.html",
+                name: "filechooserMultiple",
                 html: function () {
                     var input = softtion.html("input", false).
                         addAttribute("type", "file");
@@ -2202,7 +2241,10 @@
                                         addAttribute("ng-class", "{disabled: ngDisabled}")
                                 )
                         ).addChildren(
-                            softtion.html("div").addClass(["file", "{{responsive}}"]).
+                            softtion.html("div").addClass("files").
+                                addChildren(
+                                
+                            softtion.html("div").addClass(["file"]).
                                 addAttribute("ng-repeat", "file in files").
                                 addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
                                 addAttribute("ng-clickright", "fileRight(file, $event, $index)").
@@ -2235,6 +2277,7 @@
                                                     softtion.html("label").addClass("name").setText("{{file.name}}")
                                                 )
                                         )
+                            )
                                 )
                         );
                     
@@ -2243,10 +2286,8 @@
                 directive: ["$timeout", function ($timeout) {
                     return {
                         restrict: "C",
-                        templateUrl: Material.components.FileChooserMultiple.route,
+                        templateUrl: Material.components.FilechooserMultiple.route,
                         scope: {
-                            responsive: "@",
-                            height: "=?",
                             files: "=ngModel",
                             iconButton: "@",
                             multiple: "=?",
@@ -2260,9 +2301,6 @@
                                 imageFormats = [
                                     "image/jpeg", "image/png", "image/jpg", "image/gif"
                                 ];
-                            
-                            $scope.height = $scope.height || "320px"; 
-                            $element.css("height", $scope.height);
                             
                             $scope.iconButton = $scope.iconButton || "attachment";
                             
@@ -2440,121 +2478,137 @@
                     return {
                         restrict: "C",
                         compile: function ($element, $attrs) {
-                            var fn = $parse($attrs["ngSlide"]), // Función al completar Slide
-                                slideActive = softtion.parseBoolean($attrs.slideActive),
-                                slideConfirmable = softtion.parseBoolean($attrs.slideConfirmable),
-                                slideIcon = $attrs.slideIcon, slideLabel = $attrs.slideLabel;
+                                // Padre del componente
+                            var parent = $element.parent(), 
+                                    
+                                // Función al completar Slide
+                                fn = $parse($attrs["ngSlide"]), 
+                                slideDisabled = softtion.parseBoolean(
+                                    parent.attr("slide-disabled")
+                                ),
+                                slideFunction = softtion.parseBoolean(
+                                    parent.attr("slide-function")
+                                ),
+                                slideConfirmable = softtion.parseBoolean(
+                                    parent.attr("slide-confirmable")
+                                ),
+                                slideIcon = parent.attr("slide-icon"),
+                                slideLabel = parent.attr("slide-label");
                                 
                             var fnItemList = Material.components.ItemList;
                             
                             return function ($scope, $element) {
-                                function slideEvent($element, $event) {
-                                    if (ejecuteEvent) {
-                                        $element.css("height", "0"); // Ocultando elemento
-                                        
-                                        var callback = function () {
-                                            fn($scope, { $element: $element, $event: $event });
-                                        };
-
-                                        $scope.$apply(callback); // Disparando evento
-                                    }
-                                }
-                                
-                                var content = $element.children(".content"),
-                                    slideAction, icon, confirmButton, ejecuteEvent = false,
-                                    initialPosition, finalPosition, slided = 0,
-                                    posInitialX, posFinalX, moveActive = false;
-
-                                if (!$element.children(".slide-action").exists()) {
-                                    slideAction = fnItemList.slideAction($element);
-                                } // Insertando contenedor slideAction en el componente
-
-                                if (slideConfirmable) {
-                                    var elements = fnItemList.elementSlideAction(slideAction, slideIcon, slideLabel);
-
-                                    icon = elements.icon; confirmButton = elements.button;
+                                if (!slideDisabled) {
+                                    $element.addClass("slide"); // Item permite Slide
                                     
-                                    confirmButton.on("click.confirmButton", function (event) {
-                                        ejecuteEvent = true; slideEvent($element, event); event.stopPropagation();
-                                    });
+                                    function slideEvent($element, $event) {
+                                        if (ejecuteEvent) {
+                                            $element.css("height", "0"); // Ocultando elemento
 
-                                    slideAction.on("click.slideAction", function () {
-                                        content.css({left: "0px"}); $element.css("height", "auto"); 
-                                    });
-                                } // Insertando elementos en slideAction del componente
+                                            var callback = function () {
+                                                fn($scope, { $element: $element, $event: $event });
+                                            };
 
-                                function start(event) {
-                                    var typeEvent = event.type; moveActive = true;
+                                            $scope.$apply(callback); // Disparando evento
+                                        }
+                                    }
 
-                                    initialPosition = content.position(); finalPosition = content.position();
+                                    var content = $element.children(".content"),
+                                        slideAction, icon, confirmButton, ejecuteEvent = false,
+                                        initialPosition, finalPosition, slided = 0,
+                                        posInitialX, posFinalX, moveActive = false;
 
-                                    content.transition("none"); slided = 0;
-
-                                    posInitialX = (typeEvent === "touchstart") ?
-                                        event.changedTouches[0].clientX : event.clientX;
-
-                                    slideAction.css("height", content.height() + "px");
-                                    $element.css("height", content.height() + "px");
-                                } // Función cuando se presiona el componente
-
-                                function move(event) {
-                                    if (!moveActive) { return; } // No esta activo el evento
-
-                                    var typeEvent = event.type; // Tipo de evento
-
-                                    if (typeEvent === "mouseleave") {
-                                        finish(event); event.stopPropagation(); return false;
-                                    } // Se ha salido del componente
-
-                                    finalPosition = content.position();
-
-                                    posFinalX = (typeEvent === "touchmove") ?
-                                            event.changedTouches[0].clientX : event.clientX;
-
-                                    slided = (slideActive) ? posFinalX - posInitialX : 
-                                            (posFinalX - posInitialX) / 8;
+                                    if (!$element.children(".slide-action").exists()) {
+                                        slideAction = fnItemList.slideAction($element);
+                                    } // Insertando contenedor slideAction en el componente
 
                                     if (slideConfirmable) {
-                                        icon.css({left: "initial", right: "initial"});
-                                        confirmButton.css({left: "initial", right: "initial"});
+                                        var elements = fnItemList.elementSlideAction(slideAction, slideIcon, slideLabel);
 
-                                        var floatElement = (slided > 0) ?
-                                            {alert: "left", button: "right"} :
-                                            {alert: "right", button: "left"};
+                                        icon = elements.icon; confirmButton = elements.button;
 
-                                        icon.css(floatElement.alert, "20px"); 
-                                        confirmButton.css(floatElement.button, "20px");
-                                    }
-                                    
-                                    content.css({left: slided + "px", top: initialPosition.top + "px"});
-                                } // Función cuando se mueve el componente
+                                        confirmButton.on("click.confirmButton", function (event) {
+                                            ejecuteEvent = true; slideEvent($element, event); event.stopPropagation();
+                                        });
 
-                                function finish() {
-                                    moveActive = false; // Fin del arrastre del slide
+                                        slideAction.on("click.slideAction", function () {
+                                            content.css({left: "0px"}); $element.css("height", "auto"); 
+                                        });
+                                    } // Insertando elementos en slideAction del componente
 
-                                    content.transition("left 0.325s var(--standard-curve)");
+                                    function start(event) {
+                                        var typeEvent = event.type; moveActive = true;
 
-                                    var width = content.width() / 2,
-                                        traslation = finalPosition.left - initialPosition.left,
-                                        left = (traslation > 0) ? "100%" : "-100%";
+                                        initialPosition = content.position(); finalPosition = content.position();
 
-                                    if (slideActive) {
-                                        if (Math.abs(traslation) >= width) {
-                                            content.css({left: left}); 
-                                            
-                                            if (!slideConfirmable) { ejecuteEvent = true; }
-                                        } else {
-                                            content.css({left: initialPosition.left});
+                                        content.transition("none"); slided = 0;
+
+                                        posInitialX = (typeEvent === "touchstart") ?
+                                            event.changedTouches[0].clientX : event.clientX;
+
+                                        slideAction.css("height", content.height() + "px");
+                                        $element.css("height", content.height() + "px");
+                                    } // Función cuando se presiona el componente
+
+                                    function move(event) {
+                                        if (!moveActive) { return; } // No esta activo el evento
+
+                                        var typeEvent = event.type; // Tipo de evento
+
+                                        if (typeEvent === "mouseleave") {
+                                            finish(event); event.stopPropagation(); return false;
+                                        } // Se ha salido del componente
+
+                                        finalPosition = content.position();
+
+                                        posFinalX = (typeEvent === "touchmove") ?
+                                                event.changedTouches[0].clientX : event.clientX;
+
+                                        slided = (slideFunction) ? posFinalX - posInitialX : 
+                                                (posFinalX - posInitialX) / 8;
+
+                                        if (slideConfirmable) {
+                                            icon.css({left: "initial", right: "initial"});
+                                            confirmButton.css({left: "initial", right: "initial"});
+
+                                            var floatElement = (slided > 0) ?
+                                                {alert: "left", button: "right"} :
+                                                {alert: "right", button: "left"};
+
+                                            icon.css(floatElement.alert, "20px"); 
+                                            confirmButton.css(floatElement.button, "20px");
                                         }
-                                    } else {
-                                        content.css({left: "0px"}); $element.css("height", "auto");
-                                    }
-                                } // Función cuando se suelta el componente
-                                            
-                                content.transitionend(function (event) { slideEvent($element, event); });
 
-                                content.pointermove(move); content.mouseleave(move);
-                                content.pointerdown(start); content.pointerup(finish);
+                                        content.css({left: slided + "px", top: initialPosition.top + "px"});
+                                    } // Función cuando se mueve el componente
+
+                                    function finish() {
+                                        moveActive = false; // Fin del arrastre del slide
+
+                                        content.transition("left 0.325s var(--standard-curve)");
+
+                                        var width = content.width() / 2,
+                                            traslation = finalPosition.left - initialPosition.left,
+                                            left = (traslation > 0) ? "100%" : "-100%";
+
+                                        if (slideFunction) {
+                                            if (Math.abs(traslation) >= width) {
+                                                content.css({left: left}); 
+
+                                                if (!slideConfirmable) { ejecuteEvent = true; }
+                                            } else {
+                                                content.css({left: initialPosition.left});
+                                            }
+                                        } else {
+                                            content.css({left: "0px"}); $element.css("height", "auto");
+                                        }
+                                    } // Función cuando se suelta el componente
+
+                                    content.transitionend(function (event) { slideEvent($element, event); });
+
+                                    content.pointermove(move); content.mouseleave(move);
+                                    content.pointerdown(start); content.pointerup(finish);
+                                }
                             };
                         }
                     };
@@ -2574,6 +2628,22 @@
                                 
                                 // Ancho es mayor igual a alto
                                 (density >= 1)  ? img.css("width", "100%") : img.css("height", "100%");
+                            }
+                        }
+                    };
+                }
+            },
+            
+            ProgressBar: {
+                name: "progressBar",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            if (!$element.hasClass("indeterminate")) {
+                                var bar = softtion.html("div").addClass("bar").tojQuery();
+                                
+                                $element.append(bar); // Insertando barra progreso
                             }
                         }
                     };
@@ -3755,7 +3825,8 @@
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
                             var body = angular.element(document.body),
-                                container = body.find(".tooltip-container");
+                                container = body.find(".tooltip-container"),
+                                $window = angular.element(window);
                             
                             if (!container.exists()) {
                                 container = angular.element(Material.components.Tooltip.container());
@@ -3772,10 +3843,11 @@
                                     heightElement = $element.innerHeight(),
                                     positionX = $element.offset().left,
                                     positionY = $element.offset().top,
-                                    widthElement = $element.innerWidth();
+                                    widthElement = $element.innerWidth(),
+                                    marginTop = ($window.width() > 640) ? 12 : 8;
                                     
                                 var left = (widthElement / 2) - (widthTooltip / 2) + positionX,
-                                    top = positionY + heightElement;
+                                    top = positionY + heightElement + marginTop;
                                     
                                 if (left < 8) { left = 8; }
                                 
@@ -4277,7 +4349,7 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
-                        if (!dropdown.hasClass(".fixed")) {
+                        if (dropdown.hasClass(".fixed")) {
                             left = left - leftBody; top = top - topContent;
                         } // Componente no ignora a sus contenedores
                         
@@ -4488,6 +4560,97 @@
                 }
             },
             
+            ProgressBar: {
+                name: "$progressBar",
+                method: function () {
+                    var Properties = { 
+                        component: undefined, 
+                        events: [
+                            "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
+                        ]
+                    };
+                    
+                    var ProgressBar = function () {};
+
+                    ProgressBar.prototype.set = function (progressID) {
+                        Properties.component = angular.element(progressID);
+                        var component = Properties.component;
+                        
+                        if (component.exists() && !component.hasClass("indeterminate")) {
+                            var bar = component.children(".bar");
+                            
+                            if (!bar.hasEventListener(Properties.events)) {
+                                bar.animationend(function () { component.removeClass("show"); });
+                            }
+                        } // Componente existe correctamente
+                        
+                        return this; // Retornando interfaz fluida
+                    };
+                    
+                    ProgressBar.prototype.show = function (duration) {
+                        duration = duration || 4000; // Definiendo duración
+                        
+                        if (!Properties.component.hasClass("indeterminate")) {
+                            var bar = Properties.component.children(".bar");
+                            
+                            bar.css("-moz-animation-duration", (duration + "ms"));
+                            bar.css("-webkit-animation-duration", (duration + "ms"));
+                            bar.css("animation-duration", (duration + "ms"));
+                            bar.css("-o-animation-duration", (duration + "ms"));
+                            bar.css("-ms-animation-duration", (duration + "ms"));
+                        } // Componente no es Indeterminado
+                        
+                        Properties.component.addClass("show"); // Visualizando
+                    };
+
+                    ProgressBar.prototype.hide = function () {
+                        Properties.component.removeClass("show");
+                    };
+                    
+                    var progressBar = new ProgressBar();
+
+                    this.$get = function () { return progressBar; };
+                }
+            },
+            
+            ProgressCircular: {
+                name: "$progressCircular",
+                method: function () {
+                    var Properties = {
+                        component: undefined
+                    };
+                    
+                    var ProgressCircular = function () { 
+                        Properties.component = angular.element(
+                            softtion.html("div").
+                                addClass("content-progress-circular").
+                                addChildren(
+                                    softtion.html("div").addClass("progress-circular")
+                                ).create()
+                        );
+                        
+                        angular.element(".app-content").append(Properties.component);
+                    };
+
+                    ProgressCircular.prototype.show = function () {
+                        if (!Properties.component.hasClass("show")) {
+                            Properties.component.addClass("show");
+                        } // Haciendo visible el componente
+                    };
+
+                    ProgressCircular.prototype.hide = function () {
+                        if (Properties.component.hasClass("show")) {
+                            Properties.component.removeClass("show");
+                        } // Haciendo invisible el componente
+                    };
+
+                    var progressCircular = new ProgressCircular();
+                    
+                    this.$get = function () { return progressCircular; };
+                }
+                
+            },
+            
             Sidenav: {
                 name: "$sidenav",
                 method: function () {
@@ -4569,8 +4732,7 @@
                 },
                 method: function () {
                     var Properties = {
-                        scope: undefined, box: undefined, 
-                        body: undefined, action: undefined
+                        body: undefined, box: undefined, action: undefined
                     };
                     
                     var SnackBar = function () { 
@@ -4749,6 +4911,94 @@
                     var snackbar = new SnackBar();
                     
                     this.$get = function () { return snackbar; };
+                }
+            },
+            
+            ThemeMaterial: {
+                name: "$themeMaterial",
+                method: function () {
+                    var ColorPallete = {
+                        red: {
+                            standard: "#f44336",        // red-500
+                            dark: "#d32f2f",            // red-700
+                            light: "#ef9a9a",           // red-200
+                            
+                            accent: "#f44336",          // red-500
+                            accentFocus: "#c62828",     // red-800
+                            accentHover: "#e57373",     // red-300
+                            accentDisabled: "#ffcdd2",  // red-100
+                            
+                            font: "#f44336"             // red-500
+                        },
+                        purple: {
+                            standard: "#9c27b0",        // purple-500
+                            dark: "#7b1fa2",            // purple-700
+                            light: "#e1bee7",           // purple-200
+                            
+                            accent: "#9c27b0",          // purple-500
+                            accentFocus: "#6a1b9a",     // purple-800
+                            accentHover: "#ba68c8",     // purple-300
+                            accentDisabled: "#e1bee7",  // purple-100
+                            
+                            font: "#9c27b0"             // purple-500
+                        }
+                    };
+                    
+                    var ThemeMaterial = function () {};
+                    
+                    ThemeMaterial.prototype.setPrimary = function (nameTheme) {
+                        var theme = ColorPallete[nameTheme]; // Tema
+                        
+                        if (softtion.isUndefined(theme)) {
+                            theme = ColorPallete["purple"];
+                        } // Estableciendo tema primario por defecto 
+                        
+                        document.documentElement.style.setProperty("--theme-background", theme.standard);
+                        document.documentElement.style.setProperty("--theme-background-light", theme.light);
+                        document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
+                    };
+                    
+                    ThemeMaterial.prototype.setError = function (nameTheme) {
+                        var theme = ColorPallete[nameTheme]; // Tema
+                        
+                        if (softtion.isUndefined(theme)) {
+                            theme = ColorPallete["purple"];
+                        } // Estableciendo tema primario por defecto 
+                        
+                        document.documentElement.style.setProperty("--theme-background-error", theme.standard);
+                        document.documentElement.style.setProperty("--error-primary-font", theme.standard);
+                    };
+                    
+                    ThemeMaterial.prototype.setAccent = function (nameTheme) {
+                        var theme = ColorPallete[nameTheme]; // Tema
+                        
+                        if (softtion.isUndefined(theme)) {
+                            theme = ColorPallete["purple"];
+                        } // Estableciendo tema primario por defecto 
+                        
+                        document.documentElement.style.setProperty("--theme-background-accent", theme.accent);
+                        document.documentElement.style.setProperty("--theme-background-accent-disabled", theme.accentDisabled);
+                        document.documentElement.style.setProperty("--theme-background-accent-focus", theme.accentFocus);
+                        document.documentElement.style.setProperty("--theme-background-accent-hover", theme.accentHover);
+                        
+                        document.documentElement.style.setProperty("--accent-primary-font", theme.font);
+                    };
+                    
+                    var themeMaterial = new ThemeMaterial();
+                    
+                    this.$get = function () { return themeMaterial; };
+                    
+                    this.setPrimary = function (nameTheme) {
+                        themeMaterial.setPrimary(nameTheme); return this;
+                    };
+                    
+                    this.setError = function (nameTheme) {
+                        themeMaterial.setError(nameTheme); return this;
+                    };
+                    
+                    this.setAccent = function (nameTheme) {
+                        themeMaterial.setAccent(nameTheme); return this;
+                    };
                 }
             }
         }

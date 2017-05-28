@@ -50,7 +50,7 @@
     -ms-iteration-count: infinite;
     animation-iteration-count: infinite; }
 
-/** Ripple */
+/** RIPPLE */
 
 @keyframes ripple-squarecenter {
     0% {
@@ -234,7 +234,7 @@
     animation-timing-function: var(--standard-curve);
     -ms-animation-timing-function: var(--standard-curve); }
 
-/** ButtonFocus */
+/** BUTTON FOCUS */
 
 @keyframes button-focus {
     0% {
@@ -248,7 +248,7 @@
 }
 
 
-/** ButtonFocusContent */
+/** BUTTON FOCUS CONTENT */
 
 @keyframes button-focus-content {
     0% {
@@ -284,7 +284,7 @@
         width: calc(100% - 4px); }
 }
 
-/** FadeIn */
+/** FADE IN */
 
 @-webkit-keyframes fadeIn {
     0% {
@@ -309,7 +309,7 @@
     animation-name: fadeIn; 
     -ms-animation-name: fadeIn; }
 
-/** FadeOut */
+/** FADE OUT */
 
 @-webkit-keyframes fadeOut {
     0% {
@@ -334,7 +334,7 @@
     animation-name: fadeOut; 
     -ms-animation-name: fadeOut; }
 
-/** SlideInRight */
+/** SLIDE IN RIGHT */
 
 @-webkit-keyframes slideInRight {
     0% {
@@ -365,6 +365,8 @@
     animation-name: slideInRight; 
     -ms-animation-name: slideInRight; }
 
+/** SLIDE OUT RIGHT */
+
 @-webkit-keyframes slideOutRight {
     0% {
         visibility: visible;
@@ -391,7 +393,7 @@
     -webkit-animation-name: slideOutRight;
     animation-name: slideOutRight; }
 
-/** SlideInLeft */
+/** SLIDE IN LEFT */
 
 @-webkit-keyframes slideInLeft {
     0% {
@@ -422,7 +424,7 @@
     animation-name: slideInLeft;
     -ms-animation-name: slideInLeft; }
 
-/** SlideOutLeft */
+/** SLIDE OUT LEFT */
 
 @-webkit-keyframes slideOutLeft {
     0% {
@@ -452,3 +454,81 @@
     -o-animation-name: slideOutLeft;
     animation-name: slideOutLeft; 
     -ms-animation-name: slideOutLeft; }
+
+/** PROGRESS INDETERMINATE BEFORE */
+
+@-webkit-keyframes progressIndeterminateBefore {
+    0% {
+        width: 100%; 
+        left: -125% }
+    
+    20% {
+        width: 100%; 
+        left: -125% }
+    
+    100% {
+        width: 12.5%; 
+        left: 100% }
+}
+
+@keyframes progressIndeterminateBefore {
+    0% {
+        width: 100%; 
+        left: -125% }
+    
+    20% {
+        width: 100%; 
+        left: -125% }
+    
+    100% {
+        width: 12.5%; 
+        left: 100% }
+}
+
+/** PROGRESS INDETERMINATE AFTER */
+
+@-webkit-keyframes progressIndeterminateAfter {
+    0% {
+        width: 12.5%; 
+        left: -12.5% }
+    
+    80% {
+        width: 100%; 
+        left: 125% }
+    
+    100%{
+        width: 100%; 
+        left: 125% }
+}
+
+@keyframes progressIndeterminateAfter {
+    0% {
+        width: 12.5%; 
+        left: -12.5% }
+    
+    80% {
+        width: 100%; 
+        left: 125% }
+    
+    100%{
+        width: 100%; 
+        left: 125% }
+}
+
+/** PROGRESS DETERMINATE */
+
+@-webkit-keyframes progressDeterminate {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: 100%; }
+}
+
+@keyframes progressDeterminate {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: 100%; }
+}

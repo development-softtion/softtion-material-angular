@@ -59,6 +59,7 @@
     --theme-background-accent-focus: #2e7d32;
     --theme-background-accent-hover: #81c784;
     --theme-background-accent-disabled: #c8e6c9;
+    
     --theme-background-error: #f44336;
     
     /** FONTS */
@@ -200,6 +201,12 @@ body.dark {
 
 .autocomplete > ul > li.not-found {
     color: var(--error-primary-font); }
+
+/** BADGE */
+
+.badge {
+    color: var(--light-primary-font);
+    background-color: var(--theme-background-accent); }
 
 /** BOTTOM SHEET */
 
@@ -1110,82 +1117,82 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** FILECHOOSER MULTIPLE */
 
-.file-chooser-multiple > .content {
+.filechooser-multiple > .content {
     background: var(--light-background);
     border: 2px dashed var(--light-background-border); }
 
-.dark .file-chooser-multiple > .content {
+.dark .filechooser-multiple > .content {
     background: var(--dark-background);
     border: 2px dashed var(--dark-background-border); }
 
-.file-chooser-multiple > .content > .select-file > i,
-.file-chooser-multiple > .content > .select-file > p {
+.filechooser-multiple > .content > .select-file > i,
+.filechooser-multiple > .content > .select-file > p {
     color: var(--dark-secondary-font); }
 
-.dark .file-chooser-multiple > .content > .select-file > i,
-.dark .file-chooser-multiple > .content > .select-file > p {
+.dark .filechooser-multiple > .content > .select-file > i,
+.dark .filechooser-multiple > .content > .select-file > p {
     color: var(--light-primary-font); }
 
-.file-chooser-multiple > .content > .select-file > i.disabled,
-.file-chooser-multiple > .content > .select-file > p.disabled {
+.filechooser-multiple > .content > .select-file > i.disabled,
+.filechooser-multiple > .content > .select-file > p.disabled {
     color: var(--dark-disabled-font); }
 
-.dark .file-chooser-multiple > .content > .select-file > i.disabled,
-.dark .file-chooser-multiple > .content > .select-file > p.disabled {
+.dark .filechooser-multiple > .content > .select-file > i.disabled,
+.dark .filechooser-multiple > .content > .select-file > p.disabled {
     color: var(--light-disabled-font); }
 
-.file-chooser-multiple > .content > .select-file > p.disabled {
+.filechooser-multiple > .content > .select-file > p.disabled {
     text-decoration-color: var(--dark-disabled-font); }
 
-.dark .file-chooser-multiple > .content > .select-file > p.disabled {
+.dark .filechooser-multiple > .content > .select-file > p.disabled {
     text-decoration-color: var(--light-disabled-font); }
 
-.file-chooser-multiple > .content > .file > .content { 
+.filechooser-multiple > .content > .files > .file > .content { 
     background: var(--light-background-component); }
 
-.dark .file-chooser-multiple > .content > .file > .content { 
+.dark .filechooser-multiple > .content > .files > .file > .content { 
     background: var(--dark-background-component); }
 
-.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > .svg-icon {
+.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > .svg-icon {
     background: var(--dark-secondary-font); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .view-preview > .icon > .svg-icon {
+.dark .filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > .svg-icon {
     background: var(--light-primary-font); }
 
-.file-chooser-multiple > .content > .file > .content > .view-preview > .icon > i {
+.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > i {
     color: var(--dark-secondary-font); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .view-preview > .icon > i {
+.dark .filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > i {
     color: var(--light-primary-font); }
 
-.file-chooser-multiple > .content > .file > .content > .detail {
+.filechooser-multiple > .content > .files > .file > .content > .detail {
     background: var(--light-background-component); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .detail {
+.dark .filechooser-multiple > .content > .files > .file > .content > .detail {
     background: var(--dark-background-component); }
 
-.file-chooser-multiple > .content > .file:focus > .content > .detail {
+.filechooser-multiple > .content > .files > .file:focus > .content > .detail {
     background: var(--theme-background); }
 
-.file-chooser-multiple > .content > .file > .content > .detail > .name {
+.filechooser-multiple > .content > .files > .file > .content > .detail > .name {
     color: var(--dark-secondary-font); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .detail > .name {
+.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .name {
     color: var(--light-primary-font); }
 
-.file-chooser-multiple > .content > .file:focus > .content > .detail > .name {
+.filechooser-multiple > .content > .files > .file:focus > .content > .detail > .name {
     color: var(--light-primary-font); }
 
-.file-chooser-multiple > .content > .file > .content > .detail > .avatar {
+.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar {
     background: var(--light-background-component); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .detail > .avatar {
+.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .avatar {
     background: var(--dark-background-component); }
 
-.file-chooser-multiple > .content > .file > .content > .detail > .avatar > i { 
+.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar > i { 
     color: var(--dark-secondary-font); }
 
-.dark .file-chooser-multiple > .content > .file > .content > .detail > .avatar > i { 
+.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .avatar > i { 
     color: var(--light-primary-font); }
 
 /** FLEXIBLE BOX */
@@ -1240,13 +1247,18 @@ button.raised.primary:before, button.floating.primary:before {
 .grid-list > .cell > .content > button.action:before {
     background-color: var(--light-ripple); }
 
+/** LINK */
+
+.link {
+    color: var(--accent-primary-font); }
+
 /** LIST */
 
 .list {
-    background-color: var(--light-background-component); }
+    background-color: var(--light-background); }
 
 .dark .list {
-    background-color: var(--dark-background-component); }
+    background-color: var(--dark-background); }
 
 .list > .item-list:hover {
     background-color: var(--light-background-active); }
@@ -1255,10 +1267,10 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--dark-background-active); }
 
 .list > .item-list > .content {
-    background-color: var(--light-background-component); }
+    background-color: var(--light-background); }
 
 .dark .list > .item-list > .content {
-    background-color: var(--dark-background-component); }
+    background-color: var(--dark-background); }
 
 .list > .item-list > .content > div.avatar {
     background-color: var(--dark-secondary-font); }
@@ -1315,10 +1327,10 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-primary-font); }
 
 .list > .item-list > .slide-action {
-    background-color: var(--light-background-appbar); }
+    background-color: var(--light-background-statusbar); }
 
 .dark .list > .item-list > .slide-action {
-    background-color: var(--dark-background-appbar); }
+    background-color: var(--dark-background-component); }
 
 .list > .item-list > .slide-action > i {
     color: var(--dark-secondary-font); }
@@ -1358,7 +1370,22 @@ button.raised.primary:before, button.floating.primary:before {
 .menu > li.option.active, .menu > li.option.active > i {
     color: var(--accent-primary-font); }
 
+/** PROGRESS BAR */
+
+.progress-bar {
+    background-color: var(--theme-background-accent-disabled); }
+
+.progress-bar.indeterminate:after, .progress-bar > .bar,
+.progress-bar.indeterminate:before {
+    background-color: var(--theme-background-accent); }
+
 /** PROGRESS CIRCULAR */
+
+.content-progress-circular {
+    background-color: var(--light-background-appbar); }
+
+.dark .content-progress-circular {
+    background-color: var(--dark-background-component); }
 
 .progress-circular > svg > circle {
     stroke: var(--theme-background); }
@@ -1735,7 +1762,7 @@ button.raised.primary:before, button.floating.primary:before {
 .snackbar > .action > span {
     color: var(--accent-primary-font); }
 
-/** THEEME */
+/** SWITCH */
 
 .switch > label > .track:before {
     opacity: 0.38;

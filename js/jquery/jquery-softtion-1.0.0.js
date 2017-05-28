@@ -181,6 +181,35 @@
         
         // Eventos
         
+        hasEventListener: function (eventName, namespace) {
+            var element = jQuery(this),
+                returnValue = false,
+                events = jQuery._data(element[0], "events");
+        
+            function validateEvents (event, eventName) {
+                return (softtion.isArray(eventName)) ?
+                    (eventName.indexOf(event) !== -1) : (event === eventName);
+            };
+                
+            if (events) {
+                jQuery.each(events, function (index, value) {
+                    if (validateEvents(index, eventName)) {
+                        if (namespace) {
+                            jQuery.each(value, function (index, value) {
+                                if (value.namespace === namespace) {
+                                    returnValue = true; return false;
+                                } // Namespace coincide
+                            });
+                        } else {
+                            returnValue = true; return false;
+                        } // No se definio namespace
+                    } // Evento encontrado en el componente
+                });
+            } // Tiene eventos el componente
+            
+            return returnValue; // Verificar si evento esta definido
+        },
+        
         enter: function (callback) {
             var component = jQuery(this); // Componente
             
@@ -357,18 +386,18 @@
         
         animationstart: function (callback) {
             var component = jQuery(this), // Componente para evento
-                transition = Module.whichAnimation(this[0], false);
+                animation = Module.whichAnimation(this[0], false);
             
-            component.on(transition, callback);
+            component.on(animation, callback);
             
             return component; // Retornando para interfaz fluida
         },
         
         animationend: function (callback) {
             var component = jQuery(this), // Componente para evento
-                transition = Module.whichAnimation(this[0], true);
+                animation = Module.whichAnimation(this[0], true);
             
-            component.on(transition, callback);
+            component.on(animation, callback);
             
             return component; // Retornando para interfaz fluida
         }
