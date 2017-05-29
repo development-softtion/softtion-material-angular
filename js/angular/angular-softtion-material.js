@@ -4916,72 +4916,40 @@
             
             ThemeMaterial: {
                 name: "$themeMaterial",
-                method: function () {
-                    var ColorPallete = {
-                        red: {
-                            standard: "#f44336",        // red-500
-                            dark: "#d32f2f",            // red-700
-                            light: "#ef9a9a",           // red-200
-                            
-                            accent: "#f44336",          // red-500
-                            accentFocus: "#c62828",     // red-800
-                            accentHover: "#e57373",     // red-300
-                            accentDisabled: "#ffcdd2",  // red-100
-                            
-                            font: "#f44336"             // red-500
-                        },
-                        purple: {
-                            standard: "#9c27b0",        // purple-500
-                            dark: "#7b1fa2",            // purple-700
-                            light: "#e1bee7",           // purple-200
-                            
-                            accent: "#9c27b0",          // purple-500
-                            accentFocus: "#6a1b9a",     // purple-800
-                            accentHover: "#ba68c8",     // purple-300
-                            accentDisabled: "#e1bee7",  // purple-100
-                            
-                            font: "#9c27b0"             // purple-500
-                        }
-                    };
-                    
+                method: ["ColorPalette", function (ColorPallete) {
+                        
                     var ThemeMaterial = function () {};
                     
                     ThemeMaterial.prototype.setPrimary = function (nameTheme) {
                         var theme = ColorPallete[nameTheme]; // Tema
                         
-                        if (softtion.isUndefined(theme)) {
-                            theme = ColorPallete["purple"];
-                        } // Estableciendo tema primario por defecto 
-                        
-                        document.documentElement.style.setProperty("--theme-background", theme.standard);
-                        document.documentElement.style.setProperty("--theme-background-light", theme.light);
-                        document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
+                        if (softtion.isDefined(theme)) {
+                            document.documentElement.style.setProperty("--theme-background", theme.standard);
+                            document.documentElement.style.setProperty("--theme-background-light", theme.light);
+                            document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
+                        } // Tema de la paleta encontrado, cargando
                     };
                     
                     ThemeMaterial.prototype.setError = function (nameTheme) {
                         var theme = ColorPallete[nameTheme]; // Tema
                         
-                        if (softtion.isUndefined(theme)) {
-                            theme = ColorPallete["purple"];
-                        } // Estableciendo tema primario por defecto 
-                        
-                        document.documentElement.style.setProperty("--theme-background-error", theme.standard);
-                        document.documentElement.style.setProperty("--error-primary-font", theme.standard);
+                        if (softtion.isDefined(theme)) {
+                            document.documentElement.style.setProperty("--error-primary-font", theme.standard);
+                            document.documentElement.style.setProperty("--theme-background-error", theme.standard);
+                        } // Tema de la paleta encontrado, cargando
                     };
                     
                     ThemeMaterial.prototype.setAccent = function (nameTheme) {
                         var theme = ColorPallete[nameTheme]; // Tema
                         
-                        if (softtion.isUndefined(theme)) {
-                            theme = ColorPallete["purple"];
-                        } // Estableciendo tema primario por defecto 
-                        
-                        document.documentElement.style.setProperty("--theme-background-accent", theme.accent);
-                        document.documentElement.style.setProperty("--theme-background-accent-disabled", theme.accentDisabled);
-                        document.documentElement.style.setProperty("--theme-background-accent-focus", theme.accentFocus);
-                        document.documentElement.style.setProperty("--theme-background-accent-hover", theme.accentHover);
-                        
-                        document.documentElement.style.setProperty("--accent-primary-font", theme.font);
+                        if (softtion.isDefined(theme)) {
+                            document.documentElement.style.setProperty("--theme-background-accent", theme.accent);
+                            document.documentElement.style.setProperty("--theme-background-accent-disabled", theme.accentDisabled);
+                            document.documentElement.style.setProperty("--theme-background-accent-focus", theme.accentFocus);
+                            document.documentElement.style.setProperty("--theme-background-accent-hover", theme.accentHover);
+
+                            document.documentElement.style.setProperty("--accent-primary-font", theme.font);
+                        } // Tema de la paleta encontrado, cargando
                     };
                     
                     var themeMaterial = new ThemeMaterial();
@@ -4999,7 +4967,7 @@
                     this.setAccent = function (nameTheme) {
                         themeMaterial.setAccent(nameTheme); return this;
                     };
-                }
+                }]
             }
         }
     };
@@ -5021,6 +4989,262 @@
             }
         });
     }]);
+
+    ngMaterial.constant("ColorPalette", {
+        red: {
+            standard: "#f44336",        // red-500
+            dark: "#d32f2f",            // red-700
+            light: "#ef9a9a",           // red-200
+
+            accent: "#f44336",          // red-500
+            accentFocus: "#c62828",     // red-800
+            accentHover: "#e57373",     // red-300
+            accentDisabled: "#ffcdd2",  // red-100
+
+            font: "#f44336"             // red-500
+        },
+        pink: {
+            standard: "#e91e63",        // pink-500
+            dark: "#c2185b",            // pink-700
+            light: "#f48fb1",           // pink-200
+
+            accent: "#e91e63",          // pink-500
+            accentFocus: "#ad1457",     // pink-800
+            accentHover: "#f06292",     // pink-300
+            accentDisabled: "#f8bbd0",  // pink-100
+
+            font: "#e91e63"             // pink-500
+        },
+        purple: {
+            standard: "#9c27b0",        // purple-500
+            dark: "#7b1fa2",            // purple-700
+            light: "#e1bee7",           // purple-200
+
+            accent: "#9c27b0",          // purple-500
+            accentFocus: "#6a1b9a",     // purple-800
+            accentHover: "#ba68c8",     // purple-300
+            accentDisabled: "#e1bee7",  // purple-100
+
+            font: "#9c27b0"             // purple-500
+        },
+        deepPurple: {
+            standard: "#673ab7",        // deep-purple-500
+            dark: "#512da8",            // deep-purple-700
+            light: "#b39ddb",           // deep-purple-200
+
+            accent: "#673ab7",          // deep-purple-500
+            accentFocus: "#4527a0",     // deep-purple-800
+            accentHover: "#9575cd",     // deep-purple-300
+            accentDisabled: "#d1c4e9",  // deep-purple-100
+
+            font: "#673ab7"             // deep-purple-500
+        },
+        indigo: {
+            standard: "#3f51b5",        // indigo-500
+            dark: "#303f9f",            // indigo-700
+            light: "#9fa8da",           // indigo-200
+
+            accent: "#3f51b5",          // indigo-500
+            accentFocus: "#283593",     // indigo-800
+            accentHover: "#7986cb",     // indigo-300
+            accentDisabled: "#c5cae9",  // indigo-100
+
+            font: "#3f51b5"             // indigo-500
+        },
+        blue: {
+            standard: "#2196f3",        // blue-500
+            dark: "#1976d2",            // blue-700
+            light: "#90caf9",           // blue-200
+
+            accent: "#2196f3",          // blue-500
+            accentFocus: "#1565c0",     // blue-800
+            accentHover: "#64b5f6",     // blue-300
+            accentDisabled: "#bbdefb",  // blue-100
+
+            font: "#2196f3"             // blue-500
+        },
+        lightBlue: {
+            standard: "#03a9f4",        // light-blue-500
+            dark: "#0288d1",            // light-blue-700
+            light: "#81d4fa",           // light-blue-200
+
+            accent: "#03a9f4",          // light-blue-500
+            accentFocus: "#0277bd",     // light-blue-800
+            accentHover: "#4fc3f7",     // light-blue-300
+            accentDisabled: "#b3e5fc",  // light-blue-100
+
+            font: "#03a9f4"             // light-blue-500
+        },
+        cyan: {
+            standard: "#00bcd4",        // cyan-500
+            dark: "#0097a7",            // cyan-700
+            light: "#80deea",           // cyan-200
+
+            accent: "#00bcd4",          // cyan-500
+            accentFocus: "#00838f",     // cyan-800
+            accentHover: "#4dd0e1",     // cyan-300
+            accentDisabled: "#b2ebf2",  // cyan-100
+
+            font: "#00bcd4"             // cyan-500
+        },
+        teal: {
+            standard: "#009688",        // teal-500
+            dark: "#00796b",            // teal-700
+            light: "#80cbc4",           // teal-200
+
+            accent: "#009688",          // teal-500
+            accentFocus: "#00695c",     // teal-800
+            accentHover: "#4db6ac",     // teal-300
+            accentDisabled: "#b2dfdb",  // teal-100
+
+            font: "#009688"             // teal-500
+        },
+        green: {
+            standard: "#4caf50",        // green-500
+            dark: "#388e3c",            // green-700
+            light: "#a5d6a7",           // green-200
+
+            accent: "#4caf50",          // green-500
+            accentFocus: "#2e7d32",     // green-800
+            accentHover: "#81c784",     // green-300
+            accentDisabled: "#c8e6c9",  // green-100
+
+            font: "#4caf50"             // green-500
+        },
+        lightGreen: {
+            standard: "#8bc34a",        // light-green-500
+            dark: "#689f38",            // light-green-700
+            light: "#c5e1a5",           // light-green-200
+
+            accent: "#8bc34a",          // light-green-500
+            accentFocus: "#558b2f",     // light-green-800
+            accentHover: "#aed581",     // light-green-300
+            accentDisabled: "#dcedc8",  // light-green-100
+
+            font: "#8bc34a"             // light-green-500
+        },
+        lime: {
+            standard: "#c0ca33",        // lime-600
+            dark: "#9e9d24",            // lime-800
+            light: "#dce775",           // lime-300
+
+            accent: "#c0ca33",          // lime-600
+            accentFocus: "#827717",     // lime-900
+            accentHover: "#d4e157",     // lime-400
+            accentDisabled: "#e6ee9c",  // lime-200
+
+            font: "#c0ca33"             // lime-600
+        },
+        yellow: {
+            standard: "#fdd835",        // yellow-600
+            dark: "#fbc02d",            // yellow-700
+            light: "#fff176",           // yellow-300
+
+            accent: "#fdd835",          // yellow-600
+            accentFocus: "#f9a825",     // yellow-800
+            accentHover: "#ffee58",     // yellow-400
+            accentDisabled: "#fff59d",  // yellow-200
+
+            font: "#fdd835"             // yellow-600
+        },
+        amber: {
+            standard: "#ffc107",        // amber-500
+            dark: "#ffa000",            // amber-700
+            light: "#ffe082",           // amber-200
+
+            accent: "#ffc107",          // amber-500
+            accentFocus: "#ff8f00",     // amber-800
+            accentHover: "#ffd54f",     // amber-300
+            accentDisabled: "#ffecb3",  // amber-100
+
+            font: "#ffc107"             // amber-500
+        },
+        orange: {
+            standard: "#ff9800",        // orange-500
+            dark: "#f57c00",            // orange-700
+            light: "#ffe0b2",           // orange-200
+
+            accent: "#ff9800",          // orange-500
+            accentFocus: "#ef6c00",     // orange-800
+            accentHover: "#ffb74d",     // orange-300
+            accentDisabled: "#c5cae9",  // orange-100
+
+            font: "#ff9800"             // orange-500
+        },
+        deepOrange: {
+            standard: "#ff5722",        // deep-orange-500
+            dark: "#e64a19",            // deep-orange-700
+            light: "#ffab91",           // deep-orange-200
+
+            accent: "#ff5722",          // deep-orange-500
+            accentFocus: "#d84315",     // deep-orange-800
+            accentHover: "#ff8a65",     // deep-orange-300
+            accentDisabled: "#ffccbc",  // deep-orange-100
+
+            font: "#ff5722"             // deep-orange-500
+        },
+        brown: {
+            standard: "#795548",        // brown-500
+            dark: "#5d4037",            // brown-700
+            light: "#bcaaa4",           // brown-200
+
+            accent: "#795548",          // brown-500
+            accentFocus: "#4e342e",     // brown-800
+            accentHover: "#a1887f",     // brown-300
+            accentDisabled: "#d7ccc8",  // brown-100
+
+            font: "#795548"             // brown-500
+        },
+        grey: {
+            standard: "#9e9e9e",        // grey-500
+            dark: "#616161",            // grey-700
+            light: "#e0e0e0",           // grey-300
+
+            accent: "#9e9e9e",          // grey-500
+            accentFocus: "#424242",     // grey-800
+            accentHover: "#bdbdbd",     // grey-400
+            accentDisabled: "#eeeeee",  // grey-200
+
+            font: "#9e9e9e"             // grey-500
+        },
+        blueGrey: {
+            standard: "#607d8b",        // blue-grey-500
+            dark: "#455a64",            // blue-grey-700
+            light: "#b0bec5",           // blue-grey-200
+
+            accent: "#607d8b",          // blue-grey-500
+            accentFocus: "#263238",     // blue-grey-900
+            accentHover: "#90a4ae",     // blue-grey-300
+            accentDisabled: "#cfd8dc",  // blue-grey-100
+
+            font: "#607d8b"             // blue-grey-500
+        }
+    });
+    
+    ngMaterial.constant("SofttionMaterial", {
+        VERSION: "1.0.4",
+        Theme: {
+            RED: "red",
+            PINK: "pink",
+            PURPLE: "purple",
+            DEEP_PURPLE: "deepPurple",
+            INDIGO: "indigo",
+            BLUE: "blue",
+            LIGHT_BLUE: "lightBlue",
+            CYAN: "cyan",
+            TEAL: "teal",
+            GREEN: "green",
+            LIGHT_GREEN: "lightGreen",
+            LIME: "lime",
+            YELLOW: "yellow",
+            AMBER: "amber",
+            ORANGE: "orange",
+            DEEP_ORANGE: "deepOrange",
+            BROWN: "brown",
+            GREY: "grey",
+            BLUE_GREY: "blueGrey"
+        }
+    });
     
     // Provedores de SofttionMaterial
     angular.forEach(Material.providers, function (provider) {
