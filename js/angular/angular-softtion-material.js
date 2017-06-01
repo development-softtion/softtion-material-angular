@@ -47,28 +47,11 @@
                                 
                                 // Atributos
                                 position = 0, hideClass = "hide",
-                                heightElement = $element.innerHeight(),
-                                
-                               // Funciones
-                               changeStatus = function (event, value) {
-                                   var nowStatus = (event === "show") ?
-                                       $element.hasClass(hideClass) :
-                                       !$element.hasClass(hideClass);
-                                   
-                                   if (nowStatus) {
-                                       (event === "hide") ?
-                                           $element.addClass(hideClass) :
-                                           $element.removeClass(hideClass);
-
-                                       appContent.css("top", value); 
-                                       appContent.css("padding-bottom", value);
-                                   } // Validando estado del Appbar
-                               };
+                                heightElement = $element.innerHeight();
                             
                             if (!$scope.fixed) {
                                 appContent.scroll(function () {
                                     var heightMin = (($window.width() > 960) ? 64 : 56),
-                                        newTop = heightElement - heightMin,
                                         positionNew = appContent.scrollTop();
 
                                     hideClass = toolbar.hasClass("flexible-title") ? 
@@ -76,47 +59,20 @@
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            var heightWindow = $window.height(), heightContent = 0;
-                                                
-                                            angular.forEach(appContent.children(), function (children) {
-                                                var element = angular.element(children);
-                                                
-                                                if (!element.hasClass("content-progress-circular")) {
-                                                    heightContent += element.height();
-                                                } // Evitando componentes que no tienen tamaño
-                                            });
-                                            
-                                            if (heightContent > (heightWindow + heightMin)) { 
-                                                changeStatus("hide", newTop); 
-                                            } // Alcanza los requisitos para ocultarse
+                                            $element.addClass(hideClass);
                                         } else {
-                                            changeStatus("show", heightElement);
+                                            $element.removeClass(hideClass);
                                         } // Revelando componente
                                     } else if (positionNew === 0) {
-                                        changeStatus("show", heightElement);
+                                        $element.removeClass(hideClass);
                                     } // Revelando componente, se llego al inicio
 
                                     position = positionNew; // Nueva posición del scroll
                                 });
-                            }                        
+                            }
                             
-                            appContent.css("top", heightElement);
+                            appContent.css("padding-top", heightElement);
                             sidenav.children(".content").css("top", heightElement); 
-                            appContent.css("padding-bottom", heightElement);
-                            
-                            setTimeout(function () { appContent.addClass("transition"); }, 500);
-                            
-                            $window.resize(function () {
-                                var newHeightElement = $element.height();
-                                
-                                if (!$element.hasClass(hideClass)) {
-                                    heightElement = newHeightElement;
-                                } // Componente no esta oculto
-                                
-                                appContent.css("top", newHeightElement);
-                                sidenav.children(".content").css("top", newHeightElement); 
-                                appContent.css("padding-bottom", newHeightElement);
-                            });
                         }
                     };
                 }
@@ -635,15 +591,17 @@
                 name: "carousel",
                 html: function () {
                     var content = softtion.html("div").
-                        addClass("slide").addAttribute("ng-repeat", "slide in slides").
+                        addClass("slide").addAttribute("ng-repeat", "slide in gallery").
                         addAttribute(
                             "ng-class", "{active: slideActive($index), before: slideBefore($index), after: slideAfter($index)}"
-                        ).addChildren(
+                        ).
+                        addChildren(
                             softtion.html("img", false).addAttribute("ng-src", "{{slide.img}}")
                         );
 
                     content.addChildren(
                         softtion.html("div").addClass(["detail", "{{positionContent}}"]).
+                            addAttribute("ng-style", "{color: fontColor}").
                             addChildren(
                                 softtion.html("label").addClass("title").setText("{{slide.title}}")
                             ).
@@ -654,34 +612,59 @@
 
                     var buttonPrev = softtion.html("a").addClass(["arrow", "prev", "{{positionContent}}"]).
                         addAttribute("ng-click", "prev()").
+                        addAttribute("ng-class", "{disabled: transitionActive}").
+                        addAttribute("ng-if", "beforeActive()").
                         addChildren(
-                            softtion.html("i").setText("chevron_left")
+                            softtion.html("i").setText("chevron_left").
+                                addAttribute("ng-style", "{color: fontColor}")
                         );
 
                     var buttonNext = softtion.html("a").addClass(["arrow", "next", "{{positionContent}}"]).
                         addAttribute("ng-click", "next()").
+                        addAttribute("ng-class", "{disabled: transitionActive}").
+                        addAttribute("ng-if", "afterActive()").
                         addChildren(
-                            softtion.html("i").setText("chevron_right")
+                            softtion.html("i").setText("chevron_right").
+                                addAttribute("ng-style", "{color: fontColor}")
                         );
                 
                     return content + buttonPrev + buttonNext;
                 },
-                directive: ["$interval", function ($interval) {
+                directive: ["$interval", "$timeout", function ($interval, $timeout) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.Carousel.route,
                         scope: {
-                            slides: "=",
+                            gallery: "=",
                             disabledInterval: "=?",
                             time: "=?",
                             height: "@",
-                            positionContent: "@"
+                            positionContent: "@",
+                            fontColor: "@"
                         },
                         link: function ($scope, $element) {
                             var intervalCarousel = undefined; $scope.index = 0; 
+                            $scope.twoSlideActive = false; $scope.twoSlideStatus = "next";
                             $scope.time = isNaN($scope.time) ? 4000 : $scope.time;
                             
+                            $scope.transitionActive = false; // Desactiva cambio
+                            
+                            $scope.fontColor = $scope.fontColor || "#ffffff";
+                            
                             $element.css("padding-top", $scope.height || "56.6%");
+                            
+                            $scope.$watch("gallery", function () {
+                                $scope.index = 0; $interval.cancel(intervalCarousel);
+                                $scope.twoSlideActive = ($scope.gallery.length === 2);
+                                
+                                $scope.twoSlideStatus = "next"; // Adelante
+                                                                
+                                (!$scope.twoSlideActive) ?  
+                                    $element.removeClass("two-slide") :
+                                    $element.addClass("two-slide");
+                                
+                                $element.addClass("next"); startInterval(); // Inicializando interval
+                            });
 
                             $scope.slideActive = function (index) {
                                 return $scope.index === index;
@@ -691,42 +674,74 @@
                                 var before = $scope.index - 1;
 
                                 if (before < 0) {
-                                    before = $scope.slides.length - 1;
+                                    before = $scope.gallery.length - 1;
                                 } // Slide before es el ultimo
 
-                                return before === (index);
+                                return before === (index) && this.beforeActive();
                             };
 
                             $scope.slideAfter = function (index) {
                                 var after = $scope.index + 1;
 
-                                if (after === $scope.slides.length) {
+                                if (after === $scope.gallery.length) {
                                     after = 0;
                                 } // Slide after es el primero
 
-                                return after === (index);
+                                return after === (index) && this.afterActive();
+                            };
+                            
+                            $scope.beforeActive = function () {
+                                return (this.gallery.length > 2) || (this.twoSlideStatus === "prev"); 
+                            };
+                            
+                            $scope.afterActive = function () {
+                                return ($scope.gallery.length > 1) && (this.twoSlideStatus === "next"); 
                             };
 
                             function prev() {
-                                $scope.index--; // Index para slide anterior
+                                if ($scope.twoSlideActive) {
+                                    $scope.twoSlideStatus = "next";
+                                } // Galería solo tiene 2 imagenes
+                                
+                                $element.removeClass("next").addClass("prev");
+                                $scope.index--; $scope.transitionActive = true;
 
                                 if ($scope.index < 0)  {
-                                    $scope.index = $scope.slides.length - 1;
+                                    $scope.index = $scope.gallery.length - 1;
                                 } // Se salio del rango inferior de la lista
                             };
 
                             function next() {
-                                $scope.index++; // Index para slide siguiente
+                                if ($scope.twoSlideActive) {
+                                    $scope.twoSlideStatus = "prev";
+                                } // Galería solo tiene 2 imagenes
+                                
+                                $element.removeClass("prev").addClass("next");
+                                $scope.index++; $scope.transitionActive = true;
 
-                                if ($scope.index === $scope.slides.length) {
+                                if ($scope.index === $scope.gallery.length) {
                                     $scope.index = 0;
                                 } // Se alcanzo la cantidad de slides
+                                
+                                $timeout(function () { $scope.transitionActive = false; }, 1000);
+                            };
+                            
+                            function interval() {
+                                var fn; // Función a ejecutar
+                                
+                                if (!$scope.twoSlideActive) {
+                                    fn = next;
+                                } else {
+                                    fn = ($scope.twoSlideStatus === "next") ? next : prev;
+                                } // Galería solo tiene 2 imagenes
+                                
+                                fn(); // Invocando función
                             };
 
                             function startInterval() {
                                 if (!$scope.disabledInterval) {
                                     if (softtion.isInPage($element[0])) {
-                                        intervalCarousel = $interval(next, $scope.time);
+                                        intervalCarousel = $interval(interval, $scope.time);
                                     } else {
                                         $interval.cancel(intervalCarousel);
                                     } // Ya no se encuentra en el documento
@@ -740,8 +755,6 @@
                             $scope.prev = function () {
                                 $interval.cancel(intervalCarousel); prev(); startInterval();
                             };
-
-                            startInterval(); // Inicializando el interval
                         }
                     };
                 }]
@@ -3173,32 +3186,26 @@
                         restrict: "C",
                         link: function ($scope, $element) {
                             // Componentes
-                            var options = $element.find(".options");
+                            var options = $element.children(".options"),
+                                detail = $element.children(".detail");
                             
                             if (options.exists()) {
-                                var ul = options.find("ul"),
-                                    button = angular.element(
-                                        Material.components.SidenavItem.buttonAction()
-                                    ),
-                                    icon = button.find("i");
+                                var list = options.children("ul");
                                 
-                                ul.css("margin-top", (ul[0].clientHeight * -1));
-                                $element.find(".detail > a").append(button); // Agregando icono
+                                detail.children("a").append(
+                                    angular.element(
+                                        Material.components.SidenavItem.buttonAction()
+                                    )
+                                ); // Agregando button
 
-                                $element.find(".detail").click(function () {
-                                    var marginTop = (-1 * ul.innerHeight()), isStart = options.hasClass("active");
-                                    
-                                    if (!isStart) {
-                                        ul.css("margin-top", marginTop); options.addClass("active");
-                                    } // Componente no se encuentra iniciado
-                                    
+                                detail.click(function () {
                                     $element.toggleClass("active"); // Cambiando estado
+                                    
+                                    var heightList = list.height();
 
-                                    if ($element.hasClass("active")) {
-                                        icon.addClass("active");
-                                    } else {
-                                        icon.removeClass("active"); ul.css("margin-top", (-1 * ul.innerHeight()));
-                                    } // Cerrando content del Expansion
+                                    ($element.hasClass("active")) ?
+                                        options.css("max-height", heightList + "px") :
+                                        options.css("max-height", "0px");
                                 });
                             } // El item contiene opciones
                         }

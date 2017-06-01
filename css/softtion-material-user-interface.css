@@ -856,6 +856,7 @@ input[type=number]::-webkit-outer-spin-button {
 .block {
     position: relative;
     padding: 0px 8px;
+    float: left;
     box-sizing: border-box; }
 
 .container {
@@ -946,20 +947,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 .app-content {
     position: absolute;
-    top: 0px;
     left: 0px;
     padding: 0px;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     overflow: auto; }
-
-.app-content.transition {
-    -moz-transition: top 0.225s var(--easing-in);
-    -webkit-transition: top 0.225s var(--easing-in);
-    transition: top 0.225s var(--easing-in);
-    -o-transition: top 0.225s var(--easing-in);
-    -ms-transition: top 0.225s var(--easing-in); }
 
 .app-body > .sidenav ~ .app-content {
     left: 320px; 
@@ -2110,15 +2103,27 @@ button.raised:focus:after, button.flat:focus:after {
     visibility: visible;
     z-index: 2; }
 
-.carousel > .slide.before {
+.carousel > .slide.before, .carousel.next > .slide.before {
     left: -100%;
     visibility: visible;
     z-index: 1; }
 
-.carousel > .slide.after {
+.carousel > .slide.after, .carousel.next > .slide.after {
     left: 100%;
-    visibility: visible;
     z-index: 0; }
+
+.carousel.prev > .slide.before {
+    z-index: 0; }
+
+.carousel.prev > .slide.after {
+    z-index: 1;
+    visibility: visible; }
+
+.carousel.two-slide > .slide.before {
+    left: 100%; }
+
+.carousel.two-slide > .slide.after {
+    left: -100%; }
 
 .carousel > .slide > img {
     position: absolute;
@@ -2178,6 +2183,10 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(0%, -50%);
     -ms-transform: translate(0%, -50%); }
 
+.carousel > .arrow.disabled {
+    opacity: 0.38;
+    pointer-events: none; }
+
 .carousel > .arrow.top {
     top: 16px;
     -moz-transform: none;
@@ -2198,7 +2207,8 @@ button.raised:focus:after, button.flat:focus:after {
 .carousel > .arrow > i {
     font-size: 48px;
     width: 48px;
-    height: 48px; }
+    height: 48px;
+    opacity: 0.5; }
 
 .carousel > .arrow.prev {
     left: 8px; }
@@ -4228,7 +4238,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 36px;
     border-radius: 50%;
     box-shadow: var(--shadow-4);
-    z-index: 20;
+    z-index: 12;
     -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
@@ -5155,6 +5165,13 @@ button.raised:focus:after, button.flat:focus:after {
 .sidenav > .content .sidenav-item > .detail > a > i + span {
     width: calc(100% - 84px); }
 
+.sidenav > .content .sidenav-item > .detail > a > span.badge {
+    top: 12px;
+    right: 18px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px; }
+
 .sidenav > .content .sidenav-item > .detail > a > button.action {
     position: absolute;
     top: 12px;
@@ -5165,29 +5182,23 @@ button.raised:focus:after, button.flat:focus:after {
     animation: ripple-squarecenter-high 1s var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action > i {
-    transition: transform 0.325s var(--standard-curve);
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+    transition: transform 0.325s var(--standard-curve); }
 
-.sidenav > .content .sidenav-item > .detail > a > button.action > i.active {
+.sidenav > .content .sidenav-item.active > .detail > a > button.action > i {
     transform: rotate(180deg); }
 
 .sidenav > .content .sidenav-item > .options {
-    height: 0px;
+    max-height: 0px;
     box-sizing: border-box;
     overflow: hidden; }
 
-.sidenav > .content .sidenav-item > .options.active {
-    height: auto; }
-
-.sidenav > .content .sidenav-item > .options > ul {
-    -moz-transition: margin-top 0.375s var(--standard-curve);
-    -webkit-transition: margin-top 0.375s var(--standard-curve);
-    -o-transition: margin-top 0.375s var(--standard-curve);
-    transition: margin-top 0.375s var(--standard-curve);
-    -ms-transition: margin-top 0.375s var(--standard-curve); }
-
-.sidenav > .content .sidenav-item.active > .options > ul {
-    margin-top: 0% !important; }
+.sidenav > .content .sidenav-item > .options {
+    -moz-transition: max-height 0.375s var(--standard-curve);
+    -webkit-transition: max-height 0.375s var(--standard-curve);
+    -o-transition: max-height 0.375s var(--standard-curve);
+    transition: max-height 0.375s var(--standard-curve);
+    -ms-transition: max-height 0.375s var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .options > ul > li > a {
     display: block;
@@ -5219,7 +5230,8 @@ button.raised:focus:after, button.flat:focus:after {
 @media only screen and (max-width : 640px) {
     
     .sidenav > .content .sidenav-item > .detail > a,
-    .sidenav > .content .subheader {
+    .sidenav > .content .subheader,
+    .sidenav > .content .sidenav-item > .detail > a > span.badge {
         font-size: 14px; }
 }
 
@@ -5883,6 +5895,10 @@ body.not-touch .tabs::-webkit-scrollbar {
     min-height: 128px;
     max-height: 128px; }
 
+.app-bar.hide-flexible-title > .toolbar.flexible-title {
+    min-height: 56px; 
+    max-height: 56px;  }
+
 .toolbar > .nav-icon {
     width: 40px;
     min-height: inherit; 
@@ -5910,6 +5926,11 @@ body.not-touch .tabs::-webkit-scrollbar {
     font-size: 24px;
     transition: margin-top 0.525s var(--easing-out),
         font-size 0.525s var(--easing-out); }
+
+.app-bar.hide-flexible-title > .toolbar.flexible-title > .title {
+    line-height: inherit;
+    margin: 0px;
+    font-size: 20px; }
 
 .toolbar > .detail {
     margin: 0px;

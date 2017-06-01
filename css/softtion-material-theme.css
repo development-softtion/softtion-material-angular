@@ -526,9 +526,6 @@ button.raised.primary:before, button.floating.primary:before {
 .carousel > .arrow:hover {
     background-color: rgba(255, 255, 255, 0.2); }
 
-.carousel > .arrow > i {
-    color: rgba(255, 255, 255, 0.5); }
-
 /** CHECKBOX */
 
 .checkbox > label {
@@ -1675,7 +1672,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-primary-font); }
 
 .sidenav > .content .sidenav-item > .detail > a:hover {
-    background-color: var(--light-background-active); }
+    background-color: var(--light-background-hover); }
 
 .dark .sidenav > .content .sidenav-item > .detail > a:hover {
     background-color: var(--dark-background-active); }
@@ -1704,7 +1701,7 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--light-background-hover); }
 
 .dark .sidenav > .content .sidenav-item .options .item > a:hover {
-    background-color: var(--dark-background-hover); }
+    background-color: var(--dark-background-active); }
 
 .sidenav > .content .sidenav-item .detail.active > a > i {
     color: var(--accent-primary-font); }
