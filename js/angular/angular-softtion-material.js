@@ -59,7 +59,8 @@
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            $element.addClass(hideClass);
+                                            $element.addClass(hideClass); // Ocultando barra
+                                            $element.find(".dropdown").removeClass("active");
                                         } else {
                                             $element.removeClass(hideClass);
                                         } // Revelando componente
@@ -4288,63 +4289,74 @@
             Dropdown: {
                 name: "$dropdown",
                 handler: {
+                    parentContent: function (element) {
+                        var formNavigation = element.parents(".form-navigation");
+                        
+                        if (formNavigation.exists()) {
+                            return formNavigation.children(".content");
+                        } // Elemento invocador esta contenido en un FormNavigation
+                        
+                        return angular.element(".app-body"); // AppBody
+                    },
                     hide: function (dropdown) {
                         dropdown.removeClass("active"); 
                     },
                     show: function (properties) {
-                        properties.component.addClass("active"); // Activando dropdown
+                        properties.component.addClass("active"); // Activado
                         
-                        var dropdown = properties.component, origin = properties.origin;
-                        var topContent = parseInt(angular.element(".app-content").css("top"));
-                        var leftBody = parseInt(angular.element(".app-body").css("left"));
+                        var appContent = angular.element(".app-content"),
+                            appBody = angular.element(".app-body"),
                         
-                        var heightDropdown = dropdown.innerHeight(),
+                            dropdown = properties.component, 
+                            origin = properties.origin,
+                            patent = Material.providers.Dropdown.handler.parentContent(origin),
+                            leftBody = parseInt(appBody.css("left")),
+                        
+                            heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
                             
                             heightOrigin = (origin) ? origin.innerHeight() : 0, 
                             widthOrigin = (origin) ? origin.innerWidth() : 0,
                             
-                            posOriginY = (origin) ? origin.fixed().top : 0,
-                            posOriginX = (origin) ? origin.fixed().left : 0,
+                            posOriginY = (origin) ? origin.position().top : 0,
+                            posOriginX = (origin) ? origin.position().left : 0,
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
                             
-                        // Definiendo posicion eje X
-                        if ((posOriginX + widthDropdown) <= (window.innerWidth + window.scrollX)) {
-                            left = posOriginX; transformOrigin = transformOrigin + 1;
+                        // Definiendo posicion del eje X
+                        if ((posOriginX + widthDropdown) <= (patent.width())) {
+                            left = posOriginX; 
+                            transformOrigin = transformOrigin + 1;
                         } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
                             transformOrigin = transformOrigin + 3;
                             left = posOriginX + widthOrigin - widthDropdown - 10; 
                         } else { 
                             transformOrigin = transformOrigin + 1; 
-                            left = window.innerWidth - widthDropdown - 10; 
+                            left = patent.width() - widthDropdown - 10; 
                         }
 
-                        // Definiendo posicion eje Y
+                        // Definiendo posicion del eje Y
                         if (properties.belowOrigin) { 
-                            if ((posOriginY + heightDropdown) <= (window.innerHeight + window.scrollY)) {
-                                top = posOriginY; transformOrigin = transformOrigin + 4;
-                            } 
-                            else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
+                            if ((posOriginY + heightDropdown) <= (patent.height())) {
+                                top = posOriginY; 
+                                transformOrigin = transformOrigin + 4;
+                            } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
                                 transformOrigin = transformOrigin + 7;
                                 top = posOriginY + heightOrigin - heightDropdown; 
-                            } 
-                            else { 
+                            } else { 
                                 transformOrigin = transformOrigin + 4;
-                                top = window.innerHeight - heightDropdown - 10;  
+                                top = patent.height() - heightDropdown - 10;  
                             }
                         } else { 
-                            if ((posOriginY + heightOrigin + heightDropdown) <= window.innerHeight) {
+                            if ((posOriginY + heightOrigin + heightDropdown) <= patent.height()) {
                                 top = posOriginY + heightOrigin; transformOrigin = transformOrigin + 4;
-                            } 
-                            else if ((posOriginY - heightDropdown) > 0) {
+                            } else if ((posOriginY - heightDropdown) > 0) {
                                 top = posOriginY - heightDropdown; 
                                 transformOrigin = transformOrigin + 7;
-                            } 
-                            else { 
+                            } else { 
                                 transformOrigin = transformOrigin + 4; 
-                                top = window.innerHeight - heightDropdown - 10;
+                                top = patent.height() - heightDropdown - 10;
                             }
                         }
                         
@@ -4356,9 +4368,9 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
-                        if (dropdown.hasClass(".fixed")) {
-                            left = left - leftBody; top = top - topContent;
-                        } // Componente no ignora a sus contenedores
+                        if (dropdown.parents(".app-content").exists()) {
+                            top = top + appContent.scrollTop();
+                        } // Dropdown esta contenido en el AppContent
                         
                         dropdown.css({ 
                             left: left, top: top,
@@ -4378,31 +4390,37 @@
                             widthDropdown = dropdown.innerWidth(),
                             transformOrigin = 0, originEffect;
                         
-                        // Definiendo posicion eje X
-                        if ((left + widthDropdown) <= (window.innerWidth + window.scrollX)) {
+                        // Definiendo posicion del eje X
+                        if ((left + widthDropdown) <= (window.innerWidth)) {
                             transformOrigin = transformOrigin + 1;
                         } else if ((left - widthDropdown) > 0) {
-                            transformOrigin = transformOrigin + 3; left = left - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 3; 
+                            left = left - widthDropdown - 10; 
                         } else { 
-                            transformOrigin = transformOrigin + 1; left = window.innerWidth - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 1; 
+                            left = window.innerWidth - widthDropdown - 10; 
                         }
 
-                        // Definiendo posicion eje Y
+                        // Definiendo posicion del eje Y
                         if (properties.belowOrigin) { 
-                            if ((top + heightDropdown) <= (window.innerHeight + window.scrollY)) {
+                            if ((top + heightDropdown) <= (window.innerHeight)) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                transformOrigin = transformOrigin + 7; top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; 
                             } else { 
-                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;  
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;  
                             }
                         } else { 
                             if ((top + heightDropdown) <= window.innerHeight) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                top = top - heightDropdown; transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
                             } else { 
-                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;
                             }
                         }
                         
@@ -4460,7 +4478,8 @@
                     };
 
                     Dropdown.prototype.show = function (origin, autoclose) {
-                        var self = this; // Objeto dropdown
+                        var self = this, id = Properties.id,
+                            nameEvent = "click.hidedropdown" + id;
                         
                         if (softtion.isDefined(Properties.component)) {
                             Properties.origin = origin; // Estableciendo origen
@@ -4469,9 +4488,9 @@
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
                                 
-                                $body.on("click.hidedropdown", function (event) {
+                                $body.on(nameEvent, function (event) {
                                     if (Properties.component.find(event.target).length === 0) {
-                                        self.hide(); $body.off("click.hidedropdown");
+                                        self.set(id).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
                             }

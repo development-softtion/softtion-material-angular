@@ -167,11 +167,14 @@
         },
         
         fixed: function () {
-            var element = this[0], parent = element.offsetParent,
-                top = element.offsetTop, left = element.offsetLeft;
+            var element = this[0], 
+                parent = element.offsetParent,
+                top = element.offsetTop,
+                left = element.offsetLeft;
             
             while (softtion.isDefined(parent)) {
-                top += parent.offsetTop; left += parent.offsetLeft;
+                top += parent.offsetTop; 
+                left += parent.offsetLeft;
                 
                 parent = parent.offsetParent;
             } // El elemento esta contenido en otro
