@@ -48,6 +48,9 @@
                                 // Atributos
                                 position = 0, hideClass = "hide",
                                 heightElement = $element.innerHeight();
+                        
+                            $element.transitionend(function () {
+                            });
                             
                             if (!$scope.fixed) {
                                 appContent.scroll(function () {
@@ -59,8 +62,7 @@
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            $element.addClass(hideClass); // Ocultando barra
-                                            $element.find(".dropdown").removeClass("active");
+                                            $element.addClass(hideClass); // Ocultando barra                                            
                                         } else {
                                             $element.removeClass(hideClass);
                                         } // Revelando componente
@@ -4145,6 +4147,8 @@
                     
                     var alert = new Alert();
                     
+                    this.get = function () { return alert; };
+                    
                     this.$get = function () { return alert; };
                 }
             },
@@ -4220,6 +4224,8 @@
                     };
                     
                     var bottomSheet = new BottomSheet();
+                    
+                    this.get = function () { return bottomSheet; };
 
                     this.$get = function () { return bottomSheet; };
                 }
@@ -4290,6 +4296,8 @@
                     };
                     
                     var dialog = new Dialog();
+                    
+                    this.get = function () { return dialog; };
 
                     this.$get = function () { return dialog; };
                 }
@@ -4298,13 +4306,31 @@
             Dropdown: {
                 name: "$dropdown",
                 handler: {
+                    scrollMove: function (origin, dropdown) {
+                        if (origin.parents(".app-bar").exists()) {
+                            dropdown.addClass("fixed"); return false;
+                        } // Esta contenido en un Appbar
+
+                        if (origin.parents(".form-navigation").exists()) {
+                            dropdown.addClass("fixed"); return false;
+                        } // Esta contenido en un FormNavigation
+
+                        if (origin.parents(".bottom-sheet").exists()) {
+                            dropdown.addClass("fixed"); return false;
+                        } // Esta contenido en un BottomSheet
+
+                        dropdown.removeClass("fixed"); 
+                        return true; // Se debe desplazar con app-content
+                    },
                     hide: function (dropdown) {
                         dropdown.removeClass("active"); 
                     },
                     show: function (properties) {
-                        properties.component.addClass("active"); // Activado
-                        var dropdown = properties.component, origin = properties.origin;
-                        var leftBody = parseInt(angular.element(".app-body").css("left"));
+                        var handler = Material.providers.Dropdown.handler,
+                            appContent = angular.element(".app-content"),
+                            dropdown = properties.component, 
+                            origin = properties.origin,
+                            leftBody = parseInt(angular.element(".app-body").css("left"));
                         
                         var heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
@@ -4317,6 +4343,8 @@
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
+                            
+                        dropdown.addClass("active"); // Activado dropdown
                             
                         // Definiendo posicion eje X
                         if ((posOriginX + widthDropdown) <= (window.innerWidth)) {
@@ -4364,6 +4392,10 @@
                         } // Definiendo inicio del efecto
                         
                         left = left - leftBody; // Desplazando posición
+                        
+                        if (handler.scrollMove(origin, dropdown)) {
+                            top = top + appContent.scrollTop();
+                        } // Componente debe moverse con scroll de AppContent
                         
                         dropdown.css({ 
                             left: left, top: top,
@@ -4515,6 +4547,8 @@
                     };
                     
                     var dropdown = new Dropdown();
+                    
+                    this.get = function () { return dropdown; };
 
                     this.$get = function () { return dropdown; };
                     
@@ -4574,6 +4608,8 @@
                     };
                     
                     var formNavigation = new FormNavigation();
+                    
+                    this.get = function () { return formNavigation; };
 
                     this.$get = function () { return formNavigation; };
                 }
@@ -4583,7 +4619,10 @@
                 name: "$progressBar",
                 method: function () {
                     var Properties = { 
-                        component: undefined, 
+                        component: undefined,
+                        callback: undefined,
+                        functionStart: false,
+                        $rootScope: undefined,
                         events: [
                             "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
                         ]
@@ -4599,18 +4638,30 @@
                             var bar = component.children(".bar");
                             
                             if (!bar.hasEventListener(Properties.events)) {
-                                bar.animationend(function () { component.removeClass("show"); });
+                                bar.animationend(function () { 
+                                    component.removeClass("show"); Properties.functionStart = false;
+                                    
+                                    if (softtion.isFunction(Properties.callback)) {
+                                        Properties.$rootScope.$apply(function () { Properties.callback(); });
+                                    } // Invocando función al terminar animación
+                                });
                             }
                         } // Componente existe correctamente
                         
                         return this; // Retornando interfaz fluida
                     };
                     
-                    ProgressBar.prototype.show = function (duration) {
+                    ProgressBar.prototype.show = function (duration, callback) {
                         duration = duration || 4000; // Definiendo duración
                         
                         if (!Properties.component.hasClass("indeterminate")) {
                             var bar = Properties.component.children(".bar");
+                            
+                            if (!Properties.functionStart) {
+                                Properties.callback = callback;
+                            } // No se ha iniciado ningún proceso
+                            
+                            Properties.functionStart = true; // Inicio de efecto
                             
                             bar.css("-moz-animation-duration", (duration + "ms"));
                             bar.css("-webkit-animation-duration", (duration + "ms"));
@@ -4627,8 +4678,12 @@
                     };
                     
                     var progressBar = new ProgressBar();
+                    
+                    this.get = function () { return progressBar; };
 
-                    this.$get = function () { return progressBar; };
+                    this.$get = ["$rootScope", function ($rootScope) {
+                        Properties.$rootScope = $rootScope; return progressBar; 
+                    }];
                 }
             },
             
@@ -4648,7 +4703,10 @@
                                 ).create()
                         );
                         
-                        angular.element(".app-content").append(Properties.component);
+                        var appBar = angular.element(".app-bar");
+                        
+                        (appBar.exists()) ? appBar.append(Properties.component) :
+                            angular.element(".app-content").append(Properties.component);
                     };
 
                     ProgressCircular.prototype.show = function () {
@@ -4664,6 +4722,8 @@
                     };
 
                     var progressCircular = new ProgressCircular();
+                    
+                    this.get = function () { return progressCircular; };
                     
                     this.$get = function () { return progressCircular; };
                 }
@@ -4734,6 +4794,8 @@
                     };
                     
                     var sidenav = new SideNav();
+                    
+                    this.get = function () { return sidenav; };
 
                     this.$get = function () { return sidenav; };
                 }
@@ -4854,6 +4916,8 @@
 
                     var snackbar = new SnackBar();
                     
+                    this.get = function () { return snackbar; };
+                    
                     this.$get = function () { return snackbar; };
                 }
             },
@@ -4873,7 +4937,7 @@
                         scope: undefined, box: undefined, body: undefined
                     };
                     
-                    var SnackBar = function () { 
+                    var Toast = function () { 
                         Properties.body = angular.element(
                             softtion.html("p").addClass(["body"]).create()
                         );
@@ -4887,7 +4951,7 @@
                         angular.element(".app-body").append(Properties.box);
                     };
 
-                    SnackBar.prototype.show = function (text) {
+                    Toast.prototype.show = function (text) {
                         var heightBody, self = this, // Toast
                             bottomNavigation = angular.element(".bottom-navigation");
 
@@ -4927,9 +4991,11 @@
                         }
                     };
 
-                    var snackbar = new SnackBar();
+                    var toast = new Toast();
                     
-                    this.$get = function () { return snackbar; };
+                    this.get = function () { return toast; };
+                    
+                    this.$get = function () { return toast; };
                 }
             },
             
@@ -4958,7 +5024,7 @@
                         } // Tema de la paleta encontrado, cargando
                     };
                     
-                    ThemeMaterial.prototype.setAccent = function (nameTheme) {
+                    ThemeMaterial.prototype.setSecondary = function (nameTheme) {
                         var theme = ColorPallete[nameTheme]; // Tema
                         
                         if (softtion.isDefined(theme)) {
@@ -4983,8 +5049,8 @@
                         themeMaterial.setError(nameTheme); return this;
                     };
                     
-                    this.setAccent = function (nameTheme) {
-                        themeMaterial.setAccent(nameTheme); return this;
+                    this.setSecondary = function (nameTheme) {
+                        themeMaterial.setSecondary(nameTheme); return this;
                     };
                 }]
             }

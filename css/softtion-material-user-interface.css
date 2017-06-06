@@ -1549,6 +1549,7 @@ button.action > .badge {
 /** BREADCRUMB */
 
 .breadcrumb {
+    display: -webkit-box;
     padding: 0px 16px;
     width: 100%;
     min-height: 56px; 
@@ -1560,7 +1561,6 @@ button.action > .badge {
 .breadcrumb > label {
     display: block;
     height: inherit;
-    float: left; 
     font-size: 16px;
     font-weight: 500; }
 
@@ -1581,6 +1581,12 @@ button.action > .badge {
 .breadcrumb > label > a {
     cursor: pointer;
     display: inline-block; }
+
+@media only screen and (max-width : 360px) {
+    
+    .breadcrumb > label {
+        font-size: 14px; }
+}
 
 /** BUTTON */
 
@@ -1604,7 +1610,10 @@ button.raised, button.flat {
     text-transform: uppercase; }
 
 button.raised {
-    box-shadow: var(--shadow-2); }
+    box-shadow: var(--shadow-1); }
+
+button.raised.flat {
+    box-shadow: none !important; }
 
 button.raised > span, button.flat > span {
     min-width: 64px;
@@ -3326,7 +3335,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 280px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 16;
+    z-index: 4;
     box-shadow: var(--shadow-4);
     opacity: 0;
     transform: scale(0, 0);
@@ -3358,6 +3367,9 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: -o-transform 0.3s var(--standard-curve);
     transition: transform 0.3s var(--standard-curve);
     -ms-transition: -ms-transform 0.3s var(--standard-curve); }
+
+.dropdown.fixed {
+    z-index: 16; }
 
 /** EXPANSION PANEL */ 
 
@@ -4222,26 +4234,41 @@ button.raised:focus:after, button.flat:focus:after {
 
 .content-progress-circular {
     position: absolute;
-    top: -48px;
     left: 50%;
     width: 36px;
     height: 36px;
     border-radius: 50%;
     box-shadow: var(--shadow-4);
-    z-index: 12;
     -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -moz-transition: top 0.325s var(--standard-curve);
-    -webkit-transition: top 0.325s var(--standard-curve);
-    transition: top 0.325s var(--standard-curve);
-    -o-transition: top 0.325s var(--standard-curve);
-    -ms-transition: top 0.325s var(--standard-curve); }
+    -ms-transform: translateX(-50%); }
 
-.content-progress-circular.show {
-    top: 16px; }
+.app-bar > .content-progress-circular {
+    top: initial;
+    bottom: 150%;
+    -moz-transition: bottom 0.475s var(--standard-curve);
+    -webkit-transition: bottom 0.475s var(--standard-curve);
+    transition: bottom 0.475s var(--standard-curve);
+    -o-transition: bottom 0.475s var(--standard-curve);
+    -ms-transition: bottom 0.475s var(--standard-curve); }
+
+.app-bar > .content-progress-circular.show {
+    bottom: -48px; }
+
+.app-content > .content-progress-circular {
+    position: fixed;
+    top: -56px;
+    bottom: initial;
+    -moz-transition: top 0.475s var(--standard-curve);
+    -webkit-transition: top 0.475s var(--standard-curve);
+    transition: top 0.475s var(--standard-curve);
+    -o-transition: top 0.475s var(--standard-curve);
+    -ms-transition: top 0.475s var(--standard-curve); }
+
+.app-content > .content-progress-circular.show {
+    top: 12px; }
 
 .progress-circular {
     width: 20px;
