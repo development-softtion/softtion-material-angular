@@ -179,6 +179,23 @@
             return { top: top, left: left };
         },
         
+        positionContent: function (parentClass) {
+            var element = jQuery(this), 
+                left = element.offset().left,
+                top = element.offset().top;
+            
+            if (softtion.isString(parentClass)) {
+                var parent = element.parents(parentClass);
+                
+                if (parent.exists()) {
+                    top = top - parent.offset().top;
+                    left = left - parent.offset().left;
+                }
+            } // Se ha definido selector para encontrar posición
+            
+            return { top: top, left: left }; // Posicion en contenido
+        },
+        
         // Eventos
         
         hasEventListener: function (eventName, namespace) {

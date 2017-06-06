@@ -1211,10 +1211,10 @@ button.raised.primary:before, button.floating.primary:before {
 .flexible-box > .banner > .toolbar > .nav-icon > button::before {
     background-color: var(--light-ripple); }
 
-.flexible-box > .box {
-    background-color: var(--light-background-component); }
+.flexible-box > .content {
+    background-color: var(--light-background); }
 
-.dark .flexible-box > .box {
+.dark .flexible-box > .content {
     background-color: var(--dark-background); }
 
 /** FORM NAVIGATION */

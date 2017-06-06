@@ -116,6 +116,8 @@ body.dark.not-touch *::-webkit-scrollbar-thumb:hover {
     height: 0px; }
 
 ul {
+    float: left;
+    width: 100%;
     list-style-type: none; 
     margin: 0px;
     padding: 0px; }
@@ -855,6 +857,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .block {
     position: relative;
+    width: 100%;
     padding: 0px 8px;
     float: left;
     box-sizing: border-box; }
@@ -1394,19 +1397,34 @@ button.action > .badge {
 /** BOTTOM SHEET */
 
 .bottom-sheet > .backdrop {
+    display: block;
     z-index: 15;
-    position: absolute; }
+    bottom: initial;
+    opacity: 0;
+    -moz-transition: opacity 0.3s var(--easing-in);
+    -webkit-transition: opacity 0.3s var(--easing-in);
+    transition: opacity 0.3s var(--easing-in);
+    -o-transition: opacity 0.3s var(--easing-in);
+    -ms-transition: opacity 0.3s var(--easing-in); }
+
+.bottom-sheet.active > .backdrop {
+    bottom: 0;
+    opacity: 1; }
 
 .bottom-sheet > .content {
     position: absolute;
     bottom: 0px;
     left: 50%;
-    transform: translateX(-50%);
     width: 100%;
     z-index: 16;
     visibility: hidden;
     overflow-y: auto;
-    box-shadow: var(--shadow-16-inv); }
+    box-shadow: var(--shadow-16-inv);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%); }
 
 .app-content .bottom-sheet > .backdrop, 
 .app-content .bottom-sheet > .content {
@@ -1425,7 +1443,11 @@ button.action > .badge {
 }
 
 .bottom-sheet > .content.start {
-    transition: all 0.325s var(--standard-curve); }
+    -moz-transition: all 0.3s var(--standard-curve);
+    -webkit-transition: all 0.3s var(--standard-curve);
+    transition: all 0.3s var(--standard-curve);
+    -o-transition: all 0.3s var(--standard-curve);
+    -ms-transition: all 0.3s var(--standard-curve); }
 
 .bottom-sheet > .content.show {
     visibility: visible;
@@ -2814,37 +2836,6 @@ button.raised:focus:after, button.flat:focus:after {
 .clockpicker-input.flex-pd-left > .line-shadow {
     left: 8px; }
 
-.clockpicker-input > .dialog > .backdrop {
-    z-index: 23; }
-
-.clockpicker-input > .dialog > .box {
-    position: fixed;
-    top: calc(50% + 8px);
-    left: calc(50% - 140px);
-    padding-top: 0px;
-    visibility: hidden;
-    opacity: 0;
-    width: 280px;
-    height: auto;
-    overflow: hidden;
-    z-index: 24;
-    border-radius: 36px;
-    box-shadow: var(--shadow-24);
-    transform: scale(0) translateY(-50%);
-    transition: all 0.175s var(--standard-curve); }
-
-.clockpicker-input > .dialog > .box > .clockpicker {
-    opacity: 0; }
-
-.clockpicker-input > .dialog > .box.show {
-    top: 50%;
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1) translateY(-50%); }
-
-.clockpicker-input > .dialog > .box.show > .clockpicker {
-    opacity: 1; }
-
 /** DATATABLE */
 
 .datatable.card-table {
@@ -3209,36 +3200,6 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker-input.flex-pd-left > .line-shadow {
     left: 8px; }
 
-.datepicker-input > .dialog > .backdrop {
-    z-index: 23; }
-
-.datepicker-input > .dialog > .box {
-    position: fixed;
-    top: calc(50% + 8px);
-    left: calc(50% - 150px);
-    padding-top: 0px;
-    visibility: hidden;
-    opacity: 1;
-    width: 300px;
-    height: auto;
-    overflow: hidden;
-    z-index: 24;
-    box-shadow: var(--shadow-24);
-    transform: scale(0) translateY(-50%);
-    transition: all 0.175s var(--standard-curve); }
-
-.datepicker-input > .dialog > .box > .datepicker {
-    opacity: 0; }
-
-.datepicker-input > .dialog > .box.show {
-    visibility: visible;
-    opacity: 1;
-    top: 50%;
-    transform: scale(1) translateY(-50%); }
-
-.datepicker-input > .dialog > .box.show > .datepicker {
-    opacity: 1; }
-
 /** DIALOG */
 
 .dialog > .backdrop {
@@ -3246,7 +3207,11 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 23;
     bottom: initial;
     opacity: 0;
-    transition: opacity 0.3s var(--easing-in); }
+    -moz-transition: opacity 0.3s var(--easing-in);
+    -webkit-transition: opacity 0.3s var(--easing-in);
+    transition: opacity 0.3s var(--easing-in);
+    -o-transition: opacity 0.3s var(--easing-in);
+    -ms-transition: opacity 0.3s var(--easing-in); }
 
 .dialog.active > .backdrop {
     bottom: 0;
@@ -3327,6 +3292,12 @@ button.raised:focus:after, button.flat:focus:after {
     animation: button-focus-content 2.5s infinite linear; 
     -ms-animation: button-focus-content 2.5s infinite linear; }
 
+.dialog.picker-date > .box {
+    width: 300px !important; }
+
+.dialog.picker-clock > .box {
+    width: 280px !important; }
+
 @media only screen and (min-width : 361px) {
     
     .dialog > .box {
@@ -3355,7 +3326,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 280px;
     max-height: 280px;
     overflow-y: auto;
-    z-index: 4;
+    z-index: 16;
     box-shadow: var(--shadow-4);
     opacity: 0;
     transform: scale(0, 0);
@@ -3364,15 +3335,16 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform-origin: 0 0;
     transform-origin: 0 0;
     -ms-transform-origin: 0 0;
-    -moz-transition: -moz-transform 0.3s var(--standard-curve);
-    -webkit-transition: -webkit-transform 0.3s var(--standard-curve);
-    -o-transition: -o-transform 0.3s var(--standard-curve);
-    transition: transform 0.3s var(--standard-curve);
-    -ms-transition: -ms-transform 0.3s var(--standard-curve); }
-
-.dropdown.fixed {
-    position: fixed; 
-    z-index: 12; }
+    -moz-transition: -moz-transform 0.3s var(--standard-curve),
+        opacity 0.3s var(--standard-curve);
+    -webkit-transition: -webkit-transform 0.3s var(--standard-curve),
+        opacity 0.3s var(--standard-curve);
+    -o-transition: -o-transform 0.3s var(--standard-curve),
+        opacity 0.3s var(--standard-curve);
+    transition: transform 0.3s var(--standard-curve),
+        opacity 0.3s var(--standard-curve);
+    -ms-transition: -ms-transform 0.3s var(--standard-curve),
+        opacity 0.3s var(--standard-curve); }
 
 .dropdown.active {
     opacity: 1;
@@ -3380,7 +3352,12 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-transform: scale(1, 1);
     -o-transform: scale(1, 1);
     transform: scale(1, 1);
-    -ms-transform: scale(1, 1); }
+    -ms-transform: scale(1, 1);
+    -moz-transition: -moz-transform 0.3s var(--standard-curve);
+    -webkit-transition: -webkit-transform 0.3s var(--standard-curve);
+    -o-transition: -o-transform 0.3s var(--standard-curve);
+    transition: transform 0.3s var(--standard-curve);
+    -ms-transition: -ms-transform 0.3s var(--standard-curve); }
 
 /** EXPANSION PANEL */ 
 
@@ -3727,7 +3704,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%;
     transform: translate(-50%, -50%); }
 
-.flexible-box > .box {
+.flexible-box > .content {
     position: absolute;
     top: 0;
     left: 0;
@@ -3750,7 +3727,19 @@ button.raised:focus:after, button.flat:focus:after {
 /** FORM NAVIGATION */
 
 .form-navigation > .backdrop {
-    z-index: 15; }
+    display: block;
+    z-index: 15;
+    bottom: initial;
+    opacity: 0;
+    -moz-transition: opacity 0.3s var(--easing-in);
+    -webkit-transition: opacity 0.3s var(--easing-in);
+    transition: opacity 0.3s var(--easing-in);
+    -o-transition: opacity 0.3s var(--easing-in);
+    -ms-transition: opacity 0.3s var(--easing-in); }
+
+.form-navigation.active > .backdrop {
+    bottom: 0;
+    opacity: 1; }
 
 .form-navigation > .content {
     position: fixed;
@@ -4961,7 +4950,11 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 15;
     bottom: initial;
     opacity: 0;
-    transition: opacity 0.3s var(--easing-in); }
+    -moz-transition: opacity 0.3s var(--easing-in);
+    -webkit-transition: opacity 0.3s var(--easing-in);
+    transition: opacity 0.3s var(--easing-in);
+    -o-transition: opacity 0.3s var(--easing-in);
+    -ms-transition: opacity 0.3s var(--easing-in); }
 
 .sidenav.active > .backdrop {
     bottom: 0;
@@ -5964,7 +5957,7 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .toolbar > .actions {
     display: flex;
-    overflow-y: hidden;
+    overflow: hidden;
     padding: 0px;
     margin: 0px;
     margin-right: 4px;

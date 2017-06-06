@@ -1369,7 +1369,7 @@
                         addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click", "showDialog($event)");
                     
-                    var dialog = softtion.html("div").addClass("dialog").
+                    var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
                         addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
@@ -1398,6 +1398,7 @@
                             format: "@",
                             autoStart: "=?",
                             ngDisabled: "=?",
+                            parent: "@",
                             
                             // Eventos
                             showEvent: "=?",
@@ -1407,7 +1408,7 @@
                         },
                         controller: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
-                                backdrop = dialog.find(".backdrop");
+                                $body = angular.element(document.body);
                         
                             if (softtion.isString($scope.icon) && $element.hasClass("label-hidden")) {
                                 var icon = angular.element(
@@ -1433,6 +1434,12 @@
                                 $scope.time = new Date(); 
                             } // Se desea iniciar automaticamente la fecha
                             
+                            if (softtion.isString($scope.parent)) {
+                                var parent = angular.element($scope.parent);
+                                
+                                if (parent.exists()) { dialog.appendTo(parent); }
+                            } // Se definio un selector para contener dialog
+                            
                             $scope.getValueModel = function () {
                                 if (softtion.isUndefined($scope.time)) {
                                     return "";
@@ -1449,8 +1456,8 @@
                             
                             $scope.showDialog = function ($event) {
                                 if (!$scope.ngDisabled) {
-                                    $scope.show = true; dialog.addClass("active"); backdrop.fadeIn(175); 
-                                    angular.element(document.body).addClass("body-overflow-none");
+                                    $scope.show = true; dialog.addClass("active");
+                                    $body.addClass("body-overflow-none");
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
                                         $scope.showEvent($event);
@@ -1459,8 +1466,8 @@
                             };
                             
                             $scope.cancelSelect = function () {
-                                $scope.show = false; dialog.removeClass("active"); backdrop.fadeOut(175); 
-                                angular.element(document.body).removeClass("body-overflow-none");
+                                $scope.show = false; dialog.removeClass("active"); 
+                                $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent($scope.time);
@@ -1469,8 +1476,7 @@
                             
                             $scope.timeSelect = function (time) {
                                 $scope.time = time; dialog.removeClass("active"); 
-                                backdrop.fadeOut(175); $scope.show = false; 
-                                angular.element(document.body).removeClass("body-overflow-none");
+                                $scope.show = false; $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
                                     $scope.selectEvent($scope.time);
@@ -2070,7 +2076,7 @@
                         addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click", "showDialog($event)");
                     
-                    var dialog = softtion.html("div").addClass("dialog").
+                    var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
                         addChildren(
                             softtion.html("div").addClass("backdrop")
                         ).
@@ -2104,6 +2110,7 @@
                             maxDate: "=?",
                             yearRange: "=?",
                             ngDisabled: "=?",
+                            parent: "@",
                             
                             // Eventos
                             showEvent: "=?",
@@ -2114,7 +2121,7 @@
                         link: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
                                 value = $element.find(".value"),
-                                backdrop = dialog.find(".backdrop");
+                                $body = angular.element(document.body);
                         
                             var icon = activeIconLabel($scope, $element, value);
                             
@@ -2134,6 +2141,12 @@
                                 $scope.date = new Date(); 
                             } // Se desea iniciar automaticamente la fecha
                             
+                            if (softtion.isString($scope.parent)) {
+                                var parent = angular.element($scope.parent);
+                                
+                                if (parent.exists()) { dialog.appendTo(parent); }
+                            } // Se definio un selector para contener dialog
+                            
                             $scope.getValueModel = function () {
                                 if (softtion.isUndefined($scope.date)) {
                                     return "";
@@ -2150,8 +2163,8 @@
                             
                             $scope.showDialog = function ($event) {
                                 if (!$scope.ngDisabled) {
-                                    $scope.show = true; dialog.addClass("active"); backdrop.fadeIn(175); 
-                                    angular.element(document.body).addClass("body-overflow-none");
+                                    $scope.show = true; dialog.addClass("active");
+                                    $body.addClass("body-overflow-none");
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
                                         $scope.showEvent($event);
@@ -2161,8 +2174,7 @@
                             
                             $scope.dateSelect = function (date) {
                                 $scope.date = date; dialog.removeClass("active"); 
-                                $scope.show = false; backdrop.fadeOut(175);
-                                angular.element(document.body).removeClass("body-overflow-none");
+                                $scope.show = false; $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
                                     $scope.selectEvent($scope.date);
@@ -2170,8 +2182,8 @@
                             };
                             
                             $scope.cancelSelect = function () {
-                                $scope.show = false; dialog.removeClass("active"); backdrop.fadeOut(175); 
-                                angular.element(document.body).removeClass("body-overflow-none");
+                                $scope.show = false; dialog.removeClass("active");
+                                $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent($scope.date);
@@ -2496,8 +2508,8 @@
                                     
                                 // Función al completar Slide
                                 fn = $parse($attrs["ngSlide"]), 
-                                slideDisabled = softtion.parseBoolean(
-                                    parent.attr("slide-disabled")
+                                slideEnabled = softtion.parseBoolean(
+                                    parent.attr("slide-enabled")
                                 ),
                                 slideFunction = softtion.parseBoolean(
                                     parent.attr("slide-function")
@@ -2511,7 +2523,7 @@
                             var fnItemList = Material.components.ItemList;
                             
                             return function ($scope, $element) {
-                                if (!slideDisabled) {
+                                if (slideEnabled) {
                                     $element.addClass("slide"); // Item permite Slide
                                     
                                     function slideEvent($element, $event) {
@@ -4126,7 +4138,6 @@
                     Alert.prototype.hide = function () {
                         if (Properties.dialog.hasClass("active")) {
                             angular.element(document.body).removeClass("body-overflow-none");
-                            
                             Properties.dialog.removeClass("active"); Properties.box.removeClass("show");
                         } // Dialog se encuentra activo
                     };
@@ -4152,7 +4163,7 @@
                         Properties.component = angular.element(sheetID);
                         
                         if (Properties.component.exists()) {
-                            Properties.content = Properties.component.children(".content:first");
+                            Properties.content = Properties.component.children(".content");
                             Properties.backdrop = Properties.component.children(".backdrop");
 
                             Properties.backdrop.click(function () { self.hide(); });
@@ -4165,22 +4176,21 @@
                         if (Properties.component.exists()) {
                             var appContent = Properties.component.parents(".app-content");
                             
-                            var isContent = (appContent.exists()) ? true : false,
-                                content = (appContent.exists()) ? appContent :  
+                            var isInAppcontent = (appContent.exists()),
+                                content = (isInAppcontent) ? appContent :  
                                     angular.element(document.body);
                             
                             if (!Properties.component.hasClass("active")) {
                                 content.addClass("overflow-none");
                                 
-                                if (isContent) {
+                                if (isInAppcontent) {
                                     Properties.content.addClass("show");
                                 } else {
                                     Properties.content.addClass("show-content");
                                     Properties.content.css("margin-bottom", content.scrollTop());
-                                }
+                                } // Componente no se encuentra en AppContent
                                 
                                 Properties.component.addClass("active"); 
-                                Properties.backdrop.fadeIn(325, "standardCurve"); 
                             } // Componente no se encuentra activo en la Aplicación
                         }
                     };
@@ -4189,22 +4199,21 @@
                         if (Properties.component.exists()) {
                             var appContent = Properties.component.parents(".app-content");
                             
-                            var isContent = (appContent.exists()) ? true : false,
-                                content = (appContent.exists()) ? appContent :  
+                            var isInAppcontent = (appContent.exists()),
+                                content = (isInAppcontent) ? appContent :  
                                     angular.element(document.body);
                             
                             if (Properties.component.hasClass("active")) {
                                 content.removeClass("overflow-none");
 
-                                (isContent) ?
-                                    Properties.content.removeClass("show") :
-                                    Properties.content.removeClass("show-content");
+                                (!isInAppcontent) ? 
+                                    Properties.content.removeClass("show-content") :
+                                    Properties.content.removeClass("show");
 
                                 var marginBottom = Properties.content.outerHeight();
                                 Properties.content.css("margin-bottom", (marginBottom * -1) - 1);
 
                                 Properties.component.removeClass("active"); 
-                                Properties.backdrop.fadeOut(325, "standardCurve"); 
                             } // Componente se encuentra activo en la Aplicación
                         }
                     };
@@ -4295,7 +4304,6 @@
                         properties.component.addClass("active"); // Activando dropdown
                         
                         var dropdown = properties.component, origin = properties.origin;
-                        var topContent = parseInt(angular.element(".app-content").css("top"));
                         var leftBody = parseInt(angular.element(".app-body").css("left"));
                         
                         var heightDropdown = dropdown.innerHeight(),
@@ -4304,15 +4312,16 @@
                             heightOrigin = (origin) ? origin.innerHeight() : 0, 
                             widthOrigin = (origin) ? origin.innerWidth() : 0,
                             
-                            posOriginY = (origin) ? origin.fixed().top : 0,
-                            posOriginX = (origin) ? origin.fixed().left : 0,
+                            posOriginY = (origin) ? origin.offset().top : 0,
+                            posOriginX = (origin) ? origin.offset().left : 0,
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
                             
                         // Definiendo posicion eje X
-                        if ((posOriginX + widthDropdown) <= (window.innerWidth + window.scrollX)) {
-                            left = posOriginX; transformOrigin = transformOrigin + 1;
+                        if ((posOriginX + widthDropdown) <= (window.innerWidth)) {
+                            left = posOriginX; 
+                            transformOrigin = transformOrigin + 1;
                         } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
                             transformOrigin = transformOrigin + 3;
                             left = posOriginX + widthOrigin - widthDropdown - 10; 
@@ -4323,26 +4332,24 @@
 
                         // Definiendo posicion eje Y
                         if (properties.belowOrigin) { 
-                            if ((posOriginY + heightDropdown) <= (window.innerHeight + window.scrollY)) {
-                                top = posOriginY; transformOrigin = transformOrigin + 4;
-                            } 
-                            else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
+                            if ((posOriginY + heightDropdown) <= (window.innerHeight)) {
+                                top = posOriginY;
+                                transformOrigin = transformOrigin + 4;
+                            } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
                                 transformOrigin = transformOrigin + 7;
                                 top = posOriginY + heightOrigin - heightDropdown; 
-                            } 
-                            else { 
+                            } else { 
                                 transformOrigin = transformOrigin + 4;
                                 top = window.innerHeight - heightDropdown - 10;  
                             }
                         } else { 
                             if ((posOriginY + heightOrigin + heightDropdown) <= window.innerHeight) {
-                                top = posOriginY + heightOrigin; transformOrigin = transformOrigin + 4;
-                            } 
-                            else if ((posOriginY - heightDropdown) > 0) {
+                                top = posOriginY + heightOrigin; 
+                                transformOrigin = transformOrigin + 4;
+                            } else if ((posOriginY - heightDropdown) > 0) {
                                 top = posOriginY - heightDropdown; 
                                 transformOrigin = transformOrigin + 7;
-                            } 
-                            else { 
+                            } else { 
                                 transformOrigin = transformOrigin + 4; 
                                 top = window.innerHeight - heightDropdown - 10;
                             }
@@ -4356,9 +4363,7 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
-                        if (dropdown.hasClass(".fixed")) {
-                            left = left - leftBody; top = top - topContent;
-                        } // Componente no ignora a sus contenedores
+                        left = left - leftBody; // Desplazando posición
                         
                         dropdown.css({ 
                             left: left, top: top,
@@ -4525,8 +4530,8 @@
                         Properties.form = angular.element(idPaneForm);
 
                         if (Properties.form.exists()) {
-                            Properties.content = Properties.form.children(".content:first");
                             Properties.backdrop = Properties.form.children(".backdrop");
+                            Properties.content = Properties.form.children(".content");
 
                             if (!Properties.backdrop.exists()) {
                                 Properties.backdrop = angular.element(
@@ -4546,8 +4551,8 @@
                             angular.element(document.body).addClass("body-overflow-none");
                             
                             Properties.content.removeClass("sharp-curve").removeClass("hide");
+                            Properties.form.addClass("active"); 
                             Properties.content.addClass("easing-out").addClass("show");
-                            Properties.backdrop.fadeIn(300); Properties.form.addClass("active"); 
                         } // Sidenav no se encuentra activo
                     };
 
@@ -4556,8 +4561,8 @@
                             angular.element(document.body).removeClass("body-overflow-none");
                             
                             Properties.content.removeClass("easing-out").removeClass("show");
+                            Properties.form.removeClass("active"); 
                             Properties.content.addClass("hide").addClass("sharp-curve");
-                            Properties.backdrop.fadeOut(300); Properties.form.removeClass("active"); 
                         } // Sidenav no se encuentra activo
                     };
                     
