@@ -59,7 +59,8 @@
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            $element.addClass(hideClass);
+                                            $element.addClass(hideClass); // Ocultando barra
+                                            $element.find(".dropdown").removeClass("active");
                                         } else {
                                             $element.removeClass(hideClass);
                                         } // Revelando componente
@@ -4301,8 +4302,7 @@
                         dropdown.removeClass("active"); 
                     },
                     show: function (properties) {
-                        properties.component.addClass("active"); // Activando dropdown
-                        
+                        properties.component.addClass("active"); // Activado
                         var dropdown = properties.component, origin = properties.origin;
                         var leftBody = parseInt(angular.element(".app-body").css("left"));
                         
@@ -4383,31 +4383,37 @@
                             widthDropdown = dropdown.innerWidth(),
                             transformOrigin = 0, originEffect;
                         
-                        // Definiendo posicion eje X
-                        if ((left + widthDropdown) <= (window.innerWidth + window.scrollX)) {
+                        // Definiendo posicion del eje X
+                        if ((left + widthDropdown) <= (window.innerWidth)) {
                             transformOrigin = transformOrigin + 1;
                         } else if ((left - widthDropdown) > 0) {
-                            transformOrigin = transformOrigin + 3; left = left - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 3; 
+                            left = left - widthDropdown - 10; 
                         } else { 
-                            transformOrigin = transformOrigin + 1; left = window.innerWidth - widthDropdown - 10; 
+                            transformOrigin = transformOrigin + 1; 
+                            left = window.innerWidth - widthDropdown - 10; 
                         }
 
-                        // Definiendo posicion eje Y
+                        // Definiendo posicion del eje Y
                         if (properties.belowOrigin) { 
-                            if ((top + heightDropdown) <= (window.innerHeight + window.scrollY)) {
+                            if ((top + heightDropdown) <= (window.innerHeight)) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                transformOrigin = transformOrigin + 7; top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; 
                             } else { 
-                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;  
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;  
                             }
                         } else { 
                             if ((top + heightDropdown) <= window.innerHeight) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
-                                top = top - heightDropdown; transformOrigin = transformOrigin + 7;
+                                top = top - heightDropdown; 
+                                transformOrigin = transformOrigin + 7;
                             } else { 
-                                transformOrigin = transformOrigin + 4; top = window.innerHeight - heightDropdown - 10;
+                                transformOrigin = transformOrigin + 4; 
+                                top = window.innerHeight - heightDropdown - 10;
                             }
                         }
                         
@@ -4465,7 +4471,8 @@
                     };
 
                     Dropdown.prototype.show = function (origin, autoclose) {
-                        var self = this; // Objeto dropdown
+                        var self = this, id = Properties.id,
+                            nameEvent = "click.hidedropdown" + id;
                         
                         if (softtion.isDefined(Properties.component)) {
                             Properties.origin = origin; // Estableciendo origen
@@ -4474,9 +4481,9 @@
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
                                 
-                                $body.on("click.hidedropdown", function (event) {
+                                $body.on(nameEvent, function (event) {
                                     if (Properties.component.find(event.target).length === 0) {
-                                        self.hide(); $body.off("click.hidedropdown");
+                                        self.set(id).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
                             }

@@ -3749,6 +3749,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 320px;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     z-index: 16;
     box-shadow: var(--shadow-16); }
 
