@@ -182,13 +182,13 @@
             return { top: top, left: left };
         },
         
-        positionContent: function (parentClass) {
+        positionParent: function (parentSelector) {
             var element = jQuery(this), 
                 left = element.offset().left,
                 top = element.offset().top;
             
-            if (softtion.isString(parentClass)) {
-                var parent = element.parents(parentClass);
+            if (softtion.isString(parentSelector)) {
+                var parent = element.parents(parentSelector);
                 
                 if (parent.exists()) {
                     top = top - parent.offset().top;

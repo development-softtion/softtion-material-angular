@@ -49,8 +49,7 @@
                                 position = 0, hideClass = "hide",
                                 heightElement = $element.innerHeight();
                         
-                            $element.transitionend(function () {
-                            });
+                            $element.transitionend(function () {});
                             
                             if (!$scope.fixed) {
                                 appContent.scroll(function () {
@@ -62,7 +61,8 @@
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
-                                            $element.addClass(hideClass); // Ocultando barra                                            
+                                            $element.addClass(hideClass); // Ocultando barra 
+                                            $element.children(".dropdown").removeClass("active");
                                         } else {
                                             $element.removeClass(hideClass);
                                         } // Revelando componente
@@ -712,6 +712,8 @@
                                 if ($scope.index < 0)  {
                                     $scope.index = $scope.gallery.length - 1;
                                 } // Se salio del rango inferior de la lista
+                                
+                                $timeout(function () { $scope.transitionActive = false; }, 1000);
                             };
 
                             function next() {
@@ -2444,7 +2446,7 @@
                                 title = toolbar.children(".title"),
                                 detail = toolbar.children(".detail");
                         
-                            var height = banner.height(),
+                            var height = undefined,
                                 background = angular.element(
                                     Material.components.FlexibleBox.backgroundColor()
                                 );
@@ -2456,6 +2458,7 @@
                             } // No existe un Toolbar en el banner
 
                             box.scroll(function () {
+                                height = height || banner.height(); // Tomando height inicial
                                 var heightToolbar = (window.innerWidth > 960) ? 64 : 56;
                                 
                                 var scroll = angular.element(this).scrollTop();
@@ -3951,7 +3954,7 @@
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
                             $element.click(function (event) {
-                                $formNavigation.set($attrs.bottomNavigation).show();
+                                $formNavigation.set($attrs.formNavigation).show();
                             });
                         }
                     };
@@ -4306,30 +4309,81 @@
             Dropdown: {
                 name: "$dropdown",
                 handler: {
-                    scrollMove: function (origin, dropdown) {
-                        if (origin.parents(".app-bar").exists()) {
-                            dropdown.addClass("fixed"); return false;
-                        } // Esta contenido en un Appbar
+                    settingsElement: function (origin, dropdown, classElement) {
+                        var settings = {
+                                top: 0, left: 0, moveLeft: false,
+                                innerWidth: window.innerWidth, 
+                                innerHeight: window.innerHeight
+                            },  
+                            element = origin.parents(classElement),
+                            position = origin.positionParent(classElement + " > .content"),
+                            content = element.children(".content"), 
+                            flexibleBox = origin.parents(".flexible-box");
 
-                        if (origin.parents(".form-navigation").exists()) {
-                            dropdown.addClass("fixed"); return false;
-                        } // Esta contenido en un FormNavigation
+                        if (flexibleBox.exists()) {
+                            if (origin.parents(".flexible-box > .banner").exists()) {
+                                dropdown.appendTo(flexibleBox);
 
-                        if (origin.parents(".bottom-sheet").exists()) {
-                            dropdown.addClass("fixed"); return false;
-                        } // Esta contenido en un BottomSheet
+                                settings.innerWidth = content.width();
+                                settings.innerHeight = content.height();
+                            } else {
+                                var box = flexibleBox.children(".box"), 
+                                    contentFlexible = box.children(".content");
 
-                        dropdown.removeClass("fixed"); 
-                        return true; // Se debe desplazar con app-content
+                                dropdown.appendTo(contentFlexible); 
+                                position.top += box.scrollTop();
+
+                                settings.innerWidth = contentFlexible.width();
+                                settings.innerHeight = contentFlexible.height();
+                            }
+                        } else {
+                            dropdown.appendTo(content); 
+                            position.top += content.scrollTop();
+
+                            settings.innerWidth = content.width();
+                            settings.innerHeight = content.height();
+                        }
+
+                        return angular.extend(settings, position);
                     },
+                    
+                    settingsDropdown: function (dropdown, origin) {
+                        var settings = {
+                            top: 0, left: 0, moveLeft: true,
+                            moveScroll: true,
+                            innerWidth: window.innerWidth, 
+                            innerHeight: window.innerHeight
+                        }; // Configuración estandar para posición
+                        
+                        if (origin.exists()) {
+                            if (origin.parents(".form-navigation").exists()) {
+                                return this.settingsElement(origin, dropdown, ".form-navigation");
+                            } // Elemento está contenido en un FormNavigation
+                            
+                            if (origin.parents(".bottom-sheet").exists()) {
+                                return this.settingsElement(origin, dropdown, ".bottom-sheet");
+                            } // Elemento está contenido en un BottomSheet
+                            
+                            if (origin.parents(".app-bar").exists()) {
+                                dropdown.appendTo(origin.parents(".app-bar")); settings.moveScroll = false;
+                            } // Elemento está contenido en un Appbar
+                        
+                            return angular.extend(settings, origin.offset()); 
+                        } // Se definío elemento que disparó despliegue del dropdown
+                        
+                        return settings; // Configuración por defecto
+                    },
+                    
                     hide: function (dropdown) {
                         dropdown.removeClass("active"); 
                     },
+                    
                     show: function (properties) {
                         var handler = Material.providers.Dropdown.handler,
                             appContent = angular.element(".app-content"),
                             dropdown = properties.component, 
                             origin = properties.origin,
+                            settings = handler.settingsDropdown(dropdown, origin),
                             leftBody = parseInt(angular.element(".app-body").css("left"));
                         
                         var heightDropdown = dropdown.innerHeight(),
@@ -4338,8 +4392,7 @@
                             heightOrigin = (origin) ? origin.innerHeight() : 0, 
                             widthOrigin = (origin) ? origin.innerWidth() : 0,
                             
-                            posOriginY = (origin) ? origin.offset().top : 0,
-                            posOriginX = (origin) ? origin.offset().left : 0,
+                            posOriginY = settings.top, posOriginX = settings.left,
                             
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
@@ -4347,7 +4400,7 @@
                         dropdown.addClass("active"); // Activado dropdown
                             
                         // Definiendo posicion eje X
-                        if ((posOriginX + widthDropdown) <= (window.innerWidth)) {
+                        if ((posOriginX + widthDropdown) <= (settings.innerWidth)) {
                             left = posOriginX; 
                             transformOrigin = transformOrigin + 1;
                         } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
@@ -4355,12 +4408,12 @@
                             left = posOriginX + widthOrigin - widthDropdown - 10; 
                         } else { 
                             transformOrigin = transformOrigin + 1; 
-                            left = window.innerWidth - widthDropdown - 10; 
+                            left = settings.innerWidth - widthDropdown - 10; 
                         }
 
                         // Definiendo posicion eje Y
                         if (properties.belowOrigin) { 
-                            if ((posOriginY + heightDropdown) <= (window.innerHeight)) {
+                            if ((posOriginY + heightDropdown) <= (settings.innerHeight)) {
                                 top = posOriginY;
                                 transformOrigin = transformOrigin + 4;
                             } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
@@ -4368,10 +4421,10 @@
                                 top = posOriginY + heightOrigin - heightDropdown; 
                             } else { 
                                 transformOrigin = transformOrigin + 4;
-                                top = window.innerHeight - heightDropdown - 10;  
+                                top = settings.innerHeight - heightDropdown - 10;  
                             }
                         } else { 
-                            if ((posOriginY + heightOrigin + heightDropdown) <= window.innerHeight) {
+                            if ((posOriginY + heightOrigin + heightDropdown) <= settings.innerHeight) {
                                 top = posOriginY + heightOrigin; 
                                 transformOrigin = transformOrigin + 4;
                             } else if ((posOriginY - heightDropdown) > 0) {
@@ -4379,7 +4432,7 @@
                                 transformOrigin = transformOrigin + 7;
                             } else { 
                                 transformOrigin = transformOrigin + 4; 
-                                top = window.innerHeight - heightDropdown - 10;
+                                top = settings.innerHeight - heightDropdown - 10;
                             }
                         }
                         
@@ -4391,11 +4444,15 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
-                        left = left - leftBody; // Desplazando posición
-                        
-                        if (handler.scrollMove(origin, dropdown)) {
-                            top = top + appContent.scrollTop();
-                        } // Componente debe moverse con scroll de AppContent
+                        if (settings.moveLeft) {
+                            dropdown.removeClass("fixed"); left = left - leftBody; 
+                            
+                            if (settings.moveScroll) {
+                                top = top + appContent.scrollTop(); 
+                            } // Desplazando con Scroll
+                        } else {
+                            dropdown.addClass("fixed");
+                        }// Componente debe moverse con scroll de AppContent
                         
                         dropdown.css({ 
                             left: left, top: top,
@@ -4469,8 +4526,10 @@
                 },
                 method: function () {
                     var Properties = {
-                        id: "", belowOrigin: true, 
-                        component: undefined, origin: undefined
+                        id: undefined, 
+                        belowOrigin: true, 
+                        component: undefined, 
+                        origin: undefined
                     };
                     
                     var Dropdown = function () { };
@@ -4813,7 +4872,10 @@
                 },
                 method: function () {
                     var Properties = {
-                        body: undefined, box: undefined, action: undefined
+                        body: undefined, 
+                        $rootScope: undefined,
+                        box: undefined, 
+                        action: undefined
                     };
                     
                     var SnackBar = function () { 
@@ -4865,13 +4927,13 @@
                                 
                                 Properties.action.find("span").click(function () {
                                     if (softtion.isFunction(optionsAction.action)) {
-                                        optionsAction.action(); Properties.action.html(""); 
+                                        Properties.$rootScope.$apply(function () { optionsAction.action(); });
 
                                         if (softtion.isDefined(self.hiddenSnackbar)) {
                                             clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                                         } // Existe un cierre pendiente por realizar
 
-                                        Material.providers.Snackbar.moveButton(false); 
+                                        Properties.action.html(""); Material.providers.Snackbar.moveButton(false); 
                                         Properties.box.removeClass("show").removeClass("active"); 
                                     } // Ejecutando acción establecida en el Controlador
                                 });
@@ -4918,7 +4980,9 @@
                     
                     this.get = function () { return snackbar; };
                     
-                    this.$get = function () { return snackbar; };
+                    this.$get = ["$rootScope", function ($rootScope) { 
+                        Properties.$rootScope = $rootScope; return snackbar; 
+                    }];
                 }
             },
             

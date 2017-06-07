@@ -3716,7 +3716,7 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%;
     transform: translate(-50%, -50%); }
 
-.flexible-box > .content {
+.flexible-box > .box {
     position: absolute;
     top: 0;
     left: 0;
@@ -3726,6 +3726,9 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box;
     z-index: 1;
     overflow: auto; }
+
+.flexible-box > .box > .content {
+    overflow-y: auto; }
 
 .flexible-box.square > .box {
     padding-top: 100%; }
@@ -3764,6 +3767,12 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-x: hidden;
     z-index: 16;
     box-shadow: var(--shadow-16); }
+
+.form-navigation.x150 > .content {
+    max-width: 400px; }
+
+.form-navigation.x200 > .content {
+    max-width: 480px; }
 
 .form-navigation > .content.show {
     right: 0%; }
