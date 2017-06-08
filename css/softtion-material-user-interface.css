@@ -167,8 +167,8 @@ input[type=number]::-webkit-outer-spin-button {
 /** SVG-ICONS */
 
 .svg-icon {
-    width: 56px;
-    height: 56px; }
+    width: 128px;
+    height: 128px; }
 
 .svg-icon.pdf {
     -webkit-mask: url(icons/file-pdf.svg) no-repeat 50% 50%;
