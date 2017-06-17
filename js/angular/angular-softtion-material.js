@@ -15,16 +15,15 @@
     var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]),
         TextType = softtion.get(softtion.TEXTCONTROL);
 
-    var activeIconLabel = function ($scope, $element, component) {
-        if (softtion.isString($scope.icon) && $element.hasClass("label-hidden")) {
+    var insertIconDescription = function ($scope, $component) {
+        if (softtion.isString($scope.iconDescription)) {
             var icon = angular.element(
-                softtion.html("i").setText($scope.icon).create()
+                softtion.html("i").addClass("icon-description").
+                    setText($scope.iconDescription).create()
             );
             
-            icon.insertAfter(component); $element.addClass("icon-active");
-            
-            return icon; // Icono generado en el componente
-        } // IconLabel activado, se debe insertar el icono antes del input
+            icon.insertBefore($component); return icon; // Icono
+        } // Icono descriptivo, se debe insertar el icono antes del input
     };
     
     var Material = {        
@@ -157,7 +156,7 @@
                             var input = $element.find("input"), 
                                 list = $element.find("ul");
                             
-                            activeIconLabel($scope, $element, input); // IconLabel
+                            insertIconDescription($scope, $element, input); // IconLabel
                                 
                             // Atributos de control
                             var focusLi = false, searchStart = false;
@@ -960,7 +959,7 @@
                             // Componentes
                             var input = $element.find("input"); 
                             
-                            activeIconLabel($scope, $element, input);
+                            insertIconDescription($scope, $element, input);
                         
                             $scope.maxCount = !isNaN($scope.maxCount) ? $scope.maxCount : -1;
                             $scope.listValue = $scope.listValue || new Array(); $scope.focus = false;
@@ -2128,7 +2127,7 @@
                                 value = $element.find(".value"),
                                 $body = angular.element(document.body);
                         
-                            var icon = activeIconLabel($scope, $element, value);
+                            var icon = insertIconDescription($scope, $element, value);
                             
                             if (softtion.isFunction($scope.iconEvent)) {
                                 if (softtion.isDefined(icon)) {
@@ -2863,7 +2862,7 @@
                                 button = $element.find("button"), buttonIcon = button.find("i"),
                                 value = $element.find(".value"), list = $element.find("ul");
                             
-                            activeIconLabel($scope, $element, input);
+                            insertIconDescription($scope, $element, input);
                             
                             var clickComponent = function (target) {
                                 return (label.is(target) || input.is(target) || value.is(target) || list.is(target))
@@ -3075,7 +3074,7 @@
                                 button = $element.find("button"), buttonIcon = button.find("i"),
                                 value = $element.find(".value"), list = $element.find("ul");
                         
-                            activeIconLabel($scope, $element, input);
+                            insertIconDescription($scope, $element, input);
                         
                             // Atributos
                             var describeValues = Material.components.SelectMultiple.describeValues;
@@ -3431,7 +3430,7 @@
                             var hidden = $element.find(".textarea-hidden"),
                                 area = $element.find("textarea");
                             
-                            activeIconLabel($scope, $element, area);
+                            insertIconDescription($scope, $element, area);
 
                             // Atributos de control
                             var defineTextHidden = Material.components.TextArea.defineTextHidden;
@@ -3545,6 +3544,8 @@
                 route: "softtion/template/textfield.html",
                 name: "textfield",
                 html: function () {
+                    var content = softtion.html("div").addClass("content");
+                    
                     var input = softtion.html("input", false).
                         addAttribute("type", "{{typeInput}}").
                         addAttribute("ng-model", "valueInput").
@@ -3552,24 +3553,24 @@
                         addAttribute("ng-blur", "blurInput($event)").
                         addAttribute("ng-focus", "focusInput($event)").
                         addAttribute("ng-keypress", "keypressInput($event)").
+                        addAttribute("ng-keyup", "keyupInput($event)").
                         addAttribute("ng-readonly", "ngReadonly").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("ng-class", "{hide: !hideValue, holderhide: isHaveText()}").
+                        addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
                         addAttribute("ng-trim", "ngTrim").
-                        addAttribute("ng-change", "ngChange").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
+                    var lineActive = softtion.html("div").addClass("line-shadow-active");
 
                     var value = softtion.html("p").addClass(["value"]).
                         setText("{{getValueModel()}}").
                         addAttribute("ng-hide", "hideValue").
                         addAttribute("ng-click", "clickLabel($event)");
                 
-                    var iconPassword = softtion.html("i").addClass("password").
-                        addAttribute("ng-if", "isPasswordActive()").
-                        addAttribute("ng-click", "clickPassword()").
-                        setText("{{viewPassword ? 'visibility' : 'visibility_off'}}");
+                    var iconPassword = softtion.html("i").addClass("action").
+                        setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+                        addAttribute("ng-click", "clickAction()");
 
                     var label = softtion.html("label").
                         setText("{{label}}").addClass("truncate").
@@ -3579,9 +3580,22 @@
                             softtion.html("span").setText("*").addAttribute("ng-if","required")
                         );
 
-                    var span = softtion.html("span").addClass("truncate");
+                    var spanError = softtion.html("span").addClass(["error", "truncate"]).
+                        setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+                
+                    var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
+                        setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
+                    
+                    content.addChildren(input).addChildren(lineShadow).
+                        addChildren(lineActive).addChildren(value).
+                        addChildren(iconPassword).addChildren(label).
+                        addChildren(spanHelper).addChildren(spanError).
+                        addChildren(spanCounter);
 
-                    return input + lineShadow + value + iconPassword + label + span; // Componente
+                    return content.create(); // Componente Textfield
                 },        
                 defineInput: function (typeInput) {
                     switch (typeInput) {
@@ -3597,81 +3611,186 @@
                         templateUrl: Material.components.TextField.route,
                         scope: {
                             value: "=ngModel", 
-                            valueInput: "=?value",
                             label: "@", 
                             type: "@",
                             required: "=?",
                             ngTrim: "=?",
-                            ngChange: "=?",
                             uppercase: "=?",
                             ngDisabled: "=?",
                             ngReadonly: "=?",
                             minLength: "=?",
                             maxLength: "=?",
-                            icon: "@",
+                            iconDescription: "@",
+                            iconAction: "@",
+                            iconFunction: "=?",
                             placeholder: "@",
+                            helperText: "@",
                             
                             // Eventos
                             clickEvent: "=?",
                             blurEvent: "=?",
                             focusEvent: "=?",
-                            enterEvent: "=?"
+                            enterEvent: "=?",
+                            changeEvent: "=?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var input = $element.find("input"); activeIconLabel($scope, $element, input);
-                            var regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+                            var input = $element.children(".content").children("input"),
+                                regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/,
+                                handler = Material.components.TextField;
+
+                            insertIconDescription($scope, input); // Icono descriptivo
+                            
+                            var callbackFnEvent = function ($event, $function) {
+                                if (softtion.isFunction($function)) {
+                                    $function($event, $scope.valueInput);
+                                } // Se definio una función para invocar
+                            };
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
-                            $scope.typeInput = Material.components.TextField.defineInput($scope.type || "text");
-                            $scope.valueInput = ""; $scope.hideValue = false; $scope.viewPassword = false;
+                            $scope.typeInput = handler.defineInput($scope.type || "text");
+                            $scope.valueInput = "";  $scope.isIconAction = false;
+                            $scope.errorActive = false; $scope.isErrorActive = false; 
+                            $scope.inputActive = false; $scope.viewPassword = false;
 
-                            // Se ha definido un valor
-                            if (softtion.isString($scope.value)) { $element.addClass("active"); } 
+                            if (softtion.isString($scope.value)) { 
+                                $element.addClass("active"); 
+                            } // Se ha definido un valor en el Model
+                            
+                            if ($scope.type === "password") {
+                                $scope.isIconAction = true;
+                                $scope.iconAction = "visibility";
+                            } else {
+                                if (softtion.isString($scope.iconAction)) {
+                                    $scope.isIconAction = true;
+                                } // Icono de acción definido por el usuario
+                            }
+                            
+                            function defineModel() {
+                                if ($scope.uppercase) {
+                                    $scope.valueInput = $scope.valueInput.toUpperCase();
+                                } // Se desea texto en mayuscula
+
+                                switch ($scope.type) {
+                                    case (TextType.MONEY):
+                                        $scope.successInput(parseInt($scope.valueInput));
+                                    break;
+
+                                    case (TextType.DECIMAL): 
+                                        $scope.successInput(parseFloat($scope.valueInput)); 
+                                    break;
+
+                                    case (TextType.EMAIL):
+                                        if (regexEmail.test($scope.valueInput)) {
+                                            $scope.successInput($scope.valueInput);
+                                        } else {
+                                            $scope.errorInput("Texto digitado no es email");
+                                        } // Error en el correo
+                                    break;
+
+                                    default: 
+                                        $scope.successInput($scope.valueInput);
+                                    break;
+                                } // Definiendo tipo de dato del modelo
+                            };
+                            
+                            function textEmpty() {
+                                $element.removeClass("active"); // Sin texto
+                                    
+                                if ($scope.valueInput === "") { 
+                                    $scope.value = undefined; 
+                                } // Dejando Model indefinido
+                                    
+                                if ($scope.required) {
+                                    $scope.isErrorActive = true;
+                                    $scope.errorInput("Este campo es requerido"); 
+                                } // Texto es requerido
+                            };
+                            
+                            function validateTextModel(assign) {
+                                var lengthText = $scope.valueInput.length;
+                                
+                                if (!softtion.isString($scope.valueInput)) {
+                                    if (assign) { 
+                                        textEmpty(); 
+                                    } // Componente sin texto
+                                } else if (lengthText < $scope.minLength) {
+                                    if (assign || $scope.isErrorActive) {
+                                        $scope.isErrorActive = true;
+                                        $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
+                                    }
+                                } else {
+                                    $scope.isErrorActive = false;
+                                    $scope.errorActive = false; 
+                                    $element.removeClass("error");
+                                    
+                                    if (assign) {
+                                        defineModel(); 
+                                    } // Estableciendo Model
+                                } // Todo esta correcto
+                            };
                             
                             $scope.successInput = function (value) {
-                                $scope.value = value; $element.removeClass("error");
+                                $scope.value = value; 
                             };
                             
                             $scope.errorInput = function (message) {
-                                $element.addClass("error"); // Se ha generado un error
-                                
-                                input.siblings("span").html(message); $scope.value = undefined; 
-                            };
-                            
-                            $scope.isPasswordActive = function () {
-                                return ($scope.type === "password");
+                                $scope.errorActive = true; $element.addClass("error"); 
+                                $scope.errorText = message; $scope.value = undefined; 
                             };
                             
                             $scope.isActiveLabel = function () {
-                                return ($scope.hideValue || softtion.isString($scope.valueInput)
+                                return ($scope.inputActive || softtion.isString($scope.valueInput)
                                     || softtion.isDefined($scope.value)) ? "active" : "";
+                            };
+                            
+                            $scope.isCounterAllowed = function () {
+                                return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
+                            };
+                            
+                            $scope.textCounter = function () {
+                                var lengthText = 0; // Cantidad de caracteres
+                                
+                                if ($scope.inputActive) {
+                                    lengthText = $scope.valueInput.length;
+                                } else {
+                                    lengthText = (softtion.isDefined($scope.value)) ?
+                                        lengthText = $scope.value.length :
+                                        lengthText = $scope.valueInput.length;
+                                } // Componente no se encuentra enfocado
+                                
+                                return lengthText + "/" + $scope.maxLength;
                             };
                             
                             $scope.isHaveText = function () {
                                 return softtion.isString($scope.valueInput) || softtion.isDefined($scope.value);
                             };
 
-                            $scope.clickLabel = function ($event) { 
+                            $scope.clickLabel = function () { 
                                 input.focus(); // Enfocando el input
-                                
-                                if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event);
-                                } // Evento click sobre el componente
                             };
                             
                             $scope.clickInput = function ($event) {
-                                if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event);
-                                } // Evento click sobre el componente
+                                callbackFnEvent($event, $scope.clickEvent); // Evento click
                             };
                             
-                            $scope.clickPassword = function () {
-                                $scope.viewPassword = !$scope.viewPassword; // Password
+                            $scope.clickAction = function () {
+                                if ($scope.ngDisabled) {
+                                    return;
+                                } // Componente esta desactivado
                                 
-                                $scope.typeInput = $scope.viewPassword ? "text" : "password";
+                                if ($scope.type === "password") {
+                                    $scope.viewPassword = !$scope.viewPassword; // Definiendo visibilidad
+                                    
+                                    $scope.typeInput = $scope.viewPassword ? "text" : "password";
+                                    $scope.iconAction = $scope.viewPassword ? "visibility_off" : "visibility";
+                                } else {
+                                    if (softtion.isFunction($scope.iconFunction)) {
+                                        $scope.$apply(function () { $scope.iconFunction(); });
+                                    } // Se ha definido una función para el icono
+                                }
                             };
 
                             $scope.focusInput = function ($event) {
@@ -3679,61 +3798,19 @@
                                     $scope.valueInput = $scope.value.toString();
                                 } // Cambiando valor del texto en el Input
                                 
-                                $element.addClass("active"); $scope.hideValue = true; 
+                                $element.addClass("active"); $scope.inputActive = true; 
                                 
-                                if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.valueInput);
-                                } // Evento focus sobre el componente
+                                callbackFnEvent($event, $scope.focusEvent); // Evento focus
                             };
 
                             $scope.blurInput = function ($event) {
-                                if (!softtion.isString($scope.valueInput)) {
-                                    $element.removeClass("active"); // Componente sin texto
-                                    
-                                    if ($scope.valueInput === "") { $scope.value = undefined; }
-                                    
-                                    if ($scope.required) {
-                                        $scope.errorInput("Este campo es requerido"); 
-                                    } // Texto es requerido
-                                } else if($scope.valueInput.length < $scope.minLength) {
-                                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
-                                } else {
-                                    if ($scope.uppercase) {
-                                        $scope.valueInput = $scope.valueInput.toUpperCase();
-                                    } // Se desea texto en mayuscula
-                                    
-                                    switch ($scope.type) {
-                                        case (TextType.MONEY):
-                                            $scope.successInput(parseInt($scope.valueInput));
-                                        break;
-                                            
-                                        case (TextType.DECIMAL): 
-                                            $scope.successInput(parseFloat($scope.valueInput)); 
-                                        break;
-                                            
-                                        case (TextType.EMAIL):
-                                            if (regexEmail.test($scope.valueInput)) {
-                                                $scope.successInput($scope.valueInput);
-                                            } else {
-                                                $scope.errorInput("Texto digitado no es email");
-                                            } // Error en el correo
-                                        break;
-                                            
-                                        default: 
-                                            $scope.successInput($scope.valueInput);
-                                        break;
-                                    } // Definiendo tipo de dato del modelo
-                                } // Todo esta correcto
+                                validateTextModel(true); $scope.inputActive = false;
                                 
-                                $scope.hideValue = false;
+                                callbackFnEvent($event, $scope.blurEvent); // Evento blur
                                 
                                 if (softtion.isDefined($scope.value)) {
                                     $scope.valueInput = ""; 
                                 } // Limpiando texto en input del componente
-                                
-                                if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.value, $scope.valueInput);
-                                } // Evento blur sobre el componente
                             };
 
                             $scope.keypressInput = function ($event) {
@@ -3752,10 +3829,18 @@
                                 } // Se definío numero correctamente
                                 
                                 if ($event.keyCode === 13) {
-                                    if (softtion.isFunction($scope.enterEvent)) {
-                                        $scope.enterEvent($event, $scope.valueInput);
-                                    } // Evento enter sobre el componente
-                                } // Se presiono tecla 'Enter' en el componente
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.changeEvent);
+                                } // No se presiono tecla 'Enter' en el input
+                            };
+                            
+                            $scope.keyupInput = function ($event) {
+                                validateTextModel(false); // Validando campo
+                                
+                                if ($event.keyCode === 8) {
+                                    callbackFnEvent($event, $scope.changeEvent);
+                                } // Se borró un carácter del input
                             };
                             
                             $scope.getValueModel = function () {
@@ -3813,7 +3898,7 @@
                         link: function ($scope, $element) {
                             var input = $element.find("input");
                             
-                            activeIconLabel($scope, $element, input);
+                            insertIconDescription($scope, $element, input);
                             
                             $scope.clickInput = function ($event) {
                                 if (softtion.isFunction($scope.clickEvent)) {

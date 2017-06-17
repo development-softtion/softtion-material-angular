@@ -193,7 +193,12 @@ input[type=number]::-webkit-outer-spin-button {
     display: table;
     clear: both; }
 
-.row .flex, .row .flex-pd, .row .flex-pd-right, .row .flex-pd-left {
+.row .flex, .row .flex-pd, .row .flex-pd-medium, 
+.row .flex-pd-large, .row .flex-pd-extralarge,
+.row .flex-pd-right, .row .flex-pd-right-medium, 
+.row .flex-pd-right-large, .row .flex-pd-right-extralarge,
+.row .flex-pd-left, .row .flex-pd-left-medium, 
+.row .flex-pd-left-large, .row .flex-pd-left-extralarge {
     margin-left: 0;
     float: left;
     box-sizing: border-box; }
@@ -207,6 +212,42 @@ input[type=number]::-webkit-outer-spin-button {
  
  .row .flex-pd-left {
     padding-left: 8px; }
+ 
+ @media only screen and (min-width : 361px) { 
+     .row .flex-pd-medium {
+        padding-left: 8px;
+        padding-right: 8px; }
+
+     .row .flex-pd-right-medium {
+        padding-right: 8px; }
+
+     .row .flex-pd-left-medium {
+        padding-left: 8px; }
+ }
+ 
+ @media only screen and (min-width : 641px) {
+     .row .flex-pd-large {
+        padding-left: 8px;
+        padding-right: 8px; }
+
+     .row .flex-pd-right-large {
+        padding-right: 8px; }
+
+     .row .flex-pd-left-large {
+        padding-left: 8px; }
+ }
+ 
+ @media only screen and (min-width : 961px) {
+     .row .flex-pd-extralarge {
+        padding-left: 8px;
+        padding-right: 8px; }
+
+     .row .flex-pd-right-extralarge {
+        padding-right: 8px; }
+
+     .row .flex-pd-left-extralarge {
+        padding-left: 8px; }
+ }
 
 .small-5 {
     width: 5%; }
@@ -5628,54 +5669,45 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield {
     position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textfield > .content {
+    position: relative;
+    width: 100%;
     float: left;
-    padding: 16px 0px 8px 0px; }
+    padding: 8px 0px 12px 0px; }
 
-.textfield.label-hidden {
-    padding-top: 8px; }
-
-.textfield > label {
+.textfield > .content > label {
     position: absolute;
-    top: 40px;
+    top: 28px;
     left: 0;
     width: 100%;
     font-size: 16px;
     height: 18px;
     line-height: 18px;
     cursor: text;
-    -moz-transition: all 0.1s var(--sharp-curve);
-    -webkit-transition: all 0.1s var(--sharp-curve);
-    -o-transition: all 0.1s var(--sharp-curve);
-    transition: all 0.1s var(--sharp-curve);
-    -ms-transition: all 0.1s var(--sharp-curve); }
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve);
+    -ms-transition: all 0.125s var(--sharp-curve); }
 
-.textfield > label.active {
+.textfield > .content > label.active {
     cursor: none;
-    top: 16px;
+    top: 8px;
     height: 14px;
     line-height: 14px;
     font-size: 12px; }
 
-.textfield.label-hidden > label {
-    display: none; }
-
-.textfield.label-hidden > i {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    padding: 20px 12px 12px 12px; }
-
-.textfield.flex-pd.label-hidden > i {
-    left: 8px; }
-
-.textfield > label > span {
+.textfield > .content > label > span {
     margin-left: 2px; }
 
-.textfield > input {
+.textfield > .content > input {
     width: 100%;
     cursor: text;
     height: 32px;
-    padding: 16px 0px 8px 0px;
+    padding: 12px 0px 8px 0px;
     line-height: 32px;
     font-size: 16px;
     line-height: 24px;
@@ -5683,28 +5715,21 @@ body.not-touch .tabs::-webkit-scrollbar {
     outline: none; 
     background-color: transparent; }
 
-.textfield > input.hide {
-    color: transparent; }
-
-.textfield > input::-webkit-input-placeholder {
+.textfield > .content > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textfield.label-hidden > input {
-    padding-top: 8px; }
-
-.textfield.label-hidden > input::-webkit-input-placeholder {
+.textfield.active > .content > input::-webkit-input-placeholder {
     visibility: visible; }
 
-.textfield > input.holderhide::-webkit-input-placeholder {
+.textfield > .content > input.holderhide::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textfield.label-hidden.icon-active > input {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
+.textfield > .content > input.iconaction {
+    width: calc(100% - 28px); }
 
-.textfield > .value {
+.textfield > .content > .value {
     position: absolute;
-    top: 33px;
+    top: 21px;
     margin: 0px;
     height: 32px;
     line-height: 32px;
@@ -5713,73 +5738,94 @@ body.not-touch .tabs::-webkit-scrollbar {
     overflow: hidden; 
     white-space: nowrap; }
 
-.textfield.label-hidden > .value {
-    top: 17px; }
+.textfield > .content > input.iconaction ~ .value {
+    width: calc(100% - 28px); }
 
-.textfield.label-hidden.icon-active > .value {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.textfield.flex-pd.label-hidden.icon-active > .value {
-    width: calc(100% - 88px); }
-
-.textfield > .line-shadow {
+.textfield > .content > .line-shadow {
     position: absolute;
     left: 0; 
-    bottom: 7px; 
+    z-index: 1;
+    bottom: 18px; 
     width: 100%; }
 
-.textfield.label-hidden.icon-active > .line-shadow {
-    left: 72px;
-    width: calc(100% - 72px); }
-
-.textfield.flex-pd.label-hidden.icon-active > .line-shadow {
-    left: 80px;
-    width: calc(100% - 88px); }
-
-.textfield.active > input:focus ~ .line-shadow {
-    bottom: 6px; }
-
-.textfield > span {
-    display: none;
-    width: 100%;
+.textfield > .content > .line-shadow-active {
     position: absolute;
-    left: 0;
-    bottom: -10px;
-    font-size: 12px; }
+    left: 50%;
+    bottom: 18px;
+    width: 0%;
+    z-index: 2;
+    transform: translateX(-50%); }
 
-.textfield.error > span {
-    display: block; }
+.textfield.active > .content > input:focus ~ .line-shadow-active {
+    width: 100%; 
+    -moz-animation: border-textfield 0.225s var(--sharp-curve);
+    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
+    animation: border-textfield 0.225s var(--sharp-curve);
+    -o-animation: border-textfield 0.225s var(--sharp-curve);
+    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
 
-.textfield.label-hidden.icon-active > span {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.textfield.flex-pd > label, .textfield.flex-pd > span, 
-.textfield.flex-pd > .line-shadow {
-    width: calc(100% - 16px); }
-
-.textfield.flex-pd-left > label, .textfield.flex-pd-right > label, 
-.textfield.flex-pd-left > .line-shadow, .textfield.flex-pd-right > .line-shadow, 
-.textfield.flex-pd-left > span, .textfield.flex-pd-right > span {
-    width: calc(100% - 8px); }
-
-.textfield.flex-pd > label, .textfield.flex-pd-left > label,
-.textfield.flex-pd > .line-shadow, .textfield.flex-pd-left > .line-shadow,
-.textfield.flex-pd > span, .textfield.flex-pd-left > span {
-    left: 8px; }
-
-.textfield > i.password, .textfield.label-hidden > i.password {
+.textfield > .content > i.action {
     position: absolute;
-    top: 36px;
-    left: initial;
-    right: 8px; 
+    top: 24px;
+    right: 0px; 
     padding: 0px;
     cursor: pointer; 
     z-index: 2; }
 
-.textfield.label-hidden > i.password {
-    top: 20px; }
+.textfield > .content > input:disabled ~ i.action {
+    cursor: not-allowed; }
+
+.textfield > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
+
+.textfield > .content > span.counter {
+    right: 0px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
+
+.textfield > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
+
+.textfield > .content > i.icon-description ~ .value,
+.textfield > .content > i.icon-description ~ input { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield > .content > i.icon-description ~ input.iconaction,
+.textfield > .content > i.icon-description ~ input.iconaction ~ .value {
+    width: calc(100% - 68px); }
+
+.textfield > .content > i.icon-description ~ label,
+.textfield > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield > .content > i.icon-description ~ span.counter {
+    left: initial;
+    width: auto; }
+
+.textfield > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield > .content > i.icon-description ~ .line-shadow-active {
+    left: calc(50% + 20px); }
+
+.textfield.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+    width: calc(100% - 40px); 
+    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
 
 /** TEXTFIELD READONLY */
 

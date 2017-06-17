@@ -1904,67 +1904,102 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** TEXTFIELD */
 
-.textfield > label {
+.textfield > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .textfield > label {
+.dark .textfield > .content > label {
     color: var(--light-secondary-font); }
 
-.textfield > input:focus ~ label.active {
+.textfield > .content > input:focus ~ label.active {
     color: var(--accent-primary-font); }
 
-.textfield.error > input:focus ~ label.active, .textfield.error > label,
-.textfield.active > input:focus ~ label > span {
+.textfield.error > .content > input:focus ~ label.active, .textfield.error > label,
+.textfield.active > .content > input:focus ~ label > span {
     color: var(--error-primary-font); }
 
-.textfield > i {
+.textfield > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .textfield > i {
+.dark .textfield > .content > i {
     color: var(--light-secondary-font); }
 
-.textfield.active > input:focus ~ i {
-    color: var(--accent-primary-font); }
-
-.textfield.active.error > input:focus ~ i, .textfield.error > i {
-    color: var(--error-primary-font); }
-
-.dark .textfield > input {
-    color: var(--light-primary-font); }
-
-.textfield > input:disabled {
+.textfield > .content > input:disabled ~ i {
     color: var(--dark-disabled-font); }
 
-.textfield > input:disabled ~ .value {
-    color: var(--dark-disabled-font); }
-
-.dark .textfield > input:disabled ~ .value  {
+.dark .textfield > .content > input:disabled ~ i {
     color: var(--light-disabled-font); }
 
-.textfield > input::selection { 
+.textfield > .content > input {
+    color: transparent; }
+
+.textfield.active > .content > input {
+    color: var(--dark-primary-font); }
+
+.dark .textfield.active > .content > input {
+    color: var(--light-primary-font); }
+
+.textfield > .content > input:disabled {
+    color: var(--dark-disabled-font); }
+
+.textfield > .content > input::selection { 
     background-color: var(--theme-background-accent); 
     color: var(--light-primary-font); }
 
-.textfield > .line-shadow {
+.textfield.active > .content > input:focus ~ .value {
+    color: transparent; }
+
+.textfield > .content > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield > .content > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.textfield > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .textfield > .line-shadow {
+.textfield:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .textfield > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.textfield.active > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-background-accent); }
+.dark .textfield:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--light-primary-font); }
 
-.textfield > input:disabled ~ .line-shadow {
+.textfield > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .textfield > input:disabled ~ .line-shadow {
+.dark .textfield > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.textfield.active.error > input:focus ~ .line-shadow {
+.textfield > .content > .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.textfield.active > .content > input:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-accent); }
+
+.textfield.active.error > .content > input:focus ~ .line-shadow-active {
     border-bottom: 2px solid var(--theme-background-error); }
 
-.textfield > span {
+.textfield > .content > input:disabled ~ .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.textfield > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.textfield > .content > span.error {
     color: var(--error-primary-font); }
+
+.textfield > .content > span.counter {
+    background-color: var(--light-background);
+    color: var(--dark-secondary-font); }
+
+.dark .textfield > .content > span.counter {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
 
 /** TEXTFIELD READONLY */
 

@@ -532,3 +532,37 @@
     100% {
         width: 100%; }
 }
+
+/** BORDER TEXTFIELD */
+
+@keyframes border-textfield {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: 100%; }
+}
+
+@-webkit-keyframes border-textfield {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: 100%; }
+}
+
+@keyframes border-textfield-icon {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: calc(100% - 40px); }
+}
+
+@-webkit-keyframes border-textfield-icon {
+    0% {
+        width: 0%; }
+    
+    100% {
+        width: calc(100% - 40px); }
+}
