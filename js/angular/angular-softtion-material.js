@@ -1411,7 +1411,7 @@
                             cancelEvent: "=?",
                             iconEvent: "=?"
                         },
-                        controller: function ($scope, $element) {
+                        directive: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
                                 $body = angular.element(document.body);
                         
