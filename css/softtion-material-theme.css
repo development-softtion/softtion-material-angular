@@ -1836,71 +1836,200 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** TEXTAREA */
 
-.textarea > label {
+.textarea > .content > .box {
+    border: 1px solid var(--light-background-divider); }
+
+.dark .textarea > .content > .box {
+    border: 1px solid var(--dark-background-divider); }
+
+.textarea:hover > .content > .box {
+    border: 2px solid var(--dark-primary-font); }
+
+.dark .textarea:hover > .content > .box {
+    border: 2px solid var(--light-primary-font); }
+
+.dark .textarea > .content.focused > .box,
+.textarea > .content.focused > .box {
+    border: 2px solid var(--theme-background-accent); }
+
+.textarea.active.error > .content.focused > .box {
+    border: 2px solid var(--theme-background-error); }
+
+.textarea > .content.disabled > .box,
+.textarea:hover > .content.disabled > .box {
+    background-color: var(--light-background-statusbar);
+    border: 1px solid var(--light-background-divider); }
+
+.dark .textarea > .content.disabled > .box,
+.dark .textarea:hover > .content.disabled > .box {
+    background-color: var(--dark-background-component);
+    border: 1px solid var(--dark-background-divider); }
+
+.textarea > .content > .box > label {
     color: var(--dark-secondary-font); }
 
-.dark .textarea > label {
+.dark .textarea > .content > .box > label {
     color: var(--light-secondary-font); }
 
-.textarea.active > textarea:focus ~ label {
-    color: var(--accent-primary-font); }
-
-.textarea.active.error > textarea:focus ~ label, 
-.textarea.error > label,
-.textarea.active > textarea:focus ~ label > span {
-    color: var(--error-primary-font); }
-
-.textarea > i {
-    color: var(--dark-secondary-font); }
-
-.dark .textarea > i {
-    color: var(--light-secondary-font); }
-
-.textarea > textarea {
-    background-color: transparent; }
-
-.textarea.active > textarea:focus ~ i {
-    color: var(--accent-primary-font); }
-
-.textarea.active.error > textarea:focus ~ i, .textarea.error > i {
-    color: var(--error-primary-font); }
-
-.dark .textarea > textarea {
-    color: var(--light-primary-font); }
-
-.textarea > textarea:disabled {
+.textarea > .content.disabled > .box > label {
     color: var(--dark-disabled-font); }
 
-.textarea > textarea::selection {
+.dark .textarea > .content.disabled > .box > label {
+    color: var(--light-disabled-font); }
+
+.textarea.active > .content > .box > textarea:focus ~ label {
+    color: var(--accent-primary-font); }
+
+.textarea.active.error > .content > .box > textarea:focus ~ label, 
+.textarea.error > .content > .box > label,
+.textarea.active > .content > .box > textarea:focus ~ label > span {
+    color: var(--error-primary-font); }
+
+.textarea > .content > .box > textarea {
+    color: transparent;
+    background-color: transparent; }
+
+.textarea.active > .content > .box > textarea:focus {
+    color: var(--dark-primary-font); }
+
+.dark .textarea.active > .content > .box > textarea:focus {
+    color: var(--light-primary-font); }
+
+.dark .textarea > .content > .box > textarea {
+    color: var(--light-primary-font); }
+
+.textarea > .content > .box > textarea:disabled {
+    color: var(--dark-disabled-font); }
+
+.textarea > .content > .box > textarea::selection {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
-.textarea > textarea:disabled ~ .value {
+.textarea.active > .content > .box > textarea:focus ~ .value {
+    color: transparent; }
+
+.textarea > .content > .box > textarea:disabled ~ .value {
     color: var(--dark-disabled-font); }
 
-.dark .textarea > textarea:disabled ~ .value  {
+.dark .textarea > .content > .box > textarea:disabled ~ .value  {
     color: var(--light-disabled-font); }
 
-.textarea > .line-shadow {
-    border-bottom: 1px solid var(--light-background-divider); }
+.textarea > .content > span.help {
+    color: var(--dark-secondary-font); }
 
-.dark .textarea > .line-shadow {
-    border-bottom: 1px solid var(--dark-background-divider); }
+.dark .textarea > .content > span.help {
+    color: var(--light-secondary-font); }
 
-.textarea.active > textarea:focus ~ .line-shadow {
+.textarea > .content > span.error {
+    color: var(--error-primary-font); }
+
+.textarea > .content > span.counter {
+    background-color: var(--light-background);
+    color: var(--dark-secondary-font); }
+
+.dark .textarea > .content > span.counter {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
+
+/** TEXTBOX MULTILINE */
+
+.textbox-multiline > .content > .box {
+    background-color: rgba(238, 238, 238, 1);
+    border-bottom: 2px solid var(--light-background-divider); }
+
+.dark .textbox-multiline > .content > .box {
+    background-color: rgba(56, 56, 56, 1);
+    border-bottom: 2px solid var(--dark-background-divider); }
+
+.textbox-multiline:hover > .content > .box {
+    background-color: rgba(231, 231, 231, 1);
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .textbox-multiline:hover > .content > .box {
+    background-color: rgba(63, 63, 63, 1);
+    border-bottom: 2px solid var(--light-primary-font); }
+
+.dark .textbox-multiline > .content.focused > .box,
+.textbox-multiline > .content.focused > .box {
     border-bottom: 2px solid var(--theme-background-accent); }
 
-.textarea > textarea:disabled ~ .line-shadow {
-    border-bottom: 1px dashed var(--light-background-divider); }
+.textbox-multiline.active.error > .content.focused > .box {
+    border-bottom: 2px solid var(--theme-background-error); }
 
-.dark .textarea > textarea:disabled ~ .line-shadow {
-    border-bottom: 1px dashed var(--dark-background-divider); }
+.textbox-multiline > .content.disabled > .box,
+.textbox-multiline:hover > .content.disabled > .box {
+    background-color: var(--light-background-appbar);
+    border-bottom: 2px solid transparent; }
 
-.textarea.active.error > textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--error-primary-font); }
+.dark .textbox-multiline > .content.disabled > .box,
+.dark .textbox-multiline:hover > .content.disabled > .box {
+    background-color: var(--dark-background-component); }
 
-.textarea > span {
+.textbox-multiline > .content > .box > label {
+    color: var(--dark-secondary-font); }
+
+.dark .textbox-multiline > .content > .box > label {
+    color: var(--light-secondary-font); }
+
+.textbox-multiline > .content.disabled > .box > label {
+    color: var(--dark-disabled-font); }
+
+.dark .textbox-multiline > .content.disabled > .box > label {
+    color: var(--light-disabled-font); }
+
+.textbox-multiline.active > .content > .box > textarea:focus ~ label {
+    color: var(--accent-primary-font); }
+
+.textbox-multiline.active.error > .content > .box > textarea:focus ~ label, 
+.textbox-multiline.error > .content > .box > label,
+.textbox-multiline.active > .content > .box > textarea:focus ~ label > span {
     color: var(--error-primary-font); }
+
+.textbox-multiline > .content > .box > textarea {
+    color: transparent;
+    background-color: transparent; }
+
+.textbox-multiline.active > .content > .box > textarea:focus {
+    color: var(--dark-primary-font); }
+
+.dark .textbox-multiline.active > .content > .box > textarea:focus {
+    color: var(--light-primary-font); }
+
+.dark .textbox-multiline > .content > .box > textarea {
+    color: var(--light-primary-font); }
+
+.textbox-multiline > .content > .box > textarea:disabled {
+    color: var(--dark-disabled-font); }
+
+.textbox-multiline > .content > .box > textarea::selection {
+    background-color: var(--theme-background-accent);
+    color: var(--light-primary-font); }
+
+.textbox-multiline.active > .content > .box > textarea:focus ~ .value {
+    color: transparent; }
+
+.textbox-multiline > .content > .box > textarea:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textbox-multiline > .content > .box > textarea:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.textbox-multiline > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textbox-multiline > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.textbox-multiline > .content > span.error {
+    color: var(--error-primary-font); }
+
+.textbox-multiline > .content > span.counter {
+    background-color: var(--light-background);
+    color: var(--dark-secondary-font); }
+
+.dark .textbox-multiline > .content > span.counter {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
 
 /** TEXTFIELD */
 
@@ -1913,7 +2042,8 @@ button.raised.primary:before, button.floating.primary:before {
 .textfield > .content > input:focus ~ label.active {
     color: var(--accent-primary-font); }
 
-.textfield.error > .content > input:focus ~ label.active, .textfield.error > label,
+.textfield.error > .content > input:focus ~ label.active, 
+.textfield.error > .content > label,
 .textfield.active > .content > input:focus ~ label > span {
     color: var(--error-primary-font); }
 
@@ -1932,10 +2062,10 @@ button.raised.primary:before, button.floating.primary:before {
 .textfield > .content > input {
     color: transparent; }
 
-.textfield.active > .content > input {
+.textfield.active > .content > input:focus {
     color: var(--dark-primary-font); }
 
-.dark .textfield.active > .content > input {
+.dark .textfield.active > .content > input:focus {
     color: var(--light-primary-font); }
 
 .textfield > .content > input:disabled {
@@ -2000,6 +2130,104 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .textfield > .content > span.counter {
     background-color: var(--dark-background);
     color: var(--light-secondary-font); }
+
+/** TEXTFIELD MULTILINE */
+
+.textfield-multiline > .content > label {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-multiline > .content > label {
+    color: var(--light-secondary-font); }
+
+.textfield-multiline.active > .content > textarea:focus ~ label {
+    color: var(--accent-primary-font); }
+
+.textfield-multiline.active.error > .content > textarea:focus ~ label, 
+.textfield-multiline.error > .content > label,
+.textfield-multiline.active > .content > textarea:focus ~ label > span {
+    color: var(--error-primary-font); }
+
+.textfield-multiline > .content > i {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-multiline > .content > i {
+    color: var(--light-secondary-font); }
+
+.textfield-multiline > .content > textarea {
+    color: transparent;
+    background-color: transparent; }
+
+.textfield-multiline.active > .content > textarea:focus {
+    color: var(--dark-primary-font); }
+
+.dark .textfield-multiline.active > .content > textarea:focus {
+    color: var(--light-primary-font); }
+
+.dark .textfield-multiline > .content > textarea {
+    color: var(--light-primary-font); }
+
+.textfield-multiline > .content > textarea:disabled {
+    color: var(--dark-disabled-font); }
+
+.textfield-multiline > .content > textarea::selection {
+    background-color: var(--theme-background-accent);
+    color: var(--light-primary-font); }
+
+.textfield-multiline.active > .content > textarea:focus ~ .value {
+    color: transparent; }
+
+.textfield-multiline > .content > textarea:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield-multiline > .content > textarea:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.textfield-multiline > .content > .line-shadow {
+    border-bottom: 1px solid var(--light-background-divider); }
+
+.textfield-multiline:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .textfield-multiline > .content > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-divider); }
+
+.dark .textfield-multiline:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--light-primary-font); }
+
+.textfield-multiline > .content > textarea:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-divider); }
+
+.dark .textfield-multiline > .content > textarea:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-divider); }
+
+.textfield-multiline > .content > .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.textfield-multiline.active > .content > textarea:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-accent); }
+
+.textfield-multiline.active.error > .content > textarea:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-error); }
+
+.textfield-multiline > .content > textarea:disabled ~ .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.textfield-multiline > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-multiline > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.textfield-multiline > .content > span.error {
+    color: var(--error-primary-font); }
+
+.textfield-multiline > .content > span.counter {
+    color: var(--dark-secondary-font); 
+    background-color: var(--light-background); }
+
+.dark .textfield-multiline > .content > span.counter {
+    color: var(--light-secondary-font);
+    background-color: var(--dark-background); }
 
 /** TEXTFIELD READONLY */
 

@@ -3112,6 +3112,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0;
     border-radius: 50%; }
 
+.datepicker > .content > .days-month > tbody td.disabled {
+    pointer-events: none; }
+
 .datepicker > .content > .days-month > tbody td.active {
     font-weight: 700; }
 
@@ -5509,161 +5512,232 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textarea {
     position: relative;
-    float: left;
-    padding: 16px 0px 16px 0px; }
+    overflow-y: auto; 
+    overflow-x: hidden; }
 
-.textarea.label-hidden {
-    padding-top: 8px; }
-
-.textarea > label {
-    position: absolute;
-    top: 40px;
-    left: 0px;
+.textarea > .content {
+    position: relative;
     width: 100%;
+    float: left;
+    overflow-y: hidden;
+    padding: 8px 0px 20px 0px; }
+
+.textarea > .content > .box {
+    padding-bottom: 4px;
+    border-radius: 4px; }
+
+.textarea > .content.focused > .box {
+    padding-bottom: 6px; }
+
+.textarea > .content > .box > label {
+    position: absolute;
+    top: 28px;
+    left: 16px;
+    width: calc(100% - 32px);
     height: 16px;
     font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.1s var(--sharp-curve);
-    -webkit-transition: all 0.1s var(--sharp-curve);
-    -o-transition: all 0.1s var(--sharp-curve);
-    transition: all 0.1s var(--sharp-curve); 
-    -ms-transition: all 0.1s var(--sharp-curve); }
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve); 
+    -ms-transition: all 0.125s var(--sharp-curve); }
 
-.textarea > label.active {
-    top: 16px;
-    height: 16px;
-    line-height: 16px;
+.textarea > .content > .box > label.active {
     cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 12px;
     font-size: 12px; }
 
-.textarea.label-hidden > label {
-    display: none; }
-
-.textarea.label-hidden > i {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    padding: 20px 12px 12px 12px; }
-
-.textarea.flex-pd.label-hidden > i {
-    left: 8px; }
-
-.textarea > label > span {
+.textarea > .content > .box > label > span {
     margin-left: 2px; }
 
-.textarea > textarea {
+.textarea > .content > .box > textarea {
     overflow-y: hidden;
     cursor: text;
     border: none;
-    width: 100%;
+    width: calc(100% - 32px);
     outline: none;
     resize: none;
-    line-height: 18px;
     height: 18px;
+    line-height: 18px;
     min-height: 18px;
     font-size: 16px;
-    padding: 24px 0px 0px 0px;
+    padding: 28px 16px 0px 16px;
     -moz-transition: height 0.175s ease-out;
     -webkit-transition: height 0.175s ease-out;
     -o-transition: height 0.175s ease-out;
     transition: height 0.175s ease-out;
     -ms-transition: height 0.175s ease-out; }
 
-.textarea > textarea.hide {
-    color: transparent; }
+.textarea > .content.focused > .box > textarea {
+    padding: 26px 15px 0px 15px; }
 
-.textarea > textarea::-webkit-input-placeholder {
+.textarea > .content > .box > textarea::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textarea.label-hidden.icon-active > textarea {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.textarea.label-hidden > textarea::-webkit-input-placeholder {
+.textarea.active > .content > .box > textarea::-webkit-input-placeholder {
     visibility: visible; }
 
-.textarea > textarea.holderhide::-webkit-input-placeholder {
+.textarea > .content > .box > textarea.holderhide::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textarea.label-hidden > textarea {
-    padding-top: 8px; }
-
-.textarea > .value {
+.textarea > .content > .box > .value {
     position: absolute;
-    top: 40px;
+    top: 36px;
+    left: 17px;
     margin: 0px;
     line-height: 18px;
     font-size: 16px;
-    width: 100%;
-    overflow-x: hidden;
+    cursor: text;
+    width: calc(100% - 34px);
+    overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word; }
 
-.textarea.label-hidden > .value {
-    top: 16px; }
-
-.textarea.label-hidden.icon-active > .value {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.textarea.flex-pd.label-hidden.icon-active > .value {
-    width: calc(100% - 88px); }
-
-.textarea > .line-shadow {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 7px; }
-
-.textarea.label-hidden.icon-active > .line-shadow {
-    left: 72px;
-    width: calc(100% - 72px); }
-
-.textarea.flex-pd.label-hidden.icon-active > .line-shadow {
-    left: 80px;
-    width: calc(100% - 88px); }
-
-.textarea.active > textarea:focus ~ .line-shadow {
-    bottom: 6px; }
-
-.textarea > span {
-    display: none;
-    width: 100%;
+.textarea > .content > span {
     position: absolute;
     left: 0;
-    font-size: 12px;
-    bottom: -12px; }
-
-.textarea.error > span {
-    display: block; }
-
-.textarea.flex-pd > label, .textarea.flex-pd > span, 
-.textarea.flex-pd > .line-shadow {
-    width: calc(100% - 16px); }
-
-.textarea.flex-pd-left > label, .textarea.flex-pd-right > label, 
-.textarea.flex-pd-left > .line-shadow, .textarea.flex-pd-right > .line-shadow, 
-.textarea.flex-pd-left > span, .textarea.flex-pd-right > span {
-    width: calc(100% - 8px); }
-
-.textarea.flex-pd > label, .textarea.flex-pd-left > label,
-.textarea.flex-pd > .line-shadow, .textarea.flex-pd-left > .line-shadow,
-.textarea.flex-pd > span, .textarea.flex-pd-left > span {
-    left: 8px; }
-
-.textarea > .textarea-hidden {
-    display: none;
+    bottom: 0px;
     width: 100%;
+    font-size: 12px; }
+
+.textarea:hover > .content > span,
+.textarea > .content.focused > span {
+    bottom: 2px; }
+
+.textarea:hover > .content.disabled > span {
+    bottom: 0px; }
+
+.textarea > .content > span.counter {
+    right: 0px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
+
+.textarea > .content > .box > .textarea-hidden {
+    position: absolute;
+    top: 0;
+    left: 17px;
+    width: calc(100% - 34px);
+    visibility: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 18px; }
+
+/** TEXTBOX MULTILINE */
+
+.textbox-multiline {
+    position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textbox-multiline > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    overflow-y: hidden;
+    padding: 8px 0px 20px 0px; }
+
+.textbox-multiline > .content > .box {
+    padding-bottom: 4px;
+    border-radius: 4px; }
+
+.textbox-multiline > .content > .box > label {
+    position: absolute;
+    top: 28px;
+    left: 16px;
+    width: calc(100% - 32px);
+    height: 16px;
+    font-size: 16px;
+    cursor: text;
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve); 
+    -ms-transition: all 0.125s var(--sharp-curve); }
+
+.textbox-multiline > .content > .box > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
+
+.textbox-multiline > .content > .box > label > span {
+    margin-left: 2px; }
+
+.textbox-multiline > .content > .box > textarea {
+    overflow-y: hidden;
+    cursor: text;
+    border: none;
+    width: calc(100% - 32px);
+    outline: none;
+    resize: none;
+    height: 18px;
+    line-height: 18px;
+    min-height: 18px;
+    font-size: 16px;
+    padding: 28px 16px 0px 16px;
+    -moz-transition: height 0.175s ease-out;
+    -webkit-transition: height 0.175s ease-out;
+    -o-transition: height 0.175s ease-out;
+    transition: height 0.175s ease-out;
+    -ms-transition: height 0.175s ease-out; }
+
+.textbox-multiline > .content > .box > textarea::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textbox-multiline.active > .content > .box > textarea::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textbox-multiline > .content > .box > textarea.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textbox-multiline > .content > .box > .value {
+    position: absolute;
+    top: 36px;
+    left: 16px;
+    margin: 0px;
+    line-height: 18px;
+    font-size: 16px;
+    cursor: text;
+    width: calc(100% - 32px);
+    overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word; }
 
-.textarea.label-hidden.icon-active > .textarea-hidden {
-    width: calc(100% - 72px); }
+.textbox-multiline > .content > span {
+    position: absolute;
+    left: 16px;
+    bottom: 0px;
+    width: calc(100% - 32px);
+    font-size: 12px; }
 
-.textarea.flex-pd.label-hidden.icon-active > .textarea-hidden {
-    width: calc(100% - 88px); }
+.textbox-multiline > .content > span.counter {
+    right: 16px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
+
+.textbox-multiline > .content > .box > .textarea-hidden {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    width: calc(100% - 32px);
+    visibility: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 18px; }
 
 /** TEXTFIELD */
 
@@ -5697,7 +5771,7 @@ body.not-touch .tabs::-webkit-scrollbar {
     cursor: none;
     top: 8px;
     height: 14px;
-    line-height: 14px;
+    line-height: 12px;
     font-size: 12px; }
 
 .textfield > .content > label > span {
@@ -5820,6 +5894,167 @@ body.not-touch .tabs::-webkit-scrollbar {
     left: calc(50% + 20px); }
 
 .textfield.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+    width: calc(100% - 40px); 
+    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
+    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
+
+/** TEXTFIELD MULTILINE */
+
+.textfield-multiline {
+    position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textfield-multiline > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    overflow-y: hidden;
+    padding: 8px 0px 24px 0px; }
+
+.textfield-multiline > .content > label {
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    width: 100%;
+    height: 16px;
+    font-size: 16px;
+    cursor: text;
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve); 
+    -ms-transition: all 0.125s var(--sharp-curve); }
+
+.textfield-multiline > .content > label.active {
+    cursor: none;
+    top: 8px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
+
+.textfield-multiline > .content > label > span {
+    margin-left: 2px; }
+
+.textfield-multiline > .content > textarea {
+    overflow-y: hidden;
+    cursor: text;
+    border: none;
+    width: 100%;
+    outline: none;
+    resize: none;
+    height: 18px;
+    line-height: 18px;
+    min-height: 18px;
+    font-size: 16px;
+    padding: 20px 0px 0px 0px;
+    -moz-transition: height 0.175s ease-out;
+    -webkit-transition: height 0.175s ease-out;
+    -o-transition: height 0.175s ease-out;
+    transition: height 0.175s ease-out;
+    -ms-transition: height 0.175s ease-out; }
+
+.textfield-multiline > .content > textarea::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textfield-multiline.active > .content > textarea::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textfield-multiline > .content > textarea.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textfield-multiline > .content > .value {
+    position: absolute;
+    top: 28px;
+    margin: 0px;
+    line-height: 18px;
+    font-size: 16px;
+    cursor: text;
+    width: 100%;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word; }
+
+.textfield-multiline > .content > .line-shadow {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 18px; }
+
+.textfield-multiline > .content > .line-shadow-active {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    width: 0%;
+    z-index: 2;
+    transform: translateX(-50%); }
+
+.textfield-multiline.active > .content > textarea:focus ~ .line-shadow-active {
+    width: 100%; 
+    -moz-animation: border-textfield 0.225s var(--sharp-curve);
+    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
+    animation: border-textfield 0.225s var(--sharp-curve);
+    -o-animation: border-textfield 0.225s var(--sharp-curve);
+    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
+
+.textfield-multiline > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
+
+.textfield-multiline > .content > span.counter {
+    right: 0px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
+
+.textfield-multiline > .content > .textarea-hidden {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    visibility: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 18px; }
+
+.textfield-multiline > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
+
+.textfield-multiline > .content > i.icon-description ~ .value,
+.textfield-multiline > .content > i.icon-description ~ .textarea-hidden,
+.textfield-multiline > .content > i.icon-description ~ textarea { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline > .content > i.icon-description ~ label,
+.textfield-multiline > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline > .content > i.icon-description ~ span.counter {
+    left: initial;
+    width: auto; }
+
+.textfield-multiline > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline > .content > i.icon-description ~ .line-shadow-active {
+    left: calc(50% + 20px); }
+
+.textfield-multiline.active > .content > i.icon-description ~ textarea:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
     -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
