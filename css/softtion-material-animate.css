@@ -566,3 +566,117 @@
     100% {
         width: calc(100% - 40px); }
 }
+
+/** CLOSE SELECT */
+
+@keyframes close-select {
+    0% {
+        max-width: 100%;
+        max-height: 288px; 
+        opacity: 1; }
+    
+    100% {
+        max-width: 100%;
+        max-height: 288px;  
+        opacity: 0; }
+}
+
+@-webkit-keyframes close-select {
+    0% {
+        max-width: 100%;
+        max-height: 288px; 
+        opacity: 1; }
+    
+    100% {
+        max-width: 100%;
+        max-height: 288px;  
+        opacity: 0; }
+}
+
+/** BUTTON FLOATING */
+
+@keyframes button-floating {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@-webkit-key-frames button-floating {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/** OPEN FAB SPEEDDIAL */
+
+@keyframes open-fab-speeddial {
+    0% {
+        opacity: 0;
+        transform: scale(0.4) translateY(40px); }
+    
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0px); }
+}
+
+@-webkit-keyframes open-fab-speeddial {
+    0% {
+        opacity: 0;
+        transform: scale(0.4) translateY(40px); }
+    
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0px); }
+}
+
+/** CLOSE FAB SPEEDDIAL */
+
+@keyframes close-fab-speeddial {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0px); }
+    
+    100% {
+        opacity: 0;
+        transform: scale(0.4) translateY(40px); }
+}
+
+@-webkit-keyframes close-fab-speeddial {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0px); }
+    
+    100% {
+        opacity: 0;
+        transform: scale(0.4) translateY(40px); }
+}
+
+/** CHANGE NEW ICON */
+
+@keyframes change-new-icon {
+    0% {
+        opacity: 0;
+        transform: rotate(90deg) scale(0.4); }
+    
+    100% {
+        opacity: 1;
+        transform: rotate(0deg) scale(1); }
+}
+
+/** CHANGE RESTORE ICON */
+
+@keyframes change-restore-icon {
+    0% {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.4); }
+    
+    100% {
+        opacity: 1;
+        transform: rotate(0deg) scale(1); }
+}

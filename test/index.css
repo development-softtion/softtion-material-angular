@@ -1,0 +1,6 @@
+
+@import url("sf/style-font.css");
+
+
+html, body ,input, textarea {
+    font-family: sf; }

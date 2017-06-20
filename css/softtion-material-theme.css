@@ -116,90 +116,110 @@ body.dark {
 
 /** AUTOCOMPLETE */
 
-.autocomplete > label {
+.autocomplete > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .autocomplete > label {
+.dark .autocomplete > .content > label {
     color: var(--light-secondary-font); }
 
-.autocomplete.active > input:focus ~ label {
+.autocomplete.active > .content > input:focus ~ label {
     color: var(--accent-primary-font); }
 
-.autocomplete > i {
+.autocomplete > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .autocomplete > i {
+.dark .autocomplete > .content > i {
     color: var(--light-secondary-font); }
 
-.autocomplete.active > input:focus ~ i {
-    color: var(--accent-primary-font); }
+.autocomplete > .content > input {
+    color: transparent; }
 
-.autocomplete.active.error > input:focus ~ i, .autocomplete.error > i {
-    color: var(--error-primary-font); }
+.autocomplete.active > .content > input:focus {
+    color: var(--dark-primary-font); }
 
-.dark .autocomplete > input {
+.dark .autocomplete.active > .content > input:focus {
     color: var(--light-primary-font); }
 
-.autocomplete > input::selection {
+.autocomplete > .content > input::selection {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
-.autocomplete > input:disabled ~ .value {
+.autocomplete.active > .content > input:focus ~ .value {
+    color: transparent; }
+
+.autocomplete > .content > input:disabled ~ .value {
     color: var(--dark-disabled-font); }
 
-.dark .autocomplete > input:disabled ~ .value  {
+.dark .autocomplete > .content > input:disabled ~ .value  {
     color: var(--light-disabled-font); }
 
-.autocomplete > .line-shadow {
+.autocomplete > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .autocomplete > .line-shadow {
+.autocomplete:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .autocomplete > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.autocomplete.active > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-background-accent); }
+.dark .autocomplete:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--light-primary-font); }
 
-.autocomplete > input:disabled ~ .line-shadow {
+.autocomplete > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .autocomplete> input:disabled ~ .line-shadow {
+.dark .autocomplete > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.autocomplete > span {
-    color: var(--error-primary-font); }
+.autocomplete > .content > .line-shadow-active {
+    border-bottom: 2px solid transparent; }
 
-.autocomplete.active > input:focus ~ .action-icon,
-.autocomplete > .action-icon {
+.autocomplete.active > .content > input:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-accent); }
+
+.autocomplete.active.error > .content > input:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-error); }
+
+.autocomplete > .content > input:disabled ~ .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.autocomplete > .content > i.action {
     color: var(--dark-secondary-font); }
 
-.dark .autocomplete > .action-icon {
+.dark .autocomplete > .content > i.action {
     color: var(--light-primary-font); }
 
-.autocomplete > ul { 
-    background-color: var(--light-background-component); }
-
-.dark .autocomplete > ul { 
-    background-color: var(--dark-background-component); }
-
-.autocomplete > ul > li { 
-    color: var(--dark-primary-font); }
-
-.dark .autocomplete > ul > li { 
-    color: var(--light-primary-font); }
-
-.autocomplete > ul > li > b { 
+.autocomplete > .content > span.help {
     color: var(--dark-secondary-font); }
 
-.dark .autocomplete > ul > li > b { 
+.dark .autocomplete > .content > span.help {
     color: var(--light-secondary-font); }
 
-.autocomplete > ul > li:focus {
+.autocomplete > .content > ul { 
+    background-color: var(--light-background-component); }
+
+.dark .autocomplete > .content > ul { 
+    background-color: var(--dark-background-component); }
+
+.autocomplete > .content > ul > li { 
+    color: var(--dark-primary-font); }
+
+.dark .autocomplete > .content > ul > li { 
+    color: var(--light-primary-font); }
+
+.autocomplete > .content > ul > li > b { 
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete > .content > ul > li > b { 
+    color: var(--light-disabled-font); }
+
+.autocomplete > .content > ul > li:focus {
     background-color: var(--light-background-focus); }
 
-.autocomplete > ul > li:hover {
+.autocomplete > .content > ul > li:hover {
     background-color: var(--light-background-hover); }
 
-.autocomplete > ul > li.not-found {
+.autocomplete > .content > ul > li.not-found {
     color: var(--error-primary-font); }
 
 /** BADGE */
@@ -712,45 +732,57 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** CHIP INPUT */
 
-.chip-input > label {
+.chip-input > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .chip-input > label {
+.dark .chip-input > .content > label {
     color: var(--light-secondary-font); }
 
-.chip-input.active > input:focus ~ label {
+.chip-input.active > .content > .box.focused ~ label {
     color: var(--accent-primary-font); }
 
-.chip-input > i {
+.chip-input > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .chip-input > i {
+.dark .chip-input > .content > i {
     color: var(--light-secondary-font); }
 
-.chip-input.active > input:focus ~ i {
-    color: var(--accent-primary-font); }
-
-.chip-input.active.error > input:focus ~ i, .chip-input.error > i {
-    color: var(--error-primary-font); }
-
-.chip-input > input::selection {
+.chip-input > .content > input::selection {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
-.chip-input > .line-shadow {
+.chip-input > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .chip-input > .line-shadow {
+.chip-input:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .chip-input > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.chip-input.active > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-background-accent); }
+.dark .chip-input:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--light-primary-font); }
 
-.chip-input > input:disabled ~ .line-shadow {
+.chip-input > .content > .box.disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .chip-input> input:disabled ~ .line-shadow {
+.dark .chip-input > .content > .box.disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
+
+.chip-input > .content > .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.chip-input.active > .content > .box.focused ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-background-accent); }
+
+.chip-input > .content > .box.disabled ~ .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.chip-input > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .chip-input > .content > span.help {
+    color: var(--light-secondary-font); }
 
 /** CLOCKPICKER */
 
@@ -1225,6 +1257,37 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .form-navigation > .content {
     background-color: var(--dark-background); }
 
+/** FULLWIDTH FIELD */
+
+.fullwidth-field > .content > textarea {
+    color: transparent;
+    background-color: transparent; }
+
+.fullwidth-field.active > .content > textarea:focus {
+    color: var(--dark-primary-font); }
+
+.dark .fullwidth-field.active > .content > textarea:focus {
+    color: var(--light-primary-font); }
+
+.dark .fullwidth-field > .content > textarea {
+    color: var(--light-primary-font); }
+
+.fullwidth-field > .content > textarea:disabled {
+    color: var(--dark-disabled-font); }
+
+.fullwidth-field > .content > textarea::selection {
+    background-color: var(--theme-background-accent);
+    color: var(--light-primary-font); }
+
+.fullwidth-field.active > .content > textarea:focus ~ .value {
+    color: transparent; }
+
+.fullwidth-field > .content > textarea:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .fullwidth-field > .content > textarea:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
 /** GRIDLIST */
 
 .grid-list > .subheader {
@@ -1466,186 +1529,187 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** SELECT */
 
-.select > label {
+.select > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .select > label {
+.dark .select > .content > label {
     color: var(--light-secondary-font); }
 
-.select.active > label.active, .dark .select.active > label.active {
+.select.active > .content > label.active, 
+.dark .select.active > .content > label.active {
     color: var(--accent-primary-font); }
 
-.select > i {
+.select > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .select > i {
+.dark .select > .content > i {
     color: var(--light-secondary-font); }
 
-.select.active > i {
-    color: var(--accent-primary-font); }
-
-.select.active.error > i, .select.error > i {
-    color: var(--error-primary-font); }
-
-.select > input {
+.select > .content > input {
     color: transparent; }
 
-.select > .value::selection {
+.select > .content > .value::selection {
     background-color: var(--theme-background-accent);
     color: var(--light-primary-font); }
 
-.select > input:disabled ~ .value {
+.select > .content > input:disabled ~ .value {
     color: var(--dark-disabled-font); }
 
-.dark .select > input:disabled ~ .value  {
+.dark .select > .content > input:disabled ~ .value  {
     color: var(--light-disabled-font); }
 
-.select > .line-shadow {
+.select > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .select > .line-shadow {
+.dark .select > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.select.active > .line-shadow {
+.select.active > .content > .line-shadow {
     border-bottom: 2px solid var(--theme-background-accent); }
 
-.select > input:disabled ~ .line-shadow {
+.select > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .select > input:disabled ~ .line-shadow {
+.dark .select > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.select > button.action {
+.select > .content > button.action {
     color: var(--dark-secondary-font); }
 
-.dark .select > button.action {
+.dark .select > .content > button.action {
     color: var(--light-primary-font); }
 
-.select > button.action:before {
+.select > .content > button.action:before {
     background-color: var(--dark-ripple); }
 
-.dark .select > button.action:before {
+.dark .select > .content > button.action:before {
     background-color: var(--light-ripple); }
 
-.select > ul { 
-    background-color: var(--light-background-component); }
-
-.dark .select > ul { 
-    background-color: var(--dark-background-component); }
-
-.dark .select > ul > li {
-    color: var(--light-primary-font); }
-
-.select > ul > li.active {
+.select > .content > span.help {
     color: var(--dark-secondary-font); }
 
-.dark .select > ul > li.active {
+.dark .select > .content > span.help {
     color: var(--light-secondary-font); }
 
-.select > ul > li.clear-suggestion {
+.select > .content > ul { 
+    background-color: var(--light-background-component); }
+
+.dark .select > .content > ul { 
+    background-color: var(--dark-background-component); }
+
+.dark .select > .content > ul > li {
+    color: var(--light-primary-font); }
+
+.select > .content > ul > li.active {
+    color: var(--dark-secondary-font); }
+
+.dark .select > .content > ul > li.active {
+    color: var(--light-secondary-font); }
+
+.select > .content > ul > li.clear-suggestion {
     border-bottom: 1px solid var(--light-background-divider);
     color: var(--accent-primary-font); }
 
-.dark .select > ul > li.clear-suggestion {
+.dark .select > .content > ul > li.clear-suggestion {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.select > ul > li:focus {
+.select > .content > ul > li:focus {
     background-color: var(--light-background-focus); }
 
-.dark .select > ul > li:focus {
+.dark .select > .content > ul > li:focus {
     background-color: var(--dark-background-focus); }
 
-.select > ul > li:hover {
+.select > .content > ul > li:hover {
     background-color: var(--light-background-hover); }
 
-.dark .select > ul > li:hover {
+.dark .select > .content > ul > li:hover {
     background-color: var(--dark-background-hover); }
 
 /** SELECT MULTIPLE */
 
-.select-multiple > label {
+.select-multiple > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .select-multiple > label {
+.dark .select-multiple > .content > label {
     color: var(--light-secondary-font); }
 
-.select-multiple.active > label.active {
+.select-multiple.active > .content > label.active {
     color: var(--accent-primary-font); }
 
-.select-multiple > i {
+.select-multiple > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .select-multiple > i {
+.dark .select-multiple > .content > i {
     color: var(--light-secondary-font); }
 
-.select-multiple.active > i {
-    color: var(--accent-primary-font); }
-
-.select-multiple.active.error > i, .select-multiple.error > i {
-    color: var(--error-primary-font); }
-
-.select-multiple > input {
+.select-multiple > .content > input {
     color: transparent; }
 
-.select-multiple > input:disabled ~ .value {
+.select-multiple > .content > input:disabled ~ .value {
     color: var(--dark-disabled-font); }
 
-.dark .select-multiple > input:disabled ~ .value  {
+.dark .select-multiple > .content > input:disabled ~ .value  {
     color: var(--light-disabled-font); }
 
-.select-multiple > .line-shadow {
+.select-multiple > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .select-multiple > .line-shadow {
+.dark .select-multiple > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.select-multiple.active > .line-shadow {
+.select-multiple.active > .content > .line-shadow {
     border-bottom: 2px solid var(--theme-background-accent); }
 
-.select-multiple > input:disabled ~ .line-shadow {
+.select-multiple > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .select-multiple > input:disabled ~ .line-shadow {
+.dark .select-multiple > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.select-multiple > button.action {
+.select-multiple > .content > button.action {
     background-color: transparent;
     color: var(--dark-secondary-font); }
 
-.dark .select-multiple > button.action {
+.dark .select-multiple > .content > button.action {
     color: var(--light-primary-font); }
 
-.select-multiple > button.action:before {
+.select-multiple > .content > button.action:before {
     background-color: var(--dark-ripple); }
 
-.dark .select-multiple > button.action:before {
+.dark .select-multiple > .content > button.action:before {
     background-color: var(--light-ripple); }
 
-.select-multiple > ul { 
-    background-color: var(--light-background-component); }
-
-.dark .select-multiple > ul { 
-    background-color: var(--dark-background-component); }
-
-.dark .select-multiple > ul > li {
-    color: var(--light-primary-font); }
-
-.select-multiple > ul > li.active {
+.select-multiple > .content > span.help {
     color: var(--dark-secondary-font); }
 
-.dark .select-multiple > ul > li.active {
+.dark .select-multiple > .content > span.help {
     color: var(--light-secondary-font); }
 
-.select-multiple > ul > li:focus {
+.select-multiple > .content > ul { 
+    background-color: var(--light-background-component); }
+
+.dark .select-multiple > .content > ul { 
+    background-color: var(--dark-background-component); }
+
+.dark .select-multiple > .content > ul > li {
+    color: var(--light-primary-font); }
+
+.select-multiple > .content > ul > li.active {
+    color: var(--dark-secondary-font); }
+
+.dark .select-multiple > .content > ul > li.active {
+    color: var(--light-secondary-font); }
+
+.select-multiple > .content > ul > li:focus {
     background-color: var(--light-background-focus); }
 
-.select-multiple > ul > li:hover {
+.select-multiple > .content > ul > li:hover {
     background-color: var(--light-background-hover); }
 
-.select-multiple > ul > li > .checkbox-select > label:before {
+.select-multiple > .content > ul > li > .checkbox-select > label:before {
     background-color: var(--theme-background); }
 
-.dark .select-multiple > ul > li > .checkbox-select > label:after {
+.dark .select-multiple > .content > ul > li > .checkbox-select > label:after {
     border: 2px solid var(--light-background-component); }
 
 /** SIDENAV */
