@@ -538,6 +538,16 @@
                 }
             }
         };
+        
+        Date.prototype.equalsDate = function (year, month, day) {
+            if (this.getDate() !== day) {
+                return false; } // Comparando dias de las fechas
+
+            if (this.getMonth() !== month) {
+                return false; } // Comparando meses de las fechas
+
+            return (this.getFullYear() === year);
+        };
 
         Date.prototype.isLeapYear = function () { 
             return softtion.isLeapYear(this.getFullYear());

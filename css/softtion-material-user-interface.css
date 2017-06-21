@@ -1093,7 +1093,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete > .content > i.action {
     position: absolute;
-    top: 28px;
+    top: 26px;
     right: 0px;
     width: 20px;
     height: 20px;
@@ -1645,6 +1645,19 @@ button.floating {
     animation: button-floating 0.15s var(--standard-curve);
     -o-animation: button-floating 0.15s var(--standard-curve);
     -ms-animation: button-floating 0.15s var(--standard-curve); }
+
+button.floating.left {
+    left: 16px;
+    right: initial; }
+
+button.floating.center {
+    left: 50%;
+    right: initial;
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%); }
 
 button.floating.show-bottom-navigation {
     bottom: 72px; }
@@ -2782,99 +2795,95 @@ button.raised:focus:after, button.flat:focus:after {
 
 .clockpicker-input {
     position: relative;
-    float: left;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.clockpicker-input > .content {
+    position: relative;
     width: 100%;
-    padding: 16px 0px 8px 0px; }
+    float: left;
+    padding: 8px 0px 12px 0px; }
 
-.clockpicker-input.label-hidden {
-    padding-top: 8px; }
-
-.clockpicker-input > label {
+.clockpicker-input > .content > label {
     position: absolute;
-    top: 40px;
+    top: 28px;
     left: 0;
     width: 100%;
     font-size: 16px;
     height: 18px;
     line-height: 18px;
     cursor: pointer;
-    -moz-transition: all 0.1s var(--sharp-curve);
-    -webkit-transition: all 0.1s var(--sharp-curve);
-    -o-transition: all 0.1s var(--sharp-curve);
-    transition: all 0.1s var(--sharp-curve);
-    -ms-transition: all 0.1s var(--sharp-curve); }
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve);
+    -ms-transition: all 0.125s var(--sharp-curve); }
 
-.clockpicker-input > label.active {
+.clockpicker-input > .content > label.active {
     cursor: none;
-    top: 16px;
+    top: 8px;
     height: 14px;
-    line-height: 14px;
+    line-height: 12px;
     font-size: 12px; }
 
-.clockpicker-input.label-hidden > label {
-    display: none; }
-
-.clockpicker-input.label-hidden > i {
-    position: absolute;
-    top: 8px;
-    left: 0px;
-    padding: 20px 12px 12px 12px; }
-
-.clockpicker-input.flex-pd.label-hidden > i {
-    left: 8px; }
-
-.clockpicker-input > i.action {
-    cursor: pointer; }
-
-.clockpicker-input > .value {
-    padding: 16px 0px 8px 0px;
+.clockpicker-input > .content > .value {
+    padding: 12px 0px 8px 0px;
     margin: 0px;
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    width: 100%;
+    width: calc(100% - 24px);
     cursor: pointer;
     overflow: hidden; 
     white-space: nowrap; }
 
-.clockpicker-input > .value.disabled {
+.clockpicker-input > .content > .value.disabled {
     cursor: not-allowed; }
 
-.clockpicker-input.label-hidden > .value {
-    top: 17px; }
-
-.clockpicker-input.label-hidden.icon-active > .value {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.clockpicker-input > .line-shadow {
+.clockpicker-input > .content > .line-shadow {
     position: absolute;
     left: 0; 
-    bottom: 7px; 
+    z-index: 1;
+    bottom: 18px; 
     width: 100%; }
 
-.clockpicker-input.label-hidden.icon-active > .line-shadow {
-    left: 72px;
-    width: calc(100% - 72px); }
+.clockpicker-input > .content > i.action {
+    position: absolute;
+    top: 26px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 18px; 
+    font-weight: 900;
+    text-align: center; }
 
-.clockpicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
-    left: 80px;
-    width: calc(100% - 88px); }
+.clockpicker-input > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
 
-.clockpicker-input.flex-pd > label, .clockpicker-input.flex-pd > .line-shadow {
-    width: calc(100% - 16px); }
- 
-.clockpicker-input.flex-pd-left > .line-shadow, 
-.clockpicker-input.flex-pd-left > label, 
-.clockpicker-input.flex-pd-right > label,
-.clockpicker-input.flex-pd-right > .line-shadow {
-    width: calc(100% - 8px); }
+.clockpicker-input > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
 
-.clockpicker-input.flex-pd > .line-shadow, 
-.clockpicker-input.flex-pd > label, 
-.clockpicker-input.flex-pd-left > label,
-.clockpicker-input.flex-pd-left > .line-shadow {
-    left: 8px; }
+.clockpicker-input > .content > i.icon-description ~ .value { 
+    padding-left: 40px;
+    width: calc(100% - 64px); }
+
+.clockpicker-input > .content > i.icon-description ~ label,
+.clockpicker-input > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.clockpicker-input > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
 
 /** DATATABLE */
 
@@ -3102,6 +3111,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0;
     border-radius: 50%; }
 
+.datepicker > .content > .days-month > tbody td.today {
+    font-weight: 700; }
+
 .datepicker > .content > .days-month > tbody td.disabled {
     pointer-events: none; }
 
@@ -3149,99 +3161,98 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datepicker-input {
     position: relative;
-    float: left;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.datepicker-input > .content {
+    position: relative;
     width: 100%;
-    padding: 16px 0px 8px 0px; }
+    float: left;
+    padding: 8px 0px 12px 0px; }
 
-.datepicker-input.label-hidden {
-    padding-top: 8px; }
-
-.datepicker-input > label {
+.datepicker-input > .content > label {
     position: absolute;
-    top: 40px;
+    top: 28px;
     left: 0;
     width: 100%;
     font-size: 16px;
     height: 18px;
     line-height: 18px;
     cursor: pointer;
-    -moz-transition: all 0.1s var(--sharp-curve);
-    -webkit-transition: all 0.1s var(--sharp-curve);
-    -o-transition: all 0.1s var(--sharp-curve);
-    transition: all 0.1s var(--sharp-curve);
-    -ms-transition: all 0.1s var(--sharp-curve); }
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve);
+    -ms-transition: all 0.125s var(--sharp-curve); }
 
-.datepicker-input > label.active {
+.datepicker-input > .content > label.active {
     cursor: none;
-    top: 16px;
+    top: 8px;
     height: 14px;
-    line-height: 14px;
+    line-height: 12px;
     font-size: 12px; }
 
-.datepicker-input.label-hidden > label {
-    display: none; }
-
-.datepicker-input.label-hidden > i {
-    position: absolute;
-    top: 8px;
-    left: 0px;
-    padding: 20px 12px 12px 12px; }
-
-.datepicker-input.flex-pd.label-hidden > i {
-    left: 8px; }
-
-.datepicker-input > i.action {
+.datepicker-input > .content > i.action {
     cursor: pointer; }
 
-.datepicker-input > .value {
-    padding: 16px 0px 8px 0px;
+.datepicker-input > .content > .value {
+    padding: 12px 0px 8px 0px;
     margin: 0px;
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    width: 100%;
+    width: calc(100% - 24px);
     cursor: pointer;
     overflow: hidden; 
     white-space: nowrap; }
 
-.datepicker-input > .value.disabled {
+.datepicker-input > .content > .value.disabled {
     cursor: not-allowed; }
 
-.datepicker-input.label-hidden > .value {
-    top: 17px; }
-
-.datepicker-input.label-hidden.icon-active > .value {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.datepicker-input > .line-shadow {
+.datepicker-input > .content > .line-shadow {
     position: absolute;
     left: 0; 
-    bottom: 7px; 
+    z-index: 1;
+    bottom: 18px; 
     width: 100%; }
 
-.datepicker-input.label-hidden.icon-active > .line-shadow {
-    left: 72px;
-    width: calc(100% - 72px); }
+.datepicker-input > .content > i.action {
+    position: absolute;
+    top: 26px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 18px; 
+    font-weight: 900;
+    text-align: center; }
 
-.datepicker-input.flex-pd > label, .datepicker-input.flex-pd > .line-shadow {
-    width: calc(100% - 16px); }
+.datepicker-input > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
 
-.datepicker-input.flex-pd.label-hidden.icon-active > .line-shadow {
-    left: 80px;
-    width: calc(100% - 88px); }
- 
-.datepicker-input.flex-pd-left > .line-shadow, 
-.datepicker-input.flex-pd-left > label, 
-.datepicker-input.flex-pd-right > label,
-.datepicker-input.flex-pd-right > .line-shadow {
-    width: calc(100% - 8px); }
+.datepicker-input > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
 
-.datepicker-input.flex-pd > .line-shadow, 
-.datepicker-input.flex-pd > label, 
-.datepicker-input.flex-pd-left > label,
-.datepicker-input.flex-pd-left > .line-shadow {
-    left: 8px; }
+.datepicker-input > .content > i.icon-description ~ .value { 
+    padding-left: 40px;
+    width: calc(100% - 64px); }
+
+.datepicker-input > .content > i.icon-description ~ label,
+.datepicker-input > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.datepicker-input > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
 
 /** DIALOG */
 
@@ -3492,6 +3503,114 @@ button.raised:focus:after, button.flat:focus:after {
 .expansion-panel.active > .body > .content {
     margin-top: 0% !important; }
 
+/** FAB MENU */
+
+.fab-menu > .backdrop {
+    display: block;
+    bottom: initial;
+    opacity: 0;
+    z-index: 5;
+    -moz-transition: opacity 0.3s var(--standard-curve);
+    -webkit-transition: opacity 0.3s var(--standard-curve);
+    transition: opacity 0.3s var(--standard-curve);
+    -o-transition: opacity 0.3s var(--standard-curve);
+    -ms-transition: opacity 0.3s var(--standard-curve); }
+
+.fab-menu.active > .backdrop {
+    bottom: 0;
+    opacity: 1; }
+
+.fab-menu > .box {
+    position: fixed;
+    bottom: 44px;
+    right: 44px;
+    width: 56px;
+    height: 56px;
+    z-index: 6;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: var(--shadow-6);
+    -moz-transform: translate(50%, 50%);
+    -webkit-transform: translate(50%, 50%);
+    transform: translate(50%, 50%);
+    -o-transform: translate(50%, 50%);
+    -ms-transform: translate(50%, 50%);
+    -moz-animation: collapse-fabmenu 0.275s var(--standard-curve);
+    -webkit-animation: collapse-fabmenu 0.275s var(--standard-curve);
+    animation: collapse-fabmenu 0.275s var(--standard-curve);
+    -o-animation: collapse-fabmenu 0.275s var(--standard-curve);
+    -ms-animation: collapse-fabmenu 0.275s var(--standard-curve); }
+
+.fab-menu.active > .box {
+    box-shadow: none;
+    width: 640px;
+    height: 640px;
+    -moz-animation: expand-fabmenu 0.275s var(--standard-curve);
+    -webkit-animation: expand-fabmenu 0.275s var(--standard-curve);
+    animation: expand-fabmenu 0.275s var(--standard-curve);
+    -o-animation: expand-fabmenu 0.275s var(--standard-curve);
+    -ms-animation: expand-fabmenu 0.275s var(--standard-curve); }
+
+.fab-menu > .box > .content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 640px;
+    height: 640px;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.fab-menu > .box > .content > .button-floating {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 56px;
+    height: 56px;
+    opacity: 1;
+    cursor: pointer;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.fab-menu.active > .box > .content > .button-floating {
+    opacity: 0;
+    visibility: hidden; }
+
+.fab-menu > .box > .content > .button-floating > i {
+    cursor: pointer;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    text-align: center; }
+
+.fab-menu > .box > .content > .menu-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    visibility: hidden;
+    box-shadow: var(--shadow-2);
+    -moz-transition: visibility 0.175s var(--standard-curve);
+    -webkit-transition: visibility 0.175s var(--standard-curve);
+    transition: visibility 0.175s var(--standard-curve);
+    -o-transition: visibility 0.175s var(--standard-curve);
+    -ms-transition: visibility 0.175s var(--standard-curve);
+    -moz-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+    -webkit-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+    transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+    -o-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+    -ms-transform: translate(calc(-100% + 28px), calc(-100% + 28px)); }
+
+.fab-menu > .box > .content > .menu-content > .menu > .option:nth-child(n + 6) {
+    display: none; }
+
+.fab-menu.active > .box > .content > .menu-content {
+    visibility: visible; }
+
 /** FAB SPEED DIAL */
 
 .fab-speed-dial {
@@ -3500,17 +3619,32 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 16px;
     padding-top: 15px;
     margin-bottom: 0;
+    z-index: 6;
     -moz-transition: margin-bottom 0.325s var(--standard-curve);
     -webkit-transition: margin-bottom 0.325s var(--standard-curve);
     transition: margin-bottom 0.325s var(--standard-curve);
     -o-transition: margin-bottom 0.325s var(--standard-curve);
     -ms-transition: margin-bottom 0.325s var(--standard-curve); }
 
+.fab-speed-dial.left {
+    left: 16px;
+    right: initial; }
+
+.fab-speed-dial.center {
+    left: 50%;
+    right: initial;
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%); }
+
 .fab-speed-dial.show-bottom-navigation {
     bottom: 72px; }
 
 .fab-speed-dial button.floating {
     position: relative;
+    z-index: 1;
     right: initial;
     bottom: initial; }
 
@@ -3542,6 +3676,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .fab-speed-dial > ul > li {
   margin-bottom: 15px; }
+
+.fab-speed-dial > ul > li:nth-child(n + 6) {
+    display: none; }
 
 .fab-speed-dial > ul > li > button.floating {
     width: 40px;
@@ -4360,6 +4497,9 @@ button.raised:focus:after, button.flat:focus:after {
     height: 4px;
     overflow: hidden;
     display: none; }
+
+.app-bar > .progress-bar {
+    height: 2px; }
 
 .progress-bar.show {
     display: block; }
@@ -6081,36 +6221,42 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield-readonly {
     position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textfield-readonly > .content {
+    position: relative;
+    width: 100%;
     float: left;
-    padding: 16px 0px 8px 0px; }
+    padding: 8px 0px 12px 0px; }
 
-.textfield-readonly.label-hidden {
-    padding-top: 8px; }
-
-.textfield-readonly > label {
+.textfield-readonly > .content > label {
     position: absolute;
-    top: 16px;
-    height: 14px;
-    line-height: 14px;
-    font-size: 12px;
+    top: 28px;
     left: 0;
     width: 100%;
-    cursor: none; }
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
+    cursor: not-allowed;
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve);
+    -ms-transition: all 0.125s var(--sharp-curve); }
 
-.textfield-readonly.label-hidden > label {
-    display: none; }
+.textfield-readonly > .content > label.active {
+    cursor: none;
+    top: 8px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
 
-.textfield-readonly.label-hidden > i {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    padding: 20px 12px 12px 12px; }
-
-.textfield-readonly > input {
+.textfield-readonly > .content > input {
     width: 100%;
     cursor: text;
     height: 32px;
-    padding: 16px 0px 8px 0px;
+    padding: 12px 0px 8px 0px;
     line-height: 32px;
     font-size: 16px;
     line-height: 24px;
@@ -6118,42 +6264,38 @@ body.not-touch .tabs::-webkit-scrollbar {
     outline: none;
     background-color: transparent; }
 
-.textfield-readonly > input::-webkit-input-placeholder {
-    visibility: hidden; }
-
-.textfield-readonly.label-hidden.icon-active > input {
-    padding-left: 72px;
-    width: calc(100% - 72px); }
-
-.textfield-readonly.label-hidden > input::-webkit-input-placeholder {
-    visibility: visible; }
-
-.textfield-readonly.label-hidden > input {
-    padding-top: 8px; }
-
-.textfield-readonly > .line-shadow {
+.textfield-readonly > .content > .line-shadow {
     position: absolute;
     left: 0; 
-    bottom: 7px;
+    z-index: 1;
+    bottom: 18px; 
     width: 100%; }
 
-.textfield-readonly.label-hidden.icon-active > .line-shadow {
-    left: 72px;
-    width: calc(100% - 72px); }
+.textfield-readonly > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
 
-.textfield-readonly > input:focus ~ .line-shadow {
-    bottom: 6px; }
+.textfield-readonly > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
 
-.textfield-readonly.flex-pd > label, .textfield-readonly.flex-pd > .line-shadow {
-    width: calc(100% - 16px); }
+.textfield-readonly > .content > i.icon-description ~ input { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
 
-.textfield-readonly.flex-pd-left > label, .textfield-readonly.flex-pd-right > label, 
-.textfield-readonly.flex-pd-left > .line-shadow, .textfield-readonly.flex-pd-right > .line-shadow {
-    width: calc(100% - 8px); }
+.textfield-readonly > .content > i.icon-description ~ label,
+.textfield-readonly > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
 
-.textfield-readonly.flex-pd > label, .textfield-readonly.flex-pd-left > label,
-.textfield-readonly.flex-pd > .line-shadow, .textfield-readonly.flex-pd-left > .line-shadow {
-    left: 8px; }
+.textfield-readonly > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
 
 /** TOAST */
 

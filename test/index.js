@@ -20,5 +20,12 @@ app.controller("myController", function ($scope, $snackbar, $toast) {
     $scope.openToast = function ($event, value) {
         $toast.show("Soy un toast");
     };
+    
+    $scope.removeFiles = function ($event) {
+        $scope.xxxx = undefined; $event.stopPropagation();
+    };
+    
+    $scope.showFiles = function () {
+        $scope.xxxx = "DANIEL ANDRES CASTILLO PEDROZA";
+    };
 });
-

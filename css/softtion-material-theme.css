@@ -68,6 +68,7 @@
     --dark-disabled-font: rgba(0, 0, 0, 0.38);
     
     --accent-primary-font: #4caf50;
+    --accent-secondary-font: #9c27b0;
     --error-primary-font: #f44336;
     
     --light-primary-font: rgba(255, 255, 255, 1);
@@ -458,16 +459,16 @@ button.floating.primary {
     color: var(--light-primary-font); }
 
 button.floating:hover {
-    background-color: var(--light-background-hover); }
+    background-color: #eeeeee; }
 
 button.floating:focus  {
-    background-color: var(--light-background-focus); }
+    background-color: #e0e0e0; }
 
 .dark button.floating:hover {
-    background-color: var(--dark-background-hover); }
+    background-color: #9e9e9e; }
 
 .dark button.floating:focus {
-    background-color: var(--dark-background-focus); }
+    background-color: #757575; }
 
 button.floating.primary:hover {
     background-color: var(--theme-background-accent-hover); }
@@ -846,43 +847,55 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .clockpicker > .content > .plate > .canvas .bearing {
     fill: var(--light-background-focus); }
 
-.clockpicker-input > label {
+.clockpicker-input > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .clockpicker-input > label {
+.dark .clockpicker-input > .content > label {
     color: var(--light-secondary-font); }
 
-.clockpicker-input > i {
+.clockpicker-input > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .clockpicker-input > i {
+.dark .clockpicker-input > .content > i {
     color: var(--light-secondary-font); }
 
-.clockpicker-input > i {
+.clockpicker-input > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .clockpicker-input > i {
+.dark .clockpicker-input > .content > i {
     color: var(--light-secondary-font); }
 
-.clockpicker-input > .value.disabled {
+.clockpicker-input > .content > .value.disabled {
     color: var(--dark-disabled-font); }
 
-.dark .clockpicker-input > .value.disabled {
+.dark .clockpicker-input > .content > .value.disabled {
     color: var(--light-disabled-font); }
 
-.clockpicker-input > .line-shadow {
+.clockpicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .clockpicker-input > .line-shadow {
+.dark .clockpicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.clockpicker-input > .line-shadow.disabled {
+.clockpicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .clockpicker-input > .line-shadow.disabled {
+.dark .clockpicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--dark-background-divider); }
 
-.clockpicker-input > .dialog > .box {
+.clockpicker-input > .content > i.action {
+    color: var(--dark-secondary-font); }
+
+.dark .clockpicker-input > .content > i.action {
+    color: var(--light-primary-font); }
+
+.clockpicker-input > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .clockpicker-input > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.clockpicker-input > .content > .dialog > .box {
     background-color: transparent !important; }
 
 /** DATATABLE */
@@ -1013,14 +1026,12 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .datepicker > .content > .days-month > thead th {
     color: var(--light-disabled-font); }
 
+.datepicker > .content > .days-month > tbody td.today {
+    color: var(--accent-secondary-font); }
+
 .datepicker > .content > .days-month > tbody td.active {
     color: var(--light-primary-font);
     background-color: var(--theme-background); }
-
-.primary .datepicker > .content > .days-month > tbody td.active,
-.secondary .datepicker > .content > .days-month > tbody td.active {
-    color: var(--dark-secondary-font);
-    background-color: var(--light-background); }
 
 .datepicker > .content > .months > ul > li,
 .datepicker > .content > .year > ul > li {
@@ -1038,41 +1049,47 @@ button.raised.primary:before, button.floating.primary:before {
 .datepicker > .content > .year > ul > li.active {
     color: var(--base-primary-font); }
 
-.datepicker-input > label {
+.datepicker-input > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .datepicker-input > label {
+.dark .datepicker-input > .content > label {
     color: var(--light-secondary-font); }
 
-.datepicker-input > i {
+.datepicker-input > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .datepicker-input > i {
+.dark .datepicker-input > .content > i {
     color: var(--light-secondary-font); }
 
-.datepicker-input > i {
-    color: var(--dark-secondary-font); }
-
-.dark .datepicker-input > i {
-    color: var(--light-secondary-font); }
-
-.datepicker-input > .value.disabled {
+.datepicker-input > .content > .value.disabled {
     color: var(--dark-disabled-font); }
 
-.dark .datepicker-input > .value.disabled {
+.dark .datepicker-input > .content > .value.disabled {
     color: var(--light-disabled-font); }
 
-.datepicker-input > .line-shadow {
+.datepicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .datepicker-input > .line-shadow {
+.dark .datepicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.datepicker-input > .line-shadow.disabled {
+.datepicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .datepicker-input > .line-shadow.disabled {
+.dark .datepicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--dark-background-divider); }
+
+.datepicker-input > .content > i.action {
+    color: var(--dark-secondary-font); }
+
+.dark .datepicker-input > .content > i.action {
+    color: var(--light-primary-font); }
+
+.datepicker-input > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .datepicker-input > .content > span.help {
+    color: var(--light-secondary-font); }
 
 .datepicker-input > .dialog > .box {
     background-color: transparent !important; }
@@ -1143,6 +1160,23 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-divider); }
+
+/** FAB MENU */
+
+.fab-menu > .box {
+    background-color: var(--theme-background-accent); }
+
+.fab-menu.active > .box {
+    background-color: transparent; }
+
+.fab-menu > .box > .content > .button-floating > i {
+    color: var(--light-primary-font); }
+
+.fab-menu > .box > .content > .menu-content > .menu {
+    background-color: var(--light-background-component); }
+
+.dark .fab-menu > .box > .content > .menu-content > .menu {
+    background-color: var(--dark-background-component); }
 
 /** FILECHOOSER MULTIPLE */
 
@@ -2295,45 +2329,51 @@ button.raised.primary:before, button.floating.primary:before {
 
 /** TEXTFIELD READONLY */
 
-.textfield-readonly > label {
+.textfield-readonly > .content > label {
     color: var(--dark-secondary-font); }
 
-.dark .textfield-readonly > label {
+.dark .textfield-readonly > .content > label {
     color: var(--light-secondary-font); }
 
-.textfield-readonly > input:focus ~ label {
+.textfield-readonly > .content > input:focus ~ label {
     color: var(--accent-primary-font); }
 
-.textfield-readonly > i {
+.textfield-readonly > .content > i {
     color: var(--dark-secondary-font); }
 
-.dark .textfield-readonly > i {
+.dark .textfield-readonly > .content > i {
     color: var(--light-secondary-font); }
 
-.textfield-readonly > input:focus ~ i {
+.textfield-readonly > .content > input:focus ~ i {
     color: var(--accent-primary-font); }
 
-.dark .textfield-readonly > input {
+.dark .textfield-readonly > .content > input {
     color: var(--light-primary-font); }
 
-.textfield-readonly > input::selection {
+.textfield-readonly > .content > input::selection {
     color: var(--light-primary-font);
     background-color: var(--theme-background-accent); }
 
-.textfield-readonly > .line-shadow {
+.textfield-readonly > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
 
-.dark .textfield-readonly > .line-shadow {
+.dark .textfield-readonly > .content > .line-shadow {
     border-bottom: 1px solid var(--dark-background-divider); }
 
-.textfield-readonly > input:focus ~ .line-shadow {
+.textfield-readonly > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-background-accent); }
 
-.textfield-readonly > input:disabled ~ .line-shadow {
+.textfield-readonly > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--light-background-divider); }
 
-.dark .textfield-readonly > input:disabled ~ .line-shadow {
+.dark .textfield-readonly > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-divider); }
+
+.textfield-readonly > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-readonly > .content > span.help {
+    color: var(--light-secondary-font); }
 
 /** TOAST */
 

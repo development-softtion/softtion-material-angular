@@ -393,7 +393,7 @@
                             softtion.html("span").addClass("effect")
                         ).create();
                 },             
-                directive: function () {
+                directive: ["SofttionMaterial", function (SofttionMaterial) {
                     return {
                         restrict: "C",
                         scope: {
@@ -403,14 +403,15 @@
                             viewEvent: "=?"
                         },
                         link: function ($scope, $element) {
+                            var selector = SofttionMaterial.Selectors.FAB; // Selector
+                            
                             // Componentes
                             var rippleBox = angular.element(
                                     Material.components.BottomNavigation.ripple()
                                 ),
                                 items = $element.find(".content > li"),
                                 itemActive = $element.find(".content > li.active:first"), 
-                                fab = angular.element("button.floating:not(.static)"),
-                                speedDial = angular.element(".fab-speed-dial"),
+                                actionButton = angular.element(selector),
                                 views = angular.element($scope.views),
                                 appContent = angular.element(".app-content"), 
                                 snackbar, toast;
@@ -423,12 +424,8 @@
                             // Atributos
                             var classColor = "default", position = 0, classHide = "hide";
                             
-                            if (fab.exists()) {
-                                fab.addClass("show-bottom-navigation");
-                            } // Cambiando posición original
-                            
-                            if (speedDial.exists()) {
-                                speedDial.addClass("show-bottom-navigation");
+                            if (actionButton.exists()) {
+                                actionButton.addClass("show-bottom-navigation");
                             } // Cambiando posición original
                             
                             items.attr("tab-index","-1"); items.removeClass("active"); 
@@ -520,15 +517,14 @@
                                     toast = angular.element(".toast");
                                 } // No se ha encontrado Toast en el documento
                                 
-                                if (softtion.isUndefined(fab) || !fab.exists()) {
-                                    fab = angular.element("button.floating");
+                                if (softtion.isUndefined(actionButton) || !actionButton.exists()) {
+                                    actionButton = angular.element(selector);
                                 } // No se ha encontrado Floating en el documento
                                 
                                 if (!softtion.isInPage($element[0])) {
-                                    toast.removeClass("show-bottom-navigation");
                                     snackbar.removeClass("show-bottom-navigation");
-                                    fab.removeClass("show-bottom-navigation");
-                                    speedDial.removeClass("show-bottom-navigation");
+                                    toast.removeClass("show-bottom-navigation");
+                                    actionButton.removeClass("show-bottom-navigation");
                                     
                                     appContent.off("scroll.bottom-navigation", scrollBottomNav); return;
                                 } // No existe el bottom navigation en el documento
@@ -536,16 +532,14 @@
                                 var positionNew = appContent.scrollTop(); // Posicion actual
                                                                 
                                 if (position < positionNew) {
-                                    fab.removeClass("show-bottom-navigation");
                                     snackbar.removeClass("show-bottom-navigation");
                                     toast.removeClass("show-bottom-navigation");
-                                    speedDial.removeClass("show-bottom-navigation");
+                                    actionButton.removeClass("show-bottom-navigation");
                                     $element.addClass(classHide);
                                 } else {
-                                    fab.addClass("show-bottom-navigation");
                                     snackbar.addClass("show-bottom-navigation");
                                     toast.addClass("show-bottom-navigation");
-                                    speedDial.addClass("show-bottom-navigation");
+                                    actionButton.addClass("show-bottom-navigation");
                                     $element.removeClass(classHide);
                                 } // Se visualiza BottomNavigation oculto
                                 
@@ -555,7 +549,7 @@
                             appContent.on("scroll.bottom-navigation", scrollBottomNav);
                         }
                     };
-                }
+                }]
             },
             
             BottomSheet: {
@@ -1421,6 +1415,8 @@
                 route: "softtion/template/clockpicker-input.html",
                 name: "clockpickerInput",
                 html: function () {
+                    var content = softtion.html("div").addClass("content");
+                    
                     var lineShadow = softtion.html("div").
                         addClass("line-shadow").addAttribute("ng-class", "{disabled: ngDisabled}");
 
@@ -1434,6 +1430,13 @@
                         setText("{{label}}").addClass("truncate").
                         addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click", "showDialog($event)");
+                
+                    var buttonClear = softtion.html("i").addClass(["action"]).
+                        setText("close").addAttribute("ng-hide", "isActiveClear()").
+                        addAttribute("ng-click", "clearTime()");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
                     
                     var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
                         addChildren(
@@ -1447,11 +1450,13 @@
                                         addAttribute("ng-model","timePicker").
                                         addAttribute("select-event","timeSelect").
                                         addAttribute("cancel-event","cancelSelect")
-
                                 )
                         );
                 
-                    return lineShadow + label + value + dialog; // Creando componente
+                    content.addChildren(value).addChildren(lineShadow).
+                        addChildren(label).addChildren(buttonClear).addChildren(spanHelper);
+                
+                    return content + dialog; // Componente ClockPickerInput
                 },
                 directive: function () {
                     return {
@@ -1460,10 +1465,12 @@
                         scope: {
                             time: "=ngModel",
                             label: "@",
-                            icon: "@",
                             format: "@",
                             autoStart: "=?",
                             ngDisabled: "=?",
+                            iconDescription: "@",
+                            helperText: "@",
+                            helperPermanent: "=?",
                             parent: "@",
                             
                             // Eventos
@@ -1472,29 +1479,20 @@
                             cancelEvent: "=?",
                             iconEvent: "=?"
                         },
-                        directive: function ($scope, $element) {
+                        link: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
+                                value = $element.find(".value"),
                                 $body = angular.element(document.body);
                         
-                            if (softtion.isString($scope.icon) && $element.hasClass("label-hidden")) {
-                                var icon = angular.element(
-                                    softtion.html("i").setText($scope.icon).create()
-                                );
-
-                                $element.append(icon); $element.addClass("icon-active");
-                                
-                                if (softtion.isFunction($scope.iconEvent)) {
-                                    icon.addClass("action"); // Se definio evento en el icono
-                                    
-                                    icon.click(function ($event) { 
-                                        $scope.$apply(function () { $scope.iconEvent($event); });
-                                    });
-                                }
-                            } // IconLabel activado, se debe insertar el icono antes del input
+                            var icon = insertIconDescription($scope, value); // Icono
                             
-                            $scope.show = false; 
+                            if (softtion.isFunction($scope.iconEvent) && softtion.isDefined(icon)) {
+                                icon.on("click", function ($event) { 
+                                    $scope.$apply(function () { $scope.iconEvent($event); }); 
+                                }); 
+                            } // Se ha definido un icono y se debe asignar su función
                             
-                            $scope.format = $scope.format || "hz:ii zz";
+                            $scope.show = false; $scope.format = $scope.format || "hz:ii zz";
                             
                             if (softtion.isUndefined($scope.time) && $scope.autoStart) {
                                 $scope.time = new Date(); 
@@ -1518,6 +1516,14 @@
                             
                             $scope.isActiveLabel = function () {
                                 return (softtion.isDefined($scope.time)) ? "active" : "";
+                            };
+                            
+                            $scope.helperActive = function () {
+                                return softtion.isUndefined($scope.time) || $scope.helperPermanent;
+                            };
+                            
+                            $scope.isActiveClear = function () {
+                                return !softtion.isDefined($scope.time);
                             };
                             
                             $scope.showDialog = function ($event) {
@@ -1547,6 +1553,10 @@
                                 if (softtion.isFunction($scope.selectEvent)) {
                                     $scope.selectEvent($scope.time);
                                 } // Evento selección nueva en el componente
+                            };
+                            
+                            $scope.clearTime = function () {
+                                $scope.time = undefined; $element.removeClass("active"); 
                             };
                         }
                     };
@@ -1729,8 +1739,8 @@
                                                 addAttribute("ng-repeat", "week in daysMonth").
                                                 addChildren(
                                                     softtion.html("td").addClass("day").
-                                                        addAttribute("ng-class","{disabled : dayDisabled(day.value)}").
                                                         addAttribute("ng-repeat", "day in week").
+                                                        addAttribute("ng-class","{disabled : dayDisabled(day.value), today: isToday(day.value)}").
                                                         addAttribute("ng-click", "selectDay(day.value, $event)").
                                                         setText("{{day.value}}")
                                                 )
@@ -1872,11 +1882,11 @@
                                 createYears = Material.components.Datepicker.createYears,
                                 fontSize = parseInt(angular.element(document.body).css("font-size"));
                             
-                            var dateNow = new Date().normalize("date");
+                            var today = new Date().normalize("date");
                                                         
-                            $scope.year = dateNow.getFullYear();
-                            $scope.day = dateNow.getDate();
-                            $scope.month = dateNow.getMonth();
+                            $scope.year = today.getFullYear();
+                            $scope.day = today.getDate();
+                            $scope.month = today.getMonth();
                             $scope.enabledSelectYear = false;
                             $scope.enabledSelectMonth = false;
                             dateDayStart.setDate(1); // Primer dia del mes
@@ -2071,6 +2081,14 @@
                                 return describe; // Retorna descripción de Fecha
                             };
                             
+                            $scope.isToday = function (day) {
+                                if (softtion.isDefined(day)) {
+                                    return today.equalsDate($scope.year, $scope.month, day);
+                                } // Se ha definido el dia a comparar
+                                
+                                return false; // No es el dia de Hoy
+                            };
+                            
                             $scope.dayDisabled = function (day) {
                                 if (softtion.isUndefined(day)) {
                                     return true;
@@ -2128,6 +2146,8 @@
                 route: "softtion/template/datepicker-input.html",
                 name: "datepickerInput",
                 html: function () {
+                    var content = softtion.html("div").addClass("content");
+                    
                     var lineShadow = softtion.html("div").
                         addClass("line-shadow").addAttribute("ng-class", "{disabled: ngDisabled}");
 
@@ -2141,6 +2161,13 @@
                         setText("{{label}}").addClass("truncate").
                         addAttribute("ng-class", "isActiveLabel()").
                         addAttribute("ng-click", "showDialog($event)");
+                
+                    var buttonClear = softtion.html("i").addClass(["action"]).
+                        setText("close").addAttribute("ng-hide", "isActiveClear()").
+                        addAttribute("ng-click", "clearDate()");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
                     
                     var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
                         addChildren(
@@ -2160,7 +2187,10 @@
                                 )
                         );
                 
-                    return lineShadow + label + value + dialog; // Creando componente
+                    content.addChildren(value).addChildren(lineShadow).
+                        addChildren(label).addChildren(buttonClear).addChildren(spanHelper);
+                
+                    return content + dialog; // Componente DatePickerInput
                 },
                 directive: function () {
                     return {
@@ -2169,13 +2199,15 @@
                         scope: {
                             date: "=ngModel",
                             label: "@",
-                            icon: "@",
                             format: "@",
                             autoStart: "=?",
                             minDate: "=?",
                             maxDate: "=?",
                             yearRange: "=?",
                             ngDisabled: "=?",
+                            iconDescription: "@",
+                            helperText: "@",
+                            helperPermanent: "=?",
                             parent: "@",
                             
                             // Eventos
@@ -2189,17 +2221,13 @@
                                 value = $element.find(".value"),
                                 $body = angular.element(document.body);
                         
-                            var icon = insertIconDescription($scope, $element, value);
+                            var icon = insertIconDescription($scope, value); // Icono
                             
-                            if (softtion.isFunction($scope.iconEvent)) {
-                                if (softtion.isDefined(icon)) {
-                                    icon.addClass("action"); // Se definio evento en el icono
-
-                                    icon.click(function ($event) { 
-                                        $scope.$apply(function () { $scope.iconEvent($event); });
-                                    }); 
-                                }
-                            }
+                            if (softtion.isFunction($scope.iconEvent) && softtion.isDefined(icon)) {
+                                icon.on("click", function ($event) { 
+                                    $scope.$apply(function () { $scope.iconEvent($event); }); 
+                                }); 
+                            } // Se ha definido un icono y se debe asignar su función
                             
                             $scope.show = false; $scope.format = $scope.format || "ww, dd de mn del aa";
                             
@@ -2225,6 +2253,14 @@
                             
                             $scope.isActiveLabel = function () {
                                 return (softtion.isDefined($scope.date)) ? "active" : "";
+                            };
+                            
+                            $scope.helperActive = function () {
+                                return softtion.isUndefined($scope.date) || $scope.helperPermanent;
+                            };
+                            
+                            $scope.isActiveClear = function () {
+                                return !softtion.isDefined($scope.date);
                             };
                             
                             $scope.showDialog = function ($event) {
@@ -2254,6 +2290,10 @@
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent($scope.date);
                                 } // Evento cancelar selección en el componente
+                            };
+                            
+                            $scope.clearDate = function () {
+                                $scope.date = undefined; $element.removeClass("active"); 
                             };
                         }
                     };
@@ -2542,6 +2582,42 @@
                                 detail.css({ marginTop: margin }); // Margin del detail
                                 detail.children(".subtitle").css("font-size", fontSizeDetailSubTitle);
                                 detail.children(".title").css("font-size", fontSizeDetailTitle);
+                            });
+                        }
+                    };
+                }
+            },
+            
+            FabMenu: {
+                name: "fabMenu",
+                directive: function () {
+                    return {
+                        restrict: "C", 
+                        link: function ($scope, $element) {
+                            var button = $element.find(".button-floating"),
+                                box = $element.children(".box"),
+                                backdrop = $element.children(".backdrop");
+                                                    
+                            if (!backdrop.exists()) {
+                                backdrop = angular.element(
+                                    softtion.html("div").addClass("backdrop").create()
+                                );
+                        
+                                $element.append(backdrop); // Agregando backdrop 
+                            } // No existe backdrop en el componente
+                            
+                            box.on("click", function () {
+                                if ($element.hasClass("active")) {
+                                    $element.removeClass("active");
+                                }
+                            });
+                            
+                            button.on("click", function (event) {
+                                $element.toggleClass("active"); event.stopPropagation();
+                            });
+                            
+                            backdrop.on("click", function () {
+                                $element.removeClass("active");
                             });
                         }
                     };
@@ -4772,21 +4848,26 @@
                 route: "softtion/template/textfield-readonly.html",
                 name: "textfieldReadonly",
                 html: function () {
+                    var content = softtion.html("div").addClass("content");
+                    
                     var input = softtion.html("input", false).
                         addAttribute("type", "text").
-                        addAttribute("ng-click", "clickInput($event)").
-                        addAttribute("ng-blur", "blurInput($event)").
-                        addAttribute("ng-focus", "focusInput($event)").
                         addAttribute("ng-readonly", "true").
-                        addAttribute("ng-model", "value").
-                        addAttribute("placeholder", "{{placeholder}}");
+                        addAttribute("ng-model", "value");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
 
                     var label = softtion.html("label").
+                        addAttribute("ng-class", "{active: isLabelActive()}").
                         setText("{{label}}").addClass("truncate");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                
+                    content.addChildren(input).addChildren(lineShadow)
+                        .addChildren(label).addChildren(spanHelper);
 
-                    return input + lineShadow + label; // Componente
+                    return content.create(); // Componente TextFieldReadonly
                 },        
                 directive: function () {
                     return {
@@ -4795,35 +4876,21 @@
                         scope: {
                             value: "=ngModel", 
                             label: "@",
-                            icon: "@",
-                            placeholder: "@", 
-                            
-                            // Eventos
-                            clickEvent: "=?", 
-                            blurEvent: "=?", 
-                            focusEvent: "=?"
+                            iconDescription: "@",
+                            helperText: "@",
+                            helperPermanent: "=?"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input");
                             
-                            insertIconDescription($scope, $element, input);
+                            insertIconDescription($scope, input); // Icono
                             
-                            $scope.clickInput = function ($event) {
-                                if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event);
-                                } // Evento click sobre el componente
+                            $scope.isLabelActive = function () {
+                                return softtion.isDefined($scope.value);
                             };
                             
-                            $scope.focusInput = function ($event) {
-                                if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event);
-                                } // Evento click sobre el componente
-                            };
-                            
-                            $scope.blurInput = function ($event) {
-                                if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event);
-                                } // Evento click sobre el componente
+                            $scope.helperActive = function () {
+                                return softtion.isUndefined($scope.value) || $scope.helperPermanent;
                             };
                         }
                     };
@@ -5855,25 +5922,19 @@
             
             Snackbar: {
                 name: "$snackbar",
-                moveButton: function (isShow, height) {
-                    var button = angular.element("button.floating");
+                moveButton: function (isShow, selector, height) {
+                    var button = angular.element(selector); // Action Button
                         
-                    if (button.exists() && (window.innerWidth <= 640) && !button.hasClass("static")) {
-                        (!isShow) ? button.css("margin-bottom", "0px") :
-                            button.css("margin-bottom", (height) + "px");
+                    if (button.exists() && (window.innerWidth <= 640)) {
+                        (isShow) ? button.css("margin-bottom", (height) + "px") :
+                            button.css("margin-bottom", "0px");
                     } // Se debe cambiar posición del Botón en la Pantalla
-                    
-                    var fabSpeed = angular.element(".fab-speed-dial");
-                    
-                    if (fabSpeed.exists() && (window.innerWidth <= 640)) {
-                        (!isShow) ? fabSpeed.css("margin-bottom", "0px") :
-                            fabSpeed.css("margin-bottom", (height) + "px");
-                    } // Se debe cambiar posición del SpeedDial en la Pantalla
                 },
                 method: function () {
                     var Properties = {
                         body: undefined, 
                         $rootScope: undefined,
+                        Softtion: undefined,
                         box: undefined, 
                         action: undefined
                     };
@@ -5899,76 +5960,74 @@
 
                     SnackBar.prototype.show = function (text, optionsAction) {
                         var heightBody, self = this, // Snackbar
+                            body = Properties.body,
+                            box = Properties.box,
+                            action = Properties.action,
+                            selector = Properties.Softtion.Selectors.FAB,
+                            $moveButton = Material.providers.Snackbar.moveButton,
                             bottomNavigation = angular.element(".bottom-navigation");
                             
-                        Properties.action.height(0); // Ocultando acción
+                        action.height(0); // Ocultando acción
 
-                        if (!Properties.box.hasClass("active")) {
-                            Properties.body.html(text); // Estableciendo texto
-                            heightBody = parseInt(Properties.body.height());
+                        if (!box.hasClass("active")) {
+                            body.html(text); heightBody = parseInt(body.height());
                             
-                            if (heightBody > 20) {
-                                Properties.body.addClass("two-line");
-                            } else {
-                                Properties.body.removeClass("two-line");
-                            } // Cuerpo es de una sola línea
+                            (heightBody > 20) ? body.addClass("two-line") : 
+                                body.removeClass("two-line");
                             
                             if (softtion.isDefined(optionsAction)) {
                                 var span = "<span>" + optionsAction.label + "</span>";
-                                Properties.action.html(span); // Texto de acción                                
+                                action.html(span); // Texto de acción                                
                                 
-                                var widthAction = Properties.action.find("span").width(),
+                                var widthAction = action.find("span").width(),
                                     widthBody = "calc(100% - " + (widthAction + 30) + "px)";
                                 
-                                Properties.body.css("width", widthBody);
-                                Properties.body.css("padding-right", "24px");
+                                body.css("padding-right", "24px");
+                                body.css("width", widthBody);
                                 
-                                Properties.action.css("height", Properties.box.height());
+                                action.css("height", box.height());
                                 
-                                Properties.action.find("span").click(function () {
+                                action.find("span").click(function () {
                                     if (softtion.isFunction(optionsAction.action)) {
-                                        Properties.$rootScope.$apply(function () { optionsAction.action(); });
+                                        Properties.$rootScope.$apply(function () { 
+                                            optionsAction.action(); 
+                                        }); // Ejecutando evento Action del Snackbar
 
                                         if (softtion.isDefined(self.hiddenSnackbar)) {
                                             clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                                         } // Existe un cierre pendiente por realizar
 
-                                        Properties.action.html(""); Material.providers.Snackbar.moveButton(false); 
-                                        Properties.box.removeClass("show").removeClass("active"); 
+                                        action.html(""); $moveButton(false, selector); 
+                                        box.removeClass("show").removeClass("active"); 
                                     } // Ejecutando acción establecida en el Controlador
                                 });
                             } else {
-                                Properties.action.html("");
-                                Properties.body.css("padding-right", "0px");
-                                Properties.body.css("width", "100%");
+                                action.html(""); body.css("width", "100%");
+                                body.css("padding-right", "0px");
                             } // No se ha definido acción para disparar en el componente
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                Properties.box.addClass("show-bottom-navigation");
+                                box.addClass("show-bottom-navigation");
                             } // Existe un bottom-navigation y esta visible en el documento
                             
-                            Properties.box.addClass("active").addClass("show");
-                            Material.providers.Snackbar.moveButton(true, Properties.box.height()); 
+                            box.addClass("active").addClass("show");
+                            $moveButton(true, selector, box.height()); 
 
                             self.hiddenSnackbar = setTimeout(
                                 function () {
-                                    self.hiddenSnackbar = undefined; // Eliminando temporizador
-                                    
-                                    Properties.box.removeClass("show").removeClass("active");
-                                    Material.providers.Snackbar.moveButton(false); 
+                                    self.hiddenSnackbar = undefined; $moveButton(false, selector); 
+                                    box.removeClass("show").removeClass("active"); 
                                 },
                                 3500 // Tiempo de espera para ocultarse
                             );
                         } else {
-                            Properties.action.html(""); // Limpiando acción
-                            heightBody = parseInt(Properties.body.css("height"));
+                            action.html(""); heightBody = parseInt(body.css("height"));
                             
                             if (softtion.isDefined(self.hiddenSnackbar)) {
                                 clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
                             } // Existe un cierre pendiente por realizar
                             
-                            Material.providers.Snackbar.moveButton(false); 
-                            Properties.box.removeClass("show").removeClass("active"); 
+                            $moveButton(false, selector); box.removeClass("show").removeClass("active"); 
                             
                             setTimeout(
                                 function () { self.show(text, optionsAction); }, 350
@@ -5976,36 +6035,35 @@
                         }
                     };
 
-                    var snackbar = new SnackBar();
+                    var snackbar = new SnackBar(); // Proveedor Snackbar
                     
                     this.get = function () { return snackbar; };
                     
-                    this.$get = ["$rootScope", function ($rootScope) { 
+                    var providerSnackbar = function ($rootScope, SofttionMaterial) { 
+                        Properties.Softtion = SofttionMaterial;
                         Properties.$rootScope = $rootScope; return snackbar; 
-                    }];
+                    };
+                    
+                    this.$get = ["$rootScope", "SofttionMaterial", providerSnackbar];
                 }
             },
             
             Toast: {
                 name: "$toast",
-                moveButton: function (isShow, height) {
-                    var button = angular.element("button.floating");
+                moveButton: function (isShow, selector, height) {
+                    var button = angular.element(selector); // Action Button
                         
-                    if (button.exists() && (window.innerWidth <= 640) && !button.hasClass("static")) {
-                        (!isShow) ? button.css("margin-bottom", "0px") :
-                            button.css("margin-bottom", (height - 16) + "px");
+                    if (button.exists() && (window.innerWidth <= 640)) {
+                        (isShow) ? button.css("margin-bottom", (height - 16) + "px") :
+                            button.css("margin-bottom", "0px");
                     } // Se debe cambiar posición del Botón en la Pantalla
-                    
-                    var fabSpeed = angular.element(".fab-speed-dial");
-                    
-                    if (fabSpeed.exists() && (window.innerWidth <= 640)) {
-                        (!isShow) ? fabSpeed.css("margin-bottom", "0px") :
-                            fabSpeed.css("margin-bottom", (height - 16) + "px");
-                    } // Se debe cambiar posición del SpeedDial en la Pantalla
                 },
                 method: function () {
                     var Properties = {
-                        scope: undefined, box: undefined, body: undefined
+                        scope: undefined,
+                        box: undefined,
+                        body: undefined, 
+                        Softtion: undefined
                     };
                     
                     var Toast = function () { 
@@ -6024,37 +6082,38 @@
 
                     Toast.prototype.show = function (text) {
                         var heightBody, self = this, // Toast
+                            body = Properties.body,
+                            box = Properties.box,
+                            selector = Properties.Softtion.Selectors.FAB,
+                            $moveButton = Material.providers.Toast.moveButton,
                             bottomNavigation = angular.element(".bottom-navigation");
 
-                        if (!Properties.box.hasClass("active")) {
-                            Properties.body.html(text); // Estableciendo texto
-                            heightBody = parseInt(Properties.body.height());
+                        if (!box.hasClass("active")) {
+                            body.html(text); heightBody = parseInt(body.height());
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                Properties.box.addClass("show-bottom-navigation");
+                                box.addClass("show-bottom-navigation");
                             } // Existe un bottom-navigation y esta visible en el documento
                             
-                            Properties.box.addClass("active").addClass("show");
-                            Material.providers.Toast.moveButton(true, Properties.box.innerHeight()); 
+                            box.addClass("active").addClass("show");
+                            $moveButton(true, selector, box.innerHeight()); 
 
                             self.hiddenToast = setTimeout(
                                 function () {
-                                    self.hiddenToast = undefined; // Eliminando temporizador
-                                    
-                                    Properties.box.removeClass("show").removeClass("active");
-                                    Material.providers.Toast.moveButton(false); 
+                                    self.hiddenToast = undefined; $moveButton(false, selector); 
+                                    box.removeClass("show").removeClass("active");
                                 },
                                 3500 // Tiempo de espera para ocultarse
                             );
                         } else {
-                            heightBody = parseInt(Properties.body.css("height"));
+                            heightBody = parseInt(body.css("height"));
                             
                             if (softtion.isDefined(self.hiddenToast)) {
                                 clearTimeout(self.hiddenToast); self.hiddenToast = undefined;
                             } // Existe un cierre pendiente por realizar
                             
-                            Material.providers.Snackbar.moveButton(false); 
-                            Properties.box.removeClass("show").removeClass("active"); 
+                            $moveButton(false, selector); 
+                            box.removeClass("show").removeClass("active"); 
                             
                             setTimeout(
                                 function () { self.show(text); }, 350
@@ -6062,11 +6121,15 @@
                         }
                     };
 
-                    var toast = new Toast();
+                    var toast = new Toast(); // Proveedor Toast
                     
                     this.get = function () { return toast; };
                     
-                    this.$get = function () { return toast; };
+                    var providerToast = function (SofttionMaterial) { 
+                        Properties.Softtion = SofttionMaterial; return toast; 
+                    };
+                    
+                    this.$get = ["SofttionMaterial", providerToast];
                 }
             },
             
@@ -6083,6 +6146,8 @@
                             document.documentElement.style.setProperty("--theme-background", theme.standard);
                             document.documentElement.style.setProperty("--theme-background-light", theme.light);
                             document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
+                            
+                            document.documentElement.style.setProperty("--accent-secondary-font", theme.standard);
                         } // Tema de la paleta encontrado, cargando
                     };
                     
@@ -6379,6 +6444,9 @@
     
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
+        Selectors: {
+            FAB: "button.floating:not(.static), .fab-speed-dial"
+        },
         Theme: {
             RED: "red",
             PINK: "pink",
