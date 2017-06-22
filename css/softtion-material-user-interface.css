@@ -51,6 +51,9 @@ html, body ,input, textarea {
     font-size: 14px;
     -webkit-tap-highlight-color: transparent; }
 
+input:not([type="image"]), textarea {
+    box-sizing: initial !important; }
+
 h1, h2, h3, h4, h5, h6, b {
     font-weight: 700; }
 
