@@ -2,7 +2,7 @@
  Angular Softtion Material v1.0.8
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 10/Abr/2017
+ Updated: 22/Jun/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -1129,7 +1129,9 @@
                     var content = softtion.html("div").addClass("content").
                         addChildren(
                             softtion.html("div").addClass("plate").
-                                addAttribute("ng-mousedown","mousedownPlate($event)").
+                                addAttribute("ng-pointerdown","pointerdownPlate($event)").
+                                addAttribute("ng-pointerup","pointerupPlate($event)").
+                                addAttribute("ng-pointermove","pointermovePlate($event)").
                                 addChildren(
                                     softtion.html("div").addClass("canvas")
                                 ).
@@ -1290,17 +1292,22 @@
                             
                             // Atributos
                             var isPM = false, isHours = true, canvasComponent,
-                                touchSupported = ("ontouchstart" in window),
+                                selectionStart = false, value = undefined,
                                 attributes = {
                                     dialRadius: 116, 
                                     radius: 96,
                                     diameter: 232,
                                     duration: 350,
                                     tickRadius: 14
-                                };
+                                },
+
+                                // Eventos de la directiva
+                                setHand = Material.components.Clockpicker.setHand,
+                                paintSelector = Material.components.Clockpicker.paintSelector,
+                                paintClock = Material.components.Clockpicker.paintClock;
                             
-                            Material.components.Clockpicker.paintClock(hours, minutes, attributes);
-                            canvasComponent = Material.components.Clockpicker.paintSelector(canvas, attributes);
+                            paintClock(hours, minutes, attributes);
+                            canvasComponent = paintSelector(canvas, attributes);
                             
                             // Propiedades del scope
                             $scope.setZone = function (zone) {
@@ -1349,24 +1356,58 @@
                                 return ((value < 10) ? "0" : "") + value;
                             };
                             
-                            $scope.mousedownPlate = function ($event) {
-                                var offset = plate.offset(), isTouch = /^touch/.test($event.type),
+                            var calculatePosition = function ($event) {
+                                var data = {
+                                        isMove: true, positionX: 0, positionY: 0
+                                    },
+                                            
+                                    isTouch = softtion.isTouchSupport(),
+                                    offset = plate.offset(), 
                                     startX = offset.left + attributes.dialRadius,
                                     startY = offset.top + attributes.dialRadius,
-                                    positionX = (isTouch ? $event.originalEvent.touches[0] : $event).pageX - startX,
-                                    positionY = (isTouch ? $event.originalEvent.touches[0] : $event).pageY - startY,
-                                    circle = Math.sqrt(positionX * positionX + positionY * positionY);
-
-                                    if (circle < attributes.radius - attributes.tickRadius || 
-                                        circle > attributes.radius + attributes.tickRadius) {
-                                            return;
-                                    } // No se presiona click sobre componente que definen hora o minutos
+                                    eventFinal = isTouch ? 
+                                        $event.originalEvent.touches[0] : $event;
                                     
-                                $event.preventDefault();
-                                
-                                var value = Material.components.Clockpicker.setHand(
-                                    positionX, positionY, isHours, canvasComponent, attributes
+                                    data.positionX = eventFinal.pageX - startX,
+                                    data.positionY = eventFinal.pageY - startY;
+                            
+                                var circle = Math.sqrt(
+                                    data.positionX * data.positionX + data.positionY * data.positionY
                                 );
+
+                                if ((circle < attributes.radius - attributes.tickRadius) || 
+                                    (circle > attributes.radius + attributes.tickRadius)) {
+                                        data.isMove = false;
+                                } // No se presiona click sobre el reloj del componente 
+                                
+                                return data; // Resultado de movel componente
+                            };
+                            
+                            var movePosition = function ($event) {
+                                var data = calculatePosition($event);
+                                
+                                if (data.isMove) {
+                                    $event.preventDefault();
+
+                                    value = setHand(
+                                        data.positionX, data.positionY, 
+                                        isHours, canvasComponent, attributes
+                                    );
+                                }
+                            };
+                            
+                            $scope.pointerdownPlate = function ($event) {
+                                selectionStart = true; movePosition($event);
+                            };
+                            
+                            $scope.pointermovePlate = function ($event) {
+                                if (selectionStart) {
+                                    movePosition($event);
+                                } // Se inicia arrastre
+                            };
+                            
+                            $scope.pointerupPlate = function () {
+                                selectionStart = false; // Deteniendo arrastre
                         
                                 if (isHours) {
                                     $scope.hourSelect = value; // Hora seleccionada
@@ -1523,7 +1564,7 @@
                             };
                             
                             $scope.isActiveClear = function () {
-                                return !softtion.isDefined($scope.time);
+                                return !softtion.isDefined($scope.time) || $scope.ngDisabled;
                             };
                             
                             $scope.showDialog = function ($event) {
@@ -2260,7 +2301,7 @@
                             };
                             
                             $scope.isActiveClear = function () {
-                                return !softtion.isDefined($scope.date);
+                                return !softtion.isDefined($scope.date) || $scope.ngDisabled;
                             };
                             
                             $scope.showDialog = function ($event) {
@@ -2596,7 +2637,10 @@
                         link: function ($scope, $element) {
                             var button = $element.find(".button-floating"),
                                 box = $element.children(".box"),
-                                backdrop = $element.children(".backdrop");
+                                backdrop = $element.children(".backdrop"),
+                                $body = angular.element(document.body);
+                        
+                            $element.attr("tab-index", "-1"); // Enfocable
                                                     
                             if (!backdrop.exists()) {
                                 backdrop = angular.element(
@@ -2608,16 +2652,16 @@
                             
                             box.on("click", function () {
                                 if ($element.hasClass("active")) {
-                                    $element.removeClass("active");
-                                }
+                                    $element.removeClass("active"); $body.removeClass("body-overflow-none");
+                                } // Debe cerrarse el componente
                             });
                             
                             button.on("click", function (event) {
-                                $element.toggleClass("active"); event.stopPropagation();
+                                $element.addClass("active"); $body.addClass("body-overflow-none"); event.stopPropagation();
                             });
                             
                             backdrop.on("click", function () {
-                                $element.removeClass("active");
+                                $element.removeClass("active"); $body.removeClass("body-overflow-none");
                             });
                         }
                     };
@@ -6147,7 +6191,7 @@
                             document.documentElement.style.setProperty("--theme-background-light", theme.light);
                             document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
                             
-                            document.documentElement.style.setProperty("--accent-secondary-font", theme.standard);
+                            document.documentElement.style.setProperty("--theme-secondary-font", theme.standard);
                         } // Tema de la paleta encontrado, cargando
                     };
                     
@@ -6155,7 +6199,7 @@
                         var theme = ColorPallete[nameTheme]; // Tema
                         
                         if (softtion.isDefined(theme)) {
-                            document.documentElement.style.setProperty("--error-primary-font", theme.standard);
+                            document.documentElement.style.setProperty("--theme-error-font", theme.standard);
                             document.documentElement.style.setProperty("--theme-background-error", theme.standard);
                         } // Tema de la paleta encontrado, cargando
                     };
@@ -6169,7 +6213,8 @@
                             document.documentElement.style.setProperty("--theme-background-accent-focus", theme.accentFocus);
                             document.documentElement.style.setProperty("--theme-background-accent-hover", theme.accentHover);
 
-                            document.documentElement.style.setProperty("--accent-primary-font", theme.font);
+                            document.documentElement.style.setProperty("--theme-primary-font", theme.font);
+                            document.documentElement.style.setProperty("--theme-accent-font", theme.accentFont);
                         } // Tema de la paleta encontrado, cargando
                     };
                     
@@ -6221,6 +6266,7 @@
             accentFocus: "#c62828",     // red-800
             accentHover: "#e57373",     // red-300
             accentDisabled: "#ffcdd2",  // red-100
+            accentFont: "#ffffff",      // white
 
             font: "#f44336"             // red-500
         },
@@ -6233,6 +6279,7 @@
             accentFocus: "#ad1457",     // pink-800
             accentHover: "#f06292",     // pink-300
             accentDisabled: "#f8bbd0",  // pink-100
+            accentFont: "#ffffff",      // white
 
             font: "#e91e63"             // pink-500
         },
@@ -6245,6 +6292,7 @@
             accentFocus: "#6a1b9a",     // purple-800
             accentHover: "#ba68c8",     // purple-300
             accentDisabled: "#e1bee7",  // purple-100
+            accentFont: "#ffffff",      // white
 
             font: "#9c27b0"             // purple-500
         },
@@ -6257,6 +6305,7 @@
             accentFocus: "#4527a0",     // deep-purple-800
             accentHover: "#9575cd",     // deep-purple-300
             accentDisabled: "#d1c4e9",  // deep-purple-100
+            accentFont: "#ffffff",      // white
 
             font: "#673ab7"             // deep-purple-500
         },
@@ -6269,6 +6318,7 @@
             accentFocus: "#283593",     // indigo-800
             accentHover: "#7986cb",     // indigo-300
             accentDisabled: "#c5cae9",  // indigo-100
+            accentFont: "#ffffff",      // white
 
             font: "#3f51b5"             // indigo-500
         },
@@ -6281,6 +6331,7 @@
             accentFocus: "#1565c0",     // blue-800
             accentHover: "#64b5f6",     // blue-300
             accentDisabled: "#bbdefb",  // blue-100
+            accentFont: "#ffffff",      // white
 
             font: "#2196f3"             // blue-500
         },
@@ -6293,6 +6344,7 @@
             accentFocus: "#0277bd",     // light-blue-800
             accentHover: "#4fc3f7",     // light-blue-300
             accentDisabled: "#b3e5fc",  // light-blue-100
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#03a9f4"             // light-blue-500
         },
@@ -6305,6 +6357,7 @@
             accentFocus: "#00838f",     // cyan-800
             accentHover: "#4dd0e1",     // cyan-300
             accentDisabled: "#b2ebf2",  // cyan-100
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#00bcd4"             // cyan-500
         },
@@ -6317,6 +6370,7 @@
             accentFocus: "#00695c",     // teal-800
             accentHover: "#4db6ac",     // teal-300
             accentDisabled: "#b2dfdb",  // teal-100
+            accentFont: "#ffffff",      // white
 
             font: "#009688"             // teal-500
         },
@@ -6329,6 +6383,7 @@
             accentFocus: "#2e7d32",     // green-800
             accentHover: "#81c784",     // green-300
             accentDisabled: "#c8e6c9",  // green-100
+            accentFont: "#ffffff",      // white
 
             font: "#4caf50"             // green-500
         },
@@ -6341,6 +6396,7 @@
             accentFocus: "#558b2f",     // light-green-800
             accentHover: "#aed581",     // light-green-300
             accentDisabled: "#dcedc8",  // light-green-100
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#8bc34a"             // light-green-500
         },
@@ -6353,6 +6409,7 @@
             accentFocus: "#827717",     // lime-900
             accentHover: "#d4e157",     // lime-400
             accentDisabled: "#e6ee9c",  // lime-200
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#c0ca33"             // lime-600
         },
@@ -6365,6 +6422,7 @@
             accentFocus: "#f9a825",     // yellow-800
             accentHover: "#ffee58",     // yellow-400
             accentDisabled: "#fff59d",  // yellow-200
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#fdd835"             // yellow-600
         },
@@ -6377,6 +6435,7 @@
             accentFocus: "#ff8f00",     // amber-800
             accentHover: "#ffd54f",     // amber-300
             accentDisabled: "#ffecb3",  // amber-100
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#ffc107"             // amber-500
         },
@@ -6389,6 +6448,7 @@
             accentFocus: "#ef6c00",     // orange-800
             accentHover: "#ffb74d",     // orange-300
             accentDisabled: "#c5cae9",  // orange-100
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#ff9800"             // orange-500
         },
@@ -6401,6 +6461,7 @@
             accentFocus: "#d84315",     // deep-orange-800
             accentHover: "#ff8a65",     // deep-orange-300
             accentDisabled: "#ffccbc",  // deep-orange-100
+            accentFont: "#ffffff",      // white
 
             font: "#ff5722"             // deep-orange-500
         },
@@ -6413,6 +6474,7 @@
             accentFocus: "#4e342e",     // brown-800
             accentHover: "#a1887f",     // brown-300
             accentDisabled: "#d7ccc8",  // brown-100
+            accentFont: "#ffffff",      // white
 
             font: "#795548"             // brown-500
         },
@@ -6425,6 +6487,7 @@
             accentFocus: "#424242",     // grey-800
             accentHover: "#bdbdbd",     // grey-400
             accentDisabled: "#eeeeee",  // grey-200
+            accentFont: "rgba(0,0,0,0.87)", // black
 
             font: "#9e9e9e"             // grey-500
         },
@@ -6437,6 +6500,7 @@
             accentFocus: "#263238",     // blue-grey-900
             accentHover: "#90a4ae",     // blue-grey-300
             accentDisabled: "#cfd8dc",  // blue-grey-100
+            accentFont: "#ffffff",      // white
 
             font: "#607d8b"             // blue-grey-500
         }
@@ -6445,7 +6509,7 @@
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
-            FAB: "button.floating:not(.static), .fab-speed-dial"
+            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box"
         },
         Theme: {
             RED: "red",

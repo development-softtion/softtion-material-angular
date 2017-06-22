@@ -760,3 +760,25 @@
         width: 640px;
         height: 640px; }
 }
+
+/** CHANGED CLOCK */
+
+@keyframes changed-clock {
+    0% {
+        visibility: hidden;
+        opacity: 0; }
+    
+    100% {
+        visibility: visible;
+        opacity: 1; }
+}
+
+@-webkit-keyframes changed-clock {
+    0% {
+        visibility: hidden;
+        opacity: 0; }
+    
+    100% {
+        visibility: visible;
+        opacity: 1; }
+}

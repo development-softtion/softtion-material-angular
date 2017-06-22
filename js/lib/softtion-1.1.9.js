@@ -229,6 +229,10 @@
         return (node === document.body) ? false : document.body.contains(node);
     };
     
+    Softtion.prototype.isTouchSupport = function () {
+        return ("ontouchstart" in window);
+    };
+    
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     Softtion.prototype.encrypt = function (value, keyPassword) {

@@ -67,9 +67,11 @@
     --dark-secondary-font: rgba(0, 0, 0, 0.54);
     --dark-disabled-font: rgba(0, 0, 0, 0.38);
     
-    --accent-primary-font: #4caf50;
-    --accent-secondary-font: #9c27b0;
-    --error-primary-font: #f44336;
+    --theme-background-font: rgba(255, 255, 255, 1);
+    --theme-accent-font: rgba(255, 255, 255, 1);
+    --theme-primary-font: #4caf50;
+    --theme-secondary-font: #9c27b0;
+    --theme-error-font: #f44336;
     
     --light-primary-font: rgba(255, 255, 255, 1);
     --light-secondary-font: rgba(255, 255, 255, 0.7);
@@ -124,7 +126,7 @@ body.dark {
     color: var(--light-secondary-font); }
 
 .autocomplete.active > .content > input:focus ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .autocomplete > .content > i {
     color: var(--dark-secondary-font); }
@@ -143,7 +145,7 @@ body.dark {
 
 .autocomplete > .content > input::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .autocomplete.active > .content > input:focus ~ .value {
     color: transparent; }
@@ -221,12 +223,12 @@ body.dark {
     background-color: var(--light-background-hover); }
 
 .autocomplete > .content > ul > li.not-found {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 /** BADGE */
 
 .badge {
-    color: var(--light-primary-font);
+    color: var(--theme-accent-font);
     background-color: var(--theme-background-accent); }
 
 /** BOTTOM SHEET */
@@ -287,7 +289,7 @@ body.dark {
     background-color: var(--dark-background-hover); }
 
 .breadcrumb > label.active > a {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .app-bar.primary > .breadcrumb, .breadcrumb.primary {
     background-color: var(--theme-background-dark); }
@@ -323,7 +325,7 @@ body.dark {
     color: var(--light-disabled-font); }
 
 .bottom-navigation > .content > li.active > .content {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .dark .bottom-navigation > .content > li.active > .content,
 .bottom-navigation.primary > .content > li.active > .content {
@@ -343,7 +345,7 @@ body.dark {
     color: var(--light-primary-font); }
 
 .bottom-navigation.shifting.default > .content > li.active > .content {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .dark .bottom-navigation.shifting.default > .content > li.active > .content,
 .bottom-navigation.shifting.primary.default > .content > li.active > .content {
@@ -383,7 +385,7 @@ button.flat {
     color: var(--light-primary-font); }
 
 button.primary.flat {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 button.flat:hover {
     background-color: var(--light-background-hover); } 
@@ -414,7 +416,7 @@ button.raised {
 
 button.raised.primary { 
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 button.raised:hover {
     background-color: var(--light-background-hover); }
@@ -443,7 +445,7 @@ button.raised:disabled, button.raised:hover:disabled {
     background-color: var(--dark-background-disabled); }
 
 button.raised.primary:disabled, button.raised.primary:disabled:hover {
-    color: var(--light-primary-font);
+    color: var(--theme-accent-font);
     background-color: var(--theme-background-accent-disabled); }
 
 button.floating { 
@@ -456,7 +458,7 @@ button.floating {
 
 button.floating.primary {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 button.floating:hover {
     background-color: #eeeeee; }
@@ -485,7 +487,7 @@ button.floating:disabled, button.floating:hover:disabled {
     background-color: var(--dark-background-disabled); }
 
 button.floating.primary:disabled, button.floating.primary:disabled:hover {
-    color: var(--light-primary-font);
+    color: var(--theme-accent-font);
     background-color: var(--theme-background-accent-disabled); }
 
 button.raised:before, button.flat:before, 
@@ -676,8 +678,11 @@ button.raised.primary:before, button.floating.primary:before {
 .chip.primary {
     background-color: var(--theme-background-accent); }
 
-.dark .chip, .chip.primary {
+.dark .chip {
     color: var(--light-primary-font); }
+
+.chip.primary {
+    color: var(--theme-accent-font); }
 
 .chip:hover {
     background-color: rgba(0, 0, 0, 0.54);
@@ -689,7 +694,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .chip.primary:hover {
     background-color: var(--theme-background-accent-hover);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .chip > .avatar {
     background-color: rgba(0, 0, 0, 0.54);
@@ -705,7 +710,7 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--theme-background-accent-focus); }
 
 .dark .chip.primary:hover > .avatar {
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .chip > .action > i {
     background-color: rgba(0, 0, 0, 0.54);
@@ -717,7 +722,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .chip.primary > .action > i {
     background-color: var(--theme-background-accent-focus);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .chip:hover > .action > i {
     background-color: var(--light-background);
@@ -729,7 +734,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .chip.primary:hover > .action > i {
     background-color: var(--light-background);
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 /** CHIP INPUT */
 
@@ -740,7 +745,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .chip-input.active > .content > .box.focused ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .chip-input > .content > i {
     color: var(--dark-secondary-font); }
@@ -750,7 +755,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .chip-input > .content > input::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .chip-input > .content > .line-shadow {
     border-bottom: 1px solid var(--light-background-divider); }
@@ -1027,7 +1032,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-disabled-font); }
 
 .datepicker > .content > .days-month > tbody td.today {
-    color: var(--accent-secondary-font); }
+    color: var(--theme-secondary-font); }
 
 .datepicker > .content > .days-month > tbody td.active {
     color: var(--light-primary-font);
@@ -1109,7 +1114,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .dialog > .box > .actions > button.flat {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .dark .dialog > .box > .actions > button.flat {
     color: var(--light-primary-font); }
@@ -1166,11 +1171,19 @@ button.raised.primary:before, button.floating.primary:before {
 .fab-menu > .box {
     background-color: var(--theme-background-accent); }
 
-.fab-menu.active > .box {
+.fab-menu:hover > .box {
+    background-color: var(--theme-background-accent-hover); }
+
+.fab-menu:focus > .box {
+    background-color: var(--theme-background-accent-focus); }
+
+.fab-menu:hover.active > .box,
+.fab-menu.active > .box,
+.fab-menu:focus.active > .box{
     background-color: transparent; }
 
 .fab-menu > .box > .content > .button-floating > i {
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .fab-menu > .box > .content > .menu-content > .menu {
     background-color: var(--light-background-component); }
@@ -1311,7 +1324,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .fullwidth-field > .content > textarea::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .fullwidth-field.active > .content > textarea:focus ~ .value {
     color: transparent; }
@@ -1344,7 +1357,7 @@ button.raised.primary:before, button.floating.primary:before {
 /** LINK */
 
 .link {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 /** LIST */
 
@@ -1462,7 +1475,7 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--light-background-hover); }
 
 .menu > li.option.active, .menu > li.option.active > i {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 /** PROGRESS BAR */
 
@@ -1556,7 +1569,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .search-box > input::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .search-box > .actions {
     background-color: transparent; }
@@ -1571,7 +1584,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .select.active > .content > label.active, 
 .dark .select.active > .content > label.active {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .select > .content > i {
     color: var(--dark-secondary-font); }
@@ -1584,7 +1597,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .select > .content > .value::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .select > .content > input:disabled ~ .value {
     color: var(--dark-disabled-font); }
@@ -1642,7 +1655,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .select > .content > ul > li.clear-suggestion {
     border-bottom: 1px solid var(--light-background-divider);
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .dark .select > .content > ul > li.clear-suggestion {
     border-bottom: 1px solid var(--dark-background-divider); }
@@ -1668,7 +1681,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .select-multiple.active > .content > label.active {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .select-multiple > .content > i {
     color: var(--dark-secondary-font); }
@@ -1802,11 +1815,11 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--dark-background-active); }
 
 .sidenav > .content .sidenav-item .detail.active > a > i {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .sidenav > .content .sidenav-item .detail.active > a, 
 .sidenav > .content .sidenav-item .options .item.active > a {
-    color: var(--accent-primary-font);
+    color: var(--theme-primary-font);
     background-color: var(--light-background-active); }
 
 .dark .sidenav > .content .sidenav-item .detail.active > a, 
@@ -1855,7 +1868,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-primary-font); }
 
 .snackbar > .action > span {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 /** SWITCH */
 
@@ -1976,12 +1989,12 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-disabled-font); }
 
 .textarea.active > .content > .box > textarea:focus ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .textarea.active.error > .content > .box > textarea:focus ~ label, 
 .textarea.error > .content > .box > label,
 .textarea.active > .content > .box > textarea:focus ~ label > span {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textarea > .content > .box > textarea {
     color: transparent;
@@ -2001,7 +2014,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .textarea > .content > .box > textarea::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .textarea.active > .content > .box > textarea:focus ~ .value {
     color: transparent; }
@@ -2019,7 +2032,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textarea > .content > span.error {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textarea > .content > span.counter {
     background-color: var(--light-background);
@@ -2076,12 +2089,12 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-disabled-font); }
 
 .textbox-multiline.active > .content > .box > textarea:focus ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .textbox-multiline.active.error > .content > .box > textarea:focus ~ label, 
 .textbox-multiline.error > .content > .box > label,
 .textbox-multiline.active > .content > .box > textarea:focus ~ label > span {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textbox-multiline > .content > .box > textarea {
     color: transparent;
@@ -2101,7 +2114,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .textbox-multiline > .content > .box > textarea::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .textbox-multiline.active > .content > .box > textarea:focus ~ .value {
     color: transparent; }
@@ -2119,7 +2132,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textbox-multiline > .content > span.error {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textbox-multiline > .content > span.counter {
     background-color: var(--light-background);
@@ -2138,12 +2151,12 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield > .content > input:focus ~ label.active {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .textfield.error > .content > input:focus ~ label.active, 
 .textfield.error > .content > label,
 .textfield.active > .content > input:focus ~ label > span {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textfield > .content > i {
     color: var(--dark-secondary-font); }
@@ -2171,7 +2184,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .textfield > .content > input::selection { 
     background-color: var(--theme-background-accent); 
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .textfield.active > .content > input:focus ~ .value {
     color: transparent; }
@@ -2219,7 +2232,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield > .content > span.error {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textfield > .content > span.counter {
     background-color: var(--light-background);
@@ -2238,12 +2251,12 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield-multiline.active > .content > textarea:focus ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .textfield-multiline.active.error > .content > textarea:focus ~ label, 
 .textfield-multiline.error > .content > label,
 .textfield-multiline.active > .content > textarea:focus ~ label > span {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textfield-multiline > .content > i {
     color: var(--dark-secondary-font); }
@@ -2269,7 +2282,7 @@ button.raised.primary:before, button.floating.primary:before {
 
 .textfield-multiline > .content > textarea::selection {
     background-color: var(--theme-background-accent);
-    color: var(--light-primary-font); }
+    color: var(--theme-accent-font); }
 
 .textfield-multiline.active > .content > textarea:focus ~ .value {
     color: transparent; }
@@ -2317,7 +2330,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield-multiline > .content > span.error {
-    color: var(--error-primary-font); }
+    color: var(--theme-error-font); }
 
 .textfield-multiline > .content > span.counter {
     color: var(--dark-secondary-font); 
@@ -2336,7 +2349,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield-readonly > .content > input:focus ~ label {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .textfield-readonly > .content > i {
     color: var(--dark-secondary-font); }
@@ -2345,13 +2358,13 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--light-secondary-font); }
 
 .textfield-readonly > .content > input:focus ~ i {
-    color: var(--accent-primary-font); }
+    color: var(--theme-primary-font); }
 
 .dark .textfield-readonly > .content > input {
     color: var(--light-primary-font); }
 
 .textfield-readonly > .content > input::selection {
-    color: var(--light-primary-font);
+    color: var(--theme-accent-font);
     background-color: var(--theme-background-accent); }
 
 .textfield-readonly > .content > .line-shadow {
