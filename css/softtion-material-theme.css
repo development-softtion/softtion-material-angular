@@ -69,6 +69,7 @@
     
     --theme-background-font: rgba(255, 255, 255, 1);
     --theme-accent-font: rgba(255, 255, 255, 1);
+    
     --theme-primary-font: #4caf50;
     --theme-secondary-font: #9c27b0;
     --theme-error-font: #f44336;
@@ -1001,7 +1002,8 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--dark-background); }
 
 .datepicker > .title {
-    background-color: var(--theme-background); }
+    background-color: var(--theme-background);
+    color: var(--theme-background-font); }
 
 .dark .datepicker > .title {
     background-color: var(--dark-background-component); }
@@ -1035,7 +1037,7 @@ button.raised.primary:before, button.floating.primary:before {
     color: var(--theme-secondary-font); }
 
 .datepicker > .content > .days-month > tbody td.active {
-    color: var(--light-primary-font);
+    color: var(--theme-background-font);
     background-color: var(--theme-background); }
 
 .datepicker > .content > .months > ul > li,
@@ -1131,7 +1133,8 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--dark-background-component); }
 
 .dropdown.primary { 
-    background-color: var(--theme-background); }
+    background-color: var(--theme-background);
+    color: var(--theme-background-font); }
 
 .dropdown.primary > .menu > .option { 
     color: var(--light-primary-font); }
@@ -1191,6 +1194,92 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .fab-menu > .box > .content > .menu-content > .menu {
     background-color: var(--dark-background-component); }
 
+/** FILECHOOSER */
+
+.filechooser > .content {
+    background: var(--light-background);
+    border: 2px dashed var(--light-background-border); }
+
+.dark .filechooser > .content {
+    background: var(--dark-background);
+    border: 2px dashed var(--dark-background-border); }
+
+.filechooser > .content > .select-file > i,
+.filechooser > .content > .select-file > p {
+    color: var(--dark-secondary-font); }
+
+.dark .filechooser > .content > .select-file > i,
+.dark .filechooser > .content > .select-file > p {
+    color: var(--light-primary-font); }
+
+.filechooser > .content > .select-file > i.disabled,
+.filechooser > .content > .select-file > p.disabled {
+    color: var(--dark-disabled-font); }
+
+.dark .filechooser > .content > .select-file > i.disabled,
+.dark .filechooser > .content > .select-file > p.disabled {
+    color: var(--light-disabled-font); }
+
+.filechooser > .content > .select-file > p.disabled {
+    text-decoration-color: var(--dark-disabled-font); }
+
+.dark .filechooser > .content > .select-file > p.disabled {
+    text-decoration-color: var(--light-disabled-font); }
+
+.filechooser > .content > .files > .file > .content { 
+    background: var(--light-background-component); }
+
+.dark .filechooser > .content > .files > .file > .content { 
+    background: var(--dark-background-component); }
+
+.filechooser .view-preview > .delete {
+    background-color: rgba(255, 255, 255, 0.78); }
+
+.dark .filechooser .view-preview > .delete {
+    background-color: rgba(0, 0, 0, 0.57); }
+
+.filechooser .content > .view-preview > .icon > .svg-icon {
+    background: var(--dark-secondary-font); }
+
+.dark .filechooser .view-preview > .icon > .svg-icon {
+    background: var(--light-primary-font); }
+
+.filechooser .view-preview > .icon > i {
+    color: var(--dark-secondary-font); }
+
+.dark .filechooser .view-preview > .icon > i {
+    color: var(--light-primary-font); }
+
+.filechooser .content > .detail {
+    background: var(--light-background-component); }
+
+.dark .filechooser .content > .detail {
+    background: var(--dark-background-component); }
+
+.filechooser .file:focus > .content > .detail {
+    background: var(--theme-background); }
+
+.filechooser .content > .detail > .name {
+    color: var(--dark-secondary-font); }
+
+.dark .filechooser .content > .detail > .name {
+    color: var(--light-primary-font); }
+
+.filechooser .file:focus > .content > .detail > .name {
+    color: var(--theme-background-font); }
+
+.filechooser .content > .detail > .avatar {
+    background: var(--light-background-component); }
+
+.dark .filechooser .content > .detail > .avatar {
+    background: var(--dark-background-component); }
+
+.filechooser .content > .detail > .avatar > i { 
+    color: var(--dark-secondary-font); }
+
+.dark .filechooser .content > .detail > .avatar > i { 
+    color: var(--light-primary-font); }
+
 /** FILECHOOSER MULTIPLE */
 
 .filechooser-multiple > .content {
@@ -1229,47 +1318,72 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .filechooser-multiple > .content > .files > .file > .content { 
     background: var(--dark-background-component); }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > .svg-icon {
+.filechooser-multiple .view-preview > .delete {
+    background-color: rgba(255, 255, 255, 0.78); }
+
+.dark .filechooser-multiple .view-preview > .delete {
+    background-color: rgba(0, 0, 0, 0.57); }
+
+.filechooser-multiple .content > .view-preview > .icon > .svg-icon {
     background: var(--dark-secondary-font); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > .svg-icon {
+.dark .filechooser-multiple .content > .view-preview > .icon > .svg-icon {
     background: var(--light-primary-font); }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > i {
+.filechooser-multiple .content > .view-preview > .icon > i {
     color: var(--dark-secondary-font); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > i {
+.dark .filechooser-multiple .content > .view-preview > .icon > i {
     color: var(--light-primary-font); }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail {
+.filechooser-multiple .content > .detail {
     background: var(--light-background-component); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .detail {
+.dark .filechooser-multiple .content > .detail {
     background: var(--dark-background-component); }
 
-.filechooser-multiple > .content > .files > .file:focus > .content > .detail {
-    background: var(--theme-background); }
+.filechooser-multiple .file:focus > .content > .detail {
+    color: var(--theme-background-font);
+    background-color: var(--theme-background); }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .name {
+.filechooser-multiple .content > .detail > .name {
     color: var(--dark-secondary-font); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .name {
+.dark .filechooser-multiple .content > .detail > .name {
     color: var(--light-primary-font); }
 
-.filechooser-multiple > .content > .files > .file:focus > .content > .detail > .name {
-    color: var(--light-primary-font); }
+.filechooser-multiple .file:focus > .content > .detail > .name {
+    color: var(--theme-background-font); }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar {
+.filechooser-multiple .content > .detail > .avatar {
     background: var(--light-background-component); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .avatar {
+.dark .filechooser-multiple .content > .detail > .avatar {
     background: var(--dark-background-component); }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar > i { 
+.filechooser-multiple .content > .detail > .avatar > i { 
     color: var(--dark-secondary-font); }
 
-.dark .filechooser-multiple > .content > .files > .file > .content > .detail > .avatar > i { 
+.dark .filechooser-multiple .content > .detail > .avatar > i { 
     color: var(--light-primary-font); }
+
+.filechooser-multiple > .action-add {
+    background-color: rgba(0, 0, 0, 0.45); }
+
+.dark .filechooser-multiple > .action-add {
+    background-color: rgba(255, 255, 255, 0.45); }
+
+.filechooser-multiple > .action-add:hover {
+    background-color: rgba(0, 0, 0, 0.87); }
+
+.dark .filechooser-multiple > .action-add:hover {
+    background-color: rgba(255, 255, 255, 0.92); }
+
+.filechooser-multiple > .action-add > i {
+    color: var(--light-secondary-font); }
+
+.dark .filechooser-multiple > .action-add > i {
+    color: var(--dark-secondary-font); }
 
 /** FLEXIBLE BOX */
 
@@ -1869,6 +1983,76 @@ button.raised.primary:before, button.floating.primary:before {
 
 .snackbar > .action > span {
     color: var(--theme-primary-font); }
+
+/** STEPPER HORIZONTAL */
+
+.stepper-horizontal:before {
+    background-color: var(--light-background-divider); }
+
+.dark .stepper-horizontal:before {
+    background-color: var(--dark-background-divider); }
+
+.stepper-horizontal > ul > li > .content,
+.stepper-horizontal > ul > li > .content > .detail {
+    background-color: var(--light-background); }
+
+.dark .stepper-horizontal > ul > li > .content,
+.dark .stepper-horizontal > ul > li > .content > .detail {
+    background-color: var(--dark-background); }
+
+.stepper-horizontal > ul > li > .content > .ripple-box > .effect {
+    background-color: var(--dark-ripple); }
+
+.dark .stepper-horizontal > ul > li > .content > .ripple-box > .effect {
+    background-color: var(--light-ripple); }
+
+.stepper-horizontal > ul > li.success > .content > .indicator:before {
+    color: var(--theme-accent-font);
+    background-color: var(--theme-background-accent); }
+
+.stepper-horizontal > ul > li > .content > .indicator > span {
+    color: var(--light-primary-font);
+    background-color: var(--dark-secondary-font); }
+
+.dark .stepper-horizontal > ul > li > .content > .indicator > span {
+    color: var(--dark-primary-font);
+    background-color: var(--light-secondary-font); }
+
+.stepper-horizontal > ul > li.active > .content > .indicator > span {
+    color: var(--theme-accent-font);
+    background-color: var(--theme-background-accent); }
+
+.stepper-horizontal > ul > li.disabled > .content > .indicator > span {
+    color: var(--light-disabled-font);
+    background-color: var(--dark-disabled-font); }
+
+.dark .stepper-horizontal > ul > li.disabled > .content > .indicator > span {
+    color: var(--dark-disabled-font);
+    background-color: var(--light-disabled-font); }
+
+.stepper-horizontal > ul > li > .content > .detail > .title,
+.stepper-horizontal > ul > li > .content > .detail > .optional {
+    color: var(--dark-secondary-font); }
+
+.dark .stepper-horizontal > ul > li > .content > .detail > .title,
+.dark .stepper-horizontal > ul > li > .content > .detail > .optional {
+    color: var(--light-secondary-font); }
+
+.stepper-horizontal > ul > li.active > .content > .detail > .title {
+    font-weight: 600;
+    color: var(--dark-primary-font); }
+
+.dark .stepper-horizontal > ul > li.active > .content > .detail > .title {
+    color: var(--light-primary-font); }
+
+.stepper-horizontal > ul > li.disabled > .content > .detail > .title,
+.stepper-horizontal > ul > li.disabled > .content > .detail > .optional {
+    font-weight: 400;
+    color: var(--dark-disabled-font); }
+
+.dark .stepper-horizontal > ul > li.disabled > .content > .detail > .title,
+.dark .stepper-horizontal > ul > li.disabled > .content > .detail > .optional {
+    color: var(--light-disabled-font); }
 
 /** SWITCH */
 

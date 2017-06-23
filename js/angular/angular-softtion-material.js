@@ -2389,6 +2389,201 @@
                 }
             },
             
+            ImgMaterial: {
+                name: "imgMaterial",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            $element.on("load", function () {
+                                var height = $element[0].naturalHeight,
+                                    width = $element[0].naturalWidth,
+                                    density = height / width; // Calculando
+                                    
+                                (density > 1) ?
+                                    $element.addClass("density-height") :
+                                    $element.addClass("density-width");
+                            
+                                $element.addClass("active"); // Activando
+                            });
+                        }
+                    };
+                }
+            },
+            
+            Filechooser: {
+                route: "softtion/template/filechooser.html",
+                name: "filechooser",
+                html: function () {
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "file");
+                
+                    var content = softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("select-file").
+                                addAttribute("ng-hide", "isSelectedFile()").
+                                addAttribute("ng-click", "selectFile()"). 
+                                addChildren(
+                                    softtion.html("i").setText("file_upload").
+                                        addAttribute("ng-class", "{disabled: ngDisabled}")
+                                ).addChildren(
+                                    softtion.html("p").setText("{{textDescription}}").
+                                        addAttribute("ng-class", "{disabled: ngDisabled}")
+                                )
+                        ).addChildren(
+                            softtion.html("div").addClass("files").
+                                addAttribute("ng-hide", "!isSelectedFile()").
+                                addChildren(
+                                    softtion.html("div").addClass(["file"]).
+                                        addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
+                                        addAttribute("ng-clickright", "fileRight(file, $event, $index)").
+                                        addAttribute("tabindex", "-1").
+                                        addChildren(
+                                            softtion.html("div").addClass("content").
+                                                addChildren(
+                                                    softtion.html("div").addClass("view-preview").
+                                                        addChildren(
+                                                            softtion.html("div").addClass("delete").addChildren(
+                                                                softtion.html("button").addClass("flat").setText("Remover").
+                                                                    addAttribute("ng-click", "removeFile()")
+                                                            )
+                                                        ).addChildren(
+                                                            softtion.html("div").addClass("icon").
+                                                                addAttribute("ng-bind-html", "getIconComponent(file.type)").
+                                                                addAttribute("ng-if", "!isImageFile(file.type)")
+                                                        ).addChildren(
+                                                            softtion.html("img", false).addClass(["img-material"]).
+                                                                addAttribute("ng-src", "{{file.base64}}").
+                                                                addAttribute("ng-if", "isImageFile(file.type)")
+                                                        )
+                                                ).
+
+                                                addChildren(
+                                                    softtion.html("div").addClass("detail").
+                                                        addChildren(
+                                                            softtion.html("div").addClass("avatar").
+                                                                addChildren(
+                                                                    softtion.html("i").setText("{{getIconFile(file.type)}}")
+                                                                )
+                                                        ).addChildren(
+                                                            softtion.html("label").addClass("name").setText("{{file.name}}")
+                                                        )
+                                                )
+                                        )
+                                )
+                        );
+                    
+                    return input + content; // Componente FileChooser
+                },
+                directive: ["$timeout", "$sce", "SofttionMaterial", function ($timeout, $sce, SofttionMaterial) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Filechooser.route,
+                        scope: {
+                            files: "=ngModel",
+                            ngDisabled: "=?",
+                            textDescription: "@",
+                            
+                            holdEvent: "=?",
+                            clickrightEvent: "=?"
+                        },
+                        link: function ($scope, $element) {
+                            var fileInput = $element.find("input[type=file]"),
+                                imagesFormat = SofttionMaterial.File.imagesFormat,
+                                viewPreview = $element.find(".view-preview"),
+                                heightStart = (viewPreview.height() - 16);                                
+                            
+                            $scope.textDescription = $scope.textDescription || 
+                                "Seleccione archivos a procesar";
+                            
+                            $scope.file = undefined; // Archivos seleccionado
+                            
+                            var processFile = function (file) {
+                                var reader = new FileReader();
+                                
+                                reader.onloadstart = function ($event) {
+                                    // En Inicio
+                                };  
+        
+                                reader.onprogress = function ($event) {
+                                    // En progreso
+                                };
+        
+                                reader.onload = function ($event) {
+                                    $scope.$apply(function () {
+                                        var fileResult = $event.target.result; 
+                                        file["base64"] = fileResult; $scope.file = file;
+                                    });
+                                };
+                                
+                                reader.onerror = function (event) {
+                                    // Error
+                                };
+
+                                reader.onabort = function (event) {
+                                    // Cancelar
+                                };
+                                
+                                $timeout(function () { reader.readAsDataURL(file); }, 250);
+        
+                                return reader; // Retornando procesador de Archivo
+                            };
+                            
+                            fileInput.change(function ($event) {
+                                var files = fileInput[0].files; // Archivos
+                                
+                                if (files.length) {
+                                    console.log(files[0].type); processFile(files[0]);
+                                } // Se cambio archivo a seleccionar
+                            });
+                            
+                            $scope.isSelectedFile = function () { 
+                                return softtion.isDefined($scope.file);
+                            };
+                            
+                            $scope.selectFile = function () { fileInput.click(); };
+                            
+                            $scope.removeFile = function () {
+                                $scope.file = undefined; fileInput[0].value = "";
+                            };
+                            
+                            $scope.isImageFile = function (typeFile) {
+                                return (imagesFormat.indexOf(typeFile) !== -1);
+                            };
+                            
+                            $scope.getIconFile = function (typeFile) {
+                                return SofttionMaterial.File.getIconFile(typeFile);
+                            };
+                            
+                            $scope.getIconComponent = function (typeFile) {
+                                var icon = SofttionMaterial.File.getIconComponent(typeFile),
+                                        
+                                    heightPreview = viewPreview.height(),
+                                    height = (heightPreview > 0) ? 
+                                        (heightPreview - 16) + "px" : heightStart + "px",
+                                                
+                                    style = "height: " + height + "; width: " + height
+                                        + "; line-height: " + height + "; font-size: " + height;
+                                
+                                return $sce.trustAsHtml(icon.addAttribute("style", style).create());
+                            };
+                            
+                            $scope.fileHold = function (file, $event, $index) {
+                                if (softtion.isFunction($scope.holdEvent)) {
+                                    $scope.holdEvent(file, $event, $index);
+                                } // Se ha definido evento Hold en el componente
+                            };
+                            
+                            $scope.fileRight = function (file, $event, $index) {
+                                if (softtion.isFunction($scope.clickrightEvent)) {
+                                    $scope.clickrightEvent(file, $event, $index);
+                                } // Se ha definido evento Click derecho en el componente
+                            };
+                        }
+                    };
+                }]
+            },
+            
             FilechooserMultiple: {
                 route: "softtion/template/filechooser-multiple.html",
                 name: "filechooserMultiple",
@@ -2396,9 +2591,9 @@
                     var input = softtion.html("input", false).
                         addAttribute("type", "file");
                     
-                    var button = softtion.html("button").addClass(["floating", "static"]).
+                    var actionAdd = softtion.html("div").addClass(["action-add"]).
                         addAttribute("ng-click", "selectFile()").
-                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-class", "{disabled: ngDisabled}").
                         addChildren(softtion.html("i").setText("{{iconButton}}"));
                 
                     var content = softtion.html("div").addClass("content").
@@ -2409,53 +2604,53 @@
                                     softtion.html("i").setText("file_upload").
                                         addAttribute("ng-class", "{disabled: ngDisabled}")
                                 ).addChildren(
-                                    softtion.html("p").setText("Seleccione archivos a procesar").
+                                    softtion.html("p").setText("{{textDescription}}").
                                         addAttribute("ng-class", "{disabled: ngDisabled}")
                                 )
                         ).addChildren(
                             softtion.html("div").addClass("files").
                                 addChildren(
-                                
-                            softtion.html("div").addClass(["file"]).
-                                addAttribute("ng-repeat", "file in files").
-                                addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
-                                addAttribute("ng-clickright", "fileRight(file, $event, $index)").
-                                addAttribute("tabindex", "-1").
-                                addChildren(
-                                    softtion.html("div").addClass("content").
+                                    softtion.html("div").addClass(["file"]).
+                                        addAttribute("ng-repeat", "file in files").
+                                        addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
+                                        addAttribute("ng-clickright", "fileRight(file, $event, $index)").
+                                        addAttribute("tabindex", "-1").
                                         addChildren(
-                                            softtion.html("div").addClass("view-preview").
+                                            softtion.html("div").addClass("content").
                                                 addChildren(
-                                                    softtion.html("div").addClass("icon").
-                                                        addAttribute("ng-bind-html", "getIconComponent(file.type)").
-                                                        addAttribute("ng-if", "!isImageFile(file.type)")
-                                                ).
-                                                addChildren(
-                                                    softtion.html("img", false).
-                                                        addAttribute("ng-if", "isImageFile(file.type)").
-                                                        addAttribute("ng-src", "{{file.base64}}")
-                                                )
-                                        ).
-                                    
-                                        addChildren(
-                                            softtion.html("div").addClass("detail").
-                                                addChildren(
-                                                    softtion.html("div").addClass("avatar").
+                                                    softtion.html("div").addClass("view-preview").
                                                         addChildren(
-                                                            softtion.html("i").setText("{{getIconFile(file.type)}}")
+                                                            softtion.html("div").addClass("delete").addChildren(
+                                                                softtion.html("button").addClass("flat").setText("Remover").
+                                                                    addAttribute("ng-click", "removeFile($index)")
+                                                            )
+                                                        ).addChildren(
+                                                            softtion.html("div").addClass("icon").
+                                                            addAttribute("ng-bind-html", "getIconComponent(file.type)").
+                                                            addAttribute("ng-if", "!isImageFile(file.type)")
+                                                        ).addChildren(
+                                                            softtion.html("img", false).addClass(["img-material"]).
+                                                            addAttribute("ng-src", "{{file.base64}}").
+                                                            addAttribute("ng-if", "isImageFile(file.type)")
                                                         )
-                                                ).
-                                                addChildren(
-                                                    softtion.html("label").addClass("name").setText("{{file.name}}")
+                                                ).addChildren(
+                                                    softtion.html("div").addClass("detail").
+                                                        addChildren(
+                                                            softtion.html("div").addClass("avatar").
+                                                            addChildren(
+                                                                softtion.html("i").setText("{{getIconFile(file.type)}}")
+                                                            )
+                                                        ).addChildren(
+                                                            softtion.html("label").addClass("name").setText("{{file.name}}")
+                                                        )
                                                 )
                                         )
-                            )
-                                )
-                        );
+                                    )
+                            );
                     
-                    return input + content + button;
+                    return input + content + actionAdd;
                 },
-                directive: ["$timeout", function ($timeout) {
+                directive: ["$timeout", "SofttionMaterial", function ($timeout, SofttionMaterial) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.FilechooserMultiple.route,
@@ -2464,17 +2659,18 @@
                             iconButton: "@",
                             multiple: "=?",
                             ngDisabled: "=?",
+                            textDescription: "@",
                             
-                            eventHold: "=?",
-                            eventClickright: "=?"
+                            holdEvent: "=?",
+                            clickrightEvent: "=?"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
-                                imageFormats = [
-                                    "image/jpeg", "image/png", "image/jpg", "image/gif"
-                                ];
+                                imagesFormat = SofttionMaterial.File.imagesFormat;
                             
                             $scope.iconButton = $scope.iconButton || "attachment";
+                            $scope.textDescription = $scope.textDescription || 
+                                "Seleccione archivos a procesar";
                             
                             $scope.files = []; // Lista de archivos seleccionados
                             
@@ -2525,47 +2721,31 @@
                             
                             $scope.selectFile = function () { fileInput.click(); };
                             
+                            $scope.removeFile = function ($index) {
+                                $scope.files.remove($index); fileInput[0].value = "";
+                            };
+                            
                             $scope.isImageFile = function (typeFile) {
-                                return (imageFormats.indexOf(typeFile) !== -1);
+                                return (imagesFormat.indexOf(typeFile) !== -1);
                             };
                             
                             $scope.getIconFile = function (typeFile) {
-                                switch (typeFile) {
-                                    case ("image/jpeg"): return "image";
-                                    case ("image/jpg"): return "image";
-                                    case ("image/png"): return "image";
-                                    case ("image/gif"): return "gif";
-                                    case ("application/x-zip-compressed"): return "archive";
-                                    case ("text/plain"): return "format_align_center";
-                                    default: return "insert_drive_file";
-                                }
-                            };
-                            
-                            var createIcon = function (typeFile) {
-                                return softtion.html("i").setText($scope.getIconFile(typeFile)).create();
-                            };
-                            
-                            var createImage = function (classImg) {
-                                return softtion.html("div").addClass(["svg-icon", classImg, "cover"]).create();
+                                return SofttionMaterial.File.getIconFile(typeFile);
                             };
                             
                             $scope.getIconComponent = function (typeFile) {
-                                switch (typeFile) {
-                                    case ("application/pdf"): return createImage("pdf"); 
-                                    case ("application/x-zip-compressed"): return createImage("zip");
-                                    default: return createIcon(typeFile);
-                                }
+                                return SofttionMaterial.File.getIconComponent(typeFile).create();
                             };
                             
                             $scope.fileHold = function (file, $event, $index) {
-                                if (softtion.isFunction($scope.eventHold)) {
-                                    $scope.eventHold(file, $event, $index);
+                                if (softtion.isFunction($scope.holdEvent)) {
+                                    $scope.holdEvent(file, $event, $index);
                                 } // Se ha definido evento Hold en el componente
                             };
                             
                             $scope.fileRight = function (file, $event, $index) {
-                                if (softtion.isFunction($scope.eventClickright)) {
-                                    $scope.eventClickright(file, $event, $index);
+                                if (softtion.isFunction($scope.clickrightEvent)) {
+                                    $scope.clickrightEvent(file, $event, $index);
                                 } // Se ha definido evento Click derecho en el componente
                             };
                         }
@@ -3688,6 +3868,27 @@
                         }
                     };
                 }
+            },
+            
+            StepperHorizontal: {
+                name: "stepperHorizontal",
+                directive: ["SofttionMaterial", function (SofttionMaterial) {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            var items = $element.find("li > .content");
+                            
+                            angular.forEach(items, function (item) {
+                                var element = angular.element(item),
+                                    box = SofttionMaterial.Ripple.box(),
+                                    effect = SofttionMaterial.Ripple.effect();
+
+                                box.append(effect); element.append(box);
+                                SofttionMaterial.Ripple.event(box, effect);
+                            });
+                        }
+                    };
+                }]
             },
             
             Switch: {
@@ -6192,6 +6393,7 @@
                             document.documentElement.style.setProperty("--theme-background-dark", theme.dark);
                             
                             document.documentElement.style.setProperty("--theme-secondary-font", theme.standard);
+                            document.documentElement.style.setProperty("--theme-background-font", theme.accentFont);
                         } // Tema de la paleta encontrado, cargando
                     };
                     
@@ -6510,6 +6712,65 @@
         VERSION: "1.0.4",
         Selectors: {
             FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box"
+        },
+        File: {
+            imagesFormat: [
+                "image/jpeg", "image/png", "image/jpg", "image/gif", "image/svg+xml"
+            ],
+            
+            getIconFile: function (typeFile) {
+                switch (typeFile) {
+                    case ("image/jpeg"): return "image";
+                    case ("image/jpg"): return "image";
+                    case ("image/png"): return "image";
+                    case ("image/gif"): return "gif";
+                    case ("image/svg+xml"): return "image";
+                    case ("application/x-zip-compressed"): return "archive";
+                    case ("text/plain"): return "format_align_center";
+                    default: return "insert_drive_file";
+                }
+            },
+                            
+            createIcon: function (typeFile) {
+                return softtion.html("i").setText(this.getIconFile(typeFile));
+            },
+
+            createImage: function (classImg) {
+                return softtion.html("div").addClass(["svg-icon", classImg, "cover"]);
+            },
+            
+            getIconComponent: function (typeFile) {
+                switch (typeFile) {
+                    case ("application/pdf"): return this.createImage("pdf"); 
+                    case ("application/x-zip-compressed"): return this.createImage("zip");
+                    default: return this.createIcon(typeFile);
+                }
+            }
+        },
+        Ripple: {
+            element: function () {
+                return softtion.html("div").addClass("ripple").tojQuery();
+            },
+            box: function () {
+                return softtion.html("div").addClass("ripple-box").tojQuery();
+            },
+            effect: function () {
+                return softtion.html("span").addClass("effect").tojQuery();
+            },
+            event: function (box, effect) {
+                box.click(function ($event) {
+                    if (box.parent().is(":disabled")) { return; }
+
+                    if (box.hasClass("animated")) {
+                        box.removeClass("animated");
+                    } // Removiendo la clase para animar
+
+                    var left = $event.pageX - box.offset().left, 
+                        top = $event.pageY - box.offset().top;
+
+                    effect.css({ top: top, left: left }); box.addClass("animated"); 
+                });
+            }
         },
         Theme: {
             RED: "red",

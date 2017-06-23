@@ -167,24 +167,6 @@ input[type=number]::-webkit-outer-spin-button {
 .material-icon.mi-400 { 
     font-size: 56px; }
 
-/** SVG-ICONS */
-
-.svg-icon {
-    width: 128px;
-    height: 128px; }
-
-.svg-icon.pdf {
-    -webkit-mask: url(icons/file-pdf.svg) no-repeat 50% 50%;
-    mask: url(icons/file-pdf.svg) no-repeat 50% 50%; }
-
-.svg-icon.zip {
-    -webkit-mask: url(icons/zip-box.svg) no-repeat 50% 50%;
-    mask: url(icons/zip-box.svg) no-repeat 50% 50%; }
-
-.svg-icon.cover {
-    -webkit-mask-size: cover;
-    mask-size: cover; }
-
 /** LAYOUTS, DIMENSIONS, TOOLS */
 
 .row {
@@ -3718,15 +3700,219 @@ button.raised:focus:after, button.flat:focus:after {
     -o-animation: open-fab-speeddial 0.175s var(--standard-curve);
     -ms-animation: open-fab-speeddial 0.175s var(--standard-curve); }
 
+/** FILE SVG-ICONS */
+
+.svg-icon {
+    width: 128px;
+    height: 128px; }
+
+.svg-icon.pdf {
+    -webkit-mask: url(icons/file-pdf.svg) no-repeat 50% 50%;
+    mask: url(icons/file-pdf.svg) no-repeat 50% 50%; }
+
+.svg-icon.zip {
+    -webkit-mask: url(icons/zip-box.svg) no-repeat 50% 50%;
+    mask: url(icons/zip-box.svg) no-repeat 50% 50%; }
+
+.svg-icon.cover {
+    -webkit-mask-size: cover;
+    mask-size: cover; }
+
+/** FILECHOOSER */
+
+.filechooser {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding-top: 100%;
+    margin: 8px 0px;
+    overflow: hidden;
+    user-select: none; }
+
+.filechooser.rectangle {
+    padding-top: 56.25%; }
+
+.filechooser > input[type=file] {
+    position: absolute;
+    width: 0%;
+    height: 0%;
+    visibility: hidden; }
+
+.filechooser > .content {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    border-radius: 4px; }
+
+.filechooser > .content > .select-file {
+    cursor: pointer; }
+
+.filechooser > .content > .select-file > i {
+    width: 100%;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    font-size: 60px;
+    margin-top: 16px; }
+
+.filechooser > .content > .select-file > p {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 8px; }
+
+.filechooser > .content > .select-file > p.disabled {
+    text-decoration: line-through; }
+
+.filechooser > .content > .files {
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%; }
+
+.filechooser > .content > .files > .file {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+    cursor: pointer; 
+    outline: none; }
+
+.filechooser > .content > .files > .file::before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-top: 100%; }
+
+.filechooser > .content > .files > .file > .content {
+    position: absolute;
+    top: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    box-sizing: border-box;
+    box-shadow: var(--shadow-1);
+    border-radius: 2px; }
+
+.filechooser > .content > .files > .file > .content:hover {
+    box-shadow: var(--shadow-4); }
+
+.filechooser .content > .view-preview {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 48px);
+    overflow: hidden;
+    border-radius: 2px 2px 0px 0px; }
+
+.filechooser .view-preview > .delete {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 5;
+    visibility: hidden;
+    -moz-transition: opacity 0.175s var(--sharp-curve);
+    -webkit-transition: opacity 0.175s var(--sharp-curve);
+    transition: opacity 0.175s var(--sharp-curve);
+    -o-transition: opacity 0.175s var(--sharp-curve);
+    -ms-transition: opacity 0.175s var(--sharp-curve); }
+
+.filechooser .view-preview:hover > .delete {
+    opacity: 1;
+    visibility: visible; }
+
+.filechooser .view-preview > .delete > button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.filechooser .view-preview > .icon {
+    height: 100%; }
+
+.filechooser .view-preview > .icon > .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.filechooser .view-preview > .icon > i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 56px;
+    width: 56px;
+    line-height: 56px;
+    text-align: center;
+    font-size: 56px;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.filechooser .content > .detail {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    padding: 8px;
+    height: 48px;
+    line-height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 0px 0px 2px 2px;
+    box-sizing: border-box; }
+
+.filechooser .content > .detail > .avatar {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    line-height: 32px; }
+
+.filechooser .content > .detail > .avatar > i {
+    height: inherit;
+    line-height: inherit;
+    width: inherit; 
+    text-align: center; }
+
+.filechooser .content > .detail > .name {
+    display: block;
+    width: calc(100% - 40px);
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
 /** FILECHOOSER MULTIPLE */
 
 .filechooser-multiple {
     position: relative;
     float: left;
     width: 100%;
-    height: 300px;
     margin: 8px 0px;
-    overflow: hidden; }
+    overflow: hidden;
+    user-select: none; }
 
 .filechooser-multiple > input[type=file] {
     position: absolute;
@@ -3761,8 +3947,8 @@ button.raised:focus:after, button.flat:focus:after {
     text-decoration: line-through; }
 
 .filechooser-multiple > .content > .files {
-    display: -webkit-inline-box;
-    overflow-y: hidden; }
+    overflow-y: hidden;
+    display: -webkit-inline-box; }
 
 .filechooser-multiple > .content > .files > .file {
     position: relative;
@@ -3792,17 +3978,46 @@ button.raised:focus:after, button.flat:focus:after {
 .filechooser-multiple > .content > .files > .file > .content:hover {
     box-shadow: var(--shadow-4); }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview {
+.filechooser-multiple .content > .view-preview {
     position: absolute;
     width: 100%;
     height: calc(100% - 48px);
     overflow: hidden;
     border-radius: 2px 2px 0px 0px; }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon {
+.filechooser-multiple .view-preview > .delete {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 5;
+    visibility: hidden;
+    -moz-transition: opacity 0.175s var(--sharp-curve);
+    -webkit-transition: opacity 0.175s var(--sharp-curve);
+    transition: opacity 0.175s var(--sharp-curve);
+    -o-transition: opacity 0.175s var(--sharp-curve);
+    -ms-transition: opacity 0.175s var(--sharp-curve); }
+
+.filechooser-multiple .view-preview:hover > .delete {
+    opacity: 1;
+    visibility: visible; }
+
+.filechooser-multiple .view-preview > .delete > button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
+
+.filechooser-multiple .content > .view-preview > .icon {
     height: 100%; }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > .svg-icon {
+.filechooser-multiple .content > .view-preview > .icon > .svg-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -3812,32 +4027,22 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > .icon > i {
+.filechooser-multiple .content > .view-preview > .icon > i {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 56px;
-    width: 56px;
-    line-height: 56px;
+    height: 120px;
+    width: 120px;
+    line-height: 120px;
     text-align: center;
-    font-size: 56px;
+    font-size: 120px;
     -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.filechooser-multiple > .content > .files > .file > .content > .view-preview > img {
-    position: absolute;
-    top: 50%;
-    width: 100%; 
-    -moz-transform: translateY(-50%); 
-    -webkit-transform: translateY(-50%); 
-    transform: translateY(-50%); 
-    -o-transform: translateY(-50%); 
-    -ms-transform: translateY(-50%); }
-
-.filechooser-multiple > .content > .files > .file > .content > .detail {
+.filechooser-multiple .content > .detail {
     position: absolute;
     bottom: 0px;
     width: 100%;
@@ -3847,9 +4052,10 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    border-radius: 0px 0px 2px 2px; }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar {
+.filechooser-multiple .content > .detail > .avatar {
     float: left;
     width: 32px;
     height: 32px;
@@ -3857,13 +4063,13 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 8px;
     line-height: 32px; }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .avatar > i {
+.filechooser-multiple .content > .detail > .avatar > i {
     height: inherit;
     line-height: inherit;
     width: inherit; 
     text-align: center; }
 
-.filechooser-multiple > .content > .files > .file > .content > .detail > .name {
+.filechooser-multiple .content > .detail > .name {
     display: block;
     width: calc(100% - 40px);
     float: left;
@@ -3874,31 +4080,38 @@ button.raised:focus:after, button.flat:focus:after {
     text-overflow: ellipsis;
     white-space: nowrap; }
 
-.filechooser-multiple > .content > .files > .file > .content > button.action {
+.filechooser-multiple > .action-add {
     position: absolute;
-    top: 0px;
-    right: 0px;
-    padding: 8px;
-    height: 24px;
-    box-sizing: content-box; }
+    bottom: 22px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.25s var(--sharp-curve); }
 
-.filechooser-multiple > button.floating {
-    position: absolute;
-    left: 50%;
-    bottom: 12px;
-    z-index: 1;
-    box-shadow: var(--shadow-2);
-    -moz-transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+.filechooser-multiple > .action-add.disabled {
+    pointer-events: none; }
 
-.filechooser-multiple > button.floating:hover {
-    box-shadow: var(--shadow-4); }
+.filechooser-multiple > .action-add > i {
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    transition: all 0.25s var(--sharp-curve); }
 
-.filechooser-multiple > button.floating:hover:disabled {
-    box-shadow: var(--shadow-2); }
+.filechooser-multiple > .action-add:hover {
+    bottom: 18px;
+    right: 12px;
+    opacity: 1;
+    width: 48px;
+    height: 48px; }
+
+.filechooser-multiple > .action-add:hover > i {
+    height: 48px;
+    line-height: 48px;
+    width: 48px; }
 
 /** FLEXIBLE BOX */
 
@@ -4208,6 +4421,35 @@ button.raised:focus:after, button.flat:focus:after {
 
 .grid-list > .cell > .content > .detail > .title ~ .subtitle {
     margin-top: 2px; }
+
+/** IMG MATERIAL */
+
+.img-material {
+    position: absolute;
+    visibility: hidden; }
+
+.img-material.active {
+    visibility: visible; }
+
+.img-material.density-width {
+    width: 100%;
+    top: 50%;
+    height: auto;
+    -moz-transform: translateY(-50%); 
+    -webkit-transform: translateY(-50%); 
+    transform: translateY(-50%); 
+    -o-transform: translateY(-50%); 
+    -ms-transform: translateY(-50%); }
+
+.img-material.density-height {
+    height: 100%;
+    left: 50%;
+    width: auto;
+    -moz-transform: translateX(-50%); 
+    -webkit-transform: translateX(-50%); 
+    transform: translateX(-50%); 
+    -o-transform: translateX(-50%); 
+    -ms-transform: translateX(-50%); }
 
 /** LINK */
 
@@ -4519,7 +4761,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: none; }
 
 .app-bar > .progress-bar {
-    height: 2px; }
+    height: 3px; }
 
 .progress-bar.show {
     display: block; }
@@ -4529,6 +4771,9 @@ button.raised:focus:after, button.flat:focus:after {
     top: 0;
     width: 0; 
     height: 4px; }
+
+.app-bar > .progress-bar > .bar {
+    height: 3px; }
 
 .progress-bar.show > .bar {
     -moz-animation-name: progressDeterminate;
@@ -4548,6 +4793,10 @@ button.raised:focus:after, button.flat:focus:after {
     top: 0px;
     width: 0px; 
     height: 4px; }
+
+.app-bar > .progress-bar.indeterminate:after, 
+.app-bar > .progress-bar.indeterminate:before {
+    height: 3px; }
 
 .progress-bar.show.indeterminate:after {
     -moz-animation: progressIndeterminateAfter 2s infinite;
@@ -5552,6 +5801,108 @@ button.raised:focus:after, button.flat:focus:after {
         width: 40%;
         left: 30%; }
 }
+
+/** STEPPER HORIZONTAL */
+
+.stepper-horizontal {
+    position: relative;
+    width: 100%;
+    height: 72px;
+    overflow: hidden; 
+    box-shadow: var(--shadow-2); 
+    user-select: none; }
+
+.stepper-horizontal:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    left: 24px;
+    height: 1px;
+    z-index: -1; }
+
+.stepper-horizontal > ul {
+    display: flex; }
+
+.stepper-horizontal > ul > li {
+    display: flex;
+    width: 100%; 
+    height: 72px; }
+
+.stepper-horizontal > ul > li.disabled {
+    pointer-events: none; }
+
+.stepper-horizontal > ul > li:last-child {
+    display: list-item; }
+
+.stepper-horizontal > ul > li:not(:first-child):not(:last-child) {
+    justify-content: center; }
+
+.stepper-horizontal > ul > li > .content { 
+    display: table; 
+    position: relative;
+    height: 72px;
+    padding: 0px 8px;
+    cursor: pointer; }
+
+.stepper-horizontal > ul > li > .content > .ripple-box {
+    opacity: 0.24; }
+
+.stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
+    animation: ripple-stepper 0.325s var(--easing-out); }
+
+.stepper-horizontal > ul > li:first-child > .content { 
+    padding-left: 24px; }
+
+.stepper-horizontal > ul > li:last-child > .content { 
+    float: right;
+    padding-right: 24px; }
+
+.stepper-horizontal > ul > li > .content > .indicator {
+    margin-right: 8px;
+    width: 24px;
+    text-align: center; }
+
+.stepper-horizontal > ul > li.success > .content > .indicator:before {
+    content: "done";
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    font-family: "Material Icons";
+    font-size: 20px;
+    text-align: center;
+    line-height: 24px;
+    border-radius: 50%; }
+
+.stepper-horizontal > ul > li > .content > .indicator > span {
+    display: block;
+    width: 24px;
+    height: 24px; 
+    margin-top: 24px;
+    line-height: 24px; 
+    border-radius: 50%; }
+
+.stepper-horizontal > ul > li.success > .content > .indicator > span {
+    visibility: hidden; }
+
+.stepper-horizontal > ul > li > .content > .detail {
+    display: table-cell; 
+    vertical-align: middle;
+    height: 72px; }
+
+.stepper-horizontal > ul > li > .content > .detail > p {
+    margin: 0px; }
+
+.stepper-horizontal > ul > li > .content > .detail > .title {
+    height: 24px;
+    line-height: 24px; }
+
+.stepper-horizontal > ul > li > .content > .detail > .optional {
+    margin-top: 2px;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px; }
 
 /** SWICTH */
 

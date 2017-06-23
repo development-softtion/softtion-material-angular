@@ -165,6 +165,32 @@
         width: 33%; }
 }
 
+@keyframes ripple-stepper {
+    0% {
+        opacity: 0; }
+    
+    40% {
+        opacity: 1; }
+    
+    100% {
+        opacity: 0;
+        padding-bottom: 125%;
+        width: 125%; }
+}
+
+@-webkit-keyframes ripple-stepper {
+    0% {
+        opacity: 0; }
+    
+    40% {
+        opacity: 1; }
+    
+    100% {
+        opacity: 0;
+        padding-bottom: 125%;
+        width: 125%; }
+}
+
 @keyframes ripple-25 {
     0% {
         opacity: 0; }

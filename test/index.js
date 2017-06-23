@@ -3,9 +3,9 @@
 var app = angular.module("myApp", ["ngSofttionMaterial"]);
 
 app.config(function ($themeMaterialProvider, SofttionMaterial) {
-    $themeMaterialProvider.setPrimary(SofttionMaterial.Theme.ORANGE);
+    $themeMaterialProvider.setPrimary(SofttionMaterial.Theme.BLUE);
     
-    $themeMaterialProvider.setSecondary(SofttionMaterial.Theme.TEAL);
+    $themeMaterialProvider.setSecondary(SofttionMaterial.Theme.YELLOW);
     
     $themeMaterialProvider.setError(SofttionMaterial.Theme.BLUE);
 });
