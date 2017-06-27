@@ -5812,6 +5812,9 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: var(--shadow-2); 
     user-select: none; }
 
+.stepper-horizontal.alternative {
+    height: 104px; }
+
 .stepper-horizontal:before {
     content: "";
     position: absolute;
@@ -5821,6 +5824,9 @@ button.raised:focus:after, button.flat:focus:after {
     height: 1px;
     z-index: -1; }
 
+.stepper-horizontal.alternative:before {
+    top: 28px; }
+
 .stepper-horizontal > ul {
     display: flex; }
 
@@ -5828,6 +5834,9 @@ button.raised:focus:after, button.flat:focus:after {
     display: flex;
     width: 100%; 
     height: 72px; }
+
+.stepper-horizontal.alternative > ul > li {
+    height: 104px; }
 
 .stepper-horizontal > ul > li.disabled {
     pointer-events: none; }
@@ -5844,6 +5853,18 @@ button.raised:focus:after, button.flat:focus:after {
     height: 72px;
     padding: 0px 8px;
     cursor: pointer; }
+
+.stepper-horizontal.alternative > ul > li > .content {
+    display: block;
+    width: 100%;
+    height: 104px;
+    padding: 0px; }
+
+.stepper-horizontal.alternative li:first-child > .content {
+    padding-left: 0px; }
+
+.stepper-horizontal.alternative li:last-child > .content {
+    padding-right: 0px; }
 
 .stepper-horizontal > ul > li > .content > .ripple-box {
     opacity: 0.24; }
@@ -5863,8 +5884,27 @@ button.raised:focus:after, button.flat:focus:after {
     width: 24px;
     text-align: center; }
 
+.stepper-horizontal.alternative li > .content > .indicator {
+    padding: 0px 8px;
+    margin-left: calc(50% - 20px);
+    margin-top: 16px;
+    margin-bottom: 8px; }
+
+.stepper-horizontal.alternative li:first-child > .content > .indicator {
+    margin-left: 0px;
+    padding-left: calc(50% - 12px); }
+
+.stepper-horizontal.alternative li:last-child > .content > .indicator {
+    padding-right: calc(50% - 12px); }
+
 .stepper-horizontal > ul > li.success > .content > .indicator:before {
-    content: "done";
+    content: "done"; }
+
+.stepper-horizontal > ul > li.error > .content > .indicator:before {
+    content: "report_problem"; }
+
+.stepper-horizontal > ul > li.success > .content > .indicator:before,
+.stepper-horizontal > ul > li.error > .content > .indicator:before {
     position: absolute;
     display: block;
     width: 24px;
@@ -5883,6 +5923,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 24px; 
     border-radius: 50%; }
 
+.stepper-horizontal.alternative li > .content > .indicator > span {
+    margin-top: 0px; }
+
+.stepper-horizontal > ul > li.error > .content > .indicator > span,
 .stepper-horizontal > ul > li.success > .content > .indicator > span {
     visibility: hidden; }
 
@@ -5890,6 +5934,11 @@ button.raised:focus:after, button.flat:focus:after {
     display: table-cell; 
     vertical-align: middle;
     height: 72px; }
+
+.stepper-horizontal.alternative > ul > li > .content > .detail {
+    display: block;
+    width: 100%; 
+    height: auto; }
 
 .stepper-horizontal > ul > li > .content > .detail > p {
     margin: 0px; }
@@ -5903,6 +5952,10 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 12px;
     height: 16px;
     line-height: 16px; }
+
+.stepper-horizontal.alternative li > .content > .detail > .title,
+.stepper-horizontal.alternative li > .content > .detail > .optional {
+    text-align: center; }
 
 /** SWICTH */
 

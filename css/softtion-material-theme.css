@@ -2000,6 +2000,10 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .stepper-horizontal > ul > li > .content > .detail {
     background-color: var(--dark-background); }
 
+.stepper-horizontal.alternative > ul > li > .content,
+.dark .stepper-horizontal.alternative > ul > li > .content {
+    background: transparent; }
+
 .stepper-horizontal > ul > li > .content > .ripple-box > .effect {
     background-color: var(--dark-ripple); }
 
@@ -2009,6 +2013,15 @@ button.raised.primary:before, button.floating.primary:before {
 .stepper-horizontal > ul > li.success > .content > .indicator:before {
     color: var(--theme-accent-font);
     background-color: var(--theme-background-accent); }
+
+.stepper-horizontal > ul > li.error > .content > .indicator:before {
+    color: var(--theme-error-font); }
+
+.stepper-horizontal.alternative > ul > li > .content > .indicator {
+    background-color: var(--light-background); }
+
+.dark .stepper-horizontal.alternative > ul > li > .content > .indicator {
+    background-color: var(--dark-background); }
 
 .stepper-horizontal > ul > li > .content > .indicator > span {
     color: var(--light-primary-font);
@@ -2044,6 +2057,12 @@ button.raised.primary:before, button.floating.primary:before {
 
 .dark .stepper-horizontal > ul > li.active > .content > .detail > .title {
     color: var(--light-primary-font); }
+
+.stepper-horizontal > ul > li.error > .content > .detail > .title,
+.stepper-horizontal > ul > li.error > .content > .detail > .optional,
+.dark .stepper-horizontal > ul > li.error > .content > .detail > .optional,
+.dark .stepper-horizontal > ul > li.error > .content > .detail > .title {
+    color: var(--theme-error-font); }
 
 .stepper-horizontal > ul > li.disabled > .content > .detail > .title,
 .stepper-horizontal > ul > li.disabled > .content > .detail > .optional {

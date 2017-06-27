@@ -2480,7 +2480,7 @@
                         restrict: "C",
                         templateUrl: Material.components.Filechooser.route,
                         scope: {
-                            files: "=ngModel",
+                            file: "=ngModel",
                             ngDisabled: "=?",
                             textDescription: "@",
                             
