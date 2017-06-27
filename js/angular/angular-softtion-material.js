@@ -6407,7 +6407,9 @@
                             // Colores de fuente
                             var font = ColorMaterial.font[theme.baseColor];
                             
+                            propertyStyle("--theme-primary-font", theme["500"]);
                             propertyStyle("--theme-primary-font-active", font.primary);
+                            propertyStyle("--theme-primary-font-alternative", font.alternative);
                             propertyStyle("--theme-primary-font-inactive", font.secondary);
                             propertyStyle("--theme-primary-font-disabled", font.disabled);
                             
@@ -6445,7 +6447,9 @@
                             // Colores de fuente
                             var font = ColorMaterial.font[theme.baseColor];
                             
+                            propertyStyle("--theme-secondary-font", theme["500"]);
                             propertyStyle("--theme-secondary-font-active", font.primary);
+                            propertyStyle("--theme-secondary-font-alternative", font.alternative);
                             propertyStyle("--theme-secondary-font-inactive", font.secondary);
                             propertyStyle("--theme-secondary-font-disabled", font.disabled);
                             
@@ -6526,12 +6530,12 @@
             lightBlue: {
                 50:  "#e1f5fe", 100: "#b3e5fc", 200: "#81d4fa", 300: "#4fc3f7", 
                 400: "#29b6f6", 500: "#03a9f4", 600: "#039be5", 700: "#0288d1", 
-                800: "#0277bd", 900: "#01579b", baseColor: "dark"
+                800: "#0277bd", 900: "#01579b", baseColor: "alternativeDark"
             },
             cyan: {
                 50:  "#e0f7fa", 100: "#b2ebf2", 200: "#80deea", 300: "#4dd0e1", 
                 400: "#26c6da", 500: "#00bcd4", 600: "#00acc1", 700: "#0097a7", 
-                800: "#00838f", 900: "#006064", baseColor: "dark"
+                800: "#00838f", 900: "#006064", baseColor: "alternativeDark"
             },
             teal: {
                 50:  "#e0f2f1", 100: "#b2dfdb", 200: "#80cbc4", 300: "#4db6ac", 
@@ -6546,12 +6550,12 @@
             lightGreen: {
                 50:  "#f1f8e9", 100: "#dcedc8", 200: "#c5e1a5", 300: "#aed581", 
                 400: "#9ccc65", 500: "#8bc34a", 600: "#7cb342", 700: "#689f38", 
-                800: "#558b2f", 900: "#33691e", baseColor: "dark"
+                800: "#558b2f", 900: "#33691e", baseColor: "alternativeDark"
             },
             lime: {
                 50:  "#f9fbe7", 100: "#f0f4c3", 200: "#e6ee9c", 300: "#dce775", 
                 400: "#d4e157", 500: "#cddc39", 600: "#c0ca33", 700: "#afb42b", 
-                800: "#9e9d24", 900: "#827717", baseColor: "dark"
+                800: "#9e9d24", 900: "#827717", baseColor: "alternativeDark"
             },
             yellow: {
                 50:  "#fffde7", 100: "#fff9c4", 200: "#fff59d", 300: "#fff176", 
@@ -6566,7 +6570,7 @@
             orange: {
                 50:  "#fff3e0", 100: "#ffe0b2", 200: "#ffcc80", 300: "#ffb74d", 
                 400: "#ffa726", 500: "#ff9800", 600: "#fb8c00", 700: "#f57c00", 
-                800: "#ef6c00", 900: "#e65100", baseColor: "dark"
+                800: "#ef6c00", 900: "#e65100", baseColor: "alternativeDark"
             },
             deepOrange: {
                 50:  "#fbe9e7", 100: "#ffccbc", 200: "#ffab91", 300: "#ff8a65", 
@@ -6581,7 +6585,7 @@
             grey: {
                 50:  "#fafafa", 100: "#f5f5f5", 200: "#eeeeee", 300: "#e0e0e0", 
                 400: "#bdbdbd", 500: "#9e9e9e", 600: "#757575", 700: "#616161", 
-                800: "#424242", 900: "#212121", baseColor: "dark"
+                800: "#424242", 900: "#212121", baseColor: "alternativeDark"
             },
             blueGrey: {
                 50:  "#eceff1", 100: "#cfd8dc", 200: "#b0bec5", 300: "#90a4ae", 
@@ -6592,12 +6596,19 @@
         font: {
             light: {
                 primary: "rgba(255, 255, 255, 1)",
+                alternative: "rgba(255, 255, 255, 1)",
                 secondary: "rgba(255, 255, 255, 0.7)",
                 disabled: "rgba(255, 255, 255, 0.5)"
             },
-            
             dark: {
                 primary: "rgba(0, 0, 0, 0.87)",
+                alternative: "rgba(0, 0, 0, 0.87)",
+                secondary: "rgba(0, 0, 0, 0.54)",
+                disabled: "rgba(0, 0, 0, 0.38)"
+            },
+            alternativeDark: {
+                primary: "rgba(0, 0, 0, 0.87)",
+                alternative: "rgba(255, 255, 255, 1)",
                 secondary: "rgba(0, 0, 0, 0.54)",
                 disabled: "rgba(0, 0, 0, 0.38)"
             }
@@ -6609,256 +6620,6 @@
         ripple: {
             dark: "rgba(0, 0, 0, 0.38)",
             light: "rgba(255, 255, 255, 0.5)"
-        }
-    });
-
-    ngMaterial.constant("ColorPalette", {
-        red: {
-            standard: "#f44336",        // red-500
-            dark: "#d32f2f",            // red-700
-            light: "#ef9a9a",           // red-200
-
-            accent: "#f44336",          // red-500
-            accentFocus: "#c62828",     // red-800
-            accentHover: "#e57373",     // red-300
-            accentDisabled: "#ffcdd2",  // red-100
-            accentFont: "#ffffff",      // white
-
-            font: "#f44336"             // red-500
-        },
-        pink: {
-            standard: "#e91e63",        // pink-500
-            dark: "#c2185b",            // pink-700
-            light: "#f48fb1",           // pink-200
-
-            accent: "#e91e63",          // pink-500
-            accentFocus: "#ad1457",     // pink-800
-            accentHover: "#f06292",     // pink-300
-            accentDisabled: "#f8bbd0",  // pink-100
-            accentFont: "#ffffff",      // white
-
-            font: "#e91e63"             // pink-500
-        },
-        purple: {
-            standard: "#9c27b0",        // purple-500
-            dark: "#7b1fa2",            // purple-700
-            light: "#e1bee7",           // purple-200
-
-            accent: "#9c27b0",          // purple-500
-            accentFocus: "#6a1b9a",     // purple-800
-            accentHover: "#ba68c8",     // purple-300
-            accentDisabled: "#e1bee7",  // purple-100
-            accentFont: "#ffffff",      // white
-
-            font: "#9c27b0"             // purple-500
-        },
-        deepPurple: {
-            standard: "#673ab7",        // deep-purple-500
-            dark: "#512da8",            // deep-purple-700
-            light: "#b39ddb",           // deep-purple-200
-
-            accent: "#673ab7",          // deep-purple-500
-            accentFocus: "#4527a0",     // deep-purple-800
-            accentHover: "#9575cd",     // deep-purple-300
-            accentDisabled: "#d1c4e9",  // deep-purple-100
-            accentFont: "#ffffff",      // white
-
-            font: "#673ab7"             // deep-purple-500
-        },
-        indigo: {
-            standard: "#3f51b5",        // indigo-500
-            dark: "#303f9f",            // indigo-700
-            light: "#9fa8da",           // indigo-200
-
-            accent: "#3f51b5",          // indigo-500
-            accentFocus: "#283593",     // indigo-800
-            accentHover: "#7986cb",     // indigo-300
-            accentDisabled: "#c5cae9",  // indigo-100
-            accentFont: "#ffffff",      // white
-
-            font: "#3f51b5"             // indigo-500
-        },
-        blue: {
-            standard: "#2196f3",        // blue-500
-            dark: "#1976d2",            // blue-700
-            light: "#90caf9",           // blue-200
-
-            accent: "#2196f3",          // blue-500
-            accentFocus: "#1565c0",     // blue-800
-            accentHover: "#64b5f6",     // blue-300
-            accentDisabled: "#bbdefb",  // blue-100
-            accentFont: "#ffffff",      // white
-
-            font: "#2196f3"             // blue-500
-        },
-        lightBlue: {
-            standard: "#03a9f4",        // light-blue-500
-            dark: "#0288d1",            // light-blue-700
-            light: "#81d4fa",           // light-blue-200
-
-            accent: "#03a9f4",          // light-blue-500
-            accentFocus: "#0277bd",     // light-blue-800
-            accentHover: "#4fc3f7",     // light-blue-300
-            accentDisabled: "#b3e5fc",  // light-blue-100
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#03a9f4"             // light-blue-500
-        },
-        cyan: {
-            standard: "#00bcd4",        // cyan-500
-            dark: "#0097a7",            // cyan-700
-            light: "#80deea",           // cyan-200
-
-            accent: "#00bcd4",          // cyan-500
-            accentFocus: "#00838f",     // cyan-800
-            accentHover: "#4dd0e1",     // cyan-300
-            accentDisabled: "#b2ebf2",  // cyan-100
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#00bcd4"             // cyan-500
-        },
-        teal: {
-            standard: "#009688",        // teal-500
-            dark: "#00796b",            // teal-700
-            light: "#80cbc4",           // teal-200
-
-            accent: "#009688",          // teal-500
-            accentFocus: "#00695c",     // teal-800
-            accentHover: "#4db6ac",     // teal-300
-            accentDisabled: "#b2dfdb",  // teal-100
-            accentFont: "#ffffff",      // white
-
-            font: "#009688"             // teal-500
-        },
-        green: {
-            standard: "#4caf50",        // green-500
-            dark: "#388e3c",            // green-700
-            light: "#a5d6a7",           // green-200
-
-            accent: "#4caf50",          // green-500
-            accentFocus: "#2e7d32",     // green-800
-            accentHover: "#81c784",     // green-300
-            accentDisabled: "#c8e6c9",  // green-100
-            accentFont: "#ffffff",      // white
-
-            font: "#4caf50"             // green-500
-        },
-        lightGreen: {
-            standard: "#8bc34a",        // light-green-500
-            dark: "#689f38",            // light-green-700
-            light: "#c5e1a5",           // light-green-200
-
-            accent: "#8bc34a",          // light-green-500
-            accentFocus: "#558b2f",     // light-green-800
-            accentHover: "#aed581",     // light-green-300
-            accentDisabled: "#dcedc8",  // light-green-100
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#8bc34a"             // light-green-500
-        },
-        lime: {
-            standard: "#c0ca33",        // lime-600
-            dark: "#9e9d24",            // lime-800
-            light: "#dce775",           // lime-300
-
-            accent: "#c0ca33",          // lime-600
-            accentFocus: "#827717",     // lime-900
-            accentHover: "#d4e157",     // lime-400
-            accentDisabled: "#e6ee9c",  // lime-200
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#c0ca33"             // lime-600
-        },
-        yellow: {
-            standard: "#fdd835",        // yellow-600
-            dark: "#fbc02d",            // yellow-700
-            light: "#fff176",           // yellow-300
-
-            accent: "#fdd835",          // yellow-600
-            accentFocus: "#f9a825",     // yellow-800
-            accentHover: "#ffee58",     // yellow-400
-            accentDisabled: "#fff59d",  // yellow-200
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#fdd835"             // yellow-600
-        },
-        amber: {
-            standard: "#ffc107",        // amber-500
-            dark: "#ffa000",            // amber-700
-            light: "#ffe082",           // amber-200
-
-            accent: "#ffc107",          // amber-500
-            accentFocus: "#ff8f00",     // amber-800
-            accentHover: "#ffd54f",     // amber-300
-            accentDisabled: "#ffecb3",  // amber-100
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#ffc107"             // amber-500
-        },
-        orange: {
-            standard: "#ff9800",        // orange-500
-            dark: "#f57c00",            // orange-700
-            light: "#ffe0b2",           // orange-200
-
-            accent: "#ff9800",          // orange-500
-            accentFocus: "#ef6c00",     // orange-800
-            accentHover: "#ffb74d",     // orange-300
-            accentDisabled: "#c5cae9",  // orange-100
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#ff9800"             // orange-500
-        },
-        deepOrange: {
-            standard: "#ff5722",        // deep-orange-500
-            dark: "#e64a19",            // deep-orange-700
-            light: "#ffab91",           // deep-orange-200
-
-            accent: "#ff5722",          // deep-orange-500
-            accentFocus: "#d84315",     // deep-orange-800
-            accentHover: "#ff8a65",     // deep-orange-300
-            accentDisabled: "#ffccbc",  // deep-orange-100
-            accentFont: "#ffffff",      // white
-
-            font: "#ff5722"             // deep-orange-500
-        },
-        brown: {
-            standard: "#795548",        // brown-500
-            dark: "#5d4037",            // brown-700
-            light: "#bcaaa4",           // brown-200
-
-            accent: "#795548",          // brown-500
-            accentFocus: "#4e342e",     // brown-800
-            accentHover: "#a1887f",     // brown-300
-            accentDisabled: "#d7ccc8",  // brown-100
-            accentFont: "#ffffff",      // white
-
-            font: "#795548"             // brown-500
-        },
-        grey: {
-            standard: "#9e9e9e",        // grey-500
-            dark: "#616161",            // grey-700
-            light: "#e0e0e0",           // grey-300
-
-            accent: "#9e9e9e",          // grey-500
-            accentFocus: "#424242",     // grey-800
-            accentHover: "#bdbdbd",     // grey-400
-            accentDisabled: "#eeeeee",  // grey-200
-            accentFont: "rgba(0,0,0,0.87)", // black
-
-            font: "#9e9e9e"             // grey-500
-        },
-        blueGrey: {
-            standard: "#607d8b",        // blue-grey-500
-            dark: "#455a64",            // blue-grey-700
-            light: "#b0bec5",           // blue-grey-200
-
-            accent: "#607d8b",          // blue-grey-500
-            accentFocus: "#263238",     // blue-grey-900
-            accentHover: "#90a4ae",     // blue-grey-300
-            accentDisabled: "#cfd8dc",  // blue-grey-100
-            accentFont: "#ffffff",      // white
-
-            font: "#607d8b"             // blue-grey-500
         }
     });
     

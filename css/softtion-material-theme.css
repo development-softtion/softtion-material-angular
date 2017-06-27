@@ -70,6 +70,7 @@
     --theme-primary-background-border: rgba(255, 255, 255, 0.12);
     
     --theme-primary-font-active: rgba(255, 255, 255, 1);
+    --theme-primary-font-alternative: rgba(255, 255, 255, 1);
     --theme-primary-font-inactive: rgba(255, 255, 255, 0.7);
     --theme-primary-font-disabled: rgba(255, 255, 255, 0.5);
     
@@ -89,6 +90,7 @@
     --theme-secondary-background-border: rgba(255, 255, 255, 0.12);
     
     --theme-secondary-font-active: rgba(255, 255, 255, 1);
+    --theme-secondary-font-alternative: rgba(255, 255, 255, 1);
     --theme-secondary-font-inactive: rgba(255, 255, 255, 0.7);
     --theme-secondary-font-disabled: rgba(255, 255, 255, 0.5);
     
@@ -137,8 +139,11 @@ body.dark {
 .dark .app-bar {
     background-color: var(--dark-background-appbar); }
 
-.app-bar.primary {
+.app-bar.theme-primary {
     background-color: var(--theme-primary-background-dark); }
+
+.app-bar.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
 
 /** AUTOCOMPLETE */
 
@@ -305,20 +310,20 @@ body.dark {
 .dark .breadcrumb {
     background-color: var(--dark-background-appbar); }
 
-.breadcrumb > label:hover > a {
-    background-color: var(--light-background-hover); }
-
-.dark .breadcrumb > label:hover > a {
-    background-color: var(--dark-background-hover); }
-
 .breadcrumb > label.active > a {
     color: var(--theme-primary-font); }
 
-.app-bar.primary > .breadcrumb, .breadcrumb.primary {
+.app-bar.theme-primary > .breadcrumb, .breadcrumb.theme-primary {
     background-color: var(--theme-primary-background-dark); }
 
-.app-bar.primary > .breadcrumb > label {
-    color: var(--light-primary-font); }
+.app-bar.theme-primary > .breadcrumb > label {
+    color: var(--theme-primary-font-alternative); }
+
+.app-bar.theme-secondary > .breadcrumb, .breadcrumb.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
+
+.app-bar.theme-secondary > .breadcrumb > label {
+    color: var(--theme-secondary-font-alternative); }
 
 /** BOTTOM NAVIGATION */
 
@@ -328,8 +333,11 @@ body.dark {
 .dark .bottom-navigation {
     background-color: var(--dark-background-appbar); }
 
-.bottom-navigation.primary {
+.bottom-navigation.theme-primary {
     background-color: var(--theme-primary-background-dark); }
+
+.bottom-navigation.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
 
 .bottom-navigation.default {
     background-color: var(--light-background-appbar) !important; }
@@ -337,22 +345,35 @@ body.dark {
 .dark .bottom-navigation.default {
     background-color: var(--dark-background-appbar) !important; }
 
-.bottom-navigation.primary.default {
+.bottom-navigation.theme-primary.default {
     background-color: var(--theme-primary-background-dark) !important; }
+
+.bottom-navigation.theme-secondary.default {
+    background-color: var(--theme-secondary-background-dark) !important; }
 
 .bottom-navigation > .content > li > .content {
     color: var(--dark-secondary-font); }
 
-.dark .bottom-navigation > .content > li > .content,
-.bottom-navigation.primary > .content > li > .content {
+.dark .bottom-navigation > .content > li > .content {
     color: var(--light-disabled-font); }
+
+.bottom-navigation.theme-primary > .content > li > .content {
+    color: var(--theme-primary-font-inactive); }
+
+.bottom-navigation.theme-secondary > .content > li > .content {
+    color: var(--theme-secondary-font-inactive); }
 
 .bottom-navigation > .content > li.active > .content {
     color: var(--theme-primary-font); }
 
-.dark .bottom-navigation > .content > li.active > .content,
-.bottom-navigation.primary > .content > li.active > .content {
+.dark .bottom-navigation > .content > li.active > .content {
     color: var(--light-primary-font); }
+
+.bottom-navigation.theme-primary > .content > li.active > .content {
+    color: var(--theme-primary-font-active); }
+
+.bottom-navigation.theme-secondary > .content > li.active > .content {
+    color: var(--theme-secondary-font-active); }
 
 .bottom-navigation.shifting > .content > li > .content {
     color: var(--light-secondary-font); }
@@ -360,9 +381,14 @@ body.dark {
 .bottom-navigation.shifting.default > .content > li > .content {
     color: var(--dark-secondary-font); }
 
-.dark .bottom-navigation.shifting.default > .content > li > .content,
-.bottom-navigation.shifting.primary.default > .content > li > .content {
+.dark .bottom-navigation.shifting.default > .content > li > .content {
     color: var(--light-secondary-font); }
+
+.bottom-navigation.shifting.theme-primary.default > .content > li > .content {
+    color: var(--theme-primary-font-inactive); }
+
+.bottom-navigation.shifting.theme-secondary.default > .content > li > .content {
+    color: var(--theme-primary-font-inactive); }
 
 .bottom-navigation.shifting > .content > li.active > .content {
     color: var(--light-primary-font); }
@@ -370,9 +396,14 @@ body.dark {
 .bottom-navigation.shifting.default > .content > li.active > .content {
     color: var(--theme-primary-font); }
 
-.dark .bottom-navigation.shifting.default > .content > li.active > .content,
-.bottom-navigation.shifting.primary.default > .content > li.active > .content {
+.dark .bottom-navigation.shifting.default > .content > li.active > .content {
     color: var(--light-primary-font); }
+
+.bottom-navigation.shifting.theme-primary.default > .content > li.active > .content {
+    color: var(--theme-primary-font-active); }
+
+.bottom-navigation.shifting.theme-secondary.default > .content > li.active > .content {
+    color: var(--theme-secondary-font-active); }
 
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--dark-ripple); }
@@ -380,8 +411,11 @@ body.dark {
 .dark .bottom-navigation > .ripple-box > .effect {
     background-color: var(--light-ripple); }
 
-.bottom-navigation.primary > .ripple-box > .effect {
-    background-color: var(--light-ripple); }
+.bottom-navigation.theme-primary > .ripple-box > .effect {
+    background-color: var(--theme-primary-ripple); }
+
+.bottom-navigation.theme-secondary > .ripple-box > .effect {
+    background-color: var(--theme-secondary-ripple); }
 
 .bottom-navigation.shifting > .ripple-box > .effect {
     background-color: var(--light-ripple); }
@@ -392,8 +426,11 @@ body.dark {
 .dark .bottom-navigation.shifting.default > .ripple-box > .effect {
     background-color: var(--light-ripple); }
 
-.bottom-navigation.shifting.primary.default > .ripple-box > .effect {
-    background-color: var(--light-ripple); }
+.bottom-navigation.shifting.theme-primary.default > .ripple-box > .effect {
+    background-color: var(--theme-primary-ripple); }
+
+.bottom-navigation.shifting.theme-secondary.default > .ripple-box > .effect {
+    background-color: var(--theme-secondary-ripple); }
 
 /** BUTTON */
 
@@ -407,7 +444,10 @@ button.flat {
 .dark button.flat {
     color: var(--light-primary-font); }
 
-button.primary.flat {
+button.theme-primary.flat {
+    color: var(--theme-secondary-font); }
+
+button.theme-secondary.flat {
     color: var(--theme-primary-font); }
 
 button.flat:hover {
@@ -437,9 +477,13 @@ button.raised {
     background-color: var(--dark-background-component);
     color: var(--light-primary-font); }
 
-button.raised.primary { 
+button.raised.theme-primary { 
     background-color: var(--theme-secondary-background);
     color: var(--theme-secondary-font-active); }
+
+button.raised.theme-secondary { 
+    background-color: var(--theme-primary-background);
+    color: var(--theme-primary-font-active); }
 
 button.raised:hover {
     background-color: var(--light-background-hover); }
@@ -453,11 +497,17 @@ button.raised:focus  {
 .dark button.raised:focus  {
     background-color: var(--dark-background-focus); }
 
-button.raised.primary:hover {
+button.raised.theme-primary:hover {
     background-color: var(--theme-secondary-background-hover); }
 
-button.raised.primary:focus  {
+button.raised.theme-secondary:hover {
+    background-color: var(--theme-primary-background-hover); }
+
+button.raised.theme-primary:focus  {
     background-color: var(--theme-secondary-background-focus); }
+
+button.raised.theme-secondary:focus  {
+    background-color: var(--theme-primary-background-focus); }
 
 button.raised:disabled, button.raised:hover:disabled {
     color: var(--dark-disabled-font);
@@ -467,9 +517,13 @@ button.raised:disabled, button.raised:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
 
-button.raised.primary:disabled, button.raised.primary:disabled:hover {
-    color: var(--theme-secondary-font-active);
+button.raised.theme-primary:disabled, button.raised.theme-primary:disabled:hover {
+    color: var(--theme-secondary-font-disabled);
     background-color: var(--theme-secondary-background-disabled); }
+
+button.raised.theme-secondary:disabled, button.raised.theme-secondary:disabled:hover {
+    color: var(--theme-primary-font-disabled);
+    background-color: var(--theme-primary-background-disabled); }
 
 button.floating { 
     background-color: var(--light-background-component);
@@ -479,9 +533,13 @@ button.floating {
     background-color: var(--dark-background-component);
     color: var(--light-primary-font); }
 
-button.floating.primary {
+button.floating.theme-primary {
     background-color: var(--theme-secondary-background);
     color: var(--theme-secondary-font-active); }
+
+button.floating.theme-secondary {
+    background-color: var(--theme-primary-background);
+    color: var(--theme-primary-font-active); }
 
 button.floating:hover {
     background-color: #eeeeee; }
@@ -495,11 +553,17 @@ button.floating:focus  {
 .dark button.floating:focus {
     background-color: #757575; }
 
-button.floating.primary:hover {
+button.floating.theme-primary:hover {
     background-color: var(--theme-secondary-background-hover); }
 
-button.floating.primary:focus  {
+button.floating.theme-secondary:hover {
+    background-color: var(--theme-primary-background-hover); }
+
+button.floating.theme-primary:focus  {
     background-color: var(--theme-secondary-background-focus); }
+
+button.floating.theme-secondary:focus  {
+    background-color: var(--theme-primary-background-focus); }
 
 button.floating:disabled, button.floating:hover:disabled {
     color: var(--dark-disabled-font);
@@ -509,18 +573,27 @@ button.floating:disabled, button.floating:hover:disabled {
     color: var(--light-disabled-font);
     background-color: var(--dark-background-disabled); }
 
-button.floating.primary:disabled, button.floating.primary:disabled:hover {
-    color: var(--theme-secondary-font-active);
+button.floating.theme-primary:disabled, button.floating.theme-primary:disabled:hover {
+    color: var(--theme-secondary-font-disabled);
     background-color: var(--theme-secondary-background-disabled); }
+
+button.floating.theme-secondary:disabled, button.floating.theme-secondary:disabled:hover {
+    color: var(--theme-primary-font-disabled);
+    background-color: var(--theme-primary-background-disabled); }
 
 button.raised:before, button.flat:before, 
 button.floating:before, button.action:before {
     background-color: var(--dark-ripple); }
-
-.dark button.flat:before, .dark button.raised:before, 
+ 
 .dark button.floating:before, .dark button.action:before,
-button.raised.primary:before, button.floating.primary:before {
+.dark button.flat:before, .dark button.raised:before {
     background-color: var(--light-ripple); }
+
+button.raised.theme-primary:before, button.floating.theme-primary:before {
+    background-color: var(--theme-secondary-ripple); }
+
+button.raised.theme-secondary:before, button.floating.theme-secondary:before {
+    background-color: var(--theme-primary-ripple); }
 
 /** CARD */
 
@@ -696,16 +769,16 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--light-background-statusbar); }
     
 .dark .chip {
-    background-color: var(--dark-background-appbar); }
-
-.chip.primary {
-    background-color: var(--theme-secondary-background); }
-
-.dark .chip {
+    background-color: var(--dark-background-appbar);
     color: var(--light-primary-font); }
 
-.chip.primary {
-    color: var(--theme-secondary-font-active); }
+.chip.theme-primary {
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-inactive); }
+
+.chip.theme-secondary {
+    background-color: var(--theme-primary-background);
+    color: var(--theme-primary-font-inactive); }
 
 .chip:hover {
     background-color: rgba(0, 0, 0, 0.54);
@@ -715,9 +788,13 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: rgba(255, 255, 255, 0.54);
     color: var(--dark-primary-font); }
 
-.chip.primary:hover {
+.chip.theme-primary:hover {
     background-color: var(--theme-secondary-background-hover);
     color: var(--theme-secondary-font-active); }
+
+.chip.theme-secondary:hover {
+    background-color: var(--theme-primary-background-hover);
+    color: var(--theme-primary-font-active); }
 
 .chip > .avatar {
     background-color: rgba(0, 0, 0, 0.54);
@@ -729,11 +806,19 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .chip:hover > .avatar {
     color: var(--dark-primary-font); }
 
-.chip.primary > .avatar {
-    background-color: var(--theme-secondary-background-focus); }
+.chip.theme-primary > .avatar {
+    background-color: var(--theme-secondary-background-dark);
+    color: var(--theme-secondary-font-alternative); }
 
-.dark .chip.primary:hover > .avatar {
+.chip.theme-secondary > .avatar {
+    background-color: var(--theme-primary-background-dark);
+    color: var(--theme-primary-font-alternative); }
+
+.dark .chip.theme-primary:hover > .avatar {
     color: var(--theme-secondary-font-active); }
+
+.dark .chip.theme-secondary:hover > .avatar {
+    color: var(--theme-primary-font-active); }
 
 .chip > .action > i {
     background-color: rgba(0, 0, 0, 0.54);
@@ -743,9 +828,13 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: rgba(255, 255, 255, 0.54);
     color: var(--dark-primary-font); }
 
-.chip.primary > .action > i {
-    background-color: var(--theme-secondary-background-focus);
+.chip.theme-primary > .action > i {
+    background-color: var(--theme-secondary-background-dark);
     color: var(--theme-secondary-font-active); }
+
+.chip.theme-secondary > .action > i {
+    background-color: var(--theme-primary-background-dark);
+    color: var(--theme-primary-font-active); }
 
 .chip:hover > .action > i {
     background-color: var(--light-background);
@@ -755,8 +844,12 @@ button.raised.primary:before, button.floating.primary:before {
     background-color: var(--dark-background);
     color: var(--light-secondary-font); }
 
-.chip.primary:hover > .action > i {
-    background-color: var(--light-background);
+.chip.theme-primary:hover > .action > i {
+    background-color: var(--theme-secondary-background-dark);
+    color: var(--theme-secondary-font); }
+
+.chip.theme-secondary:hover > .action > i {
+    background-color: var(--theme-primary-background-dark);
     color: var(--theme-primary-font); }
 
 /** CHIP INPUT */
@@ -1154,12 +1247,19 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .dropdown { 
     background-color: var(--dark-background-component); }
 
-.dropdown.primary { 
+.dropdown.theme-primary { 
     background-color: var(--theme-primary-background);
     color: var(--theme-primary-font-active); }
 
-.dropdown.primary > .menu > .option { 
-    color: var(--light-primary-font); }
+.dropdown.theme-primary > .menu > .option { 
+    color: var(--theme-primary-font-active); }
+
+.dropdown.theme-secondary { 
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-active); }
+
+.dropdown.theme-secondary > .menu > .option { 
+    color: var(--theme-secondary-font-active); }
 
 /** EXPANSION PANEL */
 
@@ -2014,31 +2114,58 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .stepper-horizontal:before {
     background-color: var(--dark-background-border); }
 
+.app-bar.theme-primary > .stepper-horizontal:before, 
+.stepper-horizontal.theme-primary:before {
+    background-color: var(--theme-primary-background-border); }
+
+.app-bar.theme-secondary > .stepper-horizontal:before, 
+.stepper-horizontal.theme-secondary:before {
+    background-color: var(--theme-secondary-background-border); }
+
 .stepper-horizontal > ul > li > .content,
 .stepper-horizontal > ul > li > .content > .detail {
     background-color: var(--light-background); }
-
-.app-bar > .stepper-horizontal > ul > li > .content,
-.app-bar > .stepper-horizontal > ul > li > .content > .detail {
-    background-color: var(--light-background-appbar); }
 
 .dark .stepper-horizontal > ul > li > .content,
 .dark .stepper-horizontal > ul > li > .content > .detail {
     background-color: var(--dark-background); }
 
+.app-bar > .stepper-horizontal > ul > li > .content,
+.app-bar > .stepper-horizontal > ul > li > .content > .detail {
+    background-color: var(--light-background-appbar); }
+
 .dark .app-bar > .stepper-horizontal > ul > li > .content,
 .dark .app-bar > .stepper-horizontal > ul > li > .content > .detail {
     background-color: var(--dark-background-appbar); }
 
-.stepper-horizontal.alternative > ul > li > .content,
-.dark .stepper-horizontal.alternative > ul > li > .content {
-    background: transparent; }
+.app-bar.theme-primary > .stepper-horizontal > ul > li > .content,
+.app-bar.theme-primary > .stepper-horizontal > ul > li > .content > .detail,
+.stepper-horizontal.theme-primary > ul > li > .content,
+.stepper-horizontal.theme-primary > ul > li > .content > .detail {
+    background-color: var(--theme-primary-background-dark); }
+
+.app-bar.theme-secondary > .stepper-horizontal > ul > li > .content,
+.app-bar.theme-secondary > .stepper-horizontal > ul > li > .content > .detail,
+.stepper-horizontal.theme-secondary > ul > li > .content,
+.stepper-horizontal.theme-secondary > ul > li > .content > .detail {
+    background-color: var(--theme-secondary-background-dark); }
+
+.stepper-horizontal.alternative > ul > li > .content {
+    background-color: transparent !important; }
 
 .stepper-horizontal > ul > li > .content > .ripple-box > .effect {
     background-color: var(--dark-ripple); }
 
 .dark .stepper-horizontal > ul > li > .content > .ripple-box > .effect {
     background-color: var(--light-ripple); }
+
+.app-bar.theme-primary > .stepper-horizontal li > .content > .ripple-box > .effect,
+.stepper-horizontal.theme-primary li > .content > .ripple-box > .effect {
+    background-color: var(--theme-primary-ripple); }
+
+.app-bar.theme-secondary > .stepper-horizontal li > .content > .ripple-box > .effect,
+.stepper-horizontal.theme-secondary li > .content > .ripple-box > .effect {
+    background-color: var(--theme-secondary-ripple); }
 
 .stepper-horizontal.alternative > ul > li > .content > .indicator {
     background-color: var(--light-background); }
@@ -2052,9 +2179,22 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .app-bar > .stepper-horizontal.alternative li > .content > .indicator {
     background-color: var(--dark-background-appbar); }
 
+.app-bar.theme-primary > .stepper-horizontal.alternative li > .content > .indicator, 
+.stepper-horizontal.alternative.theme-primary li > .content > .indicator {
+    background-color: var(--theme-primary-background-dark); }
+
+.app-bar.theme-secondary > .stepper-horizontal.alternative li > .content > .indicator, 
+.stepper-horizontal.alternative.theme-secondary li > .content > .indicator {
+    background-color: var(--theme-secondary-background-dark); }
+
 .stepper-horizontal > ul > li.success > .content > .indicator:before {
     color: var(--theme-secondary-font-active);
     background-color: var(--theme-secondary-background); }
+
+.app-bar.theme-secondary > .stepper-horizontal li.success > .content > .indicator:before,
+.stepper-horizontal.theme-secondary li.success > .content > .indicator:before {
+    color: var(--theme-primary-font-active);
+    background-color: var(--theme-primary-background); }
 
 .stepper-horizontal > ul > li.error > .content > .indicator:before {
     color: var(--theme-error-font); }
@@ -2070,6 +2210,11 @@ button.raised.primary:before, button.floating.primary:before {
 .stepper-horizontal > ul > li.active > .content > .indicator > span {
     color: var(--theme-secondary-font-active);
     background-color: var(--theme-secondary-background); }
+
+.app-bar.theme-secondary > .stepper-horizontal li.active > .content > .indicator > span,
+.stepper-horizontal.theme-secondary li.active > .content > .indicator > span {
+    color: var(--theme-primary-font-active);
+    background-color: var(--theme-primary-background); }
 
 .stepper-horizontal > ul > li.disabled > .content > .indicator > span {
     color: var(--light-disabled-font);
@@ -2087,6 +2232,18 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .stepper-horizontal > ul > li > .content > .detail > .optional {
     color: var(--light-secondary-font); }
 
+.app-bar.theme-primary > .stepper-horizontal li > .content > .detail > .title,
+.app-bar.theme-primary > .stepper-horizontal li > .content > .detail > .optional,
+.stepper-horizontal.theme-primary li > .content > .detail > .title,
+.stepper-horizontal.theme-primary li > .content > .detail > .optional {
+    color: var(--theme-primary-font-inactive); }
+
+.app-bar.theme-secondary > .stepper-horizontal li > .content > .detail > .title,
+.app-bar.theme-secondary > .stepper-horizontal li > .content > .detail > .optional,
+.stepper-horizontal.theme-secondary li > .content > .detail > .title,
+.stepper-horizontal.theme-secondary li > .content > .detail > .optional {
+    color: var(--theme-secondary-font-inactive); }
+
 .stepper-horizontal > ul > li.active > .content > .detail > .title {
     font-weight: 600;
     color: var(--dark-primary-font); }
@@ -2094,10 +2251,26 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .stepper-horizontal > ul > li.active > .content > .detail > .title {
     color: var(--light-primary-font); }
 
+.app-bar.theme-primary > .stepper-horizontal li.active > .content > .detail > .title,
+.stepper-horizontal.theme-primary li.active > .content > .detail > .title {
+    color: var(--theme-primary-font-active); }
+
+.app-bar.theme-secondary > .stepper-horizontal li.active > .content > .detail > .title,
+.stepper-horizontal.theme-secondary li.active > .content > .detail > .title {
+    color: var(--theme-secondary-font-active); }
+
 .stepper-horizontal > ul > li.error > .content > .detail > .title,
 .stepper-horizontal > ul > li.error > .content > .detail > .optional,
 .dark .stepper-horizontal > ul > li.error > .content > .detail > .optional,
-.dark .stepper-horizontal > ul > li.error > .content > .detail > .title {
+.dark .stepper-horizontal > ul > li.error > .content > .detail > .title,
+.app-bar.theme-primary > .stepper-horizontal li.error > .content > .detail > .title,
+.app-bar.theme-primary > .stepper-horizontal li.error > .content > .detail > .optional,
+.stepper-horizontal.theme-primary li.error > .content > .detail > .title,
+.stepper-horizontal.theme-primary li.error > .content > .detail > .optional,
+.app-bar.theme-secondary > .stepper-horizontal li.error > .content > .detail > .title,
+.app-bar.theme-secondary > .stepper-horizontal li.error > .content > .detail > .optional,
+.stepper-horizontal.theme-secondary li.error > .content > .detail > .title,
+.stepper-horizontal.theme-secondary li.error > .content > .detail > .optional {
     color: var(--theme-error-font); }
 
 .stepper-horizontal > ul > li.disabled > .content > .detail > .title,
@@ -2108,6 +2281,18 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .stepper-horizontal > ul > li.disabled > .content > .detail > .title,
 .dark .stepper-horizontal > ul > li.disabled > .content > .detail > .optional {
     color: var(--light-disabled-font); }
+
+.app-bar.theme-primary > .stepper-horizontal li.disabled > .content > .detail > .title,
+.app-bar.theme-primary > .stepper-horizontal li.disabled > .content > .detail > .optional,
+.stepper-horizontal.theme-primary li.disabled > .content > .detail > .title,
+.stepper-horizontal.theme-primary li.disabled > .content > .detail > .optional {
+    color: var(--theme-primary-font-disabled); }
+
+.app-bar.theme-secondary > .stepper-horizontal li.disabled > .content > .detail > .title,
+.app-bar.theme-secondary > .stepper-horizontal li.disabled > .content > .detail > .optional,
+.stepper-horizontal.theme-secondary li.disabled > .content > .detail > .title,
+.stepper-horizontal.theme-secondary li.disabled > .content > .detail > .optional {
+    color: var(--theme-secondary-font-disabled); }
 
 /** SWITCH */
 
@@ -2160,29 +2345,47 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .app-bar > .tabs, .dark .tabs {
     background-color: var(--dark-background-appbar); }
 
-.app-bar.primary > .tabs, .tabs.primary {
+.app-bar.theme-primary > .tabs, .tabs.theme-primary {
     background-color: var(--theme-primary-background-dark); }
+
+.app-bar.theme-secondary > .tabs, .tabs.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
 
 .app-bar > .tabs > .tab, .tabs > .tab {
     color: var(--dark-primary-font); }
 
-.dark .app-bar > .tabs > .tab, .dark .tabs > .tab,
-.app-bar.primary > .tabs > .tab, .tabs.primary > .tab {
+.dark .app-bar > .tabs > .tab, .dark .tabs > .tab {
     color: var(--light-primary-font); }
+
+.app-bar.theme-primary > .tabs > .tab, .tabs.theme-primary > .tab {
+    color: var(--theme-primary-font-alternative); }
+
+.app-bar.theme-secondary > .tabs > .tab, .tabs.theme-secondary > .tab {
+    color: var(--theme-secondary-font-alternative); }
 
 .app-bar > .tabs > .tab:before, .tabs > .tab:before {
     background-color: var(--dark-ripple); }
 
-.dark .app-bar > .tabs > .tab:before, .dark .tabs > .tab:before,
-.app-bar.primary > .tabs > .tab:before, .tabs.primary > .tab:before {
+.dark .app-bar > .tabs > .tab:before, .dark .tabs > .tab:before {
     background-color: var(--light-ripple); }
+
+.app-bar.theme-primary > .tabs > .tab:before, .tabs.theme-primary > .tab:before {
+    background-color: var(--theme-primary-ripple); }
+
+.app-bar.theme-secondary > .tabs > .tab:before, .tabs.theme-secondary > .tab:before {
+    background-color: var(--theme-secondary-ripple); }
 
 .app-bar > .tabs > .stripe, .tabs > .stripe {
     background-color: var(--dark-background-component); }
 
-.dark .app-bar > .tabs > .stripe, .dark .tabs > .stripe,
-.app-bar.primary > .tabs > .stripe, .tabs.primary > .stripe {
+.dark .app-bar > .tabs > .stripe, .dark .tabs > .stripe {
     background-color: var(--light-background-component); }
+
+.app-bar.theme-primary > .tabs > .stripe, .tabs.theme-primary > .stripe {
+    background-color: var(--theme-primary-font-alternative); }
+
+.app-bar.theme-secondary > .tabs > .stripe, .tabs.theme-secondary > .stripe {
+    background-color: var(--theme-secondary-font-alternative); }
 
 /** TEXTAREA */
 
@@ -2650,8 +2853,11 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .app-bar > .toolbar, .dark .toolbar {
     background-color: var(--dark-background-appbar); }
 
-.app-bar.primary > .toolbar, .toolbar.primary {
+.app-bar.theme-primary > .toolbar, .toolbar.theme-primary {
     background-color: var(--theme-primary-background-dark); }
+
+.app-bar.theme-secondary > .toolbar, .toolbar.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
 
 .toolbar > .title, .app-bar > .toolbar > .title,
 .toolbar > .detail, .app-bar > .toolbar > .detail {
@@ -2671,21 +2877,45 @@ button.raised.primary:before, button.floating.primary:before {
 .dark .app-bar > .toolbar > .menu-icon,
 .dark .app-bar > .toolbar > .actions > button,
 .dark .toolbar > .title, .dark .toolbar > .nav-icon > button.action,
-.dark .toolbar > .menu-icon, .dark .toolbar > .actions > button,
-.app-bar.primary > .toolbar > .title,
-.app-bar.primary > .toolbar > .detail > .title,
-.app-bar.primary > .toolbar > .detail > .subtitle,
-.app-bar.primary > .toolbar > .nav-icon > button.action,
-.app-bar.primary > .toolbar > .menu-icon,
-.app-bar.primary > .toolbar > .actions > button,
-.toolbar.primary > .title, .toolbar.primary > .nav-icon > button.action,
-.toolbar.primary > .menu-icon, .toolbar.primary > .actions > button {
+.dark .toolbar > .menu-icon, .dark .toolbar > .actions > button {
     color: var(--light-primary-font); }
 
-.app-bar.primary > .toolbar > .nav-icon > button.action:before,
-.app-bar.primary > .toolbar > .menu-icon:before,
-.app-bar.primary > .toolbar > .actions > button:before,
-.toolbar.primary > .nav-icon > button.action:before,
-.toolbar.primary > .menu-icon:before,
-.toolbar.primary > .actions > button:before {
-    background-color: var(--light-ripple); }
+.app-bar.theme-primary > .toolbar > .title,
+.app-bar.theme-primary > .toolbar > .detail > .title,
+.app-bar.theme-primary > .toolbar > .detail > .subtitle,
+.app-bar.theme-primary > .toolbar > .nav-icon > button.action,
+.app-bar.theme-primary > .toolbar > .menu-icon,
+.app-bar.theme-primary > .toolbar > .actions > button,
+.toolbar.theme-primary > .title, 
+.toolbar.theme-primary > .nav-icon > button.action,
+.toolbar.theme-primary > .menu-icon, 
+.toolbar.theme-primary > .actions > button {
+    color: var(--theme-primary-font-alternative); }
+
+.app-bar.theme-secondary > .toolbar > .title,
+.app-bar.theme-secondary > .toolbar > .detail > .title,
+.app-bar.theme-secondary > .toolbar > .detail > .subtitle,
+.app-bar.theme-secondary > .toolbar > .nav-icon > button.action,
+.app-bar.theme-secondary > .toolbar > .menu-icon,
+.app-bar.theme-secondary > .toolbar > .actions > button,
+.toolbar.theme-secondary > .title, 
+.toolbar.theme-secondary > .nav-icon > button.action,
+.toolbar.theme-secondary > .menu-icon, 
+.toolbar.theme-secondary > .actions > button {
+    color: var(--theme-secondary-font-alternative); }
+
+.app-bar.theme-primary > .toolbar > .menu-icon:before,
+.toolbar.theme-primary > .menu-icon:before,
+.app-bar.theme-primary > .toolbar > .actions > button:before,
+.toolbar.theme-primary > .nav-icon > button.action:before,
+.app-bar.theme-primary > .toolbar > .nav-icon > button.action:before,
+.toolbar.theme-primary > .actions > button:before {
+    background-color: var(--theme-primary-ripple); }
+
+.app-bar.theme-secondary > .toolbar > .menu-icon:before,
+.toolbar.theme-secondary > .menu-icon:before,
+.app-bar.theme-secondary > .toolbar > .actions > button:before,
+.toolbar.theme-secondary > .nav-icon > button.action:before,
+.app-bar.theme-secondary > .toolbar > .nav-icon > button.action:before,
+.toolbar.theme-secondary > .actions > button:before {
+    background-color: var(--theme-secondary-ripple); }
