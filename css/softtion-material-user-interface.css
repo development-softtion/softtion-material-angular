@@ -3543,6 +3543,9 @@ button.raised:focus:after, button.flat:focus:after {
     -o-animation: collapse-fabmenu 0.275s var(--standard-curve);
     -ms-animation: collapse-fabmenu 0.275s var(--standard-curve); }
 
+.fab-menu > .box.show-bottom-navigation {
+    bottom: 100px; }
+
 .fab-menu.active > .box {
     box-shadow: none;
     width: 640px;
@@ -5811,6 +5814,9 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden; 
     box-shadow: var(--shadow-2); 
     user-select: none; }
+
+.app-bar > .stepper-horizontal {
+    box-shadow: none; }
 
 .stepper-horizontal.alternative {
     height: 104px; }
