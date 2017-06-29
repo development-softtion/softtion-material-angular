@@ -3,18 +3,23 @@
 var app = angular.module("myApp", ["ngSofttionMaterial"]);
 
 app.config(function ($themeMaterialProvider, SofttionMaterial) {
-    $themeMaterialProvider.setPrimary(SofttionMaterial.Theme.BLUE);
-    
-    $themeMaterialProvider.setSecondary(SofttionMaterial.Theme.YELLOW);
-    
-    $themeMaterialProvider.setError(SofttionMaterial.Theme.BLUE);
+    $themeMaterialProvider.setPrimary(SofttionMaterial.Theme.INDIGO);
+
+    $themeMaterialProvider.setSecondary(SofttionMaterial.Theme.PINK);
+
+    $themeMaterialProvider.setError(SofttionMaterial.Theme.LIME);
 });
 
 // Inicializando controlador de la aplicación
-app.controller("myController", function ($scope, $snackbar, $toast) {
+app.controller("myController", function ($scope, $snackbar, $toast, $progressBar) {
+    
+    var x = 0;
     
     $scope.openSnackbar = function ($event, value) {
+        x += 25;
+        $progressBar.set("#x").show();
         $snackbar.show("Soy un snackbar");
+        //console.log($scope.file);
     };
     
     $scope.openToast = function ($event, value) {

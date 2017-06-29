@@ -1,0 +1,25 @@
+/*!
+ * StyleFont SF
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: sf;
+    src: url("sf-san-francisco-ui-text-light.otf") format("opentype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: sf;
+    src: url("sf-san-francisco-ui-text-regular.otf") format("opentype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: sf;
+    src: url("sf-san-francisco-ui-text-medium.otf") format("opentype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: sf;
+    src: url("sf-san-francisco-ui-text-bold.ttf") format("truetype");
+    font-weight: 700; }

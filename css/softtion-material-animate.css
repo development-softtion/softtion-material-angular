@@ -511,6 +511,36 @@
         left: 100% }
 }
 
+/** PROGRESS INDETERMINATE REVERSE BEFORE */
+
+@-webkit-keyframes progressIndeterminateReverseBefore {
+    0% {
+        width: 100%; 
+        right: -125% }
+    
+    20% {
+        width: 100%; 
+        right: -125% }
+    
+    100% {
+        width: 12.5%; 
+        right: 100% }
+}
+
+@keyframes progressIndeterminateReverseBefore {
+    0% {
+        width: 100%; 
+        right: -125% }
+    
+    20% {
+        width: 100%; 
+        right: -125% }
+    
+    100% {
+        width: 12.5%; 
+        right: 100% }
+}
+
 /** PROGRESS INDETERMINATE AFTER */
 
 @-webkit-keyframes progressIndeterminateAfter {
@@ -541,6 +571,36 @@
         left: 125% }
 }
 
+/** PROGRESS INDETERMINATE REVERSE AFTER */
+
+@-webkit-keyframes progressIndeterminateReverseAfter {
+    0% {
+        width: 12.5%; 
+        right: -12.5% }
+    
+    80% {
+        width: 100%; 
+        right: 125% }
+    
+    100%{
+        width: 100%; 
+        right: 125% }
+}
+
+@keyframes progressIndeterminateReverseAfter {
+    0% {
+        width: 12.5%; 
+        right: -12.5% }
+    
+    80% {
+        width: 100%; 
+        right: 125% }
+    
+    100%{
+        width: 100%; 
+        right: 125% }
+}
+
 /** PROGRESS DETERMINATE */
 
 @-webkit-keyframes progressDeterminate {
@@ -559,9 +619,37 @@
         width: 100%; }
 }
 
+/** PROGRESS BUFFERING */
+
+@keyframes progressBuffering {
+    to {
+        transform: translateX(-10px);
+    }
+}
+
+@-webkit-keyframes progressBuffering {
+    to {
+        transform: translateX(-10px);
+    }
+}
+
+/** PROGRESS BUFFERING REVERSE */
+
+@keyframes progressBufferingReverse {
+    to {
+        transform: translateX(10px);
+    }
+}
+
+@-webkit-keyframes progressBufferingReverse {
+    to {
+        transform: translateX(10px);
+    }
+}
+
 /** BORDER TEXTFIELD */
 
-@keyframes border-textfield {
+@keyframes borderTextfield {
     0% {
         width: 0%; }
     
@@ -569,7 +657,7 @@
         width: 100%; }
 }
 
-@-webkit-keyframes border-textfield {
+@-webkit-keyframes borderTextfield {
     0% {
         width: 0%; }
     
@@ -577,7 +665,7 @@
         width: 100%; }
 }
 
-@keyframes border-textfield-icon {
+@keyframes borderTextfieldIcon {
     0% {
         width: 0%; }
     
@@ -585,7 +673,7 @@
         width: calc(100% - 40px); }
 }
 
-@-webkit-keyframes border-textfield-icon {
+@-webkit-keyframes borderTextfieldIcon {
     0% {
         width: 0%; }
     
@@ -595,7 +683,7 @@
 
 /** CLOSE SELECT */
 
-@keyframes close-select {
+@keyframes closeSelect {
     0% {
         max-width: 100%;
         max-height: 288px; 
@@ -607,7 +695,7 @@
         opacity: 0; }
 }
 
-@-webkit-keyframes close-select {
+@-webkit-keyframes closeSelect {
     0% {
         max-width: 100%;
         max-height: 288px; 
@@ -621,7 +709,7 @@
 
 /** BUTTON FLOATING */
 
-@keyframes button-floating {
+@keyframes buttonFloating {
     0% {
         transform: scale(0);
     }
@@ -630,7 +718,7 @@
     }
 }
 
-@-webkit-key-frames button-floating {
+@-webkit-key-frames buttonFloating {
     0% {
         transform: scale(0);
     }
@@ -641,7 +729,7 @@
 
 /** OPEN FAB SPEEDDIAL */
 
-@keyframes open-fab-speeddial {
+@keyframes openFabSpeeddial {
     0% {
         opacity: 0;
         transform: scale(0.4) translateY(40px); }
@@ -651,7 +739,7 @@
         transform: scale(1) translateY(0px); }
 }
 
-@-webkit-keyframes open-fab-speeddial {
+@-webkit-keyframes openFabSpeeddial {
     0% {
         opacity: 0;
         transform: scale(0.4) translateY(40px); }
@@ -663,7 +751,7 @@
 
 /** CLOSE FAB SPEEDDIAL */
 
-@keyframes close-fab-speeddial {
+@keyframes closeFabSpeeddial {
     0% {
         opacity: 1;
         transform: scale(1) translateY(0px); }
@@ -673,7 +761,7 @@
         transform: scale(0.4) translateY(40px); }
 }
 
-@-webkit-keyframes close-fab-speeddial {
+@-webkit-keyframes closeFabSpeeddial {
     0% {
         opacity: 1;
         transform: scale(1) translateY(0px); }
@@ -685,7 +773,7 @@
 
 /** CHANGE NEW ICON */
 
-@keyframes change-new-icon {
+@keyframes changeNewIcon {
     0% {
         opacity: 0;
         transform: rotate(90deg) scale(0.4); }
@@ -695,7 +783,7 @@
         transform: rotate(0deg) scale(1); }
 }
 
-@-webkit-keyframes change-new-icon {
+@-webkit-keyframes changeNewIcon {
     0% {
         opacity: 0;
         transform: rotate(90deg) scale(0.4); }
@@ -707,7 +795,7 @@
 
 /** CHANGE RESTORE ICON */
 
-@keyframes change-restore-icon {
+@keyframes changeRestoreIcon {
     0% {
         opacity: 0;
         transform: rotate(-90deg) scale(0.4); }
@@ -717,7 +805,7 @@
         transform: rotate(0deg) scale(1); }
 }
 
-@-webkit-keyframes change-restore-icon {
+@-webkit-keyframes changeRestoreIcon {
     0% {
         opacity: 0;
         transform: rotate(-90deg) scale(0.4); }
@@ -729,7 +817,7 @@
 
 /** COLLAPSE FAB MENU */
 
-@keyframes collapse-fabmenu {
+@keyframes collapseFabmenu {
     0% {
         box-shadow: none;
         width: 640px;
@@ -747,7 +835,7 @@
         box-shadow: var(--shadow-6); }
 }
 
-@-webkit-keyframes collapse-fabmenu {
+@-webkit-keyframes collapseFabmenu {
     0% {
         box-shadow: none;
         width: 640px;
@@ -767,7 +855,7 @@
 
 /** EXPAND FAB MENU */
 
-@keyframes expand-fabmenu {
+@keyframes expandFabmenu {
     0% {
         width: 56px;
         height: 56px; }
@@ -777,7 +865,7 @@
         height: 640px; }
 }
 
-@-webkit-keyframes expand-fabmenu {
+@-webkit-keyframes expandFabmenu {
     0% {
         width: 56px;
         height: 56px; }
@@ -789,7 +877,7 @@
 
 /** CHANGED CLOCK */
 
-@keyframes changed-clock {
+@keyframes changedClock {
     0% {
         visibility: hidden;
         opacity: 0; }
@@ -799,7 +887,7 @@
         opacity: 1; }
 }
 
-@-webkit-keyframes changed-clock {
+@-webkit-keyframes changedClock {
     0% {
         visibility: hidden;
         opacity: 0; }

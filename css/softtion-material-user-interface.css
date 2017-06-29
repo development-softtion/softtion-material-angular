@@ -1070,11 +1070,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete.active > .content > input:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: border-textfield 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
-    animation: border-textfield 0.225s var(--sharp-curve);
-    -o-animation: border-textfield 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
+    animation: borderTextfield 0.225s var(--sharp-curve);
+    -o-animation: borderTextfield 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
 
 .autocomplete > .content > i.action {
     position: absolute;
@@ -1154,11 +1154,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
 
 /** BADGE */
 
@@ -1628,11 +1628,11 @@ button.floating {
     -o-transition: all 0.325s var(--standard-curve);
     transition: all 0.325s var(--standard-curve);
     -ms-transition: all 0.325s var(--standard-curve);
-    -moz-animation: button-floating 0.15s var(--standard-curve);
-    -webkit-animation: button-floating 0.15s var(--standard-curve);
-    animation: button-floating 0.15s var(--standard-curve);
-    -o-animation: button-floating 0.15s var(--standard-curve);
-    -ms-animation: button-floating 0.15s var(--standard-curve); }
+    -moz-animation: buttonFloating 0.15s var(--standard-curve);
+    -webkit-animation: buttonFloating 0.15s var(--standard-curve);
+    animation: buttonFloating 0.15s var(--standard-curve);
+    -o-animation: buttonFloating 0.15s var(--standard-curve);
+    -ms-animation: buttonFloating 0.15s var(--standard-curve); }
 
 button.floating.left {
     left: 16px;
@@ -1659,13 +1659,6 @@ button.floating > i {
     width: 24px;
     height: 24px; }
 
-button.action {
-    position: relative;
-    border: none;
-    outline: none; 
-    padding: 0px;
-    height: 24px; }
-
 button.raised:disabled, button.raised:hover:disabled {
     box-shadow: none; }
 
@@ -1689,9 +1682,16 @@ button.raised:before, button.flat:before, button.floating:before {
     margin-left: calc(-50% + 6px);
     margin-top: calc(-50% + 6px);
     border-radius: 50%;
-    opacity: 0.35;
+    opacity: 0.26;
     transform: scale(0);
     visibility: hidden; }
+
+button.action {
+    position: relative;
+    border: none;
+    outline: none; 
+    padding: 0px;
+    height: 24px; }
 
 button.action:before {
     content: "";
@@ -1704,13 +1704,17 @@ button.action:before {
     margin-left: calc(-50% + 4px);
     margin-top: calc(-50% + 4px);
     border-radius: 50%;
-    opacity: 0.35;
+    opacity: 0.26;
     transform: scale(0);
     visibility: hidden; }
 
 button.raised:not(:active):before, button.flat:not(:active):before,
 button.floating:not(:active):before, button.action:not(:active):before {
-    animation: ripple-squarecenter 1s var(--standard-curve); }
+    -moz-animation: ripple-squarecenter 1s var(--standard-curve);
+    -webkit-animation: ripple-squarecenter 1s var(--standard-curve);
+    animation: ripple-squarecenter 1s var(--standard-curve);
+    -o-animation: ripple-squarecenter 1s var(--standard-curve);
+    -ms-animation: ripple-squarecenter 1s var(--standard-curve); }
 
 button.raised:focus:before, button.flat:focus:before, 
 button.floating:focus:before, button.action:focus:before {
@@ -2621,11 +2625,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .chip-input.active > .content > .box.focused ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: border-textfield 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
-    animation: border-textfield 0.225s var(--sharp-curve);
-    -o-animation: border-textfield 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
+    animation: borderTextfield 0.225s var(--sharp-curve);
+    -o-animation: borderTextfield 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
 
 .chip-input > .content > span {
     position: absolute;
@@ -2683,11 +2687,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .chip-input.active > .content > i.icon-description ~ .box.focused ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
 
 /** CLOCKPICKER */
 
@@ -2753,11 +2757,11 @@ button.raised:focus:after, button.flat:focus:after {
 .clockpicker > .content > .plate > .hours.active,
 .clockpicker > .content > .plate > .minutes.active {
     visibility: visible;
-    -moz-animation: changed-clock 0.375s var(--standard-curve);
-    -webkit-animation: changed-clock 0.375s var(--standard-curve);
-    animation: changed-clock 0.375s var(--standard-curve);
-    -o-animation: changed-clock 0.375s var(--standard-curve);
-    -ms-animation: changed-clock 0.375s var(--standard-curve); }
+    -moz-animation: changedClock 0.375s var(--standard-curve);
+    -webkit-animation: changedClock 0.375s var(--standard-curve);
+    animation: changedClock 0.375s var(--standard-curve);
+    -o-animation: changedClock 0.375s var(--standard-curve);
+    -ms-animation: changedClock 0.375s var(--standard-curve); }
 
 .clockpicker > .content > .plate > .hours > .tick,
 .clockpicker > .content > .plate > .minutes > .tick {
@@ -3540,11 +3544,11 @@ button.raised:focus:after, button.flat:focus:after {
     transition: margin-bottom 0.325s var(--standard-curve);
     -o-transition: margin-bottom 0.325s var(--standard-curve);
     -ms-transition: margin-bottom 0.325s var(--standard-curve);
-    -moz-animation: collapse-fabmenu 0.275s var(--standard-curve);
-    -webkit-animation: collapse-fabmenu 0.275s var(--standard-curve);
-    animation: collapse-fabmenu 0.275s var(--standard-curve);
-    -o-animation: collapse-fabmenu 0.275s var(--standard-curve);
-    -ms-animation: collapse-fabmenu 0.275s var(--standard-curve); }
+    -moz-animation: collapseFabmenu 0.275s var(--standard-curve);
+    -webkit-animation: collapseFabmenu 0.275s var(--standard-curve);
+    animation: collapseFabmenu 0.275s var(--standard-curve);
+    -o-animation: collapseFabmenu 0.275s var(--standard-curve);
+    -ms-animation: collapseFabmenu 0.275s var(--standard-curve); }
 
 .fab-menu > .box.show-bottom-navigation {
     bottom: 100px; }
@@ -3553,11 +3557,11 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: none;
     width: 640px;
     height: 640px;
-    -moz-animation: expand-fabmenu 0.275s var(--standard-curve);
-    -webkit-animation: expand-fabmenu 0.275s var(--standard-curve);
-    animation: expand-fabmenu 0.275s var(--standard-curve);
-    -o-animation: expand-fabmenu 0.275s var(--standard-curve);
-    -ms-animation: expand-fabmenu 0.275s var(--standard-curve); }
+    -moz-animation: expandFabmenu 0.275s var(--standard-curve);
+    -webkit-animation: expandFabmenu 0.275s var(--standard-curve);
+    animation: expandFabmenu 0.275s var(--standard-curve);
+    -o-animation: expandFabmenu 0.275s var(--standard-curve);
+    -ms-animation: expandFabmenu 0.275s var(--standard-curve); }
 
 .fab-menu > .box > .content {
     position: absolute;
@@ -3571,7 +3575,7 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.fab-menu > .box > .content > .button-floating {
+.fab-menu > .box > .content > .buttonFloating {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -3585,11 +3589,11 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.fab-menu.active > .box > .content > .button-floating {
+.fab-menu.active > .box > .content > .buttonFloating {
     opacity: 0;
     visibility: hidden; }
 
-.fab-menu > .box > .content > .button-floating > i {
+.fab-menu > .box > .content > .buttonFloating > i {
     cursor: pointer;
     width: 56px;
     height: 56px;
@@ -3657,18 +3661,18 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: initial; }
 
 .fab-speed-dial > button.floating.active > i {
-    -moz-animation: change-restore-icon 0.225s var(--standard-curve);
-    -webkit-animation: change-restore-icon 0.225s var(--standard-curve);
-    animation: change-restore-icon 0.225s var(--standard-curve);
-    -o-animation: change-restore-icon 0.225s var(--standard-curve);
-    -ms-animation: change-restore-icon 0.225s var(--standard-curve); }
+    -moz-animation: changeRestoreIcon 0.225s var(--standard-curve);
+    -webkit-animation: changeRestoreIcon 0.225s var(--standard-curve);
+    animation: changeRestoreIcon 0.225s var(--standard-curve);
+    -o-animation: changeRestoreIcon 0.225s var(--standard-curve);
+    -ms-animation: changeRestoreIcon 0.225s var(--standard-curve); }
 
 .fab-speed-dial.active > button.floating.active > i {
-    -moz-animation: change-new-icon 0.225s var(--standard-curve);
-    -webkit-animation: change-new-icon 0.225s var(--standard-curve);
-    animation: change-new-icon 0.225s var(--standard-curve);
-    -o-animation: change-new-icon 0.225s var(--standard-curve);
-    -ms-animation: change-new-icon 0.225s var(--standard-curve); }
+    -moz-animation: changeNewIcon 0.225s var(--standard-curve);
+    -webkit-animation: changeNewIcon 0.225s var(--standard-curve);
+    animation: changeNewIcon 0.225s var(--standard-curve);
+    -o-animation: changeNewIcon 0.225s var(--standard-curve);
+    -ms-animation: changeNewIcon 0.225s var(--standard-curve); }
 
 .fab-speed-dial > ul {
     position: absolute;
@@ -3692,19 +3696,19 @@ button.raised:focus:after, button.flat:focus:after {
     width: 40px;
     height: 40px;
     opacity: 0;
-    -moz-animation: close-fab-speeddial 0.175s var(--standard-curve);
-    -webkit-animation: close-fab-speeddial 0.175s var(--standard-curve);
-    animation: close-fab-speeddial 0.175s var(--standard-curve);
-    -o-animation: close-fab-speeddial 0.175s var(--standard-curve);
-    -ms-animation: close-fab-speeddial 0.175s var(--standard-curve); }
+    -moz-animation: closeFabSpeeddial 0.175s var(--standard-curve);
+    -webkit-animation: closeFabSpeeddial 0.175s var(--standard-curve);
+    animation: closeFabSpeeddial 0.175s var(--standard-curve);
+    -o-animation: closeFabSpeeddial 0.175s var(--standard-curve);
+    -ms-animation: closeFabSpeeddial 0.175s var(--standard-curve); }
 
 .fab-speed-dial.active > ul > li > button.floating {
     opacity: 1;
-    -moz-animation: open-fab-speeddial 0.175s var(--standard-curve);
-    -webkit-animation: open-fab-speeddial 0.175s var(--standard-curve);
-    animation: open-fab-speeddial 0.175s var(--standard-curve);
-    -o-animation: open-fab-speeddial 0.175s var(--standard-curve);
-    -ms-animation: open-fab-speeddial 0.175s var(--standard-curve); }
+    -moz-animation: openFabSpeeddial 0.175s var(--standard-curve);
+    -webkit-animation: openFabSpeeddial 0.175s var(--standard-curve);
+    animation: openFabSpeeddial 0.175s var(--standard-curve);
+    -o-animation: openFabSpeeddial 0.175s var(--standard-curve);
+    -ms-animation: openFabSpeeddial 0.175s var(--standard-curve); }
 
 /** FILE SVG-ICONS */
 
@@ -4688,7 +4692,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: calc(100% - 72px);
     margin-left: 72px; }
 
-.list.appbar-button-floating > .subheader {
+.list.appbar-buttonFloating > .subheader {
     width: calc(100% - 56px);
     margin-left: 56px; }
 
@@ -4766,11 +4770,14 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     display: none; }
 
-.app-bar > .progress-bar {
-    height: 3px; }
+.progress-bar.visible {
+    display: block; }
+
+.progress-bar.visible.indeterminate {
+    display: none; }
 
 .progress-bar.show {
-    display: block; }
+    display: block !important; }
 
 .progress-bar > .bar {
     position: absolute;
@@ -4778,8 +4785,15 @@ button.raised:focus:after, button.flat:focus:after {
     width: 0; 
     height: 4px; }
 
-.app-bar > .progress-bar > .bar {
-    height: 3px; }
+.progress-bar.reverse > .bar {
+    right: 0px; }
+
+.progress-bar.visible > .bar {
+    -moz-transition: width 0.175s var(--sharp-curve); 
+    -webkit-transition: width 0.175s var(--sharp-curve); 
+    transition: width 0.175s var(--sharp-curve); 
+    -o-transition: width 0.175s var(--sharp-curve); 
+    -ms-transition: width 0.175s var(--sharp-curve); }
 
 .progress-bar.show > .bar {
     -moz-animation-name: progressDeterminate;
@@ -4800,16 +4814,19 @@ button.raised:focus:after, button.flat:focus:after {
     width: 0px; 
     height: 4px; }
 
-.app-bar > .progress-bar.indeterminate:after, 
-.app-bar > .progress-bar.indeterminate:before {
-    height: 3px; }
-
 .progress-bar.show.indeterminate:after {
     -moz-animation: progressIndeterminateAfter 2s infinite;
     -webkit-animation: progressIndeterminateAfter 2s infinite;
     animation: progressIndeterminateAfter 2s infinite;
     -o-animation: progressIndeterminateAfter 2s infinite;
     -ms-animation: progressIndeterminateAfter 2s infinite; }
+
+.progress-bar.show.indeterminate.reverse:after {
+    -moz-animation: progressIndeterminateReverseAfter 2s infinite;
+    -webkit-animation: progressIndeterminateReverseAfter 2s infinite;
+    animation: progressIndeterminateReverseAfter 2s infinite;
+    -o-animation: progressIndeterminateReverseAfter 2s infinite;
+    -ms-animation: progressIndeterminateReverseAfter 2s infinite; }
 
 .progress-bar.show.indeterminate:before {
     -moz-animation: progressIndeterminateBefore 2s infinite;
@@ -4818,9 +4835,71 @@ button.raised:focus:after, button.flat:focus:after {
     -o-animation: progressIndeterminateBefore 2s infinite;
     -ms-animation: progressIndeterminateBefore 2s infinite; }
 
-.toolbar > .progress-bar {
+.progress-bar.show.indeterminate.reverse:before {
+    -moz-animation: progressIndeterminateReverseBefore 2s infinite;
+    -webkit-animation: progressIndeterminateReverseBefore 2s infinite;
+    animation: progressIndeterminateReverseBefore 2s infinite;
+    -o-animation: progressIndeterminateReverseBefore 2s infinite;
+    -ms-animation: progressIndeterminateReverseBefore 2s infinite; }
+
+.progress-bar.buffering {
+    background-color: transparent; }
+
+.progress-bar.buffering > .buffer, .progress-bar.buffering:after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    height: 4px; }
+
+.progress-bar.buffering > .buffer {
+    width: 15%; 
+    z-index: 2; 
+    -moz-transition: width 0.175s var(--sharp-curve); 
+    -webkit-transition: width 0.175s var(--sharp-curve); 
+    transition: width 0.175s var(--sharp-curve); 
+    -o-transition: width 0.175s var(--sharp-curve); 
+    -ms-transition: width 0.175s var(--sharp-curve); }
+
+.progress-bar.buffering.reverse > .buffer {
+    right: 0px; }
+
+.progress-bar.buffering:after {
+    width: 100%;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23e6e6e6'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 10px 4px;
+    -moz-animation: progressBuffering 0.25s infinite linear;
+    -webkit-animation: progressBuffering 0.25s infinite linear;
+    animation: progressBuffering 0.25s infinite linear;
+    -o-animation: progressBuffering 0.25s infinite linear;
+    -ms-animation: progressBuffering 0.25s infinite linear; }
+
+.progress-bar.buffering.reverse:after {
+    -moz-animation: progressBufferingReverse 0.25s infinite linear;
+    -webkit-animation: progressBufferingReverse 0.25s infinite linear;
+    animation: progressBufferingReverse 0.25s infinite linear;
+    -o-animation: progressBufferingReverse 0.25s infinite linear;
+    -ms-animation: progressBufferingReverse 0.25s infinite linear; }
+
+.progress-bar.buffering > .bar {
+    z-index: 3; }
+
+.app-bar > .progress-bar, .toolbar > .progress-bar {
     position: absolute;
     bottom: 0px; }
+
+@media only screen and (min-width : 361px) {
+    .app-bar > .progress-bar {
+        height: 2px; }
+
+    .app-bar > .progress-bar > .bar {
+        height: 2px; }
+
+    .app-bar > .progress-bar.indeterminate:after, 
+    .app-bar > .progress-bar.indeterminate:before {
+        height: 2px; }
+}
 
 /** PROGRESS CIRCULAR */
 
@@ -4838,7 +4917,7 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transform: translateX(-50%); }
 
 .app-bar > .content-progress-circular {
-    top: initial;
+    top: -48px;
     bottom: 150%;
     -moz-transition: bottom 0.475s var(--standard-curve);
     -webkit-transition: bottom 0.475s var(--standard-curve);
@@ -4847,6 +4926,7 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transition: bottom 0.475s var(--standard-curve); }
 
 .app-bar > .content-progress-circular.show {
+    top: initial;
     bottom: -48px; }
 
 .app-content > .content-progress-circular {
@@ -5225,11 +5305,11 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: none;
     transition: none;
     -ms-transition: none;
-    -moz-animation: close-select 0.225s var(--easing-in); 
-    -webkit-animation: close-select 0.225s var(--easing-in); 
-    -o-animation: close-select 0.225s var(--easing-in); 
-    animation: close-select 0.225s var(--easing-in); 
-    -ms-animation: close-select 0.225s var(--easing-in); }
+    -moz-animation: closeSelect 0.225s var(--easing-in); 
+    -webkit-animation: closeSelect 0.225s var(--easing-in); 
+    -o-animation: closeSelect 0.225s var(--easing-in); 
+    animation: closeSelect 0.225s var(--easing-in); 
+    -ms-animation: closeSelect 0.225s var(--easing-in); }
 
 .select > .content > ul.active {
     max-width: 100%;
@@ -5406,11 +5486,11 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: none;
     transition: none;
     -ms-transition: none;
-    -moz-animation: close-select 0.225s var(--easing-in); 
-    -webkit-animation: close-select 0.225s var(--easing-in); 
-    -o-animation: close-select 0.225s var(--easing-in); 
-    animation: close-select 0.225s var(--easing-in); 
-    -ms-animation: close-select 0.225s var(--easing-in); }
+    -moz-animation: closeSelect 0.225s var(--easing-in); 
+    -webkit-animation: closeSelect 0.225s var(--easing-in); 
+    -o-animation: closeSelect 0.225s var(--easing-in); 
+    animation: closeSelect 0.225s var(--easing-in); 
+    -ms-animation: closeSelect 0.225s var(--easing-in); }
 
 .select-multiple > .content > ul.active {
     max-width: 100%;
@@ -5966,6 +6046,161 @@ button.raised:focus:after, button.flat:focus:after {
 .stepper-horizontal.alternative li > .content > .detail > .optional {
     text-align: center; }
 
+/** STEPPER MOBILE */
+
+.stepper-mobile {
+    position: fixed;
+    z-index: 4;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 48px;
+    -moz-transition: margin-bottom 0.325s var(--standard-curve);
+    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
+    -o-transition: margin-bottom 0.325s var(--standard-curve);
+    transition: margin-bottom 0.325s var(--standard-curve);
+    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+
+.stepper-mobile.show-bottom-navigation {
+    margin-bottom: 56px; }
+
+.stepper-mobile > .back, .stepper-mobile > .next {
+    overflow: hidden;
+    height: 48px; }
+
+.stepper-mobile > .back {
+    float: left;
+    padding-left: 8px; }
+
+.stepper-mobile > .back.start {
+    padding-left: 16px; }
+
+.stepper-mobile > .next {
+    float: right; 
+    padding-right: 8px; }
+
+.stepper-mobile > .next.finish {
+    padding-right: 16px; }
+
+.stepper-mobile > .back > button,
+.stepper-mobile > .next > button {
+    position: relative;
+    text-transform: uppercase;
+    border: none; 
+    height: 48px;
+    line-height: 48px;
+    outline: none;
+    padding: 0px 8px; }
+
+.stepper-mobile > .back > button {
+    padding-left: 0px; }
+
+.stepper-mobile > .next > button {
+    padding-right: 0px; }
+
+.stepper-mobile > .back > button:before,
+.stepper-mobile > .next > button:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding-top: calc(100% - 12px);
+    padding-left: calc(100% - 12px);
+    margin-left: calc(-50% + 6px);
+    margin-top: calc(-50% + 6px);
+    border-radius: 50%;
+    opacity: 0.26;
+    transform: scale(0);
+    visibility: hidden; }
+
+.stepper-mobile > .back > button:not(:active):before,
+.stepper-mobile > .next > button:not(:active):before {
+    -moz-animation: ripple-squarecenter 1s var(--standard-curve);
+    -webkit-animation: ripple-squarecenter 1s var(--standard-curve);
+    animation: ripple-squarecenter 1s var(--standard-curve);
+    -o-animation: ripple-squarecenter 1s var(--standard-curve);
+    -ms-animation: ripple-squarecenter 1s var(--standard-curve); }
+
+.stepper-mobile > .back > button:focus:before, 
+.stepper-mobile > .next > button:focus:before {
+    visibility: visible; }
+
+.stepper-mobile > .back:before {
+    content: "chevron_left"; }
+
+.stepper-mobile > .next:after {
+    content: "chevron_right"; }
+
+.stepper-mobile > .back:before,
+.stepper-mobile > .next:after {
+    display: block;
+    width: 24px;
+    height: 24px;
+    font-family: "Material Icons";
+    font-size: 24px;
+    text-align: center;
+    line-height: 48px;
+    border-radius: 50%; }
+
+.stepper-mobile > .back:before {
+    float: left; }
+
+.stepper-mobile > .back.start:before {
+    display: none; }
+
+.stepper-mobile > .next:after {
+    float: right; }
+
+.stepper-mobile > .next.finish:after {
+    display: none; }
+
+.stepper-mobile > .content > .dots,
+.stepper-mobile > .content > .progress-bar-stepper {
+    display: flex;
+    box-sizing: border-box;
+    padding: 0px 12px; }
+
+.stepper-mobile > .content > .dots > .dot {
+    width: 100%;
+    height: 48px; }
+
+.stepper-mobile > .content > .dots > .dot:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 19px;
+    margin-left: calc(50% - 5px); }
+
+.stepper-mobile > .content > .progress-bar-stepper > .bar {
+    position: relative;
+    width: 100%;
+    height: 48px; }
+
+.stepper-mobile > .content > .progress-bar-stepper > .bar:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 22px;
+    width: 100%;
+    height: 4px;
+    opacity: 0.24; }
+
+.stepper-mobile > .content > .progress-bar-stepper > .bar:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 22px;
+    width: 0%;
+    height: 4px;
+    -moz-transition: width 0.325s var(--standard-curve);
+    -webkit-transition: width 0.325s var(--standard-curve);
+    transition: width 0.325s var(--standard-curve);
+    -o-transition: width 0.325s var(--standard-curve);
+    -ms-transition: width 0.325s var(--standard-curve); }
+
 /** SWICTH */
 
 .switch {
@@ -6111,11 +6346,15 @@ body.not-touch .tabs::-webkit-scrollbar {
     padding: 8px 0px 20px 0px; }
 
 .textarea > .content > .box {
-    padding-bottom: 4px;
+    padding-bottom: 3px;
     border-radius: 4px; }
 
+.textarea:hover > .content > .box {
+    padding-bottom: 1px; }
+
+.textarea:hover > .content.focused > .box,
 .textarea > .content.focused > .box {
-    padding-bottom: 6px; }
+    padding-bottom: 3px; }
 
 .textarea > .content > .box > label {
     position: absolute;
@@ -6192,13 +6431,6 @@ body.not-touch .tabs::-webkit-scrollbar {
     width: 100%;
     font-size: 12px; }
 
-.textarea:hover > .content > span,
-.textarea > .content.focused > span {
-    bottom: 2px; }
-
-.textarea:hover > .content.disabled > span {
-    bottom: 0px; }
-
 .textarea > .content > span.counter {
     right: 0px;
     left: initial;
@@ -6217,6 +6449,110 @@ body.not-touch .tabs::-webkit-scrollbar {
     font-family: inherit;
     font-size: 16px;
     line-height: 18px; }
+
+/** TEXTBOX */
+
+.textbox {
+    position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textbox > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    padding: 8px 0px 20px 0px; }
+
+.textbox > .content > .box {
+    border-radius: 4px; }
+
+.textbox > .content > .box > label {
+    position: absolute;
+    top: 28px;
+    left: 16px;
+    width: calc(100% - 32px);
+    font-size: 16px;
+    height: 18px;
+    line-height: 18px;
+    cursor: text;
+    -moz-transition: all 0.125s var(--sharp-curve);
+    -webkit-transition: all 0.125s var(--sharp-curve);
+    -o-transition: all 0.125s var(--sharp-curve);
+    transition: all 0.125s var(--sharp-curve);
+    -ms-transition: all 0.125s var(--sharp-curve); }
+
+.textbox > .content > .box > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
+
+.textbox > .content > .box > label > span {
+    margin-left: 2px; }
+
+.textbox > .content > .box > input {
+    width: calc(100% - 32px);
+    cursor: text;
+    height: 32px;
+    padding: 20px 16px 0px 16px;
+    line-height: 32px;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    outline: none; 
+    background-color: transparent; }
+
+.textbox > .content > .box > input.iconaction {
+    width: calc(100% - 60px); }
+
+.textbox > .content > .box > input::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textbox.active > .content > input::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textbox > .content > .box > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textbox > .content > .box > .value {
+    position: absolute;
+    top: 29px;
+    left: 16px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    width: calc(100% - 32px);
+    overflow: hidden; 
+    white-space: nowrap; }
+
+.textbox > .content > .box > input.iconaction ~ .value {
+    width: calc(100% - 28px); }
+
+.textbox > .content > .box > i.action {
+    position: absolute;
+    top: 32px;
+    right: 16px; 
+    padding: 0px;
+    cursor: pointer; 
+    z-index: 2; }
+
+.textbox > .content > .box > input:disabled ~ i.action {
+    cursor: not-allowed; }
+
+.textbox > .content > span {
+    position: absolute;
+    left: 16px;
+    bottom: 0px;
+    width: calc(100% - 32px);
+    font-size: 12px; }
+
+.textbox > .content > span.counter {
+    right: 16px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
 
 /** TEXTBOX MULTILINE */
 
@@ -6420,11 +6756,11 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield.active > .content > input:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: border-textfield 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
-    animation: border-textfield 0.225s var(--sharp-curve);
-    -o-animation: border-textfield 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
+    animation: borderTextfield 0.225s var(--sharp-curve);
+    -o-animation: borderTextfield 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
 
 .textfield > .content > i.action {
     position: absolute;
@@ -6483,11 +6819,11 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
 
 /** TEXTFIELD MULTILINE */
 
@@ -6583,11 +6919,11 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield-multiline.active > .content > textarea:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: border-textfield 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield 0.225s var(--sharp-curve);
-    animation: border-textfield 0.225s var(--sharp-curve);
-    -o-animation: border-textfield 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
+    animation: borderTextfield 0.225s var(--sharp-curve);
+    -o-animation: borderTextfield 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
 
 .textfield-multiline > .content > span {
     position: absolute;
@@ -6644,11 +6980,11 @@ body.not-touch .tabs::-webkit-scrollbar {
 
 .textfield-multiline.active > .content > i.icon-description ~ textarea:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -webkit-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -o-animation: border-textfield-icon 0.225s var(--sharp-curve);
-    -ms-animation: border-textfield-icon 0.225s var(--sharp-curve); }
+    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
+    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
 
 /** TEXTFIELD READONLY */
 
@@ -6748,7 +7084,7 @@ body.not-touch .tabs::-webkit-scrollbar {
     -ms-transition: margin-bottom 0.325s var(--standard-curve); }
 
 .toast.show-bottom-navigation {
-    margin-bottom: -32px; }
+    margin-bottom: -64px; }
 
 .toast > .body {
     display: block;

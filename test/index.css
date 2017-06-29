@@ -1,6 +1,33 @@
 
 @import url("sf/style-font.css");
 
-html, body ,input, textarea {
+html, body ,input, textarea, button {
     font-family: sf; }
 
+.card > .media-area {
+    overflow-x: hidden;
+    padding: 16px;
+    overflow-y: auto; }
+
+.card > .media-area > .image {
+    position: relative;
+    float: left; 
+    width: calc(100% - 80px);
+    max-width: 240px; }
+
+.card > .media-area > .image:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding-top: 100%; }
+
+.card > .media-area > .actions {
+    display: inline-grid;
+    float: right;
+    margin: 8px 8px 0px 0px; }
+
+.card > .media-area > .actions > button {
+    margin-left: calc(100% - 40px);
+    padding: 8px;
+    box-sizing: content-box; }

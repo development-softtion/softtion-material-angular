@@ -401,7 +401,8 @@
                             viewEvent: "=?"
                         },
                         link: function ($scope, $element) {
-                            var selector = SofttionMaterial.Selectors.FAB; // Selector
+                            var selectorFAB = SofttionMaterial.Selectors.FAB,
+                                selectorNav = SofttionMaterial.Selectors.BottomNav; 
                             
                             // Componentes
                             var rippleBox = angular.element(
@@ -409,7 +410,8 @@
                                 ),
                                 items = $element.find(".content > li"),
                                 itemActive = $element.find(".content > li.active:first"), 
-                                actionButton = angular.element(selector),
+                                actionButton = angular.element(selectorFAB),
+                                elementsNav = angular.element(selectorNav),
                                 views = angular.element($scope.views),
                                 appContent = angular.element(".app-content"), 
                                 snackbar, toast;
@@ -424,6 +426,10 @@
                             
                             if (actionButton.exists()) {
                                 actionButton.addClass("show-bottom-navigation");
+                            } // Cambiando posición original
+                            
+                            if (elementsNav.exists()) {
+                                elementsNav.addClass("show-bottom-navigation");
                             } // Cambiando posición original
                             
                             items.attr("tab-index","-1"); items.removeClass("active"); 
@@ -515,14 +521,14 @@
                                     toast = angular.element(".toast");
                                 } // No se ha encontrado Toast en el documento
                                 
-                                if (softtion.isUndefined(actionButton) || !actionButton.exists()) {
-                                    actionButton = angular.element(selector);
-                                } // No se ha encontrado Floating en el documento
+                                actionButton = angular.element(selectorFAB);
+                                elementsNav = angular.element(selectorNav);
                                 
                                 if (!softtion.isInPage($element[0])) {
                                     snackbar.removeClass("show-bottom-navigation");
                                     toast.removeClass("show-bottom-navigation");
                                     actionButton.removeClass("show-bottom-navigation");
+                                    elementsNav.removeClass("show-bottom-navigation");
                                     
                                     appContent.off("scroll.bottom-navigation", scrollBottomNav); return;
                                 } // No existe el bottom navigation en el documento
@@ -533,11 +539,13 @@
                                     snackbar.removeClass("show-bottom-navigation");
                                     toast.removeClass("show-bottom-navigation");
                                     actionButton.removeClass("show-bottom-navigation");
+                                    elementsNav.removeClass("show-bottom-navigation");
                                     $element.addClass(classHide);
                                 } else {
                                     snackbar.addClass("show-bottom-navigation");
                                     toast.addClass("show-bottom-navigation");
                                     actionButton.addClass("show-bottom-navigation");
+                                    elementsNav.addClass("show-bottom-navigation");
                                     $element.removeClass(classHide);
                                 } // Se visualiza BottomNavigation oculto
                                 
@@ -3284,10 +3292,16 @@
                         restrict: "C",
                         link: function ($scope, $element) {
                             if (!$element.hasClass("indeterminate")) {
-                                var bar = softtion.html("div").addClass("bar").tojQuery();
-                                
-                                $element.append(bar); // Insertando barra progreso
-                            }
+                                $element.append(
+                                    softtion.html("div").addClass("bar").tojQuery()
+                                ); 
+                            } // Insertando barra progreso en el Componente
+                            
+                            if ($element.hasClass("buffering")) {
+                                $element.append(
+                                    softtion.html("div").addClass("buffer").tojQuery()
+                                ); 
+                            } // Insertando barra buffer en el Componente
                         }
                     };
                 }
@@ -4264,6 +4278,323 @@
                 }
             },
             
+            TextBox: {
+                route: "softtion/template/textbox.html",
+                name: "textbox",
+                html: function () {
+                    var content = softtion.html("div").addClass("content").
+                        addAttribute("ng-class", "{focused: inputActive, disabled: ngDisabled}");
+                    
+                    var box = softtion.html("div").addClass("box");
+                    
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "{{typeInput}}").
+                        addAttribute("ng-model", "valueInput").
+                        addAttribute("ng-click", "clickInput($event)").
+                        addAttribute("ng-blur", "blurInput($event)").
+                        addAttribute("ng-focus", "focusInput($event)").
+                        addAttribute("ng-keypress", "keypressInput($event)").
+                        addAttribute("ng-keyup", "keyupInput($event)").
+                        addAttribute("ng-readonly", "ngReadonly").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
+                        addAttribute("ng-trim", "ngTrim").
+                        addAttribute("placeholder", "{{placeholder}}");
+
+                    var value = softtion.html("p").addClass(["value"]).
+                        setText("{{getValueModel()}}").
+                        addAttribute("ng-hide", "hideValue").
+                        addAttribute("ng-click", "clickLabel($event)");
+                
+                    var iconAction = softtion.html("i").addClass("action").
+                        setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+                        addAttribute("ng-click", "clickAction($event)");
+
+                    var label = softtion.html("label").
+                        setText("{{label}}").addClass("truncate").
+                        addAttribute("ng-class", "isActiveLabel()").
+                        addAttribute("ng-click", "clickLabel($event)").
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
+
+                    var spanError = softtion.html("span").addClass(["error", "truncate"]).
+                        setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+                
+                    var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
+                        setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
+                    
+                    box.addChildren(input).addChildren(label).
+                        addChildren(value).addChildren(iconAction);
+                    
+                    content.addChildren(box).addChildren(spanHelper).
+                        addChildren(spanError).addChildren(spanCounter);
+
+                    return content.create(); // Componente Textfield
+                },        
+                defineInput: function (typeInput) {
+                    switch (typeInput) {
+                        default: return "text";
+                        case (TextType.DECIMAL): return "number";
+                        case (TextType.NUMBER): return "number";
+                        case (TextType.PASSWORD): return "password";
+                    }
+                },        
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.TextBox.route,
+                        scope: {
+                            value: "=ngModel", 
+                            label: "@", 
+                            type: "@",
+                            required: "=?",
+                            ngTrim: "=?",
+                            uppercase: "=?",
+                            ngDisabled: "=?",
+                            ngReadonly: "=?",
+                            minLength: "=?",
+                            maxLength: "=?",
+                            iconAction: "@",
+                            iconFunction: "=?",
+                            placeholder: "@",
+                            helperText: "@",
+                            
+                            // Eventos
+                            clickEvent: "=?",
+                            blurEvent: "=?",
+                            focusEvent: "=?",
+                            enterEvent: "=?",
+                            changeEvent: "=?"
+                        },
+                        link: function ($scope, $element) {
+                            // Componentes
+                            var input = $element.find("input"),
+                                regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/,
+                                handler = Material.components.TextBox;
+                            
+                            var callbackFnEvent = function ($event, $function) {
+                                if (softtion.isFunction($function)) {
+                                    $function($event, $scope.valueInput);
+                                } // Se definio una función para invocar
+                            };
+
+                            // Atributos de control
+                            $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
+
+                            $scope.typeInput = handler.defineInput($scope.type || "text");
+                            $scope.valueInput = "";  $scope.isIconAction = false;
+                            $scope.errorActive = false; $scope.isErrorActive = false; 
+                            $scope.inputActive = false; $scope.viewPassword = false;
+
+                            if (softtion.isString($scope.value)) { 
+                                $element.addClass("active"); 
+                            } // Se ha definido un valor en el Model
+                            
+                            if ($scope.type === "password") {
+                                $scope.isIconAction = true;
+                                $scope.iconAction = "visibility";
+                            } else {
+                                if (softtion.isString($scope.iconAction)) {
+                                    $scope.isIconAction = true;
+                                } // Icono de acción definido por el usuario
+                            }
+                            
+                            function defineModel() {
+                                if ($scope.uppercase) {
+                                    $scope.valueInput = $scope.valueInput.toUpperCase();
+                                } // Se desea texto en mayuscula
+
+                                switch ($scope.type) {
+                                    case (TextType.MONEY):
+                                        $scope.successInput(parseInt($scope.valueInput));
+                                    break;
+
+                                    case (TextType.DECIMAL): 
+                                        $scope.successInput(parseFloat($scope.valueInput)); 
+                                    break;
+
+                                    case (TextType.EMAIL):
+                                        if (regexEmail.test($scope.valueInput)) {
+                                            $scope.successInput($scope.valueInput);
+                                        } else {
+                                            $scope.errorInput("Texto digitado no es email");
+                                        } // Error en el correo
+                                    break;
+
+                                    default: 
+                                        $scope.successInput($scope.valueInput);
+                                    break;
+                                } // Definiendo tipo de dato del modelo
+                            };
+                            
+                            function textEmpty() {
+                                $element.removeClass("active"); // Sin texto
+                                    
+                                if ($scope.valueInput === "") { 
+                                    $scope.value = undefined; 
+                                } // Dejando Model indefinido
+                                    
+                                if ($scope.required) {
+                                    $scope.isErrorActive = true;
+                                    $scope.errorInput("Este campo es requerido"); 
+                                } // Texto es requerido
+                            };
+                            
+                            function validateTextModel(assign) {
+                                var lengthText = $scope.valueInput.length;
+                                
+                                if (!softtion.isString($scope.valueInput)) {
+                                    if (assign) { 
+                                        textEmpty(); 
+                                    } // Componente sin texto
+                                } else if (lengthText < $scope.minLength) {
+                                    if (assign || $scope.isErrorActive) {
+                                        $scope.isErrorActive = true;
+                                        $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
+                                    }
+                                } else {
+                                    $scope.isErrorActive = false;
+                                    $scope.errorActive = false; 
+                                    $element.removeClass("error");
+                                    
+                                    if (assign) {
+                                        defineModel(); 
+                                    } // Estableciendo Model
+                                } // Todo esta correcto
+                            };
+                            
+                            $scope.successInput = function (value) {
+                                $scope.value = value; // Definiendo Model
+                            };
+                            
+                            $scope.errorInput = function (message) {
+                                $scope.errorActive = true; $element.addClass("error"); 
+                                $scope.errorText = message; $scope.value = undefined; 
+                            };
+                            
+                            $scope.isActiveLabel = function () {
+                                return ($scope.inputActive || softtion.isString($scope.valueInput)
+                                    || softtion.isDefined($scope.value)) ? "active" : "";
+                            };
+                            
+                            $scope.isCounterAllowed = function () {
+                                return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
+                            };
+                            
+                            $scope.textCounter = function () {
+                                var lengthText = 0; // Cantidad de caracteres
+                                
+                                if ($scope.inputActive) {
+                                    lengthText = $scope.valueInput.length;
+                                } else {
+                                    lengthText = (softtion.isDefined($scope.value)) ?
+                                        lengthText = $scope.value.length :
+                                        lengthText = $scope.valueInput.length;
+                                } // Componente no se encuentra enfocado
+                                
+                                return lengthText + "/" + $scope.maxLength;
+                            };
+                            
+                            $scope.isHaveText = function () {
+                                return softtion.isString($scope.valueInput) || softtion.isDefined($scope.value);
+                            };
+
+                            $scope.clickLabel = function () { 
+                                input.focus(); // Enfocando el input
+                            };
+                            
+                            $scope.clickInput = function ($event) {
+                                callbackFnEvent($event, $scope.clickEvent); // Evento click
+                            };
+                            
+                            $scope.clickAction = function ($event) {
+                                if ($scope.ngDisabled) {
+                                    return;
+                                } // Componente esta desactivado
+                                
+                                if ($scope.type === "password") {
+                                    $scope.viewPassword = !$scope.viewPassword; // Definiendo visibilidad
+                                    
+                                    $scope.typeInput = $scope.viewPassword ? "text" : "password";
+                                    $scope.iconAction = $scope.viewPassword ? "visibility_off" : "visibility";
+                                } else {
+                                    callbackFnEvent($event, $scope.iconFunction); // Evento icon
+                                }
+                            };
+
+                            $scope.focusInput = function ($event) {
+                                if (softtion.isDefined($scope.value)) {
+                                    $scope.valueInput = $scope.value.toString();
+                                } // Cambiando valor del texto en el Input
+                                
+                                $element.addClass("active"); $scope.inputActive = true; 
+                                
+                                callbackFnEvent($event, $scope.focusEvent); // Evento focus
+                            };
+
+                            $scope.blurInput = function ($event) {
+                                validateTextModel(true); $scope.inputActive = false;
+                                
+                                callbackFnEvent($event, $scope.blurEvent); // Evento blur
+                                
+                                if (softtion.isDefined($scope.value)) {
+                                    $scope.valueInput = ""; 
+                                } // Limpiando texto en input del componente
+                            };
+
+                            $scope.keypressInput = function ($event) {
+                                var validate = softtion.validateCharacter({
+                                    keyCode: $event.keyCode, 
+                                    type: $scope.type, 
+                                    inputValue: $scope.valueInput
+                                });
+
+                                if (!validate) {
+                                 	$event.preventDefault();
+                                } // Cancelando el evento
+                                
+                                if (!isNaN($scope.maxLength)) {
+                                    if ($scope.valueInput.length === $scope.maxLength) {
+                                        $event.preventDefault();
+                                    } // Cancelando el evento
+                                } // Se definío numero correctamente
+                                
+                                if ($event.keyCode === 13) {
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.changeEvent);
+                                } // No se presiono tecla 'Enter' en el input
+                            };
+                            
+                            $scope.keyupInput = function ($event) {
+                                validateTextModel(false); // Validando campo
+                                
+                                if ($event.keyCode === 8) {
+                                    callbackFnEvent($event, $scope.changeEvent);
+                                } // Se borró un carácter del input
+                            };
+                            
+                            $scope.getValueModel = function () {
+                                var value = (softtion.isDefined($scope.value)) ? 
+                                    $scope.value : $scope.valueInput;                                    
+                                    
+                                if (($scope.type === "password") && !$scope.viewPassword) {
+                                    var length = value.length; value = "";
+                                    
+                                    for (var i = 0; i < length; i++) { value += "•"; }
+                                } // Contenido del input es tipo password
+                                
+                                return value; // Retornando el valor a mostrar
+                            };
+                        }
+                    };
+                }
+            },
+            
             TextBoxMultiline: {
                 route: "softtion/template/textbox-multiline.html",
                 name: "textboxMultiline",
@@ -4346,8 +4677,6 @@
                             // Componentes
                             var hidden = $element.find(".textarea-hidden"),
                                 area = $element.find("textarea");
-                            
-                            insertIconDescription($scope, area); // Icono descriptivo
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
@@ -5541,7 +5870,6 @@
                 name: "$dialog",
                 method: function () {
                     var Properties = {
-                        id: undefined,
                         dialog: undefined,
                         box: undefined,
                         backdrop: undefined,
@@ -5553,26 +5881,24 @@
                     Dialog.prototype.set = function (dialogID) {
                         var self = this; // Sidenav
                         
-                        if (Properties.id !== dialogID) {
-                            Properties.id = dialogID; Properties.dialog = angular.element(dialogID);
-                        
-                            if (Properties.dialog.exists()) {
-                                Properties.box = Properties.dialog.children(".box");
-                                Properties.backdrop = Properties.dialog.children(".backdrop");
+                        Properties.dialog = angular.element(dialogID);
 
-                                if (!Properties.backdrop.exists()) {
-                                    Properties.backdrop = angular.element(
-                                        softtion.html("div").addClass("backdrop").create()
-                                    );
+                        if (Properties.dialog.exists()) {
+                            Properties.box = Properties.dialog.children(".box");
+                            Properties.backdrop = Properties.dialog.children(".backdrop");
 
-                                    Properties.dialog.append(Properties.backdrop);
-                                    
-                                    Properties.backdrop.click(function () { 
-                                        if (!Properties.persistent) { self.hide(); }
-                                    });
-                                }
-                            } // Sidenav existe en el Documento
-                        }
+                            if (!Properties.backdrop.exists()) {
+                                Properties.backdrop = angular.element(
+                                    softtion.html("div").addClass("backdrop").create()
+                                );
+
+                                Properties.dialog.append(Properties.backdrop);
+
+                                Properties.backdrop.click(function () { 
+                                    if (!Properties.persistent) { self.hide(); }
+                                });
+                            }
+                        } // Dialog existe en el Documento
                         
                         return this; // Retornando interfaz fluida
                     };
@@ -5980,31 +6306,35 @@
             ProgressBar: {
                 name: "$progressBar",
                 method: function () {
-                    var Properties = { 
-                        component: undefined,
-                        callback: undefined,
-                        functionStart: false,
-                        $rootScope: undefined,
-                        events: [
-                            "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
-                        ]
-                    };
+                    var $scope = undefined,
+                        Properties = { 
+                            component: undefined,
+                            callback: undefined,
+                            functionStart: false,
+                            events: [
+                                "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
+                            ]
+                        };
                     
                     var ProgressBar = function () {};
 
                     ProgressBar.prototype.set = function (progressID) {
                         Properties.component = angular.element(progressID);
-                        var component = Properties.component;
+                        var component = Properties.component,
+                            events = Properties.events;
                         
                         if (component.exists() && !component.hasClass("indeterminate")) {
                             var bar = component.children(".bar");
                             
-                            if (!bar.hasEventListener(Properties.events)) {
+                            if (!bar.hasEventListener(events)) {
                                 bar.animationend(function () { 
-                                    component.removeClass("show"); Properties.functionStart = false;
+                                    Properties.functionStart = false;
+                                    component.removeClass("show"); 
                                     
-                                    if (softtion.isFunction(Properties.callback)) {
-                                        Properties.$rootScope.$apply(function () { Properties.callback(); });
+                                    var callback = Properties.callback;
+                                    
+                                    if (softtion.isFunction(callback)) {
+                                        $scope.$apply(function () { callback(); });
                                     } // Invocando función al terminar animación
                                 });
                             }
@@ -6015,9 +6345,10 @@
                     
                     ProgressBar.prototype.show = function (duration, callback) {
                         duration = duration || 4000; // Definiendo duración
+                        var component = Properties.component;
                         
-                        if (!Properties.component.hasClass("indeterminate")) {
-                            var bar = Properties.component.children(".bar");
+                        if (!component.hasClass("indeterminate")) {
+                            var bar = component.children(".bar");
                             
                             if (!Properties.functionStart) {
                                 Properties.callback = callback;
@@ -6032,11 +6363,49 @@
                             bar.css("-ms-animation-duration", (duration + "ms"));
                         } // Componente no es Indeterminado
                         
-                        Properties.component.addClass("show"); // Visualizando
+                        component.addClass("show"); // Visualizando
                     };
 
                     ProgressBar.prototype.hide = function () {
                         Properties.component.removeClass("show");
+                    };
+                    
+                    var setPercentageBuffering = function (component, percentage) {
+                        var buffer = component.children(".buffer"),
+                            bar = component.children(".bar"),
+                            
+                            bufferPercentage = percentage + 15;
+                        
+                        if (bufferPercentage > 100) {
+                            bufferPercentage = 100;
+                        } // No debe sobrepasar el 100%
+                        
+                        bar.css("width", percentage + "%");
+                        buffer.css("width", bufferPercentage + "%");
+                    };
+                    
+                    ProgressBar.prototype.setPercentage = function (percentage) {
+                        var component = Properties.component;
+                        
+                        if (component.hasClass("indeterminate")) {
+                            return;
+                        } // No se le aplican propiedades porcentuales
+                        
+                        if (isNaN(percentage)) {
+                            return;
+                        } // Dato establecido no es númerico
+                        
+                        if (percentage < 0) {
+                            percentage = 0;
+                        } // No debe ser menor a 0%
+                        
+                        if (percentage > 100) {
+                            percentage = 100;
+                        } // No debe sobrepasar el 100%
+                        
+                        !(component.hasClass("buffering")) ?
+                            component.children(".bar").css("width", percentage + "%") :
+                            setPercentageBuffering(component, percentage);
                     };
                     
                     var progressBar = new ProgressBar();
@@ -6044,7 +6413,7 @@
                     this.get = function () { return progressBar; };
 
                     this.$get = ["$rootScope", function ($rootScope) {
-                        Properties.$rootScope = $rootScope; return progressBar; 
+                        $scope = $rootScope; return progressBar; 
                     }];
                 }
             },
@@ -6095,28 +6464,26 @@
             Sidenav: {
                 name: "$sidenav",
                 method: function () {
-                    var SideNav = function () { this.id = ""; };
+                    var SideNav = function () { };
 
                     SideNav.prototype.set = function (sidenavID) {
                         var self = this; // Sidenav
                         
-                        if (self.id !== sidenavID) {
-                            self.id = sidenavID; self.sidenav = angular.element(sidenavID);
+                        self.sidenav = angular.element(sidenavID);
                         
-                            if (self.sidenav.exists()) {
-                                self.content = self.sidenav.children(".content:first");
-                                self.backdrop = self.sidenav.children(".backdrop");
+                        if (self.sidenav.exists()) {
+                            self.content = self.sidenav.children(".content:first");
+                            self.backdrop = self.sidenav.children(".backdrop");
 
-                                if (!self.backdrop.exists()) {
-                                    self.backdrop = angular.element(
-                                        softtion.html("div").addClass("backdrop").create()
-                                    );
+                            if (!self.backdrop.exists()) {
+                                self.backdrop = angular.element(
+                                    softtion.html("div").addClass("backdrop").create()
+                                );
 
-                                    self.sidenav.append(self.backdrop);
-                                    self.backdrop.click(function () { self.hide(); });
-                                }
-                            } // Sidenav existe en el Documento
-                        }
+                                self.sidenav.append(self.backdrop);
+                                self.backdrop.click(function () { self.hide(); });
+                            }
+                        } // Sidenav existe en el Documento
                         
                         return this; // Retornando interfaz fluida
                     };
@@ -6626,7 +6993,8 @@
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
-            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box"
+            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box",
+            BottomNav: ".stepper-mobile"
         },
         File: {
             imagesFormat: [

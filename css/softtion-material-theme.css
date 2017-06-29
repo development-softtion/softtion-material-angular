@@ -435,7 +435,29 @@ body.dark {
 /** BUTTON */
 
 button.action {
+    color: var(--dark-secondary-font);
     background-color: transparent; }
+
+.dark button.action {
+    color: var(--light-primary-font); }
+
+button.action.theme-primary {
+    color: var(--theme-secondary-font); }
+
+button.action.theme-secondary {
+    color: var(--theme-primary-font); }
+
+button.action:before {
+    background-color: var(--dark-ripple); }
+ 
+.dark button.action:before {
+    background-color: var(--light-ripple); }
+
+button.action.theme-primary:before {
+    background-color: var(--theme-secondary-background); }
+ 
+button.action.theme-secondary:before {
+    background-color: var(--theme-primary-background); }
 
 button.flat {
     color: var(--dark-primary-font);
@@ -581,12 +603,10 @@ button.floating.theme-secondary:disabled, button.floating.theme-secondary:disabl
     color: var(--theme-primary-font-disabled);
     background-color: var(--theme-primary-background-disabled); }
 
-button.raised:before, button.flat:before, 
-button.floating:before, button.action:before {
+button.raised:before, button.flat:before, button.floating:before {
     background-color: var(--dark-ripple); }
  
-.dark button.floating:before, .dark button.action:before,
-.dark button.flat:before, .dark button.raised:before {
+.dark button.floating:before, .dark button.raised:before, .dark button.flat:before {
     background-color: var(--light-ripple); }
 
 button.raised.theme-primary:before, button.floating.theme-primary:before {
@@ -610,32 +630,18 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .card > .rich-media > .content > .actions > button.flat {
     background-color: transparent; }
 
-.card > .rich-media > .content > .actions > button.flat:before {
-    background-color: var(--light-ripple); }
-
 .card > .rich-media > .description,
-.card > .rich-media > .content > .actions > button.flat,
-.card > .rich-media > .content > .actions > button.action,
 .card > .rich-media > .content > .primary-title > .detail > .subtitle,
 .card > .rich-media > .content > .primary-title > .detail > .title {
     color: var(--light-primary-font); }
 
 .card > .optional-header > .detail > .subtitle, 
-.card > .actions > button.action,
 .card > .primary-title > .detail > .subtitle {
     color: var(--dark-secondary-font); }
 
 .dark .card > .optional-header > .detail > .subtitle,
-.dark .card > .actions > button.action,
 .dark .card > .primary-title > .detail > .subtitle {
     color: var(--light-secondary-font); }
-
-.dark .card > .actions > button.flat {
-    color: var(--light-primary-font); }
-
-.card.dark > .actions > button.flat:before,
-.card > .rich-media > .content > .actions > button.action:before {
-    background-color: var(--light-ripple); }
 
 /** CAROUSEL */
 
@@ -1039,18 +1045,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .datatable > .content > table {
     background: var(--dark-background-component); }
 
-.datatable > .header > .title, .datatable > .header > .actions > button.action > i {
-    color: var(--dark-secondary-font); }
-
-.dark .datatable > .header > .title, .dark .datatable > .header > button.action > i {
-    color: var(--light-secondary-font); }
-
-.datatable > .header > .actions > button.action:disabled > i {
-    color: var(--dark-disabled-font); }
-
-.dark .datatable > .header > button.action:disabled > i {
-    color: var(--light-disabled-font); }
-
 .datatable > .content > table > thead > tr {
     border-bottom: 1px solid var(--light-background-border); 
     border-top: 1px solid var(--light-background-border); }
@@ -1088,22 +1082,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .datatable > .content > table .checkbox-control > label:before {
     background-color: var(--theme-primary-background); }
-
-.datatable > .content > table > thead > tr > th > button.action > i, 
-.datatable > .content > table > tbody > tr > td > button.action > i {
-    color: var(--dark-secondary-font); }
-
-.dark .datatable > .content > table > thead > tr > th > button.action > i, 
-.dark .datatable > .content > table > tbody > tr > td > button.action > i {
-    color: var(--light-secondary-font); }
-
-.datatable > .content > table > thead > tr > th > button.action:disabled > i, 
-.datatable > .content > table > tbody > tr > td > button.action:disabled > i {
-    color: var(--dark-disabled-font); }
-
-.dark .datatable > .content > table > thead > tr > th > button.action:disabled > i, 
-.dark .datatable > .content > table > tbody > tr > td > button.action:disabled > i {
-    color: var(--light-disabled-font); }
 
 .dark .datatable > .content > table .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
     border: 2px solid var(--light-background-component); }
@@ -1237,7 +1215,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-primary-font); }
 
 .dialog > .box > .actions > button.flat:disabled {
-    color: var(--accent-disabled-font); }
+    color: var(--theme-secondary-font-disabled); }
+
+.dark .dialog > .box > .actions > button.flat:disabled {
+    color: var(--light-primary-disabled); }
 
 /** DROPDOWN */
 
@@ -1275,15 +1256,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .expansion-panel > .header:hover {
     background-color: #616161; /** grey-700 */ }
 
-.expansion-panel > .header > .detail,
-.expansion-panel > .header > button.action > i {
+.expansion-panel > .header > .detail {
     color: var(--dark-secondary-font); }
 
 .dark .expansion-panel > .header > .detail {
     color: var(--light-secondary-font); }
-
-.dark .expansion-panel > .header > button.action > i {
-    color: var(--light-primary-font); }
 
 .expansion-panel > .header {
     border-bottom: 1px solid var(--light-background-border); }
@@ -1656,8 +1633,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-primary-font); }
 
 .list > .subheader, .list > .item-list > .content > .action,
-.list > .item-list > .content > .detail > .description, 
-.list > .item-list > .content > .detail > button.action > i,
+.list > .item-list > .content > .detail > .description,
 .list > .item-list > .content > .detail > .emphasis {
     color: var(--dark-secondary-font); }
 
@@ -1665,9 +1641,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .list > .item-list > .content > .detail > .emphasis,
 .dark .list > .item-list > .content > .detail > .description {
     color: var(--light-secondary-font); }
-
-.dark .list > .item-list > .content > .detail > button.action > i {
-    color: var(--light-primary-font); }
 
 .list > .item-list > .slide-action {
     background-color: var(--light-background-statusbar); }
@@ -1721,6 +1694,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .progress-bar.indeterminate:after, .progress-bar > .bar,
 .progress-bar.indeterminate:before {
     background-color: var(--theme-secondary-background); }
+
+.progress-bar.buffering > .buffer {
+    background-color: var(--theme-secondary-background-disabled); }
 
 /** PROGRESS CIRCULAR */
 
@@ -1777,22 +1753,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .search-box {
     background-color: var(--dark-background-component); }
-
-.search-box > .nav-icon > button.action,
-.search-box > .actions > button.action {
-    color: var(--dark-secondary-font); }
-
-.dark .search-box > .nav-icon > button.action,
-.dark .search-box > .actions > button.action {
-    color: var(--light-primary-font); }
-
-.search-box > .nav-icon > button.action:before,
-.search-box > .actions > button.action:before {
-    background-color: var(--dark-ripple); }
-
-.dark .search-box > .nav-icon > button.action:before, 
-.dark .search-box > .actions > button.action:before {
-    background-color: var(--light-ripple); }
 
 .search-box > input {
     background-color: transparent; }
@@ -1855,18 +1815,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .select > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-border); }
-
-.select > .content > button.action {
-    color: var(--dark-secondary-font); }
-
-.dark .select > .content > button.action {
-    color: var(--light-primary-font); }
-
-.select > .content > button.action:before {
-    background-color: var(--dark-ripple); }
-
-.dark .select > .content > button.action:before {
-    background-color: var(--light-ripple); }
 
 .select > .content > span.help {
     color: var(--dark-secondary-font); }
@@ -1948,19 +1896,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .select-multiple > .content > input:disabled ~ .line-shadow {
     border-bottom: 1px dashed var(--dark-background-border); }
-
-.select-multiple > .content > button.action {
-    background-color: transparent;
-    color: var(--dark-secondary-font); }
-
-.dark .select-multiple > .content > button.action {
-    color: var(--light-primary-font); }
-
-.select-multiple > .content > button.action:before {
-    background-color: var(--dark-ripple); }
-
-.dark .select-multiple > .content > button.action:before {
-    background-color: var(--light-ripple); }
 
 .select-multiple > .content > span.help {
     color: var(--dark-secondary-font); }
@@ -2096,9 +2031,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .snackbar {
     background: #323232; }
-
-.dark .snackbar {
-    background: var(--dark-background-component); }
 
 .snackbar > .body { 
     color: var(--light-primary-font); }
@@ -2294,6 +2226,55 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .stepper-horizontal.theme-secondary li.disabled > .content > .detail > .optional {
     color: var(--theme-secondary-font-disabled); }
 
+/** STEPPER MOBILE */
+
+.stepper-mobile {
+    background-color: var(--light-background-statusbar); }
+
+.dark .stepper-mobile {
+    background-color: var(--dark-background-appbar); }
+
+.stepper-mobile > .back > button, .stepper-mobile > .next > button {
+    background: transparent; }
+
+.stepper-mobile > .back:before, .stepper-mobile > .next:after,
+.stepper-mobile > .back > button, .stepper-mobile > .next > button {
+    color: var(--dark-secondary-font); }
+
+.dark .stepper-mobile > .back:before, .dark .stepper-mobile > .next:after,
+.dark .stepper-mobile > .back > button, .dark .stepper-mobile > .next > button {
+    color: var(--light-secondary-font); }
+
+.stepper-mobile > .back > button:disabled,
+.stepper-mobile > .next > button:disabled {
+    color: var(--dark-disabled-font); }
+
+.dark .stepper-mobile > .back > button:disabled,
+.dark .stepper-mobile > .next > button:disabled {
+    color: var(--light-disabled-font); }
+
+.stepper-mobile > .content > .dots > .dot:before {
+    background-color: var(--dark-secondary-font); }
+
+.dark .stepper-mobile > .content > .dots > .dot:before {
+    background-color: var(--light-primary-font); }
+
+.stepper-mobile > .content > .dots > .dot.active:before {
+    background-color: var(--theme-secondary-background); }
+
+.stepper-mobile > .content > .dots > .dot.error:before {
+    background-color: var(--theme-error-background); }
+
+.stepper-mobile > .content > .dots > .dot.disabled:before {
+    background-color: var(--dark-disabled-font); }
+
+.dark .stepper-mobile > .content > .dots > .dot.disabled:before {
+    background-color: var(--light-disabled-font); }
+
+.stepper-mobile > .content > .progress-bar-stepper > .bar:before,
+.stepper-mobile > .content > .progress-bar-stepper > .bar:after {
+    background-color: var(--theme-secondary-background); }
+
 /** SWITCH */
 
 .switch > label > .track:before {
@@ -2431,7 +2412,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-disabled-font); }
 
 .textarea.active > .content > .box > textarea:focus ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .textarea.active.error > .content > .box > textarea:focus ~ label, 
 .textarea.error > .content > .box > label,
@@ -2484,6 +2465,99 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--dark-background);
     color: var(--light-secondary-font); }
 
+/** TEXTBOX */
+
+.textbox > .content > .box {
+    background-color: rgba(238, 238, 238, 1);
+    border-bottom: 2px solid var(--light-background-border); }
+
+.dark .textbox > .content > .box {
+    background-color: rgba(56, 56, 56, 1);
+    border-bottom: 2px solid var(--dark-background-border); }
+
+.textbox:hover > .content > .box {
+    background-color: rgba(231, 231, 231, 1);
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .textbox:hover > .content > .box {
+    background-color: rgba(63, 63, 63, 1);
+    border-bottom: 2px solid var(--light-primary-font); }
+
+.dark .textbox > .content.focused > .box,
+.textbox > .content.focused > .box {
+    border-bottom: 2px solid var(--theme-secondary-background); }
+
+.textbox.active.error > .content.focused > .box {
+    border-bottom: 2px solid var(--theme-error-background); }
+
+.textbox > .content > .box > label {
+    color: var(--dark-secondary-font); }
+
+.dark .textbox > .content > .box > label {
+    color: var(--light-secondary-font); }
+
+.textbox > .content > .box > input:focus ~ label.active {
+    color: var(--theme-secondary-font); }
+
+.textbox.error > .content > .box > input:focus ~ label.active, 
+.textbox.error > .content > .box > label,
+.textbox.active > .content > .box > input:focus ~ label > span {
+    color: var(--theme-error-font); }
+
+.textbox > .content > .box > i {
+    color: var(--dark-secondary-font); }
+
+.dark .textbox > .content > .box > i {
+    color: var(--light-secondary-font); }
+
+.textbox > .content > .box > input:disabled ~ i {
+    color: var(--dark-disabled-font); }
+
+.dark .textbox > .content > .box > input:disabled ~ i {
+    color: var(--light-disabled-font); }
+
+.textbox > .content > .box > input {
+    color: transparent; }
+
+.textbox.active > .content > .box > input:focus {
+    color: var(--dark-primary-font); }
+
+.dark .textbox.active > .content > .box > input:focus {
+    color: var(--light-primary-font); }
+
+.textbox > .content > .box > input:disabled {
+    color: var(--dark-disabled-font); }
+
+.textbox > .content > .box > input::selection { 
+    background-color: var(--theme-secondary-background); 
+    color: var(--theme-secondary-font-active); }
+
+.textbox.active > .content > .box > input:focus ~ .value {
+    color: transparent; }
+
+.textbox > .content > .box > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textbox > .content > .box > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.textbox > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textbox > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.textbox > .content > span.error {
+    color: var(--theme-error-font); }
+
+.textbox > .content > span.counter {
+    background-color: var(--light-background);
+    color: var(--dark-secondary-font); }
+
+.dark .textbox > .content > span.counter {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
+
 /** TEXTBOX MULTILINE */
 
 .textbox-multiline > .content > .box {
@@ -2531,7 +2605,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-disabled-font); }
 
 .textbox-multiline.active > .content > .box > textarea:focus ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .textbox-multiline.active.error > .content > .box > textarea:focus ~ label, 
 .textbox-multiline.error > .content > .box > label,
@@ -2593,7 +2667,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-secondary-font); }
 
 .textfield > .content > input:focus ~ label.active {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .textfield.error > .content > input:focus ~ label.active, 
 .textfield.error > .content > label,
@@ -2693,7 +2767,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-secondary-font); }
 
 .textfield-multiline.active > .content > textarea:focus ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .textfield-multiline.active.error > .content > textarea:focus ~ label, 
 .textfield-multiline.error > .content > label,
@@ -2791,7 +2865,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-secondary-font); }
 
 .textfield-readonly > .content > input:focus ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .textfield-readonly > .content > i {
     color: var(--dark-secondary-font); }
@@ -2836,9 +2910,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-primary-font);
     background: #323232; }
 
-.dark .toast > body {
-    background: var(--dark-background-component); }
-
 /** TOOLTIP */
 
 .tooltip-element {
@@ -2863,21 +2934,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .toolbar > .detail, .app-bar > .toolbar > .detail {
     color: var(--dark-primary-font); }
 
-.app-bar > .toolbar > .nav-icon > button.action,
-.app-bar > .toolbar > .menu-icon,
-.app-bar > .toolbar > .actions > button,
-.toolbar > .actions > button, 
-.toolbar > .nav-icon > button.action, .toolbar > .menu-icon {
-    color: var(--dark-secondary-font); }
-
 .dark .app-bar > .toolbar > .title,
+.dark .toolbar > .title,
 .dark .app-bar > .toolbar > .detail > .title,
-.dark .app-bar > .toolbar > .detail > .subtitle,
-.dark .app-bar > .toolbar > .nav-icon > button.action,
-.dark .app-bar > .toolbar > .menu-icon,
-.dark .app-bar > .toolbar > .actions > button,
-.dark .toolbar > .title, .dark .toolbar > .nav-icon > button.action,
-.dark .toolbar > .menu-icon, .dark .toolbar > .actions > button {
+.dark .app-bar > .toolbar > .detail > .subtitle {
     color: var(--light-primary-font); }
 
 .app-bar.theme-primary > .toolbar > .title,
