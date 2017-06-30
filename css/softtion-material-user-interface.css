@@ -1302,11 +1302,11 @@ button.action > .badge {
     top: 0px; }
 
 .bottom-navigation.three-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple-33;
-    -webkit-animation-name: ripple-33;
-    -o-animation-name: ripple-33;
-    animation-name: ripple-33;
-    -ms-animation-name: ripple-33;
+    -moz-animation-name: ripple33;
+    -webkit-animation-name: ripple33;
+    -o-animation-name: ripple33;
+    animation-name: ripple33;
+    -ms-animation-name: ripple33;
     -moz-animation-duration: 0.325s;
     -webkit-animation-duration: 0.325s;
     -o-animation-duration: 0.325s;
@@ -1314,11 +1314,11 @@ button.action > .badge {
     -ms-animation-duration: 0.325s; }
 
 .bottom-navigation.four-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple-25;
-    -webkit-animation-name: ripple-25;
-    -o-animation-name: ripple-25;
-    animation-name: ripple-25;
-    -ms-animation-name: ripple-25;
+    -moz-animation-name: ripple25;
+    -webkit-animation-name: ripple25;
+    -o-animation-name: ripple25;
+    animation-name: ripple25;
+    -ms-animation-name: ripple25;
     -moz-animation-duration: 0.325s;
     -webkit-animation-duration: 0.325s;
     -o-animation-duration: 0.325s;
@@ -1326,11 +1326,11 @@ button.action > .badge {
     -ms-animation-duration: 0.325s; }
 
 .bottom-navigation.five-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple-20;
-    -webkit-animation-name: ripple-20;
-    -o-animation-name: ripple-20;
-    animation-name: ripple-20;
-    -ms-animation-name: ripple-20;
+    -moz-animation-name: ripple20;
+    -webkit-animation-name: ripple20;
+    -o-animation-name: ripple20;
+    animation-name: ripple20;
+    -ms-animation-name: ripple20;
     -moz-animation-duration: 0.325s;
     -webkit-animation-duration: 0.325s;
     -o-animation-duration: 0.325s;
@@ -1338,11 +1338,11 @@ button.action > .badge {
     -ms-animation-duration: 0.325s; }
 
 .bottom-navigation.shifting > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple-all;
-    -webkit-animation-name: ripple-all;
-    -o-animation-name: ripple-all;
-    animation-name: ripple-all;
-    -ms-animation-name: ripple-all;
+    -moz-animation-name: rippleAll;
+    -webkit-animation-name: rippleAll;
+    -o-animation-name: rippleAll;
+    animation-name: rippleAll;
+    -ms-animation-name: rippleAll;
     -moz-animation-duration: 0.575s;
     -webkit-animation-duration: 0.575s;
     -o-animation-duration: 0.575s;
@@ -1710,11 +1710,11 @@ button.action:before {
 
 button.raised:not(:active):before, button.flat:not(:active):before,
 button.floating:not(:active):before, button.action:not(:active):before {
-    -moz-animation: ripple-squarecenter 1s var(--standard-curve);
-    -webkit-animation: ripple-squarecenter 1s var(--standard-curve);
-    animation: ripple-squarecenter 1s var(--standard-curve);
-    -o-animation: ripple-squarecenter 1s var(--standard-curve);
-    -ms-animation: ripple-squarecenter 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
+    animation: rippleSquarecenter 1s var(--standard-curve);
+    -o-animation: rippleSquarecenter 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
 
 button.raised:focus:before, button.flat:focus:before, 
 button.floating:focus:before, button.action:focus:before {
@@ -1744,11 +1744,11 @@ button.floating:disabled, button.action:disabled {
 
 button.raised:focus:after, button.flat:focus:after {
     visibility: visible;
-    -moz-animation: button-focus 2s infinite var(--sharp-curve);  
-    -webkit-animation: button-focus 2s infinite var(--sharp-curve); 
-    -o-animation: button-focus 2s infinite var(--sharp-curve); 
-    animation: button-focus 2s infinite var(--sharp-curve); 
-    -ms-animation: button-focus 2s infinite var(--sharp-curve); }*/
+    -moz-animation: buttonFocus 2s infinite var(--sharp-curve);  
+    -webkit-animation: buttonFocus 2s infinite var(--sharp-curve); 
+    -o-animation: buttonFocus 2s infinite var(--sharp-curve); 
+    animation: buttonFocus 2s infinite var(--sharp-curve); 
+    -ms-animation: buttonFocus 2s infinite var(--sharp-curve); }*/
 
 .button-group {
     position: relative;
@@ -1775,7 +1775,7 @@ button.raised:focus:after, button.flat:focus:after {
     -ms-transition: box-shadow 0.325s var(--sharp-curve); }
 
 .card.flat {
-    border: 1px solid var(--light-background-border);
+    border-radius: 0px;
     box-shadow: none; }
 
 .card.elevation {
@@ -1805,6 +1805,16 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     overflow: hidden; 
     border-radius: 2px 2px 0px 0px; }
+
+.card > .optional-header + .rich-media, .card > .primary-title + .rich-media,
+.card > .support-content + .rich-media, .card > .actions + .rich-media {
+    border-radius: 0px; }
+
+.card > .area-action ~ .rich-media {
+    width: 70%; }
+
+.card > .area-action.left ~ .rich-media {
+    margin-left: 30%; }
 
 .card > .rich-media.only {
     border-radius: 2px; }
@@ -1921,7 +1931,11 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 8px; }
 
 .card > .rich-media > .content > .actions > button.action:not(:active):before {
-    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
 
 .card > .rich-media > .content > .actions > button.action.right {
     float: right; }
@@ -1931,6 +1945,15 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     padding: 16px 16px 24px 16px; 
     box-sizing: border-box; }
+
+.card > .rich-media + .primary-title {
+    padding-bottom: 16px; }
+
+.card > .area-action ~ .primary-title {
+    width: 70%; }
+
+.card > .area-action.left ~ .primary-title {
+    margin-left: 30%; }
 
 .card > .primary-title > .detail {
     float: left;
@@ -2003,6 +2026,12 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 16px; 
     overflow-y: auto; }
 
+.card > .area-action ~ .optional-header {
+    width: 70%; }
+
+.card > .area-action.left ~ .optional-header {
+    margin-left: 30%; }
+
 .card > .optional-header > .avatar {
     float: left;
     width: 36px;
@@ -2034,6 +2063,86 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: auto;
     padding: 16px 16px 24px 16px; }
 
+.card > .primary-title + .support-content,
+.card > .media-area + .support-content,
+.card > .optional-header + .support-content {
+    padding-top: 0px;
+    padding-bottom: 16px; }
+
+.card > .primary-title + .divider + .support-content, 
+.card > .rich-media + .support-content {
+    padding-bottom: 16px; }
+
+.card > .area-action ~ .support-content {
+    width: 70%; }
+
+.card > .area-action.left ~ .support-content {
+    margin-left: 30%; }
+
+.card > .media-area {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 16px;
+    overflow-y: auto; }
+
+.card > .area-action ~ .media-area {
+    width: 70%; }
+
+.card > .area-action.left ~ .media-area {
+    margin-left: 30%; }
+
+.card > .support-content + .media-area,
+.card > .primary-title + .media-area,
+.card > .optional-header + .media-area {
+    padding-top: 0px; }
+
+.card > .media-area > .image {
+    position: relative;
+    float: left; 
+    width: calc(100% - 80px);
+    max-width: 240px; }
+
+.card > .media-area > .image:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding-top: 100%; }
+
+.card > .media-area > .image > .img-material {
+    position: initial;
+    -moz-transform: none;
+    -webkit-transform: none;
+    transform: none;
+    -o-transform: none;
+    -ms-transform: none; }
+
+.card > .media-area > .actions {
+    display: inline-grid;
+    width: 80px;
+    float: right;
+    padding-top: 8px;
+    padding-right: 8px;
+    box-sizing: border-box; }
+
+.card > .media-area > .actions > button {
+    padding: 6px;
+    width: 24px;
+    margin: 6px 6px 6px 30px;
+    box-sizing: content-box; }
+
+.card > .media-area > .actions > button:not(:active):before {
+    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+
+.card > .media-area > .actions > button > .badge {
+    top: 2px;
+    right: 0px; }
+
 .card > .box {
     position: relative;
     overflow: auto; }
@@ -2045,6 +2154,12 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box;
     padding: 4px 8px; }
 
+.card > .area-action ~ .actions {
+    width: 70%; }
+
+.card > .area-action.left ~ .actions {
+    margin-left: 30%; }
+
 .card > .actions + .actions {
     padding-top: 0px; }
 
@@ -2053,14 +2168,6 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 12px;
     margin: 4px 0px;
     margin-right: 8px; }
-
-.card > .actions > button.flat:focus > .focused {
-    visibility: visible;
-    -moz-animation: button-focus-content 2.5s infinite linear; 
-    -webkit-animation: button-focus-content 2.5s infinite linear; 
-    -o-animation: button-focus-content 2.5s infinite linear; 
-    animation: button-focus-content 2.5s infinite linear; 
-    -ms-animation: button-focus-content 2.5s infinite linear; }
 
 .card > .actions > button.flat.right {
     float: right;
@@ -2086,7 +2193,11 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 8px; }
 
 .card > .actions > button.action:not(:active):before {
-    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
 
 .card > .actions > button.action.right {
     float: right; }
@@ -2097,32 +2208,6 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .actions > button.action > .badge {
     top: 2px;
     right: 0px; }
-
-.card > .optional-header + .rich-media, .card > .primary-title + .rich-media,
-.card > .support-content + .rich-media, .card > .action + .rich-media {
-    border-radius: 0px; }
-
-.card > .area-action ~ .primary-title, .card > .area-action ~ .actions, 
-.card > .area-action ~ .rich-media, .card > .area-action ~ .optional-header,
-.card > .area-action ~ .support-content {
-    width: 70%; }
-
-.card > .area-action.left ~ .primary-title, .card > .area-action.left ~ .actions, 
-.card > .area-action.left ~ .rich-media, .card > .area-action.left ~ .optional-header,
-.card > .area-action.left ~ .support-content {
-    margin-left: 30%; }
-
-.card > .rich-media + .primary-title, 
-.card > .rich-media + .support-content {
-    padding-bottom: 16px; }
-
-.card > .primary-title + .support-content,
-.card > .optional-header + .support-content {
-    padding-top: 0px;
-    padding-bottom: 16px; }
-
-.card > .primary-title + .divider + .support-content {
-    padding-bottom: 16px; }
 
 /** CAROUSEL */
 
@@ -2353,7 +2438,7 @@ button.raised:focus:after, button.flat:focus:after {
     transform: scale(0); }
 
 .checkbox > input[type="checkbox"]:focus ~ .ripple-content > .box {
-    animation: ripple-squarecenter 0.75s var(--standard-curve); }
+    animation: rippleSquarecenter 0.75s var(--standard-curve); }
 
 /** CHECKBOX CONTROL */
 
@@ -2785,11 +2870,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .clockpicker > .actions > button.flat:focus > .focused {
     visibility: visible;
-    -moz-animation: button-focus-content 2.5s infinite linear; 
-    -webkit-animation: button-focus-content 2.5s infinite linear; 
-    -o-animation: button-focus-content 2.5s infinite linear; 
-    animation: button-focus-content 2.5s infinite linear; 
-    -ms-animation: button-focus-content 2.5s infinite linear; }
+    -moz-animation: buttonFocusContent 2.5s infinite linear; 
+    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
+    -o-animation: buttonFocusContent 2.5s infinite linear; 
+    animation: buttonFocusContent 2.5s infinite linear; 
+    -ms-animation: buttonFocusContent 2.5s infinite linear; }
 
 .clockpicker-input {
     position: relative;
@@ -3156,11 +3241,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datepicker > .actions > button.flat:focus > .focused {
     visibility: visible;
-    -moz-animation: button-focus-content 2.5s infinite linear; 
-    -webkit-animation: button-focus-content 2.5s infinite linear; 
-    -o-animation: button-focus-content 2.5s infinite linear; 
-    animation: button-focus-content 2.5s infinite linear; 
-    -ms-animation: button-focus-content 2.5s infinite linear; }
+    -moz-animation: buttonFocusContent 2.5s infinite linear; 
+    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
+    -o-animation: buttonFocusContent 2.5s infinite linear; 
+    animation: buttonFocusContent 2.5s infinite linear; 
+    -ms-animation: buttonFocusContent 2.5s infinite linear; }
 
 .datepicker-input {
     position: relative;
@@ -3344,11 +3429,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dialog > .box > .actions > button.flat:focus > .focused {
     visibility: visible;
-    -moz-animation: button-focus-content 2.5s infinite linear; 
-    -webkit-animation: button-focus-content 2.5s infinite linear; 
-    -o-animation: button-focus-content 2.5s infinite linear; 
-    animation: button-focus-content 2.5s infinite linear; 
-    -ms-animation: button-focus-content 2.5s infinite linear; }
+    -moz-animation: buttonFocusContent 2.5s infinite linear; 
+    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
+    -o-animation: buttonFocusContent 2.5s infinite linear; 
+    animation: buttonFocusContent 2.5s infinite linear; 
+    -ms-animation: buttonFocusContent 2.5s infinite linear; }
 
 .dialog.picker-date > .box {
     width: 300px !important; }
@@ -3428,15 +3513,15 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel {
     box-shadow: var(--shadow-2);
-    -moz-transition: margin 0.275s var(--sharp-curve);
-    -webkit-transition: margin 0.275s var(--sharp-curve);
-    -o-transition: margin 0.275s var(--sharp-curve);
-    transition: margin 0.275s var(--sharp-curve);
-    -ms-transition: margin 0.275s var(--sharp-curve); }
+    -moz-transition: margin 0.225s var(--easing-out);
+    -webkit-transition: margin 0.225s var(--easing-out);
+    transition: margin 0.225s var(--easing-out);
+    -o-transition: margin 0.225s var(--easing-out);
+    -ms-transition: margin 0.225s var(--easing-out); }
 
 .expansion-panel.active {
-    box-shadow: var(--shadow-6);
-    margin: 16px 0; }
+    margin: 16px 0;
+    box-shadow: var(--shadow-4); }
 
 .expansion-panel > .header {
     display: flex;
@@ -3446,6 +3531,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 48px;
     padding: 0 24px;
     box-sizing: border-box; }
+
+.expansion-panel.active > .header, .expansion-panel:last-child > .header {
+    border-bottom: none !important; }
 
 .expansion-panel > .header > .title, 
 .expansion-panel > .header > .detail {
@@ -3478,34 +3566,37 @@ button.raised:focus:after, button.flat:focus:after {
     transform: rotate(0deg);
     transition: transform 0.325s var(--standard-curve); }
 
-.expansion-panel > .header > button.action > i.active {
-    transform: rotate(180deg); }
-
-.expansion-panel.active > .header, .expansion-panel:last-child > .header {
-    border-bottom: none !important; }
+.expansion-panel.active  > .header > button.action > i {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg); }
 
 .expansion-panel > .body {
-    height: 0px;
     box-sizing: border-box;
-    overflow: hidden; }
-
-.expansion-panel > .body.start {
-    height: auto; }
+    max-height: 0px;
+    overflow: hidden;
+    -moz-transition: max-height 0.225s var(--easing-out);
+    -webkit-transition: max-height 0.225s var(--easing-out);
+    transition: max-height 0.225s var(--easing-out);
+    -o-transition: max-height 0.225s var(--easing-out);
+    -ms-transition: max-height 0.225s var(--easing-out); }
 
 .expansion-panel > .body > .content {
-    padding: 16px 24px;
-    line-height: 18px;
-    margin-top: -100%; }
+    padding: 16px 24px; }
 
-.expansion-panel > .body.start > .content {
-    -moz-transition: margin-top 0.375s var(--easing-out);
-    -webkit-transition: margin-top 0.375s var(--easing-out);
-    -o-transition: margin-top 0.375s var(--easing-out);
-    transition: margin-top 0.375s var(--easing-out);
-    -ms-transition: margin-top 0.375s var(--easing-out); }
+.expansion-panel > .body > .actions {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    height: 48px;
+    padding: 0px 8px 0px 24px;
+    box-sizing: border-box; }
 
-.expansion-panel.active > .body > .content {
-    margin-top: 0% !important; }
+.expansion-panel > .body > .actions > button { 
+    float: right;
+    margin: 4px 0px 4px 8px; }
 
 /** FAB MENU */
 
@@ -3575,7 +3666,7 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.fab-menu > .box > .content > .buttonFloating {
+.fab-menu > .box > .content > .button-floating {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -3589,11 +3680,11 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
 
-.fab-menu.active > .box > .content > .buttonFloating {
+.fab-menu.active > .box > .content > .button-floating {
     opacity: 0;
     visibility: hidden; }
 
-.fab-menu > .box > .content > .buttonFloating > i {
+.fab-menu > .box > .content > .button-floating > i {
     cursor: pointer;
     width: 56px;
     height: 56px;
@@ -4334,6 +4425,36 @@ button.raised:focus:after, button.flat:focus:after {
     font-family: inherit;
     font-size: 16px;
     line-height: 18px; }
+
+/** FOOTER BUTTONS */
+
+.footer-buttons {
+    position: fixed;
+    overflow-x: hidden;
+    z-index: 4;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    -moz-transition: margin-bottom 0.325s var(--standard-curve);
+    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
+    -o-transition: margin-bottom 0.325s var(--standard-curve);
+    transition: margin-bottom 0.325s var(--standard-curve);
+    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+
+.footer-buttons.show-bottom-navigation {
+    margin-bottom: 56px; }
+
+.footer-buttons > button {
+    float: right; 
+    margin: 6px 4px; }
+
+.footer-buttons > button:nth-child(1) {
+    margin-right: 8px; }
+
+.footer-buttons > button.raised {
+    display: none; }
 
 /** GRID LIST */
 
@@ -5101,7 +5222,7 @@ button.raised:focus:after, button.flat:focus:after {
     transform: scale(0); }
 
 .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
-    animation: ripple-squarecenter 0.75s var(--standard-curve); }
+    animation: rippleSquarecenter 0.75s var(--standard-curve); }
 
 /** SEARCH BOX*/
 
@@ -5246,11 +5367,11 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer; }
 
 .select > .content > button.action:not(:active):before {
-    -moz-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -webkit-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -o-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -ms-animation: ripple-squarecenter-high 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
 
 .select > .content > button.action > i {
     -moz-transform: rotate(0deg);
@@ -5428,11 +5549,11 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer; }
 
 .select-multiple > .content > button.action:not(:active):before {
-    -moz-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -webkit-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -o-animation: ripple-squarecenter-high 1s var(--standard-curve);
-    -ms-animation: ripple-squarecenter-high 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
 
 .select-multiple > .content > button.action > i {
     -moz-transform: rotate(0deg);
@@ -5763,7 +5884,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 4px; }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action:not(:active):before {
-    animation: ripple-squarecenter-high 1s var(--standard-curve); }
+    animation: rippleSquarecenterHigh 1s var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action > i {
     transform: rotate(0deg);
@@ -5959,7 +6080,7 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0.24; }
 
 .stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
-    animation: ripple-stepper 0.325s var(--easing-out); }
+    animation: rippleStepper 0.325s var(--easing-out); }
 
 .stepper-horizontal > ul > li:first-child > .content { 
     padding-left: 24px; }
@@ -6116,11 +6237,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .stepper-mobile > .back > button:not(:active):before,
 .stepper-mobile > .next > button:not(:active):before {
-    -moz-animation: ripple-squarecenter 1s var(--standard-curve);
-    -webkit-animation: ripple-squarecenter 1s var(--standard-curve);
-    animation: ripple-squarecenter 1s var(--standard-curve);
-    -o-animation: ripple-squarecenter 1s var(--standard-curve);
-    -ms-animation: ripple-squarecenter 1s var(--standard-curve); }
+    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
+    animation: rippleSquarecenter 1s var(--standard-curve);
+    -o-animation: rippleSquarecenter 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
 
 .stepper-mobile > .back > button:focus:before, 
 .stepper-mobile > .next > button:focus:before {
@@ -6315,7 +6436,7 @@ body.not-touch .tabs::-webkit-scrollbar {
     visibility: hidden; }
 
 .tabs > .tab:not(:active):before {
-    animation: ripple-tab 0.75s var(--standard-curve); }
+    animation: rippleTab 0.75s var(--standard-curve); }
 
 .tabs > .tab:focus:before {
     visibility: visible; }

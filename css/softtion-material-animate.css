@@ -52,7 +52,7 @@
 
 /** RIPPLE */
 
-@keyframes ripple-squarecenter {
+@keyframes rippleSquarecenter {
     0% {
         transform: scale(0); }
     20% {
@@ -62,7 +62,7 @@
         transform: scale(1); }
 }
 
-@-webkit-keyframes ripple-squarecenter {
+@-webkit-keyframes rippleSquarecenter {
     0% {
         transform: scale(0); }
     20% {
@@ -73,7 +73,7 @@
 }
 
 
-@keyframes ripple-squarecenter-high {
+@keyframes rippleSquarecenterHigh {
     0% {
         transform: scale(0); }
     20% {
@@ -83,7 +83,7 @@
         transform: scale(1.5); }
 }
 
-@-webkit-keyframes ripple-squarecenter-high {
+@-webkit-keyframes rippleSquarecenterHigh {
     0% {
         transform: scale(0); }
     20% {
@@ -93,7 +93,7 @@
         transform: scale(1.5); }
 }
 
-@keyframes ripple-tab {
+@keyframes rippleTab {
     0% {
         transform: scale(0); }
     35% {
@@ -103,7 +103,7 @@
         transform: scale(1); }
 }
 
-@-webkit-keyframes ripple-tab {
+@-webkit-keyframes rippleTab {
     0% {
         transform: scale(0); }
     35% {
@@ -113,7 +113,7 @@
         transform: scale(1); }
 }
 
-@keyframes ripple-all {
+@keyframes rippleAll {
     0% {
         opacity: 0; }
     
@@ -126,7 +126,7 @@
         width: 200%; }
 }
 
-@-webkit-keyframes ripple-all {
+@-webkit-keyframes rippleAll {
     0% {
         opacity: 0; }
     
@@ -139,7 +139,7 @@
         width: 200%; }
 }
 
-@keyframes ripple-33 {
+@keyframes ripple33 {
     0% {
         opacity: 0; }
     
@@ -152,7 +152,7 @@
         width: 33%; }
 }
 
-@-webkit-keyframes ripple-33 {
+@-webkit-keyframes ripple33 {
     0% {
         opacity: 0; }
     
@@ -165,33 +165,7 @@
         width: 33%; }
 }
 
-@keyframes ripple-stepper {
-    0% {
-        opacity: 0; }
-    
-    40% {
-        opacity: 1; }
-    
-    100% {
-        opacity: 0;
-        padding-bottom: 125%;
-        width: 125%; }
-}
-
-@-webkit-keyframes ripple-stepper {
-    0% {
-        opacity: 0; }
-    
-    40% {
-        opacity: 1; }
-    
-    100% {
-        opacity: 0;
-        padding-bottom: 125%;
-        width: 125%; }
-}
-
-@keyframes ripple-25 {
+@keyframes ripple25 {
     0% {
         opacity: 0; }
     
@@ -204,7 +178,7 @@
         width: 25%; }
 }
 
-@-webkit-keyframes ripple-25 {
+@-webkit-keyframes ripple25 {
     0% {
         opacity: 0; }
     
@@ -217,7 +191,7 @@
         width: 25%; }
 }
 
-@keyframes ripple-20 {
+@keyframes ripple20 {
     0% {
         opacity: 0; }
     
@@ -230,7 +204,7 @@
         width: 20%; }
 }
 
-@-webkit-keyframes ripple-20 {
+@-webkit-keyframes ripple20 {
     0% {
         opacity: 0; }
     
@@ -241,6 +215,32 @@
         opacity: 0;
         padding-bottom: 20%;
         width: 20%; }
+}
+
+@keyframes rippleStepper {
+    0% {
+        opacity: 0; }
+    
+    40% {
+        opacity: 1; }
+    
+    100% {
+        opacity: 0;
+        padding-bottom: 125%;
+        width: 125%; }
+}
+
+@-webkit-keyframes rippleStepper {
+    0% {
+        opacity: 0; }
+    
+    40% {
+        opacity: 1; }
+    
+    100% {
+        opacity: 0;
+        padding-bottom: 125%;
+        width: 125%; }
 }
 
 .ripple-box.animated > .effect {
@@ -249,11 +249,11 @@
     -o-animation-duration: 0.325s;
     animation-duration: 0.325s;
     -ms-animation-duration: 0.325s;
-    -moz-animation-name: ripple-all;
-    -webkit-animation-name: ripple-all;
-    -o-animation-name: ripple-all;
-    animation-name: ripple-all;
-    -ms-animation-name: ripple-all;
+    -moz-animation-name: rippleAll;
+    -webkit-animation-name: rippleAll;
+    -o-animation-name: rippleAll;
+    animation-name: rippleAll;
+    -ms-animation-name: rippleAll;
     -moz-animation-timing-function: var(--standard-curve);
     -webkit-animation-timing-function: var(--standard-curve);
     -o-animation-timing-function: var(--standard-curve);
@@ -262,7 +262,7 @@
 
 /** BUTTON FOCUS */
 
-@keyframes button-focus {
+@keyframes buttonFocus {
     0% {
         padding-left: calc(100% - 12px); }
     
@@ -276,7 +276,7 @@
 
 /** BUTTON FOCUS CONTENT */
 
-@keyframes button-focus-content {
+@keyframes buttonFocusContent {
     0% {
         width: calc(100% - 4px); }
     
@@ -293,7 +293,7 @@
         width: calc(100% - 4px); }
 }
 
-@-webkit-keyframes button-focus-content {
+@-webkit-keyframes buttonFocusContent {
     0% {
         width: calc(100% - 4px); }
     

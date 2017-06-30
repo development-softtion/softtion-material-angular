@@ -2363,31 +2363,34 @@
                                 body = $element.children(".body");
                             
                             if (body.exists()) {
-                                var content = body.find(".content"),
+                                var content = body.children(".content"),
+                                    actions = body.children(".actions"),
                                     button = angular.element(
                                         Material.components.ExpansionPanel.buttonAction()
-                                    ),
-                                    icon = button.find("i");
+                                    );
                                 
-                                button.insertAfter(header.find(".title")); // Agregando icono
+                                button.insertAfter(header.children(".title")); // Icono
 
                                 header.click(function () {
-                                    var marginTop = (-1 * content.innerHeight()),
-                                        bodyStart = body.hasClass("start");
+                                    var elements = $element.siblings("li");
                                     
-                                    if (!bodyStart) {
-                                        content.css("margin-top", marginTop); body.addClass("start");
-                                    } // Componente no se encuentra iniciado
+                                    elements.removeClass("active"); // Desactivando
+                                    elements.children(".body").css("max-height", "0px");
                                     
-                                    $element.siblings("li").removeClass("active");
-                                    $element.siblings("li").find(".action").find("i").removeClass("active");
                                     $element.toggleClass("active"); // Cambiando estado
 
                                     if ($element.hasClass("active")) {
-                                        icon.addClass("active");
+                                        var heightActions = actions.innerHeight(),
+                                            heightContent = content.innerHeight(),
+
+                                            heightBody = // Calculando alto del Body
+                                                ((isNaN(heightContent)) ? 0 : heightContent) + 
+                                                ((isNaN(heightActions)) ? 0 : heightActions);
+                                    
+                                        body.css("max-height", heightBody + "px");
                                     } else {
-                                        icon.removeClass("active"); content.css("margin-top", marginTop);
-                                    } // Cerrando content del Expansion
+                                        body.css("max-height", "0px");
+                                    } // Se debe recoger el contenido del elemento
                                 });
                             } // El componente no tiene contenedor
                         }
@@ -2401,17 +2404,29 @@
                     return {
                         restrict: "C",
                         link: function ($scope, $element) {
-                            $element.on("load", function () {
-                                var height = $element[0].naturalHeight,
-                                    width = $element[0].naturalWidth,
-                                    density = height / width; // Calculando
+                            var height = $element[0].naturalHeight,
+                                width = $element[0].naturalWidth;
+                            
+                            function setDensity(width, height) {
+                                var density = height / width; // Calculando
                                     
                                 (density > 1) ?
                                     $element.addClass("density-height") :
                                     $element.addClass("density-width");
                             
                                 $element.addClass("active"); // Activando
-                            });
+                            };
+                            
+                            if (width > 0) {
+                                setDensity(width, height);
+                            } else {
+                                $element.on("load", function () {
+                                    var height = $element[0].naturalHeight,
+                                        width = $element[0].naturalWidth;
+
+                                    setDensity(width, height); // Cargando
+                                });
+                            }
                         }
                     };
                 }
@@ -3264,25 +3279,6 @@
                         }
                     };
                 }]
-            },
-            
-            MediaArea: {
-                name: "mediaArea",
-                directive: function () {
-                    return {
-                        restrict: "C",
-                        link: function ($scope, $element) {
-                            var img = $element.find("img"); // Imagen de la Media
-                            
-                            if (img.exists()) {
-                                var density = img[0].height / img[0].width;
-                                
-                                // Ancho es mayor igual a alto
-                                (density >= 1)  ? img.css("width", "100%") : img.css("height", "100%");
-                            }
-                        }
-                    };
-                }
             },
             
             ProgressBar: {
@@ -6994,7 +6990,7 @@
         VERSION: "1.0.4",
         Selectors: {
             FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box",
-            BottomNav: ".stepper-mobile"
+            BottomNav: ".stepper-mobile, .footer-buttons"
         },
         File: {
             imagesFormat: [

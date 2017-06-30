@@ -620,6 +620,12 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .card {
     background-color: var(--light-background-component); }
 
+.card.flat {
+    border: 1px solid var(--light-background-border); }
+
+.dark .card.flat {
+    border: 1px solid var(--dark-background-border); }
+
 .dark .card {
     background-color: var(--dark-background-component); }
 
@@ -1268,6 +1274,12 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-border); }
 
+.expansion-panel > .body > .actions {
+    border-top: 1px solid var(--light-background-border); }
+
+.dark .expansion-panel > .body > .actions {
+    border-top: 1px solid var(--dark-background-border); }
+
 /** FAB MENU */
 
 .fab-menu > .box {
@@ -1547,6 +1559,16 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .fullwidth-field > .content > textarea:disabled ~ .value  {
     color: var(--light-disabled-font); }
+
+/** FOOTER BUTTONS */
+
+.footer-buttons {
+    border-top: 1px solid var(--light-background-border);
+    background-color: var(--light-background-component); }
+
+.dark .footer-buttons {
+    border-top: 1px solid var(--dark-background-border);
+    background-color: var(--dark-background-component); }
 
 /** GRIDLIST */
 
