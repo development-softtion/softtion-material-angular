@@ -1305,6 +1305,23 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .fab-menu > .box > .content > .menu-content > .menu {
     background-color: var(--dark-background-component); }
 
+/** FAB MENU ARC */
+
+.fab-menu-arc > .box {
+    background-color: var(--theme-secondary-background); }
+
+.fab-menu-arc.active > .box {
+    background-color: transparent; }
+
+.fab-menu-arc > .box > .content > .button-floating > i {
+    color: var(--theme-secondary-font-active); }
+
+.fab-menu-arc > .box > .content > .menu-content > .menu {
+    background-color: var(--light-background-component); }
+
+.dark .fab-menu-arc > .box > .content > .menu-content > .menu {
+    background-color: var(--dark-background-component); }
+
 /** FILECHOOSER */
 
 .filechooser > .content {

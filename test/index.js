@@ -13,7 +13,7 @@ app.config(function ($themeMaterialProvider, SofttionMaterial) {
 // Inicializando controlador de la aplicación
 app.controller("myController", function ($scope, $snackbar, $toast, $progressBar) {
     
-    var x = 0;
+    var x = 0, xc = false;
     
     $scope.openSnackbar = function ($event, value) {
         x += 25;

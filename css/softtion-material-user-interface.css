@@ -3714,6 +3714,98 @@ button.raised:focus:after, button.flat:focus:after {
 .fab-menu.active > .box > .content > .menu-content {
     visibility: visible; }
 
+/** FAB MENU ARC */
+
+.fab-menu-arc {
+    position: fixed;
+    right: -56px;
+    bottom: 44px;
+    width: 200px;
+    height: 200px; }
+
+.fab-menu-arc.active {
+    transform: rotate(90deg);
+    animation: orbit 0.2s var(--easing-out); }
+
+.fab-menu-arc.start:not(.active) {
+    animation: orbitReturn 0.2s var(--easing-out); }
+
+.fab-menu-arc > .box {
+    position: absolute;
+    overflow: hidden;
+    bottom: -28px;
+    right: calc(50% - 28px);
+    width: 56px;
+    height: 56px;
+    box-shadow: var(--shadow-6);
+    border-radius: 50%; }
+
+.fab-menu-arc.active > .box {
+    width: 320px;
+    height: 320px;
+    bottom: -132px;
+    right: calc(50% - 168px);
+    box-shadow: none;
+    transform: rotate(-90deg);
+    animation: showFabArc 0.2s var(--easing-out); }
+
+.fab-menu-arc.start:not(.active) > .box {
+    animation: hideFabArc 0.2s var(--easing-out); }
+
+.fab-menu-arc > .box > .content {
+    position: absolute;
+    top: calc(50% - 80px);
+    left: calc(50% - 80px);
+    width: 160px;
+    height: 160px; }
+
+.fab-menu-arc > .box > .content > .button-floating {
+    position: absolute;
+    top: calc(50% - 28px);
+    left: calc(50% - 28px);
+    width: 56px;
+    height: 56px;
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer; }
+
+.fab-menu-arc.active > .box > .content > .button-floating {
+    opacity: 0;
+    visibility: hidden; }
+
+.fab-menu-arc.start:not(.active) > .box > .content > .button-floating {
+    animation: showButtonFabArc 0.2s var(--easing-out); }
+
+.fab-menu-arc > .box > .content > .button-floating > i {
+    cursor: pointer;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    text-align: center; }
+
+.fab-menu-arc > .box > .content > .menu-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 240px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, -50%); }
+
+.fab-menu-arc.active > .box > .content > .menu-content {
+    visibility: visible;
+    opacity: 1;
+    animation: showMenuFabArc 0.2s var(--easing-out); }
+
+.fab-menu-arc.start:not(.active) > .box > .content > .menu-content {
+    animation: hideMenuFabArc 0.2s var(--easing-out); }
+
+.fab-menu-arc > .box > .content > .menu-content > .menu {
+    position: absolute;
+    bottom: 0px;
+    box-shadow: var(--shadow-2); }
+
 /** FAB SPEED DIAL */
 
 .fab-speed-dial {

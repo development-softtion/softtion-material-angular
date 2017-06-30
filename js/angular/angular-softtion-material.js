@@ -2869,6 +2869,24 @@
                 }
             },
             
+            FabMenuArc: {
+                name: "fabMenuArc",
+                directive: function () {
+                    return {
+                        restrict: "C", 
+                        link: function ($scope, $element) {
+                            var button = $element.find(".button-floating");
+                        
+                            $element.attr("tab-index", "-1"); // Enfocable
+                            
+                            button.on("click", function (event) {
+                                $element.addClass("active"); event.stopPropagation();
+                            });
+                        }
+                    };
+                }
+            },
+            
             FabSpeedDial: {
                 name: "fabSpeedDial",
                 directive: function () {

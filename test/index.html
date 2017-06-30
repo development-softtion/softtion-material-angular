@@ -26,168 +26,17 @@ and open the template in the editor.
     <body class="" ng-app="myApp" ng-controller="myController" ng-cloak="">
         <!-- Contenido de la aplicación -->
         <div class="app-body">
-            <div class="app-bar theme-primary">
-                <div class="toolbar">
-                    <div class="nav-icon">
-                        <button class="action" ng-click="openSnackbar()"><i>menu</i></button>
-                    </div>
-
-                    <div class="title">Toolbar</div>
-
-                    <div class="actions">
-                        <button class="action theme-primary" ng-click="openToast()"><i>favorite</i></button>
-                        <button class="action menu-icon" dropdown="#dropdown">
-                            <i>more_vert</i>
-                        </button>
-                    </div>
-                </div>
-<!--                <div class="stepper-horizontal alternative">
-                    <ul>
-                        <li class="active" ng-click="openSnackbar()">
-                            <div class="content">
-                                <div class="indicator">
-                                    <span>1</span>
-                                </div>
-                                <div class="detail">
-                                    <p class="title">Select campaign</p>
-                                    <p class="optional">Text optional</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="disabled">
-                            <div class="content">
-                                <div class="indicator">
-                                    <span>2</span>
-                                </div>
-                                <div class="detail">
-                                    <p class="title">Create an ad group</p>
-                                    <p class="optional">Text optional</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="">
-                            <div class="content">
-                                <div class="indicator">
-                                    <span>3</span>
-                                </div>
-                                <div class="detail">
-                                    <p class="title">Select an app</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="active error">
-                            <div class="content">
-                                <div class="indicator">
-                                    <span>4</span>
-                                </div>
-                                <div class="detail">
-                                    <p class="title">Create an ad</p>
-                                    <p class="optional">Text optional</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>-->
-            </div>
             
             <div class="app-content row">
+                <button class="flat" ng-click="activeEvent()"><span>Click</span></button>
                 
-                <div class="block small" style="margin-top: 16px;">
-                    <div id="x" class="progress-bar indeterminate"></div>
-                    
-                    <button class="raised"><span>Button</span></button>
-                    <button class="flat"><span>Button</span></button>
-                    
-                    <div class="textbox small" ng-model="area" icon-action="search" label="Comentarios" min-length="5" max-length="15"></div>
-                    
-                    <div class="textbox-multiline small" ng-model="multi" label="Comentarios" min-length="5"></div>
-                    
-                    <!-- card con bloques primarios -->
-                    <div class="card" style="margin-top: 8px;">
-                        <div class="media-area">
-                            <div class="image">
-                                <img src="descarga.jpg" alt=""/>
-                            </div>
-                            
-                            <div class="actions">
-                                <button class="action"><i>favorite</i></button>
-                                <button class="action"><i>reply</i></button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- card con bloques primarios -->
-                    <div class="card">
-                        <div class="optional-header">
-                            <img class="avatar" src="imgs/cards/option_header.png">
-                            <div class="detail">
-                                <p class="title">Softtion Material</p>
-                                <p class="subtitle">Framework Material Design</p>
-                            </div>
-                        </div>
-
-                        <div class="rich-media">
-                            <div class="background">
-                                <img class="avatar" src="imgs/cards/rich_media.png">
-                            </div>
-                        </div>
-
-                        <div class="primary-title">
-                            <div class="detail">
-                                <p class="title">Conceptos</p>
-                                <p class="subtitle">Sobre el framework</p>
-                            </div>
-                        </div>
-
-                        <div class="support-content">
-                            <!-- Contenido de texto a establecer -->
-                        </div>
-
-                        <div class="actions">
-                            <button class="flat">Leer más</button>
-                            <button class="action right"><i>favorite</i></button>
-                            <button class="action right"><i>reply</i></button>
-                        </div>
-                    </div>
                 
-                    <div class="stepper-mobile">
-                        <div class="back start">
-                            <button ng-disabled="false"><span>Back</span></button>
-                        </div>
-                        <div class="next finish">
-                            <button ng-disabled="false"><span>Next</span></button>
-                        </div>
-                        
-                        <div class="content">
-                            <div class="progress-bar-stepper">
-                                <div class="bar"></div>
-                            </div>
-<!--                            <div class="dots">
-                                <div class="dot"></div>
-                                <div class="dot active"></div>
-                                <div class="dot"></div>
-                                <div class="dot error"></div>
-                                <div class="dot"></div>
-                                <div class="dot disabled"></div>
-                                <div class="dot"></div>
-                            </div>-->
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="dropdown" class="dropdown theme-secondary">
-                    <ul class="menu text-only">
-                        <li class="option"><span>AngularJS</span></li>
-                        <li class="option"><span>jQuery</span></li>
-                        <li class="option"><span>Material Design</span></li>
-                        <li class="option"><span>Softtion Material</span></li>
-                    </ul>
-                </div>
-                
-<!--                <div class="fab-menu">
+                    <div class="fab-menu-arc">
                         <div class="box">
                             <div class="content">
-                                <div class="button-floating"><i>add</i></div>
+                                <div class="button-floating">
+                                    <i>edit</i>
+                                </div>
 
                                 <div class="menu-content">
                                     <ul class="menu">
@@ -203,100 +52,17 @@ and open the template in the editor.
                                         <li class="option">
                                             <i>close</i><span>Close all</span>
                                         </li>
-                                        <li class="option">
+<!--                                        <li class="option">
                                             <i>close</i><span>Close all</span>
-                                        </li>
+                                        </li>-->
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>-->
-                </div>
-            </div>
-            
-            <div class="bottom-navigation theme-primary" views="#views">
-                <ul class="content">
-                    <li view="#form-one">
-                        <div class="content">
-                            <i>restore</i>
-                            <p class="title">Recientes</p>
-                        </div>
-                    </li>
-                    <li view="#form-two">
-                        <div class="content">
-                            <i>favorite</i>
-                            <p class="title">Favoritos</p>
-                        </div>
-                    </li>
-                    <li view="#form-three">
-                        <div class="content">
-                            <i>place</i>
-                            <p class="title">Destinos</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
                 
-<!--                
-                <div class="block">
-                    <div class="filechooser-multiple" ng-model="files" icon-button="add"></div>
-                    <div class="small-80 offset-small-10">
-                        <div class="filechooser" ng-model="file"></div>
-                    </div>
-                    
-                    <div class="fab-menu">
-                        <div class="box">
-                            <div class="content">
-                                <div class="button-floating"><i>add</i></div>
-
-                                <div class="menu-content">
-                                    <ul class="menu">
-                                        <li class="option" ng-click="removeFiles($event)">
-                                            <i>delete</i><span>Move to trash</span>
-                                        </li>
-                                        <li class="option" ng-click="showFiles()">
-                                            <i>undo</i><span>Undo</span>
-                                        </li>
-                                        <li class="option">
-                                            <span>Zoom</span>
-                                        </li>
-                                        <li class="option">
-                                            <i>close</i><span>Close all</span>
-                                        </li>
-                                        <li class="option">
-                                            <i>close</i><span>Close all</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
+                
             </div>
-            
-            <!-- bottom navigation -->
-<!--            <div class="bottom-navigation" views="#views">
-                <ul class="content">
-                    <li view="#form-one">
-                        <div class="content">
-                            <i>restore</i>
-                            <p class="title">Recientes</p>
-                        </div>
-                    </li>
-                    <li view="#form-two">
-                        <div class="content">
-                            <i>favorite</i>
-                            <p class="title">Favoritos</p>
-                        </div>
-                    </li>
-                    <li view="#form-three">
-                        <div class="content">
-                            <i>place</i>
-                            <p class="title">Destinos</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>-->
         </div>
     </body>
 </html>
