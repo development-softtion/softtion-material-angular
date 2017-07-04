@@ -3325,11 +3325,48 @@
                 }
             },
             
+            ProgressButtonFloating: {
+                route: "softtion/template/progress-button-floating.html",
+                name: "progressButtonFloating",
+                html: function () {
+                    var progressCircular = softtion.html("div").
+                            addClass("progress-circular");
+                    
+                    var buttonSuccess = softtion.html("div").
+                            addClass("button-success").
+                            addChildren(
+                                softtion.html("i").setText("{{iconFinish}}")
+                            );
+                    
+                    var button = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addChildren(
+                            softtion.html("i").setText("{{iconButton}}")
+                        );
+                    
+                    return progressCircular + buttonSuccess + button;
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        scope: {
+                            iconButton: "@",
+                            iconFinish: "@",
+                            ngDisabled: "=?"
+                        },
+                        templateUrl: Material.components.ProgressButtonFloating.route,
+                        link: function ($scope, $element) {
+                            $scope.iconFinish = $scope.iconFinish || "done";
+                        }
+                    };
+                }
+            },
+            
             ProgressCircular: {
                 route: "softtion/template/progress-circular.html",
                 name: "progressCircular",
                 html: function () {
-                    return softtion.html("svg").addAttribute("viewBox","0 0 66 66").
+                    return softtion.html("svg").addAttribute("viewBox","0 0 32 32").
                         addChildren(softtion.html("circle")).create();
                 },
                 directive: function () {
@@ -3975,8 +4012,8 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var views = angular.element($scope.views), index = 0,
-                                tabs = $element.find(".tab"),
+                            var views = angular.element($scope.views), 
+                                tabs = $element.find(".tab"), index = 0,
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
                                 );
@@ -4013,7 +4050,8 @@
                                     
                                     var position = itemTab.data("position"),
                                         left = itemTab[0].offsetLeft,
-                                        width = itemTab[0].clientWidth;
+                                        width = itemTab[0].clientWidth,
+                                        widthTab = $element.width();
                                     
                                     stripe.css({ width: width, left: left });
                             
@@ -4027,8 +4065,8 @@
                                         angular.element(".app-content").scrollTop(0); 
                                     } // No es necesario subir vista
                                     
-                                    if (left < $element.scrollLeft()) {
-                                        $element.animate({ scrollLeft: left }, 175, "standardCurve"); 
+                                    if (left < $element.scrollLeft() || (width + left) > widthTab) {
+                                        $element.animate({ scrollLeft: left }, 175, "standardCurve");                                         
                                     } // Reubicando vista del contenedor en pestaña
                                     
                                     views.css("left", (position * -100) + "%");
@@ -6421,28 +6459,66 @@
                 }
             },
             
-            ProgressCircular: {
-                name: "$progressCircular",
+            ProgressButtonFloating: {
+                name: "$progressFAB",
                 method: function () {
                     var component = undefined,
+                        circular = undefined,
                         events = [
                             "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
                         ];
                     
-                    var ProgressCircular = function () { 
-                        component = angular.element(
-                            softtion.html("div").
-                                addClass("content-progress-circular").
-                                addChildren(
-                                    softtion.html("div").addClass("progress-circular")
-                                ).create()
-                        );
+                    var ProgressFAB = function () { };
+                    
+                    ProgressFAB.prototype.set = function (progressID) {
+                        component = angular.element(progressID);
                         
-                        var appBar = angular.element(".app-bar");
+                        if (component.exists()) {
+                            circular = component.children(".progress-circular");
                         
-                        (appBar.exists()) ? appBar.append(component) :
-                            angular.element(".app-content").append(component);
+                            if (!circular.hasEventListener(events)) {
+                                circular.animationend(function () { 
+                                    component.removeClass("start").addClass("finish"); 
+                                });
+                            } // No tiene establecido finalización de Animación
+                        } // Componente se ha definido
+                        
+                        return this; // Retornando como interfaz fluida
                     };
+                    
+                    ProgressFAB.prototype.determinate = function (time) {
+                        if (!component.hasClass("finish")) {
+                            time = isNaN(time) ? 4000 : time;
+                            propertyStyle("--time-progress-circular", time + "ms"); 
+                        
+                            component.addClass("start"); // Iniciando
+                        } // Componente no esta finalizado
+                    };
+                    
+                    ProgressFAB.prototype.restore = function () {
+                        if (softtion.isDefined(component)) {
+                            component.removeClass("finish");
+                        } // Componente esta definido en el Proveedor
+                    };
+
+                    var progressFAB = new ProgressFAB();
+                    
+                    this.get = function () { return progressFAB; };
+                    
+                    this.$get = function () { return progressFAB; };
+                }
+            },
+            
+            ProgressCircular: {
+                name: "$progressCircular",
+                method: function () {
+                    var component = undefined,
+                        circularRefresh = undefined,
+                        events = [
+                            "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
+                        ];
+                    
+                    var ProgressCircular = function () { };
                     
                     ProgressCircular.prototype.set = function (circularID) {
                         component = angular.element(circularID); return this;
@@ -6454,6 +6530,43 @@
 
                     ProgressCircular.prototype.hide = function () {
                         component.removeClass("show");
+                    };
+                    
+                    ProgressCircular.prototype.refreshInstance = function () {
+                        if (softtion.isUndefined(circularRefresh)) {
+                            circularRefresh = angular.element(
+                                softtion.html("div").
+                                    addClass("refresh-progress-circular").
+                                    addChildren(
+                                        softtion.html("div").addClass(
+                                            ["progress-circular", "indeterminate"]
+                                        ).addChildren(
+                                            softtion.html("svg").
+                                                addAttribute("viewBox", "0 0 32 32").
+                                                addChildren(softtion.html("circle"))
+                                        )
+                                    ).create()
+                            );
+
+                            var appBar = angular.element(".app-bar");
+
+                            (appBar.exists()) ? appBar.append(circularRefresh) :
+                                angular.element(".app-content").append(circularRefresh);
+                        } // Ya se encuentra instanciado
+                        
+                        return this;
+                    };
+
+                    ProgressCircular.prototype.refreshShow = function () {
+                        if (softtion.isDefined(circularRefresh)) {
+                            circularRefresh.addClass("show"); 
+                        } // Visualizando progress circular para refrescar
+                    };
+
+                    ProgressCircular.prototype.refreshHide = function () {
+                        if (softtion.isDefined(circularRefresh)) {
+                            circularRefresh.removeClass("show"); 
+                        } // Ocultando progress circular para refrescar
                     };
                     
                     ProgressCircular.prototype.determinate = function (time, round) {
@@ -6999,7 +7112,7 @@
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
-            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box",
+            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box, .progress-button-floating",
             BottomNav: ".stepper-mobile, .footer-buttons"
         },
         File: {

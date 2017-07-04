@@ -1753,16 +1753,45 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .progress-bar.buffering > .buffer {
     background-color: var(--theme-secondary-background-disabled); }
 
+/** PROGRESS BUTTON FLOATING */
+
+.progress-button-floating > .progress-circular {
+    background-color: transparent; }
+
+.progress-button-floating > .progress-circular > svg > circle {
+    stroke: var(--theme-primary-background); }
+
+.progress-button-floating > .button-success {
+    background-color: var(--theme-primary-background-light); }
+
+.progress-button-floating.finish > .button-success {
+    background-color: var(--theme-primary-background); }
+
+.progress-button-floating > .button-success > i {
+    color: var(--theme-primary-font-alternative); }
+
+.progress-button-floating > button {
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-active); }
+
+.progress-button-floating > button:disabled,
+.progress-button-floating > button:disabled:hover {
+    color: var(--theme-primary-font-disabled);
+    background-color: var(--theme-secondary-background-disabled); }
+
+.progress-button-floating > button:before {
+    background-color: var(--theme-secondary-ripple); }
+
 /** PROGRESS CIRCULAR */
 
-.content-progress-circular {
+.refresh-progress-circular {
     background-color: var(--light-background-appbar); }
 
-.dark .content-progress-circular {
+.dark .refresh-progress-circular {
     background-color: var(--dark-background-component); }
 
 .progress-circular > svg > circle {
-    stroke: var(--theme-primary-background); }
+    stroke: var(--theme-secondary-background); }
 
 /** RADIOBUTTON */
 

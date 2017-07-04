@@ -44,6 +44,9 @@
     --shadow-2-inv: 0 -1px 5px 0 rgba(0,0,0,0.075), 0 -2px 2px 0 rgba(0,0,0,0.105), 0 -3px 1px -2px rgba(0,0,0,0.09);
     --shadow-8-inv: 0 -5px 5px -3px rgba(0,0,0,0.1), 0 -8px 10px 1px rgba(0,0,0,0.07), 0 -3px 14px 2px rgba(0,0,0,0.06);
     --shadow-16-inv: 0 -8px 10px -5px rgba(0,0,0,0.1), 0 -16px 24px 2px rgba(0,0,0,0.07), 0 -6px 30px 5px rgba(0,0,0,0.06);
+    
+    --time-progress-circular: 5s;
+    --round-progress-circular: 990deg;
 }
 
 html, body ,input, textarea {
@@ -5127,9 +5130,137 @@ button.raised:focus:after, button.flat:focus:after {
         height: 2px; }
 }
 
+/** PROGRESS BUTTON FLOATING */
+
+.progress-button-floating {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    border: none;
+    outline: none;
+    z-index: 6;
+    width: 56px;
+    height: 56px;
+    user-select: none; 
+    -moz-transition: margin-bottom 0.325s var(--standard-curve); 
+    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
+    transition: margin-bottom 0.325s var(--standard-curve);
+    -o-transition: margin-bottom 0.325s var(--standard-curve);
+    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+
+.progress-button-floating.show-bottom-navigation {
+    bottom: 72px; }
+
+.progress-button-floating > .progress-circular {
+    position: absolute;
+    top: -16px;
+    left: -16px;
+    width: 88px;
+    height: 88px;
+    z-index: -1;
+    pointer-events: none; }
+
+.progress-button-floating.start > .progress-circular > svg {
+    -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -o-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -ms-animation: progressDeterminateDash var(--time-progress-circular) linear; }
+
+.progress-button-floating > .progress-circular > svg {
+    width: 80px;
+    height: 80px; }
+
+.progress-button-floating.start > .progress-circular > svg > circle {
+    -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -o-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -ms-animation: progressDeterminateRotate var(--time-progress-circular) linear; }
+
+.progress-button-floating > .button-success {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    z-index: -2;
+    border-radius: 50%;
+    pointer-events: none; 
+    visibility: hidden;
+    transition: all 0.475s var(--easing-out); }
+
+.progress-button-floating.start > .button-success {
+    visibility: visible; }
+
+.progress-button-floating.finish > .button-success {
+    pointer-events: initial;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1; 
+    cursor: pointer;
+    box-shadow: var(--shadow-6);
+    visibility: visible; }
+
+.progress-button-floating > .button-success > i {
+    height: 56px;
+    line-height: 56px;
+    width: 56px;
+    text-align: center;
+    visibility: hidden; }
+
+.progress-button-floating.finish > .button-success > i {
+    visibility: visible; }
+
+.progress-button-floating > button {
+    overflow: hidden;
+    border: none;
+    outline: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%; 
+    box-shadow: var(--shadow-6); }
+
+.progress-button-floating > button:hover {
+    box-shadow: var(--shadow-8); }
+
+.progress-button-floating > button:hover:disabled {
+    box-shadow: var(--shadow-6); }
+
+.progress-button-floating.start > button,
+.progress-button-floating.finish > button {
+    box-shadow: none !important; }
+
+.progress-button-floating > button:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding-top: calc(100% - 12px);
+    padding-left: calc(100% - 12px);
+    margin-left: calc(-50% + 6px);
+    margin-top: calc(-50% + 6px);
+    border-radius: 50%;
+    opacity: 0.26;
+    transform: scale(0);
+    visibility: hidden; }
+
+.progress-button-floating > button:not(:active):before {
+    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
+    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
+    animation: rippleSquarecenter 1s var(--standard-curve);
+    -o-animation: rippleSquarecenter 1s var(--standard-curve);
+    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
+
+.progress-button-floating > button:focus:before {
+    visibility: visible; }
+
 /** PROGRESS CIRCULAR */
 
-.content-progress-circular {
+.refresh-progress-circular {
     position: absolute;
     left: 50%;
     width: 36px;
@@ -5142,8 +5273,8 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transform: translateX(-50%);
     -ms-transform: translateX(-50%); }
 
-.app-bar > .content-progress-circular {
-    top: -48px;
+.app-bar > .refresh-progress-circular {
+    top: initial;
     bottom: 150%;
     -moz-transition: bottom 0.475s var(--standard-curve);
     -webkit-transition: bottom 0.475s var(--standard-curve);
@@ -5151,102 +5282,97 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: bottom 0.475s var(--standard-curve);
     -ms-transition: bottom 0.475s var(--standard-curve); }
 
-.app-bar > .content-progress-circular.show {
-    top: initial;
+.app-bar > .refresh-progress-circular.show {
     bottom: -48px; }
 
-.app-content > .content-progress-circular {
+.app-content > .refresh-progress-circular {
     position: fixed;
     top: -56px;
     bottom: initial;
+    z-index: 24;
     -moz-transition: top 0.475s var(--standard-curve);
     -webkit-transition: top 0.475s var(--standard-curve);
     transition: top 0.475s var(--standard-curve);
     -o-transition: top 0.475s var(--standard-curve);
     -ms-transition: top 0.475s var(--standard-curve); }
 
-.app-content > .content-progress-circular.show {
+.app-content > .refresh-progress-circular.show {
     top: 12px; }
 
 .progress-circular {
-    width: 20px;
-    height: 20px; }
+    position: relative;
+    width: 56px;
+    height: 56px;
+    padding: 4px;
+    box-sizing: border-box; }
 
-.content-progress-circular > .progress-circular {
-    padding: 8px 0px 0px 8px; }
+.refresh-progress-circular > .progress-circular {
+    width: 36px;
+    height: 36px; }
 
-.progress-circular.x150 {
-    width: 32px;
-    height: 32px; }
-
-.progress-circular.x200 {
+.progress-circular > svg { 
     width: 48px;
-    height: 48px; }
+    height: 48px;
+    -moz-transform: rotate(var(--round-progress-circular));
+    -webkit-transform: rotate(var(--round-progress-circular));
+    transform: rotate(var(--round-progress-circular));
+    -o-transform: rotate(var(--round-progress-circular));
+    -ms-transform: rotate(var(--round-progress-circular)); }
 
-@keyframes rotator {
-    0% { 
-        transform: rotate(0deg); }
-    
-    100% { 
-        transform: rotate(360deg); }
-}
+.refresh-progress-circular > .progress-circular > svg {
+    width: 28px;
+    height: 28px; }
 
-@-webkit-keyframes rotator {
-    0% { 
-        transform: rotate(0deg); }
-    
-    100% { 
-        transform: rotate(360deg); }
-}
-
-.progress-circular > svg {
-    height: inherit; 
-    width: inherit;
-    -moz-animation: rotator 1.8s linear infinite;
-    -webkit-animation: rotator 1.8s linear infinite;
-    -o-animation: rotator 1.8s linear infinite;
-    animation: rotator 1.8s linear infinite;
-    -ms-animation: rotator 1.8s linear infinite; }
-
-@keyframes dash {
-    50% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: -150;
-    }
-}
-
-@-webkit-keyframes dash {
-    50% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: -150;
-    }
-}
+.progress-circular.show > svg {
+    -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -o-animation: progressDeterminateDash var(--time-progress-circular) linear;
+    -ms-animation: progressDeterminateDash var(--time-progress-circular) linear; }
 
 .progress-circular > svg > circle {
+    stroke-dasharray: 70, 70;
+    cx: 16;
+    cy: 16;
+    r: 11;
+    opacity: 0;
     fill: none;
-    cx: 33;
-    cy: 33;
-    r: 30;
-    stroke-linecap: round;
-    stroke-dasharray: 150;
-    stroke-dashoffset: 150;
-    stroke-width: 7px;
-    transform-origin: center;
-    -moz-animation: dash 1.8s var(--standard-curve) infinite;
-    -webkit-animation: dash 1.8s var(--standard-curve) infinite;
-    -o-animation: dash 1.8s var(--standard-curve) infinite;
-    animation: dash 1.8s var(--standard-curve) infinite;
-    -ms-animation: dash 1.8s var(--standard-curve) infinite; }
+    stroke-width: 3px; }
 
-.progress-circular.x150 > svg > circle {
-    stroke-width: 5px; }
+.progress-circular.show > svg > circle {
+    -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -o-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+    -ms-animation: progressDeterminateRotate var(--time-progress-circular) linear; }
 
-.progress-circular.x200 > svg > circle {
-    stroke-width: 4px; }
+.progress-circular.indeterminate > svg {
+    -moz-animation: none;
+    -webkit-animation: none;
+    animation: none;
+    -o-animation: none;
+    -ms-animation: none; }
+
+.refresh-progress-circular.show > .progress-circular.indeterminate > svg,
+.progress-circular.indeterminate.show > svg {
+    -moz-animation: progressIndeterminateRotate 3.5s linear infinite;
+    -webkit-animation: progressIndeterminateRotate 3.5s linear infinite;
+    animation: progressIndeterminateRotate 3.5s linear infinite;
+    -o-animation: progressIndeterminateRotate 3.5s linear infinite;
+    -ms-animation: progressIndeterminateRotate 3.5s linear infinite; }
+
+.progress-circular.indeterminate > svg > circle {
+    stroke-dasharray: 65;
+    stroke-dashoffset: 65; }
+
+.refresh-progress-circular.show > .progress-circular.indeterminate > svg > circle,
+.progress-circular.indeterminate.show > svg > circle {
+    opacity: 1;
+    -moz-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
+    -webkit-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
+    animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
+    -o-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
+    -ms-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite; }
 
 /** RADIOBUTTON */
 
@@ -6496,17 +6622,16 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%; 
     height: 56px;
     overflow: auto; 
-    overflow-y: hidden; }
+    overflow-y: hidden;
+    user-select: none; }
 
-.tabs.fixed {
-    display: flex; }
+body.not-touch .tabs::-webkit-scrollbar, 
+.tabs::-webkit-scrollbar {
+    width: 0px; 
+    height: 0px; }
 
 .app-bar > .tabs {
     transition: all 0.525s var(--easing-out); }
-
-body.not-touch .tabs::-webkit-scrollbar {
-    width: 0px; 
-    height: 0px; }
 
 .tabs > .tab {
     position: relative;
@@ -6522,8 +6647,8 @@ body.not-touch .tabs::-webkit-scrollbar {
     width: 100%;
     text-align: center;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    white-space: nowrap; }
 
 .tabs > .tab:before {
     content: "";
@@ -6537,11 +6662,19 @@ body.not-touch .tabs::-webkit-scrollbar {
     margin-top: calc(-50%);
     border-radius: 50%;
     opacity: 0.35;
+    visibility: hidden;
+    -moz-transform: scale(0);
+    -webkit-transform: scale(0);
     transform: scale(0);
-    visibility: hidden; }
+    -o-transform: scale(0);
+    -ms-transform: scale(0); }
 
 .tabs > .tab:not(:active):before {
-    animation: rippleTab 0.75s var(--standard-curve); }
+    -moz-animation: rippleTab 0.75s var(--standard-curve);
+    -webkit-animation: rippleTab 0.75s var(--standard-curve);
+    animation: rippleTab 0.75s var(--standard-curve);
+    -o-animation: rippleTab 0.75s var(--standard-curve);
+    -ms-animation: rippleTab 0.75s var(--standard-curve); }
 
 .tabs > .tab:focus:before {
     visibility: visible; }
@@ -6553,8 +6686,8 @@ body.not-touch .tabs::-webkit-scrollbar {
     height: 3px; 
     -moz-transition: left 0.175s var(--standard-curve), width 0.175s var(--standard-curve);
     -webkit-transition: left 0.175s var(--standard-curve, width 0.175s var(--standard-curve));
-    -o-transition: left 0.175s var(--standard-curve), width 0.175s var(--standard-curve);
     transition: left 0.175s var(--standard-curve), width 0.175s var(--standard-curve);
+    -o-transition: left 0.175s var(--standard-curve), width 0.175s var(--standard-curve);
     -ms-transition: left 0.175s var(--standard-curve), width 0.175s var(--standard-curve); }
 
 /** TEXTAREA */
@@ -7348,7 +7481,12 @@ body.not-touch .tabs::-webkit-scrollbar {
     z-index: 8;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: all 0.525s var(--easing-out); }
+    user-select: none;
+    -moz-transition: all 0.525s var(--easing-out);
+    -webkit-transition: all 0.525s var(--easing-out);
+    transition: all 0.525s var(--easing-out);
+    -o-transition: all 0.525s var(--easing-out);
+    -ms-transition: all 0.525s var(--easing-out); }
 
 .toolbar::-webkit-scrollbar {
     height: 0px;
