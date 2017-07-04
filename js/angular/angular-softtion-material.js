@@ -25,6 +25,10 @@
             icon.insertBefore($component); return icon; // Icono
         } // Icono descriptivo, se debe insertar el icono antes del input
     };
+                    
+    var propertyStyle = function (key, value) {
+        document.documentElement.style.setProperty(key, value);
+    };
     
     var Material = {        
         components: {
@@ -5626,134 +5630,129 @@
             Alert: {
                 name: "$alert",
                 method: function () {
-                    // Propiedades del proveedor
-                    var Properties = {
                         // Elementos
-                        dialog: undefined, 
-                        backdrop: undefined,
-                        box: undefined, 
-                        title: undefined, 
-                        content: undefined,
-                        actions: undefined,
-                        positiveButton: undefined,
-                        negativeButton: undefined,
+                    var dialog = undefined, 
+                        backdrop = undefined,
+                        box = undefined, 
+                        title = undefined, 
+                        content = undefined,
+                        actions = undefined,
+                        positiveButton = undefined,
+                        negativeButton = undefined,
                         
                         // Propiedades
-                        backdropEnabled: false,
-                        positiveFunction: undefined,
-                        negativeEnabled: true,
-                        negativeFunction: undefined
-                    };
+                        enabledBackdrop = false,
+                        positiveFunction = undefined,
+                        enabledNegative = true,
+                        negativeFunction = undefined;
                     
                     var Alert = function () {
                         var self = this; // Objeto Alert
 
-                        Properties.dialog = angular.element(
+                        dialog = angular.element(
                             softtion.html("div").addClass(["dialog", "alert"]).create()
                         );
 
-                        Properties.backdrop = angular.element(
+                        backdrop = angular.element(
                             softtion.html("div").addClass("backdrop").create()
                         );
 
-                        Properties.box = angular.element(
+                        box = angular.element(
                             softtion.html("div").addClass("box").create()
                         );
 
-                        Properties.title = angular.element(
+                        title = angular.element(
                             softtion.html("div").addClass("title").create()
                         );
 
-                        Properties.content = angular.element(
+                        content = angular.element(
                             softtion.html("div").addClass("content").create()
                         );
 
-                        Properties.actions = angular.element(
+                        actions = angular.element(
                             softtion.html("div").addClass("actions").create()
                         );
 
-                        Properties.positiveButton = angular.element(
+                        positiveButton = angular.element(
                             softtion.html("button").addClass(["flat","positive"]).create()
                         );
 
-                        Properties.negativeButton = angular.element(
+                        negativeButton = angular.element(
                             softtion.html("button").addClass(["flat","negative"]).create()
                         );
 
-                        Properties.dialog.append(Properties.backdrop);
-                        Properties.box.append(Properties.title);
-                        Properties.box.append(Properties.content);
-                        Properties.actions.append(Properties.positiveButton);
-                        Properties.actions.append(Properties.negativeButton);
-                        Properties.box.append(Properties.actions);
-                        Properties.dialog.append(Properties.box);
+                        
+                        box.append(title); box.append(content);
+                        box.append(actions);
+                        
+                        actions.append(positiveButton);
+                        actions.append(negativeButton);
+                        
+                        dialog.append(backdrop); dialog.append(box);
 
-                        Properties.backdrop.click(function () { 
-                            if (Properties.backdropEnabled) {
-                                self.hide(); 
-                            } // Cerrando dialog con el Backdrop
+                        backdrop.click(function () { 
+                            if (enabledBackdrop) { self.hide(); } // Cerrando Dialog 
                         });
 
-                        Properties.positiveButton.click(function () { 
+                        positiveButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.isFunction(Properties.positiveFunction)) {
-                                Properties.positiveFunction(); 
+                            if (softtion.isFunction(positiveFunction)) {
+                                positiveFunction(); 
                             } // Se establecío función para proceso Positivo
                         });
 
-                        Properties.negativeButton.click(function () { 
+                        negativeButton.click(function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.isFunction(Properties.negativeFunction)) {
-                                Properties.negativeFunction(); 
+                            if (softtion.isFunction(negativeFunction)) {
+                                negativeFunction(); 
                             } // Se establecío función para proceso Negativo
                         });
 
-                        angular.element(document.body).append(Properties.dialog);
+                        angular.element(document.body).append(dialog);
                     };
 
                     Alert.prototype.title = function (title) {
                         if (softtion.isString(title)) {
-                            Properties.title.html(title); 
-                            Properties.title.removeClass("hidden");
+                            title.html(title); title.removeClass("hidden");
                         } else {
-                            Properties.title.addClass("hidden");
+                            title.addClass("hidden");
                         }
                         
                         return this; // Retornando interfaz fluida
                     };
 
                     Alert.prototype.content = function (content) {
-                        Properties.content.html(content); return this;
+                        content.html(content); return this;
                     };
 
                     Alert.prototype.positiveLabel = function (label) {
-                        Properties.positiveButton.html(label); return this;
+                        positiveButton.html(label); return this;
                     };
 
                     Alert.prototype.negativeLabel = function (label) {
-                        Properties.negativeButton.html(label); return this;
+                        negativeButton.html(label); return this;
                     };
                     
                     Alert.prototype.negativeEnabled = function (enabled) {
-                        Properties.negativeEnabled = enabled; return this;
+                        enabledNegative = enabled; return this;
                     };
 
                     Alert.prototype.backdropEnabled = function (enabled) {
-                        Properties.backdropEnabled = enabled; return this;
+                        enabledBackdrop = enabled; return this;
                     };
 
-                    Alert.prototype.positiveFunction = function (positiveFunction) {
-                        Properties.positiveFunction = positiveFunction; return this;
+                    Alert.prototype.positiveFunction = function (functionPositive) {
+                        positiveFunction = functionPositive; return this;
                     };
 
-                    Alert.prototype.negativeFunction = function (negativeFunction) {
-                        Properties.negativeFunction = negativeFunction; return this;
+                    Alert.prototype.negativeFunction = function (functionNegative) {
+                        negativeFunction = functionNegative; return this;
                     };
 
                     Alert.prototype.settings = function (options) {
-                        var optionsDefault = {
+                        var defaults = {
                             title: "", content: "",
                             positiveLabel: "Aceptar",
                             negativeLabel: "Cancelar",
@@ -5762,35 +5761,34 @@
                             negativeFunction: undefined
                         };
                         
-                        angular.extend(optionsDefault, options); 
+                        angular.extend(defaults, options); 
                         
-                        this.title(optionsDefault.title); 
-                        this.content(optionsDefault.content);
-                        this.positiveLabel(optionsDefault.positiveLabel);
-                        this.negativeLabel(optionsDefault.negativeLabel);
-                        this.backdropEnabled(optionsDefault.enabledBackdrop);
-                        this.positiveFunction(optionsDefault.positiveFunction);
-                        this.negativeFunction(optionsDefault.negativeFunction);
+                        this.enabledBackdrop(defaults.enabledBackdrop);
+                        this.title(defaults.title); this.content(defaults.content);
+                        this.positiveLabel(defaults.positiveLabel);
+                        this.negativeLabel(defaults.negativeLabel);
+                        this.positiveFunction(defaults.positiveFunction);
+                        this.negativeFunction(defaults.negativeFunction);
 
                         return this; // Retornando interfaz fluida
                     };
 
                     Alert.prototype.show = function () {
-                        if (!Properties.dialog.hasClass("active")) {
+                        if (!dialog.hasClass("active")) {
                             angular.element(document.body).addClass("body-overflow-none");
                             
-                            (Properties.negativeEnabled) ?
-                                Properties.negativeButton.removeClass("hidden") :
-                                Properties.negativeButton.addClass("hidden");
+                            (enabledNegative) ?
+                                negativeButton.removeClass("hidden") :
+                                negativeButton.addClass("hidden");
                             
-                            Properties.dialog.addClass("active"); Properties.box.addClass("show");
+                            dialog.addClass("active"); box.addClass("show");
                         } // Dialog no se encuentra activo
                     };
 
                     Alert.prototype.hide = function () {
-                        if (Properties.dialog.hasClass("active")) {
+                        if (dialog.hasClass("active")) {
                             angular.element(document.body).removeClass("body-overflow-none");
-                            Properties.dialog.removeClass("active"); Properties.box.removeClass("show");
+                            dialog.removeClass("active"); box.removeClass("show");
                         } // Dialog se encuentra activo
                     };
                     
@@ -5805,69 +5803,69 @@
             BottomSheet: {
                 name: "$bottomSheet",
                 method: function () {
-                    var Properties = {
-                        component: undefined, content: undefined, backdrop: undefined
-                    };
+                    var component = undefined, 
+                        content = undefined, 
+                        backdrop = undefined;
                     
                     var BottomSheet = function () {};
 
                     BottomSheet.prototype.set = function (sheetID) {
                         var self = this; // Componente
                         
-                        Properties.component = angular.element(sheetID);
+                        component = angular.element(sheetID);
                         
-                        if (Properties.component.exists()) {
-                            Properties.content = Properties.component.children(".content");
-                            Properties.backdrop = Properties.component.children(".backdrop");
+                        if (component.exists()) {
+                            content = component.children(".content");
+                            backdrop = component.children(".backdrop");
 
-                            Properties.backdrop.click(function () { self.hide(); });
+                            backdrop.click(function () { self.hide(); });
                         } // Componente existe en el Documento
                         
                         return this; // Retornando interfaz fluida
                     };
                     
                     BottomSheet.prototype.show = function () {
-                        if (Properties.component.exists()) {
-                            var appContent = Properties.component.parents(".app-content");
+                        if (component.exists()) {
+                            var appContent = component.parents(".app-content");
                             
                             var isInAppcontent = (appContent.exists()),
-                                content = (isInAppcontent) ? appContent :  
+                                container = (isInAppcontent) ? appContent :  
                                     angular.element(document.body);
                             
-                            if (!Properties.component.hasClass("active")) {
-                                content.addClass("overflow-none");
+                            if (!component.hasClass("active")) {
+                                container.addClass("overflow-none");
                                 
                                 if (isInAppcontent) {
-                                    Properties.content.addClass("show");
+                                    content.addClass("show");
                                 } else {
-                                    Properties.content.addClass("show-content");
-                                    Properties.content.css("margin-bottom", content.scrollTop());
+                                    content.addClass("show-content");
+                                    content.css("margin-bottom", container.scrollTop());
                                 } // Componente no se encuentra en AppContent
                                 
-                                Properties.component.addClass("active"); 
+                                component.addClass("active"); 
                             } // Componente no se encuentra activo en la Aplicación
                         }
                     };
 
                     BottomSheet.prototype.hide = function () {
-                        if (Properties.component.exists()) {
-                            var appContent = Properties.component.parents(".app-content");
+                        if (component.exists()) {
+                            var appContent = component.parents(".app-content");
                             
                             var isInAppcontent = (appContent.exists()),
-                                content = (isInAppcontent) ? appContent :  
+                                container = (isInAppcontent) ? appContent :  
                                     angular.element(document.body);
                             
-                            if (Properties.component.hasClass("active")) {
-                                content.removeClass("overflow-none");
+                            if (component.hasClass("active")) {
+                                container.removeClass("overflow-none");
 
                                 (!isInAppcontent) ? 
-                                    Properties.content.removeClass("show-content") :
-                                    Properties.content.removeClass("show");
+                                    content.removeClass("show-content") :
+                                    content.removeClass("show");
 
-                                var marginBottom = Properties.content.outerHeight();
-                                Properties.content.css("margin-bottom", (marginBottom * -1) - 1);
+                                var marginBottom = content.outerHeight();
+                                content.css("margin-bottom", (marginBottom * -1) - 1);
 
-                                Properties.component.removeClass("active"); 
+                                component.removeClass("active"); 
                             } // Componente se encuentra activo en la Aplicación
                         }
                     };
@@ -5883,33 +5881,31 @@
             Dialog: {
                 name: "$dialog",
                 method: function () {
-                    var Properties = {
-                        dialog: undefined,
-                        box: undefined,
-                        backdrop: undefined,
-                        persistent: false
-                    };
+                    var dialog = undefined,
+                        box = undefined,
+                        backdrop = undefined,
+                        persistent = false;
                     
-                    var Dialog = function () { this.id = ""; };
+                    var Dialog = function () { };
 
                     Dialog.prototype.set = function (dialogID) {
                         var self = this; // Sidenav
                         
-                        Properties.dialog = angular.element(dialogID);
+                        dialog = angular.element(dialogID);
 
-                        if (Properties.dialog.exists()) {
-                            Properties.box = Properties.dialog.children(".box");
-                            Properties.backdrop = Properties.dialog.children(".backdrop");
+                        if (dialog.exists()) {
+                            box = dialog.children(".box");
+                            backdrop = dialog.children(".backdrop");
 
-                            if (!Properties.backdrop.exists()) {
-                                Properties.backdrop = angular.element(
+                            if (!backdrop.exists()) {
+                                backdrop = angular.element(
                                     softtion.html("div").addClass("backdrop").create()
                                 );
 
-                                Properties.dialog.append(Properties.backdrop);
+                                dialog.append(backdrop);
 
-                                Properties.backdrop.click(function () { 
-                                    if (!Properties.persistent) { self.hide(); }
+                                backdrop.click(function () { 
+                                    if (!persistent) { self.hide(); }
                                 });
                             }
                         } // Dialog existe en el Documento
@@ -5917,27 +5913,27 @@
                         return this; // Retornando interfaz fluida
                     };
 
-                    Dialog.prototype.show = function (persistent) {
-                        if (!Properties.dialog.hasClass("active")) {
-                            Properties.persistent = persistent;
+                    Dialog.prototype.show = function (isPersistent) {
+                        if (!dialog.hasClass("active")) {
+                            persistent = isPersistent;
                             
                             var $body = angular.element(document.body);
                             
                             $body.addClass("body-overflow-none"); // Body no scroll
                             
-                            Properties.box.removeClass("hide").addClass("show");
-                            Properties.dialog.addClass("active"); // Se activa el Sidenav
+                            box.removeClass("hide").addClass("show");
+                            dialog.addClass("active"); // Se activa el Dialog
                         } // Sidenav no se encuentra activo
                     };
 
                     Dialog.prototype.hide = function () {
-                        if (Properties.dialog.hasClass("active")) {
+                        if (dialog.hasClass("active")) {
                             var $body = angular.element(document.body);
                             
                             $body.removeClass("body-overflow-none"); // Body scroll
                             
-                            Properties.box.removeClass("show").addClass("hide");
-                            Properties.dialog.removeClass("active"); // Se desactiva el Sidenav
+                            box.removeClass("show").addClass("hide");
+                            dialog.removeClass("active"); // Se desactiva el Dialog
                         } // Sidenav no se encuentra activo
                     };
                     
@@ -6261,28 +6257,28 @@
             FormNavigation: {
                 name: "$formNavigation",
                 method: function () {
-                    var Properties = {
-                        form: undefined, backdrop: undefined, content: undefined
-                    };
+                    var form = undefined,
+                        backdrop = undefined, 
+                        content = undefined;
                     
                     var FormNavigation = function () {};
 
-                    FormNavigation.prototype.set = function (idPaneForm) {
+                    FormNavigation.prototype.set = function (FormNavigationID) {
                         var self = this; // Instancia del PaneForm
                         
-                        Properties.form = angular.element(idPaneForm);
+                        form = angular.element(FormNavigationID);
 
-                        if (Properties.form.exists()) {
-                            Properties.backdrop = Properties.form.children(".backdrop");
-                            Properties.content = Properties.form.children(".content");
+                        if (form.exists()) {
+                            backdrop = form.children(".backdrop");
+                            content = form.children(".content");
 
-                            if (!Properties.backdrop.exists()) {
-                                Properties.backdrop = angular.element(
+                            if (!backdrop.exists()) {
+                                backdrop = angular.element(
                                     softtion.html("div").addClass("backdrop").create()
                                 );
 
-                                Properties.form.append(Properties.backdrop);
-                                Properties.backdrop.click(function () { self.hide(); });
+                                form.append(backdrop);
+                                backdrop.click(function () { self.hide(); });
                             }
                         } // Existe el PaneForm en el documento
                         
@@ -6290,22 +6286,22 @@
                     };
 
                     FormNavigation.prototype.show = function () {
-                        if (Properties.form.exists() && !Properties.form.hasClass("active")) {
-                            angular.element(document.body).addClass("body-overflow-none");
+                        if (form.exists() && !form.hasClass("active")) {
+                            var $body = angular.element(document.body);
                             
-                            Properties.content.removeClass("sharp-curve").removeClass("hide");
-                            Properties.form.addClass("active"); 
-                            Properties.content.addClass("easing-out").addClass("show");
+                            content.removeClass("sharp-curve").removeClass("hide");
+                            $body.addClass("body-overflow-none"); form.addClass("active"); 
+                            content.addClass("easing-out").addClass("show");
                         } // Sidenav no se encuentra activo
                     };
 
                     FormNavigation.prototype.hide = function () {
-                        if (Properties.form.exists() && Properties.form.hasClass("active")) {
-                            angular.element(document.body).removeClass("body-overflow-none");
+                        if (form.exists() && form.hasClass("active")) {
+                            var $body = angular.element(document.body);
                             
-                            Properties.content.removeClass("easing-out").removeClass("show");
-                            Properties.form.removeClass("active"); 
-                            Properties.content.addClass("hide").addClass("sharp-curve");
+                            content.removeClass("easing-out").removeClass("show");
+                            form.removeClass("active"); $body.removeClass("body-overflow-none");
+                            content.addClass("hide").addClass("sharp-curve");
                         } // Sidenav no se encuentra activo
                     };
                     
@@ -6321,67 +6317,62 @@
                 name: "$progressBar",
                 method: function () {
                     var $scope = undefined,
-                        Properties = { 
-                            component: undefined,
-                            callback: undefined,
-                            functionStart: false,
-                            events: [
-                                "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
-                            ]
-                        };
+                        component = undefined,
+                        callback = undefined,
+                        functionStart = false,
+                        isDeterminate = false,
+                        events = [
+                            "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
+                        ];
                     
                     var ProgressBar = function () {};
 
                     ProgressBar.prototype.set = function (progressID) {
-                        Properties.component = angular.element(progressID);
-                        var component = Properties.component,
-                            events = Properties.events;
-                        
-                        if (component.exists() && !component.hasClass("indeterminate")) {
-                            var bar = component.children(".bar");
-                            
-                            if (!bar.hasEventListener(events)) {
-                                bar.animationend(function () { 
-                                    Properties.functionStart = false;
-                                    component.removeClass("show"); 
-                                    
-                                    var callback = Properties.callback;
-                                    
-                                    if (softtion.isFunction(callback)) {
-                                        $scope.$apply(function () { callback(); });
-                                    } // Invocando función al terminar animación
-                                });
-                            }
-                        } // Componente existe correctamente
-                        
-                        return this; // Retornando interfaz fluida
+                        component = angular.element(progressID); return this;
                     };
                     
-                    ProgressBar.prototype.show = function (duration, callback) {
-                        duration = duration || 4000; // Definiendo duración
-                        var component = Properties.component;
-                        
+                    ProgressBar.prototype.show = function () {
+                        component.addClass("show"); return this;
+                    };
+                    
+                    ProgressBar.prototype.determinate = function (duration, callbackFunction) {
                         if (!component.hasClass("indeterminate")) {
+                            isDeterminate = true; duration = duration || 4000;
+                            
                             var bar = component.children(".bar");
                             
-                            if (!Properties.functionStart) {
-                                Properties.callback = callback;
+                            if (!functionStart) {
+                                callback = callbackFunction;
                             } // No se ha iniciado ningún proceso
                             
-                            Properties.functionStart = true; // Inicio de efecto
+                            functionStart = true; // Inicio de efecto
                             
                             bar.css("-moz-animation-duration", (duration + "ms"));
                             bar.css("-webkit-animation-duration", (duration + "ms"));
                             bar.css("animation-duration", (duration + "ms"));
                             bar.css("-o-animation-duration", (duration + "ms"));
                             bar.css("-ms-animation-duration", (duration + "ms"));
+                            
+                            var bar = component.children(".bar");
+
+                            if (!bar.hasEventListener(events)) {
+                                bar.animationend(function () { 
+                                    if (isDeterminate) {
+                                        component.removeClass("show"); 
+                                    } // Se invoco método determinado
+                                    
+                                    isDeterminate = false; functionStart = false;
+
+                                    if (softtion.isFunction(callback)) {
+                                        $scope.$apply(function () { callback(); });
+                                    } // Invocando función al terminar animación
+                                });
+                            }
                         } // Componente no es Indeterminado
-                        
-                        component.addClass("show"); // Visualizando
                     };
 
                     ProgressBar.prototype.hide = function () {
-                        Properties.component.removeClass("show");
+                        component.removeClass("show");
                     };
                     
                     var setPercentageBuffering = function (component, percentage) {
@@ -6399,8 +6390,6 @@
                     };
                     
                     ProgressBar.prototype.setPercentage = function (percentage) {
-                        var component = Properties.component;
-                        
                         if (component.hasClass("indeterminate")) {
                             return;
                         } // No se le aplican propiedades porcentuales
@@ -6435,12 +6424,13 @@
             ProgressCircular: {
                 name: "$progressCircular",
                 method: function () {
-                    var Properties = {
-                        component: undefined
-                    };
+                    var component = undefined,
+                        events = [
+                            "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
+                        ];
                     
                     var ProgressCircular = function () { 
-                        Properties.component = angular.element(
+                        component = angular.element(
                             softtion.html("div").
                                 addClass("content-progress-circular").
                                 addChildren(
@@ -6450,20 +6440,38 @@
                         
                         var appBar = angular.element(".app-bar");
                         
-                        (appBar.exists()) ? appBar.append(Properties.component) :
-                            angular.element(".app-content").append(Properties.component);
+                        (appBar.exists()) ? appBar.append(component) :
+                            angular.element(".app-content").append(component);
+                    };
+                    
+                    ProgressCircular.prototype.set = function (circularID) {
+                        component = angular.element(circularID); return this;
                     };
 
                     ProgressCircular.prototype.show = function () {
-                        if (!Properties.component.hasClass("show")) {
-                            Properties.component.addClass("show");
-                        } // Haciendo visible el componente
+                        component.addClass("show");
                     };
 
                     ProgressCircular.prototype.hide = function () {
-                        if (Properties.component.hasClass("show")) {
-                            Properties.component.removeClass("show");
-                        } // Haciendo invisible el componente
+                        component.removeClass("show");
+                    };
+                    
+                    ProgressCircular.prototype.determinate = function (time, round) {
+                        if (component.hasClass("indeterminate")) {
+                            return;
+                        } // Componente es Indeterminado, no realiza efecto
+                        
+                        time = isNaN(time) ? 4000 : time;
+                        round = isNaN(round) ? 3 : round;
+                        
+                        propertyStyle("--time-progress-circular", time + "ms"); 
+                        propertyStyle("--round-progress-circular", (round * 360 - 90) + "deg"); 
+                        
+                        this.show(); // Haciendo visible el componente
+                        
+                        if (!component.hasEventListener(events)) {
+                            component.animationend(function () { component.removeClass("show"); });
+                        } // No tiene establecido finalización de Animación
                     };
 
                     var progressCircular = new ProgressCircular();
@@ -6478,24 +6486,28 @@
             Sidenav: {
                 name: "$sidenav",
                 method: function () {
+                    var sidenav = undefined,
+                        content = undefined,
+                        backdrop = undefined;
+                
                     var SideNav = function () { };
 
                     SideNav.prototype.set = function (sidenavID) {
                         var self = this; // Sidenav
                         
-                        self.sidenav = angular.element(sidenavID);
+                        sidenav = angular.element(sidenavID);
                         
-                        if (self.sidenav.exists()) {
-                            self.content = self.sidenav.children(".content:first");
-                            self.backdrop = self.sidenav.children(".backdrop");
+                        if (sidenav.exists()) {
+                            content = sidenav.children(".content:first");
+                            backdrop = sidenav.children(".backdrop");
 
-                            if (!self.backdrop.exists()) {
-                                self.backdrop = angular.element(
+                            if (!backdrop.exists()) {
+                                backdrop = angular.element(
                                     softtion.html("div").addClass("backdrop").create()
                                 );
 
-                                self.sidenav.append(self.backdrop);
-                                self.backdrop.click(function () { self.hide(); });
+                                sidenav.append(backdrop);
+                                backdrop.click(function () { self.hide(); });
                             }
                         } // Sidenav existe en el Documento
                         
@@ -6503,34 +6515,30 @@
                     };
 
                     SideNav.prototype.show = function () {
-                        var self = this; // Sidenav
-
-                        if (!self.sidenav.hasClass("active")) {
+                        if (!sidenav.hasClass("active")) {
                             var $body = angular.element(document.body);
                             
                             $body.addClass("body-overflow-none"); // Body no scroll
                             
-                            self.content.removeClass("hide").addClass("show");
-                            self.sidenav.addClass("active"); // Se activa el Sidenav
+                            content.removeClass("hide").addClass("show");
+                            sidenav.addClass("active"); // Se activa el Sidenav
                             
-                            if (self.sidenav.hasClass("persistent")) {
+                            if (sidenav.hasClass("persistent")) {
                                 $body.addClass("sidenav-persistent");
                             } // Componente es persistente en el documento
                         } // Sidenav no se encuentra activo
                     };
 
                     SideNav.prototype.hide = function () {
-                        var self = this; // Sidenav
-
-                        if (self.sidenav.hasClass("active")) {
+                        if (sidenav.hasClass("active")) {
                             var $body = angular.element(document.body);
                             
                             $body.removeClass("body-overflow-none"); // Body scroll
                             
-                            self.content.removeClass("show").addClass("hide");
-                            self.sidenav.removeClass("active"); // Se desactiva el Sidenav
+                            content.removeClass("show").addClass("hide");
+                            sidenav.removeClass("active"); // Se desactiva el Sidenav
                             
-                            if (self.content.hasClass("persistent")) {
+                            if (content.hasClass("persistent")) {
                                 $body.removeClass("sidenav-persistent");
                             } // Componente es persistente en el documento
                         } // Sidenav no se encuentra activo
@@ -6555,39 +6563,34 @@
                     } // Se debe cambiar posición del Botón en la Pantalla
                 },
                 method: function () {
-                    var Properties = {
-                        body: undefined, 
-                        $rootScope: undefined,
-                        Softtion: undefined,
-                        box: undefined, 
-                        action: undefined
-                    };
+                    var body = undefined, 
+                        $scope = undefined,
+                        Softtion = undefined,
+                        box = undefined, 
+                        action = undefined,
+                        hiddenSnackbar = undefined;
                     
                     var SnackBar = function () { 
-                        Properties.body = angular.element(
+                        body = angular.element(
                             softtion.html("p").addClass(["body"]).create()
                         );
                 
-                        Properties.action = angular.element(
+                        action = angular.element(
                             softtion.html("div").addClass(["action"]).create()
                         );
 
-                        Properties.box = angular.element(
+                        box = angular.element(
                             softtion.html("div").addClass(["snackbar"]).create()
                         );
 
-                        Properties.box.append(Properties.body); 
-                        Properties.box.append(Properties.action);
+                        box.append(body); box.append(action);
                         
-                        angular.element(".app-body").append(Properties.box);
+                        angular.element(".app-body").append(box);
                     };
 
                     SnackBar.prototype.show = function (text, optionsAction) {
                         var heightBody, self = this, // Snackbar
-                            body = Properties.body,
-                            box = Properties.box,
-                            action = Properties.action,
-                            selector = Properties.Softtion.Selectors.FAB,
+                            selector = Softtion.Selectors.FAB,
                             $moveButton = Material.providers.Snackbar.moveButton,
                             bottomNavigation = angular.element(".bottom-navigation");
                             
@@ -6613,12 +6616,12 @@
                                 
                                 action.find("span").click(function () {
                                     if (softtion.isFunction(optionsAction.action)) {
-                                        Properties.$rootScope.$apply(function () { 
+                                        $scope.$apply(function () { 
                                             optionsAction.action(); 
                                         }); // Ejecutando evento Action del Snackbar
 
-                                        if (softtion.isDefined(self.hiddenSnackbar)) {
-                                            clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
+                                        if (softtion.isDefined(hiddenSnackbar)) {
+                                            clearTimeout(hiddenSnackbar); hiddenSnackbar = undefined;
                                         } // Existe un cierre pendiente por realizar
 
                                         action.html(""); $moveButton(false, selector); 
@@ -6637,9 +6640,9 @@
                             box.addClass("active").addClass("show");
                             $moveButton(true, selector, box.height()); 
 
-                            self.hiddenSnackbar = setTimeout(
+                            hiddenSnackbar = setTimeout(
                                 function () {
-                                    self.hiddenSnackbar = undefined; $moveButton(false, selector); 
+                                    hiddenSnackbar = undefined; $moveButton(false, selector); 
                                     box.removeClass("show").removeClass("active"); 
                                 },
                                 3500 // Tiempo de espera para ocultarse
@@ -6647,8 +6650,8 @@
                         } else {
                             action.html(""); heightBody = parseInt(body.css("height"));
                             
-                            if (softtion.isDefined(self.hiddenSnackbar)) {
-                                clearTimeout(self.hiddenSnackbar); self.hiddenSnackbar = undefined;
+                            if (softtion.isDefined(hiddenSnackbar)) {
+                                clearTimeout(hiddenSnackbar); hiddenSnackbar = undefined;
                             } // Existe un cierre pendiente por realizar
                             
                             $moveButton(false, selector); box.removeClass("show").removeClass("active"); 
@@ -6664,8 +6667,7 @@
                     this.get = function () { return snackbar; };
                     
                     var providerSnackbar = function ($rootScope, SofttionMaterial) { 
-                        Properties.Softtion = SofttionMaterial;
-                        Properties.$rootScope = $rootScope; return snackbar; 
+                        Softtion = SofttionMaterial; $scope = $rootScope; return snackbar; 
                     };
                     
                     this.$get = ["$rootScope", "SofttionMaterial", providerSnackbar];
@@ -6683,32 +6685,26 @@
                     } // Se debe cambiar posición del Botón en la Pantalla
                 },
                 method: function () {
-                    var Properties = {
-                        scope: undefined,
-                        box: undefined,
-                        body: undefined, 
-                        Softtion: undefined
-                    };
+                    var body = undefined, 
+                        box = undefined,
+                        hiddenToast = undefined,
+                        Softtion = undefined;
                     
                     var Toast = function () { 
-                        Properties.body = angular.element(
+                        box = angular.element(
+                            softtion.html("div").addClass(["toast"]).create()
+                        );
+                
+                        body = angular.element(
                             softtion.html("p").addClass(["body"]).create()
                         );
 
-                        Properties.box = angular.element(
-                            softtion.html("div").addClass(["toast"]).create()
-                        );
-
-                        Properties.box.append(Properties.body); 
-                        
-                        angular.element(".app-body").append(Properties.box);
+                        box.append(body); angular.element(".app-body").append(box);
                     };
 
                     Toast.prototype.show = function (text) {
                         var heightBody, self = this, // Toast
-                            body = Properties.body,
-                            box = Properties.box,
-                            selector = Properties.Softtion.Selectors.FAB,
+                            selector = Softtion.Selectors.FAB,
                             $moveButton = Material.providers.Toast.moveButton,
                             bottomNavigation = angular.element(".bottom-navigation");
 
@@ -6722,9 +6718,9 @@
                             box.addClass("active").addClass("show");
                             $moveButton(true, selector, box.innerHeight()); 
 
-                            self.hiddenToast = setTimeout(
+                            hiddenToast = setTimeout(
                                 function () {
-                                    self.hiddenToast = undefined; $moveButton(false, selector); 
+                                    hiddenToast = undefined; $moveButton(false, selector); 
                                     box.removeClass("show").removeClass("active");
                                 },
                                 3500 // Tiempo de espera para ocultarse
@@ -6732,8 +6728,8 @@
                         } else {
                             heightBody = parseInt(body.css("height"));
                             
-                            if (softtion.isDefined(self.hiddenToast)) {
-                                clearTimeout(self.hiddenToast); self.hiddenToast = undefined;
+                            if (softtion.isDefined(hiddenToast)) {
+                                clearTimeout(hiddenToast); hiddenToast = undefined;
                             } // Existe un cierre pendiente por realizar
                             
                             $moveButton(false, selector); 
@@ -6750,7 +6746,7 @@
                     this.get = function () { return toast; };
                     
                     var providerToast = function (SofttionMaterial) { 
-                        Properties.Softtion = SofttionMaterial; return toast; 
+                        Softtion = SofttionMaterial; return toast; 
                     };
                     
                     this.$get = ["SofttionMaterial", providerToast];
@@ -6762,10 +6758,6 @@
                 method: ["ColorMaterial", function (ColorMaterial) {
                         
                     var ThemeMaterial = function () {};
-                    
-                    function propertyStyle (key, value) {
-                        document.documentElement.style.setProperty(key, value);
-                    };
                     
                     ThemeMaterial.prototype.setPrimary = function (nameTheme) {
                         var theme = ColorMaterial.background[nameTheme],

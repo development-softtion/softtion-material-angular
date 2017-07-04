@@ -119,17 +119,42 @@ body.dark {
 
 /** COMPONENTS GLOBALS */
 
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.54); }
+
+.dark .backdrop {
+    background-color: rgba(255, 255, 255, 0.54); }
+
 .divider {
     background-color: var(--light-background-border); }
 
 .dark .divider {
     background-color: var(--dark-background-border); }
 
-.backdrop {
-    background-color: rgba(0, 0, 0, 0.54); }
+.avatar > span, .avatar > i {
+    background-color: var(--theme-secondary-background); }
 
-.dark .backdrop {
-    background-color: rgba(255, 255, 255, 0.54); }
+.avatar.transparent > span, .avatar.transparent > i {
+    background-color: transparent !important;
+    color: var(--dark-secondary-font) !important; }
+
+.dark .avatar.transparent > i, .dark .avatar.transparent > span {
+    color: var(--light-primary-font) !important; }
+
+.avatar.action:hover > span, .avatar.action:hover > i {
+    background-color: var(--theme-secondary-background-dark); }
+
+.dark .avatar.action:hover > span, .dark .avatar.action:hover > i {
+    background-color: var(--theme-secondary-background-light); }
+
+.avatar.action:hover:before {
+    background-color: rgba(189, 189, 189, 0.78); }
+
+.dark .avatar.action:hover:before {
+    background-color: rgba(224, 224, 224, 0.45); }
+
+.avatar > span, .avatar > i {
+    color: var(--theme-secondary-font-active); }
 
 /** APP BAR */
 
@@ -649,6 +674,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .card > .primary-title > .detail > .subtitle {
     color: var(--light-secondary-font); }
 
+.card > .optional-header > .avatar.transparent > span,
+.card > .optional-header > .avatar.transparent > i {
+    color: var(--theme-secondary-font) !important; }
+
 /** CAROUSEL */
 
 .carousel > .slide > .detail {
@@ -808,28 +837,30 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--theme-primary-background-hover);
     color: var(--theme-primary-font-active); }
 
-.chip > .avatar {
+.chip > .avatar > span, .chip > .avatar > i {
     background-color: rgba(0, 0, 0, 0.54);
     color: var(--light-primary-font); }
 
-.dark .chip > .avatar {
+.dark .chip > .avatar > span, .dark .chip > .avatar > i {
     background-color: rgba(255, 255, 255, 0.54); }
 
-.dark .chip:hover > .avatar {
+.dark .chip:hover > .avatar > span, .dark .chip:hover > .avatar > i {
     color: var(--dark-primary-font); }
 
-.chip.theme-primary > .avatar {
+.chip.theme-primary > .avatar > span, .chip.theme-primary > .avatar > i {
     background-color: var(--theme-secondary-background-dark);
     color: var(--theme-secondary-font-alternative); }
 
-.chip.theme-secondary > .avatar {
+.chip.theme-secondary > .avatar > span, .chip.theme-secondary > .avatar > i {
     background-color: var(--theme-primary-background-dark);
     color: var(--theme-primary-font-alternative); }
 
-.dark .chip.theme-primary:hover > .avatar {
+.dark .chip.theme-primary:hover > .avatar > span,
+.dark .chip.theme-primary:hover > .avatar > i {
     color: var(--theme-secondary-font-active); }
 
-.dark .chip.theme-secondary:hover > .avatar {
+.dark .chip.theme-secondary:hover > .avatar > span,
+.dark .chip.theme-secondary:hover > .avatar > i {
     color: var(--theme-primary-font-active); }
 
 .chip > .action > i {
@@ -1396,10 +1427,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .filechooser .file:focus > .content > .detail > .name {
     color: var(--theme-primary-font-active); }
 
-.filechooser .content > .detail > .avatar {
+.filechooser .content > .detail > .avatar > i {
     background: var(--light-background-component); }
 
-.dark .filechooser .content > .detail > .avatar {
+.dark .filechooser .content > .detail > .avatar > i {
     background: var(--dark-background-component); }
 
 .filechooser .content > .detail > .avatar > i { 
@@ -1483,10 +1514,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .filechooser-multiple .file:focus > .content > .detail > .name {
     color: var(--theme-primary-font-active); }
 
-.filechooser-multiple .content > .detail > .avatar {
+.filechooser-multiple .content > .detail > .avatar > i {
     background: var(--light-background-component); }
 
-.dark .filechooser-multiple .content > .detail > .avatar {
+.dark .filechooser-multiple .content > .detail > .avatar > i {
     background: var(--dark-background-component); }
 
 .filechooser-multiple .content > .detail > .avatar > i { 
@@ -1631,30 +1662,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .list > .item-list > .content {
     background-color: var(--dark-background); }
 
-.list > .item-list > .content > div.avatar {
-    background-color: var(--dark-secondary-font); }
-
-.dark .list > .item-list > .content > div.avatar {
-    background-color: var(--light-secondary-font); }
-
-.list > .item-list > .content > div.avatar.transparent {
-    background-color: transparent; }
-
-.list > .item-list > .content > div.avatar > i,
-.list > .item-list > .content > div.avatar > span {
+.list > .item-list > .content > .avatar > span,
+.list > .item-list > .content > .avatar > i {
+    background-color: var(--dark-secondary-font);
     color: var(--light-primary-font); }
 
-.dark .list > .item-list > .content > div.avatar > i,
-.dark .list > .item-list > .content > div.avatar > span {
+.dark .list > .item-list > .content > .avatar > span,
+.dark .list > .item-list > .content > .avatar > i {
+    background-color: var(--light-secondary-font);
     color: var(--dark-secondary-font); }
-
-.list > .item-list > .content > div.avatar.transparent > i,
-.list > .item-list > .content > div.avatar.transparent > span {
-    color: var(--dark-secondary-font); }
-
-.dark .list > .item-list > .content > div.avatar.transparent > i,
-.dark .list > .item-list > .content > div.avatar.transparent > span {
-    color: var(--light-primary-font); }
 
 .list > .item-list > .content > .detail {
     border-bottom-color: transparent; }

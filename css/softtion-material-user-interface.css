@@ -866,7 +866,8 @@ input[type=number]::-webkit-outer-spin-button {
     opacity: 0;
     width: 0;
     height: 0;
-    border-radius: 50%; }
+    border-radius: 50%;
+    pointer-events: none; }
 
 /** COMPONENTS GLOBALS */
 
@@ -895,6 +896,46 @@ input[type=number]::-webkit-outer-spin-button {
 .divider {
     width: 100%;
     height: 1px; }
+
+.avatar {
+    position: relative;
+    width: 48px;
+    height: 48px; 
+    line-height: 48px;
+    border-radius: 50%;
+    font-size: 24px;
+    user-select: none; }
+
+.avatar.action {
+    cursor: pointer; }
+
+.avatar.action:before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    display: block;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border-radius: 50%;
+    z-index: -1; }
+
+.avatar > span, .avatar > i {
+    display: block;
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    text-align: center;
+    font-size: inherit;
+    border-radius: 50%; }
+
+.avatar > span {
+    text-transform: uppercase; }
+
+.avatar > img {
+    width: 100%;
+    border-radius: 50%;
+}
 
 /** APP BAR */
 
@@ -1691,7 +1732,8 @@ button.action {
     border: none;
     outline: none; 
     padding: 0px;
-    height: 24px; }
+    height: 24px; 
+    user-select: none; }
 
 button.action:before {
     content: "";
@@ -1764,6 +1806,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card {
     position: relative;
+    float: left;
     margin-bottom: 8px;
     border-radius: 2px;
     z-index: 4;
@@ -2035,8 +2078,9 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .optional-header > .avatar {
     float: left;
     width: 36px;
-    height: 36px;
-    border-radius: 50%; }
+    height: 36px; 
+    line-height: 36px;
+    font-size: 18px; }
 
 .card > .optional-header > .detail {
     float: left;
@@ -2082,9 +2126,8 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .media-area {
     width: 100%;
     box-sizing: border-box;
-    overflow-x: hidden;
     padding: 16px;
-    overflow-y: auto; }
+    overflow: hidden; }
 
 .card > .area-action ~ .media-area {
     width: 70%; }
@@ -2600,16 +2643,13 @@ button.raised:focus:after, button.flat:focus:after {
 .chip.active {
     box-shadow: var(--shadow-2); }
 
-.chip > img, .chip > .avatar {
+.chip > .avatar {
     float: left;
     margin: 0 8px 0 -12px;
-    height: 32px;
     width: 32px;
-    border-radius: 50%; }
-
-.chip > .avatar {
-    text-align: center;
-    font-size: 16px; }
+    height: 32px; 
+    line-height: 32px;
+    font-size: 18px; }
 
 .chip > .action {
     position: relative;
@@ -3464,7 +3504,6 @@ button.raised:focus:after, button.flat:focus:after {
 .dropdown {
     position: absolute;
     margin: 8px 0px 0px 0px;
-    padding: 8px 0px;
     min-width: 140px;
     max-width: 280px;
     max-height: 280px;
@@ -3504,6 +3543,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dropdown.fixed {
     z-index: 16; }
+
+.dropdown > .menu {
+    padding: 8px 0px; }
 
 /** EXPANSION PANEL */ 
 
@@ -4076,15 +4118,9 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
     margin-right: 8px;
-    line-height: 32px; }
-
-.filechooser .content > .detail > .avatar > i {
-    height: inherit;
-    line-height: inherit;
-    width: inherit; 
-    text-align: center; }
+    line-height: 32px;
+    font-size: 24px; }
 
 .filechooser .content > .detail > .name {
     display: block;
@@ -4252,15 +4288,8 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
     margin-right: 8px;
     line-height: 32px; }
-
-.filechooser-multiple .content > .detail > .avatar > i {
-    height: inherit;
-    line-height: inherit;
-    width: inherit; 
-    text-align: center; }
 
 .filechooser-multiple .content > .detail > .name {
     display: block;
@@ -4735,26 +4764,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 32px;
     line-height: 32px;
     z-index: 2;
-    cursor: pointer;
-    border-radius: 50%; }
-
-.list > .item-list > .content > div.avatar > i {
-    font-size: 20px;
-    text-align: center;
-    width: inherit;
-    height: inherit;
-    line-height: inherit; }
-
-.list > .item-list > .content > div.avatar > span {
-    display: block;
-    width: inherit;
-    height: inherit;
-    font-size: 20px;
-    text-align: center; }
-
-.list.two-line > .item-list > .content > div.avatar > span,
-.list.three-line > .item-list > .content > div.avatar > span {
-    font-size: 28px; }
+    font-size: 18px; }
 
 .list.two-line > .item-list > .content > .avatar,
 .list.three-line > .item-list > .content > .avatar {
@@ -4762,10 +4772,11 @@ button.raised:focus:after, button.flat:focus:after {
     top: 12px; 
     left: 12px;
     height: 48px;
-    line-height: 48px; }
+    line-height: 48px;
+    font-size: 28px; }
 
-.list.two-line > .item-list > .content > div.avatar > i,
-.list.three-line > .item-list > .content > div.avatar > i {
+.list.two-line > .item-list > .content > .avatar > i,
+.list.three-line > .item-list > .content > .avatar > i {
     font-size: 24px; }
 
 .list > .item-list > .content > .detail {
@@ -4940,6 +4951,9 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px; }
 
 .menu > li.option {
+    position: relative;
+    display: flex;
+    overflow: hidden;
     font-weight: 500;
     cursor: pointer;
     height: 48px;
@@ -4948,18 +4962,18 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     box-sizing: border-box; }
 
-.menu.text-only > li.option {
-    padding: 0px 16px; }
-
 .menu > li.option > span {
-    padding-left: 40px;
     display: block;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap; }
 
-.menu.text-only > li.option > span, .menu > li.option > i + span {
-    padding-left: 0px; }
+.menu > li.option.align-icon > span {
+    margin-left: 40px; }
+
+.menu > li.option.align-icon > i + span {
+    margin-left: 0px; }
 
 .menu > li.option > i {
     height: inherit;
@@ -4968,7 +4982,12 @@ button.raised:focus:after, button.flat:focus:after {
     text-align: left;
     margin-right: 16px; }
 
-.menu.text-only > li.option > i {
+.menu > li.option > span + i {
+    float: right;
+    margin-left: 16px;
+    margin-right: 0px; }
+
+.menu > li.option > i + i {
     display: none; }
 
 .menu > li.divider {
@@ -4981,12 +5000,6 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%; 
     height: 4px;
     overflow: hidden;
-    display: none; }
-
-.progress-bar.visible {
-    display: block; }
-
-.progress-bar.visible.indeterminate {
     display: none; }
 
 .progress-bar.show {
@@ -7327,6 +7340,7 @@ body.not-touch .tabs::-webkit-scrollbar {
 /** TOOLBAR */
 
 .toolbar {
+    display: flex;
     width: 100%;
     min-height: 56px; 
     max-height: 56px; 
@@ -7363,6 +7377,7 @@ body.not-touch .tabs::-webkit-scrollbar {
     box-sizing: content-box; }
 
 .toolbar > .title {
+    width: 100%;
     margin: 0px;
     margin-left: 16px;
     float: left;
@@ -7413,17 +7428,17 @@ body.not-touch .tabs::-webkit-scrollbar {
     display: none; }
 
 .toolbar > .actions {
-    display: flex;
+    width: 100%;
     overflow: hidden;
     padding: 0px;
     margin: 0px;
     margin-right: 4px;
-    float: right;
     min-height: inherit; 
     max-height: inherit;
     line-height: inherit; }
 
 .toolbar > .actions > button.action {
+    float: right;
     padding: 16px 12px;
     box-sizing: content-box;
     margin-right: 1px; }

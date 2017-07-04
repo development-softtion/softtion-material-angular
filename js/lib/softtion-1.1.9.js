@@ -233,6 +233,16 @@
         return ("ontouchstart" in window);
     };
     
+    Softtion.prototype.getGUID = (function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        };
+        
+        return function () {
+            return s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4();
+        };
+    })();
+    
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     Softtion.prototype.encrypt = function (value, keyPassword) {
