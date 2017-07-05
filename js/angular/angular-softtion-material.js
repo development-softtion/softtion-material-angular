@@ -2696,6 +2696,12 @@
                             $scope.iconButton = $scope.iconButton || "attachment";
                             $scope.textDescription = $scope.textDescription || 
                                 "Seleccione archivos a procesar";
+                        
+                            var parentView = $element.parents(".view");
+                            
+                            if (parentView.exists()) {
+                                $element.css("max-width", $element.width() + "px");
+                            } // Componente esta contenido en una ViewTab
                             
                             $scope.files = []; // Lista de archivos seleccionados
                             
@@ -2879,12 +2885,36 @@
                     return {
                         restrict: "C", 
                         link: function ($scope, $element) {
-                            var button = $element.find(".button-floating");
+                            var button = $element.find(".button-floating"),
+                                box = $element.children(".box"),
+                                backdrop = angular.element(".backdrop.fab-backdrop"),
+                                $body = angular.element(document.body);
+                                                    
+                            if (!backdrop.exists()) {
+                                backdrop = angular.element(
+                                    softtion.html("div").addClass(["backdrop", "fab-backdrop"]).create()
+                                );
+                        
+                                $body.append(backdrop); // Agregando backdrop 
+                            } // No existe backdrop en el componente
                         
                             $element.attr("tab-index", "-1"); // Enfocable
                             
+                            box.on("click", function () {
+                                if ($element.hasClass("active")) {
+                                    $element.removeClass("active"); backdrop.removeClass("active");
+                                    $body.removeClass("body-overflow-none");
+                                } // Debe cerrarse el componente
+                            });
+                            
                             button.on("click", function (event) {
-                                $element.addClass("active"); event.stopPropagation();
+                                $element.addClass("active").addClass("start"); 
+                                $body.addClass("body-overflow-none");
+                                backdrop.addClass("active"); event.stopPropagation();
+                            });
+                            
+                            backdrop.on("click", function () {
+                                $element.removeClass("active"); backdrop.removeClass("active");
                             });
                         }
                     };
@@ -3998,31 +4028,41 @@
                 }
             },
             
-            Tab: {
+            Tabs: {
                 name: "tabs",
-                directive: function () {
+                directive: ["$timeout", function ($timeout) {
                     return {
                         restrict: "C",
                         scope: {
                             views: "@",
                             disabledPositionStart: "=?",
+                            disabledOverflow: "=?",
                             
                             // Eventos
                             viewEvent: "=?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var views = angular.element($scope.views), 
-                                tabs = $element.find(".tab"), index = 0,
+                            var viewContent = angular.element($scope.views), 
+                                tabs = $element.find(".tab"),
+                                index = 0, clickActive = true, viewsCount = 0,
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
                                 );
                             
                             if (tabs.exists()) {
-                                tabs.attr("tabindex", "-1"); // Haciendo componentes enfocables
+                                tabs.attr("tabindex", "-1"); // Componentes enfocables
+                                
+                                if (viewContent.exists()) {
+                                    viewsCount = viewContent.children(".view").length;
+                                } // Determinando capacida
 
                                 angular.forEach(tabs, function (tab) { 
-                                    angular.element(tab).data("position", index); index++;
+                                    (viewsCount > index) ?
+                                        angular.element(tab).data("position", index) :
+                                        angular.element(tab).data("position", -1);
+                                    
+                                    index++; // Aumentando el contador de Vistas
                                 });
                                 
                                 var tabActive = $element.find(".tab.active:first");
@@ -4039,12 +4079,25 @@
                                 stripe.css({ width: widthBar, left: leftBar });
                                 
                                 var position = tabActive.data("position");
-                                views.css("left", (position * -100) + "%");
+                                viewContent.css("left", (position * -100) + "%");
+                                
+                                $element.displaceLeft(function (name) {
+                                    switch (name) {
+                                        case ("displace"): clickActive = false; break;
+                                        case ("end"): 
+                                            $timeout(function () { clickActive = true; }, 500);
+                                        break;
+                                    }
+                                }); // Evento arrastre en el componente
                                 
                                 tabs.click(function ($event) {
-                                    if (!views.hasClass("transition")) {
-                                        views.addClass("transition");
-                                    } // Agregando la clase transition al componente
+                                    if (!clickActive) {
+                                        clickActive = true; return;
+                                    } // Se realizo un arrastre
+                                    
+                                    if (!viewContent.hasClass("transition")) {
+                                        viewContent.addClass("transition");
+                                    } // Agregando transition al componente
                                     
                                     var itemTab = angular.element(this);
                                     
@@ -4052,13 +4105,11 @@
                                         left = itemTab[0].offsetLeft,
                                         width = itemTab[0].clientWidth,
                                         widthTab = $element.width();
+                            
+                                    // Este componente está activo o no tiene vista
+                                    if (itemTab.hasClass("active") || (position === -1)) { return; }
                                     
                                     stripe.css({ width: width, left: left });
-                            
-                                    if (itemTab.hasClass("active")) {
-                                        return;
-                                    } // Este componente ya se encuentra activo
-                                    
                                     tabs.removeClass("active"); itemTab.addClass("active");
                                     
                                     if (!$scope.disabledPositionStart) {
@@ -4069,7 +4120,7 @@
                                         $element.animate({ scrollLeft: left }, 175, "standardCurve");                                         
                                     } // Reubicando vista del contenedor en pestaña
                                     
-                                    views.css("left", (position * -100) + "%");
+                                    viewContent.css("left", (position * -100) + "%");
                                     
                                     if (softtion.isFunction($scope.viewEvent)) {
                                         $scope.viewEvent($event);
@@ -4080,7 +4131,7 @@
                             $element.append(stripe); // Agregando componente selector
                         }
                     };
-                }
+                }]
             },
             
             TextArea: {
@@ -7112,7 +7163,8 @@
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
-            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box, .progress-button-floating",
+            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box,"
+                + ".progress-button-floating, .fab-menu-arc",
             BottomNav: ".stepper-mobile, .footer-buttons"
         },
         File: {

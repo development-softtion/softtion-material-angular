@@ -3761,19 +3761,55 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** FAB MENU ARC */
 
+.backdrop.fab-backdrop {
+    display: block;
+    z-index: 9;
+    bottom: initial;
+    opacity: 0;
+    -moz-transition: opacity 0.225s var(--easing-in);
+    -webkit-transition: opacity 0.225s var(--easing-in);
+    transition: opacity 0.225s var(--easing-in);
+    -o-transition: opacity 0.225s var(--easing-in);
+    -ms-transition: opacity 0.225s var(--easing-in); }
+
+.backdrop.fab-backdrop.active {
+    bottom: 0;
+    opacity: 1; }
+
 .fab-menu-arc {
     position: fixed;
     right: -56px;
     bottom: 44px;
+    z-index: 10;
     width: 200px;
-    height: 200px; }
+    height: 200px; 
+    -moz-transition: margin-bottom 0.325s var(--standard-curve);
+    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
+    transition: margin-bottom 0.325s var(--standard-curve);
+    -o-transition: margin-bottom 0.325s var(--standard-curve);
+    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+
+.fab-menu-arc.show-bottom-navigation {
+    bottom: 100px; }
 
 .fab-menu-arc.active {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
-    animation: orbit 0.2s var(--easing-out); }
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -moz-animation: orbit 0.225s var(--easing-out);
+    -webkit-animation: orbit 0.225s var(--easing-out);
+    animation: orbit 0.225s var(--easing-out);
+    -o-animation: orbit 0.225s var(--easing-out);
+    -ms-animation: orbit 0.225s var(--easing-out); }
 
 .fab-menu-arc.start:not(.active) {
-    animation: orbitReturn 0.2s var(--easing-out); }
+    -moz-animation: orbitReturn 0.225s var(--easing-out);
+    -webkit-animation: orbitReturn 0.225s var(--easing-out);
+    animation: orbitReturn 0.225s var(--easing-out);
+    -o-animation: orbitReturn 0.225s var(--easing-out);
+    -ms-animation: orbitReturn 0.225s var(--easing-out); }
 
 .fab-menu-arc > .box {
     position: absolute;
@@ -3791,11 +3827,23 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: -132px;
     right: calc(50% - 168px);
     box-shadow: none;
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
-    animation: showFabArc 0.2s var(--easing-out); }
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -moz-animation: showFabArc 0.225s var(--easing-out);
+    -webkit-animation: showFabArc 0.225s var(--easing-out);
+    animation: showFabArc 0.225s var(--easing-out);
+    -o-animation: showFabArc 0.225s var(--easing-out);
+    -ms-animation: showFabArc 0.225s var(--easing-out); }
 
 .fab-menu-arc.start:not(.active) > .box {
-    animation: hideFabArc 0.2s var(--easing-out); }
+    -moz-animation: hideFabArc 0.225s var(--easing-out);
+    -webkit-animation: hideFabArc 0.225s var(--easing-out);
+    animation: hideFabArc 0.225s var(--easing-out);
+    -o-animation: hideFabArc 0.225s var(--easing-out);
+    -ms-animation: hideFabArc 0.225s var(--easing-out); }
 
 .fab-menu-arc > .box > .content {
     position: absolute;
@@ -3819,7 +3867,11 @@ button.raised:focus:after, button.flat:focus:after {
     visibility: hidden; }
 
 .fab-menu-arc.start:not(.active) > .box > .content > .button-floating {
-    animation: showButtonFabArc 0.2s var(--easing-out); }
+    -moz-animation: showButtonFabArc 0.225s var(--easing-out);
+    -webkit-animation: showButtonFabArc 0.225s var(--easing-out);
+    animation: showButtonFabArc 0.225s var(--easing-out);
+    -o-animation: showButtonFabArc 0.225s var(--easing-out);
+    -ms-animation: showButtonFabArc 0.225s var(--easing-out); }
 
 .fab-menu-arc > .box > .content > .button-floating > i {
     cursor: pointer;
@@ -3836,15 +3888,27 @@ button.raised:focus:after, button.flat:focus:after {
     height: 240px;
     visibility: hidden;
     opacity: 0;
-    transform: translate(-50%, -50%); }
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); }
 
 .fab-menu-arc.active > .box > .content > .menu-content {
     visibility: visible;
     opacity: 1;
-    animation: showMenuFabArc 0.2s var(--easing-out); }
+    -moz-animation: showMenuFabArc 0.225s var(--easing-out);
+    -webkit-animation: showMenuFabArc 0.225s var(--easing-out);
+    animation: showMenuFabArc 0.225s var(--easing-out);
+    -o-animation: showMenuFabArc 0.225s var(--easing-out);
+    -ms-animation: showMenuFabArc 0.225s var(--easing-out); }
 
 .fab-menu-arc.start:not(.active) > .box > .content > .menu-content {
-    animation: hideMenuFabArc 0.2s var(--easing-out); }
+    -moz-animation: hideMenuFabArc 0.225s var(--easing-out);
+    -webkit-animation: hideMenuFabArc 0.225s var(--easing-out);
+    animation: hideMenuFabArc 0.225s var(--easing-out);
+    -o-animation: hideMenuFabArc 0.225s var(--easing-out);
+    -ms-animation: hideMenuFabArc 0.225s var(--easing-out); }
 
 .fab-menu-arc > .box > .content > .menu-content > .menu {
     position: absolute;
@@ -4583,11 +4647,11 @@ button.raised:focus:after, button.flat:focus:after {
 /** GRID LIST */
 
 .grid-list {
-    padding: 0 2px;
-    margin-left: 0;
     float: left;
     width: 100%;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    padding: 0 2px;
+    margin-left: 0; }
 
 .grid-list > .subheader {
     font-weight: 700;
@@ -4600,20 +4664,18 @@ button.raised:focus:after, button.flat:focus:after {
 
 .grid-list > .cell {
     position: relative;
-    display: flex;
     float: left;
     padding: 2px;
     box-sizing: border-box; }
 
 .grid-list > .cell > img {
-    width: 100%; 
-    height: 100%; }
+    width: 100%; }
 
 .grid-list > .cell > .content {
     position: absolute;
     width: calc(100% - 4px);
     padding: 16px 8px;
-    bottom: 2px;
+    bottom: 5px;
     box-sizing: border-box; }
 
 .grid-list > .cell > .content.top {
@@ -6669,7 +6731,7 @@ body.not-touch .tabs::-webkit-scrollbar,
     -o-transform: scale(0);
     -ms-transform: scale(0); }
 
-.tabs > .tab:not(:active):before {
+.tabs > .tab.active:not(:active):before {
     -moz-animation: rippleTab 0.75s var(--standard-curve);
     -webkit-animation: rippleTab 0.75s var(--standard-curve);
     animation: rippleTab 0.75s var(--standard-curve);
@@ -7686,6 +7748,9 @@ body.not-touch .tabs::-webkit-scrollbar,
     transition: left 0.275s var(--standard-curve);
     -o-transition: left 0.275s var(--standard-curve);
     -ms-transition: left 0.275s var(--standard-curve); }
+
+.views-content-tab > .views-tab.overflow-none {
+    pointer-events: none; }
 
 .views-content-tab > .views-tab > .view {
     width: 100%; 

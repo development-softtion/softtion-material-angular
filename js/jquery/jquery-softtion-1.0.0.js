@@ -420,6 +420,104 @@
             component.on(animation, callback);
             
             return component; // Retornando para interfaz fluida
+        },
+        
+        displaceLeft: function (callback) {
+            var draggActive = false, 
+                positionX = -1,
+                component = jQuery(this),
+                triggerCallback = function (name, event) {
+                    if (softtion.isFunction(callback)) {
+                        callback(name, event);
+                    } // Se ha definido una función de llamada
+                };
+                                
+            component.on("mousedown", function (event) {
+                draggActive = true; positionX = event.originalEvent.x;
+                triggerCallback("start", event); // Inicio 
+            });
+
+            component.on("mousemove", function (event) {
+                if (draggActive) {
+                    var positionNew = event.originalEvent.x,
+                        scrollLeft = component.scrollLeft();
+
+                    if (positionX > positionNew) {
+                        scrollLeft = scrollLeft + (positionX - positionNew);
+                        component.scrollLeft(scrollLeft);
+                    } else {
+                        scrollLeft = scrollLeft - (positionNew - positionX);
+                        component.scrollLeft(scrollLeft);
+                    } // Moviendo scroll
+
+                    positionX = positionNew; triggerCallback("displace", event);
+                }
+            });
+
+            component.on("mouseup", function (event) {
+                if (draggActive) {
+                    triggerCallback("end", event); 
+                } // Arrastre esta activo
+                
+                draggActive = false; // Finalización de arrastre
+            });
+
+            component.on("mouseleave", function (event) { 
+                if (draggActive) {
+                    triggerCallback("leave", event); 
+                } // Arrastre esta activo
+                
+                draggActive = false; // Finalización de arrastre 
+            });
+        },
+        
+        displaceTop: function (callback) {
+            var draggActive = false, 
+                positionY = -1,
+                component = jQuery(this),
+                triggerCallback = function (name, event) {
+                    if (softtion.isFunction(callback)) {
+                        callback(name, event);
+                    } // Se ha definido una función de llamada
+                };
+                                
+            component.on("mousedown", function (event) {
+                draggActive = true; positionY = event.originalEvent.y;
+                triggerCallback("start", event); // Inicio 
+            });
+
+            component.on("mousemove", function (event) {
+                if (draggActive) {
+                    var positionNew = event.originalEvent.y,
+                        scrollTop = component.scrollTop();
+
+                    if (positionY > positionNew) {
+                        scrollTop = scrollTop + (positionY - positionNew);
+                        component.scrollTop(scrollTop);
+                    } else {
+                        scrollTop = scrollTop - (positionNew - positionY);
+                        component.scrollTop(scrollTop);
+                    } // Moviendo scroll
+
+                    positionY = positionNew; triggerCallback("displace", event);
+                }
+            });
+
+            component.on("mouseup", function (event) {
+                if (draggActive) {
+                    triggerCallback("end", event); 
+                } // Arrastre esta activo
+                
+                draggActive = false; // Finalización de arrastre
+            });
+
+            component.on("mouseleave", function (event) { 
+                if (draggActive) {
+                    triggerCallback("leave", event); 
+                } // Arrastre esta activo
+                
+                draggActive = false; // Finalización de arrastre 
+            });
         }
     });
     
