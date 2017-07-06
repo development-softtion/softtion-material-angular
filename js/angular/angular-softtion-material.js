@@ -158,9 +158,9 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            changedEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?"
+                            changedEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -172,14 +172,18 @@
                             // Atributos de control
                             var focusLi = false, searchStart = false;
 
-                            $scope.suggestionsFilter = []; $scope.suggestionTemp = undefined; 
-                            $scope.clearSuggestion = true; $scope.inputActive = false; $scope.valueInput = ""; 
+                            $scope.suggestionsFilter = []; 
+                            $scope.suggestionTemp = undefined; 
+                            $scope.valueInput = ""; 
+                            $scope.clearSuggestion = true;
+                            $scope.inputActive = false; 
 
                             $scope.describeSuggestion = function (suggestion) {
                                 if (typeof suggestion === "string") {
                                     return suggestion;
                                 } else {
-                                    return (!(softtion.isString($scope.keyDescription)) ? suggestion.toString() :
+                                    return (!(softtion.isString($scope.keyDescription)) ? 
+                                        suggestion.toString() :
                                         softtion.findKey(suggestion, $scope.keyDescription));
                                 }
                             };
@@ -210,7 +214,7 @@
                                 $scope.searchSuggestions($scope.valueInput.toLowerCase());
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.select);
+                                    $scope.focusEvent({$event: $event, $selected: $scope.select});
                                 } // Evento focus sobre el inpur en el componente
                             };
                             
@@ -309,7 +313,7 @@
                                     $scope.inputActive = false; // Desactivando vista del componente
 
                                     if (softtion.isFunction($scope.blurEvent)) {
-                                        $scope.blurEvent($event, $scope.select);
+                                        $scope.blurEvent({$event: $event, $selected: $scope.select});
                                     } // Evento 'focus' sobre el inpur en el componente
                                 }
                             };
@@ -324,7 +328,11 @@
                                 
                                 if ($scope.suggestionTemp !== $scope.select) {
                                     if (softtion.isFunction($scope.changedEvent)) {
-                                        $scope.changedEvent("changed", $scope.select, $scope.suggestionTemp);
+                                        $scope.changedEvent({
+                                            $nameEvent: "changed", 
+                                            $old: $scope.suggestionTemp, 
+                                            $selected: $scope.select
+                                        });
                                     } // Evento cambio de selección
                                 } // La selección realizada es diferente a la anterior
                             };
@@ -367,7 +375,11 @@
                                 $scope.clearSuggestion = true; $element.removeClass("active"); 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
-                                    $scope.changedEvent("clear", $scope.select, $scope.suggestionTemp);
+                                    $scope.changedEvent({
+                                        $nameEvent: "clear", 
+                                        $old: $scope.suggestionTemp, 
+                                        $selected: $scope.select
+                                    });
                                 } // Evento cambio de selección de sugerencia
                                 
                                 if (!$scope.disabledFocusclear) { 
@@ -402,7 +414,7 @@
                             views: "@",
                             
                             // Eventos
-                            viewEvent: "=?"
+                            viewEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var selectorFAB = SofttionMaterial.Selectors.FAB,
@@ -463,7 +475,7 @@
                                 $element.addClass(classColor); // Color
                             } // Se debe establecer color base del componente
                                 
-                            items.click(function (event) {
+                            items.click(function ($event) {
                                 var item = angular.element(this); // Opción activada
                                 
                                 if (item.hasClass("active")) {
@@ -512,7 +524,7 @@
                                 }// BottomNavigation permite cambio de Color
                                 
                                 if (softtion.isFunction($scope.viewEvent)) {
-                                    $scope.viewEvent(event);
+                                    $scope.viewEvent({$event: $event});
                                 } // Evento 'view' cuando hay un cambio de vista
                             });
                             
@@ -819,7 +831,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "=?"
+                            clickEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -829,7 +841,7 @@
                                     $scope.checked = !$scope.checked; input.focus();
                                     
                                     if (softtion.isFunction($scope.clickEvent)) {
-                                        $scope.clickEvent($event, $scope.checked);
+                                        $scope.clickEvent({$event: $event, $status: $scope.checked});
                                     } // Evento click sobre el componente
                                 } // No se permite el cambio de la Propiedad
                             };
@@ -863,7 +875,7 @@
                             stopPropagation: "=?",
                             
                             // Eventos
-                            clickEvent: "=?"
+                            clickEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -876,7 +888,7 @@
                                 $scope.checked = !$scope.checked; input.focus();
                                     
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event);
+                                    $scope.clickEvent({$event: $event});
                                 } // Evento click sobre el componente
                                 
                                 if ($scope.stopPropagation) {
@@ -906,7 +918,7 @@
                             stopPropagation: "=?",
                             
                             // Eventos
-                            clickEvent: "=?"
+                            clickEvent: "&?"
                         },
                         link: function ($scope) {
                             $scope.clickLabel = function ($event) { 
@@ -915,7 +927,7 @@
                                 } // Se detendrá activación del evento
                                 
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event);
+                                    $scope.clickEvent({$event: $event});
                                 } // Evento click sobre el componente
                                 
                                 if ($scope.stopPropagation) {
@@ -995,9 +1007,9 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            changedEvent: "=?"
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            changedEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -1052,7 +1064,7 @@
                                 $element.removeClass("hide-input");
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.listValue);
+                                    $scope.focusEvent({$event: $event, $values: $scope.listValue});
                                 } // Evento focus sobre el componente
                             };
                             
@@ -1066,7 +1078,7 @@
                                 } // No tiene opciones escritas
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.listValue);
+                                    $scope.blurEvent({$event: $event, $values: $scope.listValue});
                                 } // Evento blur sobre el componente
                             };
                             
@@ -1087,7 +1099,11 @@
                                     $scope.listValue.push($scope.valueInput); 
 
                                     if (softtion.isFunction($scope.changedEvent)) {
-                                        $scope.changedEvent("add", $scope.valueInput, $scope.listValue);
+                                        $scope.changedEvent({
+                                            $nameEvent: "add", 
+                                            $values: $scope.listValue, 
+                                            $text: $scope.valueInput
+                                        });
                                     } // Evento clear sobre el componente
                                     
                                     $scope.valueInput = undefined;
@@ -1101,7 +1117,11 @@
                                     $scope.listValue.remove(index); // Removiendo
 
                                     if (softtion.isFunction($scope.changedEvent)) {
-                                        $scope.changedEvent("remove", objectRemove, $scope.listValue);
+                                        $scope.changedEvent({
+                                            $nameEvent: "remove", 
+                                            $values: $scope.listValue, 
+                                            $remove: objectRemove
+                                        });
                                     } // Evento clear sobre el componente
                                 }
                             };
@@ -1283,8 +1303,8 @@
                             time: "=ngModel", 
                             
                             // Eventos
-                            selectEvent: "=?",
-                            cancelEvent: "=?"
+                            selectEvent: "&?",
+                            cancelEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -1446,7 +1466,7 @@
                                 this.setSelection(true); // Seleccion de hora
                                 
                                 if (softtion.isFunction($scope.selectEvent)) {
-                                    $scope.selectEvent($scope.time);
+                                    $scope.selectEvent({$time: $scope.time});
                                 } // Función que se llama cuando se selecciona Fecha
                             };
                             
@@ -1454,7 +1474,7 @@
                                 this.setSelection(true); // Seleccion de hora
                                 
                                 if (softtion.isFunction($scope.cancelEvent)) {
-                                    $scope.cancelEvent($scope.time);
+                                    $scope.cancelEvent({$time: $scope.time});
                                 } // Función que se llama cuando se cancela Selección
                             };
                         }
@@ -1499,8 +1519,8 @@
                                 addChildren(
                                     softtion.html("div").addClass("clockpicker").
                                         addAttribute("ng-model","timePicker").
-                                        addAttribute("select-event","timeSelect").
-                                        addAttribute("cancel-event","cancelSelect")
+                                        addAttribute("select-event","timeSelect($time)").
+                                        addAttribute("cancel-event","cancelSelect($time)")
                                 )
                         );
                 
@@ -1525,10 +1545,10 @@
                             parent: "@",
                             
                             // Eventos
-                            showEvent: "=?",
-                            selectEvent: "=?",
-                            cancelEvent: "=?",
-                            iconEvent: "=?"
+                            showEvent: "&?",
+                            selectEvent: "&?",
+                            cancelEvent: "&?",
+                            iconEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
@@ -1537,11 +1557,15 @@
                         
                             var icon = insertIconDescription($scope, value); // Icono
                             
-                            if (softtion.isFunction($scope.iconEvent) && softtion.isDefined(icon)) {
+                            if (softtion.isDefined(icon)) {
                                 icon.on("click", function ($event) { 
-                                    $scope.$apply(function () { $scope.iconEvent($event); }); 
+                                    if (softtion.isFunction($scope.iconEvent)) {
+                                        $scope.$apply(function () { 
+                                            $scope.iconEvent({$event: $event}); 
+                                        }); 
+                                    } // Asignando su función
                                 }); 
-                            } // Se ha definido un icono y se debe asignar su función
+                            } // Se ha definido un icono descriptivo
                             
                             $scope.show = false; $scope.format = $scope.format || "hz:ii zz";
                             
@@ -1583,7 +1607,7 @@
                                     $body.addClass("body-overflow-none");
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
-                                        $scope.showEvent($event);
+                                        $scope.showEvent({$event: $event});
                                     } // Evento abrir dialog en el componente
                                 }
                             };
@@ -1593,16 +1617,16 @@
                                 $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.cancelEvent)) {
-                                    $scope.cancelEvent($scope.time);
+                                    $scope.cancelEvent({$time: $scope.time});
                                 } // Evento cancelar selección en el componente
                             };
                             
-                            $scope.timeSelect = function (time) {
-                                $scope.time = time; dialog.removeClass("active"); 
+                            $scope.timeSelect = function ($time) {
+                                $scope.time = $time; dialog.removeClass("active"); 
                                 $scope.show = false; $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
-                                    $scope.selectEvent($scope.time);
+                                    $scope.selectEvent({$time: $scope.time});
                                 } // Evento selección nueva en el componente
                             };
                             
@@ -1625,105 +1649,133 @@
                             countSelect: "=?",
                             selectMultiple: "=?",
                             selectAll: "=?",
-                            clickSelectAll: "=?",
-                            clickSelect: "=?",
-                            
-                            // Eventos
-                            selectEvent: "=?"
+                            keySelect: "@",
+                            ngSelect: "&?",
+                            ngSelectAll: "&?"
                         },
                         link: function ($scope, $element) {
                             var selectedBefore = undefined; // Objeto seleccionado
-                        
-                            $scope.selection = ($scope.selectMultiple) ? [] : undefined;
                             
-                            if (softtion.isDefined($scope.rowsData)) {
-                                
+                            $scope.selection = ($scope.selectMultiple) ? [] : undefined;
+                            $scope.keySelect = $scope.keySelect || "checked";
+                            $scope.selectAll = false; $scope.countSelect = 0;
+
+                            if (softtion.isArray($scope.rowsData)) {
+                                angular.forEach($scope.rowsData, 
+                                    function (object) {
+                                        object[$scope.keySelect] = false;
+                                    }
+                                );
                             } // Se han definido lista de datos a manipular
                             
-                            $scope.clickSelectAll = function () {
+                            function selectItem(object, row) {
+                                object[$scope.keySelect] = !object[$scope.keySelect];
+
                                 if ($scope.selectMultiple) {
-                                    $scope.selection = []; // Reiniciando lista de selección
-                                    
-                                    if (!$scope.selectAll) {
-                                        $element.find("tbody tr.active").removeClass("active");
-                                        $element.removeClass("selected"); $scope.countSelect = 0; 
-                                        
-                                        angular.forEach($scope.rowsData, 
-                                            function (object) { object.checked = false; }
-                                        );
+                                    row.toggleClass("active"); // Cambiando estado
+
+                                    if (object[$scope.keySelect]) {
+                                        $scope.selection.push(object);
                                     } else {
-                                        $element.find("tbody tr").addClass("active"); // Activando filas
+                                        $scope.selection.remove($scope.selection.indexOf(object));
+                                    } // Ya estaba seleccionado la fila
+
+                                    $scope.countSelect = $scope.selection.length;
+                                } else {
+                                    if (object[$scope.keySelect]) {
+                                        row.siblings("tr").removeClass("active");
                                         
-                                        angular.forEach($scope.rowsData, function (object) {
-                                            $scope.selection.push(object); object.checked = true;
-                                        });
+                                        row.addClass("active"); $scope.selection = object; 
+                                        $scope.countSelect = 1; 
+
+                                        if (softtion.isDefined(selectedBefore)) {
+                                            selectedBefore[$scope.keySelect] = false; 
+                                        } // Desactivando selección anterior
                                         
-                                        $scope.countSelect = $scope.selection.length; 
-                                        $element.addClass("selected"); 
+                                        selectedBefore = object; // Realizando nueva asignación
+                                    } else {
+                                        $scope.selection = undefined; row.removeClass("active");
+                                        selectedBefore = undefined; $scope.countSelect = 0;
+                                    } // Ya estaba seleccionado la fila
+                                }
+
+                                $scope.selectAll = ($scope.countSelect === $scope.rowsData.length);
+                                
+                                !$scope.selectAll ?
+                                    $element.find("thead > tr").removeClass("active") :
+                                    $element.find("thead > tr").addClass("active"); 
+                            };
+
+                            function selectAll() {
+                                if ($scope.selectMultiple) {
+                                    $scope.selection = []; $scope.selectAll = !$scope.selectAll;
+
+                                    if ($scope.selectAll) {
+                                        $element.find("thead > tr").addClass("active"); 
+                                        $element.find("tbody > tr").addClass("active");
+
+                                        angular.forEach($scope.rowsData,
+                                            function (object) { 
+                                                $scope.selection.push(object); 
+                                                object[$scope.keySelect] = true; 
+                                            }
+                                        );
+                                
+                                        $scope.countSelect = $scope.selection.length;
+                                    } else {
+                                        $element.find("thead > tr").removeClass("active"); 
+                                        $element.find("tbody > tr").removeClass("active"); 
+
+                                        angular.forEach($scope.rowsData, 
+                                            function (object) { object[$scope.keySelect] = false; }
+                                        );
+
+                                        $scope.countSelect = 0; // No hay seleccionados
                                     }
-                                    
-                                    if (softtion.isFunction($scope.selectEvent)) {
-                                        $scope.selectEvent("all", $scope.selection);
-                                    } // Se definio escuchador cuando se realize selección
                                 } else {
                                     $scope.selectAll = false;
                                 } // No se permite la selección multiple
                             };
                             
-                            $scope.clickSelect = function (object, $event) {
-                                object.checked = !object.checked;
+                            $element.on("click", "thead", function ($event) {
+                                var callback = function () {
+                                    selectAll(); // Evento de selección Multiple
+
+                                    if (softtion.isFunction($scope.ngSelectAll)) {
+                                        $scope.ngSelectAll({
+                                            $event: $event, $selection: $scope.selection
+                                        });
+                                    } // Se ha definido función
+                                };
                                 
-                                var row = angular.element($event.currentTarget); 
-                                
-                                if ($scope.selectMultiple) {
-                                    row.toggleClass("active"); // Cambiando estado
+                                $scope.$apply(callback); // Ejecutando
+                            });
+                            
+                            $element.on("click", "tbody > tr", function ($event) {
+                                var tr = angular.element($event.currentTarget),
+                                    index = $element.find("tbody > tr").index(tr),
+                                    itemSelect = undefined, itemActive = false,
                                     
-                                    if (object.checked) {
-                                        $scope.selection.push(object);
-                                        
-                                        if (softtion.isFunction($scope.selectEvent)) {
-                                            $scope.selectEvent("checked", object);
-                                        } // Se definio escuchador cuando se realize selección
-                                    } else {
-                                        $scope.selection.remove($scope.selection.indexOf(object)); 
-                                        
-                                        if (softtion.isFunction($scope.selectEvent)) {
-                                            $scope.selectEvent("unchecked", object);
-                                        } // Se definio escuchador cuando se realize selección
-                                    } // Ya estaba seleccionado la fila
-                                    
-                                    $scope.countSelect = $scope.selection.length;
-                                } else {
-                                    if (object.checked) {
-                                        row.siblings("tr").removeClass("active");
-                                        row.addClass("active"); $scope.selection = object;
-                                        
-                                        $scope.countSelect = 1; // Hay selección
-                                        
-                                        if (softtion.isDefined(selectedBefore)) {
-                                            selectedBefore.checked = false; selectedBefore = object;
-                                        } else { 
-                                            selectedBefore = object; 
-                                        } // Activando el nuevo objeto
-                                        
-                                        if (softtion.isFunction($scope.selectEvent)) {
-                                            $scope.selectEvent("checked", object);
-                                        } // Se definio escuchador cuando se realize selección
-                                    } else {
-                                        $scope.selection = undefined; row.removeClass("active"); 
-                                        selectedBefore = undefined; $scope.countSelect = 0;
-                                        
-                                        if (softtion.isFunction($scope.selectEvent)) {
-                                            $scope.selectEvent("unchecked", object);
-                                        } // Se definio escuchador cuando se realize selecciónS
-                                    } // Ya estaba seleccionado la fila
-                                }
+                                    callback = function () {
+                                        if (softtion.isArray($scope.rowsData)) {
+                                            itemSelect = $scope.rowsData[index];
+
+                                            if (softtion.isDefined(itemSelect)) {
+                                                selectItem(itemSelect, tr);
+                                            }
+                                        } // Se definio model en el componente
+
+                                        if (softtion.isFunction($scope.ngSelect)) {
+                                            $scope.ngSelect({
+                                                $index: index, $status: itemActive, 
+                                                $item: itemSelect, $event: $event, 
+                                                $element: tr, $selection: $scope.selection
+                                            });
+                                        } // Se ha definido función
+                                    };                                    
                                 
-                                ($scope.countSelect > 0) ?
-                                    $element.addClass("selected") : $element.removeClass("selected");
-                                
-                                $scope.selectAll = ($scope.countSelect === $scope.rowsData.length);
-                            };
+                                $scope.$apply(callback); // Ejecutando
+                            });
                         }
                     };
                 }
@@ -1913,8 +1965,8 @@
                             yearRange: "@",
                             
                             // Eventos
-                            selectEvent: "=?",
-                            cancelEvent: "=?"
+                            selectEvent: "&?",
+                            cancelEvent: "&?"
                         },
                         link: function ($scope, $elememt) {
                             // Componentes
@@ -2179,13 +2231,13 @@
                                 $scope.date = new Date($scope.year, $scope.month, $scope.day);
                                 
                                 if (softtion.isFunction($scope.selectEvent)) {
-                                    $scope.selectEvent($scope.date);
+                                    $scope.selectEvent({$date: $scope.date});
                                 } // Se ha establecido metodo para seleccionar Fecha
                             };
                             
                             $scope.cancel = function () {
                                 if (softtion.isFunction($scope.cancelEvent)) {
-                                    $scope.cancelEvent($scope.date);
+                                    $scope.cancelEvent({$date: $scope.date});
                                 } // Se ha establecido metodo para cancelar Selección
                             };
                         }
@@ -2230,8 +2282,8 @@
                                 addChildren(
                                     softtion.html("div").addClass("datepicker").
                                         addAttribute("ng-model","datePicker").
-                                        addAttribute("select-event","dateSelect").
-                                        addAttribute("cancel-event","cancelSelect").
+                                        addAttribute("select-event","dateSelect($date)").
+                                        addAttribute("cancel-event","cancelSelect($date)").
                                         addAttribute("min-date","minDate").
                                         addAttribute("max-date","maxDate").
                                         addAttribute("year-range","{{yearRange}}")
@@ -2262,10 +2314,10 @@
                             parent: "@",
                             
                             // Eventos
-                            showEvent: "=?",
-                            selectEvent: "=?",
-                            cancelEvent: "=?",
-                            iconEvent: "=?"
+                            showEvent: "&?",
+                            selectEvent: "&?",
+                            cancelEvent: "&?",
+                            iconEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var dialog = $element.find(".dialog"),
@@ -2274,11 +2326,15 @@
                         
                             var icon = insertIconDescription($scope, value); // Icono
                             
-                            if (softtion.isFunction($scope.iconEvent) && softtion.isDefined(icon)) {
+                            if (softtion.isDefined(icon)) {
                                 icon.on("click", function ($event) { 
-                                    $scope.$apply(function () { $scope.iconEvent($event); }); 
+                                    if (softtion.isFunction($scope.iconEvent)) {
+                                        $scope.$apply(function () { 
+                                            $scope.iconEvent({$event: $event}); 
+                                        }); 
+                                    } // Asignando su función
                                 }); 
-                            } // Se ha definido un icono y se debe asignar su función
+                            } // Se ha definido un icono descriptivo
                             
                             $scope.show = false; $scope.format = $scope.format || "ww, dd de mn del aa";
                             
@@ -2320,7 +2376,7 @@
                                     $body.addClass("body-overflow-none");
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
-                                        $scope.showEvent($event);
+                                        $scope.showEvent({$event: $event});
                                     } // Evento abrir dialog en el componente
                                 }
                             };
@@ -2330,7 +2386,7 @@
                                 $scope.show = false; $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
-                                    $scope.selectEvent($scope.date);
+                                    $scope.selectEvent({$date: $scope.date});
                                 } // Evento selección nueva en el componente
                             };
                             
@@ -2339,7 +2395,7 @@
                                 $body.removeClass("body-overflow-none");
                                     
                                 if (softtion.isFunction($scope.cancelEvent)) {
-                                    $scope.cancelEvent($scope.date);
+                                    $scope.cancelEvent({$date: $scope.date});
                                 } // Evento cancelar selección en el componente
                             };
                             
@@ -2509,8 +2565,8 @@
                             ngDisabled: "=?",
                             textDescription: "@",
                             
-                            holdEvent: "=?",
-                            clickrightEvent: "=?"
+                            holdEvent: "&?",
+                            clickrightEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
@@ -2595,13 +2651,17 @@
                             
                             $scope.fileHold = function (file, $event, $index) {
                                 if (softtion.isFunction($scope.holdEvent)) {
-                                    $scope.holdEvent(file, $event, $index);
+                                    $scope.holdEvent({
+                                        $file: file, $event: $event, $index: $index
+                                    });
                                 } // Se ha definido evento Hold en el componente
                             };
                             
                             $scope.fileRight = function (file, $event, $index) {
                                 if (softtion.isFunction($scope.clickrightEvent)) {
-                                    $scope.clickrightEvent(file, $event, $index);
+                                    $scope.clickrightEvent({
+                                        $file: file, $event: $event, $index: $index
+                                    });
                                 } // Se ha definido evento Click derecho en el componente
                             };
                         }
@@ -2686,8 +2746,8 @@
                             ngDisabled: "=?",
                             textDescription: "@",
                             
-                            holdEvent: "=?",
-                            clickrightEvent: "=?"
+                            holdEvent: "&?",
+                            clickrightEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
@@ -2696,12 +2756,6 @@
                             $scope.iconButton = $scope.iconButton || "attachment";
                             $scope.textDescription = $scope.textDescription || 
                                 "Seleccione archivos a procesar";
-                        
-                            var parentView = $element.parents(".view");
-                            
-                            if (parentView.exists()) {
-                                $element.css("max-width", $element.width() + "px");
-                            } // Componente esta contenido en una ViewTab
                             
                             $scope.files = []; // Lista de archivos seleccionados
                             
@@ -2770,13 +2824,17 @@
                             
                             $scope.fileHold = function (file, $event, $index) {
                                 if (softtion.isFunction($scope.holdEvent)) {
-                                    $scope.holdEvent(file, $event, $index);
+                                    $scope.holdEvent({
+                                        $file: file, $event: $event, $index: $index
+                                    });
                                 } // Se ha definido evento Hold en el componente
                             };
                             
                             $scope.fileRight = function (file, $event, $index) {
                                 if (softtion.isFunction($scope.clickrightEvent)) {
-                                    $scope.clickrightEvent(file, $event, $index);
+                                    $scope.clickrightEvent({
+                                        $file: file, $event: $event, $index: $index
+                                    });
                                 } // Se ha definido evento Click derecho en el componente
                             };
                         }
@@ -2996,10 +3054,10 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -3010,7 +3068,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueArea);
+                                    $function({
+                                        $event: $event, $value: $scope.valueArea
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -3441,7 +3501,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "=?"
+                            clickEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='radio']");
@@ -3451,7 +3511,9 @@
                                     $scope.model = $scope.value; input.focus();
                                     
                                     if (softtion.isFunction($scope.clickEvent)) {
-                                        $scope.clickEvent($event, $scope.model);
+                                        $scope.clickEvent({
+                                            $event: $event, $status: $scope.model
+                                        });
                                     } // Evento click sobre el componente
                                 } // No se permite el cambio de la Propiedad
                             };
@@ -3572,10 +3634,10 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            changedEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?"
+                            clickEvent: "&?",
+                            changedEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -3592,7 +3654,7 @@
                             
                             $scope.selectTemp = undefined; $scope.showList = false; $scope.startShow = false;
                             
-                            $scope.closeSelect = function ($event) {
+                            function closeSelect ($event) {
                                 $scope.$apply(function() {
                                     if (!clickComponent($event.target)) {
                                         $scope.hideSuggestions(); // Ocultando opciones
@@ -3602,21 +3664,18 @@
                             
                             $scope.showSuggestions = function () {
                                 if (!$scope.disabledAutoclose) {
-                                    angular.element(document).on("click.sm-select", $scope.closeSelect);
+                                    angular.element(document).on("click.sm-select", closeSelect);
                                 } // No se permite cerrado automatico
                                 
-                                if (softtion.isDefined($scope.select)) {
-                                    //S$scope.valueInput = $scope.describeSuggestion($scope.select);
-                                } // Cambiando valor del texto en el Input
-                                
-                                $scope.startShow = true; $scope.showList = true; $element.addClass("active"); 
+                                $scope.startShow = true; $scope.showList = true; 
+                                $element.addClass("active"); 
                             };
                             
                             $scope.hideSuggestions = function () {
                                 $scope.showList = false; $element.removeClass("active"); 
                                 
                                 if (!$scope.disabledAutoclose) {
-                                    angular.element(document).off("click.sm-select", $scope.closeSelect);
+                                    angular.element(document).off("click.sm-select", closeSelect);
                                 } // No se permite cerrado automatico
                             };
                             
@@ -3646,7 +3705,9 @@
                                 $scope.toggleSuggestions();
                                 
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event, $scope.select); 
+                                    $scope.clickEvent({
+                                        $event: $event, $selected: $scope.select
+                                    }); 
                                 } // Evento click sobre el componente
                                 
                                 $event.stopPropagation(); // Deteniendo propagación
@@ -3660,7 +3721,9 @@
                                 $element.addClass("active"); // Activando
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.select); 
+                                    $scope.focusEvent({
+                                        $event: $event, $selected: $scope.select
+                                    }); 
                                 } // Evento focus sobre el componente
                             };
 
@@ -3668,7 +3731,9 @@
                                 $element.removeClass("active"); // Desactivando
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.select); 
+                                    $scope.blurEvent({
+                                        $event: $event, $selected: $scope.select
+                                    }); 
                                 } // Evento blur sobre el componente
                             };
 
@@ -3690,7 +3755,11 @@
                                 $scope.select = suggestion; $scope.hideSuggestions(); // Ocultando opciones
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
-                                    $scope.changedEvent("select", $scope.select, $scope.selectTemp); 
+                                    $scope.changedEvent({
+                                        $nameEvent: "select", 
+                                        $selected: $scope.select, 
+                                        $old: $scope.selectTemp
+                                    }); 
                                 } // Evento change sobre el componente
                             };
                             
@@ -3699,7 +3768,11 @@
                                 list.find("li").removeClass("active"); 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
-                                    $scope.changedEvent("clear", $scope.select, $scope.selectTemp); 
+                                    $scope.changedEvent({
+                                        $nameEvent: "clear", 
+                                        $selected: $scope.select, 
+                                        $old: $scope.selectTemp
+                                    }); 
                                 } // Evento change sobre el componente
                             };
                             
@@ -3796,10 +3869,10 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            changedEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?"
+                            clickEvent: "&?",
+                            changedEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -3825,7 +3898,7 @@
                                     || button.is(target) || buttonIcon.is(target) || $element.is(target);
                             };
                             
-                            $scope.closeSelect = function ($event) {
+                            function closeSelect ($event) {
                                 $scope.$apply(function() {
                                     if (!clickComponent($event.target)) {
                                         $scope.hideSuggestions(); // Ocultando opciones
@@ -3843,17 +3916,18 @@
                             
                             $scope.showSuggestions = function () {
                                 if (!$scope.disabledAutoclose) {
-                                    angular.element(document).on("click.sm-select-multiple", $scope.closeSelect);
+                                    angular.element(document).on("click.sm-select-multiple", closeSelect);
                                 } // No se permite cerrado automatico
                                 
-                                $scope.startShow = true; $scope.showList = true; $element.addClass("active"); 
+                                $scope.startShow = true; $scope.showList = true; 
+                                $element.addClass("active"); 
                             };
                             
                             $scope.hideSuggestions = function () {
                                 $scope.showList = false; $element.removeClass("active"); 
                                 
                                 if (!$scope.disabledAutoclose) {
-                                    angular.element(document).off("click.sm-select-multiple", $scope.closeSelect);
+                                    angular.element(document).off("click.sm-select-multiple", closeSelect);
                                 } // No se permite cerrado automatico
                             };
                             
@@ -3867,7 +3941,9 @@
                                 $scope.toggleSuggestions();
                                 
                                 if (softtion.isFunction($scope.clickEvent)) {
-                                    $scope.clickEvent($event, $scope.selects); 
+                                    $scope.clickEvent({
+                                        $event: $event, $selecteds: $scope.selects
+                                    }); 
                                 } // Evento click sobre el componente
                             };
                             
@@ -3879,7 +3955,9 @@
                                 $element.addClass("active"); // Activando
                                 
                                 if (softtion.isFunction($scope.focusEvent)) {
-                                    $scope.focusEvent($event, $scope.selects); 
+                                    $scope.focusEvent({
+                                        $event: $event, $selecteds: $scope.selects
+                                    }); 
                                 } // Evento focus sobre el componente
                             };
 
@@ -3887,7 +3965,9 @@
                                 $element.removeClass("active"); // Desactivando
                                 
                                 if (softtion.isFunction($scope.blurEvent)) {
-                                    $scope.blurEvent($event, $scope.selects); 
+                                    $scope.blurEvent({
+                                        $event: $event, $selecteds: $scope.selects
+                                    }); 
                                 } // Evento blur sobre el componente
                             };
 
@@ -3902,7 +3982,9 @@
                                     $scope.selects.remove($scope.selects.indexOf(suggestion));
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
-                                    $scope.changedEvent("select", $scope.selects); 
+                                    $scope.changedEvent({
+                                        $event: $event, $selecteds: $scope.selects
+                                    }); 
                                 } // Evento change sobre el componente
                                     
                                 $event.stopPropagation(); // Deteniendo propagación
@@ -4013,13 +4095,13 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "=?"
+                            clickEvent: "&?"
                         },
                         link: function ($scope, $element) { 
                             $scope.clickLabel = function ($event) { 
                                 if (!$scope.ngDisabled) {
                                     if (softtion.isFunction($scope.clickEvent)) {
-                                        $scope.clickEvent($event);
+                                        $scope.clickEvent({$event: $event});
                                     } // Evento click sobre el componente
                                 } // No se permite el cambio de la Propiedad
                             };
@@ -4039,12 +4121,12 @@
                             disabledOverflow: "=?",
                             
                             // Eventos
-                            viewEvent: "=?"
+                            viewEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
                             var viewContent = angular.element($scope.views), 
-                                tabs = $element.find(".tab"),
+                                views, tabs = $element.find(".tab"),
                                 index = 0, clickActive = true, viewsCount = 0,
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
@@ -4054,7 +4136,8 @@
                                 tabs.attr("tabindex", "-1"); // Componentes enfocables
                                 
                                 if (viewContent.exists()) {
-                                    viewsCount = viewContent.children(".view").length;
+                                    views = viewContent.children(".view"); 
+                                    views.removeClass("active"); viewsCount = views.length;
                                 } // Determinando capacida
 
                                 angular.forEach(tabs, function (tab) { 
@@ -4080,6 +4163,10 @@
                                 
                                 var position = tabActive.data("position");
                                 viewContent.css("left", (position * -100) + "%");
+                                
+                                if (softtion.isDefined(views)) {
+                                    angular.element(views[position]).addClass("active");
+                                } // Vista actualmente activa
                                 
                                 $element.displaceLeft(function (name) {
                                     switch (name) {
@@ -4111,6 +4198,10 @@
                                     
                                     stripe.css({ width: width, left: left });
                                     tabs.removeClass("active"); itemTab.addClass("active");
+                                
+                                    if (softtion.isDefined(views)) {
+                                        views.removeClass("active"); angular.element(views[position]).addClass("active");
+                                    } // Vista actualmente activa
                                     
                                     if (!$scope.disabledPositionStart) {
                                         angular.element(".app-content").scrollTop(0); 
@@ -4123,7 +4214,7 @@
                                     viewContent.css("left", (position * -100) + "%");
                                     
                                     if (softtion.isFunction($scope.viewEvent)) {
-                                        $scope.viewEvent($event);
+                                        $scope.viewEvent({$event: $event});
                                     } // Evento view cuando hay un cambio de vista
                                 });
                             } // Exiten pestañas en el componente
@@ -4207,10 +4298,10 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -4221,7 +4312,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueArea);
+                                    $function({
+                                        $event: $event, $value: $scope.valueArea
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -4471,11 +4564,11 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            enterEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            enterEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -4485,7 +4578,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueInput);
+                                    $function({
+                                        $event: $event, $value: $scope.valueInput
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -4775,10 +4870,10 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -4787,7 +4882,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueArea);
+                                    $function({
+                                        $event: $event, $value: $scope.valueArea
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -5038,11 +5135,11 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            enterEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            enterEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -5054,7 +5151,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueInput);
+                                    $function({
+                                        $event: $event, $value: $scope.valueInput
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -5345,10 +5444,10 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "=?",
-                            blurEvent: "=?",
-                            focusEvent: "=?",
-                            changeEvent: "=?"
+                            clickEvent: "&?",
+                            blurEvent: "&?",
+                            focusEvent: "&?",
+                            changeEvent: "&?"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -5359,7 +5458,9 @@
                             
                             var callbackFnEvent = function ($event, $function) {
                                 if (softtion.isFunction($function)) {
-                                    $function($event, $scope.valueArea);
+                                    $function({
+                                        $event: $event, $value: $scope.valueArea
+                                    });
                                 } // Se definio una función para invocar
                             };
 
@@ -5582,29 +5683,34 @@
                     return softtion.html("div").addClass("tooltip-container").create();
                 },
                 element: function () {
-                    return softtion.html("div").addClass("tooltip-element").create();
+                    return softtion.html("div").
+                        addClass("tooltip-element").addChildren(
+                            softtion.html("p")
+                        ).create();
                 },
                 directive: function () {
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            var body = angular.element(document.body),
+                            var handler = Material.components.Tooltip,
+                                body = angular.element(document.body),
                                 container = body.find(".tooltip-container"),
                                 $window = angular.element(window);
                             
                             if (!container.exists()) {
-                                container = angular.element(Material.components.Tooltip.container());
+                                container = angular.element(handler.container());
                         
-                                body.append(container); // Agegando contenedor
+                                body.append(container); // Agregando contenedor
                             } // Contenedor tooltip no se encuentra creado en el documento
                             
-                            var tooltip = angular.element(Material.components.Tooltip.element());
+                            var tooltip = angular.element(handler.element());
                             
-                            tooltip.html($attrs.tooltip); container.append(tooltip); // Agregando
+                            container.append(tooltip); 
+                            tooltip.children("p").html($attrs.tooltip); 
+                            var widthTooltip = tooltip.innerWidth();
                             
                             $element.on("mouseenter", function () {
-                                var widthTooltip = tooltip.innerWidth(),
-                                    heightElement = $element.innerHeight(),
+                                var heightElement = $element.innerHeight(),
                                     positionX = $element.offset().left,
                                     positionY = $element.offset().top,
                                     widthElement = $element.innerWidth(),
@@ -7163,8 +7269,9 @@
     ngMaterial.constant("SofttionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
-            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box,"
-                + ".progress-button-floating, .fab-menu-arc",
+            FAB: "button.floating:not(.static), .fab-speed-dial," 
+                + " .fab-menu > .box, .fab-menu-arc,"
+                + " .progress-button-floating",
             BottomNav: ".stepper-mobile, .footer-buttons"
         },
         File: {

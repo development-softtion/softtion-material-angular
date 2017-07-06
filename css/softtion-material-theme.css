@@ -788,7 +788,8 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .checkbox-select > label:after {
     border: 2px solid rgba(255, 255, 255, 0.7); }
 
-.checkbox-select.active > label:after, .checkbox-select.active.disabled > label:after {
+.checkbox-select.active > label:after, 
+.checkbox-select.active.disabled > label:after {
     border-left: 2px solid transparent !important;
     border-top: 2px solid transparent !important; }
 
@@ -1117,11 +1118,13 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .datatable > .content > table > tbody > tr:hover {
     background-color: var(--dark-background-hover); }
 
-.datatable > .content > table .checkbox-control > label:before {
-    background-color: var(--theme-primary-background); }
+.datatable > .content > table .checkbox-select > label:before {
+    background-color: var(--theme-secondary-background); }
 
-.dark .datatable > .content > table .checkbox-control > input[type="checkbox"]:not(:checked) + label:after {
-    border: 2px solid var(--light-background-component); }
+.datatable > .content > table tr.active .checkbox-select > label:after {
+    border: 2px solid var(--theme-secondary-font-active); 
+    border-top: 2px solid transparent !important;
+    border-left: 2px solid transparent !important; }
 
 /** DATEPICKER */
 
@@ -2419,14 +2422,25 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .app-bar > .tabs > .tab, .tabs > .tab {
     color: var(--dark-primary-font); }
 
+.app-bar > .tabs > .tab.disabled, .tabs > .tab.disabled {
+    color: var(--dark-disabled-font); }
+
 .dark .app-bar > .tabs > .tab, .dark .tabs > .tab {
     color: var(--light-primary-font); }
+
+.dark .app-bar > .tabs > .tab.disabled, .dark .tabs > .tab.disabled {
+    color: var(--light-disabled-font); }
 
 .app-bar.theme-primary > .tabs > .tab, .tabs.theme-primary > .tab {
     color: var(--theme-primary-font-alternative); }
 
-.app-bar.theme-secondary > .tabs > .tab, .tabs.theme-secondary > .tab {
-    color: var(--theme-secondary-font-alternative); }
+.app-bar.theme-primary > .tabs > .tab.disabled,
+.tabs.theme-primary > .tab.disabled {
+    color: var(--theme-primary-font-disabled); }
+
+.app-bar.theme-secondary > .tabs > .tab.disabled, 
+.tabs.theme-secondary > .tab.disabled {
+    color: var(--theme-secondary-font-disabled); }
 
 .app-bar > .tabs > .tab:before, .tabs > .tab:before {
     background-color: var(--dark-ripple); }

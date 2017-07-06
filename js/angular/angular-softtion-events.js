@@ -26,7 +26,7 @@
                     if (($element.tagName() === "INPUT") || $element.tagName() === "TEXTAREA") {
                         $element.on("keyup", function ($event) {
                             if ($event.which === 13) { 
-                                var callback = function() {
+                                var callback = function () {
                                     fn($scope, { $event: $event });
                                 };
                                 
@@ -51,7 +51,7 @@
                     
                     $element.on("mousedown", function ($event) {
                         if ($event.which === 3) { 
-                            var callback = function() {
+                            var callback = function () {
                                 fn($scope, { $event: $event });
                             };
 
@@ -73,7 +73,7 @@
                     
                     return function ($scope, $element) {
                         $element.on("mousedown", function ($event) {
-                            var callback = function() {
+                            var callback = function () {
                                 fn($scope, { $event: $event });
                             };
 
@@ -108,7 +108,7 @@
                     return function ($scope, $element) {
                         if ("ontouchstart" in window && softtion.isFunction(fn)) {
                             $element.on(directive.event, function ($event) {
-                                var callback = function() {
+                                var callback = function () {
                                     fn($scope, { $event: $event });
                                 };
 
@@ -132,7 +132,7 @@
                     return function ($scope, $element) {
                         if ("ontouchstart" in window && softtion.isFunction(fn)) {
                             $element.on("touchstart", function ($event) {
-                                var callback = function() {
+                                var callback = function () {
                                     fn($scope, { $event: $event });
                                 };
                                 
@@ -165,7 +165,7 @@
 
                     return function ($scope, $element) {
                         var fnEvent = function ($event) {
-                            var callback = function() {
+                            var callback = function () {
                                 fn($scope, { $event: $event });
                             };
 
@@ -193,7 +193,7 @@
                     
                     return function ($scope, $element) {
                         var fnPromise = function ($event) {
-                                var callback = function() {
+                                var callback = function () {
                                     fn($scope, { $event: $event });
                                 };
 
