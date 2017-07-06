@@ -2014,6 +2014,42 @@
                     
                             $scope.maxDate = (softtion.isDate($scope.maxDate)) ?
                                 $scope.maxDate.normalize("date") : undefined;
+                                
+                            listYears.scroll(function () {
+                                function updateYears () {
+                                    var scrollHeight = listYears[0].scrollHeight,
+                                        scrollTop = listYears.scrollTop(), newYears = [],
+                                        clientHeight = listYears[0].clientHeight;
+
+                                    if (scrollTop === (scrollHeight - clientHeight)) {
+                                        var year = $scope.years.last(),
+                                            yearLimit = (softtion.isDefined($scope.maxDate)) ? 
+                                                $scope.maxDate.getFullYear() : 10000;
+
+                                        for (var i = 1; i <= 5; i++) {
+                                            if ((year + i) <= yearLimit) { 
+                                                newYears.push((year + i));
+                                            } // No desborda limite superior
+                                        } // Cargando años siguientes de rango
+
+                                        $scope.years = $scope.years.concat(newYears);
+                                    } else if (scrollTop <= 10) {
+                                        var year = $scope.years.first(),
+                                            yearLimit = (softtion.isDefined($scope.minDate)) ? 
+                                                $scope.minDate.getFullYear() : 1969;
+
+                                        for (var i = 0; i < 5; i++) {
+                                            if ((year + i - 5) > yearLimit) {
+                                                newYears.push((year + i - 5));
+                                            } // No desborda limite inferior
+                                        } //  Cargando años anteriores de rango
+
+                                        $scope.years = newYears.concat($scope.years);
+                                    }
+                                }
+                                
+                                $scope.$apply(updateYears); // Agregando años
+                            });
                             
                             // Eventos para controlar años
                             $scope.isYearActive = function (year) {
