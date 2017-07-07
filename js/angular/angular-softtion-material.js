@@ -77,6 +77,28 @@
                             
                             appContent.css("padding-top", heightElement);
                             sidenav.children(".content").css("top", heightElement); 
+                            
+                            ($window.width() > 960) ? 
+                                appContent.addClass("pd-64") : 
+                                appContent.addClass("pd-56");
+                            
+                            $window.resize(function () {
+                                if ($window.width() > 960) {
+                                    if (!appContent.hasClass("pd-64")) {
+                                        var paddingTop = parseInt(appContent.css("padding-top"));
+                                        appContent.css("padding-top", (paddingTop + 8) + "px");
+                                    } // AppBar de 64px Mínimo
+                                    
+                                    appContent.addClass("pd-64").removeClass("pd-56");
+                                } else {
+                                    if (!appContent.hasClass("pd-56")) {
+                                        var paddingTop = parseInt(appContent.css("padding-top"));
+                                        appContent.css("padding-top", (paddingTop - 8) + "px");
+                                    } // AppBar de 56px Mínimo
+                                    
+                                    appContent.addClass("pd-56").removeClass("pd-64");
+                                }
+                            });
                         }
                     };
                 }
