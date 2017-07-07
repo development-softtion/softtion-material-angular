@@ -15,7 +15,7 @@
     var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]),
         TextType = softtion.get(softtion.TEXTCONTROL);
 
-    var insertIconDescription = function ($scope, $component) {
+    function insertIconDescription ($scope, $component) {
         if (softtion.isString($scope.iconDescription)) {
             var icon = angular.element(
                 softtion.html("i").addClass("icon-description").
@@ -26,8 +26,30 @@
         } // Icono descriptivo, se debe insertar el icono antes del input
     };
                     
-    var propertyStyle = function (key, value) {
+    function propertyStyle (key, value) {
         document.documentElement.style.setProperty(key, value);
+    };
+    
+    function instanceElement (object, hasClass) {
+        var $element = undefined;
+        
+        if (softtion.isString(object)) {
+            $element = angular.element(object);
+        } else if (softtion.isjQuery(object)) {
+            $element = object;
+        } // Objeto es una instancia de jQuery
+        
+        if (softtion.isDefined(object) && softtion.isString(hasClass)) {
+            if (!$element.hasClass(hasClass)) {
+                $element = undefined;
+            } // Objeto no contiene la clase establecida
+        }
+        
+        return $element; // Retornando elemento
+    };
+    
+    function executeIfExists (object, callback) {
+        if (softtion.isDefined(object)) { callback(); }
     };
     
     var Material = {        
@@ -1759,7 +1781,7 @@
                                 } // No se permite la selección multiple
                             };
                             
-                            $element.on("click", "thead", function ($event) {
+                            $element.on("click", "thead .checkbox-select", function ($event) {
                                 var callback = function () {
                                     selectAll(); // Evento de selección Multiple
 
@@ -1773,10 +1795,10 @@
                                 $scope.$apply(callback); // Ejecutando
                             });
                             
-                            $element.on("click", "tbody > tr", function ($event) {
-                                var tr = angular.element($event.currentTarget),
-                                    index = $element.find("tbody > tr").index(tr),
+                            $element.on("click", "tbody > tr .checkbox-select", function ($event) {
+                                var tr = angular.element($event.currentTarget).parents("tr"),
                                     itemSelect = undefined, itemActive = false,
+                                    index = $element.find("tbody > tr").index(tr),
                                     
                                     callback = function () {
                                         if (softtion.isArray($scope.rowsData)) {
@@ -2260,13 +2282,15 @@
                                     return false;
                                 } // Todos los dias están permitidos en el Componente
                                 
-                                var date = new Date($scope.year, $scope.month, day);                                
+                                var date = new Date($scope.year, $scope.month, day);  
                                 
-                                if (date.getTime() < $scope.minDate.getTime()) {
+                                if (softtion.isDate($scope.minDate) && 
+                                    date.getTime() < $scope.minDate.getTime()) {
                                     return true; 
                                 } // La fecha es menor a la establecida
                                 
-                                if (date.getTime() > $scope.maxDate.getTime()) {
+                                if (softtion.isDate($scope.maxDate) &&
+                                    date.getTime() > $scope.maxDate.getTime()) {
                                     return true; 
                                 } // La fecha es mayor a la establecida
                                 
@@ -3453,14 +3477,19 @@
             
             ProgressBar: {
                 name: "progressBar",
-                directive: function () {
+                directive: ["$progressBar", function ($progressBar) {
                     return {
                         restrict: "C",
+                        scope: {
+                            visible: "=?",
+                            percentage: "@"
+                        },
                         link: function ($scope, $element) {
                             if (!$element.hasClass("indeterminate")) {
-                                $element.append(
-                                    softtion.html("div").addClass("bar").tojQuery()
-                                ); 
+                                var bar = softtion.html("div").
+                                    addClass("bar").tojQuery();
+                                
+                                $element.append(bar); // Cargando Barra
                             } // Insertando barra progreso en el Componente
                             
                             if ($element.hasClass("buffering")) {
@@ -3468,9 +3497,15 @@
                                     softtion.html("div").addClass("buffer").tojQuery()
                                 ); 
                             } // Insertando barra buffer en el Componente
+                            
+                            $progressBar.set($element).setPercentage($scope.percentage);
+                            
+                            if ($scope.visible) {
+                                $progressBar.show();
+                            } // Se hace visible inicialmente
                         }
                     };
-                }
+                }]
             },
             
             ProgressButtonFloating: {
@@ -5810,7 +5845,7 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function (event) {
+                            $element.click(function () {
                                 $bottomSheet.set($attrs.bottomNavigation).show();
                             });
                         }
@@ -5856,7 +5891,7 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function (event) {
+                            $element.click(function () {
                                 $formNavigation.set($attrs.formNavigation).show();
                             });
                         }
@@ -5870,7 +5905,7 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function (event) {
+                            $element.click(function () {
                                 $sidenav.set($attrs.sidenav).show();
                             });
                         }
@@ -6056,78 +6091,84 @@
             BottomSheet: {
                 name: "$bottomSheet",
                 method: function () {
-                    var component = undefined, 
+                    var bottomSheet = undefined, 
                         content = undefined, 
                         backdrop = undefined;
                     
                     var BottomSheet = function () {};
 
-                    BottomSheet.prototype.set = function (sheetID) {
+                    BottomSheet.prototype.set = function (sheetElement) {
                         var self = this; // Componente
                         
-                        component = angular.element(sheetID);
+                        bottomSheet = instanceElement(sheetElement, "bottom-sheet");
                         
-                        if (component.exists()) {
-                            content = component.children(".content");
-                            backdrop = component.children(".backdrop");
+                        executeIfExists(bottomSheet, function () {
+                            if (bottomSheet.exists()) {
+                                content = bottomSheet.children(".content");
+                                backdrop = bottomSheet.children(".backdrop");
 
-                            backdrop.click(function () { self.hide(); });
-                        } // Componente existe en el Documento
+                                backdrop.click(function () { self.hide(); });
+                            } // BottomSheet existe en el Documento
+                        });
                         
                         return this; // Retornando interfaz fluida
                     };
                     
                     BottomSheet.prototype.show = function () {
-                        if (component.exists()) {
-                            var appContent = component.parents(".app-content");
-                            
-                            var isInAppcontent = (appContent.exists()),
-                                container = (isInAppcontent) ? appContent :  
-                                    angular.element(document.body);
-                            
-                            if (!component.hasClass("active")) {
-                                container.addClass("overflow-none");
-                                
-                                if (isInAppcontent) {
-                                    content.addClass("show");
-                                } else {
-                                    content.addClass("show-content");
-                                    content.css("margin-bottom", container.scrollTop());
-                                } // Componente no se encuentra en AppContent
-                                
-                                component.addClass("active"); 
-                            } // Componente no se encuentra activo en la Aplicación
-                        }
+                        executeIfExists(bottomSheet, function () {
+                            if (bottomSheet.exists()) {
+                                var appContent = bottomSheet.parents(".app-content");
+
+                                var isInAppcontent = (appContent.exists()),
+                                    container = (isInAppcontent) ? appContent :  
+                                        angular.element(document.body);
+
+                                if (!bottomSheet.hasClass("active")) {
+                                    container.addClass("overflow-none");
+
+                                    if (isInAppcontent) {
+                                        content.addClass("show");
+                                    } else {
+                                        content.addClass("show-content");
+                                        content.css("margin-bottom", container.scrollTop());
+                                    } // Componente no se encuentra en AppContent
+
+                                    bottomSheet.addClass("active"); 
+                                } // BottomSheet no se encuentra activo
+                            }
+                        });
                     };
 
                     BottomSheet.prototype.hide = function () {
-                        if (component.exists()) {
-                            var appContent = component.parents(".app-content");
-                            
-                            var isInAppcontent = (appContent.exists()),
-                                container = (isInAppcontent) ? appContent :  
-                                    angular.element(document.body);
-                            
-                            if (component.hasClass("active")) {
-                                container.removeClass("overflow-none");
+                        executeIfExists(bottomSheet, function () {
+                            if (bottomSheet.exists()) {
+                                var appContent = bottomSheet.parents(".app-content");
 
-                                (!isInAppcontent) ? 
-                                    content.removeClass("show-content") :
-                                    content.removeClass("show");
+                                var isInAppcontent = (appContent.exists()),
+                                    container = (isInAppcontent) ? appContent :  
+                                        angular.element(document.body);
 
-                                var marginBottom = content.outerHeight();
-                                content.css("margin-bottom", (marginBottom * -1) - 1);
+                                if (bottomSheet.hasClass("active")) {
+                                    container.removeClass("overflow-none");
 
-                                component.removeClass("active"); 
-                            } // Componente se encuentra activo en la Aplicación
-                        }
+                                    (!isInAppcontent) ? 
+                                        content.removeClass("show-content") :
+                                        content.removeClass("show");
+
+                                    var marginBottom = content.outerHeight();
+                                    content.css("margin-bottom", (marginBottom * -1) - 1);
+
+                                    bottomSheet.removeClass("active"); 
+                                } // BottomSheet se encuentra activo
+                            }
+                        });
                     };
                     
-                    var bottomSheet = new BottomSheet();
-                    
-                    this.get = function () { return bottomSheet; };
+                    var bottomSheetProvider = new BottomSheet();
 
-                    this.$get = function () { return bottomSheet; };
+                    this.$get = function () { return bottomSheetProvider; };
+                    
+                    this.get = function () { return bottomSheetProvider; };
                 }
             },
             
@@ -6139,55 +6180,61 @@
                         backdrop = undefined,
                         persistent = false;
                     
-                    var Dialog = function () { };
+                    var Dialog = function () {};
 
-                    Dialog.prototype.set = function (dialogID) {
+                    Dialog.prototype.set = function (dialogElement) {
                         var self = this; // Sidenav
                         
-                        dialog = angular.element(dialogID);
+                        dialog = instanceElement(dialogElement, "dialog");
+                        
+                        executeIfExists(dialog, function () {
+                            if (dialog.exists()) {
+                                box = dialog.children(".box");
+                                backdrop = dialog.children(".backdrop");
 
-                        if (dialog.exists()) {
-                            box = dialog.children(".box");
-                            backdrop = dialog.children(".backdrop");
+                                if (!backdrop.exists()) {
+                                    backdrop = angular.element(
+                                        softtion.html("div").addClass("backdrop").create()
+                                    );
 
-                            if (!backdrop.exists()) {
-                                backdrop = angular.element(
-                                    softtion.html("div").addClass("backdrop").create()
-                                );
+                                    dialog.append(backdrop);
 
-                                dialog.append(backdrop);
-
-                                backdrop.click(function () { 
-                                    if (!persistent) { self.hide(); }
-                                });
-                            }
-                        } // Dialog existe en el Documento
+                                    backdrop.click(function () { 
+                                        if (!persistent) { self.hide(); }
+                                    });
+                                }
+                            } // Dialog existe en el Documento
+                        });
                         
                         return this; // Retornando interfaz fluida
                     };
 
                     Dialog.prototype.show = function (isPersistent) {
-                        if (!dialog.hasClass("active")) {
-                            persistent = isPersistent;
-                            
-                            var $body = angular.element(document.body);
-                            
-                            $body.addClass("body-overflow-none"); // Body no scroll
-                            
-                            box.removeClass("hide").addClass("show");
-                            dialog.addClass("active"); // Se activa el Dialog
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(dialog, function () {
+                            if (!dialog.hasClass("active")) {
+                                persistent = isPersistent;
+
+                                var $body = angular.element(document.body);
+
+                                $body.addClass("body-overflow-none"); // Body no scroll
+
+                                box.removeClass("hide").addClass("show");
+                                dialog.addClass("active"); // Se activa el Dialog
+                            } // Dialog no se encuentra activo
+                        });
                     };
 
                     Dialog.prototype.hide = function () {
-                        if (dialog.hasClass("active")) {
-                            var $body = angular.element(document.body);
-                            
-                            $body.removeClass("body-overflow-none"); // Body scroll
-                            
-                            box.removeClass("show").addClass("hide");
-                            dialog.removeClass("active"); // Se desactiva el Dialog
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(dialog, function () {
+                            if (dialog.hasClass("active")) {
+                                var $body = angular.element(document.body);
+
+                                $body.removeClass("body-overflow-none"); // Body scroll
+
+                                box.removeClass("show").addClass("hide");
+                                dialog.removeClass("active"); // Se desactiva el Dialog
+                            } // Dialog se encuentra activo
+                        });
                     };
                     
                     var dialog = new Dialog();
@@ -6270,11 +6317,11 @@
                         dropdown.removeClass("active"); 
                     },
                     
-                    show: function (properties) {
+                    show: function (options) {
                         var handler = Material.providers.Dropdown.handler,
                             appContent = angular.element(".app-content"),
-                            dropdown = properties.component, 
-                            origin = properties.origin,
+                            dropdown = options.dropdown, 
+                            origin = options.origin,
                             settings = handler.settingsDropdown(dropdown, origin),
                             leftBody = parseInt(angular.element(".app-body").css("left"));
                         
@@ -6304,7 +6351,7 @@
                         }
 
                         // Definiendo posicion eje Y
-                        if (properties.belowOrigin) { 
+                        if (options.belowOrigin) { 
                             if ((posOriginY + heightDropdown) <= (settings.innerHeight)) {
                                 top = posOriginY;
                                 transformOrigin = transformOrigin + 4;
@@ -6356,8 +6403,8 @@
                          }); 
                     },
                     
-                    showXY: function (properties, left, top) {
-                        var dropdown = properties.component;
+                    showXY: function (options, left, top) {
+                        var dropdown = options.dropdown;
                         dropdown.addClass("active"); // Activando dropdown
                         
                         var heightDropdown = dropdown.innerHeight(),
@@ -6376,7 +6423,7 @@
                         }
 
                         // Definiendo posicion del eje Y
-                        if (properties.belowOrigin) { 
+                        if (options.belowOrigin) { 
                             if ((top + heightDropdown) <= (window.innerHeight)) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
@@ -6417,93 +6464,85 @@
                     }
                 },
                 method: function () {
-                    var Properties = {
-                        id: undefined, 
-                        belowOrigin: true, 
-                        component: undefined, 
-                        origin: undefined
-                    };
+                    var belowOrigin = true, 
+                        dropdown = undefined, 
+                        origin = undefined;
                     
                     var Dropdown = function () { };
 
-                    Dropdown.prototype.set = function (dropdownID) { 
-                        if (Properties.id !== dropdownID) {
-                            Properties.id = dropdownID;
-                            Properties.component = angular.element(dropdownID); 
-                        } else if (!softtion.isInPage(Properties.component[0])) {
-                            Properties.component = angular.element(dropdownID); 
-                        } // Se reasigna el componente
+                    Dropdown.prototype.set = function (dropdownElement) { 
+                        dropdown = instanceElement(dropdownElement, "dropdown"); 
                         
                         return this; // Retornando interfaz fluida
                     };
                     
-                    Dropdown.prototype.clear = function () {
-                        Properties.component = undefined; Properties.id = ""; return this;
-                    };
-                    
-                    Dropdown.prototype.setBelowOrigin = function (belowOrigin) {
-                        Properties.belowOrigin = belowOrigin; return this;
+                    Dropdown.prototype.setBelowOrigin = function (belowOriginDropdown) {
+                        belowOrigin = belowOriginDropdown; return this;
                     };
 
                     Dropdown.prototype.isActive = function () {
-                        if (softtion.isDefined(Properties.component)) {
-                            return Properties.component.hasClass("active");
-                        } // Esta definido el Id del Dropdown
+                        if (softtion.isDefined(dropdown)) {
+                            return dropdown.hasClass("active");
+                        } // Esta definido el Dropdown
 
                         return false; // Se desconoce el Componente
                     };
 
-                    Dropdown.prototype.show = function (origin, autoclose) {
-                        var self = this, id = Properties.id,
-                            nameEvent = "click.hidedropdown" + id;
+                    Dropdown.prototype.show = function (originElement, autoclose) {
+                        var self = this, // Instancia del proveedor
+                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
                         
-                        if (softtion.isDefined(Properties.component)) {
-                            Properties.origin = origin; // Estableciendo origen
-                            Material.providers.Dropdown.handler.show(Properties); 
+                        executeIfExists(dropdown, function () {
+                            origin = originElement; // Estableciendo origen
+                            
+                            Material.providers.Dropdown.handler.show({
+                                origin: origin, belowOrigin: belowOrigin, dropdown: dropdown
+                            }); 
                             
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
                                 
                                 $body.on(nameEvent, function (event) {
-                                    if (Properties.component.find(event.target).length === 0) {
-                                        self.set(id).hide(); $body.off(nameEvent);
+                                    if (dropdown.find(event.target).length === 0) {
+                                        self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
                             }
-                        } // Esta definido el dropdown en el Provedor
+                        });
                     };
                     
                     Dropdown.prototype.showXY = function (left, top, autoclose) {
-                        var self = this; // Objeto dropdown
+                        var self = this, // Instancia del proveedor
+                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
                         
-                        if (softtion.isDefined(Properties.component)) {
-                            Material.providers.Dropdown.handler.showXY(Properties, left, top); 
+                        executeIfExists(dropdown, function () {
+                            Material.providers.Dropdown.handler.showXY({
+                                belowOrigin: belowOrigin, dropdown: dropdown
+                            }, left, top); 
                             
                             if (autoclose) {
                                 var $body = angular.element(document.body); // Documento
                                 
-                                $body.on("click.hidedropdown", function (ev) {
-                                    if (Properties.component.find(ev.target).length === 0) {
-                                        self.hide(); $body.off("click.hidedropdown");
+                                $body.on(nameEvent, function (ev) {
+                                    if (dropdown.find(ev.target).length === 0) {
+                                        self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
                             }
-                        } // Esta definido el dropdown en el Provedor
+                        });
                     };
 
                     Dropdown.prototype.hide = function () {
                         if (this.isActive()) { 
-                            Material.providers.Dropdown.handler.hide(Properties.component); 
+                            Material.providers.Dropdown.handler.hide(dropdown); 
                         } // Esta abierto el dropdown en el Provedor
                     };
                     
-                    var dropdown = new Dropdown();
-                    
-                    this.get = function () { return dropdown; };
+                    var dropdownProvider = new Dropdown();
 
-                    this.$get = function () { return dropdown; };
+                    this.$get = function () { return dropdownProvider; };
                     
-                    this.clear = function () { dropdown.clear(); };
+                    this.get = function () { return dropdownProvider; };
                 }
             },
             
@@ -6516,53 +6555,61 @@
                     
                     var FormNavigation = function () {};
 
-                    FormNavigation.prototype.set = function (FormNavigationID) {
-                        var self = this; // Instancia del PaneForm
+                    FormNavigation.prototype.set = function (formElement) {
+                        var self = this; // Instancia del Proveedor
                         
-                        form = angular.element(FormNavigationID);
+                        form = instanceElement(formElement, "form-navigation");
+                        
+                        executeIfExists(form, function () {
+                            if (form.exists()) {
+                                backdrop = form.children(".backdrop");
+                                content = form.children(".content");
 
-                        if (form.exists()) {
-                            backdrop = form.children(".backdrop");
-                            content = form.children(".content");
+                                if (!backdrop.exists()) {
+                                    backdrop = angular.element(
+                                        softtion.html("div").
+                                            addClass("backdrop").create()
+                                    );
 
-                            if (!backdrop.exists()) {
-                                backdrop = angular.element(
-                                    softtion.html("div").addClass("backdrop").create()
-                                );
-
-                                form.append(backdrop);
-                                backdrop.click(function () { self.hide(); });
-                            }
-                        } // Existe el PaneForm en el documento
+                                    form.append(backdrop);
+                                    
+                                    backdrop.click(function () { self.hide(); });
+                                }
+                            } // Existe elemento FormNavigation en el documento
+                        });
                         
                         return this; // Retornando interfaz fluida
                     };
 
                     FormNavigation.prototype.show = function () {
-                        if (form.exists() && !form.hasClass("active")) {
-                            var $body = angular.element(document.body);
-                            
-                            content.removeClass("sharp-curve").removeClass("hide");
-                            $body.addClass("body-overflow-none"); form.addClass("active"); 
-                            content.addClass("easing-out").addClass("show");
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(form, function () {
+                            if (form.exists() && !form.hasClass("active")) {
+                                var $body = angular.element(document.body);
+
+                                content.removeClass("sharp-curve").removeClass("hide");
+                                $body.addClass("body-overflow-none"); form.addClass("active"); 
+                                content.addClass("easing-out").addClass("show");
+                            } // FormNavigation no se encuentra activo
+                        });
                     };
 
                     FormNavigation.prototype.hide = function () {
-                        if (form.exists() && form.hasClass("active")) {
-                            var $body = angular.element(document.body);
-                            
-                            content.removeClass("easing-out").removeClass("show");
-                            form.removeClass("active"); $body.removeClass("body-overflow-none");
-                            content.addClass("hide").addClass("sharp-curve");
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(form, function () {
+                            if (form.exists() && form.hasClass("active")) {
+                                var $body = angular.element(document.body);
+
+                                content.removeClass("easing-out").removeClass("show");
+                                form.removeClass("active"); $body.removeClass("body-overflow-none");
+                                content.addClass("hide").addClass("sharp-curve");
+                            } // FormNavigation se encuentra activo
+                        });
                     };
                     
-                    var formNavigation = new FormNavigation();
-                    
-                    this.get = function () { return formNavigation; };
+                    var formNavigationProvider = new FormNavigation();
 
-                    this.$get = function () { return formNavigation; };
+                    this.$get = function () { return formNavigationProvider; };
+                    
+                    this.get = function () { return formNavigationProvider; };
                 }
             },
             
@@ -6570,7 +6617,7 @@
                 name: "$progressBar",
                 method: function () {
                     var $scope = undefined,
-                        component = undefined,
+                        progressBar = undefined,
                         callback = undefined,
                         functionStart = false,
                         isDeterminate = false,
@@ -6580,52 +6627,62 @@
                     
                     var ProgressBar = function () {};
 
-                    ProgressBar.prototype.set = function (progressID) {
-                        component = angular.element(progressID); return this;
+                    ProgressBar.prototype.set = function (progressElement) {
+                        progressBar = instanceElement(progressElement, "progress-bar");
+                        
+                        return this; // Retornando como interfaz fluida
                     };
                     
                     ProgressBar.prototype.show = function () {
-                        component.addClass("show"); return this;
+                        executeIfExists(progressBar, 
+                            function () { progressBar.addClass("show"); }
+                        );
+                        
+                        return this; // Retornando como interfaz fluida
                     };
                     
                     ProgressBar.prototype.determinate = function (duration, callbackFunction) {
-                        if (!component.hasClass("indeterminate")) {
-                            isDeterminate = true; duration = duration || 4000;
-                            
-                            var bar = component.children(".bar");
-                            
-                            if (!functionStart) {
-                                callback = callbackFunction;
-                            } // No se ha iniciado ningún proceso
-                            
-                            functionStart = true; // Inicio de efecto
-                            
-                            bar.css("-moz-animation-duration", (duration + "ms"));
-                            bar.css("-webkit-animation-duration", (duration + "ms"));
-                            bar.css("animation-duration", (duration + "ms"));
-                            bar.css("-o-animation-duration", (duration + "ms"));
-                            bar.css("-ms-animation-duration", (duration + "ms"));
-                            
-                            var bar = component.children(".bar");
+                        executeIfExists(progressBar, function () { 
+                            if (!progressBar.hasClass("indeterminate")) {
+                                isDeterminate = true; duration = duration || 4000;
 
-                            if (!bar.hasEventListener(events)) {
-                                bar.animationend(function () { 
-                                    if (isDeterminate) {
-                                        component.removeClass("show"); 
-                                    } // Se invoco método determinado
-                                    
-                                    isDeterminate = false; functionStart = false;
+                                var bar = progressBar.children(".bar");
 
-                                    if (softtion.isFunction(callback)) {
-                                        $scope.$apply(function () { callback(); });
-                                    } // Invocando función al terminar animación
-                                });
-                            }
-                        } // Componente no es Indeterminado
+                                if (!functionStart) {
+                                    callback = callbackFunction;
+                                } // No se ha iniciado ningún proceso
+
+                                functionStart = true; // Inicio de efecto
+
+                                bar.css("-moz-animation-duration", (duration + "ms"));
+                                bar.css("-webkit-animation-duration", (duration + "ms"));
+                                bar.css("animation-duration", (duration + "ms"));
+                                bar.css("-o-animation-duration", (duration + "ms"));
+                                bar.css("-ms-animation-duration", (duration + "ms"));
+
+                                var bar = progressBar.children(".bar");
+
+                                if (!bar.hasEventListener(events)) {
+                                    bar.animationend(function () { 
+                                        if (isDeterminate) {
+                                            progressBar.removeClass("show"); 
+                                        } // Se invoco método determinado
+
+                                        isDeterminate = false; functionStart = false;
+
+                                        if (softtion.isFunction(callback)) {
+                                            $scope.$apply(function () { callback(); });
+                                        } // Invocando función al terminar animación
+                                    });
+                                }
+                            } // Componente no es Indeterminado
+                        });
                     };
 
                     ProgressBar.prototype.hide = function () {
-                        component.removeClass("show");
+                        executeIfExists(progressBar, 
+                            function () { progressBar.removeClass("show"); }
+                        );
                     };
                     
                     var setPercentageBuffering = function (component, percentage) {
@@ -6643,33 +6700,35 @@
                     };
                     
                     ProgressBar.prototype.setPercentage = function (percentage) {
-                        if (component.hasClass("indeterminate")) {
-                            return;
-                        } // No se le aplican propiedades porcentuales
-                        
-                        if (isNaN(percentage)) {
-                            return;
-                        } // Dato establecido no es númerico
-                        
-                        if (percentage < 0) {
-                            percentage = 0;
-                        } // No debe ser menor a 0%
-                        
-                        if (percentage > 100) {
-                            percentage = 100;
-                        } // No debe sobrepasar el 100%
-                        
-                        !(component.hasClass("buffering")) ?
-                            component.children(".bar").css("width", percentage + "%") :
-                            setPercentageBuffering(component, percentage);
+                        executeIfExists(progressBar, function () { 
+                            if (progressBar.hasClass("indeterminate")) {
+                                return;
+                            } // No se le aplican propiedades porcentuales
+
+                            if (isNaN(percentage)) {
+                                return;
+                            } // Dato establecido no es númerico
+
+                            if (percentage < 0) {
+                                percentage = 0;
+                            } // No debe ser menor a 0%
+
+                            if (percentage > 100) {
+                                percentage = 100;
+                            } // No debe sobrepasar el 100%
+
+                            !(progressBar.hasClass("buffering")) ?
+                                progressBar.children(".bar").css("width", percentage + "%") :
+                                setPercentageBuffering(progressBar, percentage);
+                        });
                     };
                     
-                    var progressBar = new ProgressBar();
+                    var progressBarProvider = new ProgressBar();
                     
-                    this.get = function () { return progressBar; };
+                    this.get = function () { return progressBarProvider; };
 
                     this.$get = ["$rootScope", function ($rootScope) {
-                        $scope = $rootScope; return progressBar; 
+                        $scope = $rootScope; return progressBarProvider; 
                     }];
                 }
             },
@@ -6677,57 +6736,61 @@
             ProgressButtonFloating: {
                 name: "$progressFAB",
                 method: function () {
-                    var component = undefined,
+                    var progressFab = undefined,
                         circular = undefined,
                         events = [
                             "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
                         ];
                     
-                    var ProgressFAB = function () { };
+                    var ProgressFAB = function () {};
                     
-                    ProgressFAB.prototype.set = function (progressID) {
-                        component = angular.element(progressID);
+                    ProgressFAB.prototype.set = function (progressElement) {
+                        progressFab = instanceElement(progressElement, "progress-button-floating");
                         
-                        if (component.exists()) {
-                            circular = component.children(".progress-circular");
-                        
-                            if (!circular.hasEventListener(events)) {
-                                circular.animationend(function () { 
-                                    component.removeClass("start").addClass("finish"); 
-                                });
-                            } // No tiene establecido finalización de Animación
-                        } // Componente se ha definido
+                        executeIfExists(progressFab, function () {
+                            if (progressFab.exists()) {
+                                circular = progressFab.children(".progress-circular");
+
+                                if (!circular.hasEventListener(events)) {
+                                    circular.animationend(function () { 
+                                        progressFab.removeClass("start").addClass("finish"); 
+                                    });
+                                } // No tiene establecido finalización de Animación
+                            } // Componente se ha definido
+                        });
                         
                         return this; // Retornando como interfaz fluida
                     };
                     
                     ProgressFAB.prototype.determinate = function (time) {
-                        if (!component.hasClass("finish")) {
-                            time = isNaN(time) ? 4000 : time;
-                            propertyStyle("--time-progress-circular", time + "ms"); 
-                        
-                            component.addClass("start"); // Iniciando
-                        } // Componente no esta finalizado
+                        executeIfExists(progressFab, function () {
+                            if (!progressFab.hasClass("finish")) {
+                                time = isNaN(time) ? 4000 : time;
+                                propertyStyle("--time-progress-circular", time + "ms"); 
+
+                                progressFab.addClass("start"); // Iniciando
+                            } // Componente no esta finalizado
+                        });
                     };
                     
                     ProgressFAB.prototype.restore = function () {
-                        if (softtion.isDefined(component)) {
-                            component.removeClass("finish");
-                        } // Componente esta definido en el Proveedor
+                        executeIfExists(progressFab, function () {
+                            progressFab.removeClass("finish");
+                        }); // Componente esta definido en el Proveedor
                     };
 
-                    var progressFAB = new ProgressFAB();
+                    var progressFabProvider = new ProgressFAB();
                     
-                    this.get = function () { return progressFAB; };
+                    this.$get = function () { return progressFabProvider; };
                     
-                    this.$get = function () { return progressFAB; };
+                    this.get = function () { return progressFabProvider; };
                 }
             },
             
             ProgressCircular: {
                 name: "$progressCircular",
                 method: function () {
-                    var component = undefined,
+                    var progressCircular = undefined,
                         circularRefresh = undefined,
                         events = [
                             "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
@@ -6735,16 +6798,20 @@
                     
                     var ProgressCircular = function () { };
                     
-                    ProgressCircular.prototype.set = function (circularID) {
-                        component = angular.element(circularID); return this;
+                    ProgressCircular.prototype.set = function (circularElement) {
+                        progressCircular = instanceElement(circularElement, "progress-circular"); return this;
                     };
 
                     ProgressCircular.prototype.show = function () {
-                        component.addClass("show");
+                        executeIfExists(progressCircular, function () { 
+                            progressCircular.addClass("show"); 
+                        }); // Visualizando progress circular del documento
                     };
 
                     ProgressCircular.prototype.hide = function () {
-                        component.removeClass("show");
+                        executeIfExists(progressCircular, function () { 
+                            progressCircular.removeClass("show"); 
+                        }); // Ocultando progress circular del documento
                     };
                     
                     ProgressCircular.prototype.refreshInstance = function () {
@@ -6769,44 +6836,48 @@
                                 angular.element(".app-content").append(circularRefresh);
                         } // Ya se encuentra instanciado
                         
-                        return this;
+                        return this; // Retornando como interfaz fluida
                     };
 
                     ProgressCircular.prototype.refreshShow = function () {
-                        if (softtion.isDefined(circularRefresh)) {
+                        executeIfExists(circularRefresh, function () {
                             circularRefresh.addClass("show"); 
-                        } // Visualizando progress circular para refrescar
+                        }); // Visualizando progress circular para refrescar
                     };
 
                     ProgressCircular.prototype.refreshHide = function () {
-                        if (softtion.isDefined(circularRefresh)) {
+                        executeIfExists(circularRefresh, function () {
                             circularRefresh.removeClass("show"); 
-                        } // Ocultando progress circular para refrescar
+                        }); // Ocultando progress circular para refrescar
                     };
                     
                     ProgressCircular.prototype.determinate = function (time, round) {
-                        if (component.hasClass("indeterminate")) {
-                            return;
-                        } // Componente es Indeterminado, no realiza efecto
-                        
-                        time = isNaN(time) ? 4000 : time;
-                        round = isNaN(round) ? 3 : round;
-                        
-                        propertyStyle("--time-progress-circular", time + "ms"); 
-                        propertyStyle("--round-progress-circular", (round * 360 - 90) + "deg"); 
-                        
-                        this.show(); // Haciendo visible el componente
-                        
-                        if (!component.hasEventListener(events)) {
-                            component.animationend(function () { component.removeClass("show"); });
-                        } // No tiene establecido finalización de Animación
+                        executeIfExists(progressCircular, function () {
+                            if (progressCircular.hasClass("indeterminate")) {
+                                return;
+                            } // Componente es Indeterminado, no realiza efecto
+
+                            time = isNaN(time) ? 4000 : time;
+                            round = isNaN(round) ? 3 : round;
+
+                            propertyStyle("--time-progress-circular", time + "ms"); 
+                            propertyStyle("--round-progress-circular", (round * 360 - 90) + "deg"); 
+
+                            this.show(); // Haciendo visible el componente
+
+                            if (!progressCircular.hasEventListener(events)) {
+                                progressCircular.animationend(function () { 
+                                    progressCircular.removeClass("show"); 
+                                });
+                            } // No tiene establecido finalización de Animación
+                        });
                     };
 
-                    var progressCircular = new ProgressCircular();
+                    var progressCircularProvider = new ProgressCircular();
                     
-                    this.get = function () { return progressCircular; };
+                    this.$get = function () { return progressCircularProvider; };
                     
-                    this.$get = function () { return progressCircular; };
+                    this.get = function () { return progressCircularProvider; };
                 }
                 
             },
@@ -6820,63 +6891,69 @@
                 
                     var SideNav = function () { };
 
-                    SideNav.prototype.set = function (sidenavID) {
+                    SideNav.prototype.set = function (sidenavElement) {
                         var self = this; // Sidenav
                         
-                        sidenav = angular.element(sidenavID);
+                        sidenav = instanceElement(sidenavElement, "sidenav");
                         
-                        if (sidenav.exists()) {
-                            content = sidenav.children(".content:first");
-                            backdrop = sidenav.children(".backdrop");
+                        executeIfExists(sidenav, function () {
+                            if (sidenav.exists()) {
+                                content = sidenav.children(".content:first");
+                                backdrop = sidenav.children(".backdrop");
 
-                            if (!backdrop.exists()) {
-                                backdrop = angular.element(
-                                    softtion.html("div").addClass("backdrop").create()
-                                );
+                                if (!backdrop.exists()) {
+                                    backdrop = angular.element(
+                                        softtion.html("div").addClass("backdrop").create()
+                                    );
 
-                                sidenav.append(backdrop);
-                                backdrop.click(function () { self.hide(); });
-                            }
-                        } // Sidenav existe en el Documento
+                                    sidenav.append(backdrop);
+                                    backdrop.click(function () { self.hide(); });
+                                }
+                            } // Sidenav existe en el Documento
+                        });
                         
                         return this; // Retornando interfaz fluida
                     };
 
                     SideNav.prototype.show = function () {
-                        if (!sidenav.hasClass("active")) {
-                            var $body = angular.element(document.body);
-                            
-                            $body.addClass("body-overflow-none"); // Body no scroll
-                            
-                            content.removeClass("hide").addClass("show");
-                            sidenav.addClass("active"); // Se activa el Sidenav
-                            
-                            if (sidenav.hasClass("persistent")) {
-                                $body.addClass("sidenav-persistent");
-                            } // Componente es persistente en el documento
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(sidenav, function () {
+                            if (!sidenav.hasClass("active")) {
+                                var $body = angular.element(document.body);
+
+                                $body.addClass("body-overflow-none"); // Body no scroll
+
+                                content.removeClass("hide").addClass("show");
+                                sidenav.addClass("active"); // Se activa el Sidenav
+
+                                if (sidenav.hasClass("persistent")) {
+                                    $body.addClass("sidenav-persistent");
+                                } // Componente es persistente en el documento
+                            } // Sidenav no se encuentra activo
+                        });
                     };
 
                     SideNav.prototype.hide = function () {
-                        if (sidenav.hasClass("active")) {
-                            var $body = angular.element(document.body);
-                            
-                            $body.removeClass("body-overflow-none"); // Body scroll
-                            
-                            content.removeClass("show").addClass("hide");
-                            sidenav.removeClass("active"); // Se desactiva el Sidenav
-                            
-                            if (content.hasClass("persistent")) {
-                                $body.removeClass("sidenav-persistent");
-                            } // Componente es persistente en el documento
-                        } // Sidenav no se encuentra activo
+                        executeIfExists(sidenav, function () {
+                            if (sidenav.hasClass("active")) {
+                                var $body = angular.element(document.body);
+
+                                $body.removeClass("body-overflow-none"); // Body scroll
+
+                                content.removeClass("show").addClass("hide");
+                                sidenav.removeClass("active"); // Se desactiva el Sidenav
+
+                                if (content.hasClass("persistent")) {
+                                    $body.removeClass("sidenav-persistent");
+                                } // Componente es persistente en el documento
+                            } // Sidenav no se encuentra activo
+                        });
                     };
                     
-                    var sidenav = new SideNav();
-                    
-                    this.get = function () { return sidenav; };
+                    var sidenavProvider = new SideNav();
 
-                    this.$get = function () { return sidenav; };
+                    this.$get = function () { return sidenavProvider; };
+                    
+                    this.get = function () { return sidenavProvider; };
                 }
             },
             

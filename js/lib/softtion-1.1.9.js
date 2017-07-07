@@ -92,6 +92,10 @@
         return ((this.isDefined(string)) && (typeof string === "string") && (string !== ""));
     };
     
+    Softtion.prototype.isjQuery = function (object) {
+        return ((this.isDefined(object)) && (object instanceof jQuery));
+    };
+    
     Softtion.prototype.parseBoolean = function (value) {
         if (this.isDefined(value)) {
             switch (value) {

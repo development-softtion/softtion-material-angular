@@ -3015,6 +3015,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** DATATABLE */
 
+.datatable {
+    width: 100%;
+    max-width: 100%;
+    float: left; }
+
 .datatable.card-table {
     box-shadow: var(--shadow-2); }
 
@@ -3242,6 +3247,10 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker > .content > .month > .button-right {
     float: right; }
 
+.datepicker > .content > .month > .button-left.disabled,
+.datepicker > .content > .month > .button-right.disabled {
+    pointer-events: none; }
+
 .datepicker > .content > .month > .name {
     position: absolute;
     left: 50%;
@@ -3265,7 +3274,8 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker > .content > .days-month > thead th {
     padding: 0px;
     width: 40px;
-    height: 40px; }
+    height: 40px;
+    text-align: center; }
 
 .datepicker > .content > .days-month > tbody .week {
     display: flex; 
@@ -7811,10 +7821,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .views-content-tab > .views-tab > .view {
     width: 100%; 
-    height: 100%; 
+    height: 0px; 
+    overflow-y: hidden;
     visibility: hidden; }
 
 .views-content-tab > .views-tab > .view.active { 
+    height: 100%; 
     visibility: visible; }
 
 /** VIEWS BOTTOM NAVIGATION */
