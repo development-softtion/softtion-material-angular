@@ -52,6 +52,81 @@
         if (softtion.isDefined(object)) { callback(); }
     };
     
+    var MANAGER_DATETIME = {
+        MONTHS: [
+            { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
+            { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
+            { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
+            { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
+            { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
+            { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
+        ]
+    };
+
+    var ManagerEvents = (function () {
+        
+        var ManagerEvents = function (callbackEvents) {
+            this.calendar = {}; // Calendario
+            this.callbackEvents = callbackEvents;
+        };
+        
+        function addEventCalendar(manager, date, event) {
+            var year = date.getFullYear(),
+                day = date.getDate(),
+                month = date.getMonth();
+        
+            if (softtion.isUndefined(manager.calendar[year])) {
+                manager.calendar[year] = {};
+            } // Agregando año en el Manejador
+            
+            var yearCalendar = manager.calendar[year];
+        
+            if (softtion.isUndefined(yearCalendar[month])) {
+                yearCalendar[month] = {};
+            } // Agregando mes en el año del Manejador
+            
+            var monthCalendar = yearCalendar[month];
+        
+            if (!softtion.isArray(monthCalendar[day])) {
+                monthCalendar[day] = new Array();
+            } // Inicializando día en el mes seleccionado
+            
+            monthCalendar[day].push(event); // Agregando evento
+        };
+        
+        ManagerEvents.prototype.addEvent = function (date, event) {
+            var manager = this; // Manejador del calendario
+            
+            if (softtion.isDate(date)) {
+                addEventCalendar(manager, date, event);
+                this.callbackEvents.addEvent(date); return true;
+            } // Se definio fecha correctamente
+            
+            return false; // No se agrego evento en el Manejador
+        };
+        
+        ManagerEvents.prototype.getEvenstDay = function (year, month, day) {
+            var manager = this; // Manejador del calendario
+            
+            if (softtion.isUndefined(manager.calendar[year])) {
+                return [];
+            } // No hay eventos en el año establecido
+            
+            var yearCalendar = manager.calendar[year];
+        
+            if (softtion.isUndefined(yearCalendar[month])) {
+                return [];
+            } // No hay eventos en el mes establecido
+            
+            var monthCalendar = yearCalendar[month];
+        
+            return (!softtion.isArray(monthCalendar[day])) ?
+                [] : monthCalendar[day]; // Eventos del día
+        };
+        
+        return ManagerEvents; // Clase generada
+    })();
+    
     var Material = {        
         components: {
             AppBar: {
@@ -665,6 +740,241 @@
                             if ($scope.disableRipple) {
                                 $element.addClass("disabled-ripple"); return;
                             } // Usuario no desea efecto ripple en el Botón
+                        }
+                    };
+                }
+            },
+            
+            Calendar: {
+                route: "softtion/template/calendar.html",
+                name: "calendar",
+                html: function () {
+                    var header = softtion.html("div").addClass("header").
+                        addChildren(
+                            softtion.html("button").addClass(["action", "left"]).
+                                addAttribute("ng-click", "prevMonth()").
+                                addChildren(
+                                    softtion.html("i").setText("chevron_left")
+                                )
+                        ).addChildren(
+                            softtion.html("div").addClass("title").
+                                setText("{{year}}, {{getNameMonth()}}")
+                        ).
+                        addChildren(
+                            softtion.html("button").addClass(["action", "right"]).
+                                addAttribute("ng-click", "nextMonth()").
+                                addChildren(
+                                    softtion.html("i").setText("chevron_right")
+                                )
+                        );
+                
+                    var headTable = softtion.html("div").addClass("head").
+                        addChildren(
+                            softtion.html("div").addClass("day-week").
+                                addAttribute("ng-repeat", "dayWeek in daysWeek").
+                                setText("{{dayWeek}}")
+                        );
+                
+                    var bodyTable = softtion.html("div").
+                        addClass(["body", "animate", "easing-out"]).
+                        addChildren(
+                            softtion.html("div").addClass("week").
+                                addAttribute("ng-repeat", "week in calendarMonth").
+                                addChildren(
+                                    softtion.html("div").addClass("day").
+                                        addAttribute("ng-repeat", "day in week").
+                                        addAttribute("tabindex", "-1").
+                                        addAttribute("ng-class", "{inactive: dayCalendarInactive(day)}").
+                                        addChildren(
+                                            softtion.html("div").addClass("number").
+                                                setText("{{day.number}}")
+                                        ).addChildren(
+                                            softtion.html("div").addClass("event").
+                                                addAttribute("ng-repeat", "event in day.events").
+                                                addAttribute("draggable", "true").
+                                                addChildren(
+                                                    softtion.html("p").setText("{{event.description}}")
+                                                )
+                                        )
+                                )
+                        );
+                
+                    var footerTable = softtion.html("div").addClass("footer").
+                        addChildren(
+                            softtion.html("i").setText("delete").
+                                addAttribute("ng-dragover", "dragOverDelete($element, $event)").
+                                addAttribute("ng-dragleave", "dragLeaveDelete($element)").
+                                addAttribute("ng-drop", "dropDelete($element)")
+                        );
+                
+                    var content = softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("table").
+                                addChildren(headTable).addChildren(bodyTable).
+                                addChildren(footerTable)
+                    );
+                
+                    return header + content; // Componente Calendario
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Calendar.route,
+                        scope: {
+                            manager: "=ngModel"
+                        }, 
+                        link: function ($scope, $element) {
+                            var table = $element.find(".body");
+                            
+                            // Eventos del manejador del calendario
+                            var addEvent = function (date) {
+                                if (date.getFullYear() === $scope.year 
+                                    && date.getMonth() === $scope.month) {
+                                   refreshCalendarMonth();
+                                } // Se agrego evento en el mes activo
+                            };
+                            
+                            $scope.manager = new ManagerEvents({
+                                addEvent: addEvent
+                            });
+                            
+                            $scope.$watch(function () {
+                                return $scope.manager;
+                            }, function (newValue, oldValue) {
+                                if (newValue === oldValue) {
+                                    return;
+                                } // No hay cambios
+                                
+                                if (!(newValue instanceof ManagerEvents)) {
+                                    $scope.manager = oldValue;
+                                } // Se ha definido instancia incorrecta
+                            });
+                            
+                            // Atributos de control
+                            $scope.date = new Date(); $scope.date.setDate(1);
+                            
+                            $scope.year = $scope.date.getFullYear(); 
+                            $scope.month = $scope.date.getMonth();
+                            
+                            $scope.daysWeek = softtion.get(softtion.DAYS_OF_WEEK);
+                            $scope.nameMonths = softtion.get(softtion.MONTHS_OF_YEAR);
+                            $scope.daysMonth = softtion.get(softtion.DAYS_OF_MONTHS);
+                            
+                            newCalendarMonth = function () {
+                                var calendarMonth = []; // Mes
+                                
+                                for (var i = 0; i < 6; i++) {
+                                    var week = []; // Semana nueva
+
+                                    for (var j = 0; j < 7; j++) {
+                                        week.push({});
+                                    } // Cargando dias en la Semana
+
+                                    calendarMonth.push(week);
+                                } // Cargando semanas en el Mes
+                                
+                                return calendarMonth; // Sin eventos
+                            };
+                            
+                            createCalendarMonth = function () {
+                                var countDay = 1, daysMonth = $scope.daysMonth[$scope.month];
+                                
+                                if ($scope.month === 1 && 
+                                    softtion.isLeapYear($scope.year)) {
+                                    daysMonth++;
+                                } // El mes es Febrero y el año es biciesto
+                                
+                                var firstWeek = $scope.calendarMonth[0];
+                                
+                                for (var i = $scope.date.getDay(); i < 7; i++) {
+                                    var events = $scope.manager.getEvenstDay(
+                                            $scope.year, $scope.month, countDay
+                                        );
+                                    
+                                    firstWeek[i] = { number: countDay, events: events }; countDay++;
+                                } // Cargando dias hábiles, Primera Semana
+                                
+                                var stop = false, weekCount = 1, dayWeek = 0;
+                                
+                                while (!stop) {
+                                    var week = $scope.calendarMonth[weekCount],
+                                        events = $scope.manager.getEvenstDay(
+                                            $scope.year, $scope.month, countDay
+                                        );
+                                
+                                    week[dayWeek] = { number: countDay, events: events }; 
+                                    countDay++; dayWeek++; // Aumentando
+                                    
+                                    if (dayWeek > 6) {
+                                        weekCount++; dayWeek = 0;
+                                    } // Siguiente semana
+                                    
+                                    stop = (countDay > daysMonth);
+                                } // Cargando las otras semanas del Mes
+                            };
+                            
+                            refreshCalendarMonth = function () {
+                                $scope.calendarMonth = newCalendarMonth();
+                                createCalendarMonth(); // Cargando eventos
+                            };
+                            
+                            refreshCalendarMonth(); // Inicializar calendario
+                            
+                            $scope.getNameMonth = function () {
+                                return $scope.nameMonths[$scope.month];
+                            };
+                            
+                            $scope.dayCalendarInactive = function (day) {
+                                return softtion.isUndefined(day.number);
+                            };
+                            
+                            $scope.prevMonth = function () {
+                                $scope.month--; // Disminuyendo el mes
+                                
+                                if ($scope.month < 0) {
+                                    $scope.year--; $scope.month = 11;
+                                    $scope.date.setFullYear($scope.year);
+                                } // Desendio de año
+                                
+                                $scope.date.setMonth($scope.month);
+                                refreshCalendarMonth();
+                                
+                                table.addClass("slide-in-left");
+                                
+                                setTimeout(function () { 
+                                    table.removeClass("slide-in-left"); 
+                                }, 300); // Quitando animación
+                            };
+                            
+                            $scope.nextMonth = function () {
+                                $scope.month++; // Aumentando el mes
+                                
+                                if ($scope.month > 11) {
+                                    $scope.year++; $scope.month = 0;
+                                    $scope.date.setFullYear($scope.year);
+                                } // Aumento de año
+                                
+                                $scope.date.setMonth($scope.month);
+                                refreshCalendarMonth();
+                                
+                                table.addClass("slide-in-right");
+                                
+                                setTimeout(function () { 
+                                    table.removeClass("slide-in-right"); 
+                                }, 300); // Quitando animación
+                            };
+                            
+                            $scope.dragOverDelete = function ($element, $event) {
+                                $element.addClass("dragover"); $event.preventDefault();
+                            };
+                            
+                            $scope.dragLeaveDelete = function ($element) {
+                                $element.removeClass("dragover"); 
+                            };
+                            
+                            $scope.dropDelete = function ($element) {
+                                $element.removeClass("dragover"); console.log("DROP");
+                            };
                         }
                     };
                 }
@@ -2044,14 +2354,7 @@
                                 $scope.year, $scope.month, dateDayStart.getDay(), countDaysMonths[$scope.month]
                             );
                     
-                            $scope.months = [
-                                { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
-                                { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
-                                { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
-                                { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
-                                { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
-                                { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
-                            ];
+                            $scope.months = MANAGER_DATETIME.MONTHS;
                     
                             $scope.minDate = (softtion.isDate($scope.minDate)) ?
                                 $scope.minDate.normalize("date") : undefined;

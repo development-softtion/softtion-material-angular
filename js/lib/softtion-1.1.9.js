@@ -96,6 +96,10 @@
         return ((this.isDefined(object)) && (object instanceof jQuery));
     };
     
+    Softtion.prototype.isJsonEmpty = function (object) {
+        return ((this.isUndefined(object)) || (Object.keys(object) === 0));
+    };
+    
     Softtion.prototype.parseBoolean = function (value) {
         if (this.isDefined(value)) {
             switch (value) {

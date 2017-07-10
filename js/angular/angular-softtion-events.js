@@ -217,4 +217,35 @@
             };
         }]
     );
+    
+    // Eventos Drag and Drop en AngularJS
+    var directivesDragAndDrop = [
+        { event: "drop", name: "ngDrop" },
+        { event: "dragstart", name: "ngDragstart" },
+        { event: "dragenter", name: "ngDragEnter" },
+        { event: "dragover", name: "ngDragover" },
+        { event: "dragleave", name: "ngDragleave" },
+        { event: "dragend", name: "ngDragend" }
+    ];
+    
+    directivesDragAndDrop.forEach(function (directive) {
+        ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
+            return {
+                restrict: "A",
+                compile: function ($element, $attrs) {
+                    var fn = $parse($attrs[directive.name]);
+
+                    return function ($scope, $element) {
+                        $element.on(directive.event, function ($event) {
+                            var callback = function () {
+                                fn($scope, { $event: $event, $element: $element });
+                            };
+
+                            $scope.$apply(callback); // Disparando evento
+                        }); 
+                    };
+                }
+            };
+        }]);
+    });
 });
