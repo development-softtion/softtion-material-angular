@@ -1112,3 +1112,29 @@
     100% {
         stroke-dashoffset: -65; }
 }
+
+/** PROGRESS INDETERIMINATE DASH */
+
+@keyframes rippleWaiting {
+    0% {
+        width: 28px;
+        height: 28px; }
+    50% {
+        width: 40px;
+        height: 40px; }
+    100% {
+        width: 28px;
+        height: 28px; }
+}
+
+@-webkit-keyframes rippleWaiting {
+    0% {
+        width: 28px;
+        height: 28px; }
+    50% {
+        width: 40px;
+        height: 40px; }
+    100% {
+        width: 28px;
+        height: 28px; }
+}
