@@ -651,6 +651,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .calendar > .header > button.action {
     color: var(--theme-primary-font-active); }
 
+.calendar > .header > button.action:disabled {
+    color: var(--theme-primary-font-disabled); }
+
 .calendar > .header > button.action:before {
     background-color: var(--light-ripple); }
 
@@ -707,6 +710,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .calendar > .content > .table > .body > .week .number { 
     color: var(--light-disabled-font); }
+
+.calendar > .content > .table > .body > .week > .day.today .number { 
+    color: var(--theme-secondary-font); }
 
 .calendar > .content > .table > .body > .week .number > span {
     color: transparent; }

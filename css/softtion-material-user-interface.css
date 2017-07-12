@@ -1986,9 +1986,13 @@ button.raised:focus:after, button.flat:focus:after {
     min-height: 14px;
     cursor: pointer; }
 
-.calendar > .content > .table > .body > .week > .day.inactive {
+.calendar > .content > .table > .body > .week > .day.inactive,
+.calendar > .content > .table > .body > .week > .day.disabled {
     cursor: not-allowed;
     pointer-events: none; }
+
+.calendar > .content > .table > .body > .week > .day.disabled {
+    opacity: 0.5; }
 
 .calendar > .content > .table > .body > .week .number {
     position: relative;
@@ -3125,6 +3129,12 @@ button.raised:focus:after, button.flat:focus:after {
     user-select: none;
     width: 280px; }
 
+.clockpicker-dialog > .box > .clockpicker {
+    height: 0px; }
+
+.clockpicker-dialog.active > .box > .clockpicker {
+    height: auto; }
+
 .clockpicker > .title {
     padding: 16px;
     height: 56px; }
@@ -3498,6 +3508,12 @@ button.raised:focus:after, button.flat:focus:after {
     width: 300px; 
     overflow-y: auto; }
 
+.datepicker-dialog > .box > .datepicker {
+    height: 0px; }
+
+.datepicker-dialog.active > .box > .datepicker {
+    height: auto; }
+
 .datepicker > .title {
     width: 100%; 
     box-sizing: border-box;
@@ -3748,7 +3764,7 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: opacity 0.3s var(--easing-in);
     -ms-transition: opacity 0.3s var(--easing-in); }
 
-.dialog.active > .backdrop {
+.dialog.show > .backdrop {
     bottom: 0;
     opacity: 1; }
 
@@ -3782,7 +3798,7 @@ button.raised:focus:after, button.flat:focus:after {
 .dialog.alert > .box {
     padding-top: 24px; }
 
-.dialog > .box.show {
+.dialog.show > .box {
     border-radius: 2px;
     visibility: visible;
     opacity: 1;

@@ -52,6 +52,21 @@
         if (softtion.isDefined(object)) { callback(); }
     };
     
+    function isDateDisabled(date, minDate, maxDate, $fnValidate) {
+        var validateCostum = false;
+        
+        if (softtion.isFunction($fnValidate)) {
+            validateCostum = $fnValidate({$date: date});
+            validateCostum = validateCostum || false;
+        } // Realizando validación Personal
+        
+        return validateCostum || // Personalizada
+            (softtion.isDate(minDate) && 
+            date.getTime() < minDate.getTime()) ||
+           (softtion.isDate(maxDate) &&
+            date.getTime() > maxDate.getTime());
+    };
+    
     var MANAGER_DATETIME = {
         MONTHS: [
             { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
@@ -78,6 +93,7 @@
                             var appBody = angular.element(".app-body"),
                                 appContent = angular.element(".app-content"),
                                 sidenav = appBody.children(".sidenav"),
+                                contentNav = sidenav.children(".content"),
                                 $window = angular.element(window),
                                 toolbar = $element.children(".toolbar"),
                                 
@@ -109,11 +125,13 @@
                             }
                             
                             appContent.css("padding-top", heightElement);
-                            sidenav.children(".content").css("top", heightElement); 
+                            contentNav.css("top", heightElement); 
                             
-                            ($window.width() > 960) ? 
-                                appContent.addClass("pd-64") : 
-                                appContent.addClass("pd-56");
+                            if ($window.width() > 960) { 
+                                appContent.addClass("pd-64"); contentNav.addClass("pd-64");
+                            } else {
+                                appContent.addClass("pd-56"); contentNav.addClass("pd-64"); 
+                            } // Pantalla es mayor a 960px
                             
                             $window.resize(function () {
                                 if ($window.width() > 960) {
@@ -689,6 +707,7 @@
                         addChildren(
                             softtion.html("button").addClass(["action", "left"]).
                                 addAttribute("ng-click", "prevMonth()").
+                                addAttribute("ng-disabled", "prevDisabled()").
                                 addAttribute("ng-class", "{hide: showEvents}").
                                 addChildren(
                                     softtion.html("i").setText("chevron_left")
@@ -706,6 +725,7 @@
                         ).addChildren(
                             softtion.html("button").addClass(["action", "right"]).
                                 addAttribute("ng-click", "nextMonth()").
+                                addAttribute("ng-disabled", "nextDisabled()").
                                 addAttribute("ng-class", "{hide: showEvents}").
                                 addChildren(
                                     softtion.html("i").setText("chevron_right")
@@ -748,8 +768,11 @@
                                         addAttribute("ng-dragover", "dragOverDay($element, $event)").
                                         addAttribute("ng-drop", "dropDay($element, day.number)").
                                         addAttribute("ng-click", "showDay(day)").
-                                        addAttribute("ng-class", "{inactive: dayCalendarInactive(day)}").
-                                        addChildren(
+                                        addAttribute("ng-class", 
+                                            "{inactive: dayCalendarInactive(day),"
+                                            + " disabled: dayDisabled(day.number),"
+                                            + " today: isToday(day.number)}"
+                                        ).addChildren(
                                             softtion.html("div").addClass("number").
                                                 setText("{{day.number}}").addChildren(
                                                     softtion.html("span").setText("*").
@@ -778,6 +801,16 @@
                     var listEvents = softtion.html("div").addClass("list-events").
                         addAttribute("ng-class", "{show: showEvents}").
                         addChildren(
+                            softtion.html("div").addClass("datepicker-dialog").
+                                addAttribute("ng-model", "datePicker").
+                                addAttribute("show-active", "showDialog").
+                                addAttribute("parent", "{{parentDialog}}").
+                                addAttribute("min-date", "minDate").
+                                addAttribute("max-date", "maxDate").
+                                addAttribute("year-range","10").
+                                addAttribute("disabled-date", "disabledDateDialog($date)").
+                                addAttribute("select-event", "selectDialogDate($date)")
+                        ).addChildren(
                             softtion.html("div").addClass("head").
                                 setText("{{getTitleEvents()}}")
                         ).addChildren(
@@ -786,9 +819,10 @@
                                     addAttribute("ng-repeat", "event in eventsSelect").
                                     addChildren(
                                         softtion.html("div").addClass("content").
-                                            addAttribute("ng-touchhold", "selectDateChanged()").
+                                            addAttribute("ng-touchhold", "startChanged(event)").
                                             addChildren(
                                                 softtion.html("button").addClass("action").
+                                                    addAttribute("ng-if", "!disabledDelete").
                                                     addAttribute("ng-click", "deleteEvent(event)").
                                                     addChildren(
                                                         softtion.html("i").setText("close")
@@ -815,14 +849,20 @@
                             disabledMove: "=?",
                             disabledDelete: "=?",
                             
+                            minDate: "=?",
+                            maxDate: "=?",
+                            parentDialog: "@",
+                            disabledDate: "&?",
+                            
                             // Eventos
                             moveEvent: "&?",
                             removeEvent: "&?"
                         }, 
                         link: function ($scope, $element) {
-                            var table = $element.find(".body"),
-                                dayEvent, removeActive = false, 
-                                eventSelect, moveActive = false;
+                            var table = $element.find(".body"), 
+                                today = new Date(),
+                                eventSelect, moveActive = false,
+                                dayEvent, removeActive = false;
                             
                             // Eventos del manejador del calendario
                             var EventsCalendar = { 
@@ -970,6 +1010,24 @@
                                 return softtion.isUndefined(day.number);
                             };
                             
+                            $scope.dayDisabled = function (day) {
+                                if (softtion.isUndefined(day)) {
+                                    return true;
+                                } // El dia del componente es inválido
+                                
+                                var date = new Date($scope.year, $scope.month, day);  
+                                
+                                return isDateDisabled(
+                                    date, $scope.minDate, $scope.maxDate, $scope.disabledDate
+                                );
+                            };
+                            
+                            $scope.disabledDateDialog = function ($date) {
+                                if (softtion.isFunction($scope.disabledDate)) {
+                                    return $scope.disabledDate({$date: $date});
+                                } // Se esta estableciendo función de Validación
+                            };
+                            
                             $scope.prevMonth = function () {
                                 $scope.month--; // Disminuyendo el mes
                                 
@@ -1005,6 +1063,42 @@
                                     table.removeClass("slide-in-right"); 
                                 }, 300); // Quitando animación
                             };
+                             
+                            $scope.prevDisabled = function () {
+                                if (softtion.isDate($scope.minDate)) {
+                                    var month = $scope.month - 1, year = $scope.year;
+                                    
+                                    if (month < 0) { 
+                                        month = 11; year--;
+                                    } // Se paso para mes del año anterior
+                                    
+                                    if (year < $scope.minDate.getFullYear()) {
+                                        return true;
+                                    } else if (year === $scope.minDate.getFullYear()) {
+                                        return (month < $scope.minDate.getMonth());
+                                    } // El mes anterior esta fuera del rango
+                                }
+                                
+                                return false; // Se puede retroceder de fecha Actual
+                            };
+                            
+                            $scope.nextDisabled = function () {
+                                if (softtion.isDate($scope.maxDate)) {
+                                    var month = $scope.month + 1, year = $scope.year;
+                                    
+                                    if (month > 12) { 
+                                        month = 0; year++;
+                                    } // Sobrepaso mes del año siguiente
+                                    
+                                    if (year > $scope.maxDate.getFullYear()) {
+                                        return true;
+                                    } else if (year === $scope.maxDate.getFullYear()) {
+                                        return (month > $scope.maxDate.getMonth());
+                                    } // El mes siguiente esta fuera del rango
+                                }
+                                
+                                return false; // Se puede avanzar de fecha Actual
+                            };
                             
                             $scope.getTitleEvents = function () {
                                 return !softtion.isDate($scope.dateSelect) ? "" :
@@ -1020,6 +1114,14 @@
                                 );
                             };
                             
+                            $scope.isToday = function (day) {
+                                if (softtion.isDefined(day)) {
+                                    return today.equalsDate($scope.year, $scope.month, day);
+                                } // Se ha definido el dia a comparar
+                                
+                                return false; // No es el dia de Hoy
+                            };
+                            
                             $scope.hideDay = function () {
                                 $scope.showEvents = false; 
                             };
@@ -1032,8 +1134,20 @@
                                 );
                             };
                             
-                            $scope.selectDateChanged = function () {
-                                console.log("Select Date");
+                            $scope.startChanged = function (event) {
+                                if ($scope.disabledMove) { return; } // Inhabilitado
+                                
+                                $scope.showDialog = true; eventSelect = event;
+                            };
+                            
+                            $scope.selectDialogDate = function ($date) {
+                                if (!$scope.dateSelect.equals($date)) {
+                                    moveActive = true; // Movido en Calendario
+                                    
+                                    $scope.managerCalendar.moveEvent(
+                                        $scope.dateSelect, $date, eventSelect
+                                    );
+                                } // Fechas son diferentes, se realiza cambio
                             };
                             
                             // Funciones para mover evento
@@ -1611,17 +1725,22 @@
                                     softtion.html("div").addClass("am-pm").
                                         addChildren(
                                             softtion.html("div").addClass("am").setText("AM").
-                                                addAttribute("ng-click","setZone(false)")
+                                                addAttribute("ng-click","setZone(false)").
+                                                addAttribute("ng-class","{active: !isPM}")
                                         ).
                                         addChildren(
                                             softtion.html("div").addClass("pm").setText("PM").
-                                                addAttribute("ng-click","setZone(true)")
+                                                addAttribute("ng-click","setZone(true)").
+                                                addAttribute("ng-class","{active: isPM}")
                                         )
                                 ).addChildren(
-                                    softtion.html("div").addClass("minute").setText(":{{leadingClock(minuteSelect)}}").
-                                        addAttribute("ng-click","setSelection(false)")
+                                    softtion.html("div").addClass("minute").
+                                        addAttribute("ng-click","setSelection(false)").
+                                        setText(":{{leadingClock(minuteSelect)}}").
+                                        addAttribute("ng-class","{active: !isHours}")
                                 ).addChildren(
                                     softtion.html("div").addClass(["hour"]).setText("{{hourSelect}}").
+                                        addAttribute("ng-class","{active: isHours}").
                                         addAttribute("ng-click","setSelection(true)")
                                 )
                         );
@@ -1636,10 +1755,25 @@
                                     softtion.html("div").addClass("canvas")
                                 ).
                                 addChildren(
-                                    softtion.html("div").addClass(["hours"])
+                                    softtion.html("div").addClass(["hours"]).
+                                        addAttribute("ng-class","{active: isHours}").
+                                        addChildren(
+                                            softtion.html("div").addClass("tick").setText("{{hour}}").
+                                                addAttribute("ng-repeat", "hour in clockValues").
+                                                addAttribute("ng-style", "getPositionElement(hour)").
+                                                addAttribute("ng-class", "{active: hourActive(hour)}")
+                                        )
                                 ).
                                 addChildren(
-                                    softtion.html("div").addClass("minutes")
+                                    softtion.html("div").addClass("minutes").
+                                        addAttribute("ng-class","{active: !isHours}").
+                                        addChildren(
+                                            softtion.html("div").addClass("tick").
+                                                setText("{{(minute - 1) * 5}}").
+                                                addAttribute("ng-repeat", "minute in clockValues").
+                                                addAttribute("ng-style", "getPositionElement((minute - 1))").
+                                                addAttribute("ng-class", "{active: minuteActive(minute)}")
+                                        )
                                 )
                         );
                         
@@ -1664,7 +1798,6 @@
                 },
                 paintSelector: function (canvas, attrs) {
                     var svg = Material.components.Clockpicker.createSvgElement("svg");
-                    svg.setAttribute("class", "materialize-clock-svg");
                     svg.setAttribute("width", attrs.diameter);
                     svg.setAttribute("height", attrs.diameter);
                     
@@ -1692,33 +1825,6 @@
                     return {
                         hand: hand, g: g, bg: bg, fg: fg, bearing: bearing, svg: svg
                     };
-                },
-                paintClock: function (hours, minutes, attrs) {
-                    var tickHour = angular.element("<div class='tick'></div>");
-    
-                    for (var hour = 1; hour < 13; hour++) {
-                        var tick = tickHour.clone(), radian = hour / 6 * Math.PI;
-                        
-                        tick.css({
-                            left: attrs.dialRadius + Math.sin(radian) * attrs.radius - attrs.tickRadius,
-                            top: attrs.dialRadius - Math.cos(radian) * attrs.radius - attrs.tickRadius
-                        });
-                        
-                        tick.addClass("tick-" + hour); tick.html(hour); hours.append(tick);
-                    } // Cargando horas del Reloj
-                    
-                    var tickMinute = angular.element("<div class='tick'></div>");
-                    
-                    for (var minute = 0; minute < 12; minute++) {
-                        var tick = tickMinute.clone(), radian = minute / 6 * Math.PI;
-                        
-                        tick.css({
-                            left: attrs.dialRadius + Math.sin(radian) * attrs.radius - attrs.tickRadius,
-                            top: attrs.dialRadius - Math.cos(radian) * attrs.radius - attrs.tickRadius
-                        });
-
-                        tick.addClass("tick-" + (minute * 5)); tick.html(minute * 5); minutes.append(tick);
-                    }
                 },
                 setHand: function (x, y, isHours, canvasComponent, attrs) {
                     var radian = Math.atan2(-x, y) + Math.PI,
@@ -1778,21 +1884,22 @@
                         },
                         link: function ($scope, $element) {
                             // Componentes
-                            var title = $element.find(".title"),
-                                am = title.find(".am-pm > .am"),
-                                pm = title.find(".am-pm > .pm"),
-                                hour = title.find(".time > .hour"),
-                                minute = title.find(".time > .minute"),
-                                
-                                content = $element.find(".content"),
+                            var content = $element.find(".content"),
                                 plate = content.find(".plate"),
-                                canvas = plate.find(".canvas"),
-                                hours = plate.find(".hours"),
-                                minutes = plate.find(".minutes");
+                                canvas = plate.find(".canvas");
                             
                             // Atributos
-                            var isPM = false, isHours = true, canvasComponent,
-                                selectionStart = false, value = undefined,
+                            $scope.clockValues = [
+                                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+                            ];
+                            
+                            $scope.valueSelection = undefined;
+                            $scope.valueHour = undefined;
+                            $scope.valueMinute = undefined;
+                            $scope.isPM = false; $scope.isHours = true;
+                                    
+                            var canvasComponent,
+                                selectionStart = false, 
                                 attributes = {
                                     dialRadius: 116, 
                                     radius: 96,
@@ -1803,40 +1910,34 @@
 
                                 // Eventos de la directiva
                                 setHand = Material.components.Clockpicker.setHand,
-                                paintSelector = Material.components.Clockpicker.paintSelector,
-                                paintClock = Material.components.Clockpicker.paintClock;
+                                paintSelector = Material.components.Clockpicker.paintSelector;
                             
-                            paintClock(hours, minutes, attributes);
                             canvasComponent = paintSelector(canvas, attributes);
                             
-                            // Propiedades del scope
+                            $scope.getPositionElement = function (value) {
+                                var radian = value / 6 * Math.PI,
+                                    left = Math.sin(radian) * attributes.radius,
+                                    top = Math.cos(radian) * attributes.radius;
+                        
+                                return {
+                                    top: attributes.dialRadius - top - attributes.tickRadius,
+                                    left: attributes.dialRadius + left - attributes.tickRadius
+                                };
+                            };
+                            
                             $scope.setZone = function (zone) {
-                                if (zone) {
-                                    am.removeClass("active"); pm.addClass("active");
-                                } else {
-                                    pm.removeClass("active"); am.addClass("active");
-                                } // Zona horaria definida es "AM"
-                                    
-                                isPM = zone; // Definiendo zona horaria
+                                $scope.isPM = zone; // Definiendo zona horaria
                             };
                             
                             $scope.setSelection = function (selection) {
-                                isHours = selection; // Definiendo tipo de selección
-                                
-                                if (isHours) {
-                                    minute.removeClass("active"); hour.addClass("active");
-                                    minutes.removeClass("active"); hours.addClass("active");
-                                } else {
-                                    hour.removeClass("active"); minute.addClass("active");
-                                    hours.removeClass("active"); minutes.addClass("active");
-                                } // Tipo de selección para minutos
+                                $scope.isHours = selection; // Definiendo tipo de selección
                                     
                                 var position = Material.components.Clockpicker.getPosition(
-                                    (isHours) ? $scope.hourSelect : $scope.minuteSelect, isHours, attributes
+                                    ($scope.isHours) ? $scope.hourSelect : $scope.minuteSelect, $scope.isHours, attributes
                                 );
                         
                                 Material.components.Clockpicker.setHand(
-                                    position.x, position.y, isHours, canvasComponent, attributes
+                                    position.x, position.y, $scope.isHours, canvasComponent, attributes
                                 );
                             };
                             
@@ -1845,12 +1946,12 @@
                             $scope.hourSelect = (time.getHours() === 0) ?
                                 12 : (time.getHours() > 12) ? 
                                 time.getHours() - 12 : time.getHours();
+                            $scope.valueHour = $scope.hourSelect;
                             
                             $scope.minuteSelect = time.getMinutes();
+                            $scope.valueMinute = $scope.minuteSelect;
                             
                             $scope.setZone((time.getHours() > 11)); $scope.setSelection(true);
-                            hours.find(".tick-" + $scope.hourSelect).addClass("active");
-                            minutes.find(".tick-" + $scope.minuteSelect).addClass("active");
                             
                             $scope.leadingClock = function (value) {
                                 return ((value < 10) ? "0" : "") + value;
@@ -1889,10 +1990,16 @@
                                 if (data.isMove) {
                                     $event.preventDefault();
 
-                                    value = setHand(
+                                    $scope.valueSelection = setHand(
                                         data.positionX, data.positionY, 
-                                        isHours, canvasComponent, attributes
+                                        $scope.isHours, canvasComponent, attributes
                                     );
+                            
+                                    if ($scope.isHours) {
+                                        $scope.valueHour = $scope.valueSelection;
+                                    } else {
+                                        $scope.valueMinute = $scope.valueSelection;
+                                    }
                                 }
                             };
                             
@@ -1908,22 +2015,25 @@
                             
                             $scope.pointerupPlate = function () {
                                 selectionStart = false; // Deteniendo arrastre
-                        
-                                if (isHours) {
-                                    $scope.hourSelect = value; // Hora seleccionada
-                                    hours.find(".tick").removeClass("active");
-                                    hours.find(".tick-" + value).addClass("active");
-                                    
+                                
+                                if ($scope.isHours) {
+                                    $scope.hourSelect = $scope.valueSelection;
                                     $scope.setSelection(false); // Minutos
                                 } else {
-                                    $scope.minuteSelect = value;// Minuto seleccionado
-                                    minutes.find(".tick").removeClass("active");
-                                    minutes.find(".tick-" + value).addClass("active");
+                                    $scope.minuteSelect = $scope.valueSelection;
                                 }
                             };
                             
+                            $scope.hourActive = function (hour) {
+                                return (hour === $scope.valueHour);
+                            };
+                            
+                            $scope.minuteActive = function (minute) {
+                                return ((minute - 1) * 5 === $scope.valueMinute);
+                            };
+                            
                             $scope.setTime = function () {
-                                var hour = (isPM) ?
+                                var hour = ($scope.isPM) ?
                                     ($scope.hourSelect !== 12) ? ($scope.hourSelect + 12) : $scope.hourSelect :
                                     ($scope.hourSelect !== 12) ? ($scope.hourSelect) : 0;
                                 
@@ -1946,6 +2056,78 @@
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent({$time: $scope.time});
                                 } // Función que se llama cuando se cancela Selección
+                            };
+                        }
+                    };
+                }
+            },
+            
+            ClockpickerDialog: {
+                route: "softtion/template/clockpicker-dialog.html",
+                name: "clockpickerDialog",
+                html: function () {
+                    var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
+                        addAttribute("ng-class", "{show: showActive}").
+                        addChildren(
+                            softtion.html("div").addClass("backdrop")
+                        ).addChildren(
+                            softtion.html("div").addClass("box").
+                                addChildren(
+                                    softtion.html("div").addClass("clockpicker").
+                                        addAttribute("ng-model","time").
+                                        addAttribute("select-event","selectComponent($time)").
+                                        addAttribute("cancel-event","cancelComponent($time)")
+                                )
+                        );
+                    
+                    return dialog.create(); // Componente DatepickerDialog
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.ClockpickerDialog.route,
+                        scope: {
+                            time: "=ngModel",
+                            showActive: "=",
+                            parent: "@",
+                            
+                            // Eventos
+                            selectEvent: "&?",
+                            cancelEvent: "&?"
+                        },
+                        link: function ($scope, $element) {
+                            var $body = angular.element(document.body);
+                            
+                            if (softtion.isString($scope.parent)) {
+                                var parent = angular.element($scope.parent);
+                                
+                                if (parent.exists()) {
+                                    $element.appendTo(parent); 
+                                } // Moviendo componente
+                            } // Se definio un selector para contener dialog
+                            
+                            $scope.$watch(function () {
+                                return $scope.showActive;
+                            }, function (newValue) {
+                                (!newValue) ? 
+                                    $body.removeClass("body-overflow-none") :
+                                    $body.addClass("body-overflow-none");
+                            });
+                            
+                            $scope.selectComponent = function ($time) {
+                                $scope.showActive = false; $scope.time = $time;
+                                    
+                                if (softtion.isFunction($scope.selectEvent)) {
+                                    $scope.selectEvent({$time: $scope.time});
+                                } // Evento selección nueva en el componente
+                            };
+                            
+                            $scope.cancelComponent = function () {
+                                $scope.showActive = false; // Cerrando Dialog
+                                    
+                                if (softtion.isFunction($scope.selectEvent)) {
+                                    $scope.selectEvent({$time: $scope.time});
+                                } // Evento selección nueva en el componente
                             };
                         }
                     };
@@ -1979,20 +2161,12 @@
                     var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
                         setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
                     
-                    var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
-                        addChildren(
-                            softtion.html("div").addClass("backdrop")
-                        ).
-                        addChildren(
-                            softtion.html("div").addClass("box").
-                                addAttribute("ng-class", "{show: show}").
-                                addChildren(
-                                    softtion.html("div").addClass("clockpicker").
-                                        addAttribute("ng-model","timePicker").
-                                        addAttribute("select-event","timeSelect($time)").
-                                        addAttribute("cancel-event","cancelSelect($time)")
-                                )
-                        );
+                    var dialog = softtion.html("div").addClass("clockpicker-dialog").
+                        addAttribute("ng-model","timePicker").
+                        addAttribute("show-active", "show").
+                        addAttribute("select-event","selectDialog($time)").
+                        addAttribute("cancel-event","cancelDialog($time)").
+                        addAttribute("parent", "{{parent}}");
                 
                     content.addChildren(value).addChildren(lineShadow).
                         addChildren(label).addChildren(buttonClear).addChildren(spanHelper);
@@ -2007,7 +2181,7 @@
                             time: "=ngModel",
                             label: "@",
                             format: "@",
-                            autoStart: "=?",
+                            autoStart: "@",
                             ngDisabled: "=?",
                             iconDescription: "@",
                             helperText: "@",
@@ -2021,9 +2195,7 @@
                             iconEvent: "&?"
                         },
                         link: function ($scope, $element) {
-                            var dialog = $element.find(".dialog"),
-                                value = $element.find(".value"),
-                                $body = angular.element(document.body);
+                            var value = $element.find(".value");
                         
                             var icon = insertIconDescription($scope, value); // Icono
                             
@@ -2039,24 +2211,22 @@
                             
                             $scope.show = false; $scope.format = $scope.format || "hz:ii zz";
                             
-                            if (softtion.isUndefined($scope.time) && $scope.autoStart) {
+                            if (softtion.isUndefined($scope.time) 
+                                    && $scope.$eval($scope.autoStart)) {
                                 $scope.time = new Date(); 
                             } // Se desea iniciar automaticamente la fecha
                             
-                            if (softtion.isString($scope.parent)) {
-                                var parent = angular.element($scope.parent);
-                                
-                                if (parent.exists()) { dialog.appendTo(parent); }
-                            } // Se definio un selector para contener dialog
+                            $scope.$watch(function () {
+                                return $scope.time;
+                            }, function (newValue) {
+                                if (!softtion.isDate(newValue)) {
+                                    $scope.time = undefined;
+                                } // Objeto establecido no es una fecha
+                            });
                             
                             $scope.getValueModel = function () {
-                                if (softtion.isUndefined($scope.time)) {
-                                    return "";
-                                } else if (softtion.isDate($scope.time)) {
-                                    return $scope.time.getFormat($scope.format);
-                                } else {
-                                    return "Parámetro establecido no es hora";
-                                }
+                                return (softtion.isDefined($scope.time)) ?
+                                    $scope.time.getFormat($scope.format) : "";
                             };
                             
                             $scope.isActiveLabel = function () {
@@ -2073,8 +2243,7 @@
                             
                             $scope.showDialog = function ($event) {
                                 if (!$scope.ngDisabled) {
-                                    $scope.show = true; dialog.addClass("active");
-                                    $body.addClass("body-overflow-none");
+                                    $scope.show = true; // Activando Dialog
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
                                         $scope.showEvent({$event: $event});
@@ -2082,22 +2251,18 @@
                                 }
                             };
                             
-                            $scope.cancelSelect = function () {
-                                $scope.show = false; dialog.removeClass("active"); 
-                                $body.removeClass("body-overflow-none");
-                                    
-                                if (softtion.isFunction($scope.cancelEvent)) {
-                                    $scope.cancelEvent({$time: $scope.time});
-                                } // Evento cancelar selección en el componente
-                            };
-                            
-                            $scope.timeSelect = function ($time) {
-                                $scope.time = $time; dialog.removeClass("active"); 
-                                $scope.show = false; $body.removeClass("body-overflow-none");
+                            $scope.selectDialog = function ($time) {
+                                $scope.time = $time; // Asignando tiempo
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
                                     $scope.selectEvent({$time: $scope.time});
                                 } // Evento selección nueva en el componente
+                            };
+                            
+                            $scope.cancelDialog = function () {
+                                if (softtion.isFunction($scope.cancelEvent)) {
+                                    $scope.cancelEvent({$time: $scope.time});
+                                } // Evento cancelar selección en el componente
                             };
                             
                             $scope.clearTime = function () {
@@ -2433,6 +2598,7 @@
                             minDate: "=?",
                             maxDate: "=?",
                             yearRange: "@",
+                            disabledDate: "&?",
                             
                             // Eventos
                             selectEvent: "&?",
@@ -2696,24 +2862,11 @@
                                     return true;
                                 } // El dia del componente es inválido
                                 
-                                if (!softtion.isDate($scope.minDate) && 
-                                    !softtion.isDate($scope.maxDate)) {
-                                    return false;
-                                } // Todos los dias están permitidos en el Componente
-                                
                                 var date = new Date($scope.year, $scope.month, day);  
                                 
-                                if (softtion.isDate($scope.minDate) && 
-                                    date.getTime() < $scope.minDate.getTime()) {
-                                    return true; 
-                                } // La fecha es menor a la establecida
-                                
-                                if (softtion.isDate($scope.maxDate) &&
-                                    date.getTime() > $scope.maxDate.getTime()) {
-                                    return true; 
-                                } // La fecha es mayor a la establecida
-                                
-                                return false; // El día es permitido para Selección
+                                return isDateDisabled(
+                                    date, $scope.minDate, $scope.maxDate, $scope.disabledDate
+                                );
                             };
                             
                             $scope.activeDay = function () {
@@ -2740,6 +2893,92 @@
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent({$date: $scope.date});
                                 } // Se ha establecido metodo para cancelar Selección
+                            };
+                        }
+                    };
+                }
+            },
+            
+            DatepickerDialog: {
+                route: "softtion/template/datepicker-dialog.html",
+                name: "datepickerDialog",
+                html: function () {
+                    var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
+                        addAttribute("ng-class", "{show: showActive}").
+                        addChildren(
+                            softtion.html("div").addClass("backdrop")
+                        ).addChildren(
+                            softtion.html("div").addClass("box").
+                                addChildren(
+                                    softtion.html("div").addClass("datepicker").
+                                        addAttribute("ng-model","date").
+                                        addAttribute("disabled-date", "disabledDatePicker($date)").
+                                        addAttribute("select-event","selectComponent($date)").
+                                        addAttribute("cancel-event","cancelComponent($date)").
+                                        addAttribute("min-date","minDate").
+                                        addAttribute("max-date","maxDate").
+                                        addAttribute("year-range","{{yearRange}}")
+                                )
+                        );
+                    
+                    return dialog.create(); // Componente DatepickerDialog
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.DatepickerDialog.route,
+                        scope: {
+                            date: "=ngModel",
+                            minDate: "=?",
+                            maxDate: "=?",
+                            disabledDate: "&?",
+                            yearRange: "@",
+                            showActive: "=",
+                            parent: "@",
+                            
+                            // Eventos
+                            selectEvent: "&?",
+                            cancelEvent: "&?"
+                        },
+                        link: function ($scope, $element) {
+                            var $body = angular.element(document.body);
+                            
+                            if (softtion.isString($scope.parent)) {
+                                var parent = angular.element($scope.parent);
+                                
+                                if (parent.exists()) {
+                                    $element.appendTo(parent); 
+                                } // Moviendo componente
+                            } // Se definio un selector para contener dialog
+                            
+                            $scope.$watch(function () {
+                                return $scope.showActive;
+                            }, function (newValue) {
+                                (!newValue) ? 
+                                    $body.removeClass("body-overflow-none") :
+                                    $body.addClass("body-overflow-none");
+                            });
+                            
+                            $scope.selectComponent = function ($date) {
+                                $scope.showActive = false; $scope.date = $date;
+                                    
+                                if (softtion.isFunction($scope.selectEvent)) {
+                                    $scope.selectEvent({$date: $scope.date});
+                                } // Evento selección nueva en el componente
+                            };
+                            
+                            $scope.cancelComponent = function () {
+                                $scope.showActive = false; // Cerrando Dialog
+                                    
+                                if (softtion.isFunction($scope.selectEvent)) {
+                                    $scope.selectEvent({$date: $scope.date});
+                                } // Evento selección nueva en el componente
+                            };
+                            
+                            $scope.disabledDatePicker = function ($date) {
+                                if (softtion.isFunction($scope.disabledDate)) {
+                                    return $scope.disabledDate({$date: $date});
+                                } // Se esta estableciendo función de Validación
                             };
                         }
                     };
@@ -2773,23 +3012,16 @@
                     var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
                         setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
                     
-                    var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
-                        addChildren(
-                            softtion.html("div").addClass("backdrop")
-                        ).
-                        addChildren(
-                            softtion.html("div").addClass("box").
-                                addAttribute("ng-class", "{show: show}").
-                                addChildren(
-                                    softtion.html("div").addClass("datepicker").
-                                        addAttribute("ng-model","datePicker").
-                                        addAttribute("select-event","dateSelect($date)").
-                                        addAttribute("cancel-event","cancelSelect($date)").
-                                        addAttribute("min-date","minDate").
-                                        addAttribute("max-date","maxDate").
-                                        addAttribute("year-range","{{yearRange}}")
-                                )
-                        );
+                    var dialog = softtion.html("div").addClass("datepicker-dialog").
+                        addAttribute("ng-model","datePicker").
+                        addAttribute("show-active", "show").
+                        addAttribute("select-event","selectDialog($date)").
+                        addAttribute("cancel-event","cancelDialog($date)").
+                        addAttribute("parent", "{{parent}}").
+                        addAttribute("min-date","minDate").
+                        addAttribute("max-date","maxDate").
+                        addAttribute("disabled-date", "disabledDateDialog($date)").
+                        addAttribute("year-range","{{yearRange}}");
                 
                     content.addChildren(value).addChildren(lineShadow).
                         addChildren(label).addChildren(buttonClear).addChildren(spanHelper);
@@ -2802,17 +3034,19 @@
                         templateUrl: Material.components.DatepickerInput.route,
                         scope: {
                             date: "=ngModel",
-                            label: "@",
                             format: "@",
-                            autoStart: "=?",
-                            minDate: "=?",
-                            maxDate: "=?",
-                            yearRange: "=?",
+                            label: "@",
+                            autoStart: "@",
                             ngDisabled: "=?",
                             iconDescription: "@",
                             helperText: "@",
                             helperPermanent: "=?",
+                            
+                            minDate: "=?",
+                            maxDate: "=?",
+                            yearRange: "=?",
                             parent: "@",
+                            disabledDate: "&?",
                             
                             // Eventos
                             showEvent: "&?",
@@ -2821,9 +3055,8 @@
                             iconEvent: "&?"
                         },
                         link: function ($scope, $element) {
-                            var dialog = $element.find(".dialog"),
-                                value = $element.find(".value"),
-                                $body = angular.element(document.body);
+                            var value = $element.find(".value"),
+                                format = "ww, dd de mn del aa";
                         
                             var icon = insertIconDescription($scope, value); // Icono
                             
@@ -2837,26 +3070,24 @@
                                 }); 
                             } // Se ha definido un icono descriptivo
                             
-                            $scope.show = false; $scope.format = $scope.format || "ww, dd de mn del aa";
+                            $scope.show = false; $scope.format = $scope.format || format;
                             
-                            if (softtion.isUndefined($scope.date) && $scope.autoStart) {
+                            if (softtion.isUndefined($scope.date) 
+                                    && $scope.$eval($scope.autoStart)) {
                                 $scope.date = new Date(); 
                             } // Se desea iniciar automaticamente la fecha
                             
-                            if (softtion.isString($scope.parent)) {
-                                var parent = angular.element($scope.parent);
-                                
-                                if (parent.exists()) { dialog.appendTo(parent); }
-                            } // Se definio un selector para contener dialog
+                            $scope.$watch(function () {
+                                return $scope.date;
+                            }, function (newValue) {
+                                if (!softtion.isDate(newValue)) {
+                                    $scope.date = undefined;
+                                } // Objeto establecido no es una fecha
+                            });
                             
                             $scope.getValueModel = function () {
-                                if (softtion.isUndefined($scope.date)) {
-                                    return "";
-                                } else if (softtion.isDate($scope.date)) {
-                                    return $scope.date.getFormat($scope.format);
-                                } else {
-                                    return "Parámetro establecido no es fecha";
-                                }
+                                return (softtion.isDefined($scope.date)) ?
+                                    $scope.date.getFormat($scope.format) : "";
                             };
                             
                             $scope.isActiveLabel = function () {
@@ -2873,8 +3104,7 @@
                             
                             $scope.showDialog = function ($event) {
                                 if (!$scope.ngDisabled) {
-                                    $scope.show = true; dialog.addClass("active");
-                                    $body.addClass("body-overflow-none");
+                                    $scope.show = true; // Haciendo visible
                                     
                                     if (softtion.isFunction($scope.showEvent)) {
                                         $scope.showEvent({$event: $event});
@@ -2882,22 +3112,24 @@
                                 }
                             };
                             
-                            $scope.dateSelect = function (date) {
-                                $scope.date = date; dialog.removeClass("active"); 
-                                $scope.show = false; $body.removeClass("body-overflow-none");
+                            $scope.selectDialog = function ($date) {
+                                $scope.date = $date; // Nueva fecha establecida
                                     
                                 if (softtion.isFunction($scope.selectEvent)) {
                                     $scope.selectEvent({$date: $scope.date});
                                 } // Evento selección nueva en el componente
                             };
                             
-                            $scope.cancelSelect = function () {
-                                $scope.show = false; dialog.removeClass("active");
-                                $body.removeClass("body-overflow-none");
-                                    
+                            $scope.cancelDialog = function () {
                                 if (softtion.isFunction($scope.cancelEvent)) {
                                     $scope.cancelEvent({$date: $scope.date});
                                 } // Evento cancelar selección en el componente
+                            };
+                            
+                            $scope.disabledDateDialog = function ($date) {
+                                if (softtion.isFunction($scope.disabledDate)) {
+                                    return $scope.disabledDate({$date: $date});
+                                } // Se esta estableciendo función de Validación
                             };
                             
                             $scope.clearDate = function () {
