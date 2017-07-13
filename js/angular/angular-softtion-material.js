@@ -138,16 +138,20 @@
                                     if (!appContent.hasClass("pd-64")) {
                                         var paddingTop = parseInt(appContent.css("padding-top"));
                                         appContent.css("padding-top", (paddingTop + 8) + "px");
+                                        contentNav.css("top", (paddingTop + 8) + "px");
                                     } // AppBar de 64px Mínimo
                                     
                                     appContent.addClass("pd-64").removeClass("pd-56");
+                                    contentNav.addClass("pd-64").removeClass("pd-56");
                                 } else {
                                     if (!appContent.hasClass("pd-56")) {
                                         var paddingTop = parseInt(appContent.css("padding-top"));
                                         appContent.css("padding-top", (paddingTop - 8) + "px");
+                                        contentNav.css("top", (paddingTop - 8) + "px");
                                     } // AppBar de 56px Mínimo
                                     
                                     appContent.addClass("pd-56").removeClass("pd-64");
+                                    contentNav.addClass("pd-56").removeClass("pd-64");
                                 }
                             });
                         }
@@ -739,6 +743,12 @@
                                         addAttribute("ng-dragleave", "dragLeaveDelete($element)").
                                         addAttribute("ng-drop", "dropDelete($element)").
                                         addAttribute("ng-dragover", "dragOverDelete($element, $event)")
+                                ).addChildren(
+                                    softtion.html("i").setText("edit").
+                                        addAttribute("ng-if", "!disabledEdit").
+                                        addAttribute("ng-dragleave", "dragLeaveEdit($element)").
+                                        addAttribute("ng-drop", "dropEdit($element)").
+                                        addAttribute("ng-dragover", "dragOverEdit($element, $event)")
                                 )
                         );
                 
@@ -819,20 +829,30 @@
                                     addAttribute("ng-repeat", "event in eventsSelect").
                                     addChildren(
                                         softtion.html("div").addClass("content").
-                                            addAttribute("ng-touchhold", "startChanged(event)").
                                             addChildren(
-                                                softtion.html("button").addClass("action").
-                                                    addAttribute("ng-if", "!disabledDelete").
-                                                    addAttribute("ng-click", "deleteEvent(event)").
-                                                    addChildren(
-                                                        softtion.html("i").setText("close")
-                                                    )
-                                            ).addChildren(
                                                 softtion.html("label").addClass("title").
                                                     setText("{{event.title}}")
                                             ).addChildren(
                                                 softtion.html("p").addClass("description").
                                                     setText("{{event.description}}")
+                                            ).addChildren(
+                                                softtion.html("div").addClass("actions").
+                                                    addChildren(
+                                                        softtion.html("button").addClass("flat").
+                                                            addAttribute("ng-if", "!disabledDelete").
+                                                            addAttribute("ng-click", "deleteEvent(event)").
+                                                            setText("Eliminar")
+                                                    ).addChildren(
+                                                        softtion.html("button").addClass("flat").
+                                                            addAttribute("ng-if", "!disabledMove").
+                                                            addAttribute("ng-click", "startChanged(event)").
+                                                            setText("Mover")
+                                                    ).addChildren(
+                                                        softtion.html("button").addClass("flat").
+                                                            addAttribute("ng-if", "!disabledEdit").
+                                                            addAttribute("ng-click", "startEdit(event)").
+                                                            setText("Editar")
+                                                    )
                                             )
                                     )
                             )
@@ -848,6 +868,7 @@
                             managerCalendar: "=ngModel",
                             disabledMove: "=?",
                             disabledDelete: "=?",
+                            disabledEdit: "=?",
                             
                             minDate: "=?",
                             maxDate: "=?",
@@ -856,7 +877,8 @@
                             
                             // Eventos
                             moveEvent: "&?",
-                            removeEvent: "&?"
+                            removeEvent: "&?",
+                            editEvent: "&?"
                         }, 
                         link: function ($scope, $element) {
                             var table = $element.find(".body"), 
@@ -1135,9 +1157,13 @@
                             };
                             
                             $scope.startChanged = function (event) {
-                                if ($scope.disabledMove) { return; } // Inhabilitado
-                                
                                 $scope.showDialog = true; eventSelect = event;
+                            };
+                            
+                            $scope.startEdit = function (event) {
+                                if (softtion.isFunction($scope.editEvent)) {
+                                    $scope.editEvent({$event: event});
+                                } // Se ha disparado acción para Editar evento
                             };
                             
                             $scope.selectDialogDate = function ($date) {
@@ -1150,8 +1176,7 @@
                                 } // Fechas son diferentes, se realiza cambio
                             };
                             
-                            // Funciones para mover evento
-                            
+                            // Funciones para capturar evento
                             $scope.dragOverDay = function ($element, $event) {
                                 if ($scope.disabledMove) { return; } // Inhabilitado
                                 
@@ -1178,7 +1203,6 @@
                             };
                             
                             // Funciones para arrastrar evento
-                            
                             $scope.dragStartEvent = function (event, day, $element) {
                                 eventSelect = event; dayEvent = day; 
                                 $element.addClass("drag-event"); // Inicio de drag
@@ -1188,8 +1212,24 @@
                                 $element.removeClass("drag-event"); // Fin de drag
                             };
                             
-                            // Funciones para remover evento
+                            // Funciones para editar evento
+                            $scope.dragOverEdit = function ($element, $event) {
+                                $element.addClass("dragover"); $event.preventDefault();
+                            };
                             
+                            $scope.dragLeaveEdit = function ($element) {
+                                $element.removeClass("dragover"); // Quitando efecto
+                            };
+                            
+                            $scope.dropEdit = function ($element) {
+                                $element.removeClass("dragover"); // Quitando efecto
+                                
+                                if (softtion.isFunction($scope.editEvent)) {
+                                    $scope.editEvent({$event: eventSelect});
+                                } // Se ha disparado acción para Editar evento
+                            };
+                            
+                            // Funciones para remover evento
                             $scope.dragOverDelete = function ($element, $event) {
                                 $element.addClass("dragover"); $event.preventDefault();
                             };
@@ -4753,6 +4793,32 @@
                 }
             },
             
+            Sidenav: {
+                name: "sidenav",
+                buttonClose: function () {
+                    return softtion.html("button").
+                        addClass(["action", "close"]).
+                        addChildren(
+                            softtion.html("i").setText("chevron_left")
+                        ).tojQuery();
+                },
+                directive: ["$sidenav", function ($sidenav) {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            var buttonClose = 
+                                Material.components.Sidenav.buttonClose();
+                            
+                            $element.children(".content").append(buttonClose);
+                            
+                            buttonClose.on("click", function () {
+                                $sidenav.set($element).hide();
+                            });
+                        }
+                    };
+                }]
+            },
+            
             SidenavItem: {
                 name: "sidenavItem",
                 buttonAction: function () {
@@ -4771,6 +4837,7 @@
                             
                             if (options.exists()) {
                                 var list = options.children("ul");
+                                $element.addClass("optionable");
                                 
                                 detail.children("a").append(
                                     angular.element(
@@ -6570,172 +6637,179 @@
                 name: "$alert",
                 method: function () {
                         // Elementos
-                    var dialog = undefined, 
-                        backdrop = undefined,
-                        box = undefined, 
-                        title = undefined, 
-                        content = undefined,
-                        actions = undefined,
-                        positiveButton = undefined,
-                        negativeButton = undefined,
+                    var $dialog = undefined, 
+                        $backdrop = undefined,
+                        $title = undefined, 
+                        $content = undefined,
+                        $buttonPositive = undefined,
+                        $buttonNegative = undefined,
+                        
+                        // Proveedores
+                        $body = undefined,
+                        $scope = undefined,
                         
                         // Propiedades
-                        enabledBackdrop = false,
-                        positiveFunction = undefined,
-                        enabledNegative = true,
-                        negativeFunction = undefined;
+                        $enabledBackdrop = false,
+                        $fnPositive = undefined,
+                        $enabledNegative = true,
+                        $fnNegative = undefined;
                     
                     var Alert = function () {
                         var self = this; // Objeto Alert
 
-                        dialog = angular.element(
-                            softtion.html("div").addClass(["dialog", "alert"]).create()
-                        );
+                        $dialog = softtion.html("div").
+                            addClass(["dialog", "alert"]).tojQuery();
 
-                        backdrop = angular.element(
-                            softtion.html("div").addClass("backdrop").create()
-                        );
+                        $backdrop = softtion.html("div").
+                            addClass("backdrop").tojQuery();
 
-                        box = angular.element(
-                            softtion.html("div").addClass("box").create()
-                        );
+                        var box = softtion.html("div").
+                            addClass("box").tojQuery();
 
-                        title = angular.element(
-                            softtion.html("div").addClass("title").create()
-                        );
+                        $title = softtion.html("div").
+                            addClass("title").tojQuery();
 
-                        content = angular.element(
-                            softtion.html("div").addClass("content").create()
-                        );
+                        $content = softtion.html("div").
+                            addClass("content").tojQuery();
 
-                        actions = angular.element(
-                            softtion.html("div").addClass("actions").create()
-                        );
+                        var actions = softtion.html("div").
+                            addClass("actions").tojQuery();
 
-                        positiveButton = angular.element(
-                            softtion.html("button").addClass(["flat","positive"]).create()
-                        );
+                        $buttonPositive = softtion.html("button").
+                            addClass(["flat","positive"]).tojQuery();
 
-                        negativeButton = angular.element(
-                            softtion.html("button").addClass(["flat","negative"]).create()
-                        );
-
+                        $buttonNegative = softtion.html("button").
+                            addClass(["flat","negative"]).tojQuery();
                         
-                        box.append(title); box.append(content);
-                        box.append(actions);
-                        
-                        actions.append(positiveButton);
-                        actions.append(negativeButton);
-                        
-                        dialog.append(backdrop); dialog.append(box);
+                        box.append($title); box.append($content); box.append(actions);
+                        actions.append($buttonPositive); actions.append($buttonNegative);
+                        $dialog.append($backdrop); $dialog.append(box);
 
-                        backdrop.click(function () { 
-                            if (enabledBackdrop) { self.hide(); } // Cerrando Dialog 
+                        $backdrop.on("click", function () { 
+                            if ($enabledBackdrop) { self.hide(); } // Cerrando 
                         });
 
-                        positiveButton.click(function () { 
+                        $buttonPositive.on("click", function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.isFunction(positiveFunction)) {
-                                positiveFunction(); 
+                            if (softtion.isFunction($fnPositive)) {
+                                $scope.$apply(function () { $fnPositive(); });
                             } // Se establecío función para proceso Positivo
                         });
 
-                        negativeButton.click(function () { 
+                        $buttonNegative.on("click", function () { 
                             self.hide(); // Ocultado el modal
 
-                            if (softtion.isFunction(negativeFunction)) {
-                                negativeFunction(); 
+                            if (softtion.isFunction($fnNegative)) {
+                                $scope.$apply(function () { $fnNegative(); });
                             } // Se establecío función para proceso Negativo
                         });
-
-                        angular.element(document.body).append(dialog);
+                        //$bodyElement.append($dialog); // Agregando Alert
                     };
 
-                    Alert.prototype.title = function (title) {
+                    Alert.prototype.setTitle = function (title) {
                         if (softtion.isString(title)) {
-                            title.html(title); title.removeClass("hidden");
+                            $title.html(title); $title.removeClass("hidden");
                         } else {
-                            title.addClass("hidden");
-                        }
+                            $title.addClass("hidden");
+                        } // Titulo definido no es una cadena
                         
                         return this; // Retornando interfaz fluida
                     };
 
-                    Alert.prototype.content = function (content) {
-                        content.html(content); return this;
+                    Alert.prototype.setContent = function (content) {
+                        $content.html(content); return this;
                     };
 
-                    Alert.prototype.positiveLabel = function (label) {
-                        positiveButton.html(label); return this;
+                    Alert.prototype.setLabelPositive = function (label) {
+                        $buttonPositive.html(label); return this;
                     };
 
-                    Alert.prototype.negativeLabel = function (label) {
-                        negativeButton.html(label); return this;
+                    Alert.prototype.setLabelNegative = function (label) {
+                        $buttonNegative.html(label); return this;
                     };
                     
-                    Alert.prototype.negativeEnabled = function (enabled) {
-                        enabledNegative = enabled; return this;
+                    Alert.prototype.isEnabledNegative = function (enabled) {
+                        $enabledNegative = enabled; return this;
                     };
 
-                    Alert.prototype.backdropEnabled = function (enabled) {
-                        enabledBackdrop = enabled; return this;
+                    Alert.prototype.isEnabledBackdrop = function (enabled) {
+                        $enabledBackdrop = enabled; return this;
                     };
 
-                    Alert.prototype.positiveFunction = function (functionPositive) {
-                        positiveFunction = functionPositive; return this;
+                    Alert.prototype.setFunctionPositive = function (fnPositive) {
+                        $fnPositive = fnPositive; return this;
                     };
 
-                    Alert.prototype.negativeFunction = function (functionNegative) {
-                        negativeFunction = functionNegative; return this;
+                    Alert.prototype.setFunctionNegative = function (fnNegative) {
+                        $fnNegative = fnNegative; return this;
                     };
 
-                    Alert.prototype.settings = function (options) {
+                    Alert.prototype.setSettings = function (options) {
                         var defaults = {
                             title: "", content: "",
-                            positiveLabel: "Aceptar",
-                            negativeLabel: "Cancelar",
+                            labelNegative: "Cancelar",
+                            labelPositive: "Aceptar",
+                            enabledNegative: true,
                             enabledBackdrop: false,
-                            positiveFunction: undefined,
-                            negativeFunction: undefined
+                            functionPositive: undefined,
+                            functionNegative: undefined
                         };
                         
                         angular.extend(defaults, options); 
                         
-                        this.enabledBackdrop(defaults.enabledBackdrop);
-                        this.title(defaults.title); this.content(defaults.content);
-                        this.positiveLabel(defaults.positiveLabel);
-                        this.negativeLabel(defaults.negativeLabel);
-                        this.positiveFunction(defaults.positiveFunction);
-                        this.negativeFunction(defaults.negativeFunction);
+                        this.isEnabledBackdrop(defaults.enabledBackdrop);
+                        this.isEnabledNegative(defaults.enabledNegative);
+                        this.setTitle(defaults.title);
+                        this.setContent(defaults.content);
+                        this.setLabelPositive(defaults.labelPositive);
+                        this.setLabelNegative(defaults.labelNegative);
+                        this.setFunctionPositive(defaults.functionPositive);
+                        this.setFunctionNegative(defaults.functionNegative);
 
                         return this; // Retornando interfaz fluida
                     };
 
                     Alert.prototype.show = function () {
-                        if (!dialog.hasClass("active")) {
-                            angular.element(document.body).addClass("body-overflow-none");
+                        if (!$dialog.hasClass("show")) {
+                            $body.addClass("body-overflow-none");
                             
-                            (enabledNegative) ?
-                                negativeButton.removeClass("hidden") :
-                                negativeButton.addClass("hidden");
+                            ($enabledNegative) ?
+                                $buttonNegative.removeClass("hidden") :
+                                $buttonNegative.addClass("hidden");
                             
-                            dialog.addClass("active"); box.addClass("show");
-                        } // Dialog no se encuentra activo
+                            $dialog.addClass("show");
+                        } // Dialog no se encuentra visible en la Aplicación
                     };
 
                     Alert.prototype.hide = function () {
-                        if (dialog.hasClass("active")) {
-                            angular.element(document.body).removeClass("body-overflow-none");
-                            dialog.removeClass("active"); box.removeClass("show");
-                        } // Dialog se encuentra activo
+                        if ($dialog.hasClass("show")) {
+                            $body.removeClass("body-overflow-none");
+                            $dialog.removeClass("show"); 
+                        } // Dialog se encuentra visible en la Aplicación
                     };
                     
-                    var alert = new Alert();
+                    var alertProvider = new Alert();
                     
-                    this.get = function () { return alert; };
+                    this.get = function () { return alertProvider; };
                     
-                    this.$get = function () { return alert; };
+                    var fnProvider = function ($bodyElement, $rootScope) { 
+                        $bodyElement.append($dialog); // Dialog
+                        $body = $bodyElement; $scope = $rootScope; 
+                        
+                        return alertProvider; // Retornando Proveedor
+                    };
+                    
+                    this.$get = ["$body", "$rootScope", fnProvider];
+                }
+            },
+            
+            Body: {
+                name: "$body",
+                method: function () {
+                    var $body = angular.element(document.body);
+                    
+                    this.$get = function () { return $body; };
                 }
             },
             
@@ -6743,6 +6817,7 @@
                 name: "$bottomSheet",
                 method: function () {
                     var bottomSheet = undefined, 
+                        $body = undefined,
                         content = undefined, 
                         backdrop = undefined;
                     
@@ -6767,57 +6842,47 @@
                     
                     BottomSheet.prototype.show = function () {
                         executeIfExists(bottomSheet, function () {
-                            if (bottomSheet.exists()) {
-                                var appContent = bottomSheet.parents(".app-content");
+                            if (bottomSheet.exists() && !bottomSheet.hasClass("show")) {
+                                var appContent = bottomSheet.parents(".app-content"),
+                                    isInAppcontent = (appContent.exists()),
+                                    container = (isInAppcontent) ? appContent : $body;
 
-                                var isInAppcontent = (appContent.exists()),
-                                    container = (isInAppcontent) ? appContent :  
-                                        angular.element(document.body);
+                                container.addClass("overflow-none");
 
-                                if (!bottomSheet.hasClass("active")) {
-                                    container.addClass("overflow-none");
-
-                                    if (isInAppcontent) {
-                                        content.addClass("show");
-                                    } else {
-                                        content.addClass("show-content");
-                                        content.css("margin-bottom", container.scrollTop());
-                                    } // Componente no se encuentra en AppContent
-
-                                    bottomSheet.addClass("active"); 
-                                } // BottomSheet no se encuentra activo
-                            }
+                                if (isInAppcontent) {
+                                    bottomSheet.addClass("show");
+                                } else {
+                                    bottomSheet.addClass("show-content");
+                                    content.css("margin-bottom", container.scrollTop());
+                                } // Componente no se encuentra en AppContent
+                            } // BottomSheet existe, no se encuentra activo
                         });
                     };
 
                     BottomSheet.prototype.hide = function () {
                         executeIfExists(bottomSheet, function () {
-                            if (bottomSheet.exists()) {
-                                var appContent = bottomSheet.parents(".app-content");
-
-                                var isInAppcontent = (appContent.exists()),
-                                    container = (isInAppcontent) ? appContent :  
-                                        angular.element(document.body);
-
-                                if (bottomSheet.hasClass("active")) {
+                            if (bottomSheet.exists() && (bottomSheet.hasClass("show")
+                                    || bottomSheet.hasClass("show-content"))) {
+                                var appContent = bottomSheet.parents(".app-content"),
+                                    isInAppcontent = (appContent.exists()),
+                                    container = (isInAppcontent) ? appContent : $body;
                                     container.removeClass("overflow-none");
 
-                                    (!isInAppcontent) ? 
-                                        content.removeClass("show-content") :
-                                        content.removeClass("show");
+                                (!isInAppcontent) ? 
+                                    bottomSheet.removeClass("show-content") :
+                                    bottomSheet.removeClass("show");
 
-                                    var marginBottom = content.outerHeight();
-                                    content.css("margin-bottom", (marginBottom * -1) - 1);
-
-                                    bottomSheet.removeClass("active"); 
-                                } // BottomSheet se encuentra activo
-                            }
+                                var marginBottom = content.outerHeight();
+                                content.css("margin-bottom", (marginBottom * -1) - 1);
+                            } // BottomSheet existe, se encuentra activo
                         });
                     };
                     
                     var bottomSheetProvider = new BottomSheet();
 
-                    this.$get = function () { return bottomSheetProvider; };
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return bottomSheetProvider; 
+                    }];
                     
                     this.get = function () { return bottomSheetProvider; };
                 }
@@ -7537,7 +7602,7 @@
                 name: "$sidenav",
                 method: function () {
                     var sidenav = undefined,
-                        content = undefined,
+                        $body = undefined,
                         backdrop = undefined;
                 
                     var SideNav = function () { };
@@ -7549,7 +7614,6 @@
                         
                         executeIfExists(sidenav, function () {
                             if (sidenav.exists()) {
-                                content = sidenav.children(".content:first");
                                 backdrop = sidenav.children(".backdrop");
 
                                 if (!backdrop.exists()) {
@@ -7568,41 +7632,27 @@
 
                     SideNav.prototype.show = function () {
                         executeIfExists(sidenav, function () {
-                            if (!sidenav.hasClass("active")) {
-                                var $body = angular.element(document.body);
-
-                                $body.addClass("body-overflow-none"); // Body no scroll
-
-                                content.removeClass("hide").addClass("show");
-                                sidenav.addClass("active"); // Se activa el Sidenav
-
-                                if (sidenav.hasClass("persistent")) {
-                                    $body.addClass("sidenav-persistent");
-                                } // Componente es persistente en el documento
+                            if (!sidenav.hasClass("show")) {
+                                $body.addClass("body-overflow-none"); // No scroll
+                                sidenav.removeClass("hide").addClass("show");
                             } // Sidenav no se encuentra activo
                         });
                     };
 
                     SideNav.prototype.hide = function () {
                         executeIfExists(sidenav, function () {
-                            if (sidenav.hasClass("active")) {
-                                var $body = angular.element(document.body);
-
-                                $body.removeClass("body-overflow-none"); // Body scroll
-
-                                content.removeClass("show").addClass("hide");
-                                sidenav.removeClass("active"); // Se desactiva el Sidenav
-
-                                if (content.hasClass("persistent")) {
-                                    $body.removeClass("sidenav-persistent");
-                                } // Componente es persistente en el documento
+                            if (sidenav.hasClass("show")) {
+                                $body.removeClass("body-overflow-none"); // Scroll
+                                sidenav.removeClass("show").addClass("hide");
                             } // Sidenav no se encuentra activo
                         });
                     };
                     
                     var sidenavProvider = new SideNav();
 
-                    this.$get = function () { return sidenavProvider; };
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return sidenavProvider; 
+                    }];
                     
                     this.get = function () { return sidenavProvider; };
                 }
@@ -7722,11 +7772,11 @@
                     
                     this.get = function () { return snackbar; };
                     
-                    var providerSnackbar = function ($rootScope, SofttionMaterial) { 
+                    var fnProvider = function ($rootScope, SofttionMaterial) { 
                         Softtion = SofttionMaterial; $scope = $rootScope; return snackbar; 
                     };
                     
-                    this.$get = ["$rootScope", "SofttionMaterial", providerSnackbar];
+                    this.$get = ["$rootScope", "SofttionMaterial", fnProvider];
                 }
             },
             
