@@ -170,6 +170,12 @@ body.dark {
 .app-bar.theme-secondary {
     background-color: var(--theme-secondary-background-dark); }
 
+.app-bar.flat {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.dark .app-bar.flat {
+    border-bottom: 1px solid var(--dark-background-border); }
+
 /** AUTOCOMPLETE */
 
 .autocomplete > .content > label {

@@ -2122,7 +2122,7 @@
                     
                     return dialog.create(); // Componente DatepickerDialog
                 },
-                directive: function () {
+                directive: ["$body", function ($body) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.ClockpickerDialog.route,
@@ -2136,8 +2136,6 @@
                             cancelEvent: "&?"
                         },
                         link: function ($scope, $element) {
-                            var $body = angular.element(document.body);
-                            
                             if (softtion.isString($scope.parent)) {
                                 var parent = angular.element($scope.parent);
                                 
@@ -2171,7 +2169,7 @@
                             };
                         }
                     };
-                }
+                }]
             },
             
             ClockpickerInput: {
@@ -2963,7 +2961,7 @@
                     
                     return dialog.create(); // Componente DatepickerDialog
                 },
-                directive: function () {
+                directive: ["$body", function ($body) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.DatepickerDialog.route,
@@ -2981,8 +2979,6 @@
                             cancelEvent: "&?"
                         },
                         link: function ($scope, $element) {
-                            var $body = angular.element(document.body);
-                            
                             if (softtion.isString($scope.parent)) {
                                 var parent = angular.element($scope.parent);
                                 
@@ -3022,7 +3018,7 @@
                             };
                         }
                     };
-                }
+                }]
             },
             
             DatepickerInput: {
@@ -3673,14 +3669,13 @@
             
             FabMenu: {
                 name: "fabMenu",
-                directive: function () {
+                directive: ["$body", function ($body) {
                     return {
                         restrict: "C", 
                         link: function ($scope, $element) {
                             var button = $element.find(".button-floating"),
                                 box = $element.children(".box"),
-                                backdrop = $element.children(".backdrop"),
-                                $body = angular.element(document.body);
+                                backdrop = $element.children(".backdrop");
                         
                             $element.attr("tab-index", "-1"); // Enfocable
                                                     
@@ -3707,23 +3702,23 @@
                             });
                         }
                     };
-                }
+                }]
             },
             
             FabMenuArc: {
                 name: "fabMenuArc",
-                directive: function () {
+                directive: ["$body", function ($body) {
                     return {
                         restrict: "C", 
                         link: function ($scope, $element) {
                             var button = $element.find(".button-floating"),
                                 box = $element.children(".box"),
-                                backdrop = angular.element(".backdrop.fab-backdrop"),
-                                $body = angular.element(document.body);
+                                backdrop = angular.element(".backdrop.fab-backdrop");
                                                     
                             if (!backdrop.exists()) {
                                 backdrop = angular.element(
-                                    softtion.html("div").addClass(["backdrop", "fab-backdrop"]).create()
+                                    softtion.html("div").
+                                        addClass(["backdrop", "fab-backdrop"]).create()
                                 );
                         
                                 $body.append(backdrop); // Agregando backdrop 
@@ -3749,7 +3744,7 @@
                             });
                         }
                     };
-                }
+                }]
             },
             
             FabSpeedDial: {
@@ -4795,23 +4790,19 @@
             
             Sidenav: {
                 name: "sidenav",
-                buttonClose: function () {
-                    return softtion.html("button").
-                        addClass(["action", "close"]).
-                        addChildren(
-                            softtion.html("i").setText("chevron_left")
-                        ).tojQuery();
-                },
                 directive: ["$sidenav", function ($sidenav) {
                     return {
                         restrict: "C",
                         link: function ($scope, $element) {
-                            var buttonClose = 
-                                Material.components.Sidenav.buttonClose();
+                            var buttonClose = softtion.html("button").
+                                addClass(["action", "close"]).
+                                addChildren(
+                                    softtion.html("i").setText("chevron_left")
+                                ).tojQuery();
                             
                             $element.children(".content").append(buttonClose);
                             
-                            buttonClose.on("click", function () {
+                            buttonClose.on("click.hide-sidenav", function () {
                                 $sidenav.set($element).hide();
                             });
                         }
@@ -4988,7 +4979,7 @@
                                     }
                                 }); // Evento arrastre en el componente
                                 
-                                tabs.click(function ($event) {
+                                tabs.on("click.tabs", function ($event) {
                                     if (!clickActive) {
                                         clickActive = true; return;
                                     } // Se realizo un arrastre
@@ -6499,19 +6490,18 @@
                             softtion.html("p")
                         ).create();
                 },
-                directive: function () {
+                directive: ["$body", function ($body) {
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
                             var handler = Material.components.Tooltip,
-                                body = angular.element(document.body),
-                                container = body.find(".tooltip-container"),
+                                container = $body.find(".tooltip-container"),
                                 $window = angular.element(window);
                             
                             if (!container.exists()) {
                                 container = angular.element(handler.container());
                         
-                                body.append(container); // Agregando contenedor
+                                $body.append(container); // Agregando contenedor
                             } // Contenedor tooltip no se encuentra creado en el documento
                             
                             var tooltip = angular.element(handler.element());
@@ -6538,7 +6528,7 @@
                             $element.on("mouseout", function () { tooltip.removeClass("show"); });
                         }
                     };
-                }
+                }]
             },
             
             ViewsTabs: {
@@ -6563,8 +6553,8 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function () {
-                                $bottomSheet.set($attrs.bottomNavigation).show();
+                            $element.on("click", function () {
+                                $bottomSheet.set($attrs.bottomSheet).show();
                             });
                         }
                     };
@@ -6591,12 +6581,16 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            var disabledAutoclose = softtion.parseBoolean($attrs.disabledAutoclose);
+                            var disabledAutoclose = 
+                                $scope.$eval($attrs.disabledAutoclose);
                             
-                            $element.click(function (event) {
-                                $dropdown.set($attrs.dropdown).show($element, !disabledAutoclose);
+                            $element.on("click", function (event) {
+                                $dropdown.set($attrs.dropdown).
+                                    show($element, !disabledAutoclose);
                                 
-                                if (!disabledAutoclose) { event.stopPropagation(); }
+                                if (!disabledAutoclose) { 
+                                    event.stopPropagation(); 
+                                } // Desactivar Autocerrado
                             });
                         }
                     };
@@ -6609,7 +6603,7 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function () {
+                            $element.on("click", function () {
                                 $formNavigation.set($attrs.formNavigation).show();
                             });
                         }
@@ -6623,7 +6617,7 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            $element.click(function () {
+                            $element.on("click", function () {
                                 $sidenav.set($attrs.sidenav).show();
                             });
                         }
@@ -6842,7 +6836,7 @@
                     
                     BottomSheet.prototype.show = function () {
                         executeIfExists(bottomSheet, function () {
-                            if (bottomSheet.exists() && !bottomSheet.hasClass("show")) {
+                            if (!bottomSheet.hasClass("show")) {
                                 var appContent = bottomSheet.parents(".app-content"),
                                     isInAppcontent = (appContent.exists()),
                                     container = (isInAppcontent) ? appContent : $body;
@@ -6861,8 +6855,9 @@
 
                     BottomSheet.prototype.hide = function () {
                         executeIfExists(bottomSheet, function () {
-                            if (bottomSheet.exists() && (bottomSheet.hasClass("show")
-                                    || bottomSheet.hasClass("show-content"))) {
+                            if ((bottomSheet.hasClass("show") || 
+                                bottomSheet.hasClass("show-content"))) {
+                            
                                 var appContent = bottomSheet.parents(".app-content"),
                                     isInAppcontent = (appContent.exists()),
                                     container = (isInAppcontent) ? appContent : $body;
@@ -6893,6 +6888,7 @@
                 method: function () {
                     var dialog = undefined,
                         box = undefined,
+                        $body = undefined,
                         backdrop = undefined,
                         persistent = false;
                     
@@ -6927,28 +6923,19 @@
 
                     Dialog.prototype.show = function (isPersistent) {
                         executeIfExists(dialog, function () {
-                            if (!dialog.hasClass("active")) {
+                            if (!dialog.hasClass("show")) {
                                 persistent = isPersistent;
-
-                                var $body = angular.element(document.body);
-
-                                $body.addClass("body-overflow-none"); // Body no scroll
-
-                                box.removeClass("hide").addClass("show");
-                                dialog.addClass("active"); // Se activa el Dialog
+                                $body.addClass("body-overflow-none"); 
+                                dialog.addClass("show"); // No scroll
                             } // Dialog no se encuentra activo
                         });
                     };
 
                     Dialog.prototype.hide = function () {
                         executeIfExists(dialog, function () {
-                            if (dialog.hasClass("active")) {
-                                var $body = angular.element(document.body);
-
-                                $body.removeClass("body-overflow-none"); // Body scroll
-
-                                box.removeClass("show").addClass("hide");
-                                dialog.removeClass("active"); // Se desactiva el Dialog
+                            if (dialog.hasClass("show")) {
+                                $body.removeClass("body-overflow-none"); 
+                                dialog.removeClass("show"); // Scroll
                             } // Dialog se encuentra activo
                         });
                     };
@@ -6957,7 +6944,9 @@
                     
                     this.get = function () { return dialog; };
 
-                    this.$get = function () { return dialog; };
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return dialog; 
+                    }];
                 }
             },
             
@@ -7181,6 +7170,7 @@
                 },
                 method: function () {
                     var belowOrigin = true, 
+                        $body = undefined,
                         dropdown = undefined, 
                         origin = undefined;
                     
@@ -7216,10 +7206,8 @@
                             }); 
                             
                             if (autoclose) {
-                                var $body = angular.element(document.body); // Documento
-                                
-                                $body.on(nameEvent, function (event) {
-                                    if (dropdown.find(event.target).length === 0) {
+                                $body.on(nameEvent, function ($event) {
+                                    if (dropdown.find($event.target).length === 0) {
                                         self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
@@ -7237,10 +7225,8 @@
                             }, left, top); 
                             
                             if (autoclose) {
-                                var $body = angular.element(document.body); // Documento
-                                
-                                $body.on(nameEvent, function (ev) {
-                                    if (dropdown.find(ev.target).length === 0) {
+                                $body.on(nameEvent, function ($event) {
+                                    if (dropdown.find($event.target).length === 0) {
                                         self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
                                 });
@@ -7256,7 +7242,9 @@
                     
                     var dropdownProvider = new Dropdown();
 
-                    this.$get = function () { return dropdownProvider; };
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return dropdownProvider;
+                    }];
                     
                     this.get = function () { return dropdownProvider; };
                 }
@@ -7265,9 +7253,9 @@
             FormNavigation: {
                 name: "$formNavigation",
                 method: function () {
-                    var form = undefined,
-                        backdrop = undefined, 
-                        content = undefined;
+                    var $body = undefined,
+                        form = undefined,
+                        backdrop = undefined;
                     
                     var FormNavigation = function () {};
 
@@ -7279,7 +7267,6 @@
                         executeIfExists(form, function () {
                             if (form.exists()) {
                                 backdrop = form.children(".backdrop");
-                                content = form.children(".content");
 
                                 if (!backdrop.exists()) {
                                     backdrop = angular.element(
@@ -7299,31 +7286,27 @@
 
                     FormNavigation.prototype.show = function () {
                         executeIfExists(form, function () {
-                            if (form.exists() && !form.hasClass("active")) {
-                                var $body = angular.element(document.body);
-
-                                content.removeClass("sharp-curve").removeClass("hide");
-                                $body.addClass("body-overflow-none"); form.addClass("active"); 
-                                content.addClass("easing-out").addClass("show");
+                            if (!form.hasClass("show")) {
+                                $body.addClass("body-overflow-none"); 
+                                form.removeClass("hide").addClass("show"); 
                             } // FormNavigation no se encuentra activo
                         });
                     };
 
                     FormNavigation.prototype.hide = function () {
                         executeIfExists(form, function () {
-                            if (form.exists() && form.hasClass("active")) {
-                                var $body = angular.element(document.body);
-
-                                content.removeClass("easing-out").removeClass("show");
-                                form.removeClass("active"); $body.removeClass("body-overflow-none");
-                                content.addClass("hide").addClass("sharp-curve");
+                            if (form.hasClass("show")) {
+                                $body.removeClass("body-overflow-none");
+                                form.removeClass("show").addClass("hide"); 
                             } // FormNavigation se encuentra activo
                         });
                     };
                     
                     var formNavigationProvider = new FormNavigation();
 
-                    this.$get = function () { return formNavigationProvider; };
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return formNavigationProvider; 
+                    }];
                     
                     this.get = function () { return formNavigationProvider; };
                 }

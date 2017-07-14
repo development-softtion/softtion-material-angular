@@ -959,6 +959,9 @@ input[type=number]::-webkit-outer-spin-button {
     z-index: 8;
     box-shadow: var(--shadow-2); }
 
+.app-bar.flat {
+    box-shadow: none; }
+
 /** APP BODY */
 
 .app-body {
@@ -1869,7 +1872,7 @@ button.raised:focus:after, button.flat:focus:after {
         display: block; }
 }
 
-@media only screen and (min-width : 721px) {
+@media only screen and (min-width : 721px) and (max-width : 960px) {
     
     .sidenav.persistent.show ~ .app-body .calendar button.action.hide,
     .sidenav.persistent.show ~ .app-body .calendar .actions.hide {
@@ -1944,7 +1947,7 @@ button.raised:focus:after, button.flat:focus:after {
         padding-bottom: 8px; }
 }
 
-@media only screen and (min-width : 721px) {
+@media only screen and (min-width : 721px) and (max-width : 960px) {
 
     .sidenav.persistent.show ~ .app-body .calendar > .content.hide {
         height: 0px; 
@@ -2044,7 +2047,7 @@ button.raised:focus:after, button.flat:focus:after {
         display: none; }
 }
 
-@media only screen and (min-width : 721px) {
+@media only screen and (min-width : 721px) and (max-width : 960px) {
     
     .sidenav.persistent.show ~ .app-body .calendar .week .event {
         display: none; }
@@ -2126,9 +2129,9 @@ button.raised:focus:after, button.flat:focus:after {
         display: none; }
 }
  
-@media only screen and (min-width : 721px) {
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
     .sidenav.persistent.show ~ .app-body .calendar > .list-events {
-        
         display: block; }
 }
 
@@ -2136,6 +2139,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card {
     position: relative;
+    display: table;
     float: left;
     margin-bottom: 8px;
     border-radius: 2px;
@@ -4907,7 +4911,7 @@ button.raised:focus:after, button.flat:focus:after {
     -o-transition: opacity 0.3s var(--easing-in);
     -ms-transition: opacity 0.3s var(--easing-in); }
 
-.form-navigation.active > .backdrop {
+.form-navigation.show > .backdrop {
     bottom: 0;
     opacity: 1; }
 
@@ -4929,18 +4933,25 @@ button.raised:focus:after, button.flat:focus:after {
 .form-navigation.x200 > .content {
     max-width: 480px; }
 
-.form-navigation > .content.show {
+.form-navigation.show > .content {
     right: 0%; }
 
-.form-navigation > .content.hide {
+.form-navigation.hide > .content {
     right: -105%; }
 
-.form-navigation > .content.show, .form-navigation > .content.hide {
-    -moz-transition: right 0.3s var(--standard-curve); 
-    -webkit-transition: right 0.3s var(--standard-curve); 
-    -o-transition: right 0.3s var(--standard-curve); 
-    transition: right 0.3s var(--standard-curve); 
-    -ms-transition: right 0.3s var(--standard-curve); }
+.form-navigation.show > .content {
+    -moz-transition: right 0.3s var(--easing-out); 
+    -webkit-transition: right 0.3s var(--easing-out); 
+    -o-transition: right 0.3s var(--easing-out); 
+    transition: right 0.3s var(--easing-out); 
+    -ms-transition: right 0.3s var(--easing-out); }
+
+.form-navigation.hide > .content {
+    -moz-transition: right 0.3s var(--easing-in); 
+    -webkit-transition: right 0.3s var(--easing-in); 
+    -o-transition: right 0.3s var(--easing-in); 
+    transition: right 0.3s var(--easing-in); 
+    -ms-transition: right 0.3s var(--easing-in); }
 
 /** FULLWIDTH FIELD */
 
@@ -5914,25 +5925,32 @@ button.raised:focus:after, button.flat:focus:after {
 
 .search-box {
     position: relative;
+    display: flex;
     float: left;
     width: 100%;
     height: 48px;
     border-radius: 2px;
-    box-shadow: var(--shadow-1); }
+    box-shadow: var(--shadow-1);
+    box-sizing: border-box; }
 
 .app-bar > .search-box {
     width: calc(100% - 16px);
     margin: 8px;
+    box-shadow: none;
     -moz-transition: all 0.525s var(--easing-out);
     -webkit-transition: all 0.525s var(--easing-out);
     transition: all 0.525s var(--easing-out);
     -o-transition: all 0.525s var(--easing-out);
     -ms-transition: all 0.525s var(--easing-out); }
 
+.app-bar.flat > .search-box {
+    box-shadow: var(--shadow-1); }
+
 .app-bar.hide > .search-box:first-child {
     margin-top: -56px; }
 
 @media only screen and (min-width : 961px) {
+    
     .app-bar > .search-box {
         margin: 12px 8px; }
 
@@ -5955,25 +5973,18 @@ button.raised:focus:after, button.flat:focus:after {
 
 .search-box > input {
     width: 100%;
-    float: left;
-    height: 48px; 
-    padding: 8px;
-    float: left;
+    height: 32px; 
+    margin: 8px;
     font-size: 16px;
     font-weight: 500;
     border: none;
     outline: none;
     box-sizing: border-box; }
 
-.search-box > .nav-icon ~ input {
-    width: calc(100% - 56px); }
-
 .search-box > .actions {
-    position: absolute;
     display: flex;
     margin: 0px;
     padding: 0px;
-    right: 0px;
     min-height: inherit;
     max-height: inherit;
     line-height: inherit; }
@@ -5985,9 +5996,6 @@ button.raised:focus:after, button.flat:focus:after {
 
 .search-box > .actions > button.action:nth-child(n + 3) {
     display: none; }
-
-.search-box > .actions ~ input {
-    padding-right: 90px; }
 
 /** SELECT */
 
@@ -8136,7 +8144,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     min-height: inherit; 
     max-height: inherit; 
     cursor: pointer;
-    float: left;
     line-height: inherit;
     margin: 0px 16px 0px 4px; }
 
@@ -8195,11 +8202,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: 20px; }
 
 .toolbar > .detail {
+    width: 100%;
     margin: 0px;
     margin-left: 16px;
     min-height: inherit; 
     max-height: inherit; 
-    float: left;
     line-height: inherit; }
 
 .toolbar > .detail > .title, .toolbar > .detail > .subtitle {
@@ -8229,8 +8236,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     display: none; }
 
 .toolbar > .actions {
-    width: 100%;
-    overflow: hidden;
+    display: flex;
     padding: 0px;
     margin: 0px;
     margin-right: 4px;
@@ -8239,7 +8245,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     line-height: inherit; }
 
 .toolbar > .actions > button.action {
-    float: right;
     padding: 16px 12px;
     box-sizing: content-box;
     margin-right: 1px; }
