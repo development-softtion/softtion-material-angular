@@ -1193,12 +1193,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
 
-.datatable > .header > .search-box {
-    border: 1px solid var(--light-background-border); }
-
-.dark .datatable > .header > .search-box {
-    border: 1px solid var(--dark-background-border); }
-
 .datatable > .content > table {
     background: var(--light-background-component); }
 
@@ -1956,6 +1950,24 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .search-box {
     background-color: var(--dark-background-component); }
+
+.datatable > .header > .search-box {
+    border: 1px solid var(--light-background-border); }
+
+.dark .datatable > .header > .search-box {
+    border: 1px solid var(--dark-background-border); }
+
+.app-bar.floating > .search-box {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.dark .app-bar.floating > .search-box {
+    border-bottom: 1px solid var(--dark-background-border); }
+
+.app-bar.floating > .tabs + .search-box {
+    border-bottom: none; }
+
+.app-bar.floating.hide > .search-box:first-child {
+    border-bottom: none; }
 
 .search-box > input {
     background-color: transparent; }

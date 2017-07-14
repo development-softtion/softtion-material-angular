@@ -95,19 +95,16 @@
                                 sidenav = appBody.children(".sidenav"),
                                 contentNav = sidenav.children(".content"),
                                 $window = angular.element(window),
-                                toolbar = $element.children(".toolbar"),
                                 
                                 // Atributos
                                 position = 0, hideClass = "hide",
-                                heightElement = $element.innerHeight();
+                                heightElement = (!$element.hasClass("floating")) ?
+                                    $element.innerHeight() : $element.outerHeight(true);
                             
                             if (!$scope.fixed) {
                                 appContent.scroll(function () {
                                     var heightMin = (($window.width() > 960) ? 64 : 56),
                                         positionNew = appContent.scrollTop();
-
-                                    hideClass = toolbar.hasClass("flexible-title") ? 
-                                        "hide-flexible-title" : "hide";
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
@@ -681,6 +678,18 @@
                             content.css("max-height", "calc(100% - " + $scope.marginTop + ")");
                             
                             content.addClass("start"); // Componente inicializado
+                        }
+                    };
+                }
+            },
+            
+            Breadcrumb: {
+                name: "breadcrumb",
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        link: function ($scope, $element) {
+                            $element.displaceLeft();
                         }
                     };
                 }
@@ -1260,7 +1269,8 @@
                             "ng-class", "{active: slideActive($index), before: slideBefore($index), after: slideAfter($index)}"
                         ).
                         addChildren(
-                            softtion.html("img", false).addAttribute("ng-src", "{{slide.img}}")
+                            softtion.html("img", false).addClass("center").
+                                addAttribute("ng-src", "{{slide.img}}")
                         );
 
                     content.addChildren(
@@ -3227,38 +3237,29 @@
                 }
             },
             
-            ImgMaterial: {
-                name: "imgMaterial",
-                directive: function () {
+            Img: {
+                name: "img",
+                directive: ["$fnMaterial", function ($fnMaterial) {
                     return {
-                        restrict: "C",
+                        restrict: "E",
+                        scope: {
+                            disabledResponsive: "=?"
+                        },
                         link: function ($scope, $element) {
-                            var height = $element[0].naturalHeight,
-                                width = $element[0].naturalWidth;
+                            if ($scope.disabledResponsive) { return; }
                             
-                            function setDensity(width, height) {
-                                var density = height / width; // Calculando
-                                    
-                                (density > 1) ?
-                                    $element.addClass("density-height") :
-                                    $element.addClass("density-width");
+                            var defineDensity = function () {
+                                var height = $element[0].naturalHeight,
+                                    width = $element[0].naturalWidth;
                             
-                                $element.addClass("active"); // Activando
+                                $fnMaterial.setDensity($element, width, height);
                             };
                             
-                            if (width > 0) {
-                                setDensity(width, height);
-                            } else {
-                                $element.on("load", function () {
-                                    var height = $element[0].naturalHeight,
-                                        width = $element[0].naturalWidth;
-
-                                    setDensity(width, height); // Cargando
-                                });
-                            }
+                            ($element[0].complete) ? defineDensity() :
+                                $element.on("load", function () { defineDensity(); });
                         }
                     };
-                }
+                }]
             },
             
             Filechooser: {
@@ -3302,7 +3303,7 @@
                                                                 addAttribute("ng-bind-html", "getIconComponent(file.type)").
                                                                 addAttribute("ng-if", "!isImageFile(file.type)")
                                                         ).addChildren(
-                                                            softtion.html("img", false).addClass(["img-material"]).
+                                                            softtion.html("img", false).addClass("center").
                                                                 addAttribute("ng-src", "{{file.base64}}").
                                                                 addAttribute("ng-if", "isImageFile(file.type)")
                                                         )
@@ -3483,7 +3484,7 @@
                                                             addAttribute("ng-bind-html", "getIconComponent(file.type)").
                                                             addAttribute("ng-if", "!isImageFile(file.type)")
                                                         ).addChildren(
-                                                            softtion.html("img", false).addClass(["img-material"]).
+                                                            softtion.html("img", false).addClass("center").
                                                             addAttribute("ng-src", "{{file.base64}}").
                                                             addAttribute("ng-if", "isImageFile(file.type)")
                                                         )
@@ -8465,6 +8466,20 @@
             
             isInstance: function (object) {
                 return (object instanceof ManagerCalendar);
+            }
+        };
+    });
+    
+    ngMaterial.service("$fnMaterial", function () {
+        return {
+            setDensity: function ($element, width, height) {
+                var density = height / width; // Calculando
+
+                (density > 1) ?
+                    $element.addClass("density-height") :
+                    $element.addClass("density-width");
+
+                $element.addClass("active"); // Activando
             }
         };
     });
