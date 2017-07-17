@@ -3237,31 +3237,6 @@
                 }
             },
             
-            Img: {
-                name: "img",
-                directive: ["$fnMaterial", function ($fnMaterial) {
-                    return {
-                        restrict: "E",
-                        scope: {
-                            disabledResponsive: "=?"
-                        },
-                        link: function ($scope, $element) {
-                            if ($scope.disabledResponsive) { return; }
-                            
-                            var defineDensity = function () {
-                                var height = $element[0].naturalHeight,
-                                    width = $element[0].naturalWidth;
-                            
-                                $fnMaterial.setDensity($element, width, height);
-                            };
-                            
-                            ($element[0].complete) ? defineDensity() :
-                                $element.on("load", function () { defineDensity(); });
-                        }
-                    };
-                }]
-            },
-            
             Filechooser: {
                 route: "softtion/template/filechooser.html",
                 name: "filechooser",
@@ -3503,7 +3478,7 @@
                                     )
                             );
                     
-                    return input + content + actionAdd;
+                    return input + content + actionAdd; // Componente FileChooser Multiple
                 },
                 directive: ["$timeout", "SofttionMaterial", function ($timeout, SofttionMaterial) {
                     return {
@@ -3516,6 +3491,7 @@
                             ngDisabled: "=?",
                             textDescription: "@",
                             
+                            // Eventos
                             holdEvent: "&?",
                             clickrightEvent: "&?"
                         },
@@ -4003,6 +3979,121 @@
                 }
             },
             
+            Gallery: {
+                route: "softtion/template/gallery.html",
+                name: "gallery",
+                html: function () {
+                    var image = softtion.html("div").addClass(["image"]).
+                        addAttribute("ng-repeat", "image in images").
+                        addAttribute("ng-touchhold", "fileHold(image, $event, $index)").
+                        addAttribute("ng-clickright", "fileRight(image, $event, $index)").
+                        addAttribute("tabindex", "-1").
+                        addChildren(
+                            softtion.html("div").addClass("content").
+                                addChildren(
+                                    softtion.html("div").addClass("view-preview").
+                                        addChildren(
+                                            softtion.html("div").addClass("delete").
+                                                addAttribute("ng-if", "!disabledRemove").
+                                                addChildren(
+                                                    softtion.html("button").addClass("flat").setText("Remover").
+                                                        addAttribute("ng-click", "removeImage($index)")
+                                                )
+                                        ).addChildren(
+                                            softtion.html("img", false).addClass("center").
+                                            addAttribute("ng-src", "{{image.src}}")
+                                        )
+                                ).addChildren(
+                                    softtion.html("div").addClass("detail").
+                                        addChildren(
+                                            softtion.html("div").addClass("avatar").
+                                            addChildren(
+                                                softtion.html("i").setText("{{image.icon}}")
+                                            )
+                                        ).addChildren(
+                                            softtion.html("label").addClass("name").setText("{{image.name}}")
+                                        )
+                                )
+                        );
+                    
+                    var content = softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("images").addChildren(image)
+                        );
+                    
+                    return content.create(); // Componente Gallery
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Gallery.route,
+                        scope: {
+                            images: "=ngModel",
+                            disabledRemove: "=?",
+                            
+                            // Eventos
+                            removeEvent: "&?",
+                            holdEvent: "&?",
+                            clickrightEvent: "&?"
+                        },
+                        link: function ($scope, $element) {
+                            $scope.removeImage = function ($index) {
+                                var item = $scope.images[$index]; // Item eliminado
+                                
+                                $scope.images.remove($index); // Eliminando
+                                
+                                if (softtion.isFunction($scope.removeEvent)) {
+                                    $scope.removeEvent({$item: item, $index: $index});
+                                } // Se ha definido una función al remover
+                            };
+                            
+                            $scope.fileHold = function (item, $event, $index) {
+                                if (softtion.isFunction($scope.holdEvent)) {
+                                    $scope.holdEvent({
+                                        $item: item, $event: $event, $index: $index
+                                    });
+                                } // Se ha definido evento Hold en el componente
+                            };
+                            
+                            $scope.fileRight = function (item, $event, $index) {
+                                if (softtion.isFunction($scope.clickrightEvent)) {
+                                    $scope.clickrightEvent({
+                                        $item: item, $event: $event, $index: $index
+                                    });
+                                } // Se ha definido evento Click derecho en el componente
+                            };
+                        }
+                    };
+                }
+            },
+            
+            Img: {
+                name: "img",
+                directive: ["$fnMaterial", function ($fnMaterial) {
+                    return {
+                        restrict: "E",
+                        scope: {
+                            disabledResponsive: "=?"
+                        },
+                        link: function ($scope, $element) {
+                            if ($scope.disabledResponsive) { 
+                                $element.addClass("active"); return; 
+                            } // No se desea configurar imagen
+                            
+                            var defineDensity = function () {
+                                var height = $element[0].naturalHeight,
+                                    width = $element[0].naturalWidth;
+                            
+                                $fnMaterial.setDensity($element, width, height);
+                            };
+                            
+                            ($element[0].complete) ? defineDensity() :
+                                $element.on("load", function () { defineDensity(); });
+                        }
+                    };
+                }]
+            },
+            
             ItemList: {
                 name: "itemList",
                 slideAction: function (itemList) {
@@ -4296,6 +4387,77 @@
                                         });
                                     } // Evento click sobre el componente
                                 } // No se permite el cambio de la Propiedad
+                            };
+                        }
+                    };
+                }
+            },
+            
+            Rating: {
+                route: "softtion/template/rating.html",
+                name: "rating",
+                html: function () {
+                    var button1 = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-click", "setValue(1)").
+                        addClass("action").addChildren(
+                            softtion.html("i").setText("{{isActive(1)}}")
+                        );
+                
+                    var button2 = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-click", "setValue(2)").
+                        addClass("action").addChildren(
+                            softtion.html("i").setText("{{isActive(2)}}")
+                        );
+                
+                    var button3 = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-click", "setValue(3)").
+                        addClass("action").addChildren(
+                            softtion.html("i").setText("{{isActive(3)}}")
+                        );
+                
+                    var button4 = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-click", "setValue(4)").
+                        addClass("action").addChildren(
+                            softtion.html("i").setText("{{isActive(4)}}")
+                        );
+                
+                    var button5 = softtion.html("button").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-click", "setValue(5)").
+                        addClass("action").addChildren(
+                            softtion.html("i").setText("{{isActive(5)}}")
+                        );
+
+                    return button1 + button2 + button3 + button4 + button5;
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Rating.route,
+                        scope: {
+                            value: "=ngModel",
+                            ngDisabled: "=?",
+                            
+                            // Eventos
+                            changedEvent: "&?"
+                        },
+                        link: function ($scope, $element) {
+                            $scope.value = isNaN($scope.value) ? 0 : $scope.value;
+                            
+                            $scope.setValue = function (value) {
+                                $scope.value = ($scope.value === value) ? 0 : value;
+                                
+                                if (softtion.isFunction($scope.changedEvent)) {
+                                    $scope.changedEvent({$value: $scope.value});
+                                } // Se realizo cambio de valor en Componente
+                            };
+                            
+                            $scope.isActive = function (value) {
+                                return ($scope.value >= value) ? "star" : "star_border";
                             };
                         }
                     };
@@ -4803,9 +4965,9 @@
                             
                             $element.children(".content").append(buttonClose);
                             
-                            buttonClose.on("click.hide-sidenav", function () {
-                                $sidenav.set($element).hide();
-                            });
+                            buttonClose.on("click.hide-sidenav", 
+                                function () { $sidenav.set($element).hide(); }
+                            );
                         }
                     };
                 }]
@@ -7871,6 +8033,8 @@
                             var font = ColorMaterial.font[theme.baseColor];
                             
                             propertyStyle("--theme-primary-font", theme["500"]);
+                            propertyStyle("--theme-primary-font-disabledcolor", theme["100"]);
+                            
                             propertyStyle("--theme-primary-font-active", font.primary);
                             propertyStyle("--theme-primary-font-alternative", font.alternative);
                             propertyStyle("--theme-primary-font-inactive", font.secondary);
@@ -7911,6 +8075,8 @@
                             var font = ColorMaterial.font[theme.baseColor];
                             
                             propertyStyle("--theme-secondary-font", theme["500"]);
+                            propertyStyle("--theme-secondary-font-disabledcolor", theme["100"]);
+                            
                             propertyStyle("--theme-secondary-font-active", font.primary);
                             propertyStyle("--theme-secondary-font-alternative", font.alternative);
                             propertyStyle("--theme-secondary-font-inactive", font.secondary);
