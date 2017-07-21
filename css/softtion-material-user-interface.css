@@ -77,13 +77,11 @@ h1, h2, h3, h4, h5, h6 {
 body {
     position: absolute;
     top: 0; 
+    bottom: 0;
     left: 0;
-    width: 100vw; 
-    height: 100vh;
+    right: 0;
     margin: 0px;
     padding: 0px;
-    max-width: 100vw; 
-    max-height: 100vh;
     overflow: hidden; }
 
 .body-overflow-none {
@@ -1474,7 +1472,7 @@ button.action > .badge {
         left: calc(50% + 160px); }
 }
 
-@media only screen and (min-width : 720px) {
+@media only screen and (min-width : 720px) and (max-width : 960px) {
 
     .sidenav.persistent.show ~ .bottom-sheet > .content {
         left: calc(50% + 128px); }
@@ -7043,205 +7041,6 @@ img.center.density-height {
         display: none; }
 }
 
-/** SLIDER */
-
-.slider {
-    position: relative;
-    width: 100%;
-    float: left; 
-    margin-top: 8px; }
-
-.slider > label {
-    display: none;
-    height: 16px;
-    line-height: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 16px;
-    margin-bottom: 0px; }
-
-.slider > label.active {
-    display: block;
-    margin-bottom: 8px; }
-
-.slider > .content {
-    position: relative;
-    width: 100%; 
-    height: 48px;
-    padding: 8px; 
-    cursor: pointer;
-    box-sizing: border-box; }
-
-.slider > .content.iconactive {
-    padding-left: 48px; }
-
-.slider:not(.discrete) > .content.showcase {
-    padding-right: 48px; }
-
-.slider > .content > i {
-    position: absolute;
-    top: 12px; 
-    left: 0px;
-    display: none; }
-
-.slider > .content.iconactive > i {
-    display: block; }
-
-.slider > .content > .track-off {
-    position: relative;
-    width: 100%; 
-    height: 4px;
-    margin-top: 14px; }
-
-.slider > .content > .track-off > .track-on {
-    overflow: hidden;
-    height: 4px;
-    -moz-transition: width 0.325s var(--standard-curve);
-    -webkit-transition: width 0.325s var(--standard-curve);
-    transition: width 0.325s var(--standard-curve);
-    -o-transition: width 0.325s var(--standard-curve);
-    -ms-transition: width 0.325s var(--standard-curve); }
-
-.slider > .content.deslice > .track-off > .track-on {
-    -moz-transition: none;
-    -webkit-transition: none;
-    transition: none;
-    -o-transition: none;
-    -ms-transition: none; }
-
-.slider > .content.full > .track-off > .track-on {
-    width: 100% !important; }
-
-.slider > .content > .track-off > .thumb {
-    position: absolute;
-    top: -4px; 
-    left: 0px;
-    cursor: pointer;
-    width: 12px; 
-    height: 12px;
-    border-radius: 50%;
-    -moz-transition: left 0.325s var(--standard-curve);
-    -webkit-transition: left 0.325s var(--standard-curve);
-    transition: left 0.325s var(--standard-curve);
-    -o-transition: left 0.325s var(--standard-curve);
-    -ms-transition: left 0.325s var(--standard-curve); }
-
-.slider > .content.disabled > .track-off > .thumb {
-    top: -6px; 
-    height: 16px;
-    width: 16px; }
-
-.slider > .content > .track-off > .thumb:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 10px;
-    height: 10px;
-    visibility: hidden;
-    border-radius: 50%; }
-
-.slider > .content > .track-off > .thumb.off:before {
-    width: 6px;
-    height: 6px; }
-
-.slider > .content.disabled > .track-off > .thumb:before {
-    visibility: visible; }
-
-.slider > .content.deslice > .track-off > .thumb {
-    -moz-transition: none;
-    -webkit-transition: none;
-    transition: none;
-    -o-transition: none;
-    -ms-transition: none; }
-
-.slider > .content > .track-off > .thumb.off {
-    width: 8px; 
-    height: 8px;
-    left: -6px !important; }
-
-.slider > .content > .track-off > .thumb.active {
-    top: -6px;
-    height: 16px;
-    width: 16px; }
-
-.slider > .content > .track-off > .thumb.off.active {
-    width: 12px; 
-    height: 12px; }
-
-.slider > .content.full > .track-off > .thumb {
-    left: calc(100% - 8px) !important; }
-
-.slider > .content.full > .track-off > .thumb.active {
-    left: calc(100% - 8px) !important; }
-
-.slider.discrete > .content > .track-off > .thumb.off {
-    top: -4px;
-    height: 12px;
-    width: 12px; }
-
-.slider.discrete > .content > .track-off > .thumb.active {
-    border-radius: 50% 50% 50% 0px;
-    top: 50%;
-    width: 24px; 
-    height: 24px;
-    -moz-transform-origin: left bottom;
-    -webkit-transform-origin: left bottom;
-    transform-origin: left bottom;
-    -o-transform-origin: left bottom;
-    -ms-transform-origin: left bottom;
-    -moz-transform: translate(0, -120%) rotate(-45deg);
-    -webkit-transform: translate(0, -120%) rotate(-45deg);
-    transform: translate(0, -120%) rotate(-45deg);
-    -o-transform: translate(0, -120%) rotate(-45deg);
-    -ms-transform: translate(0, -120%) rotate(-45deg); }
-
-.slider.discrete > .content > .track-off > .thumb.off.active {
-    left: 0px !important; }
-
-.slider.discrete > .content.full > .track-off > .thumb.active {
-    left: 100% !important; }
-
-.slider > .content > .track-off > .thumb > span {
-    position: absolute;
-    top: 50%; 
-    left: 50%;
-    visibility: hidden;
-    font-size: 12px;
-    -moz-transform: translate(-50%, -50%) rotate(45deg);
-    -webkit-transform: translate(-50%, -50%) rotate(45deg);
-    transform: translate(-50%, -50%) rotate(45deg);
-    -o-transform: translate(-50%, -50%) rotate(45deg);
-    -ms-transform: translate(-50%, -50%) rotate(45deg); }
-
-.slider.discrete > .content > .track-off > .thumb.active > span {
-    visibility: visible; }
-
-.slider > .content > .showcase-input {
-    position: absolute;
-    top: 12px; 
-    right: 0px;
-    width: 28px; 
-    height: 24px;
-    visibility: hidden;
-    padding: 0px; }
-
-.slider:not(.discrete) > .content.showcase > .showcase-input {
-    visibility: visible; }
-
-.slider > .content > .showcase-input > input {
-    width: 28px; 
-    height: 24px;
-    padding: 0;
-    border: none;
-    outline: none;
-    text-align: center; }
-
-.slider > .content > .showcase-input > .line-shadow {
-    bottom: 0px; }
-
 /** SNACKBAR */
 
 .snackbar {
@@ -7713,6 +7512,21 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .dark .app-bar.floating > .tabs:last-child {
     box-shadow: var(--dark-shadow-appbar-floating); }
+    
+.app-bar > .tabs.tabulate {
+    margin-left: 64px;
+    width: calc(100% - 64px); }
+
+@media only screen and (min-width : 961px) {
+    
+    .app-bar > .tabs.tabulate {
+        margin-left: 72px;
+        width: calc(100% - 72px); }
+}
+    
+.app-bar.floating > .tabs.tabulate {
+    margin: 0px 8px;
+    width: calc(100% - 16px); }
 
 .tabs > .tab {
     position: relative;
@@ -8609,24 +8423,37 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .app-bar.floating.hide > .toolbar {
     margin-top: -48px; }
 
-.toolbar.flexible-title {
+.toolbar.flexible {
     min-height: 128px;
     max-height: 128px; }
 
-/*.app-bar.floating > .toolbar.flexible-title {
+.app-bar.floating > .toolbar.flexible {
     min-height: 112px;
-    max-height: 112px; }*/
+    max-height: 112px; }
 
-.app-bar.hide > .toolbar.flexible-title {
+.app-bar.hide > .toolbar.flexible {
     margin-top: 0px; 
     min-height: 56px;
     max-height: 56px; }
 
-/*.app-bar.floating.hide > .toolbar.flexible-title {
+.app-bar.floating.hide > .toolbar.flexible {
+    margin-top: 8px; 
     min-height: 48px;
-    max-height: 48px; }*/
+    max-height: 48px; }
 
 @media only screen and (min-width : 961px) {
+    
+    .toolbar {
+        min-height: 64px; 
+        max-height: 64px;  
+        line-height: 64px; }
+    
+    .toolbar.flexible {
+        min-height: 136px;
+        max-height: 136px; }
+    
+    .toolbar.flexible > .title {
+        margin-top: 64px; }
     
     .app-bar.hide > .toolbar {
         margin-top: -64px; }
@@ -8634,11 +8461,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     .app-bar.floating.hide > .toolbar {
         margin-top: -48px; }
 
-    .app-bar.hide > .toolbar.flexible-title {
+    .app-bar.hide > .toolbar.flexible {
         min-height: 64px;
         max-height: 64px; }
 
-    .app-bar.floating.hide > .toolbar.flexible-title {
+    .app-bar.floating.hide > .toolbar.flexible {
         min-height: 48px;
         max-height: 48px; }
 }
@@ -8651,6 +8478,13 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     line-height: inherit;
     margin: 0px 16px 0px 4px; }
 
+.toolbar > .nav-icon > button.action {
+    padding: 16px 12px;
+    box-sizing: content-box; }
+
+.app-bar.floating > .toolbar > .nav-icon > button.action {
+    padding: 12px; }
+
 @media only screen and (min-width : 721px) {
     
     .sidenav ~ .app-bar > .toolbar > .nav-icon,
@@ -8660,16 +8494,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 @media only screen and (min-width : 961px) {
     
+    .toolbar > .nav-icon > button.action {
+        padding: 20px 12px; }
+    
     .sidenav.permanent ~ .app-body > .app-bar > .toolbar > .nav-icon {
         display: none; }
 }
-
-.toolbar > .nav-icon > button.action {
-    padding: 16px 12px;
-    box-sizing: content-box; }
-
-.app-bar.floating > .toolbar > .nav-icon > button.action {
-    padding: 12px; }
 
 .toolbar > .title {
     width: 100%;
@@ -8682,13 +8512,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar > .detail ~ .title, .toolbar > .logo ~ .title {
     display: none; }
 
-@media only screen and (max-width : 360px) {
-    
-    .toolbar > .title {
-        margin-left: 8px; }
-}
-
-.toolbar.flexible-title > .title {
+.toolbar.flexible > .title {
     margin-top: 56px;
     height: 72px;
     line-height: 72px;
@@ -8704,17 +8528,23 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     -ms-transition: margin-top 0.525s var(--easing-out),
         font-size 0.525s var(--easing-out); }
 
-/*.app-bar.floating > .toolbar.flexible-title > .title { 
+.app-bar.floating > .toolbar.flexible > .title { 
     margin-top: 48px;
     height: 64px;
     line-height: 64px;
-    font-size: 22px; }*/
+    font-size: 22px; }
 
-.app-bar.hide > .toolbar.flexible-title > .title {
+.app-bar.hide > .toolbar.flexible > .title {
     margin-top: 0px;
     height: inherit;
     line-height: inherit;
     font-size: 20px; }
+
+@media only screen and (max-width : 360px) {
+    
+    .toolbar > .title {
+        margin-left: 8px; }
+}
 
 .toolbar > .detail {
     width: 100%;
@@ -8727,12 +8557,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar > .title ~ .detail, .toolbar > .logo ~ .detail {
     display: none; }
 
-@media only screen and (max-width : 360px) {
-    
-    .toolbar > .detail {
-        margin-left: 8px; }
-}
-
 .toolbar > .detail > .title {
     display: block;
     margin-top: 7px;
@@ -8740,11 +8564,26 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 24px;
     font-weight: 500;
     line-height: 24px;
-    -moz-transition: margin 0.325s var(--standard-curve);
-    -webkit-transition: margin 0.325s var(--standard-curve);
-    transition: margin 0.325s var(--standard-curve);
-    -o-transition: margin 0.325s var(--standard-curve);
-    -ms-transition: margin 0.325s var(--standard-curve); }
+    -moz-transition: margin 0.525s var(--easing-out);
+    -webkit-transition: margin 0.525s var(--easing-out);
+    transition: margin 0.525s var(--easing-out);
+    -o-transition: margin 0.525s var(--easing-out);
+    -ms-transition: margin 0.525s var(--easing-out); }
+
+.toolbar.flexible > .detail > .title {
+    margin-top: 80px; }
+
+.app-bar.hide > .toolbar.flexible > .detail > .title {
+    margin-top: 7px; }
+
+.toolbar > .detail.hide-subtitle > .title {
+    margin-top: 16px; }
+
+.toolbar.flexible > .detail.hide-subtitle > .title {
+    margin-top: 89px; }
+
+.app-bar.hide > .toolbar.flexible > .detail.hide-subtitle > .title {
+    margin-top: 16px; }
 
 .app-bar.floating > .toolbar > .detail > .title {
     margin-top: 6px;
@@ -8752,8 +8591,20 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 20px;
     line-height: 20px; }
 
-.toolbar > .detail.hide-subtitle > .title {
-    margin-top: 16px; }
+.app-bar.floating > .toolbar.flexible > .detail > .title {
+    margin-top: 60px; }
+
+.app-bar.floating.hide > .toolbar.flexible > .detail > .title {
+    margin-top: 6px; }
+
+.app-bar.floating .toolbar > .detail.hide-subtitle > .title {
+    margin-top: 14px; }
+
+.app-bar.floating .toolbar.flexible > .detail.hide-subtitle > .title {
+    margin-top: 78px; }
+
+.app-bar.floating.hide .toolbar.flexible > .detail.hide-subtitle > .title {
+    margin-top: 14px; }
 
 .toolbar > .detail > .subtitle {
     display: block;
@@ -8769,6 +8620,33 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar > .detail.hide-subtitle > .subtitle {
     display: none; }
 
+@media only screen and (max-width : 360px) {
+    
+    .toolbar > .detail {
+        margin-left: 8px; }
+}
+
+@media only screen and (min-width : 961px) {
+
+    .toolbar > .detail > .title {
+        margin-top: 11px; }
+    
+    .toolbar.flexible > .detail > .title {
+        margin-top: 88px; }
+
+    .app-bar.hide > .toolbar.flexible > .detail > .title {
+        margin-top: 11px; }
+
+    .toolbar > .detail.hide-subtitle > .title {
+        margin-top: 20px; }
+
+    .toolbar.flexible > .detail.hide-subtitle > .title {
+        margin-top: 93px; }
+
+    .app-bar.hide > .toolbar.flexible > .detail.hide-subtitle > .title {
+        margin-top: 20px; }
+}
+
 .toolbar > .logo {
     width: 100%;
     margin: 8px 0px;
@@ -8777,9 +8655,45 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar > .title ~ .logo, .toolbar > .detail ~ .logo {
     display: none; }
 
+.toolbar.flexible > .logo {
+    margin-top: 72px;
+    height: 48px;
+    -moz-transition: margin-top 0.525s var(--easing-out),
+        height 0.525s var(--easing-out);
+    -webkit-transition: margin-top 0.525s var(--easing-out),
+        height 0.525s var(--easing-out);
+    transition: margin-top 0.525s var(--easing-out),
+        height 0.525s var(--easing-out);
+    -o-transition: margin-top 0.525s var(--easing-out),
+        height 0.525s var(--easing-out);
+    -ms-transition: margin-top 0.525s var(--easing-out),
+        height 0.525s var(--easing-out); }
+
+.app-bar.hide > .toolbar.flexible > .logo {
+    height: 40px;
+    margin-top: 8px; }
+
 .app-bar.floating > .toolbar > .logo {
     height: 36px;
     margin: 6px 0px; }
+
+.app-bar.floating > .toolbar.flexible > .logo {
+    height: 40px;
+    margin-top: 66px; }
+
+.app-bar.floating.hide > .toolbar.flexible > .logo {
+    height: 36px; 
+    margin-top: 6px; }
+
+@media only screen and (min-width : 961px) {
+    
+    .toolbar.flexible > .logo {
+        margin-top: 80px; }
+
+    .app-bar.hide > .toolbar.flexible > .logo {
+        height: 48px;
+        margin-top: 8px; }
+}
 
 .toolbar > .nav-icon + .logo,
 .app-bar.floating > .toolbar > .nav-icon + .logo {
@@ -8853,27 +8767,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     right: 4px; }
 
 @media only screen and (min-width : 961px) {
-    
-    .toolbar {
-        min-height: 64px; 
-        max-height: 64px;  
-        line-height: 64px; }
-    
-    .toolbar > .nav-icon > button.action {
-        padding: 20px 12px; }
-    
-    .toolbar.flexible-title {
-        min-height: 136px;
-        max-height: 136px; }
-    
-    .toolbar.flexible-title > .title {
-        margin-top: 64px; }
-
-    .toolbar > .detail > .title {
-        margin-top: 11px; }
-
-    .toolbar > .detail.hide-subtitle > .title {
-        margin-top: 20px; }
     
     .toolbar > .actions > button.action {
         padding: 20px 12px; }

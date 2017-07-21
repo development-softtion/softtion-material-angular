@@ -5028,11 +5028,13 @@
                                 softtion.html("i").setText("{{getIconValue()}}").
                                     addAttribute("ng-click", "clickIcon()")
                             ).addChildren(
-                                softtion.html("div").addClass("track-off").
+                                softtion.html("div").addClass("track").
                                     addAttribute("ng-pointerdown", "trackPointerDown($event)").
                                     addAttribute("ng-pointerup", "trackPointerUp($event)").
                                     addAttribute("ng-pointermove", "trackPointerMove($event)").
                                     addChildren(
+                                        softtion.html("div").addClass("track-off")
+                                    ).addChildren(
                                         softtion.html("div").addClass("track-on").
                                         addAttribute("ng-style", "getPercentajeValue()")
                                     ).addChildren(
@@ -5081,13 +5083,12 @@
                         link: function ($scope, $element) {
                                 // Componentes
                             var $content = $element.find(".content"),
-                                $trackOff = $content.find(".track-off"),
+                                $trackOff = $content.find(".track"),
                                 $thumb = $content.find(".thumb"),
                                 $trackOn = $content.find(".track-on");
                                 
                                 // Atributos
-                            var initialPosition, finalPosition,
-                                initialX, finalX, range, time;
+                            var initialPosition, initialX, finalX, range, time;
                             
                             $scope.desliceActive = false;
                             $scope.slideActive = false; 
@@ -5107,8 +5108,8 @@
                                 return $scope.value;
                             }, function (newValue) {
                                 var between = softtion.isBetween(
-                                        newValue, $scope.minValue, $scope.maxValue
-                                    );
+                                    newValue, $scope.minValue, $scope.maxValue
+                                );
                             
                                 if (!between) {
                                     if (newValue < $scope.minValue) {
@@ -5120,7 +5121,7 @@
                                     } // Valor es mayor que el rango
                                 }
                                 
-                                $scope.valueInput = parseInt($scope.value);
+                                $scope.valueInput = Math.round($scope.value);
                             });
 
                             $scope.iconActive = function () {
@@ -5182,16 +5183,14 @@
                                 initialPosition = ($target.is($thumb)) ? 
                                     $trackOn.width() : offsetX;
                                     
-                                setPositionSlide(initialPosition / $trackOff.width());
+                                setValueSlide(initialPosition / $trackOff.width());
                                 
                                 $scope.slideActive = true; // Inicio de arrastre
                             };
 
-                            var setPositionSlide = function (position) {
-                                finalPosition = $trackOn.width();
-                                
+                            var setValueSlide = function (position) {
                                 if (position >= 0 && position <= 1) {
-                                    $scope.value = position * range + $scope.minValue;
+                                    $scope.value = Math.round(position * range + $scope.minValue);
                                 } // Definiendo valor por Posición
                             };
                             
@@ -5208,23 +5207,21 @@
                                     $event.changedTouches[0].clientX : $event.clientX;
 
                                 $scope.desliceActive = true; // Se activo el arrastre
-                                finalPosition = initialPosition + (finalX - initialX);
+                                var finalPosition = initialPosition + (finalX - initialX);
 
                                 if ((finalPosition > 0) && (finalPosition < $trackOff.width())) {
-                                    setPositionSlide(finalPosition / $trackOff.width());
+                                    setValueSlide(finalPosition / $trackOff.width());
                                 } else if (finalPosition < 0) {
-                                    setPositionSlide(0);
+                                    setValueSlide(0);
                                 } else if (finalPosition >= $trackOff.width()) {
                                     (!$element.hasClass("discret")) ?
-                                        setPositionSlide(1) :
-                                        setPositionSlide(finalPosition / $trackOff.width());
+                                        setValueSlide(1) :
+                                        setValueSlide(finalPosition / $trackOff.width());
                                 }
                             };
                             
                             $scope.trackPointerUp = function () {
-                                finalPosition = $trackOn.width();
-                                $scope.slideActive = false; 
-                                $scope.desliceActive = false; 
+                                $scope.slideActive = false; $scope.desliceActive = false; 
                             };
                             
                             $scope.outContent = function () { 
