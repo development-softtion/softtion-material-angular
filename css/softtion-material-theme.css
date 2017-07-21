@@ -1,11 +1,10 @@
 /*
  * Softtion Material Theme
- * v1.0.5
+ * v1.1.5
  * @license MIT
  * Author: Softtion Developers
- * Updated: 15/Ene/2017
+ * Updated: 21/Jul/2017
  */
-
 :root {
     
     /** DEFAULT */
@@ -2501,10 +2500,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .slider > .content > .showcase-input > input:focus + .line-shadow {
     border-bottom: 2px solid var(--theme-primary-background); }
 
-.slider > .content > .showcase-input > .line-shadow {
+.slider > .content.disabled > .showcase-input > .line-shadow {
     border-bottom: 1px dashed var(--light-background-border); }
 
-.dark .slider > .content > .showcase-input > .line-shadow {
+.dark .slider > .content.disabled > .showcase-input > .line-shadow {
     border-bottom: 1px dashed var(--dark-background-border); }
 
 /** SNACKBAR */

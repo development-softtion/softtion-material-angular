@@ -1,9 +1,9 @@
 /*!
  * Softtion Material UI
- * v1.0.2
+ * v1.1.5
  * @license MIT
  * Author: Softtion Developers
- * Updated: 23/Dic/2016
+ * Updated: 21/Jul/2017
  */
 
 @import url("fonts/roboto/style-font.css");
@@ -7172,7 +7172,7 @@ img.center.density-height {
     height: 12px; }
 
 .slider > .content.full > .track-off > .thumb {
-    left: calc(100% - 6px) !important; }
+    left: calc(100% - 8px) !important; }
 
 .slider > .content.full > .track-off > .thumb.active {
     left: calc(100% - 8px) !important; }
@@ -8936,6 +8936,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     .tooltip-element.show {
         height: 24px; }
 }
+
+/** VIDEO */
+
+.video-youtube {
+    position: relative;
+    width: 100%;
+    float: left; }
+
+.video-youtube:before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-top: 56%; }
+
+.video-youtube > iframe {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border: none; }
 
 /** VIEWS TAB */
 

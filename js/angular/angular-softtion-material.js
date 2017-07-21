@@ -1,8 +1,8 @@
 /*
- Angular Softtion Material v1.1.4
+ Angular Softtion Material v1.1.5
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 20/Jul/2017
+ Updated: 21/Jul/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -5232,17 +5232,6 @@
                             };
 
                             $scope.getPercentajeValue = function () {
-//                                $timeout.cancel(time); time = undefined;
-//                                
-//                                time = $timeout(function () {
-//                                    if (parseInt($scope.value) < minValue) {
-//                                        $scope.value = minValue;
-//                                        
-//                                    }
-//                                    if (parseInt($scope.value) > maxValue) {
-//                                        $scope.value = maxValue;
-//                                    }
-//                                }, 1000);
                                 $scope.percentage = ($scope.value - $scope.minValue) / range * 100;
 
                                 ($scope.value >= $scope.maxValue) ?
@@ -5255,7 +5244,7 @@
                                 var percentage = ($element.hasClass("discrete")) ?
                                     $scope.percentage + "%" : 
                                     "calc(" + $scope.percentage + "% - 8px)";
-                                        
+                                
                                 return {left: percentage}; // Posicion del Thumb
                             };
                                 
@@ -6957,6 +6946,34 @@
                         }
                     };
                 }]
+            },
+            
+            Video: {
+                route: "softtion/template/video-youtube.html",
+                name: "videoYoutube",
+                html: function () {
+                    var iframe = softtion.html("iframe");
+                
+                    return iframe.create(); // Componente
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Video.route,
+                        scope: {
+                            allowfullscreen: "=?",
+                            src: "@"
+                        },
+                        link: function ($scope, $element) {
+                            var $iframe = $element.children("iframe");
+                            
+                            var allowfullscreen = $scope.$eval($scope.allowfullscreen);
+                            
+                            $iframe.attr("src", $scope.src);
+                            $iframe.attr("allowfullscreen", $scope.allowfullscreen);
+                        }
+                    };
+                }
             },
             
             ViewsTabs: {
