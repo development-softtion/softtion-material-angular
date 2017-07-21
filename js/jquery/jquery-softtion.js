@@ -1,8 +1,8 @@
 /* !
- jQuery Softtion v1.0.0
+ jQuery Softtion v1.4.2
  (c) 2016 Softtion Developers, http://jquery.softtion.com.co
  License: MIT
- Updated: 23/Nov/2016
+ Updated: 20/Jul/2017
  */
 (function (factory) {
     if (typeof jQuery === "function" && typeof window.softtion === "object") {
@@ -263,41 +263,25 @@
         
         touchstart: function (callback) {
             var component = jQuery(this); // Componente para evento
-            
-            if ("ontouchstart" in window) {
-                component[0].addEventListener("touchstart", callback, false);
-            } // Dispositivo soporta TouchEvent
-            
+            component[0].addEventListener("touchstart", callback, false);
             return component; // Retornando para interfaz fluida
         },
         
         touchmove: function (callback) {
             var component = jQuery(this); // Componente para evento
-            
-            if ("ontouchstart" in window) {
-                component[0].addEventListener("touchmove", callback, false);
-            } // Dispositivo soporta TouchEvent
-            
+            component[0].addEventListener("touchmove", callback, false);
             return component; // Retornando para interfaz fluida
         },
         
         touchcancel: function (callback) {
             var component = jQuery(this); // Componente para evento
-            
-            if ("ontouchstart" in window) {
-                component[0].addEventListener("touchcancel", callback, false);
-            } // Dispositivo soporta TouchEvent
-            
+            component[0].addEventListener("touchcancel", callback, false);
             return component; // Retornando para interfaz fluida
         },
         
         touchend: function (callback) {
             var component = jQuery(this); // Componente para evento
-            
-            if ("ontouchstart" in window) {
-                component[0].addEventListener("touchend", callback, false);
-            } // Dispositivo soporta TouchEvent
-            
+            component[0].addEventListener("touchend", callback, false);
             return component; // Retornando para interfaz fluida
         },
         
@@ -322,11 +306,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            if (!("ontouchstart" in window)) {
-                component.mousedown(fn);
-            } else {
-                component.touchstart(fn);
-            } // Dispositivo soporta TouchEvent
+            component.mousedown(fn).component.touchstart(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -335,11 +315,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            if (!("ontouchstart" in window)) {
-                component.mousemove(fn);
-            } else {
-                component.touchmove(fn);
-            } // Dispositivo soporta TouchEvent
+            component.mousemove(fn).component.touchmove(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -348,11 +324,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            if (!("ontouchstart" in window)) {
-                component.mouseup(fn);
-            } else {
-                component.touchend(fn);
-            } // Dispositivo soporta TouchEvent
+            component.mouseup(fn).component.touchend(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -361,11 +333,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            if (!("ontouchstart" in window)) {
-                component.mousehold(fn, time);
-            } else {
-                component.touchhold(fn, time);
-            } // Dispositivo soporta TouchEvent
+            component.mousehold(fn, time).component.touchhold(fn, time);
             
             return component; // Retornando para interfaz fluida
         },

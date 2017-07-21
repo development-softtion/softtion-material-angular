@@ -1,10 +1,9 @@
 /*
- Angular Softtion Events v1.0.0
+ Angular Softtion Events v1.1.2
  (c) 2017 Softtion Developers, http://angular.softtion.com.co
  License: MIT
- Updated: 05/May/2017
-*/
-
+ Updated: 20/Jul/2017
+ */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular, jQuery);
@@ -172,11 +171,13 @@
                             $scope.$apply(callback); // Disparando evento
                         };
                         
-                        if ("ontouchstart" in window) {
-                            $element.on(directive.eventTouch, fnEvent);
-                        } else {
-                            $element.on(directive.eventMouse, fnEvent);
-                        } // Dispositivo no soporta TouchEvent
+                        $element.on(directive.eventTouch, fnEvent).
+                            on(directive.eventMouse, fnEvent);
+                    
+                        if (directive.name === "ngPointermove") {
+                            $element.on("mouseout", fnEvent);
+                            $element.on("mouseleave", fnEvent);
+                        }
                     };
                 }
             };
@@ -203,15 +204,12 @@
                                 $timeout.cancel(promise); 
                             };
                         
-                        if ("ontouchstart" in window) {
-                            $element.on("touchstart", fnPromise);
-                            $element.on("touchmove", cancelPromise);
-                            $element.on("touchend", cancelPromise);
-                        } else {
-                            $element.on("mousedown", fnPromise);
-                            $element.on("mousemove", cancelPromise);
-                            $element.on("mouseup", cancelPromise);
-                        } // Dispositivo no soporta TouchEvent
+                        $element.on("touchstart", fnPromise);
+                        $element.on("touchmove", cancelPromise);
+                        $element.on("touchend", cancelPromise);
+                        $element.on("mousedown", fnPromise);
+                        $element.on("mousemove", cancelPromise);
+                        $element.on("mouseup", cancelPromise);
                     };
                 }
             };

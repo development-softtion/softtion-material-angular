@@ -1,8 +1,8 @@
 /* !
- Softtion v1.1.9
+ Softtion v1.2.6
  (c) 2015-2017 Softtion Developers, http://www.softtion.com.co
  License: MIT
- Update: 03/Ene/2017
+ Update: 20/Juli/2017
  */
 
 /* global CryptoJS */
@@ -239,6 +239,14 @@
     
     Softtion.prototype.isTouchSupport = function () {
         return ("ontouchstart" in window);
+    };
+    
+    Softtion.prototype.isBetween = function (value, minValue, maxValue) {
+        if (value < minValue) { return false; } // Afuera rango
+        
+        if (value > maxValue) { return false; } // Supera rango
+        
+        return true; // Valor se encuentra entre rango determinado
     };
     
     Softtion.prototype.getGUID = (function () {

@@ -1,8 +1,8 @@
 /*
- Angular Softtion Material v1.0.8
+ Angular Softtion Material v1.1.4
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 22/Jun/2017
+ Updated: 20/Jul/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -5012,6 +5012,271 @@
                         }
                     };
                 }
+            },
+            
+            Slider: {
+                route: "softtion/template/slider.html",
+                name: "slider",
+                html: function () {
+                    var content = softtion.html("div").addClass("content").
+                            addAttribute("ng-class", "{iconactive: iconActive(),"
+                                + " deslice: desliceActive, disabled: ngDisabled,"
+                                + " full: isValueFull(), showcase: showcase}").
+                            addAttribute("ng-mouseout", "outContent()").
+                            addAttribute("ng-mouseleave", "outContent()").
+                            addChildren(
+                                softtion.html("i").setText("{{getIconValue()}}").
+                                    addAttribute("ng-click", "clickIcon()")
+                            ).addChildren(
+                                softtion.html("div").addClass("track-off").
+                                    addAttribute("ng-pointerdown", "trackPointerDown($event)").
+                                    addAttribute("ng-pointerup", "trackPointerUp($event)").
+                                    addAttribute("ng-pointermove", "trackPointerMove($event)").
+                                    addChildren(
+                                        softtion.html("div").addClass("track-on").
+                                        addAttribute("ng-style", "getPercentajeValue()")
+                                    ).addChildren(
+                                        softtion.html("div").addClass("thumb").
+                                            addAttribute("ng-class", "{off: isValueOff(), active: slideActive}").
+                                            addAttribute("ng-style", "getPositionThumb()").
+                                            addChildren(
+                                                softtion.html("span").
+                                                setText("{{value|number:0}}")
+                                            )
+                                    )
+                            ).addChildren(
+                                softtion.html("div").addClass("showcase-input").
+                                addChildren(
+                                    softtion.html("input").
+                                    addAttribute("type", "number").
+                                    addAttribute("ng-model", "valueInput").
+                                    addAttribute("ng-disabled", "ngDisabled").
+                                    addAttribute("ng-keyup", "keyUpInput()")
+                                ).addChildren(
+                                    softtion.html("div").addClass("line-shadow")
+                                )
+                            );
+
+                    var label = softtion.html("label").setText("{{label}}").
+                        addAttribute("ng-class", "{active: isLabelActive()}");
+                    
+                    return label + content; // Componente Slider
+                },
+                directive: ["$timeout", function ($timeout) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Slider.route,
+                        scope: {
+                            value: "=ngModel",
+                            ngDisabled: "=?",
+                            label: "@",
+                            icon: "@",
+                            emptyIcon: "@",
+                            fullIcon: "@",
+                            minValue: "=?",
+                            maxValue: "=?",
+                            slided: "=?",
+                            showcase: "=?"
+                        },
+                        link: function ($scope, $element) {
+                                // Componentes
+                            var $content = $element.find(".content"),
+                                $trackOff = $content.find(".track-off"),
+                                $thumb = $content.find(".thumb"),
+                                $trackOn = $content.find(".track-on");
+                                
+                                // Atributos
+                            var initialPosition, finalPosition,
+                                initialX, finalX, range, time;
+                            
+                            $scope.desliceActive = false;
+                            $scope.slideActive = false; 
+                            $scope.maxValue = $scope.maxValue || 100;
+                            $scope.minValue = $scope.minValue || 0;
+                            range = $scope.maxValue - $scope.minValue;
+                            
+                            $scope.value = isNaN($scope.value) ? 
+                                $scope.minValue : $scope.value;
+                                
+                            $scope.valueInput = parseInt($scope.value);
+
+                            $scope.fullIcon = $scope.fullIcon || $scope.icon;
+                            $scope.emptyIcon = $scope.emptyIcon || $scope.icon;
+                            
+                            $scope.$watch(function () {
+                                return $scope.value;
+                            }, function (newValue) {
+                                var between = softtion.isBetween(
+                                        newValue, $scope.minValue, $scope.maxValue
+                                    );
+                            
+                                if (!between) {
+                                    if (newValue < $scope.minValue) {
+                                        $scope.value = $scope.minValue;
+                                    } // Valor es menor que el rango
+                                    
+                                    if (newValue > $scope.maxValue) {
+                                        $scope.value = $scope.maxValue;
+                                    } // Valor es mayor que el rango
+                                }
+                                
+                                $scope.valueInput = parseInt($scope.value);
+                            });
+
+                            $scope.iconActive = function () {
+                                return softtion.isString($scope.icon);
+                            };
+                            
+                            $scope.isLabelActive = function () {
+                                return softtion.isString($scope.label); 
+                            };
+
+                            $scope.getIconValue = function () {
+                                if ($scope.value <= $scope.minValue) {
+                                    return $scope.emptyIcon;
+                                } else if ($scope.value >= $scope.maxValue) {
+                                    return $scope.fullIcon;
+                                } else {
+                                    return $scope.icon;
+                                } // Icono por defecto establecido
+                            };
+
+                            $scope.isValueOff = function () {
+                                return ($scope.value <= $scope.minValue);
+                            };
+                            
+                            $scope.isValueFull = function () {
+                                return ($scope.value >= $scope.maxValue);
+                            };
+
+                            $scope.clickIcon = function () {
+                                if ($scope.ngDisabled) { return; } // Inactivo
+                                
+                                $scope.value = $scope.minValue; // Mínimo valor
+                            };
+                            
+                            var startSlide = function ($event) {
+                                var offsetX,
+                                    typeEvent = $event.type || $event.originalEvent.type;
+                                
+                                if (typeEvent === "touchstart") {
+                                    var position = $event.changedTouches[0];
+                                    
+                                    initialX = position.clientX;
+                                    offsetX = position.clientX - $trackOff.offset().left; 
+                                } else {
+                                    offsetX = $event.offsetX; initialX = $event.clientX;
+                                } // No es un evento Touch
+
+                                offsetX = ($element.hasClass("discrete")) ? offsetX + 4 : offsetX;
+                                
+                                return offsetX; // Posición inicial para arrastre
+                            };
+                            
+                            $scope.trackPointerDown = function ($event) {
+                                if ($scope.ngDisabled) { return; } // Inactivo
+                                
+                                var offsetX = startSlide($event),
+                                    $target = angular.element($event.target);
+                                
+                                initialPosition = ($target.is($thumb)) ? 
+                                    $trackOn.width() : offsetX;
+                                    
+                                setPositionSlide(initialPosition / $trackOff.width());
+                                
+                                $scope.slideActive = true; // Inicio de arrastre
+                            };
+
+                            var setPositionSlide = function (position) {
+                                finalPosition = $trackOn.width();
+                                
+                                if (position >= 0 && position <= 1) {
+                                    $scope.value = position * range + $scope.minValue;
+                                } // Definiendo valor por Posición
+                            };
+                            
+                            $scope.trackPointerMove = function ($event) {
+                                if (!$scope.slideActive) { return; } // No ha iniciado Slide
+                                
+                                var typeEvent = $event.type || $event.originalEvent.type;
+                                
+                                if (typeEvent === "mouseout" || typeEvent === "mouseleave") {
+                                    $event.stopPropagation();
+                                } // Se ha salido del componente Slide en arrastre
+
+                                finalX = (typeEvent === "touchmove") ? 
+                                    $event.changedTouches[0].clientX : $event.clientX;
+
+                                $scope.desliceActive = true; // Se activo el arrastre
+                                finalPosition = initialPosition + (finalX - initialX);
+
+                                if ((finalPosition > 0) && (finalPosition < $trackOff.width())) {
+                                    setPositionSlide(finalPosition / $trackOff.width());
+                                } else if (finalPosition < 0) {
+                                    setPositionSlide(0);
+                                } else if (finalPosition >= $trackOff.width()) {
+                                    (!$element.hasClass("discret")) ?
+                                        setPositionSlide(1) :
+                                        setPositionSlide(finalPosition / $trackOff.width());
+                                }
+                            };
+                            
+                            $scope.trackPointerUp = function () {
+                                finalPosition = $trackOn.width();
+                                $scope.slideActive = false; 
+                                $scope.desliceActive = false; 
+                            };
+                            
+                            $scope.outContent = function () { 
+                                $scope.slideActive = false; $scope.desliceActive = false; 
+                            };
+
+                            $scope.getPercentajeValue = function () {
+//                                $timeout.cancel(time); time = undefined;
+//                                
+//                                time = $timeout(function () {
+//                                    if (parseInt($scope.value) < minValue) {
+//                                        $scope.value = minValue;
+//                                        
+//                                    }
+//                                    if (parseInt($scope.value) > maxValue) {
+//                                        $scope.value = maxValue;
+//                                    }
+//                                }, 1000);
+                                $scope.percentage = ($scope.value - $scope.minValue) / range * 100;
+
+                                ($scope.value >= $scope.maxValue) ?
+                                    $element.addClass("full") : $element.removeClass("full");
+
+                                return {width: $scope.percentage + '%'}; // Porcentaje del Valor
+                            };
+
+                            $scope.getPositionThumb = function () {
+                                var percentage = ($element.hasClass("discrete")) ?
+                                    $scope.percentage + "%" : 
+                                    "calc(" + $scope.percentage + "% - 8px)";
+                                        
+                                return {left: percentage}; // Posicion del Thumb
+                            };
+                                
+                            var setValueInput = function () {
+                                if (softtion.isUndefined($scope.valueInput)) {
+                                    $scope.valueInput = $scope.value;
+                                } else {
+                                    $scope.value = $scope.valueInput;
+                                } // Se ha definido correctamente valor en Input
+                            };
+                            
+                            $scope.keyUpInput = function () {
+                                if (softtion.isDefined(time)) {
+                                    $timeout.cancel(time);
+                                } // Cancelando función actual
+                                
+                                time = $timeout(setValueInput, 500);
+                            };
+                        }
+                    };
+                }]
             },
             
             StepperHorizontal: {
