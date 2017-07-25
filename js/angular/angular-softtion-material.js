@@ -507,12 +507,10 @@
                                 snackbar, toast;
                         
                             $element.append(rippleBox); // Agregando ripple
-                            
-                            var paddingBottom = parseInt(appContent.css("padding-bottom"));
-                            appContent.css("padding-bottom", (paddingBottom + 32) + "px");
                         
                             // Atributos
-                            var classColor = "default", position = 0, classHide = "hide";
+                            var classColor = "default", position = 0,
+                                classHide = "hide", classShow = "show-bottom-navigation";
                             
                             if (actionButton.exists()) {
                                 actionButton.addClass("show-bottom-navigation");
@@ -602,47 +600,53 @@
                                 } // Evento 'view' cuando hay un cambio de vista
                             });
                             
-                            var scrollBottomNav = function () {
-                                if (softtion.isUndefined(snackbar) || !snackbar.exists()) {
+                            var nameEvent = "scroll.bottom-navigation",
+                                defineElements = function () {
                                     snackbar = angular.element(".snackbar");
-                                } // No se ha encontrado Snackbar en el documento
-                                
-                                if (softtion.isUndefined(toast) || !toast.exists()) {
                                     toast = angular.element(".toast");
-                                } // No se ha encontrado Toast en el documento
-                                
-                                actionButton = angular.element(selectorFAB);
-                                elementsNav = angular.element(selectorNav);
+                                    actionButton = angular.element(selectorFAB);
+                                    elementsNav = angular.element(selectorNav);
+                                },
+                                defineStatusElement = function (status) {
+                                    if (!status) {
+                                        snackbar.removeClass(classShow);
+                                        toast.removeClass(classShow);
+                                        actionButton.removeClass(classShow);
+                                        elementsNav.removeClass(classShow);
+                                    } else {
+                                        snackbar.addClass(classShow);
+                                        toast.addClass(classShow);
+                                        actionButton.addClass(classShow);
+                                        elementsNav.addClass(classShow);
+                                    } // Se visualiza Bottom Navigation 
+                                };
+                            
+                            var scrollBottomNav = function () {
+                                var element = angular.element(this); defineElements();
                                 
                                 if (!softtion.isInPage($element[0])) {
-                                    snackbar.removeClass("show-bottom-navigation");
-                                    toast.removeClass("show-bottom-navigation");
-                                    actionButton.removeClass("show-bottom-navigation");
-                                    elementsNav.removeClass("show-bottom-navigation");
-                                    
-                                    appContent.off("scroll.bottom-navigation", scrollBottomNav); return;
+                                    appContent.off(nameEvent, scrollBottomNav);
+                                    defineStatusElement(false); return; 
                                 } // No existe el bottom navigation en el documento
                                 
-                                var positionNew = appContent.scrollTop(); // Posicion actual
+                                var positionNew = element.scrollTop(); // Posicion actual
                                                                 
                                 if (position < positionNew) {
-                                    snackbar.removeClass("show-bottom-navigation");
-                                    toast.removeClass("show-bottom-navigation");
-                                    actionButton.removeClass("show-bottom-navigation");
-                                    elementsNav.removeClass("show-bottom-navigation");
-                                    $element.addClass(classHide);
+                                    defineStatusElement(false); $element.addClass(classHide);
                                 } else {
-                                    snackbar.addClass("show-bottom-navigation");
-                                    toast.addClass("show-bottom-navigation");
-                                    actionButton.addClass("show-bottom-navigation");
-                                    elementsNav.addClass("show-bottom-navigation");
-                                    $element.removeClass(classHide);
+                                    defineStatusElement(true); $element.removeClass(classHide);
                                 } // Se visualiza BottomNavigation oculto
                                 
                                 position = positionNew; // Posición nueva del scroll
                             };
                             
-                            appContent.on("scroll.bottom-navigation", scrollBottomNav);
+                            appContent.on(nameEvent, scrollBottomNav);
+                            
+                            var flexibleContent = $element.parents(".flexible-content");
+                            
+                            if (flexibleContent.exists()) {
+                                flexibleContent.children(".box").on(nameEvent, scrollBottomNav);
+                            } // Elemento se encuentra insertado en un Flexible Content
                         }
                     };
                 }]
@@ -5342,8 +5346,9 @@
                         link: function ($scope, $element) {
                             // Componentes
                             var viewContent = angular.element($scope.views), 
-                                views, tabs = $element.find(".tab"),
+                                views, tabs = $element.find(".tab"), 
                                 index = 0, clickActive = true, viewsCount = 0,
+                                positionStart, enabledClick,
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
                                 );
@@ -5384,11 +5389,24 @@
                                     angular.element(views[position]).addClass("active");
                                 } // Vista actualmente activa
                                 
-                                $element.displaceLeft(function (name) {
+                                $element.displaceLeft(function (name, event) {
                                     switch (name) {
-                                        case ("displace"): clickActive = false; break;
+                                        case ("start"):
+                                            positionStart = event.originalEvent.pageX;
+                                        break;
+                                        
+                                        case ("displace"): 
+                                            var disabledClick = !softtion.isBetween(
+                                                (event.originalEvent.pageX - positionStart), -15, 15
+                                            );
+                                            
+                                            if (disabledClick) { clickActive = false; }
+                                        break;
+                                        
                                         case ("end"): 
-                                            $timeout(function () { clickActive = true; }, 500);
+                                            enabledClick = $timeout(
+                                                function () { clickActive = true; }, 100
+                                            );
                                         break;
                                     }
                                 }); // Evento arrastre en el componente
@@ -5410,13 +5428,14 @@
                                         widthTab = $element.width();
                             
                                     // Este componente está activo o no tiene vista
-                                    if (itemTab.hasClass("active") || (position === -1)) { return; }
+                                    if (itemTab.hasClass("active")) { return; }
                                     
                                     stripe.css({ width: width, left: left });
                                     tabs.removeClass("active"); itemTab.addClass("active");
                                 
                                     if (softtion.isDefined(views)) {
-                                        views.removeClass("active"); angular.element(views[position]).addClass("active");
+                                        views.removeClass("active"); 
+                                        angular.element(views[position]).addClass("active");
                                     } // Vista actualmente activa
                                     
                                     if (!$scope.disabledPositionStart) {
