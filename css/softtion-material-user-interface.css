@@ -1,19 +1,19 @@
 /*!
  * Softtion Material UI
- * v1.1.5
+ * v1.1.8
  * @license MIT
  * Author: Softtion Developers
- * Updated: 21/Jul/2017
+ * Updated: 31/Jul/2017
  */
 
 @import url("fonts/roboto/style-font.css");
 
 :root {
     /** ANIMATION MATERIAL */
-    --standard-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
-    --easing-out: cubic-bezier(0.0, 0.0, 0.2, 1);
-    --easing-in: cubic-bezier(0.4, 0.0, 1, 1);
-    --sharp-curve: cubic-bezier(0.4, 0.0, 0.6, 1);
+    --standard-curve: cubic-bezier(0.4, 0, 0.2, 1);
+    --deceleration-curve: cubic-bezier(0, 0, 0.2, 1);
+    --acceleration-curve: cubic-bezier(0.4, 0, 1, 1);
+    --sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
     
     /** SHADOWS MATERIAL */
     --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
@@ -84,7 +84,7 @@ body {
     padding: 0px;
     overflow: hidden; }
 
-.body-overflow-none {
+body.body-overflow-none, body.body-overflow-none-sidenav {
     overflow: hidden; }
 
 /** SCROLLBAR */
@@ -808,13 +808,14 @@ input[type=number]::-webkit-outer-spin-button {
 
 .ripple-box > .effect {
     position: absolute;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%); 
     opacity: 0;
     width: 0;
     height: 0;
     border-radius: 50%;
-    pointer-events: none; }
+    pointer-events: none;
+    -webkit-transform: translate(-50%, -50%); 
+       -moz-transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%); }
 
 /** COMPONENTS GLOBALS */
 
@@ -827,7 +828,8 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     bottom: 0;
     right: 0;
-    display: none; }
+    display: none;
+    will-change: opacity; }
 
 .block {
     position: relative;
@@ -909,22 +911,24 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;     
     width: 100%; 
     height: 100%;
-    -moz-transition: left 0.3s var(--easing-in), 
-        width 0.3s var(--easing-in);
-    -webkit-transition: left 0.3s var(--easing-in), 
-        width 0.3s var(--easing-in);
-    transition: left 0.3s var(--easing-in), 
-        width 0.3s var(--easing-in);
-    -o-transition: left 0.3s var(--easing-in), 
-        width 0.3s var(--easing-in);
-    -ms-transition: left 0.3s var(--easing-in), 
-        width 0.3s var(--easing-in); }
+    -webkit-transition: left 120ms 0ms var(--acceleration-curve), 
+                width 120ms 0ms var(--acceleration-curve);
+       -moz-transition: left 120ms 0ms var(--acceleration-curve), 
+                width 120ms 0ms var(--acceleration-curve);
+            transition: left 120ms 0ms var(--acceleration-curve), 
+                width 120ms 0ms var(--acceleration-curve); }
 
 @media only screen and (min-width : 721px) {
     
     .sidenav.persistent.show ~ .app-body {
         left: 256px;
-        width: calc(100% - 256px); } 
+        width: calc(100% - 256px);
+        -webkit-transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve);
+           -moz-transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve);
+                transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve); } 
 }
 
 @media only screen and (min-width : 961px) {
@@ -935,7 +939,13 @@ input[type=number]::-webkit-outer-spin-button {
     
     .sidenav.persistent.show ~ .app-body {
         left: 320px;
-        width: calc(100% - 320px); } 
+        width: calc(100% - 320px);
+        -webkit-transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve);
+           -moz-transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve);
+                transition: left 120ms 0ms var(--deceleration-curve), 
+                    width 120ms 0ms var(--deceleration-curve); } 
 }
 
 /** APP CONTENT */
@@ -953,8 +963,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 8px; }
 
 .app-content:after {
-    display: table;
-    clear: both; }
+    clear: both;
+    display: table; }
 
 .app-content .flex, .app-content .flex-pd, .app-content .flex-pd-medium, 
 .app-content .flex-pd-large, .app-content .flex-pd-extralarge,
@@ -1015,11 +1025,18 @@ input[type=number]::-webkit-outer-spin-button {
         padding-left: 8px; }
  }
 
-@media only screen and (min-width : 721px) {
+@media only screen and (min-width : 961px) {
     
     .app-body > .sidenav ~ .app-content {
         left: 320px; 
         width: calc(100% - 320px); }
+}
+
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
+    .app-body > .sidenav ~ .app-content {
+        left: 256px; 
+        width: calc(100% - 256px); }
 }
 
 /** AUTOCOMPLETE */
@@ -1027,6 +1044,7 @@ input[type=number]::-webkit-outer-spin-button {
 .autocomplete {
     position: relative;
     display: table;
+    float: left;
     overflow-x: hidden;
     overflow-y: auto; }
 
@@ -1045,11 +1063,9 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 18px;
     font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .autocomplete > .content > label.active {
     cursor: none;
@@ -1082,10 +1098,10 @@ input[type=number]::-webkit-outer-spin-button {
     position: absolute;
     top: 20px;
     margin: 0px;
+    width: calc(100% - 24px);
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    width: calc(100% - 24px);
     overflow: hidden; }
 
 .autocomplete.active > .content > input:focus ~ .value {
@@ -1104,15 +1120,15 @@ input[type=number]::-webkit-outer-spin-button {
     bottom: 18px;
     width: 0%;
     z-index: 2;
-    transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .autocomplete.active > .content > input:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
-    animation: borderTextfield 0.225s var(--sharp-curve);
-    -o-animation: borderTextfield 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfield 225ms var(--sharp-curve);
+       -moz-animation: borderTextfield 225ms var(--sharp-curve);
+            animation: borderTextfield 225ms var(--sharp-curve); }
 
 .autocomplete > .content > i.action {
     position: absolute;
@@ -1142,11 +1158,12 @@ input[type=number]::-webkit-outer-spin-button {
     overflow-y: auto;
     z-index: 4;
     box-shadow: var(--shadow-2); 
-    -moz-transition: max-height 0.225s, max-width 0.225s;
-    -webkit-transition: max-height 0.225s, max-width 0.225s;
-    -o-transition: max-height 0.225s, max-width 0.225s;
-    transition: max-height 0.225s, max-width 0.225s;
-    -ms-transition: max-height 0.225s, max-width 0.225s; }
+    -webkit-transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve);
+       -moz-transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve);
+            transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve); }
 
 .autocomplete > .content > ul.active {
     max-width: 100%;
@@ -1192,11 +1209,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .autocomplete.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfieldIcon 225ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 225ms var(--sharp-curve);
+            animation: borderTextfieldIcon 225ms var(--sharp-curve); }
 
 /** BADGE */
 
@@ -1221,12 +1236,11 @@ button.action > .badge {
     right: 0;
     height: 56px;
     z-index: 8;
+    user-select: none;
     box-shadow: var(--shadow-8-inv);
-    -moz-transition: all 0.325s var(--standard-curve);
-    -webkit-transition: all 0.325s var(--standard-curve);
-    -o-transition: all 0.325s var(--standard-curve);
-    transition: all 0.325s var(--standard-curve);
-    -ms-transition: all 0.325s var(--standard-curve); }
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 @media only screen and (min-width: 641px) {
     
@@ -1250,7 +1264,9 @@ button.action > .badge {
 }
 
 .bottom-navigation.hide {
-    margin-bottom: -56px; }
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%); }
 
 .bottom-navigation > .content {
     display: flex;
@@ -1259,7 +1275,9 @@ button.action > .badge {
     padding: 0;
     margin: 0;
     width: 100%;
-    transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .bottom-navigation.three-tabs > .content {
     min-width: 240px;
@@ -1328,7 +1346,9 @@ button.action > .badge {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    transition: all 0.1s var(--standard-curve); }
+    -webkit-transition: all 100ms 0ms var(--standard-curve);
+       -moz-transition: all 100ms 0ms var(--standard-curve);
+            transition: all 100ms 0ms var(--standard-curve); }
 
 .bottom-navigation > .content > li.active > .content > .title {
     padding-top: 26px;
@@ -1349,8 +1369,12 @@ button.action > .badge {
     position: absolute;
     top: 0px;
     left: 50%;
-    transform: translateX(-50%);
-    transition: all 0.1s var(--standard-curve); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%);
+    -webkit-transition: all 100ms 0ms var(--standard-curve);
+       -moz-transition: all 100ms 0ms var(--standard-curve);
+            transition: all 100ms 0ms var(--standard-curve); }
 
 .bottom-navigation.four-tabs > .content > li > .content > i,
 .bottom-navigation.five-tabs > .content > li > .content > i {
@@ -1361,59 +1385,41 @@ button.action > .badge {
     top: 0px; }
 
 .bottom-navigation.three-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple33;
     -webkit-animation-name: ripple33;
-    -o-animation-name: ripple33;
-    animation-name: ripple33;
-    -ms-animation-name: ripple33;
-    -moz-animation-duration: 0.325s;
-    -webkit-animation-duration: 0.325s;
-    -o-animation-duration: 0.325s;
-    animation-duration: 0.325s;
-    -ms-animation-duration: 0.325s; }
+       -moz-animation-name: ripple33;
+            animation-name: ripple33;
+    -webkit-animation-duration: 325ms;
+       -moz-animation-duration: 325ms;
+            animation-duration: 325ms; }
 
 .bottom-navigation.four-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple25;
     -webkit-animation-name: ripple25;
-    -o-animation-name: ripple25;
-    animation-name: ripple25;
-    -ms-animation-name: ripple25;
-    -moz-animation-duration: 0.325s;
-    -webkit-animation-duration: 0.325s;
-    -o-animation-duration: 0.325s;
-    animation-duration: 0.325s;
-    -ms-animation-duration: 0.325s; }
+       -moz-animation-name: ripple25;
+            animation-name: ripple25;
+    -webkit-animation-duration: 325ms;
+       -moz-animation-duration: 325ms;
+            animation-duration: 325ms; }
 
 .bottom-navigation.five-tabs > .ripple-box.animated > .effect {
-    -moz-animation-name: ripple20;
     -webkit-animation-name: ripple20;
-    -o-animation-name: ripple20;
-    animation-name: ripple20;
-    -ms-animation-name: ripple20;
-    -moz-animation-duration: 0.325s;
-    -webkit-animation-duration: 0.325s;
-    -o-animation-duration: 0.325s;
-    animation-duration: 0.325s;
-    -ms-animation-duration: 0.325s; }
+       -moz-animation-name: ripple20;
+            animation-name: ripple20;
+    -webkit-animation-duration: 325ms;
+       -moz-animation-duration: 325ms;
+            animation-duration: 325ms; }
 
 .bottom-navigation.shifting > .ripple-box.animated > .effect {
-    -moz-animation-name: rippleAll;
     -webkit-animation-name: rippleAll;
-    -o-animation-name: rippleAll;
-    animation-name: rippleAll;
-    -ms-animation-name: rippleAll;
-    -moz-animation-duration: 0.575s;
-    -webkit-animation-duration: 0.575s;
-    -o-animation-duration: 0.575s;
-    animation-duration: 0.575s;
-    -ms-animation-duration: 0.575s; }
+       -moz-animation-name: rippleAll;
+            animation-name: rippleAll;
+    -webkit-animation-duration: 525ms;
+       -moz-animation-duration: 525ms;
+            animation-duration: 525ms; }
 
 .opacity-bottom {
-    -moz-animation: fadeIn 0.325s var(--easing-out);
-    -webkit-animation: fadeIn 0.325s var(--easing-out);
-    -o-animation: fadeIn 0.325s var(--easing-out);
-    animation: fadeIn 0.325s var(--easing-out);
-    -ms-animation: fadeIn 0.325s var(--easing-out); }
+    -webkit-animation: fadeIn 325ms var(--deceleration-curve);
+       -moz-animation: fadeIn 325ms var(--deceleration-curve);
+            animation: fadeIn 325ms var(--deceleration-curve); }
 
 .bottom-navigation > .ripple-box {
     width: 0%; 
@@ -1451,67 +1457,87 @@ button.action > .badge {
 
 /** BOTTOM SHEET */
 
+.bottom-sheet {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    z-index: 16;
+    visibility: hidden;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+
+.bottom-sheet.show, .bottom-sheet.show-content {
+    height: 100%;
+    visibility: visible; }
+
 .bottom-sheet > .backdrop {
+    position: absolute;
     display: block;
-    z-index: 15;
+    z-index: 1;
     bottom: initial;
     opacity: 0;
-    -moz-transition: opacity 0.3s var(--easing-in);
-    -webkit-transition: opacity 0.3s var(--easing-in);
-    transition: opacity 0.3s var(--easing-in);
-    -o-transition: opacity 0.3s var(--easing-in);
-    -ms-transition: opacity 0.3s var(--easing-in); }
+    -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
+            transition: opacity 120ms 0ms var(--acceleration-curve); }
 
 .bottom-sheet.show > .backdrop,
 .bottom-sheet.show-content > .backdrop {
+    opacity: 0.78;
     bottom: 0;
-    opacity: 1; }
+    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
+            transition: opacity 120ms 0ms var(--deceleration-curve); }
 
 .bottom-sheet > .content {
     position: absolute;
     bottom: 0px;
-    left: 50%;
     width: 100%;
-    z-index: 16;
+    max-width: 480px;
+    z-index: 2;
     visibility: hidden;
     overflow-y: auto;
-    box-shadow: var(--shadow-16-inv);
-    -moz-transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+    will-change: transform;
+    box-shadow: 0px 4px 16px 6px rgba(0, 0, 0, 0.12);
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: all 120ms 0ms var(--acceleration-curve);
+       -moz-transition: all 120ms 0ms var(--acceleration-curve);
+            transition: all 120ms 0ms var(--acceleration-curve); }
 
-.app-content .bottom-sheet > .backdrop, 
-.app-content .bottom-sheet > .content {
-    position: fixed; }
+@media only screen and (min-width : 961px) {
 
-@media only screen and (min-width : 960px) {
-
-    .sidenav.persistent.show ~ .bottom-sheet > .content,
-    .sidenav.permanent ~ .bottom-sheet > .content {
-        left: calc(50% + 160px); }
+    .sidenav.persistent.show ~ .bottom-sheet,
+    .sidenav.permanent ~ .bottom-sheet {
+        left: 320px;
+        width: calc(100% - 320px); }
 }
 
 @media only screen and (min-width : 720px) and (max-width : 960px) {
 
-    .sidenav.persistent.show ~ .bottom-sheet > .content {
-        left: calc(50% + 128px); }
+    .sidenav.persistent.show ~ .bottom-sheet {
+        left: 256px;
+        width: calc(100% - 256px); }
 }
 
-.bottom-sheet > .content.start {
-    -moz-transition: all 0.3s var(--standard-curve);
-    -webkit-transition: all 0.3s var(--standard-curve);
-    transition: all 0.3s var(--standard-curve);
-    -o-transition: all 0.3s var(--standard-curve);
-    -ms-transition: all 0.3s var(--standard-curve); }
-
-.bottom-sheet.show > .content {
-    visibility: visible;
-    margin-bottom: 0px !important; }
-
+.bottom-sheet.show > .content,
 .bottom-sheet.show-content > .content {
-    visibility: visible; }
+    visibility: visible;
+    -webkit-transform: translateY(0%);
+       -moz-transform: translateY(0%);
+            transform: translateY(0%);
+    -webkit-transition: all 120ms 0ms var(--deceleration-curve);
+       -moz-transition: all 120ms 0ms var(--deceleration-curve);
+            transition: all 120ms 0ms var(--deceleration-curve); }
 
 .bottom-sheet > .content > .list-style-sheet {
     padding: 8px 0px;
@@ -1579,9 +1605,11 @@ button.action > .badge {
     cursor: pointer;
     top: 24px;
     left: 50%;
-    transform: translateX(-50%);
     width: 48px;
-    height: 48px; }
+    height: 48px;
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .bottom-sheet > .content > .grid-style-sheet > .item > i.icon {
     font-size: 48px; }
@@ -1616,8 +1644,7 @@ button.action > .badge {
     box-sizing: border-box;
     user-select: none; }
 
-body.not-touch .breadcrumb::-webkit-scrollbar, 
-.breadcrumb::-webkit-scrollbar {
+body.not-touch .breadcrumb::-webkit-scrollbar, .breadcrumb::-webkit-scrollbar {
     width: 0px; 
     height: 0px; }
 
@@ -1682,8 +1709,7 @@ button {
     cursor: pointer;
     font-family: softtion-material;
     font-weight: 700;
-    font-size: 14px; 
-    transition: all 0.325s var(--standard-curve); }
+    font-size: 14px; }
 
 button.raised, button.flat {
     position: relative;
@@ -1721,16 +1747,12 @@ button.floating {
     z-index: 6;
     border-radius: 50%; 
     box-shadow: var(--shadow-6);
-    -moz-transition: all 0.325s var(--standard-curve); 
-    -webkit-transition: all 0.325s var(--standard-curve);
-    -o-transition: all 0.325s var(--standard-curve);
-    transition: all 0.325s var(--standard-curve);
-    -ms-transition: all 0.325s var(--standard-curve);
-    -moz-animation: buttonFloating 0.15s var(--standard-curve);
-    -webkit-animation: buttonFloating 0.15s var(--standard-curve);
-    animation: buttonFloating 0.15s var(--standard-curve);
-    -o-animation: buttonFloating 0.15s var(--standard-curve);
-    -ms-animation: buttonFloating 0.15s var(--standard-curve); }
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve); 
+            transition: all 160ms 0ms var(--standard-curve);
+    -webkit-animation: buttonFloating 120ms 0ms var(--standard-curve);
+       -moz-animation: buttonFloating 120ms 0ms var(--standard-curve);
+            animation: buttonFloating 120ms 0ms var(--standard-curve); }
 
 button.floating.left {
     left: 16px;
@@ -1739,11 +1761,9 @@ button.floating.left {
 button.floating.center {
     left: 50%;
     right: initial;
-    -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 button.floating.show-bottom-navigation {
     bottom: 72px; }
@@ -1773,16 +1793,18 @@ button.raised:before, button.flat:before, button.floating:before {
     content: "";
     display: block;
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     padding-top: calc(100% - 12px);
     padding-left: calc(100% - 12px);
-    margin-left: calc(-50% + 6px);
     margin-top: calc(-50% + 6px);
+    margin-left: calc(-50% + 6px);
     border-radius: 50%;
     opacity: 0.26;
-    transform: scale(0);
-    visibility: hidden; }
+    visibility: hidden;
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 button.action {
     position: relative;
@@ -1803,24 +1825,24 @@ button.action:before {
     content: "";
     display: block;
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     padding-top: calc(100% - 8px);
     padding-left: calc(100% - 8px);
-    margin-left: calc(-50% + 4px);
     margin-top: calc(-50% + 4px);
+    margin-left: calc(-50% + 4px);
     border-radius: 50%;
     opacity: 0.26;
-    transform: scale(0);
-    visibility: hidden; }
+    visibility: hidden;
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 button.raised:not(:active):before, button.flat:not(:active):before,
 button.floating:not(:active):before, button.action:not(:active):before {
-    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
-    animation: rippleSquarecenter 1s var(--standard-curve);
-    -o-animation: rippleSquarecenter 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+            animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 button.raised:focus:before, button.flat:focus:before, 
 button.floating:focus:before, button.action:focus:before {
@@ -1855,6 +1877,8 @@ button.raised:focus:after, button.flat:focus:after {
     -o-animation: buttonFocus 2s infinite var(--sharp-curve); 
     animation: buttonFocus 2s infinite var(--sharp-curve); 
     -ms-animation: buttonFocus 2s infinite var(--sharp-curve); }*/
+
+/** BUTTON GROUP */
 
 .button-group {
     position: relative;
@@ -1959,21 +1983,21 @@ button.raised:focus:after, button.flat:focus:after {
     top: 50%;
     left: 50%;
     display: block;
-    transform: translate(-50%, -50%);
     border-radius: 50%; 
     opacity: 0.32;
-    background-color: var(--light-ripple); }
+    background-color: var(--light-ripple);
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .calendar > .header > .actions > i.dragover:before {
     width: 28px;
     height: 28px; }
 
 .calendar > .header > .actions > i.dragover:before {
-    -moz-animation: rippleWaiting 0.8s var(--standard-curve) infinite;
-    -webkit-animation: rippleWaiting 0.8s var(--standard-curve) infinite;
-    animation: rippleWaiting 0.8s var(--standard-curve) infinite;
-    -o-animation: rippleWaiting 0.8s var(--standard-curve) infinite;
-    -ms-animation: rippleWaiting 0.8s var(--standard-curve) infinite; }
+    -webkit-animation: rippleWaiting 425ms var(--standard-curve) infinite;
+       -moz-animation: rippleWaiting 425ms var(--standard-curve) infinite;
+            animation: rippleWaiting 425ms var(--standard-curve) infinite; }
 
 @media only screen and (max-width : 360px) {
     
@@ -2131,12 +2155,12 @@ button.raised:focus:after, button.flat:focus:after {
 
 .calendar > .list-events > .head {
     width: 100%;
-    box-sizing: border-box;
     padding: 0px 12px; 
     height: 32px;
     line-height: 32px;
     font-size: 16px;
-    font-weight: 700; }
+    font-weight: 700;
+    box-sizing: border-box; }
 
 .calendar > .list-events > ul > li > .content {
     position: relative;
@@ -2203,11 +2227,9 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     z-index: 4;
     box-shadow: var(--shadow-2); 
-    -moz-transition: box-shadow 0.325s var(--sharp-curve);
-    -webkit-transition: box-shadow 0.325s var(--sharp-curve);
-    -o-transition: box-shadow 0.325s var(--sharp-curve);
-    transition: box-shadow 0.325s var(--sharp-curve);
-    -ms-transition: box-shadow 0.325s var(--sharp-curve); }
+    -webkit-transition: box-shadow 120ms 0ms var(--sharp-curve);
+       -moz-transition: box-shadow 120ms 0ms var(--sharp-curve);
+            transition: box-shadow 120ms 0ms var(--sharp-curve); }
 
 .card.flat {
     border-radius: 0px;
@@ -2353,11 +2375,9 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 8px; }
 
 .card > .rich-media > .content > .actions > button.action:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .rich-media > .content > .actions > button.action.right {
     float: right; }
@@ -2550,11 +2570,9 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: content-box; }
 
 .card > .media-area > .actions > button:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .media-area > .actions > button > .badge {
     top: 2px;
@@ -2599,8 +2617,8 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     margin: 4px 0px;
     text-align: center;
-    box-sizing: content-box;
-    padding: 6px; }
+    padding: 6px;
+    box-sizing: content-box; }
 
 .card > .actions > button.action + button.action {
     margin-left: 8px; }
@@ -2610,11 +2628,9 @@ button.raised:focus:after, button.flat:focus:after {
     margin-right: 8px; }
 
 .card > .actions > button.action:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .actions > button.action.right {
     float: right; }
@@ -2649,11 +2665,9 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%; 
     height: 100%;
     overflow: hidden;
-    -moz-transition: left 1s var(--standard-curve);
-    -webkit-transition: left 1s var(--standard-curve);
-    transition: left 1s var(--standard-curve);
-    -o-transition: left 1s var(--standard-curve);
-    -ms-transition: left 1s var(--standard-curve); }
+    -webkit-transition: left 1000ms var(--standard-curve);
+       -moz-transition: left 1000ms var(--standard-curve);
+            transition: left 1000ms var(--standard-curve); }
 
 .carousel > .slide.active {
     left: 0;
@@ -2687,28 +2701,22 @@ button.raised:focus:after, button.flat:focus:after {
     top: 50%;
     left: 80px;
     z-index: 3; 
-    -moz-transform: translate(0%, -50%);
     -webkit-transform: translate(0%, -50%);
-    transform: translate(0%, -50%);
-    -o-transform: translate(0%, -50%);
-    -ms-transform: translate(0%, -50%); }
+       -moz-transform: translate(0%, -50%);
+            transform: translate(0%, -50%); }
 
 .carousel > .slide > .detail.top {
     top: 16px;
-    -moz-transform: none;
     -webkit-transform: none;
-    transform: none;
-    -o-transform: none;
-    -ms-transform: none; }
+       -moz-transform: none;
+            transform: none; }
 
 .carousel > .slide > .detail.bottom {
     top: initial;
     bottom: 16px;
-    -moz-transform: none;
     -webkit-transform: none;
-    transform: none;
-    -o-transform: none;
-    -ms-transform: none; }
+       -moz-transform: none;
+            transform: none; }
 
 .carousel > .slide > .detail > .title {
     font-size: 36px;
@@ -2726,11 +2734,9 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 50%;
     cursor: pointer;
     z-index: 3; 
-    -moz-transform: translate(0%, -50%);
     -webkit-transform: translate(0%, -50%);
-    transform: translate(0%, -50%);
-    -o-transform: translate(0%, -50%);
-    -ms-transform: translate(0%, -50%); }
+       -moz-transform: translate(0%, -50%);
+            transform: translate(0%, -50%); }
 
 .carousel > .arrow.disabled {
     opacity: 0.38;
@@ -2738,20 +2744,16 @@ button.raised:focus:after, button.flat:focus:after {
 
 .carousel > .arrow.top {
     top: 16px;
-    -moz-transform: none;
     -webkit-transform: none;
-    transform: none;
-    -o-transform: none;
-    -ms-transform: none; }
+       -moz-transform: none;
+            transform: none; }
 
 .carousel > .arrow.bottom {
     top: initial;
     bottom: 16px;
-    -moz-transform: none;
     -webkit-transform: none;
-    transform: none;
-    -o-transform: none;
-    -ms-transform: none; }
+       -moz-transform: none;
+            transform: none; }
 
 .carousel > .arrow > i {
     font-size: 48px;
@@ -2775,7 +2777,8 @@ button.raised:focus:after, button.flat:focus:after {
 .checkbox > input[type="checkbox"] {
     position: absolute;
     width: 0px;
-    height: 0px; }
+    height: 0px;
+    opacity: 0; }
 
 .checkbox > label {
     position: relative;
@@ -2804,13 +2807,15 @@ button.raised:focus:after, button.flat:focus:after {
     height: 20px;
     z-index: 1;
     border-radius: 2px;
-    transform: scale(0);
-    transform-origin: 50% 50%;
-    -moz-transition: all 0.2s var(--standard-curve);
-    -webkit-transition: all 0.2s var(--standard-curve);
-    -o-transition: all 0.2s var(--standard-curve);
-    transition: all 0.2s var(--standard-curve);
-    -ms-transition: all 0.2s var(--standard-curve); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox > label:after {
     position: absolute;
@@ -2823,19 +2828,19 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px; }
 
 .checkbox > input[type="checkbox"]:checked + label:after {
-    top: 2px;
-    left: 7px;
     width: 5px;
     height: 12px;
-    -moz-transform: rotate(40deg);
+    top: 2px;
+    left: 7px;
+    -webkit-backface-visibility: hidden;
     -webkit-transform: rotate(40deg);
-    -o-transform: rotate(40deg);
-    transform: rotate(40deg);
-    -ms-transform: rotate(40deg);
-    -webkit-backface-visibility: hidden; }
+       -moz-transform: rotate(40deg);
+            transform: rotate(40deg); }
 
 .checkbox > input[type="checkbox"]:checked ~ label:before {
-    transform: scale(1); }
+    -webkit-transform: scale(1);
+       -moz-transform: scale(1);
+            transform: scale(1); }
 
 .checkbox > .ripple-content {
     position: absolute;
@@ -2844,8 +2849,10 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     top: 50%;
     left: -12px;
-    transform: translateY(-50%);
-    background: transparent; }
+    background: transparent;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 .checkbox > .ripple-content > .box {
     position: absolute;
@@ -2853,10 +2860,14 @@ button.raised:focus:after, button.flat:focus:after {
     padding-top: 48px;
     padding-left: 48px;
     border-radius: 50%;
-    transform: scale(0); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 .checkbox > input[type="checkbox"]:focus ~ .ripple-content > .box {
-    animation: rippleSquarecenter 0.75s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenter 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 750ms var(--standard-curve);
+            animation: rippleSquarecenter 750ms var(--standard-curve); }
 
 /** CHECKBOX CONTROL */
 
@@ -2871,7 +2882,8 @@ button.raised:focus:after, button.flat:focus:after {
 .checkbox-control > input[type="checkbox"] {
     position: absolute;
     width: 0px;
-    height: 0px; }
+    height: 0px; 
+    opacity: 0; }
 
 .checkbox-control > label {
     position: relative;
@@ -2881,37 +2893,30 @@ button.raised:focus:after, button.flat:focus:after {
     width: inherit;
     height: inherit;
     line-height: inherit;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none; }
+    user-select: none;  }
 
 .checkbox-control > label:after {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
     width: calc(100% - 8px);
     height: calc(100% - 8px);
     z-index: 1;
-    border-radius: 2px; }
+    border-radius: 2px;
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .checkbox-control > input[type="checkbox"]:checked + label:after {
     border-left: 2px solid transparent;
     border-top: 2px solid transparent;
     width: 20%;
     height: 50%;
-    -moz-transform: translate(-50%, -65%) rotate(40deg);
+    -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
-    -o-transform: translate(-50%, -65%) rotate(40deg);
-    transform: translate(-50%, -65%) rotate(40deg);
-    -ms-transform: translate(-50%, -65%) rotate(40deg);
-    -webkit-backface-visibility: hidden; }
+       -moz-transform: translate(-50%, -65%) rotate(40deg);
+            transform: translate(-50%, -65%) rotate(40deg); }
 
 .checkbox-control > label:before {
     content: "";
@@ -2922,16 +2927,20 @@ button.raised:focus:after, button.flat:focus:after {
     height: calc(100% - 4px);
     z-index: 1;
     border-radius: 2px;
-    transform: scale(0);
-    transform-origin: 50% 50%;
-    -moz-transition: all 0.2s var(--standard-curve);
-    -webkit-transition: all 0.2s var(--standard-curve);
-    -o-transition: all 0.2s var(--standard-curve);
-    transition: all 0.2s var(--standard-curve);
-    -ms-transition: all 0.2s var(--standard-curve); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox-control > input[type="checkbox"]:checked ~ label:before {
-    transform: scale(1); }
+    -webkit-transform: scale(1);
+       -moz-transform: scale(1);
+            transform: scale(1); }
 
 /** CHECKBOX SELECT */
 
@@ -2951,37 +2960,30 @@ button.raised:focus:after, button.flat:focus:after {
     width: inherit;
     height: inherit;
     line-height: inherit;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none; }
+    user-select: none; }
 
 .checkbox-select > label:after {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
     width: calc(100% - 8px);
     height: calc(100% - 8px);
     z-index: 1;
-    border-radius: 2px; }
+    border-radius: 2px;
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .checkbox-select.active > label:after {
     border-left: 2px solid transparent;
     border-top: 2px solid transparent;
     width: 20%;
     height: 50%;
-    -moz-transform: translate(-50%, -65%) rotate(40deg);
+    -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
-    -o-transform: translate(-50%, -65%) rotate(40deg);
-    transform: translate(-50%, -65%) rotate(40deg);
-    -ms-transform: translate(-50%, -65%) rotate(40deg);
-    -webkit-backface-visibility: hidden; }
+       -moz-transform: translate(-50%, -65%) rotate(40deg);
+            transform: translate(-50%, -65%) rotate(40deg); }
 
 .checkbox-select > label:before {
     content: "";
@@ -2992,20 +2994,20 @@ button.raised:focus:after, button.flat:focus:after {
     height: calc(100% - 4px);
     z-index: 1;
     border-radius: 2px;
-    transform: scale(0);
-    transform-origin: 50% 50%;
-    -moz-transition: all 0.2s var(--standard-curve);
-    -webkit-transition: all 0.2s var(--standard-curve);
-    -o-transition: all 0.2s var(--standard-curve);
-    transition: all 0.2s var(--standard-curve);
-    -ms-transition: all 0.2s var(--standard-curve); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox-select.active > label:before {
-    -moz-transform: scale(1);
     -webkit-transform: scale(1);
-    transform: scale(1);
-    -o-transform: scale(1);
-    -ms-transform: scale(1); }
+       -moz-transform: scale(1);
+            transform: scale(1); }
 
 /** CHIP */
 
@@ -3017,7 +3019,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0 12px;
     font-weight: 300;
     border-radius: 16px;
-    transition: all 0.175s var(--sharp-curve); }
+    -webkit-transition: all 160ms 0ms var(--sharp-curve);
+       -moz-transition: all 160ms 0ms var(--sharp-curve);
+            transition: all 160ms 0ms var(--sharp-curve); }
 
 .chip.active {
     box-shadow: var(--shadow-2); }
@@ -3034,9 +3038,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     width: 16px;
     height: 32px;
+    float: right;
     line-height: 32px;
-    padding-left: 4px;
-    float: right; }
+    padding-left: 4px; }
 
 .chip > .action > i {
     position: absolute;
@@ -3078,11 +3082,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 16px;
     cursor: text;
     font-size: 16px;
-    -moz-transition: all 0.125s ease-out;
-    -webkit-transition: all 0.125s ease-out;
-    -o-transition: all 0.125s ease-out;
-    transition: all 0.125s ease-out;
-    -ms-transition: all 0.125s ease-out; }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .chip-input > .content > label.active {
     cursor: none;
@@ -3125,15 +3127,15 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 18px;
     width: 0%;
     z-index: 2;
-    transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .chip-input.active > .content > .box.focused ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
-    animation: borderTextfield 0.225s var(--sharp-curve);
-    -o-animation: borderTextfield 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfield 160ms var(--sharp-curve);
+       -moz-animation: borderTextfield 160ms var(--sharp-curve);
+            animation: borderTextfield 160ms var(--sharp-curve); }
 
 .chip-input > .content > span {
     position: absolute;
@@ -3191,11 +3193,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .chip-input.active > .content > i.icon-description ~ .box.focused ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfieldIcon 160ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 160ms var(--sharp-curve);
+            animation: borderTextfieldIcon 160ms var(--sharp-curve); }
 
 /** CLOCKPICKER */
 
@@ -3267,11 +3267,9 @@ button.raised:focus:after, button.flat:focus:after {
 .clockpicker > .content > .plate > .hours.active,
 .clockpicker > .content > .plate > .minutes.active {
     visibility: visible;
-    -moz-animation: changedClock 0.375s var(--standard-curve);
-    -webkit-animation: changedClock 0.375s var(--standard-curve);
-    animation: changedClock 0.375s var(--standard-curve);
-    -o-animation: changedClock 0.375s var(--standard-curve);
-    -ms-animation: changedClock 0.375s var(--standard-curve); }
+    -webkit-animation: changedClock 375ms var(--standard-curve);
+       -moz-animation: changedClock 375ms var(--standard-curve);
+            animation: changedClock 375ms var(--standard-curve); }
 
 .clockpicker > .content > .plate > .hours > .tick,
 .clockpicker > .content > .plate > .minutes > .tick {
@@ -3293,14 +3291,6 @@ button.raised:focus:after, button.flat:focus:after {
     float: right; 
     margin-left: 8px; }
 
-.clockpicker > .actions > button.flat:focus > .focused {
-    visibility: visible;
-    -moz-animation: buttonFocusContent 2.5s infinite linear; 
-    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
-    -o-animation: buttonFocusContent 2.5s infinite linear; 
-    animation: buttonFocusContent 2.5s infinite linear; 
-    -ms-animation: buttonFocusContent 2.5s infinite linear; }
-
 .clockpicker-input {
     position: relative;
     overflow-y: auto; 
@@ -3321,11 +3311,9 @@ button.raised:focus:after, button.flat:focus:after {
     height: 18px;
     line-height: 18px;
     cursor: pointer;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .clockpicker-input > .content > label.active {
     cursor: none;
@@ -3498,11 +3486,9 @@ button.raised:focus:after, button.flat:focus:after {
     text-align: right; }
 
 .datatable > .content > table tbody tr {
-    -moz-transition: background-color 0.3s var(--sharp-curve);
-    -webkit-transition: background-color 0.3s var(--sharp-curve);
-    -o-transition: background-color 0.3s var(--sharp-curve);
-    transition: background-color 0.3s var(--sharp-curve);
-    -ms-transition: background-color 0.3s var(--sharp-curve); }
+    -webkit-transition: background-color 160ms 0ms var(--sharp-curve);
+       -moz-transition: background-color 160ms 0ms var(--sharp-curve);
+            transition: background-color 160ms 0ms var(--sharp-curve); }
 
 .datatable > .content > table > thead > tr > th > button.action,
 .datatable > .content > table > tbody > tr > td > button.action {
@@ -3522,12 +3508,10 @@ button.raised:focus:after, button.flat:focus:after {
     border-top: 2px solid transparent;
     width: 20%;
     height: 50%;
-    -moz-transform: translate(-50%, -65%) rotate(40deg);
+    -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
-    -o-transform: translate(-50%, -65%) rotate(40deg);
-    transform: translate(-50%, -65%) rotate(40deg);
-    -ms-transform: translate(-50%, -65%) rotate(40deg);
-    -webkit-backface-visibility: hidden; }
+       -moz-transform: translate(-50%, -65%) rotate(40deg);
+            transform: translate(-50%, -65%) rotate(40deg); }
 
 .datatable thead > tr.active > th > .checkbox-select > label:before,
 .datatable tbody > tr.active > td > .checkbox-select > label:before {
@@ -3539,21 +3523,21 @@ button.raised:focus:after, button.flat:focus:after {
     height: calc(100% - 4px);
     z-index: 1;
     border-radius: 2px;
-    transform: scale(0);
-    transform-origin: 50% 50%;
-    -moz-transition: all 0.2s var(--standard-curve);
-    -webkit-transition: all 0.2s var(--standard-curve);
-    -o-transition: all 0.2s var(--standard-curve);
-    transition: all 0.2s var(--standard-curve);
-    -ms-transition: all 0.2s var(--standard-curve); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 .datatable thead > tr.active > th > .checkbox-select > label:before,
 .datatable tbody > tr.active > td > .checkbox-select > label:before {
-    -moz-transform: scale(1);
     -webkit-transform: scale(1);
-    transform: scale(1);
-    -o-transform: scale(1);
-    -ms-transform: scale(1); }
+       -moz-transform: scale(1);
+            transform: scale(1); }
 
 .datatable > .content > table > thead > tr > th > .checkbox-select {
     margin-top: 17px; }
@@ -3627,12 +3611,14 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker > .content > .month > .name {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%); 
     cursor: pointer;
     height: 28px;
     line-height: 28px;
     font-size: 15px;
-    font-weight: 500; }
+    font-weight: 500; 
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%); 
+            transform: translateX(-50%); }
 
 .datepicker > .content > .days-month {
     width: 100%; }
@@ -3707,14 +3693,6 @@ button.raised:focus:after, button.flat:focus:after {
     float: right; 
     margin-left: 8px; }
 
-.datepicker > .actions > button.flat:focus > .focused {
-    visibility: visible;
-    -moz-animation: buttonFocusContent 2.5s infinite linear; 
-    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
-    -o-animation: buttonFocusContent 2.5s infinite linear; 
-    animation: buttonFocusContent 2.5s infinite linear; 
-    -ms-animation: buttonFocusContent 2.5s infinite linear; }
-
 .datepicker-input {
     position: relative;
     overflow-y: auto; 
@@ -3735,11 +3713,9 @@ button.raised:focus:after, button.flat:focus:after {
     height: 18px;
     line-height: 18px;
     cursor: pointer;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .datepicker-input > .content > label.active {
     cursor: none;
@@ -3813,119 +3789,104 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** DIALOG */
 
+.dialog {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 24;
+    visibility: hidden;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+
+.dialog.show {
+    visibility: visible; }
+
 .dialog > .backdrop {
+    position: absolute;
     display: block;
-    z-index: 23;
+    z-index: 1;
     bottom: initial;
     opacity: 0;
-    -moz-transition: opacity 0.3s var(--easing-in);
-    -webkit-transition: opacity 0.3s var(--easing-in);
-    transition: opacity 0.3s var(--easing-in);
-    -o-transition: opacity 0.3s var(--easing-in);
-    -ms-transition: opacity 0.3s var(--easing-in); }
+    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve),
+                bottom 120ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--deceleration-curve),
+                bottom 120ms 0ms var(--deceleration-curve);
+            transition: opacity 120ms 0ms var(--deceleration-curve),
+                bottom 120ms 0ms var(--deceleration-curve); }
 
 .dialog.show > .backdrop {
     bottom: 0;
-    opacity: 1; }
+    opacity: 0.78; }
 
 .dialog > .box {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    visibility: hidden;
-    opacity: 0;
-    width: 80%;
+    position: absolute;
+    width: calc(100% - 32px);
+    max-width: 720px;
     height: auto;
-    z-index: 24;
-    border-radius: 36px;
+    opacity: 0;
+    z-index: 2;
+    visibility: hidden;
     box-shadow: var(--shadow-24);
-    -moz-transition: all 0.175s var(--standard-curve);
-    -webkit-transition: all 0.175s var(--standard-curve);
-    transition: all 0.175s var(--standard-curve);
-    -o-transition: all 0.175s var(--standard-curve);
-    -ms-transition: all 0.175s var(--standard-curve);
-    -moz-transform: scale(0.25) translate(-50%, -50%);
-    -webkit-transform: scale(0.25) translate(-50%, -50%);
-    transform: scale(0.25) translate(-50%, -50%);
-    -o-transform: scale(0.25) translate(-50%, -50%);
-    -ms-transform: scale(0.25) translate(-50%, -50%);
-    -moz-transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-    -o-transform-origin: 0 0;
-    transform-origin: 0 0;
-    -ms-transform-origin: 0 0; }
+    will-change: transform;
+    -webkit-transform: translateY(150px) scale(0.6);
+       -moz-transform: translateY(150px) scale(0.6);
+            transform: translateY(150px) scale(0.6);
+    -webkit-transition: opacity 125ms 0ms var(--deceleration-curve),
+                -webkit-transform 125ms 0ms var(--deceleration-curve),
+                visibility 125ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 125ms 0ms var(--deceleration-curve),
+                -moz-transform 125ms 0ms var(--deceleration-curve),
+                visibility 125ms 0ms var(--deceleration-curve);
+            transition: opacity 125ms 0ms var(--deceleration-curve),
+                transform 125ms 0ms var(--deceleration-curve),
+                visibility 125ms 0ms var(--deceleration-curve); }
 
 .dialog.alert > .box {
     padding-top: 24px; }
+
+.dialog.picker-date > .box {
+    max-width: 300px !important;
+    width: 300px !important; }
+
+.dialog.picker-clock > .box {
+    max-width: 280px !important;
+    width: 280px !important; }
 
 .dialog.show > .box {
     border-radius: 2px;
     visibility: visible;
     opacity: 1;
-    -moz-transform: scale(1) translate(-50%, -50%);
-    -webkit-transform: scale(1) translate(-50%, -50%);
-    transform: scale(1) translate(-50%, -50%);
-    -o-transform: scale(1) translate(-50%, -50%);
-    -ms-transform: scale(1) translate(-50%, -50%); }
+    -webkit-transform: translateY(0) scale(1);
+       -moz-transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1); }
 
 .dialog > .box > .title {
     padding: 0px 24px 20px 24px;
     font-size: 20px;
-    opacity: 0; 
     font-weight: 500; }
 
 .dialog > .box > .content {
     font-size: 15px;
-    opacity: 0; 
     overflow: auto;
     padding: 0px 24px 24px 24px; }
 
 .dialog > .box > .actions {
     height: 36px;
-    opacity: 0;
     padding: 8px 8px 8px 24px; }
-
-.dialog.show > .box > .title,
-.dialog.show > .box > .content,
-.dialog.show > .box > .actions {
-    opacity: 1; }
 
 .dialog > .box > .actions > button.flat {
     padding: 0px 12px;
     float: right; 
     margin-left: 8px; }
-
-.dialog > .box > .actions > button.flat:focus > .focused {
-    visibility: visible;
-    -moz-animation: buttonFocusContent 2.5s infinite linear; 
-    -webkit-animation: buttonFocusContent 2.5s infinite linear; 
-    -o-animation: buttonFocusContent 2.5s infinite linear; 
-    animation: buttonFocusContent 2.5s infinite linear; 
-    -ms-animation: buttonFocusContent 2.5s infinite linear; }
-
-.dialog.picker-date > .box {
-    width: 300px !important; }
-
-.dialog.picker-clock > .box {
-    width: 280px !important; }
-
-@media only screen and (min-width : 361px) {
-    
-    .dialog > .box {
-        width: 70%; }
-}
-
-@media only screen and (min-width : 641px) {
-    
-    .dialog > .box {
-        width: 60%; }
-}
-
-@media only screen and (min-width : 961px) {
-    
-    .dialog > .box {
-        width: 50%; }
-}
 
 /** DROPDOWN */
 
@@ -3939,35 +3900,28 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 4;
     box-shadow: var(--shadow-4);
     opacity: 0;
-    transform: scale(0, 0);
-    -moz-transform-origin: 0 0;
+    will-change: opacity, transform;
+    -webkit-transform: scale(0, 0);
+       -moz-transform: scale(0, 0);
+            transform: scale(0, 0);
     -webkit-transform-origin: 0 0;
-    -o-transform-origin: 0 0;
-    transform-origin: 0 0;
-    -ms-transform-origin: 0 0;
-    -moz-transition: -moz-transform 0.3s var(--standard-curve),
-        opacity 0.3s var(--standard-curve);
-    -webkit-transition: -webkit-transform 0.3s var(--standard-curve),
-        opacity 0.3s var(--standard-curve);
-    -o-transition: -o-transform 0.3s var(--standard-curve),
-        opacity 0.3s var(--standard-curve);
-    transition: transform 0.3s var(--standard-curve),
-        opacity 0.3s var(--standard-curve);
-    -ms-transition: -ms-transform 0.3s var(--standard-curve),
-        opacity 0.3s var(--standard-curve); }
+       -moz-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve),
+                opacity 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve),
+                opacity 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve),
+                opacity 160ms 0ms var(--standard-curve); }
 
-.dropdown.active {
+.dropdown.show {
     opacity: 1;
     -moz-transform: scale(1, 1);
-    -webkit-transform: scale(1, 1);
-    -o-transform: scale(1, 1);
     transform: scale(1, 1);
-    -ms-transform: scale(1, 1);
-    -moz-transition: -moz-transform 0.3s var(--standard-curve);
-    -webkit-transition: -webkit-transform 0.3s var(--standard-curve);
-    -o-transition: -o-transform 0.3s var(--standard-curve);
-    transition: transform 0.3s var(--standard-curve);
-    -ms-transition: -ms-transform 0.3s var(--standard-curve); }
+    -webkit-transform: scale(1, 1);
+    -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+    transition: transform 160ms 0ms var(--standard-curve);
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve); }
 
 .dropdown.fixed {
     z-index: 16; }
@@ -3983,11 +3937,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel {
     box-shadow: var(--shadow-2);
-    -moz-transition: margin 0.225s var(--easing-out);
-    -webkit-transition: margin 0.225s var(--easing-out);
-    transition: margin 0.225s var(--easing-out);
-    -o-transition: margin 0.225s var(--easing-out);
-    -ms-transition: margin 0.225s var(--easing-out); }
+    -webkit-transition: margin 160ms 0ms var(--deceleration-curve);
+       -moz-transition: margin 160ms 0ms var(--deceleration-curve);
+            transition: margin 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel.active {
     margin: 16px 0;
@@ -4033,25 +3985,25 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 12px; }
 
 .expansion-panel > .header > button.action > i {
-    transform: rotate(0deg);
-    transition: transform 0.325s var(--standard-curve); }
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transition: transform 160ms 0ms var(--standard-curve);
+       -moz-transition: transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
 .expansion-panel.active  > .header > button.action > i {
-    -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    -ms-transform: rotate(180deg); }
+       -moz-transform: rotate(180deg);
+            transform: rotate(180deg); }
 
 .expansion-panel > .body {
     box-sizing: border-box;
     max-height: 0px;
     overflow: hidden;
-    -moz-transition: max-height 0.225s var(--easing-out);
-    -webkit-transition: max-height 0.225s var(--easing-out);
-    transition: max-height 0.225s var(--easing-out);
-    -o-transition: max-height 0.225s var(--easing-out);
-    -ms-transition: max-height 0.225s var(--easing-out); }
+    -webkit-transition: max-height 160ms 0ms var(--deceleration-curve);
+       -moz-transition: max-height 160ms 0ms var(--deceleration-curve);
+            transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
     padding: 16px 24px; }
@@ -4075,11 +4027,9 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: initial;
     opacity: 0;
     z-index: 5;
-    -moz-transition: opacity 0.3s var(--standard-curve);
-    -webkit-transition: opacity 0.3s var(--standard-curve);
-    transition: opacity 0.3s var(--standard-curve);
-    -o-transition: opacity 0.3s var(--standard-curve);
-    -ms-transition: opacity 0.3s var(--standard-curve); }
+    -webkit-transition: opacity 160ms 0ms var(--standard-curve); 
+       -moz-transition: opacity 160ms 0ms var(--standard-curve);
+            transition: opacity 160ms 0ms var(--standard-curve); }
 
 .fab-menu.active > .backdrop {
     bottom: 0;
@@ -4095,21 +4045,19 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     border-radius: 50%;
     box-shadow: var(--shadow-6);
-    -moz-transform: translate(50%, 50%);
+    will-change: width, height;
     -webkit-transform: translate(50%, 50%);
-    transform: translate(50%, 50%);
-    -o-transform: translate(50%, 50%);
-    -ms-transform: translate(50%, 50%);
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve);
-    -moz-animation: collapseFabmenu 0.275s var(--standard-curve);
-    -webkit-animation: collapseFabmenu 0.275s var(--standard-curve);
-    animation: collapseFabmenu 0.275s var(--standard-curve);
-    -o-animation: collapseFabmenu 0.275s var(--standard-curve);
-    -ms-animation: collapseFabmenu 0.275s var(--standard-curve); }
+       -moz-transform: translate(50%, 50%);
+            transform: translate(50%, 50%);
+    -webkit-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+       -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+            transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+    -webkit-animation: collapseFabmenu 160ms 0ms var(--standard-curve);
+       -moz-animation: collapseFabmenu 160ms 0ms var(--standard-curve);
+            animation: collapseFabmenu 160ms 0ms var(--standard-curve); }
 
 .fab-menu > .box.show-bottom-navigation {
     bottom: 100px; }
@@ -4118,11 +4066,9 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: none;
     width: 640px;
     height: 640px;
-    -moz-animation: expandFabmenu 0.275s var(--standard-curve);
-    -webkit-animation: expandFabmenu 0.275s var(--standard-curve);
-    animation: expandFabmenu 0.275s var(--standard-curve);
-    -o-animation: expandFabmenu 0.275s var(--standard-curve);
-    -ms-animation: expandFabmenu 0.275s var(--standard-curve); }
+    -webkit-animation: expandFabmenu 160ms 0ms var(--standard-curve);
+       -moz-animation: expandFabmenu 160ms 0ms var(--standard-curve);
+            animation: expandFabmenu 160ms 0ms var(--standard-curve); }
 
 .fab-menu > .box > .content {
     position: absolute;
@@ -4130,11 +4076,9 @@ button.raised:focus:after, button.flat:focus:after {
     top: 50%;
     width: 640px;
     height: 640px;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .fab-menu > .box > .content > .button-floating {
     position: absolute;
@@ -4144,11 +4088,9 @@ button.raised:focus:after, button.flat:focus:after {
     height: 56px;
     opacity: 1;
     cursor: pointer;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .fab-menu.active > .box > .content > .button-floating {
     opacity: 0;
@@ -4167,16 +4109,12 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%;
     visibility: hidden;
     box-shadow: var(--shadow-2);
-    -moz-transition: visibility 0.175s var(--standard-curve);
-    -webkit-transition: visibility 0.175s var(--standard-curve);
-    transition: visibility 0.175s var(--standard-curve);
-    -o-transition: visibility 0.175s var(--standard-curve);
-    -ms-transition: visibility 0.175s var(--standard-curve);
-    -moz-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+    -webkit-transition: visibility 160ms 0ms var(--standard-curve);
+       -moz-transition: visibility 160ms 0ms var(--standard-curve);
+            transition: visibility 160ms 0ms var(--standard-curve);
     -webkit-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
-    transform: translate(calc(-100% + 28px), calc(-100% + 28px));
-    -o-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
-    -ms-transform: translate(calc(-100% + 28px), calc(-100% + 28px)); }
+       -moz-transform: translate(calc(-100% + 28px), calc(-100% + 28px));
+            transform: translate(calc(-100% + 28px), calc(-100% + 28px)); }
 
 .fab-menu > .box > .content > .menu-content > .menu > .option:nth-child(n + 6) {
     display: none; }
@@ -4191,52 +4129,48 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 9;
     bottom: initial;
     opacity: 0;
-    -moz-transition: opacity 0.225s var(--easing-in);
-    -webkit-transition: opacity 0.225s var(--easing-in);
-    transition: opacity 0.225s var(--easing-in);
-    -o-transition: opacity 0.225s var(--easing-in);
-    -ms-transition: opacity 0.225s var(--easing-in); }
+    -webkit-transition: opacity 160ms 0ms var(--acceleration-curve);
+       -moz-transition: opacity 160ms 0ms var(--acceleration-curve);
+            transition: opacity 160ms 0ms var(--acceleration-curve); }
 
 .backdrop.fab-backdrop.active {
     bottom: 0;
     opacity: 1; }
 
-.fab-menu-arc {
+.fab-menu-rainbow {
     position: fixed;
     right: -56px;
     bottom: 44px;
     z-index: 10;
     width: 200px;
-    height: 200px; 
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    height: 0px; 
+    -webkit-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+       -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+            transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve); }
 
-.fab-menu-arc.show-bottom-navigation {
+.fab-menu-rainbow.active {
+    height: 200px; }
+
+.fab-menu-rainbow.show-bottom-navigation {
     bottom: 100px; }
 
-.fab-menu-arc.active {
-    -moz-transform: rotate(90deg);
+.fab-menu-rainbow.start:not(.active) {
+    -webkit-animation: orbitReturn 160ms 0ms var(--deceleration-curve);
+       -moz-animation: orbitReturn 160ms 0ms var(--deceleration-curve);
+            animation: orbitReturn 160ms 0ms var(--deceleration-curve); }
+
+.fab-menu-rainbow.active {
     -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    -moz-animation: orbit 0.225s var(--easing-out);
-    -webkit-animation: orbit 0.225s var(--easing-out);
-    animation: orbit 0.225s var(--easing-out);
-    -o-animation: orbit 0.225s var(--easing-out);
-    -ms-animation: orbit 0.225s var(--easing-out); }
+       -moz-transform: rotate(90deg);
+            transform: rotate(90deg);
+    -webkit-animation: orbit 160ms 0ms var(--deceleration-curve);
+       -moz-animation: orbit 160ms 0ms var(--deceleration-curve);
+            animation: orbit 160ms 0ms var(--deceleration-curve); }
 
-.fab-menu-arc.start:not(.active) {
-    -moz-animation: orbitReturn 0.225s var(--easing-out);
-    -webkit-animation: orbitReturn 0.225s var(--easing-out);
-    animation: orbitReturn 0.225s var(--easing-out);
-    -o-animation: orbitReturn 0.225s var(--easing-out);
-    -ms-animation: orbitReturn 0.225s var(--easing-out); }
-
-.fab-menu-arc > .box {
+.fab-menu-rainbow > .box {
     position: absolute;
     overflow: hidden;
     bottom: -28px;
@@ -4244,40 +4178,35 @@ button.raised:focus:after, button.flat:focus:after {
     width: 56px;
     height: 56px;
     box-shadow: var(--shadow-6);
-    border-radius: 50%; }
+    border-radius: 50%;
+    will-change: transform; }
 
-.fab-menu-arc.active > .box {
+.fab-menu-rainbow.start:not(.active) > .box {
+    -webkit-animation: hideFabArc 160ms 0ms var(--deceleration-curve);
+       -moz-animation: hideFabArc 160ms 0ms var(--deceleration-curve);
+            animation: hideFabArc 160ms 0ms var(--deceleration-curve); }
+
+.fab-menu-rainbow.active > .box {
     width: 320px;
     height: 320px;
     bottom: -132px;
     right: calc(50% - 168px);
     box-shadow: none;
-    -moz-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -moz-animation: showFabArc 0.225s var(--easing-out);
-    -webkit-animation: showFabArc 0.225s var(--easing-out);
-    animation: showFabArc 0.225s var(--easing-out);
-    -o-animation: showFabArc 0.225s var(--easing-out);
-    -ms-animation: showFabArc 0.225s var(--easing-out); }
+       -moz-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    -webkit-animation: showFabArc 160ms 0ms var(--deceleration-curve);
+       -moz-animation: showFabArc 160ms 0ms var(--deceleration-curve);
+            animation: showFabArc 160ms 0ms var(--deceleration-curve); }
 
-.fab-menu-arc.start:not(.active) > .box {
-    -moz-animation: hideFabArc 0.225s var(--easing-out);
-    -webkit-animation: hideFabArc 0.225s var(--easing-out);
-    animation: hideFabArc 0.225s var(--easing-out);
-    -o-animation: hideFabArc 0.225s var(--easing-out);
-    -ms-animation: hideFabArc 0.225s var(--easing-out); }
-
-.fab-menu-arc > .box > .content {
+.fab-menu-rainbow > .box > .content {
     position: absolute;
     top: calc(50% - 80px);
     left: calc(50% - 80px);
     width: 160px;
     height: 160px; }
 
-.fab-menu-arc > .box > .content > .button-floating {
+.fab-menu-rainbow > .box > .content > .button-floating {
     position: absolute;
     top: calc(50% - 28px);
     left: calc(50% - 28px);
@@ -4287,25 +4216,23 @@ button.raised:focus:after, button.flat:focus:after {
     visibility: visible;
     cursor: pointer; }
 
-.fab-menu-arc.active > .box > .content > .button-floating {
+.fab-menu-rainbow.active > .box > .content > .button-floating {
     opacity: 0;
     visibility: hidden; }
 
-.fab-menu-arc.start:not(.active) > .box > .content > .button-floating {
-    -moz-animation: showButtonFabArc 0.225s var(--easing-out);
-    -webkit-animation: showButtonFabArc 0.225s var(--easing-out);
-    animation: showButtonFabArc 0.225s var(--easing-out);
-    -o-animation: showButtonFabArc 0.225s var(--easing-out);
-    -ms-animation: showButtonFabArc 0.225s var(--easing-out); }
+.fab-menu-rainbow.start:not(.active) > .box > .content > .button-floating {
+    -webkit-animation: showButtonFabArc 160ms 0ms var(--deceleration-curve);
+       -moz-animation: showButtonFabArc 160ms 0ms var(--deceleration-curve);
+            animation: showButtonFabArc 160ms 0ms var(--deceleration-curve); }
 
-.fab-menu-arc > .box > .content > .button-floating > i {
+.fab-menu-rainbow > .box > .content > .button-floating > i {
     cursor: pointer;
     width: 56px;
     height: 56px;
     line-height: 56px;
     text-align: center; }
 
-.fab-menu-arc > .box > .content > .menu-content {
+.fab-menu-rainbow > .box > .content > .menu-content {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -4313,29 +4240,24 @@ button.raised:focus:after, button.flat:focus:after {
     height: 240px;
     visibility: hidden;
     opacity: 0;
-    -moz-transform: translate(-50%, -50%);
+    will-change: opacity;
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
-.fab-menu-arc.active > .box > .content > .menu-content {
+.fab-menu-rainbow.active > .box > .content > .menu-content {
     visibility: visible;
     opacity: 1;
-    -moz-animation: showMenuFabArc 0.225s var(--easing-out);
-    -webkit-animation: showMenuFabArc 0.225s var(--easing-out);
-    animation: showMenuFabArc 0.225s var(--easing-out);
-    -o-animation: showMenuFabArc 0.225s var(--easing-out);
-    -ms-animation: showMenuFabArc 0.225s var(--easing-out); }
+    -webkit-animation: showMenuFabArc 160ms 0ms var(--deceleration-curve);
+       -moz-animation: showMenuFabArc 160ms 0ms var(--deceleration-curve);
+            animation: showMenuFabArc 160ms 0ms var(--deceleration-curve); }
 
-.fab-menu-arc.start:not(.active) > .box > .content > .menu-content {
-    -moz-animation: hideMenuFabArc 0.225s var(--easing-out);
-    -webkit-animation: hideMenuFabArc 0.225s var(--easing-out);
-    animation: hideMenuFabArc 0.225s var(--easing-out);
-    -o-animation: hideMenuFabArc 0.225s var(--easing-out);
-    -ms-animation: hideMenuFabArc 0.225s var(--easing-out); }
+.fab-menu-rainbow.start:not(.active) > .box > .content > .menu-content {
+    -webkit-animation: hideMenuFabArc 160ms 0ms var(--deceleration-curve);
+       -moz-animation: hideMenuFabArc 160ms 0ms var(--deceleration-curve);
+            animation: hideMenuFabArc 160ms 0ms var(--deceleration-curve); }
 
-.fab-menu-arc > .box > .content > .menu-content > .menu {
+.fab-menu-rainbow > .box > .content > .menu-content > .menu {
     position: absolute;
     bottom: 0px;
     box-shadow: var(--shadow-2); }
@@ -4349,11 +4271,12 @@ button.raised:focus:after, button.flat:focus:after {
     padding-top: 15px;
     margin-bottom: 0;
     z-index: 6;
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    -webkit-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+       -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+            transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve); }
 
 .fab-speed-dial.left {
     left: 16px;
@@ -4362,11 +4285,9 @@ button.raised:focus:after, button.flat:focus:after {
 .fab-speed-dial.center {
     left: 50%;
     right: initial;
-    -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .fab-speed-dial.show-bottom-navigation {
     bottom: 72px; }
@@ -4378,18 +4299,14 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: initial; }
 
 .fab-speed-dial > button.floating.active > i {
-    -moz-animation: changeRestoreIcon 0.225s var(--standard-curve);
-    -webkit-animation: changeRestoreIcon 0.225s var(--standard-curve);
-    animation: changeRestoreIcon 0.225s var(--standard-curve);
-    -o-animation: changeRestoreIcon 0.225s var(--standard-curve);
-    -ms-animation: changeRestoreIcon 0.225s var(--standard-curve); }
+    -webkit-animation: changeRestoreIcon 160ms 0ms var(--standard-curve);
+       -moz-animation: changeRestoreIcon 160ms 0ms var(--standard-curve);
+            animation: changeRestoreIcon 160ms 0ms var(--standard-curve); }
 
 .fab-speed-dial.active > button.floating.active > i {
-    -moz-animation: changeNewIcon 0.225s var(--standard-curve);
-    -webkit-animation: changeNewIcon 0.225s var(--standard-curve);
-    animation: changeNewIcon 0.225s var(--standard-curve);
-    -o-animation: changeNewIcon 0.225s var(--standard-curve);
-    -ms-animation: changeNewIcon 0.225s var(--standard-curve); }
+    -webkit-animation: changeNewIcon 160ms 0ms var(--standard-curve);
+       -moz-animation: changeNewIcon 160ms 0ms var(--standard-curve);
+            animation: changeNewIcon 160ms 0ms var(--standard-curve); }
 
 .fab-speed-dial > ul {
     position: absolute;
@@ -4413,19 +4330,16 @@ button.raised:focus:after, button.flat:focus:after {
     width: 40px;
     height: 40px;
     opacity: 0;
-    -moz-animation: closeFabSpeeddial 0.175s var(--standard-curve);
-    -webkit-animation: closeFabSpeeddial 0.175s var(--standard-curve);
-    animation: closeFabSpeeddial 0.175s var(--standard-curve);
-    -o-animation: closeFabSpeeddial 0.175s var(--standard-curve);
-    -ms-animation: closeFabSpeeddial 0.175s var(--standard-curve); }
+    will-change: opacity;
+    -webkit-animation: closeFabSpeeddial 120ms 0ms var(--standard-curve);
+       -moz-animation: closeFabSpeeddial 120ms 0ms var(--standard-curve);
+            animation: closeFabSpeeddial 120ms 0ms var(--standard-curve); }
 
 .fab-speed-dial.active > ul > li > button.floating {
     opacity: 1;
-    -moz-animation: openFabSpeeddial 0.175s var(--standard-curve);
-    -webkit-animation: openFabSpeeddial 0.175s var(--standard-curve);
-    animation: openFabSpeeddial 0.175s var(--standard-curve);
-    -o-animation: openFabSpeeddial 0.175s var(--standard-curve);
-    -ms-animation: openFabSpeeddial 0.175s var(--standard-curve); }
+    -webkit-animation: openFabSpeeddial 120ms 0ms var(--standard-curve);
+       -moz-animation: openFabSpeeddial 120ms 0ms var(--standard-curve);
+            animation: openFabSpeeddial 120ms 0ms var(--standard-curve); }
 
 /** FILE SVG-ICONS */
 
@@ -4463,7 +4377,8 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     width: 0%;
     height: 0%;
-    visibility: hidden; }
+    visibility: hidden;
+    opacity: 0; }
 
 .filechooser > .content {
     position: absolute;
@@ -4545,11 +4460,9 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0;
     z-index: 5;
     visibility: hidden;
-    -moz-transition: opacity 0.175s var(--sharp-curve);
-    -webkit-transition: opacity 0.175s var(--sharp-curve);
-    transition: opacity 0.175s var(--sharp-curve);
-    -o-transition: opacity 0.175s var(--sharp-curve);
-    -ms-transition: opacity 0.175s var(--sharp-curve); }
+    -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
+       -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+            transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .filechooser .view-preview:hover > .delete {
     opacity: 1;
@@ -4559,11 +4472,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser .view-preview > .icon {
     height: 100%; }
@@ -4572,11 +4483,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser .view-preview > .icon > i {
     position: absolute;
@@ -4587,11 +4496,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 56px;
     text-align: center;
     font-size: 56px;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser .content > .detail {
     position: absolute;
@@ -4717,11 +4624,9 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0;
     z-index: 5;
     visibility: hidden;
-    -moz-transition: opacity 0.175s var(--sharp-curve);
-    -webkit-transition: opacity 0.175s var(--sharp-curve);
-    transition: opacity 0.175s var(--sharp-curve);
-    -o-transition: opacity 0.175s var(--sharp-curve);
-    -ms-transition: opacity 0.175s var(--sharp-curve); }
+    -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
+       -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+            transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple .file .view-preview:hover > .delete {
     opacity: 1;
@@ -4731,11 +4636,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .view-preview > .icon {
     height: 100%; }
@@ -4744,11 +4647,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .view-preview > .icon > i {
     position: absolute;
@@ -4759,11 +4660,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 120px;
     text-align: center;
     font-size: 120px;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .detail {
     position: absolute;
@@ -4805,7 +4704,9 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 50%;
     cursor: pointer;
     opacity: 0.5;
-    transition: all 0.25s var(--sharp-curve); }
+    -webkit-transition: all 160ms 0ms var(--sharp-curve);
+       -moz-transition: all 160ms 0ms var(--sharp-curve);
+            transition: all 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple > .action-add.disabled {
     pointer-events: none; }
@@ -4815,7 +4716,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 40px;
     width: 40px;
     text-align: center;
-    transition: all 0.25s var(--sharp-curve); }
+    -webkit-transition: all 160ms 0ms var(--sharp-curve);
+       -moz-transition: all 160ms 0ms var(--sharp-curve);
+            transition: all 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple > .action-add:hover {
     bottom: 18px;
@@ -4837,7 +4740,7 @@ button.raised:focus:after, button.flat:focus:after {
     float: left; }
 
 .bottom-sheet > .content > .flexible-box {
-    height: 100vh; }
+    height: 100%; }
 
 .flexible-box > .banner {
     position: relative;
@@ -4903,17 +4806,19 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); }
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .flexible-box > .box {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
     padding-top: 56.25%;
-    box-sizing: border-box;
     z-index: 1;
+    box-sizing: border-box;
     overflow: auto; }
 
 .flexible-box > .box > .content {
@@ -5057,23 +4962,38 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** FORM NAVIGATION */
 
+.form-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    z-index: 16;
+    visibility: hidden; }
+
+.form-navigation.show {
+    height: 100%;
+    visibility: visible; }
+
 .form-navigation > .backdrop {
+    position: absolute;
     display: block;
-    z-index: 15;
+    z-index: 1;
     bottom: initial;
     opacity: 0;
-    -moz-transition: opacity 0.3s var(--easing-in);
-    -webkit-transition: opacity 0.3s var(--easing-in);
-    transition: opacity 0.3s var(--easing-in);
-    -o-transition: opacity 0.3s var(--easing-in);
-    -ms-transition: opacity 0.3s var(--easing-in); }
+    -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
+            transition: opacity 120ms 0ms var(--acceleration-curve); }
 
 .form-navigation.show > .backdrop {
     bottom: 0;
-    opacity: 1; }
+    opacity: 1;
+    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
+            transition: opacity 120ms 0ms var(--deceleration-curve); }
 
 .form-navigation > .content {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: -105%;
     width: 100%;
@@ -5081,8 +5001,11 @@ button.raised:focus:after, button.flat:focus:after {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    z-index: 16;
-    box-shadow: var(--shadow-16); }
+    z-index: 2;
+    box-shadow: var(--shadow-16);
+    -webkit-transition: right 120ms 0ms var(--acceleration-curve);
+       -moz-transition: right 120ms 0ms var(--acceleration-curve); 
+            transition: right 120ms 0ms var(--acceleration-curve); }
 
 .form-navigation.x150 > .content {
     max-width: 400px; }
@@ -5091,44 +5014,31 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 480px; }
 
 .form-navigation.show > .content {
-    right: 0%; }
-
-.form-navigation.hide > .content {
-    right: -105%; }
-
-.form-navigation.show > .content {
-    -moz-transition: right 0.3s var(--easing-out); 
-    -webkit-transition: right 0.3s var(--easing-out); 
-    -o-transition: right 0.3s var(--easing-out); 
-    transition: right 0.3s var(--easing-out); 
-    -ms-transition: right 0.3s var(--easing-out); }
-
-.form-navigation.hide > .content {
-    -moz-transition: right 0.3s var(--easing-in); 
-    -webkit-transition: right 0.3s var(--easing-in); 
-    -o-transition: right 0.3s var(--easing-in); 
-    transition: right 0.3s var(--easing-in); 
-    -ms-transition: right 0.3s var(--easing-in); }
+    right: 0%;  
+    -webkit-transition: right 120ms 0ms var(--deceleration-curve);
+       -moz-transition: right 120ms 0ms var(--deceleration-curve); 
+            transition: right 120ms 0ms var(--deceleration-curve); }
 
 /** FOOTER BUTTONS */
 
 .footer-buttons {
     position: fixed;
-    overflow-x: hidden;
+    overflow: hidden;
     z-index: 4;
     left: 0px;
     bottom: 0px;
     width: 100%;
     height: 48px;
     box-sizing: border-box;
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    will-change: transform;
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
 .footer-buttons.show-bottom-navigation {
-    margin-bottom: 56px; }
+    -webkit-transform: translateY(-56px);
+       -moz-transform: translateY(-56px);
+            transform: translateY(-56px); }
 
 .footer-buttons > button {
     float: right; 
@@ -5144,6 +5054,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .fullwidth-field {
     position: relative;
+    float: left;
+    width: 100%;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -5161,16 +5073,14 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     outline: none;
     resize: none;
-    height: 18px;
-    line-height: 18px;
-    min-height: 18px;
-    font-size: 16px;
     padding: 0px;
-    -moz-transition: height 0.175s ease-out;
-    -webkit-transition: height 0.175s ease-out;
-    -o-transition: height 0.175s ease-out;
-    transition: height 0.175s ease-out;
-    -ms-transition: height 0.175s ease-out; }
+    font-size: 16px;
+    height: 18px;
+    min-height: 18px;
+    line-height: 18px;
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
 
 .fullwidth-field > .content > textarea::-webkit-input-placeholder {
     visibility: visible; }
@@ -5276,11 +5186,9 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0;
     z-index: 5;
     visibility: hidden;
-    -moz-transition: opacity 0.175s var(--sharp-curve);
-    -webkit-transition: opacity 0.175s var(--sharp-curve);
-    transition: opacity 0.175s var(--sharp-curve);
-    -o-transition: opacity 0.175s var(--sharp-curve);
-    -ms-transition: opacity 0.175s var(--sharp-curve); }
+    -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
+       -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+            transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .gallery .image .view-preview:hover > .delete {
     opacity: 1;
@@ -5290,11 +5198,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .gallery .image .view-preview > .icon {
     height: 100%; }
@@ -5303,11 +5209,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: absolute;
     top: 50%;
     left: 50%;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .gallery .image .view-preview > .icon > i {
     position: absolute;
@@ -5318,11 +5222,9 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 120px;
     text-align: center;
     font-size: 120px;
-    -moz-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); }
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
 .gallery .image .detail {
     position: absolute;
@@ -5424,7 +5326,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 12px;
     box-sizing: content-box;
     cursor: pointer;
-    transform: translateY(-50%); }
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 .grid-list > .cell > .content > button.action.left {
     left: 0px;
@@ -5489,23 +5393,19 @@ img.density-width {
 
 img.center.density-width {
     top: 50%;
-    -moz-transform: translateY(-50%); 
-    -webkit-transform: translateY(-50%); 
-    transform: translateY(-50%); 
-    -o-transform: translateY(-50%); 
-    -ms-transform: translateY(-50%); }
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%); 
+            transform: translateY(-50%); }
 
 img.density-height {
     height: 100%;
     width: auto; }
 
 img.center.density-height {
-    left: 50%;
-    -moz-transform: translateX(-50%); 
-    -webkit-transform: translateX(-50%); 
-    transform: translateX(-50%); 
-    -o-transform: translateX(-50%); 
-    -ms-transform: translateX(-50%); }
+    left: 50%; 
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%); 
+            transform: translateX(-50%); }
 
 /** LINK */
 
@@ -5543,11 +5443,9 @@ img.center.density-height {
     overflow: hidden;
     height: auto;
     box-sizing: border-box;
-    -moz-transition: height 0.325s var(--standard-curve);
-    -webkit-transition: height 0.325s var(--standard-curve);
-    transition: height 0.352s var(--standard-curve);
-    -o-transition: height 0.325s var(--standard-curve);
-    -ms-transition: height 0.325s var(--standard-curve); }
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
 
 .list > .item-list.slide, .list > .item-list.slide label {
     cursor: pointer; }
@@ -5732,17 +5630,21 @@ img.center.density-height {
     position: absolute;
     top: 50%;
     right: 20px;
-    transform: translate(0, -50%);
     font-size: 36px;
     width: 36px;
     height: 36px;
-    line-height: inherit; }
+    line-height: inherit;
+    -webkit-transform: translate(0, -50%);
+       -moz-transform: translate(0, -50%);
+            transform: translate(0, -50%); }
 
 .list > .item-list > .slide-action > .confirm-button {
     position: absolute;
     top: 50%;
     right: 20px;
-    transform: translate(0, -50%); }
+    -webkit-transform: translate(0, -50%);
+       -moz-transform: translate(0, -50%);
+            transform: translate(0, -50%); }
 
 /** MENU */
 
@@ -5815,23 +5717,17 @@ img.center.density-height {
     right: 0px; }
 
 .progress-bar.visible > .bar {
-    -moz-transition: width 0.175s var(--sharp-curve); 
-    -webkit-transition: width 0.175s var(--sharp-curve); 
-    transition: width 0.175s var(--sharp-curve); 
-    -o-transition: width 0.175s var(--sharp-curve); 
-    -ms-transition: width 0.175s var(--sharp-curve); }
+    -webkit-transition: width 160ms 0ms var(--sharp-curve);
+       -moz-transition: width 160ms 0ms var(--sharp-curve); 
+            transition: width 160ms 0ms var(--sharp-curve); }
 
 .progress-bar.show > .bar {
-    -moz-animation-name: progressDeterminate;
     -webkit-animation-name: progressDeterminate;
-    -o-animation-name: progressDeterminate;
-    animation-name: progressDeterminate;
-    -ms-animation-name: progressDeterminate;
-    -moz-animation-timing-function: var(--sharp-curve);
+       -moz-animation-name: progressDeterminate;
+            animation-name: progressDeterminate;
     -webkit-animation-timing-function: var(--sharp-curve);
-    -o-animation-timing-function: var(--sharp-curve);
-    animation-timing-function: var(--sharp-curve);
-    -ms-animation-timing-function: var(--sharp-curve); }
+       -moz-animation-timing-function: var(--sharp-curve);
+            animation-timing-function: var(--sharp-curve); }
 
 .progress-bar.indeterminate:after, .progress-bar.indeterminate:before {
     content: "";
@@ -5841,32 +5737,24 @@ img.center.density-height {
     height: 4px; }
 
 .progress-bar.show.indeterminate:after {
-    -moz-animation: progressIndeterminateAfter 2s infinite;
-    -webkit-animation: progressIndeterminateAfter 2s infinite;
-    animation: progressIndeterminateAfter 2s infinite;
-    -o-animation: progressIndeterminateAfter 2s infinite;
-    -ms-animation: progressIndeterminateAfter 2s infinite; }
+    -webkit-animation: progressIndeterminateAfter 2000ms infinite; 
+       -moz-animation: progressIndeterminateAfter 2000ms infinite;
+            animation: progressIndeterminateAfter 2000ms infinite; }
 
 .progress-bar.show.indeterminate.reverse:after {
-    -moz-animation: progressIndeterminateReverseAfter 2s infinite;
-    -webkit-animation: progressIndeterminateReverseAfter 2s infinite;
-    animation: progressIndeterminateReverseAfter 2s infinite;
-    -o-animation: progressIndeterminateReverseAfter 2s infinite;
-    -ms-animation: progressIndeterminateReverseAfter 2s infinite; }
+    -webkit-animation: progressIndeterminateReverseAfter 2000ms infinite;
+       -moz-animation: progressIndeterminateReverseAfter 2000ms infinite;
+            animation: progressIndeterminateReverseAfter 2000ms infinite; }
 
 .progress-bar.show.indeterminate:before {
-    -moz-animation: progressIndeterminateBefore 2s infinite;
-    -webkit-animation: progressIndeterminateBefore 2s infinite;
-    animation: progressIndeterminateBefore 2s infinite;
-    -o-animation: progressIndeterminateBefore 2s infinite;
-    -ms-animation: progressIndeterminateBefore 2s infinite; }
+    -webkit-animation: progressIndeterminateBefore 2000ms infinite;
+       -moz-animation: progressIndeterminateBefore 2000ms infinite;
+            animation: progressIndeterminateBefore 2000ms infinite; }
 
 .progress-bar.show.indeterminate.reverse:before {
-    -moz-animation: progressIndeterminateReverseBefore 2s infinite;
-    -webkit-animation: progressIndeterminateReverseBefore 2s infinite;
-    animation: progressIndeterminateReverseBefore 2s infinite;
-    -o-animation: progressIndeterminateReverseBefore 2s infinite;
-    -ms-animation: progressIndeterminateReverseBefore 2s infinite; }
+    -webkit-animation: progressIndeterminateReverseBefore 2000ms infinite;
+       -moz-animation: progressIndeterminateReverseBefore 2000ms infinite;
+            animation: progressIndeterminateReverseBefore 2000ms infinite; }
 
 .progress-bar.buffering {
     background-color: transparent; }
@@ -5879,12 +5767,10 @@ img.center.density-height {
 
 .progress-bar.buffering > .buffer {
     width: 15%; 
-    z-index: 2; 
-    -moz-transition: width 0.175s var(--sharp-curve); 
-    -webkit-transition: width 0.175s var(--sharp-curve); 
-    transition: width 0.175s var(--sharp-curve); 
-    -o-transition: width 0.175s var(--sharp-curve); 
-    -ms-transition: width 0.175s var(--sharp-curve); }
+    z-index: 2;  
+    -webkit-transition: width 160ms 0ms var(--sharp-curve);
+       -moz-transition: width 160ms 0ms var(--sharp-curve); 
+            transition: width 160ms 0ms var(--sharp-curve); }
 
 .progress-bar.buffering.reverse > .buffer {
     right: 0px; }
@@ -5895,37 +5781,21 @@ img.center.density-height {
     background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23e6e6e6'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     background-size: 10px 4px;
-    -moz-animation: progressBuffering 0.25s infinite linear;
-    -webkit-animation: progressBuffering 0.25s infinite linear;
-    animation: progressBuffering 0.25s infinite linear;
-    -o-animation: progressBuffering 0.25s infinite linear;
-    -ms-animation: progressBuffering 0.25s infinite linear; }
+    -webkit-animation: progressBuffering 200ms infinite linear;
+       -moz-animation: progressBuffering 200ms infinite linear;
+            animation: progressBuffering 200ms infinite linear; }
 
 .progress-bar.buffering.reverse:after {
-    -moz-animation: progressBufferingReverse 0.25s infinite linear;
-    -webkit-animation: progressBufferingReverse 0.25s infinite linear;
-    animation: progressBufferingReverse 0.25s infinite linear;
-    -o-animation: progressBufferingReverse 0.25s infinite linear;
-    -ms-animation: progressBufferingReverse 0.25s infinite linear; }
+    -webkit-animation: progressBufferingReverse 250ms infinite linear;
+       -moz-animation: progressBufferingReverse 250ms infinite linear;
+            animation: progressBufferingReverse 250ms infinite linear; }
 
 .progress-bar.buffering > .bar {
     z-index: 3; }
 
 .app-bar > .progress-bar, .toolbar > .progress-bar {
-    position: absolute;
-    bottom: 0px; }
-
-@media only screen and (max-width : 360px) {
-    .app-bar > .progress-bar {
-        height: 2px; }
-
-    .app-bar > .progress-bar > .bar {
-        height: 2px; }
-
-    .app-bar > .progress-bar.indeterminate:after, 
-    .app-bar > .progress-bar.indeterminate:before {
-        height: 2px; }
-}
+    bottom: 0px; 
+    position: absolute; }
 
 /** PROGRESS BUTTON FLOATING */
 
@@ -5939,11 +5809,12 @@ img.center.density-height {
     width: 56px;
     height: 56px;
     user-select: none; 
-    -moz-transition: margin-bottom 0.325s var(--standard-curve); 
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    -webkit-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
+       -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve); 
+            transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve); }
 
 .progress-button-floating.show-bottom-navigation {
     bottom: 72px; }
@@ -5958,22 +5829,18 @@ img.center.density-height {
     pointer-events: none; }
 
 .progress-button-floating.start > .progress-circular > svg {
-    -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
     -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
-    animation: progressDeterminateDash var(--time-progress-circular) linear;
-    -o-animation: progressDeterminateDash var(--time-progress-circular) linear;
-    -ms-animation: progressDeterminateDash var(--time-progress-circular) linear; }
+       -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+            animation: progressDeterminateDash var(--time-progress-circular) linear; }
 
 .progress-button-floating > .progress-circular > svg {
     width: 80px;
     height: 80px; }
 
 .progress-button-floating.start > .progress-circular > svg > circle {
-    -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
     -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    -o-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    -ms-animation: progressDeterminateRotate var(--time-progress-circular) linear; }
+       -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+            animation: progressDeterminateRotate var(--time-progress-circular) linear; }
 
 .progress-button-floating > .button-success {
     position: absolute;
@@ -5985,7 +5852,9 @@ img.center.density-height {
     border-radius: 50%;
     pointer-events: none; 
     visibility: hidden;
-    transition: all 0.475s var(--easing-out); }
+    -webkit-transition: all 450ms 0ms var(--deceleration-curve);
+       -moz-transition: all 450ms 0ms var(--deceleration-curve);
+            transition: all 450ms 0ms var(--deceleration-curve); }
 
 .progress-button-floating.start > .button-success {
     visibility: visible; }
@@ -6038,19 +5907,19 @@ img.center.density-height {
     top: 50%;
     padding-top: calc(100% - 12px);
     padding-left: calc(100% - 12px);
-    margin-left: calc(-50% + 6px);
     margin-top: calc(-50% + 6px);
+    margin-left: calc(-50% + 6px);
     border-radius: 50%;
     opacity: 0.26;
-    transform: scale(0);
-    visibility: hidden; }
+    visibility: hidden;
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
-.progress-button-floating > button:not(:active):before {
-    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
-    animation: rippleSquarecenter 1s var(--standard-curve);
-    -o-animation: rippleSquarecenter 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
+.progress-button-floating > button:not(:active):before { 
+    -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+            animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 .progress-button-floating > button:focus:before {
     visibility: visible; }
@@ -6064,20 +5933,16 @@ img.center.density-height {
     height: 36px;
     border-radius: 50%;
     box-shadow: var(--shadow-4);
-    -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .app-bar > .refresh-progress-circular {
     top: initial;
-    bottom: 300px;
-    -moz-transition: bottom 0.475s var(--standard-curve);
-    -webkit-transition: bottom 0.475s var(--standard-curve);
-    transition: bottom 0.475s var(--standard-curve);
-    -o-transition: bottom 0.475s var(--standard-curve);
-    -ms-transition: bottom 0.475s var(--standard-curve); }
+    bottom: 300px; 
+    -webkit-transition: bottom 450ms 0ms var(--standard-curve);
+       -moz-transition: bottom 450ms 0ms var(--standard-curve);
+            transition: bottom 450ms 0ms var(--standard-curve); }
 
 .app-bar > .refresh-progress-circular.show {
     bottom: -48px; }
@@ -6087,11 +5952,9 @@ img.center.density-height {
     top: -56px;
     bottom: initial;
     z-index: 24;
-    -moz-transition: top 0.475s var(--standard-curve);
-    -webkit-transition: top 0.475s var(--standard-curve);
-    transition: top 0.475s var(--standard-curve);
-    -o-transition: top 0.475s var(--standard-curve);
-    -ms-transition: top 0.475s var(--standard-curve); }
+    -webkit-transition: top 450ms 0ms var(--standard-curve);
+       -moz-transition: top 450ms 0ms var(--standard-curve);
+            transition: top 450ms 0ms var(--standard-curve); }
 
 .app-content > .refresh-progress-circular.show {
     top: 12px; }
@@ -6110,22 +5973,18 @@ img.center.density-height {
 .progress-circular > svg { 
     width: 48px;
     height: 48px;
-    -moz-transform: rotate(var(--round-progress-circular));
     -webkit-transform: rotate(var(--round-progress-circular));
-    transform: rotate(var(--round-progress-circular));
-    -o-transform: rotate(var(--round-progress-circular));
-    -ms-transform: rotate(var(--round-progress-circular)); }
+       -moz-transform: rotate(var(--round-progress-circular));
+            transform: rotate(var(--round-progress-circular)); }
 
 .refresh-progress-circular > .progress-circular > svg {
     width: 28px;
     height: 28px; }
 
 .progress-circular.show > svg {
-    -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
     -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
-    animation: progressDeterminateDash var(--time-progress-circular) linear;
-    -o-animation: progressDeterminateDash var(--time-progress-circular) linear;
-    -ms-animation: progressDeterminateDash var(--time-progress-circular) linear; }
+       -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+            animation: progressDeterminateDash var(--time-progress-circular) linear; }
 
 .progress-circular > svg > circle {
     stroke-dasharray: 70, 70;
@@ -6137,26 +5996,20 @@ img.center.density-height {
     stroke-width: 3px; }
 
 .progress-circular.show > svg > circle {
-    -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
     -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    -o-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-    -ms-animation: progressDeterminateRotate var(--time-progress-circular) linear; }
+       -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+            animation: progressDeterminateRotate var(--time-progress-circular) linear; }
 
 .progress-circular.indeterminate > svg {
-    -moz-animation: none;
     -webkit-animation: none;
-    animation: none;
-    -o-animation: none;
-    -ms-animation: none; }
+       -moz-animation: none;
+            animation: none; }
 
 .refresh-progress-circular.show > .progress-circular.indeterminate > svg,
 .progress-circular.indeterminate.show > svg {
-    -moz-animation: progressIndeterminateRotate 3.5s linear infinite;
-    -webkit-animation: progressIndeterminateRotate 3.5s linear infinite;
-    animation: progressIndeterminateRotate 3.5s linear infinite;
-    -o-animation: progressIndeterminateRotate 3.5s linear infinite;
-    -ms-animation: progressIndeterminateRotate 3.5s linear infinite; }
+    -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
+       -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+            animation: progressIndeterminateRotate 3500ms linear infinite; }
 
 .progress-circular.indeterminate > svg > circle {
     stroke-dasharray: 65;
@@ -6165,11 +6018,9 @@ img.center.density-height {
 .refresh-progress-circular.show > .progress-circular.indeterminate > svg > circle,
 .progress-circular.indeterminate.show > svg > circle {
     opacity: 1;
-    -moz-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
-    -webkit-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
-    animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
-    -o-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite;
-    -ms-animation: progressIndeterminateDash 1.75s var(--standard-curve) infinite; }
+    -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+       -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+            animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
 /** RADIOBUTTON */
 
@@ -6181,7 +6032,8 @@ img.center.density-height {
 .radiobutton > input[type="radio"] {
     position: absolute;
     width: 0px;
-    height: 0px; }
+    height: 0px; 
+    opacity: 0; }
 
 .radiobutton > label {
     position: relative;
@@ -6193,10 +6045,7 @@ img.center.density-height {
     font-weight: 500;
     line-height: 24px;
     font-size: 14px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none; }
+    user-select: none; }
 
 .radiobutton > input[type="radio"]:disabled + label {
     cursor: none; }
@@ -6210,13 +6059,15 @@ img.center.density-height {
     height: 20px;
     z-index: 1;
     border-radius: 50%;
-    transform: scale(0);
-    transform-origin: 50% 50%;
-    -moz-transition: all 0.2s var(--standard-curve);
-    -webkit-transition: all 0.2s var(--standard-curve);
-    -o-transition: all 0.2s var(--standard-curve);
-    transition: all 0.2s var(--standard-curve);
-    -ms-transition: all 0.2s var(--standard-curve); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: 50% 50%;
+       -moz-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 160ms 0ms var(--standard-curve);
+       -moz-transition: all 160ms 0ms var(--standard-curve);
+            transition: all 160ms 0ms var(--standard-curve); }
 
 .radiobutton > label:after {
     position: absolute;
@@ -6229,7 +6080,9 @@ img.center.density-height {
     border-radius: 50%; }
 
 .radiobutton > input[type="radio"]:checked ~ label:before {
-    transform: scale(0.5); }
+    -webkit-transform: scale(0.5);
+       -moz-transform: scale(0.5);
+            transform: scale(0.5); }
 
 .radiobutton > .ripple-content {
     position: absolute;
@@ -6238,8 +6091,10 @@ img.center.density-height {
     overflow: hidden;
     top: 50%;
     left: -12px;
-    transform: translateY(-50%);
-    background: transparent; }
+    background: transparent;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 .radiobutton > .ripple-content > .box {
     position: absolute;
@@ -6247,10 +6102,14 @@ img.center.density-height {
     padding-top: 48px;
     padding-left: 48px;
     border-radius: 50%;
-    transform: scale(0); }
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
-    animation: rippleSquarecenter 0.75s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenter 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 750ms var(--standard-curve);
+            animation: rippleSquarecenter 750ms var(--standard-curve); }
 
 /** RATING */
 
@@ -6272,11 +6131,9 @@ img.center.density-height {
     float: right; }
 
 .rating > button.action:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 /** SEARCH BOX */
 
@@ -6308,11 +6165,9 @@ img.center.density-height {
     width: calc(100% - 16px);
     margin: 8px;
     box-shadow: none;
-    -moz-transition: all 0.525s var(--easing-out);
-    -webkit-transition: all 0.525s var(--easing-out);
-    transition: all 0.525s var(--easing-out);
-    -o-transition: all 0.525s var(--easing-out);
-    -ms-transition: all 0.525s var(--easing-out); }
+    -webkit-transition: all 250ms 0ms var(--deceleration-curve);
+       -moz-transition: all 250ms 0ms var(--deceleration-curve);
+            transition: all 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.flat > .search-box {
     box-shadow: var(--shadow-1); }
@@ -6399,6 +6254,7 @@ img.center.density-height {
 .select {
     position: relative;
     display: table;
+    float: left;
     overflow-x: hidden;
     overflow-y: auto; }
 
@@ -6416,25 +6272,23 @@ img.center.density-height {
     width: 100%;
     height: 16px;
     line-height: 16px;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .select > .content > label.active {
     cursor: none;
     top: 8px;
+    font-size: 12px;
     height: 14px;
-    line-height: 12px;
-    font-size: 12px; }
+    line-height: 12px; }
 
 .select > .content > input {
     width: calc(100% - 36px);
     cursor: pointer;
-    height: 32px;
     padding: 12px 0px 8px 0px;
     font-size: 16px;
+    height: 32px;
     line-height: 24px;
     border: none;
     outline: none;
@@ -6446,11 +6300,11 @@ img.center.density-height {
 .select > .content > .value {
     position: absolute;
     top: 20px;
-    margin: 0px;
+    width: calc(100% - 36px);
     height: 32px;
     line-height: 32px;
+    margin: 0px;
     font-size: 16px;
-    width: calc(100% - 36px);
     overflow: hidden; }
 
 .select > .content > .line-shadow {
@@ -6468,30 +6322,22 @@ img.center.density-height {
     cursor: pointer; }
 
 .select > .content > button.action:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .select > .content > button.action > i {
-    -moz-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -moz-transition: transform 0.325s var(--standard-curve);
-    -webkit-transition: transform 0.325s var(--standard-curve);
-    transition: transform 0.325s var(--standard-curve);
-    -o-transition: transform 0.325s var(--standard-curve);
-    -ms-transition: transform 0.325s var(--standard-curve); }
+       -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transition: -webkit-transform 175ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 175ms 0ms var(--standard-curve);
+            transition: transform 175ms 0ms var(--standard-curve); }
 
 .select > .content > button.action > i.active {
-    -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    -ms-transform: rotate(180deg); }
+       -moz-transform: rotate(180deg);
+            transform: rotate(180deg); }
 
 .select > .content > span {
     position: absolute;
@@ -6509,29 +6355,22 @@ img.center.density-height {
     overflow-y: auto;
     opacity: 0;
     z-index: 4;
+    will-change: opacity;
     box-shadow: var(--shadow-2); 
-    -moz-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -webkit-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -o-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -ms-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out); }
+    -webkit-transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve);
+       -moz-transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve);
+            transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve); }
 
 .select > .content > ul.show {
-    -moz-transition: none;
     -webkit-transition: none;
-    -o-transition: none;
-    transition: none;
-    -ms-transition: none;
-    -moz-animation: closeSelect 0.225s var(--easing-in); 
-    -webkit-animation: closeSelect 0.225s var(--easing-in); 
-    -o-animation: closeSelect 0.225s var(--easing-in); 
-    animation: closeSelect 0.225s var(--easing-in); 
-    -ms-animation: closeSelect 0.225s var(--easing-in); }
+       -moz-transition: none;
+            transition: none;
+    -webkit-animation: closeSelect 200ms var(--acceleration-curve);
+       -moz-animation: closeSelect 200ms var(--acceleration-curve);  
+            animation: closeSelect 200ms var(--acceleration-curve); }
 
 .select > .content > ul.active {
     max-width: 100%;
@@ -6577,6 +6416,7 @@ img.center.density-height {
 .select-multiple {
     position: relative;
     display: table;
+    float: left;
     overflow-x: hidden;
     overflow-y: auto; }
 
@@ -6594,11 +6434,9 @@ img.center.density-height {
     width: 100%;
     height: 16px;
     line-height: 16px;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .select-multiple > .content > label.active {
     cursor: none;
@@ -6611,9 +6449,9 @@ img.center.density-height {
     width: calc(100% - 36px);
     cursor: pointer;
     height: 32px;
+    line-height: 24px;
     padding: 12px 0px 8px 0px;
     font-size: 16px;
-    line-height: 24px;
     border: none;
     outline: none;
     background-color: transparent; }
@@ -6625,11 +6463,11 @@ img.center.density-height {
 .select-multiple > .content > .value {
     position: absolute;
     top: 20px;
-    margin: 0px;
+    width: calc(100% - 36px);
     height: 32px;
     line-height: 32px;
+    margin: 0px;
     font-size: 16px;
-    width: calc(100% - 36px);
     overflow: hidden; }
 
 .select-multiple > .content > input:disabled ~ .value {
@@ -6650,30 +6488,22 @@ img.center.density-height {
     cursor: pointer; }
 
 .select-multiple > .content > button.action:not(:active):before {
-    -moz-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -o-animation: rippleSquarecenterHigh 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .select-multiple > .content > button.action > i {
-    -moz-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -moz-transition: transform 0.325s var(--standard-curve);
-    -webkit-transition: transform 0.325s var(--standard-curve);
-    transition: transform 0.325s var(--standard-curve);
-    -o-transition: transform 0.325s var(--standard-curve);
-    -ms-transition: transform 0.325s var(--standard-curve); }
+       -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transition: -webkit-transform 175ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 175ms 0ms var(--standard-curve);
+            transition: transform 175ms 0ms var(--standard-curve); }
 
 .select-multiple > .content > button.action > i.active {
-    -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    -ms-transform: rotate(180deg); }
+       -moz-transform: rotate(180deg);
+            transform: rotate(180deg); }
 
 .select-multiple > .content > span {
     position: absolute;
@@ -6691,28 +6521,20 @@ img.center.density-height {
     overflow-y: auto;
     z-index: 4;
     box-shadow: var(--shadow-2); 
-    -moz-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -webkit-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -o-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out);
-    -ms-transition: max-height 0.225s var(--easing-out), 
-        max-width 0.225s var(--easing-out); }
+    -webkit-transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve);
+       -moz-transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve);
+            transition: max-height 200ms 0ms var(--deceleration-curve), 
+                max-width 200ms 0ms var(--deceleration-curve); }
 
 .select-multiple > .content > ul.show {
-    -moz-transition: none;
     -webkit-transition: none;
-    -o-transition: none;
-    transition: none;
-    -ms-transition: none;
-    -moz-animation: closeSelect 0.225s var(--easing-in); 
-    -webkit-animation: closeSelect 0.225s var(--easing-in); 
-    -o-animation: closeSelect 0.225s var(--easing-in); 
-    animation: closeSelect 0.225s var(--easing-in); 
-    -ms-animation: closeSelect 0.225s var(--easing-in); }
+       -moz-transition: none;
+            transition: none;
+    -webkit-animation: closeSelect 200ms var(--acceleration-curve);
+       -moz-animation: closeSelect 200ms var(--acceleration-curve); 
+            animation: closeSelect 200ms var(--acceleration-curve); }
 
 .select-multiple > .content > ul.active {
     max-width: 100%;
@@ -6758,30 +6580,66 @@ img.center.density-height {
 
 /** SIDENAV */
 
+.sidenav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 16;
+    visibility: hidden; }
+
+.sidenav.show {
+    width: 100%;
+    visibility: visible; }
+
+.app-body > .sidenav {
+    z-index: 5; }
+
+@media only screen and (min-width : 961px) {
+    
+    .sidenav.persistent {
+        width: 320px; }
+    
+    .sidenav.permanent {
+        width: 320px;
+        visibility: visible; }
+
+    .app-body > .sidenav {
+        width: 320px;
+        visibility: visible; }
+}
+
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
+    .sidenav.persistent {
+        width: 256px; }
+
+    .app-body > .sidenav {
+        width: 256px;
+        visibility: visible; }
+}
+
 .sidenav > .backdrop {
+    position: absolute;
     display: block;
-    z-index: 15;
+    z-index: 1;
     bottom: initial;
     opacity: 0;
-    -moz-transition: opacity 0.3s var(--easing-in);
-    -webkit-transition: opacity 0.3s var(--easing-in);
-    transition: opacity 0.3s var(--easing-in);
-    -o-transition: opacity 0.3s var(--easing-in);
-    -ms-transition: opacity 0.3s var(--easing-in); }
+    -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
+            transition: opacity 120ms 0ms var(--acceleration-curve); }
 
-.app-body > .sidenav.show > .backdrop,
-.app-body > .sidenav > .backdrop,
-.app-body > .sidenav.hide > .backdrop {
-    opacity: 0;
-    z-index: 5;
-    bottom: initial; }
+.sidenav.show > .backdrop {
+    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
+            transition: opacity 120ms 0ms var(--deceleration-curve); }
 
 .sidenav.permanent.show > .backdrop,
 .sidenav.permanent > .backdrop,
-.sidenav.permanent.hide > .backdrop,
 .sidenav.persistent.show > .backdrop,
-.sidenav.persistent > .backdrop,
-.sidenav.persistent.hide > .backdrop {
+.sidenav.persistent > .backdrop {
     opacity: 0;
     bottom: initial; }
 
@@ -6789,72 +6647,18 @@ img.center.density-height {
     bottom: 0;
     opacity: 1; }
 
-.sidenav > .content {
-    position: fixed;
-    top: 0;
-    left: -105%;
-    min-width: 240px;
-    width: calc(100% - 56px);
-    max-width: 320px;
-    height: 100%;
-    overflow-y: auto;
-    z-index: 16;
-    box-shadow: var(--shadow-16); 
-    -moz-transition: left 0.3s var(--easing-in);
-    -webkit-transition: left 0.3s var(--easing-in);
-    transition: left 0.3s var(--easing-in);
-    -o-transition: left 0.3s var(--easing-in);
-    -ms-transition: left 0.3s var(--easing-in); }
+@media only screen and (min-width : 721px) {
 
-.sidenav.show > .content {
-    left: 0%;
-    box-shadow: var(--shadow-16); }
-
-.sidenav.hide > .content {
-    left: -105%;
-    box-shadow: none; }
-
-.app-body > .sidenav.show > .content,
-.app-body > .sidenav > .content,
-.app-body > .sidenav.hide > .content {
-    position: absolute;
-    z-index: 6;
-    left: 0px;
-    box-shadow: none; }
-
-.sidenav.permanent.show > .content,
-.sidenav.permanent > .content,
-.sidenav.permanent.hide > .content,
-.sidenav.persistent.show > .content {
-    left: 0px;
-    box-shadow: none; }
-
-.sidenav.persistent > .content,
-.sidenav.persistent.hide > .content {
-    left: -105%; }
-
-.sidenav.show > .content {
-    transition: left 0.3s var(--easing-out); }
-
-.sidenav.hide > .content {
-    transition: left 0.3s var(--easing-in); }
+    .app-body > .sidenav > .backdrop {
+        opacity: 0;
+        bottom: initial; }
+}
 
 @media only screen and (max-width : 720px) {
-
-    .app-body > .sidenav.show > .backdrop,
+    
     .sidenav.persistent.show > .backdrop {
         bottom: 0;
         opacity: 1; }
-    
-    .app-body > .sidenav > .content,
-    .app-body > .sidenav.hide > .content,
-    .sidenav.persistent > .content,
-    .sidenav.persistent.hide > .content {
-        left: -105%; }
-    
-    .app-body > .sidenav.show > .content,
-    .sidenav.persistent.show > .content {
-        box-shadow: var(--shadow-16); }
 }
 
 @media only screen and (max-width : 960px) {
@@ -6862,24 +6666,57 @@ img.center.density-height {
     .sidenav.permanent.show > .backdrop {
         bottom: 0;
         opacity: 1; }
-    
-    .sidenav.permanent > .content, 
-    .sidenav.permanent.hide > .content {
-        left: -105%; 
-        box-shadow: none; }
-    
-    .sidenav.permanent.show > .content {
-        left: 0px; 
-        box-shadow: var(--shadow-16); }
-    
-    .sidenav.persistent > .content {
-        max-width: 256px; }
 }
 
-@media only screen and (max-width : 720px) {
+.sidenav > .content {
+    position: absolute;
+    top: 0;
+    left: -105%;
+    min-width: 240px;
+    width: calc(100% - 56px);
+    max-width: 320px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 2;
+    box-shadow: var(--shadow-16); 
+    box-sizing: border-box;
+    -webkit-transition: left 120ms 0ms var(--acceleration-curve);
+       -moz-transition: left 120ms 0ms var(--acceleration-curve);
+            transition: left 120ms 0ms var(--acceleration-curve); }
+
+.sidenav.show > .content {
+    left: 0%;
+    box-shadow: var(--shadow-16);
+    -webkit-transition: left 120ms 0ms var(--deceleration-curve);
+       -moz-transition: left 120ms 0ms var(--deceleration-curve);
+            transition: left 120ms 0ms var(--deceleration-curve); }
+
+@media only screen and (min-width : 961px) {
     
-    .sidenav.persistent > .content {
-        max-width: 320px; }
+    .sidenav.persistent.show > .content {
+        width: 320px; }
+    
+    .sidenav.permanent > .content {
+        left: 0px;
+        width: 320px; }
+    
+    .app-body > .sidenav > .content {
+        width: 320px; }
+
+    .app-body > .sidenav > .content {
+        left: 0px;
+        box-shadow: none; }
+}
+
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
+    .sidenav.persistent.show > .content {
+        width: 256px; }
+    
+    .app-body > .sidenav > .content {
+        width: 256px;
+        left: 0px;
+        box-shadow: none; }
 }
 
 .sidenav > .content > .logo {
@@ -6900,11 +6737,9 @@ img.center.density-height {
     left: 0px;
     top: 50%;
     max-height: 64px;
-    -moz-transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    -ms-transform: translateY(-50%); }
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 @media only screen and (max-width : 960px) {
     
@@ -6984,19 +6819,15 @@ img.center.density-height {
 
 .sidenav > .content > .banner > img.background.density-width {
     top: 50%;
-    -moz-transform: translateY(-50%); 
-    -webkit-transform: translateY(-50%); 
-    transform: translateY(-50%); 
-    -o-transform: translateY(-50%); 
-    -ms-transform: translateY(-50%); }
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%); 
+            transform: translateY(-50%); }
 
 .sidenav > .content > .banner > img.background.density-height {
     left: 50%;
-    -moz-transform: translateX(-50%); 
-    -webkit-transform: translateX(-50%); 
-    transform: translateX(-50%); 
-    -o-transform: translateX(-50%); 
-    -ms-transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%); 
+            transform: translateX(-50%); }
 
 .sidenav > .content > .banner > .detail {
     position: absolute;
@@ -7102,14 +6933,22 @@ img.center.density-height {
     padding: 0px 4px; }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action:not(:active):before {
-    animation: rippleSquarecenterHigh 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 750ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action > i {
-    transform: rotate(0deg);
-    transition: transform 0.325s var(--standard-curve); }
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transition: -webkit-transform 175ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 175ms 0ms var(--standard-curve);
+            transition: transform 175ms 0ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item.active > .detail > a > button.action > i {
-    transform: rotate(180deg); }
+    -webkit-transform: rotate(180deg);
+       -moz-transform: rotate(180deg);
+            transform: rotate(180deg); }
 
 .sidenav > .content .sidenav-item > .options {
     max-height: 0px;
@@ -7117,11 +6956,9 @@ img.center.density-height {
     overflow: hidden; }
 
 .sidenav > .content .sidenav-item > .options {
-    -moz-transition: max-height 0.375s var(--standard-curve);
-    -webkit-transition: max-height 0.375s var(--standard-curve);
-    -o-transition: max-height 0.375s var(--standard-curve);
-    transition: max-height 0.375s var(--standard-curve);
-    -ms-transition: max-height 0.375s var(--standard-curve); }
+    -webkit-transition: max-height 175ms 0ms var(--standard-curve);
+       -moz-transition: max-height 175ms 0ms var(--standard-curve);
+            transition: max-height 175ms 0ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .options > ul > li > a {
     display: block;
@@ -7256,18 +7093,14 @@ img.center.density-height {
     height: 4px;
     overflow: hidden;
     z-index: 2;
-    -moz-transition: width 0.325s var(--standard-curve);
-    -webkit-transition: width 0.325s var(--standard-curve);
-    transition: width 0.325s var(--standard-curve);
-    -o-transition: width 0.325s var(--standard-curve);
-    -ms-transition: width 0.325s var(--standard-curve); }
+    -webkit-transition: width 200ms 0ms var(--standard-curve);
+       -moz-transition: width 200ms 0ms var(--standard-curve);
+            transition: width 200ms 0ms var(--standard-curve); }
 
 .slider > .content.deslice > .track > .track-on {
     -moz-transition: none;
-    -webkit-transition: none;
     transition: none;
-    -o-transition: none;
-    -ms-transition: none; }
+    -webkit-transition: none; }
 
 .slider > .content.full > .track > .track-on {
     width: 100% !important; }
@@ -7281,11 +7114,9 @@ img.center.density-height {
     height: 12px;
     z-index: 2;
     border-radius: 50%;
-    -moz-transition: left 0.325s var(--standard-curve);
-    -webkit-transition: left 0.325s var(--standard-curve);
-    transition: left 0.325s var(--standard-curve);
-    -o-transition: left 0.325s var(--standard-curve);
-    -ms-transition: left 0.325s var(--standard-curve); }
+    -webkit-transition: left 200ms 0ms var(--standard-curve);
+       -moz-transition: left 200ms 0ms var(--standard-curve);
+            transition: left 200ms 0ms var(--standard-curve); }
 
 .slider > .content.disabled > .track > .thumb {
     top: 8px; 
@@ -7312,10 +7143,8 @@ img.center.density-height {
 
 .slider > .content.deslice > .track > .thumb {
     -moz-transition: none;
-    -webkit-transition: none;
     transition: none;
-    -o-transition: none;
-    -ms-transition: none; }
+    -webkit-transition: none; }
 
 .slider > .content > .track > .thumb.off {
     width: 8px; 
@@ -7336,34 +7165,29 @@ img.center.density-height {
     left: calc(100% - 8px) !important; }
 
 .slider.discrete > .content.full > .track > .thumb {
-    -moz-transition: none;
     -webkit-transition: none;
-    transition: none;
-    -o-transition: none;
-    -ms-transition: none; }
+       -moz-transition: none;
+            transition: none; }
 
 .slider.discrete > .content > .track > .thumb.off {
     top: 10px;
     height: 12px;
     width: 12px;
-    transition: none;
-    -webkit-transition: none; }
+    -webkit-transition: none;
+       -moz-transition: none;
+            transition: none; }
 
 .slider.discrete > .content > .track > .thumb.active {
     border-radius: 50% 50% 50% 0px;
     top: 50%;
     width: 24px; 
     height: 24px;
-    -moz-transform-origin: left bottom;
     -webkit-transform-origin: left bottom;
-    transform-origin: left bottom;
-    -o-transform-origin: left bottom;
-    -ms-transform-origin: left bottom;
-    -moz-transform: translate(0, -120%) rotate(-45deg);
+       -moz-transform-origin: left bottom;
+            transform-origin: left bottom;
     -webkit-transform: translate(0, -120%) rotate(-45deg);
-    transform: translate(0, -120%) rotate(-45deg);
-    -o-transform: translate(0, -120%) rotate(-45deg);
-    -ms-transform: translate(0, -120%) rotate(-45deg); }
+       -moz-transform: translate(0, -120%) rotate(-45deg);
+            transform: translate(0, -120%) rotate(-45deg); }
 
 .slider.discrete > .content > .track > .thumb.off.active {
     left: 0px !important; }
@@ -7377,11 +7201,9 @@ img.center.density-height {
     left: 50%;
     visibility: hidden;
     font-size: 12px;
-    -moz-transform: translate(-50%, -50%) rotate(45deg);
     -webkit-transform: translate(-50%, -50%) rotate(45deg);
-    transform: translate(-50%, -50%) rotate(45deg);
-    -o-transform: translate(-50%, -50%) rotate(45deg);
-    -ms-transform: translate(-50%, -50%) rotate(45deg); }
+       -moz-transform: translate(-50%, -50%) rotate(45deg);
+            transform: translate(-50%, -50%) rotate(45deg); }
 
 .slider.discrete > .content > .track > .thumb.active > span {
     visibility: visible; }
@@ -7412,23 +7234,52 @@ img.center.density-height {
 /** SNACKBAR */
 
 .snackbar {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     left: 0px;
-    margin-bottom: -84px;
     width: 100%;
     height: auto;
     z-index: 6;
     padding: 0px 24px;
     box-sizing: border-box;
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    will-change: transform;
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
-.snackbar.show-bottom-navigation {
-    margin-bottom: -28px; }
+.snackbar.show {
+    -webkit-transform: translateY(0%);
+       -moz-transform: translateY(0%);
+            transform: translateY(0%); }
+
+.snackbar.show-bottom-navigation.show {
+    -webkit-transform: translateY(-56px);
+       -moz-transform: translateY(-56px);
+            transform: translateY(-56px); } 
+
+@media only screen and (min-width : 641px) and (max-width: 720px) {
+    
+    .snackbar {
+        width: 360px;
+        left: calc(50% - 180px); }
+}
+
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
+    .snackbar {
+        width: 420px;
+        left: calc(50% - 210px); }
+}
+
+@media only screen and (min-width : 961px) {
+    
+    .snackbar {
+        width: 480px;
+        left: calc(50% - 240px); }
+}
 
 .snackbar > .body {
     display: -webkit-box;
@@ -7456,27 +7307,11 @@ img.center.density-height {
     position: absolute;
     top: 50%;
     cursor: pointer;
-    transform: translateY(-50%);
     font-weight: 500;
-    text-transform: uppercase; }
-
-.snackbar.show {
-    margin-bottom: 0px !important; } 
-
-.snackbar.show-bottom-navigation.show {
-    margin-bottom: 56px !important; } 
-
-@media only screen and (min-width : 641px) {
-    .snackbar {
-        width: 50%;
-        left: 25%; }
-}
-
-@media only screen and (min-width : 961px) {
-    .snackbar {
-        width: 40%;
-        left: 30%; }
-}
+    text-transform: uppercase;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 /** STEPPER HORIZONTAL */
 
@@ -7549,7 +7384,9 @@ img.center.density-height {
     opacity: 0.24; }
 
 .stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
-    animation: rippleStepper 0.325s var(--easing-out); }
+    -webkit-animation: rippleStepper 200ms var(--deceleration-curve);
+       -moz-animation: rippleStepper 200ms var(--deceleration-curve);
+            animation: rippleStepper 200ms var(--deceleration-curve); }
 
 .stepper-horizontal > ul > li:first-child > .content { 
     padding-left: 24px; }
@@ -7645,18 +7482,19 @@ img.center.density-height {
     bottom: 0px;
     width: 100%;
     height: 48px;
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    will-change: transform;
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
 .stepper-mobile.show-bottom-navigation {
-    margin-bottom: 56px; }
+    -webkit-transform: translateY(-56px);
+       -moz-transform: translateY(-56px);
+            transform: translateY(-56px); }
 
 .stepper-mobile > .back, .stepper-mobile > .next {
-    overflow: hidden;
-    height: 48px; }
+    height: 48px;
+    overflow: hidden; }
 
 .stepper-mobile > .back {
     float: left;
@@ -7697,20 +7535,20 @@ img.center.density-height {
     top: 50%;
     padding-top: calc(100% - 12px);
     padding-left: calc(100% - 12px);
-    margin-left: calc(-50% + 6px);
     margin-top: calc(-50% + 6px);
+    margin-left: calc(-50% + 6px);
     border-radius: 50%;
     opacity: 0.26;
-    transform: scale(0);
-    visibility: hidden; }
+    visibility: hidden; 
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 .stepper-mobile > .back > button:not(:active):before,
 .stepper-mobile > .next > button:not(:active):before {
-    -moz-animation: rippleSquarecenter 1s var(--standard-curve);
-    -webkit-animation: rippleSquarecenter 1s var(--standard-curve);
-    animation: rippleSquarecenter 1s var(--standard-curve);
-    -o-animation: rippleSquarecenter 1s var(--standard-curve);
-    -ms-animation: rippleSquarecenter 1s var(--standard-curve); }
+    -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+            animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 .stepper-mobile > .back > button:focus:before, 
 .stepper-mobile > .next > button:focus:before {
@@ -7785,11 +7623,9 @@ img.center.density-height {
     top: 22px;
     width: 0%;
     height: 4px;
-    -moz-transition: width 0.325s var(--standard-curve);
-    -webkit-transition: width 0.325s var(--standard-curve);
-    transition: width 0.325s var(--standard-curve);
-    -o-transition: width 0.325s var(--standard-curve);
-    -ms-transition: width 0.325s var(--standard-curve); }
+    -webkit-transition: width 200ms 0ms var(--standard-curve);
+       -moz-transition: width 200ms 0ms var(--standard-curve);
+            transition: width 200ms 0ms var(--standard-curve); }
 
 /** SWICTH */
 
@@ -7797,11 +7633,7 @@ img.center.density-height {
     position: relative;
     float: left;
     width: 40px;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none; }
+    user-select: none; }
 
 .switch > label {
     display: block;
@@ -7825,7 +7657,9 @@ img.center.density-height {
     height: 16px;
     z-index: 1;
     border-radius: 16px;
-    transition: background 0.325s var(--standard-curve); }
+    -webkit-transition: background 200ms 0ms var(--standard-curve);
+       -moz-transition: background 200ms 0ms var(--standard-curve);
+            transition: background 200ms 0ms var(--standard-curve); }
 
 .switch > label > .track:after { 
     content: "";
@@ -7838,9 +7672,15 @@ img.center.density-height {
     z-index: 2;
     border-radius: 24px;
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.38);
-    transition: left 0.325s var(--standard-curve),
-        box-shadow 0.01s var(--standard-curve), 
-        background 0.325s var(--standard-curve); }
+    -webkit-transition: left 200ms 0ms var(--standard-curve),
+                box-shadow 100ms 0ms var(--standard-curve), 
+                background 200ms 0ms var(--standard-curve);
+       -moz-transition: left 200ms 0ms var(--standard-curve),
+                box-shadow 100ms 0ms var(--standard-curve), 
+                background 200ms 0ms var(--standard-curve);
+            transition: left 200ms 0ms var(--standard-curve),
+                box-shadow 100ms 0ms var(--standard-curve), 
+                background 200ms 0ms var(--standard-curve); }
 
 .switch > label > input[type=checkbox]:checked + .track:after {
     left: 16px; }
@@ -7929,23 +7769,19 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 50%;
     padding-top: calc(100%);
     padding-left: calc(100%);
-    margin-left: calc(-50%);
     margin-top: calc(-50%);
+    margin-left: calc(-50%);
     border-radius: 50%;
     opacity: 0.35;
     visibility: hidden;
-    -moz-transform: scale(0);
     -webkit-transform: scale(0);
-    transform: scale(0);
-    -o-transform: scale(0);
-    -ms-transform: scale(0); }
+       -moz-transform: scale(0);
+            transform: scale(0); }
 
 .tabs > .tab.active:not(:active):before {
-    -moz-animation: rippleTab 0.75s var(--standard-curve);
-    -webkit-animation: rippleTab 0.75s var(--standard-curve);
-    animation: rippleTab 0.75s var(--standard-curve);
-    -o-animation: rippleTab 0.75s var(--standard-curve);
-    -ms-animation: rippleTab 0.75s var(--standard-curve); }
+    -webkit-animation: rippleTab 750ms var(--standard-curve);
+       -moz-animation: rippleTab 750ms var(--standard-curve);
+            animation: rippleTab 750ms var(--standard-curve); }
 
 .tabs > .tab:focus:before {
     visibility: visible; }
@@ -7955,21 +7791,18 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 0;
     bottom: 0;
     height: 2px; 
-    -moz-transition: left 0.175s var(--standard-curve), 
-        width 0.175s var(--standard-curve);
-    -webkit-transition: left 0.175s var(--standard-curve,
-        width 0.175s var(--standard-curve));
-    transition: left 0.175s var(--standard-curve), 
-        width 0.175s var(--standard-curve);
-    -o-transition: left 0.175s var(--standard-curve),
-        width 0.175s var(--standard-curve);
-    -ms-transition: left 0.175s var(--standard-curve),
-        width 0.175s var(--standard-curve); }
+    -webkit-transition: left 160ms 0ms var(--standard-curve),
+                width 160ms 0ms var(--standard-curve);
+       -moz-transition: left 160ms 0ms var(--standard-curve), 
+                width 160ms 0ms var(--standard-curve);
+            transition: left 160ms 0ms var(--standard-curve), 
+                width 160ms 0ms var(--standard-curve);  }
 
 /** TEXTAREA */
 
 .textarea {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -7999,11 +7832,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 16px;
     font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve); 
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textarea > .content > .box > label.active {
     cursor: none;
@@ -8018,20 +7849,18 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textarea > .content > .box > textarea {
     overflow-y: hidden;
     cursor: text;
-    border: none;
     width: calc(100% - 32px);
-    outline: none;
     resize: none;
     height: 18px;
     line-height: 18px;
     min-height: 18px;
     font-size: 16px;
     padding: 28px 16px 0px 16px;
-    -moz-transition: height 0.175s ease-out;
-    -webkit-transition: height 0.175s ease-out;
-    -o-transition: height 0.175s ease-out;
-    transition: height 0.175s ease-out;
-    -ms-transition: height 0.175s ease-out; }
+    border: none;
+    outline: none;
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
 
 .textarea > .content.focused > .box > textarea {
     padding: 26px 15px 0px 15px; }
@@ -8049,11 +7878,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: absolute;
     top: 36px;
     left: 17px;
-    margin: 0px;
+    width: calc(100% - 34px);
     line-height: 18px;
     font-size: 16px;
+    margin: 0px;
     cursor: text;
-    width: calc(100% - 34px);
     overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -8081,17 +7910,18 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 17px;
     width: calc(100% - 34px);
     visibility: hidden;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
     font-family: inherit;
     font-size: 16px;
-    line-height: 18px; }
+    line-height: 18px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word; }
 
 /** TEXTBOX */
 
 .textbox {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -8109,36 +7939,33 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 28px;
     left: 16px;
     width: calc(100% - 32px);
-    font-size: 16px;
     height: 18px;
     line-height: 18px;
+    font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textbox > .content > .box > label.active {
     cursor: none;
     top: 16px;
+    font-size: 12px;
     height: 14px;
-    line-height: 12px;
-    font-size: 12px; }
+    line-height: 12px; }
 
 .textbox > .content > .box > label > span {
     margin-left: 2px; }
 
 .textbox > .content > .box > input {
     width: calc(100% - 32px);
-    cursor: text;
     height: 32px;
-    padding: 20px 16px 0px 16px;
-    line-height: 32px;
-    font-size: 16px;
     line-height: 24px;
+    padding: 20px 16px 0px 16px;
+    font-size: 16px;
     border: none;
     outline: none; 
+    cursor: text;
     background-color: transparent; }
 
 .textbox > .content > .box > input.iconaction {
@@ -8147,7 +7974,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textbox > .content > .box > input::-webkit-input-placeholder {
     visibility: hidden; }
 
-.textbox.active > .content > input::-webkit-input-placeholder {
+.textbox.active > .content > .box > input::-webkit-input-placeholder {
     visibility: visible; }
 
 .textbox > .content > .box > input.holderhide::-webkit-input-placeholder {
@@ -8157,11 +7984,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: absolute;
     top: 29px;
     left: 16px;
-    margin: 0px;
+    width: calc(100% - 32px);
     height: 32px;
     line-height: 32px;
+    margin: 0px;
     font-size: 16px;
-    width: calc(100% - 32px);
     overflow: hidden; 
     white-space: nowrap; }
 
@@ -8199,6 +8026,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textbox-multiline {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -8220,12 +8048,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: calc(100% - 32px);
     height: 16px;
     font-size: 16px;
-    cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve); 
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    cursor: text; 
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textbox-multiline > .content > .box > label.active {
     cursor: none;
@@ -8239,21 +8065,19 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textbox-multiline > .content > .box > textarea {
     overflow-y: hidden;
-    cursor: text;
-    border: none;
     width: calc(100% - 32px);
-    outline: none;
-    resize: none;
     height: 18px;
     line-height: 18px;
     min-height: 18px;
     font-size: 16px;
     padding: 28px 16px 0px 16px;
-    -moz-transition: height 0.175s ease-out;
-    -webkit-transition: height 0.175s ease-out;
-    -o-transition: height 0.175s ease-out;
-    transition: height 0.175s ease-out;
-    -ms-transition: height 0.175s ease-out; }
+    cursor: text;
+    border: none;
+    outline: none;
+    resize: none;
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
 
 .textbox-multiline > .content > .box > textarea::-webkit-input-placeholder {
     visibility: hidden; }
@@ -8268,11 +8092,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: absolute;
     top: 36px;
     left: 16px;
-    margin: 0px;
+    width: calc(100% - 32px);
     line-height: 18px;
     font-size: 16px;
+    margin: 0px;
     cursor: text;
-    width: calc(100% - 32px);
     overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -8311,6 +8135,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textfield {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -8325,15 +8150,13 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 28px;
     left: 0;
     width: 100%;
-    font-size: 16px;
     height: 18px;
     line-height: 18px;
+    font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textfield > .content > label.active {
     cursor: none;
@@ -8399,15 +8222,15 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     bottom: 18px;
     width: 0%;
     z-index: 2;
-    transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .textfield.active > .content > input:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
-    animation: borderTextfield 0.225s var(--sharp-curve);
-    -o-animation: borderTextfield 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfield 200ms var(--sharp-curve);
+       -moz-animation: borderTextfield 200ms var(--sharp-curve);
+            animation: borderTextfield 200ms var(--sharp-curve); }
 
 .textfield > .content > i.action {
     position: absolute;
@@ -8466,16 +8289,15 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textfield.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+            animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
 /** TEXTFIELD MULTILINE */
 
 .textfield-multiline {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -8494,11 +8316,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 16px;
     font-size: 16px;
     cursor: text;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve); 
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -moz-transition: all 120ms 0ms var(--sharp-curve);
+    transition: all 120ms 0ms var(--sharp-curve);
+    -webkit-transition: all 120ms 0ms var(--sharp-curve); }
 
 .textfield-multiline > .content > label.active {
     cursor: none;
@@ -8522,11 +8342,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     min-height: 18px;
     font-size: 16px;
     padding: 20px 0px 0px 0px;
-    -moz-transition: height 0.175s ease-out;
-    -webkit-transition: height 0.175s ease-out;
-    -o-transition: height 0.175s ease-out;
-    transition: height 0.175s ease-out;
-    -ms-transition: height 0.175s ease-out; }
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
 
 .textfield-multiline > .content > textarea::-webkit-input-placeholder {
     visibility: hidden; }
@@ -8565,15 +8383,15 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     bottom: 18px;
     width: 0%;
     z-index: 2;
-    transform: translateX(-50%); }
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .textfield-multiline.active > .content > textarea:focus ~ .line-shadow-active {
     width: 100%; 
-    -moz-animation: borderTextfield 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfield 0.225s var(--sharp-curve);
-    animation: borderTextfield 0.225s var(--sharp-curve);
-    -o-animation: borderTextfield 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfield 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfield 200ms var(--sharp-curve);
+       -moz-animation: borderTextfield 200ms var(--sharp-curve);
+            animation: borderTextfield 200ms var(--sharp-curve); }
 
 .textfield-multiline > .content > span {
     position: absolute;
@@ -8630,16 +8448,15 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textfield-multiline.active > .content > i.icon-description ~ textarea:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
-    -moz-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -webkit-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -o-animation: borderTextfieldIcon 0.225s var(--sharp-curve);
-    -ms-animation: borderTextfieldIcon 0.225s var(--sharp-curve); }
+    -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+            animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
 /** TEXTFIELD READONLY */
 
 .textfield-readonly {
     position: relative;
+    float: left;
     overflow-y: auto; 
     overflow-x: hidden; }
 
@@ -8658,11 +8475,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 18px;
     line-height: 18px;
     cursor: not-allowed;
-    -moz-transition: all 0.125s var(--sharp-curve);
-    -webkit-transition: all 0.125s var(--sharp-curve);
-    -o-transition: all 0.125s var(--sharp-curve);
-    transition: all 0.125s var(--sharp-curve);
-    -ms-transition: all 0.125s var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textfield-readonly > .content > label.active {
     cursor: none;
@@ -8719,22 +8534,51 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 /** TOAST */
 
 .toast {
-    position: absolute;
+    position: fixed;
+    left: 0px;
     bottom: 0px;
-    right: 0px;
     z-index: 20;
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
-    margin-bottom: -100%;
-    -moz-transition: margin-bottom 0.325s var(--standard-curve);
-    -webkit-transition: margin-bottom 0.325s var(--standard-curve);
-    -o-transition: margin-bottom 0.325s var(--standard-curve);
-    transition: margin-bottom 0.325s var(--standard-curve);
-    -ms-transition: margin-bottom 0.325s var(--standard-curve); }
+    will-change: transform;
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
-.toast.show-bottom-navigation {
-    margin-bottom: -64px; }
+.toast.show {
+    -webkit-transform: translateY(0%);
+       -moz-transform: translateY(0%);
+            transform: translateY(0%); } 
+
+.toast.show-bottom-navigation.show {
+    -webkit-transform: translateY(-56px);
+       -moz-transform: translateY(-56px);
+            transform: translateY(-56px); } 
+
+@media only screen and (min-width : 641px) and (max-width: 720px) {
+    
+    .toast {
+        width: 360px;
+        left: calc(50% - 180px); }
+}
+
+@media only screen and (min-width : 721px) and (max-width : 960px) {
+    
+    .toast {
+        width: 420px;
+        left: calc(50% - 210px); }
+}
+
+@media only screen and (min-width : 961px) {
+    
+    .toast {
+        width: 480px;
+        left: calc(50% - 240px); }
+}
 
 .toast > .body {
     display: block;
@@ -8742,24 +8586,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin: 0px;
     padding: 16px;
     line-height: 16px; }
-
-.toast.show {
-    margin-bottom: 0px !important; } 
-
-.toast.show-bottom-navigation.show {
-    margin-bottom: 56px !important; } 
-
-@media only screen and (min-width : 641px) {
-    .toast {
-        width: 50%;
-        left: 25%; }
-}
-
-@media only screen and (min-width : 961px) {
-    .toast {
-        width: 40%;
-        left: 30%; }
-}
 
 /** TOOLBAR */
 
@@ -8770,14 +8596,11 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     max-height: 56px; 
     line-height: 56px;
     z-index: 8;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     user-select: none;
-    -moz-transition: all 0.525s var(--easing-out);
-    -webkit-transition: all 0.525s var(--easing-out);
-    transition: all 0.525s var(--easing-out);
-    -o-transition: all 0.525s var(--easing-out);
-    -ms-transition: all 0.525s var(--easing-out); }
+    -webkit-transition: all 250ms 0ms var(--deceleration-curve);
+       -moz-transition: all 250ms 0ms var(--deceleration-curve);
+            transition: all 250ms 0ms var(--deceleration-curve); }
 
 .toolbar::-webkit-scrollbar {
     height: 0px;
@@ -8900,16 +8723,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 72px;
     line-height: 72px;
     font-size: 24px;
-    -moz-transition: margin-top 0.525s var(--easing-out),
-        font-size 0.525s var(--easing-out);
-    -webkit-transition: margin-top 0.525s var(--easing-out),
-        font-size 0.525s var(--easing-out);
-    transition: margin-top 0.525s var(--easing-out),
-        font-size 0.525s var(--easing-out);
-    -o-transition: margin-top 0.525s var(--easing-out),
-        font-size 0.525s var(--easing-out);
-    -ms-transition: margin-top 0.525s var(--easing-out),
-        font-size 0.525s var(--easing-out); }
+    -webkit-transition: margin-top 250ms 0ms var(--deceleration-curve),
+                font-size 250ms 0ms var(--deceleration-curve);
+       -moz-transition: margin-top 250ms 0ms var(--deceleration-curve),
+                font-size 250ms 0ms var(--deceleration-curve);
+            transition: margin-top 250ms 0ms var(--deceleration-curve),
+                font-size 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.floating > .toolbar.flexible > .title { 
     margin-top: 48px;
@@ -8947,11 +8766,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 24px;
     font-weight: 500;
     line-height: 24px;
-    -moz-transition: margin 0.525s var(--easing-out);
-    -webkit-transition: margin 0.525s var(--easing-out);
-    transition: margin 0.525s var(--easing-out);
-    -o-transition: margin 0.525s var(--easing-out);
-    -ms-transition: margin 0.525s var(--easing-out); }
+    -webkit-transition: margin 250ms 0ms var(--deceleration-curve);
+       -moz-transition: margin 250ms 0ms var(--deceleration-curve);
+            transition: margin 250ms 0ms var(--deceleration-curve); }
 
 .toolbar.flexible > .detail > .title {
     margin-top: 80px; }
@@ -9041,16 +8858,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar.flexible > .logo {
     margin-top: 72px;
     height: 48px;
-    -moz-transition: margin-top 0.525s var(--easing-out),
-        height 0.525s var(--easing-out);
-    -webkit-transition: margin-top 0.525s var(--easing-out),
-        height 0.525s var(--easing-out);
-    transition: margin-top 0.525s var(--easing-out),
-        height 0.525s var(--easing-out);
-    -o-transition: margin-top 0.525s var(--easing-out),
-        height 0.525s var(--easing-out);
-    -ms-transition: margin-top 0.525s var(--easing-out),
-        height 0.525s var(--easing-out); }
+    -webkit-transition: margin-top 250ms 0ms var(--deceleration-curve),
+                height 250ms 0ms var(--deceleration-curve);
+       -moz-transition: margin-top 250ms 0ms var(--deceleration-curve),
+                height 250ms 0ms var(--deceleration-curve);
+            transition: margin-top 250ms 0ms var(--deceleration-curve),
+                height 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.hide > .toolbar.flexible > .logo {
     height: 40px;
@@ -9090,11 +8903,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: absolute;
     left: 50%;
     height: 40px;
-    -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%); }
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
 
 .app-bar.floating > .toolbar > .logo:first-child:last-child > img {
     height: 36px; }
@@ -9182,11 +8993,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     padding: 0px 16px;
     border-radius: 3px; 
     z-index: 24;
-    -moz-transition: opacity 0.225s var(--easing-out);
-    -webkit-transition: opacity 0.225s var(--easing-out);
-    transition: opacity 0.225s var(--easing-out);
-    -o-transition: opacity 0.225s var(--easing-out);
-    -ms-transition: opacity 0.225s var(--easing-out); }
+    will-change: opacity;
+    -webkit-transition: opacity 200ms 0ms var(--deceleration-curve);
+       -moz-transition: opacity 200ms 0ms var(--deceleration-curve);
+            transition: opacity 200ms 0ms var(--deceleration-curve); }
 
 .tooltip-element > p {
     display: block;
@@ -9247,11 +9057,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     overflow-y: auto; }
 
 .views-content-tab > .views-tab.transition {
-    -moz-transition: left 0.275s var(--standard-curve);
-    -webkit-transition: left 0.275s var(--standard-curve);
-    transition: left 0.275s var(--standard-curve);
-    -o-transition: left 0.275s var(--standard-curve);
-    -ms-transition: left 0.275s var(--standard-curve); }
+    -webkit-transition: left 120ms 0ms var(--standard-curve);
+       -moz-transition: left 120ms 0ms var(--standard-curve);
+            transition: left 120ms 0ms var(--standard-curve); }
 
 .views-content-tab > .views-tab.overflow-none {
     pointer-events: none; }
@@ -9278,16 +9086,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     display: none;
     width: 100%;
     overflow-y: auto;
-    -moz-animation-duration: 0.255s;
-    -webkit-animation-duration: 0.255s;
-    -o-animation-duration: 0.255s;
-    animation-duration: 0.255s; 
-    -ms-animation-duration: 0.255s;
-    -moz-animation-timing-function: var(--sharp-curve);
+    -webkit-animation-duration: 120ms;
+       -moz-animation-duration: 120ms;
+            animation-duration: 120ms; 
     -webkit-animation-timing-function: var(--sharp-curve);
-    -o-animation-timing-function: var(--sharp-curve);
-    animation-timing-function: var(--sharp-curve);
-    -ms-animation-timing-function: var(--sharp-curve); }
+       -moz-animation-timing-function: var(--sharp-curve);
+            animation-timing-function: var(--sharp-curve); }
 
 .views-bottom-navigation > .content.active {
     display: block; }

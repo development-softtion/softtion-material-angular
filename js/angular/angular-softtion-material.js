@@ -1,8 +1,8 @@
 /*
- Angular Softtion Material v1.1.5
+ Angular Softtion Material v1.1.6
  (c) 2016 Softtion Developers, http://material.softtion.com.co
  License: MIT
- Updated: 21/Jul/2017
+ Updated: 31/Jul/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -93,7 +93,6 @@
                             var appBody = angular.element(".app-body"),
                                 appContent = angular.element(".app-content"),
                                 sidenav = appBody.children(".sidenav"),
-                                contentNav = sidenav.children(".content"),
                                 $window = angular.element(window),
                                 
                                 // Atributos
@@ -109,7 +108,7 @@
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
                                             $element.addClass(hideClass); // Ocultando barra 
-                                            $element.children(".dropdown").removeClass("active");
+                                            $element.children(".dropdown").removeClass("show");
                                         } else {
                                             $element.removeClass(hideClass);
                                         } // Revelando componente
@@ -122,33 +121,35 @@
                             }
                             
                             appContent.css("padding-top", heightElement);
-                            contentNav.css("top", heightElement); 
+                            sidenav.css("top", heightElement); 
                             
                             if ($window.width() > 960) { 
-                                appContent.addClass("pd-64"); contentNav.addClass("pd-64");
+                                appContent.addClass("pd-64"); sidenav.addClass("pd-64");
                             } else {
-                                appContent.addClass("pd-56"); contentNav.addClass("pd-64"); 
+                                appContent.addClass("pd-56"); sidenav.addClass("pd-56"); 
                             } // Pantalla es mayor a 960px
                             
                             $window.resize(function () {
                                 if ($window.width() > 960) {
                                     if (!appContent.hasClass("pd-64")) {
                                         var paddingTop = parseInt(appContent.css("padding-top"));
+                                        
+                                        sidenav.css("top", (paddingTop + 8) + "px");
                                         appContent.css("padding-top", (paddingTop + 8) + "px");
-                                        contentNav.css("top", (paddingTop + 8) + "px");
                                     } // AppBar de 64px Mínimo
                                     
+                                    sidenav.addClass("pd-64").removeClass("pd-56");
                                     appContent.addClass("pd-64").removeClass("pd-56");
-                                    contentNav.addClass("pd-64").removeClass("pd-56");
                                 } else {
                                     if (!appContent.hasClass("pd-56")) {
                                         var paddingTop = parseInt(appContent.css("padding-top"));
+                                        
+                                        sidenav.css("top", (paddingTop - 8) + "px");
                                         appContent.css("padding-top", (paddingTop - 8) + "px");
-                                        contentNav.css("top", (paddingTop - 8) + "px");
                                     } // AppBar de 56px Mínimo
                                     
+                                    sidenav.addClass("pd-56").removeClass("pd-64");
                                     appContent.addClass("pd-56").removeClass("pd-64");
-                                    contentNav.addClass("pd-56").removeClass("pd-64");
                                 }
                             });
                         }
@@ -676,12 +677,8 @@
                                 $element.append(backdrop); // Agregando backdrop 
                             } // No existe backdrop
                             
-                            var marginBottom = content.outerHeight();
-                            content.css("margin-bottom", (marginBottom * -1) - 1);
                             content.css("max-width", $scope.maxWidth);
                             content.css("max-height", "calc(100% - " + $scope.marginTop + ")");
-                            
-                            content.addClass("start"); // Componente inicializado
                         }
                     };
                 }
@@ -3686,8 +3683,8 @@
                 }]
             },
             
-            FabMenuArc: {
-                name: "fabMenuArc",
+            FabMenuRainbow: {
+                name: "fabMenuRainbow",
                 directive: ["$body", function ($body) {
                     return {
                         restrict: "C", 
@@ -3707,20 +3704,20 @@
                         
                             $element.attr("tab-index", "-1"); // Enfocable
                             
-                            box.on("click", function () {
+                            box.on("click.fab-rainbow", function () {
                                 if ($element.hasClass("active")) {
                                     $element.removeClass("active"); backdrop.removeClass("active");
                                     $body.removeClass("body-overflow-none");
                                 } // Debe cerrarse el componente
                             });
                             
-                            button.on("click", function (event) {
+                            button.on("click.fab-rainbow", function (event) {
                                 $element.addClass("active").addClass("start"); 
                                 $body.addClass("body-overflow-none");
                                 backdrop.addClass("active"); event.stopPropagation();
                             });
                             
-                            backdrop.on("click", function () {
+                            backdrop.on("click.fab-rainbow", function () {
                                 $element.removeClass("active"); backdrop.removeClass("active");
                             });
                         }
@@ -7308,9 +7305,8 @@
                                     bottomSheet.addClass("show");
                                 } else {
                                     bottomSheet.addClass("show-content");
-                                    content.css("margin-bottom", container.scrollTop());
                                 } // Componente no se encuentra en AppContent
-                            } // BottomSheet existe, no se encuentra activo
+                            } // BottomSheet existe, no se encuentra visible en Documento
                         });
                     };
 
@@ -7327,10 +7323,7 @@
                                 (!isInAppcontent) ? 
                                     bottomSheet.removeClass("show-content") :
                                     bottomSheet.removeClass("show");
-
-                                var marginBottom = content.outerHeight();
-                                content.css("margin-bottom", (marginBottom * -1) - 1);
-                            } // BottomSheet existe, se encuentra activo
+                            } // BottomSheet existe, se encuentra visible en Documento
                         });
                     };
                     
@@ -7348,7 +7341,6 @@
                 name: "$dialog",
                 method: function () {
                     var dialog = undefined,
-                        box = undefined,
                         $body = undefined,
                         backdrop = undefined,
                         persistent = false;
@@ -7362,7 +7354,6 @@
                         
                         executeIfExists(dialog, function () {
                             if (dialog.exists()) {
-                                box = dialog.children(".box");
                                 backdrop = dialog.children(".backdrop");
 
                                 if (!backdrop.exists()) {
@@ -7480,7 +7471,7 @@
                     },
                     
                     hide: function (dropdown) {
-                        dropdown.removeClass("active"); 
+                        dropdown.removeClass("show"); 
                     },
                     
                     show: function (options) {
@@ -7502,7 +7493,7 @@
                             // Atributos finales del Dropdown
                             left, top, originEffect, transformOrigin = 0; 
                             
-                        dropdown.addClass("active"); // Activado dropdown
+                        dropdown.addClass("show"); // Activado dropdown
                             
                         // Definiendo posicion eje X
                         if ((posOriginX + widthDropdown) <= (settings.innerWidth)) {
@@ -7571,7 +7562,7 @@
                     
                     showXY: function (options, left, top) {
                         var dropdown = options.dropdown;
-                        dropdown.addClass("active"); // Activando dropdown
+                        dropdown.addClass("show"); // Activando dropdown
                         
                         var heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
@@ -7647,9 +7638,9 @@
                         belowOrigin = belowOriginDropdown; return this;
                     };
 
-                    Dropdown.prototype.isActive = function () {
+                    Dropdown.prototype.isVisible = function () {
                         if (softtion.isDefined(dropdown)) {
-                            return dropdown.hasClass("active");
+                            return dropdown.hasClass("show");
                         } // Esta definido el Dropdown
 
                         return false; // Se desconoce el Componente
@@ -7696,7 +7687,7 @@
                     };
 
                     Dropdown.prototype.hide = function () {
-                        if (this.isActive()) { 
+                        if (this.isVisible()) { 
                             Material.providers.Dropdown.handler.hide(dropdown); 
                         } // Esta abierto el dropdown en el Provedor
                     };
@@ -7731,14 +7722,13 @@
 
                                 if (!backdrop.exists()) {
                                     backdrop = angular.element(
-                                        softtion.html("div").
-                                            addClass("backdrop").create()
+                                        softtion.html("div").addClass("backdrop").create()
                                     );
 
-                                    form.append(backdrop);
-                                    
-                                    backdrop.click(function () { self.hide(); });
-                                }
+                                    form.append(backdrop); // Agregando Backdrop
+                                } // Backdrop no se encuentra en el Componente
+                                
+                                backdrop.on("click", function () { self.hide(); });
                             } // Existe elemento FormNavigation en el documento
                         });
                         
@@ -7748,8 +7738,7 @@
                     FormNavigation.prototype.show = function () {
                         executeIfExists(form, function () {
                             if (!form.hasClass("show")) {
-                                $body.addClass("body-overflow-none"); 
-                                form.removeClass("hide").addClass("show"); 
+                                $body.addClass("body-overflow-none"); form.addClass("show"); 
                             } // FormNavigation no se encuentra activo
                         });
                     };
@@ -7757,8 +7746,7 @@
                     FormNavigation.prototype.hide = function () {
                         executeIfExists(form, function () {
                             if (form.hasClass("show")) {
-                                $body.removeClass("body-overflow-none");
-                                form.removeClass("show").addClass("hide"); 
+                                $body.removeClass("body-overflow-none"); form.removeClass("show"); 
                             } // FormNavigation se encuentra activo
                         });
                     };
@@ -8077,8 +8065,8 @@
                     SideNav.prototype.show = function () {
                         executeIfExists(sidenav, function () {
                             if (!sidenav.hasClass("show")) {
-                                $body.addClass("body-overflow-none"); // No scroll
-                                sidenav.removeClass("hide").addClass("show");
+                                $body.addClass("body-overflow-none-sidenav"); 
+                                sidenav.addClass("show"); // Visualizando
                             } // Sidenav no se encuentra activo
                         });
                     };
@@ -8086,8 +8074,8 @@
                     SideNav.prototype.hide = function () {
                         executeIfExists(sidenav, function () {
                             if (sidenav.hasClass("show")) {
-                                $body.removeClass("body-overflow-none"); // Scroll
-                                sidenav.removeClass("show").addClass("hide");
+                                $body.removeClass("body-overflow-none-sidenav");
+                                sidenav.removeClass("show"); // Ocultando
                             } // Sidenav no se encuentra activo
                         });
                     };
@@ -8116,37 +8104,43 @@
                     var body = undefined, 
                         $scope = undefined,
                         Softtion = undefined,
-                        box = undefined, 
+                        snackbar = undefined, 
                         action = undefined,
-                        hiddenSnackbar = undefined;
+                        time = 3500,
+                        hiddenSnackbar = undefined,
+                        $moveButton = Material.providers.Snackbar.moveButton;
                     
-                    var SnackBar = function () { 
-                        body = angular.element(
-                            softtion.html("p").addClass(["body"]).create()
-                        );
-                
-                        action = angular.element(
-                            softtion.html("div").addClass(["action"]).create()
-                        );
+                    var SnackBar = function () { };
+                    
+                    var instanceSnackbar = function () {
+                        if (softtion.isUndefined(snackbar)) {
+                            body = angular.element(
+                                softtion.html("p").addClass(["body"]).create()
+                            );
 
-                        box = angular.element(
-                            softtion.html("div").addClass(["snackbar"]).create()
-                        );
+                            action = angular.element(
+                                softtion.html("div").addClass(["action"]).create()
+                            );
 
-                        box.append(body); box.append(action);
-                        
-                        angular.element(".app-body").append(box);
+                            snackbar = angular.element(
+                                softtion.html("div").addClass(["snackbar"]).create()
+                            );
+
+                            snackbar.append(body); snackbar.append(action);
+
+                            angular.element(".app-body").append(snackbar);
+                        } // No se ha definido elemento Snackbar en el Documento
                     };
 
                     SnackBar.prototype.show = function (text, optionsAction) {
-                        var heightBody, self = this, // Snackbar
-                            selector = Softtion.Selectors.FAB,
-                            $moveButton = Material.providers.Snackbar.moveButton,
+                        instanceSnackbar(); // Instanciando Snackbar
+                        
+                        var heightBody, self = this, selector = Softtion.Selectors.FAB,
                             bottomNavigation = angular.element(".bottom-navigation");
                             
                         action.height(0); // Ocultando acción
 
-                        if (!box.hasClass("active")) {
+                        if (!snackbar.hasClass("show")) {
                             body.html(text); heightBody = parseInt(body.height());
                             
                             (heightBody > 20) ? body.addClass("two-line") : 
@@ -8162,7 +8156,7 @@
                                 body.css("padding-right", "24px");
                                 body.css("width", widthBody);
                                 
-                                action.css("height", box.height());
+                                action.css("height", snackbar.height());
                                 
                                 action.find("span").click(function () {
                                     if (softtion.isFunction(optionsAction.action)) {
@@ -8175,7 +8169,7 @@
                                         } // Existe un cierre pendiente por realizar
 
                                         action.html(""); $moveButton(false, selector); 
-                                        box.removeClass("show").removeClass("active"); 
+                                        snackbar.removeClass("show"); 
                                     } // Ejecutando acción establecida en el Controlador
                                 });
                             } else {
@@ -8184,18 +8178,17 @@
                             } // No se ha definido acción para disparar en el componente
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                box.addClass("show-bottom-navigation");
+                                snackbar.addClass("show-bottom-navigation");
                             } // Existe un bottom-navigation y esta visible en el documento
                             
-                            box.addClass("active").addClass("show");
-                            $moveButton(true, selector, box.height()); 
+                            snackbar.addClass("show"); $moveButton(true, selector, snackbar.height()); 
 
                             hiddenSnackbar = setTimeout(
                                 function () {
                                     hiddenSnackbar = undefined; $moveButton(false, selector); 
-                                    box.removeClass("show").removeClass("active"); 
+                                    snackbar.removeClass("show"); 
                                 },
-                                3500 // Tiempo de espera para ocultarse
+                                time // Tiempo de espera para ocultarse
                             );
                         } else {
                             action.html(""); heightBody = parseInt(body.css("height"));
@@ -8204,20 +8197,24 @@
                                 clearTimeout(hiddenSnackbar); hiddenSnackbar = undefined;
                             } // Existe un cierre pendiente por realizar
                             
-                            $moveButton(false, selector); box.removeClass("show").removeClass("active"); 
+                            $moveButton(false, selector); snackbar.removeClass("show"); 
                             
                             setTimeout(
-                                function () { self.show(text, optionsAction); }, 350
+                                function () { self.show(text, optionsAction); }, 160
                             ); // Temporizador para visualizar
                         }
                     };
-
-                    var snackbar = new SnackBar(); // Proveedor Snackbar
                     
-                    this.get = function () { return snackbar; };
+                    SnackBar.prototype.setTime = function (timeDuration) {
+                        time = timeDuration; return this; // Retornando interfaz fluida
+                    };
+
+                    var snackbarProvider = new SnackBar(); // Proveedor Snackbar
+                    
+                    this.get = function () { return snackbarProvider; };
                     
                     var fnProvider = function ($rootScope, SofttionMaterial) { 
-                        Softtion = SofttionMaterial; $scope = $rootScope; return snackbar; 
+                        Softtion = SofttionMaterial; $scope = $rootScope; return snackbarProvider; 
                     };
                     
                     this.$get = ["$rootScope", "SofttionMaterial", fnProvider];
@@ -8236,44 +8233,49 @@
                 },
                 method: function () {
                     var body = undefined, 
-                        box = undefined,
+                        toast = undefined,
+                        time = 3500,
                         hiddenToast = undefined,
+                        $moveButton = Material.providers.Toast.moveButton,
                         Softtion = undefined;
                     
-                    var Toast = function () { 
-                        box = angular.element(
-                            softtion.html("div").addClass(["toast"]).create()
-                        );
-                
-                        body = angular.element(
-                            softtion.html("p").addClass(["body"]).create()
-                        );
+                    var Toast = function () { };
+                    
+                    var instanceToast = function () {
+                        if (softtion.isUndefined(toast)) {
+                            toast = angular.element(
+                                softtion.html("div").addClass(["toast"]).create()
+                            );
 
-                        box.append(body); angular.element(".app-body").append(box);
+                            body = angular.element(
+                                softtion.html("p").addClass(["body"]).create()
+                            );
+
+                            toast.append(body); angular.element(".app-body").append(toast);
+                        } // No se ha definido elemento Toast en el Documento
                     };
 
                     Toast.prototype.show = function (text) {
-                        var heightBody, self = this, // Toast
-                            selector = Softtion.Selectors.FAB,
-                            $moveButton = Material.providers.Toast.moveButton,
+                        instanceToast(); // Instanciando Toast
+                        
+                        var heightBody, self = this, selector = Softtion.Selectors.FAB,
                             bottomNavigation = angular.element(".bottom-navigation");
 
-                        if (!box.hasClass("active")) {
+                        if (!toast.hasClass("show")) {
                             body.html(text); heightBody = parseInt(body.height());
                             
                             if (bottomNavigation.exists() && !bottomNavigation.hasClass("hide")) {
-                                box.addClass("show-bottom-navigation");
+                                toast.addClass("show-bottom-navigation");
                             } // Existe un bottom-navigation y esta visible en el documento
                             
-                            box.addClass("active").addClass("show");
-                            $moveButton(true, selector, box.innerHeight()); 
+                            toast.addClass("show"); $moveButton(true, selector, toast.innerHeight()); 
 
                             hiddenToast = setTimeout(
                                 function () {
                                     hiddenToast = undefined; $moveButton(false, selector); 
-                                    box.removeClass("show").removeClass("active");
+                                    toast.removeClass("show"); // Ocultando Toast
                                 },
-                                3500 // Tiempo de espera para ocultarse
+                                time // Tiempo de espera para ocultarse
                             );
                         } else {
                             heightBody = parseInt(body.css("height"));
@@ -8282,21 +8284,23 @@
                                 clearTimeout(hiddenToast); hiddenToast = undefined;
                             } // Existe un cierre pendiente por realizar
                             
-                            $moveButton(false, selector); 
-                            box.removeClass("show").removeClass("active"); 
+                            $moveButton(false, selector); toast.removeClass("show"); 
                             
-                            setTimeout(
-                                function () { self.show(text); }, 350
-                            ); // Temporizador para visualizar
+                            // Temporizador para visualizar
+                            setTimeout(function () { self.show(text); }, 160); 
                         }
                     };
-
-                    var toast = new Toast(); // Proveedor Toast
                     
-                    this.get = function () { return toast; };
+                    Toast.prototype.setTime = function (timeDuration) {
+                        time = timeDuration; return this; // Retornando interfaz fluida
+                    };
+
+                    var toastProvider = new Toast(); // Proveedor Toast
+                    
+                    this.get = function () { return toastProvider; };
                     
                     var providerToast = function (SofttionMaterial) { 
-                        Softtion = SofttionMaterial; return toast; 
+                        Softtion = SofttionMaterial; return toastProvider; 
                     };
                     
                     this.$get = ["SofttionMaterial", providerToast];
@@ -8554,7 +8558,7 @@
         VERSION: "1.0.4",
         Selectors: {
             FAB: "button.floating:not(.static), .fab-speed-dial," 
-                + " .fab-menu > .box, .fab-menu-arc,"
+                + " .fab-menu > .box, .fab-menu-rainbow,"
                 + " .progress-button-floating",
             BottomNav: ".stepper-mobile, .footer-buttons"
         },

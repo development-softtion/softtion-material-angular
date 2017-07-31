@@ -1499,19 +1499,19 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** FAB MENU ARC */
 
-.fab-menu-arc > .box {
+.fab-menu-rainbow > .box {
     background-color: var(--theme-secondary-background); }
 
-.fab-menu-arc.active > .box {
+.fab-menu-rainbow.active > .box {
     background-color: transparent; }
 
-.fab-menu-arc > .box > .content > .button-floating > i {
+.fab-menu-rainbow > .box > .content > .button-floating > i {
     color: var(--theme-secondary-font-active); }
 
-.fab-menu-arc > .box > .content > .menu-content > .menu {
+.fab-menu-rainbow > .box > .content > .menu-content > .menu {
     background-color: var(--light-background-component); }
 
-.dark .fab-menu-arc > .box > .content > .menu-content > .menu {
+.dark .fab-menu-rainbow > .box > .content > .menu-content > .menu {
     background-color: var(--dark-background-component); }
 
 /** FILECHOOSER */
