@@ -84,9 +84,6 @@ body {
     padding: 0px;
     overflow: hidden; }
 
-body.body-overflow-none, body.body-overflow-none-sidenav {
-    overflow: hidden; }
-
 /** SCROLLBAR */
 
 body.not-touch *::-webkit-scrollbar {
@@ -781,19 +778,37 @@ input[type=number]::-webkit-outer-spin-button {
     float: left; }
 
 .align-right {
-    text-align: right; }
+    text-align: right !important; }
 
 .align-left {
-    text-align: left; }
+    text-align: left !important; }
 
 .align-center {
-    text-align: center; }
+    text-align: center !important; }
 
 .align-justify {
-    text-align: justify; }
+    text-align: justify !important; }
 
 .clear-both {
     clear: both; }
+
+.margin-vertical-8 {
+    margin: 8px 0px !important; }
+
+.margin-vertical-16 {
+    margin: 16px 0px !important; }
+
+.margin-top-8 {
+    margin-top: 8px !important; }
+
+.margin-top-16 {
+    margin-top: 16px !important; }
+
+.margin-bottom-8 {
+    margin-bottom: 8px !important; }
+
+.margin-bottom-16 {
+    margin-bottom: 16px !important; }
 
 /** EFFECTS MATERIAL */
 
@@ -962,6 +977,10 @@ input[type=number]::-webkit-outer-spin-button {
     margin-left: auto;
     margin-bottom: 8px; }
 
+body.body-overflow-none > .app-body > .app-content, 
+body.body-overflow-none-sidenav > .app-body > .app-content {
+    overflow: hidden; }
+
 .app-content:after {
     clear: both;
     display: table; }
@@ -1030,6 +1049,10 @@ input[type=number]::-webkit-outer-spin-button {
     .app-body > .sidenav ~ .app-content {
         left: 320px; 
         width: calc(100% - 320px); }
+    
+    body.body-overflow-none-sidenav > .sidenav.permanent ~ .app-body > .app-content,
+    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content {
+        overflow: auto; }
 }
 
 @media only screen and (min-width : 721px) and (max-width : 960px) {
@@ -1037,6 +1060,9 @@ input[type=number]::-webkit-outer-spin-button {
     .app-body > .sidenav ~ .app-content {
         left: 256px; 
         width: calc(100% - 256px); }
+    
+    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content {
+        overflow: auto; }
 }
 
 /** AUTOCOMPLETE */
@@ -4736,10 +4762,8 @@ button.raised:focus:after, button.flat:focus:after {
 
 .flexible-box {
     position: relative;
+    float: left;
     width: 100%;
-    float: left; }
-
-.bottom-sheet > .content > .flexible-box {
     height: 100%; }
 
 .flexible-box > .banner {
@@ -4818,8 +4842,8 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: 100%;
     padding-top: 56.25%;
     z-index: 1;
-    box-sizing: border-box;
-    overflow: auto; }
+    overflow: auto;
+    box-sizing: border-box; }
 
 .flexible-box > .box > .content {
     overflow-y: auto; }
@@ -4956,9 +4980,8 @@ button.raised:focus:after, button.flat:focus:after {
 }
 
 .flexible-content > .box > .content {
-    position: relative;
     width: 100%;
-    overflow: auto; }
+    position: relative; }
 
 /** FORM NAVIGATION */
 
@@ -5417,6 +5440,13 @@ img.center.density-height {
     font-size: 16px;
     font-weight: 500; 
     cursor: pointer; }
+
+p > .link {
+    display: initial;
+    width: auto;
+    height: auto;
+    line-height: inherit;
+    font-size: inherit; }
 
 .link:hover {
     text-decoration: underline; }

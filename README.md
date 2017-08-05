@@ -1,4 +1,18 @@
-![Softtion Material logo](https://raw.github.com/softtion-development/softtion-material-angular/master/imgs/logo.png)
+<p align="center">
+    <a href="http://material.softtion.com">
+        <img src="http://material.softtion.com/resources/imgs/logo.svg" width="150">
+    </a>
+
+    <h3 align="center">Softtion Material</h3>
+
+    <p align="center">
+        Softtion Material, framework basado en los principios de Material Design.<br>
+
+        <a href="http://material.softtion.com">
+            <strong>Visita nuestro proyecto</strong>
+        </a>
+    </p>
+</p>
 
 # Softtion Material Angular
 

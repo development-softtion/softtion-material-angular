@@ -1707,6 +1707,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** FLEXIBLE BOX */
 
+.flexible-box > .banner:before {
+    background-color: var(--theme-primary-background); }
+
 .flexible-box > .banner > .background-color {
     background-color: var(--theme-primary-background-dark); }
 
@@ -2337,6 +2340,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .dark .sidenav > .content > .banner-perfil > span {
     color: var(--light-primary-font); }
+
+.sidenav > .content > .banner {
+    background-color: var(--theme-secondary-background); }
 
 .sidenav > .content > .banner > .detail {
     color: var(--light-primary-font); }
