@@ -8113,7 +8113,7 @@
                     var SnackBar = function () { };
                     
                     var instanceSnackbar = function () {
-                        if (softtion.isUndefined(snackbar)) {
+                        if (softtion.isUndefined(snackbar) && softtion.isInPage(snackbar[0])) {
                             body = angular.element(
                                 softtion.html("p").addClass(["body"]).create()
                             );
@@ -8242,7 +8242,7 @@
                     var Toast = function () { };
                     
                     var instanceToast = function () {
-                        if (softtion.isUndefined(toast)) {
+                        if (softtion.isUndefined(toast) && softtion.isInPage(toast[0])) {
                             toast = angular.element(
                                 softtion.html("div").addClass(["toast"]).create()
                             );

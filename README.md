@@ -2,12 +2,13 @@
     <a href="http://material.softtion.com">
         <img src="http://material.softtion.com/resources/imgs/logo.svg" width="150">
     </a>
+</p>
 
 <h3 align="center">Softtion Material</h3>
 
 <p align="center">
-    Softtion Material, framework basado en los principios de Material Design.<br>
-
+    Softtion Material, framework basado en los principios de Material Design.
+    <br>
     <a href="http://material.softtion.com">
         <strong>Visita nuestro proyecto</strong>
     </a>
