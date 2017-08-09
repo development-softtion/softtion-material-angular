@@ -1407,10 +1407,16 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-secondary-font); }
 
 .dialog > .box > .actions > button.flat {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .dark .dialog > .box > .actions > button.flat {
     color: var(--light-primary-font); }
+
+.dialog > .box > .actions > button.flat.theme-primary {
+    color: var(--theme-secondary-font); }
+
+.dialog > .box > .actions > button.flat.theme-secondary {
+    color: var(--theme-primary-font); }
 
 .dialog > .box > .actions > button.flat:disabled {
     color: var(--theme-secondary-font-disabled); }
