@@ -8112,24 +8112,30 @@
                     
                     var SnackBar = function () { };
                     
+                    var createSnackbar = function () {
+                        body = angular.element(
+                            softtion.html("p").addClass(["body"]).create()
+                        );
+
+                        action = angular.element(
+                            softtion.html("div").addClass(["action"]).create()
+                        );
+
+                        snackbar = angular.element(
+                            softtion.html("div").addClass(["snackbar"]).create()
+                        );
+
+                        snackbar.append(body); snackbar.append(action);
+
+                        angular.element(".app-body").append(snackbar);  
+                    };
+                    
                     var instanceSnackbar = function () {
-                        if (softtion.isUndefined(snackbar) && softtion.isInPage(snackbar[0])) {
-                            body = angular.element(
-                                softtion.html("p").addClass(["body"]).create()
-                            );
-
-                            action = angular.element(
-                                softtion.html("div").addClass(["action"]).create()
-                            );
-
-                            snackbar = angular.element(
-                                softtion.html("div").addClass(["snackbar"]).create()
-                            );
-
-                            snackbar.append(body); snackbar.append(action);
-
-                            angular.element(".app-body").append(snackbar);
-                        } // No se ha definido elemento Snackbar en el Documento
+                        if (softtion.isUndefined(snackbar)) {
+                            createSnackbar(); return;
+                        } else if (softtion.isInPage(snackbar[0])) {
+                            createSnackbar(); return;
+                        } // Snackbar no se encuentra en el documento
                     };
 
                     SnackBar.prototype.show = function (text, optionsAction) {
@@ -8241,18 +8247,24 @@
                     
                     var Toast = function () { };
                     
+                    var createToast = function () {
+                        toast = angular.element(
+                            softtion.html("div").addClass(["toast"]).create()
+                        );
+
+                        body = angular.element(
+                            softtion.html("p").addClass(["body"]).create()
+                        );
+
+                        toast.append(body); angular.element(".app-body").append(toast);
+                    };
+                    
                     var instanceToast = function () {
-                        if (softtion.isUndefined(toast) && softtion.isInPage(toast[0])) {
-                            toast = angular.element(
-                                softtion.html("div").addClass(["toast"]).create()
-                            );
-
-                            body = angular.element(
-                                softtion.html("p").addClass(["body"]).create()
-                            );
-
-                            toast.append(body); angular.element(".app-body").append(toast);
-                        } // No se ha definido elemento Toast en el Documento
+                        if (softtion.isUndefined(toast)) {
+                            createToast(); return;
+                        } else if (softtion.isInPage(toast[0])) {
+                            createToast(); return;
+                        } // Toast no se encuentra en el documento
                     };
 
                     Toast.prototype.show = function (text) {
