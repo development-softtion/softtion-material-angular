@@ -3509,7 +3509,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .app-bar.theme-primary > .toolbar > .nav-icon > button.action,
 .app-bar.theme-primary > .toolbar > .menu-icon,
 .app-bar.theme-primary > .toolbar > .actions > button,
-.toolbar.theme-primary > .title, 
+.toolbar.theme-primary > .title,
+.toolbar.theme-primary > .detail > .title,
+.toolbar.theme-primary > .detail > .subtitle,
 .toolbar.theme-primary > .nav-icon > button.action,
 .toolbar.theme-primary > .menu-icon, 
 .toolbar.theme-primary > .actions > button {
