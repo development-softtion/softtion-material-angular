@@ -3958,6 +3958,9 @@ button.raised:focus:after, button.flat:focus:after {
 /** EXPANSION PANEL */ 
 
 .list-expansion-panel {
+    position: relative;
+    width: 100%;
+    float: left;
     margin: 0px; 
     padding: 0px; }
 
@@ -3967,9 +3970,15 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transition: margin 160ms 0ms var(--deceleration-curve);
             transition: margin 160ms 0ms var(--deceleration-curve); }
 
+.list-expansion-panel.flat > .expansion-panel {
+    box-shadow: none; }
+
 .expansion-panel.active {
     margin: 16px 0;
     box-shadow: var(--shadow-4); }
+
+.list-expansion-panel.flat > .expansion-panel.active {
+    margin: 0px; }
 
 .expansion-panel > .header {
     display: flex;

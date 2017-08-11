@@ -1448,23 +1448,25 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** EXPANSION PANEL */
 
-.expansion-panel > .header, .expansion-panel > .body {
+.list-expansion-panel.flat > .expansion-panel {
+    border: 1px solid var(--light-background-border);
+    border-bottom: none; }
+
+.dark .list-expansion-panel.flat > .expansion-panel {
+    border: 1px solid var(--dark-background-border);
+    border-bottom: none; }
+
+.list-expansion-panel.flat > .expansion-panel:last-child {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.dark .list-expansion-panel.flat > .expansion-panel:last-child {
+    border-bottom: 1px solid var(--dark-background-border); }
+
+.expansion-panel > .header {
     background-color: var(--light-background-component); }
 
-.expansion-panel > .header:hover {
-    background-color: #eeeeee; /** grey-200 */ }
-
-.dark .expansion-panel > .header, .dark .expansion-panel > .body {
+.dark .expansion-panel > .header {
     background-color: var(--dark-background-component); }
-
-.dark .expansion-panel > .header:hover {
-    background-color: #616161; /** grey-700 */ }
-
-.expansion-panel > .header > .detail {
-    color: var(--dark-secondary-font); }
-
-.dark .expansion-panel > .header > .detail {
-    color: var(--light-secondary-font); }
 
 .expansion-panel > .header {
     border-bottom: 1px solid var(--light-background-border); }
@@ -1472,11 +1474,38 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .expansion-panel > .header {
     border-bottom: 1px solid var(--dark-background-border); }
 
+.list-expansion-panel.flat > .expansion-panel > .header {
+    border-bottom: none; }
+
+.expansion-panel > .header:hover {
+    background-color: #eeeeee; /** grey-200 */ }
+
+.dark .expansion-panel > .header > .detail {
+    color: var(--light-secondary-font); }
+
+.dark .expansion-panel > .header:hover {
+    background-color: #616161; /** grey-700 */ }
+
+.expansion-panel > .header > .detail {
+    color: var(--dark-secondary-font); }
+
+.expansion-panel > .body {
+    background-color: var(--light-background-component); }
+
+.dark .expansion-panel > .body {
+    background-color: var(--dark-background-component); }
+
 .expansion-panel > .body > .actions {
     border-top: 1px solid var(--light-background-border); }
 
 .dark .expansion-panel > .body > .actions {
     border-top: 1px solid var(--dark-background-border); }
+
+.list-expansion-panel.flat > .expansion-panel > .body > .actions {
+    background: var(--light-background-appbar); }
+
+.dark .list-expansion-panel.flat > .expansion-panel > .body > .actions {
+    background: var(--dark-background); }
 
 /** FAB MENU */
 
