@@ -6666,14 +6666,12 @@ p > .link {
     z-index: 1;
     bottom: initial;
     opacity: 0;
-    -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
-       -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
-            transition: opacity 120ms 0ms var(--acceleration-curve); }
-
-.sidenav.show > .backdrop {
-    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
-       -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
-            transition: opacity 120ms 0ms var(--deceleration-curve); }
+    -webkit-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
+       -moz-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
+            transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve); }
 
 .sidenav.permanent.show > .backdrop,
 .sidenav.permanent > .backdrop,
@@ -6710,25 +6708,28 @@ p > .link {
 .sidenav > .content {
     position: absolute;
     top: 0;
-    left: -105%;
+    left: 0;
     min-width: 240px;
     width: calc(100% - 56px);
     max-width: 320px;
     height: 100%;
     overflow-y: auto;
     z-index: 2;
-    box-shadow: var(--shadow-16); 
+    box-shadow: var(--shadow-16);
     box-sizing: border-box;
-    -webkit-transition: left 120ms 0ms var(--acceleration-curve);
-       -moz-transition: left 120ms 0ms var(--acceleration-curve);
-            transition: left 120ms 0ms var(--acceleration-curve); }
+    will-change: transform;
+    -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+            transform: translateX(-100%);
+    -webkit-transition: -webkit-transform 200ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
+            transition: transform 200ms 0ms var(--standard-curve); }
 
 .sidenav.show > .content {
-    left: 0%;
     box-shadow: var(--shadow-16);
-    -webkit-transition: left 120ms 0ms var(--deceleration-curve);
-       -moz-transition: left 120ms 0ms var(--deceleration-curve);
-            transition: left 120ms 0ms var(--deceleration-curve); }
+    -webkit-transform: translateX(0%);
+       -moz-transform: translateX(0%);
+            transform: translateX(0%); }
 
 @media only screen and (min-width : 961px) {
     
@@ -6736,15 +6737,19 @@ p > .link {
         width: 320px; }
     
     .sidenav.permanent > .content {
-        left: 0px;
-        width: 320px; }
+        width: 320px;
+        -webkit-transform: translateX(0%);
+           -moz-transform: translateX(0%);
+                transform: translateX(0%); }
     
     .app-body > .sidenav > .content {
         width: 320px; }
 
     .app-body > .sidenav > .content {
-        left: 0px;
-        box-shadow: none; }
+        box-shadow: none;
+        -webkit-transform: translateX(0%);
+           -moz-transform: translateX(0%);
+                transform: translateX(0%); }
 }
 
 @media only screen and (min-width : 721px) and (max-width : 960px) {
@@ -6754,8 +6759,10 @@ p > .link {
     
     .app-body > .sidenav > .content {
         width: 256px;
-        left: 0px;
-        box-shadow: none; }
+        box-shadow: none;
+        -webkit-transform: translateX(0%);
+           -moz-transform: translateX(0%);
+                transform: translateX(0%); }
 }
 
 .sidenav > .content > .logo {
