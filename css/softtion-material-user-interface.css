@@ -926,24 +926,18 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;     
     width: 100%; 
     height: 100%;
-    -webkit-transition: left 120ms 0ms var(--acceleration-curve), 
-                width 120ms 0ms var(--acceleration-curve);
-       -moz-transition: left 120ms 0ms var(--acceleration-curve), 
-                width 120ms 0ms var(--acceleration-curve);
-            transition: left 120ms 0ms var(--acceleration-curve), 
-                width 120ms 0ms var(--acceleration-curve); }
+    -webkit-transition: left 200ms 0ms var(--standard-curve), 
+                width 200ms 0ms var(--standard-curve);
+       -moz-transition: left 200ms 0ms var(--standard-curve), 
+                width 200ms 0ms var(--standard-curve);
+            transition: left 200ms 0ms var(--standard-curve), 
+                width 200ms 0ms var(--standard-curve); }
 
 @media only screen and (min-width : 721px) {
     
     .sidenav.persistent.show ~ .app-body {
         left: 256px;
-        width: calc(100% - 256px);
-        -webkit-transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve);
-           -moz-transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve);
-                transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve); } 
+        width: calc(100% - 256px); } 
 }
 
 @media only screen and (min-width : 961px) {
@@ -954,13 +948,7 @@ input[type=number]::-webkit-outer-spin-button {
     
     .sidenav.persistent.show ~ .app-body {
         left: 320px;
-        width: calc(100% - 320px);
-        -webkit-transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve);
-           -moz-transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve);
-                transition: left 120ms 0ms var(--deceleration-curve), 
-                    width 120ms 0ms var(--deceleration-curve); } 
+        width: calc(100% - 320px); } 
 }
 
 /** APP CONTENT */
@@ -1531,7 +1519,7 @@ button.action > .badge {
     z-index: 2;
     visibility: hidden;
     overflow-y: auto;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     box-shadow: 0px 4px 16px 6px rgba(0, 0, 0, 0.12);
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
@@ -3862,7 +3850,7 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 2;
     visibility: hidden;
     box-shadow: var(--shadow-24);
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transform: translateY(150px) scale(0.6);
        -moz-transform: translateY(150px) scale(0.6);
             transform: translateY(150px) scale(0.6);
@@ -4214,7 +4202,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: 56px;
     box-shadow: var(--shadow-6);
     border-radius: 50%;
-    will-change: transform; }
+    will-change: transform, -webkit-transform, -moz-transform; }
 
 .fab-menu-rainbow.start:not(.active) > .box {
     -webkit-animation: hideFabArc 160ms 0ms var(--deceleration-curve);
@@ -5013,21 +5001,21 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 1;
     bottom: initial;
     opacity: 0;
-    -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
-       -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
-            transition: opacity 120ms 0ms var(--acceleration-curve); }
+    -webkit-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
+       -moz-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
+            transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve); }
 
 .form-navigation.show > .backdrop {
     bottom: 0;
-    opacity: 1;
-    -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
-       -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
-            transition: opacity 120ms 0ms var(--deceleration-curve); }
+    opacity: 1; }
 
 .form-navigation > .content {
     position: absolute;
     top: 0;
-    right: -105%;
+    right: 0;
     width: 100%;
     max-width: 320px;
     height: 100%;
@@ -5035,9 +5023,13 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-x: hidden;
     z-index: 2;
     box-shadow: var(--shadow-16);
-    -webkit-transition: right 120ms 0ms var(--acceleration-curve);
-       -moz-transition: right 120ms 0ms var(--acceleration-curve); 
-            transition: right 120ms 0ms var(--acceleration-curve); }
+    will-change: transform, -webkit-transform, -moz-transform;
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+            transform: translateX(100%);
+    -webkit-transition: -webkit-transform 200ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
+            transition: transform 200ms 0ms var(--standard-curve); }
 
 .form-navigation.x150 > .content {
     max-width: 400px; }
@@ -5046,10 +5038,9 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 480px; }
 
 .form-navigation.show > .content {
-    right: 0%;  
-    -webkit-transition: right 120ms 0ms var(--deceleration-curve);
-       -moz-transition: right 120ms 0ms var(--deceleration-curve); 
-            transition: right 120ms 0ms var(--deceleration-curve); }
+    -webkit-transform: translateX(0%);
+       -moz-transform: translateX(0%);
+            transform: translateX(0%); }
 
 /** FOOTER BUTTONS */
 
@@ -5062,7 +5053,7 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     height: 48px;
     box-sizing: border-box;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
@@ -6717,7 +6708,7 @@ p > .link {
     z-index: 2;
     box-shadow: var(--shadow-16);
     box-sizing: border-box;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transform: translateX(-100%);
        -moz-transform: translateX(-100%);
             transform: translateX(-100%);
@@ -7288,7 +7279,7 @@ p > .link {
     z-index: 6;
     padding: 0px 24px;
     box-sizing: border-box;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
             transform: translateY(100%);
@@ -7528,7 +7519,7 @@ p > .link {
     bottom: 0px;
     width: 100%;
     height: 48px;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
@@ -8587,7 +8578,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
-    will-change: transform;
+    will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
             transform: translateY(100%);
