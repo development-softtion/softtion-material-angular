@@ -8133,7 +8133,7 @@
                     var instanceSnackbar = function () {
                         if (softtion.isUndefined(snackbar)) {
                             createSnackbar(); return;
-                        } else if (softtion.isInPage(snackbar[0])) {
+                        } else if (!softtion.isInPage(snackbar[0])) {
                             createSnackbar(); return;
                         } // Snackbar no se encuentra en el documento
                     };
@@ -8262,7 +8262,7 @@
                     var instanceToast = function () {
                         if (softtion.isUndefined(toast)) {
                             createToast(); return;
-                        } else if (softtion.isInPage(toast[0])) {
+                        } else if (!softtion.isInPage(toast[0])) {
                             createToast(); return;
                         } // Toast no se encuentra en el documento
                     };
