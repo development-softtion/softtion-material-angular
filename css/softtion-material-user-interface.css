@@ -7491,7 +7491,7 @@ p > .link {
     box-shadow: var(--shadow-2); 
     user-select: none; }
 
-.app-bar > .stepper-horizontal {
+.app-bar > .stepper-horizontal, .stepper-horizontal.flat {
     box-shadow: none; }
 
 .stepper-horizontal.alternative {
