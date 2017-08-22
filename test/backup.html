@@ -269,60 +269,82 @@
 
 <!-- SIDENAV COMPLETO -->
 <nav id="nav-test" class="sidenav persistent">
-            <div class="content">
-                <div class="banner">
-<!--                    <img class="background" src="imgs/banner-nav.jpg" alt=""/>-->
+    <div class="content">
+        <div class="banner">
+            <!--<img class="background" src="imgs/banner-nav.jpg" alt=""/>-->
 
-                    <div class="perfil">
-                        <img src="imgs/perfil.png">
-                    </div>
+            <div class="perfil">
+                <img src="imgs/perfil.png">
+            </div>
 
-                    <div class="detail">
-                        <p class="name">Softtion Material</p>
-                        <p class="description">development@softtion.com</p>
-                    </div>
+            <div class="detail">
+                <p class="name">Softtion Material</p>
+                <p class="description">development@softtion.com</p>
+            </div>
+        </div>
+
+        <div class="banner-perfil">
+            <div class="avatar">
+                <img src="imgs/hayley1.jpg">
+            </div>
+            <span>Hayley Williams</span>
+        </div>
+
+        <main class="sidenav-menu">
+            <div class="sidenav-item">
+                <div class="detail">
+                    <a>
+                        <i>person</i><span>Estructurales</span>
+                    </a>
                 </div>
-                
-                <div class="banner-perfil">
-                    <div class="avatar">
-                        <img src="imgs/hayley1.jpg">
-                    </div>
-                    <span>Hayley Williams</span>
-                </div>
 
-                <main class="sidenav-menu">
-                    <div class="sidenav-item">
-                        <div class="detail">
-                            <a>
-                                <i>person</i><span>Estructurales</span>
-                            </a>
-                        </div>
-
-                        <div class="options">
-                            <ul>
-                                <li class="item"><a>Appbar</a></li>
-                                <li class="item"><a>Sidenav</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidenav-item">
-                        <div class="detail">
-                            <a>
-                                <i>person</i><span>A little longer title</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sidenav-item">
-                        <div class="detail">
-                            <a>
-                                <span>A very long title that will truncate</span>
-                            </a>
-                        </div>
-                    </div>
-                </main>
-
-                <div class="logo">
-                    <img src="imgs/banner-logo-light.jpg">
+                <div class="options">
+                    <ul>
+                        <li class="item"><a>Appbar</a></li>
+                        <li class="item"><a>Sidenav</a></li>
+                    </ul>
                 </div>
             </div>
-        </nav>  
+            <div class="sidenav-item">
+                <div class="detail">
+                    <a>
+                        <i>person</i><span>A little longer title</span>
+                    </a>
+                </div>
+            </div>
+            <div class="sidenav-item">
+                <div class="detail">
+                    <a>
+                        <span>A very long title that will truncate</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <div class="logo">
+            <img src="imgs/banner-logo-light.jpg">
+        </div>
+    </div>
+</nav>  
+
+<!-- FORM -->
+<div class="form">
+    <div class="header">
+        <div class="nav-icon">
+            <button class="action"><i>arrow_back</i></button>
+        </div>
+
+        <label class="title theme-secondary">Nuevo componente: Form</label>
+        <label class="subtitle">Componente creado para mejorar el Framework</label>
+    </div>
+
+    <div class="content">
+        <div class="textfield small-50 flex-pd-right" label="Nombres" ng-model="x"></div>
+        <div class="textfield small-50 flex-pd-left" label="Apellidos" ng-model="y"></div>
+
+        <div class="select small" label="Tipo de documento" suggestions="s" ng-model="d"></div>
+    </div>
+    <div class="actions">
+        <button class="flat right theme-secondary" sidenav="#sidenav">Sidenav</button>
+    </div>
+</div>

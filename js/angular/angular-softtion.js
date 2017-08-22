@@ -14,6 +14,11 @@
 })(function (softtion, angular, jQuery) {
     
     var ngSofttion = angular.module("ngSofttion", []);
+    
+    ngSofttion.provider("$softtion", function () {
+        
+        this.$get = function () { return softtion; };
+    });
 
     ngSofttion.service("$restful", ["$http", function ($http) {
         
@@ -80,21 +85,21 @@
         
         // MÉTODO PUT
         
-        HttpRestful.prototype.update = function (config) {
+        HttpRestful.prototype.update = function (id, config) {
             var self = this, $http = self.$http;
             
             return $http.put(
-                createRoute(self, config["id"]), config["data"]
+                createRoute(self, id), config["data"]
             ).then(config["done"], config["error"]);
         };
         
         // MÉTODO DELETE
         
-        HttpRestful.prototype.destroy = function (config) {
+        HttpRestful.prototype.destroy = function (id, config) {
             var self = this, $http = self.$http;
             
-            return $http.get(
-                createRoute(self, config["id"])
+            return $http.delete(
+                createRoute(self, id)
             ).then(config["done"], config["error"]);
         };
         

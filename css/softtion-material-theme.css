@@ -809,14 +809,14 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .card {
     background-color: var(--light-background-component); }
 
+.dark .card {
+    background-color: var(--dark-background-component); }
+
 .card.flat {
     border: 1px solid var(--light-background-border); }
 
 .dark .card.flat {
     border: 1px solid var(--dark-background-border); }
-
-.dark .card {
-    background-color: var(--dark-background-component); }
 
 .card > .rich-media > .content > .actions,
 .card > .rich-media > .content > .primary-title {
@@ -1799,6 +1799,32 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .flexible-content > .box {
     background-color: var(--dark-background-component); }
 
+/** FORM */
+
+.form {
+    background-color: var(--light-background-component); }
+
+.dark .form {
+    background-color: var(--dark-background-component); }
+
+.form.flat {
+    border: 1px solid var(--light-background-border); }
+
+.dark .form.flat {
+    border: 1px solid var(--dark-background-border); }
+
+.form > .header > .title.theme-primary {
+    color: var(--theme-primary-font); }
+
+.form > .header > .title.theme-secondary {
+    color: var(--theme-secondary-font); }
+
+.form > .header > .subtitle {
+    color: var(--dark-secondary-font); }
+
+.dark .form > .header > .subtitle {
+    color: var(--light-secondary-font); }
+
 /** FORM NAVIGATION */
 
 .form-navigation > .content {
@@ -2183,7 +2209,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .select.active > .content > label.active, 
 .dark .select.active > .content > label.active {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .select > .content > i {
     color: var(--dark-secondary-font); }

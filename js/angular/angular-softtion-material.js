@@ -7112,20 +7112,15 @@
                         $dialog = softtion.html("div").
                             addClass(["dialog", "alert"]).tojQuery();
 
-                        $backdrop = softtion.html("div").
-                            addClass("backdrop").tojQuery();
+                        $backdrop = softtion.html("div").addClass("backdrop").tojQuery();
 
-                        var box = softtion.html("div").
-                            addClass("box").tojQuery();
+                        var box = softtion.html("div").addClass("box").tojQuery();
 
-                        $title = softtion.html("div").
-                            addClass("title").tojQuery();
+                        $title = softtion.html("div").addClass("title").tojQuery();
 
-                        $content = softtion.html("div").
-                            addClass("content").tojQuery();
+                        $content = softtion.html("div").addClass("content").tojQuery();
 
-                        var actions = softtion.html("div").
-                            addClass("actions").tojQuery();
+                        var actions = softtion.html("div").addClass("actions").tojQuery();
 
                         $buttonPositive = softtion.html("button").
                             addClass(["flat","positive"]).tojQuery();
@@ -7156,7 +7151,6 @@
                                 $scope.$apply(function () { $fnNegative(); });
                             } // Se establecío función para proceso Negativo
                         });
-                        //$bodyElement.append($dialog); // Agregando Alert
                     };
 
                     Alert.prototype.setTitle = function (title) {
@@ -7270,7 +7264,6 @@
                 method: function () {
                     var bottomSheet = undefined, 
                         $body = undefined,
-                        content = undefined, 
                         backdrop = undefined;
                     
                     var BottomSheet = function () {};
@@ -7282,7 +7275,6 @@
                         
                         executeIfExists(bottomSheet, function () {
                             if (bottomSheet.exists()) {
-                                content = bottomSheet.children(".content");
                                 backdrop = bottomSheet.children(".backdrop");
 
                                 backdrop.click(function () { self.hide(); });
@@ -7470,9 +7462,7 @@
                         return settings; // Configuración por defecto
                     },
                     
-                    hide: function (dropdown) {
-                        dropdown.removeClass("show"); 
-                    },
+                    hide: function (dropdown) { dropdown.removeClass("show"); },
                     
                     show: function (options) {
                         var handler = Material.providers.Dropdown.handler,
@@ -7554,9 +7544,7 @@
                             left: left, top: top,
                             "-moz-transform-origin": originEffect,
                             "-webkit-transform-origin": originEffect,
-                            "-o-transform-origin": originEffect,
-                            "transform-origin": originEffect,
-                            "-ms-transform-origin": originEffect
+                            "transform-origin": originEffect
                          }); 
                     },
                     
@@ -7614,9 +7602,7 @@
                             left: left, top: top, 
                             "-moz-transform-origin": originEffect,
                             "-webkit-transform-origin": originEffect,
-                            "-o-transform-origin": originEffect,
-                            "transform-origin": originEffect,
-                            "-ms-transform-origin": originEffect
+                            "transform-origin": originEffect
                          }); 
                     }
                 },
