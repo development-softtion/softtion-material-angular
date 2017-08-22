@@ -4984,7 +4984,6 @@ button.raised:focus:after, button.flat:focus:after {
 .form {
     position: relative;
     float: left;
-    width: 100%;
     margin-bottom: 8px;
     border-radius: 2px;
     z-index: 4;
