@@ -5708,6 +5708,20 @@ p > .link {
     top: 12px;
     margin: 0px; }
 
+.list > .item-list > .content > .detail > .radiobutton {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.list > .item-list > .content > .detail > .radiobutton > label {
+    padding-left: 24px; }
+
+.list .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
+    -webkit-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+            animation: rippleSquarecenterLow 750ms var(--standard-curve); }
+
 .list > .item-list > .content > .detail > .switch {
     position: absolute;
     right: 16px;
@@ -5725,13 +5739,15 @@ p > .link {
 .list.two-line > .item-list > .content > .detail > button.action,
 .list.two-line > .item-list > .content > .detail > .badge,
 .list.two-line > .item-list > .content > .detail > .checkbox-control,
-.list.two-line > .item-list > .content > .detail > .switch {
+.list.two-line > .item-list > .content > .detail > .switch,
+.list.two-line > .item-list > .content > .detail > .radiobutton {
     top: 24px !important; }
 
 .list.three-line > .item-list > .content > .detail > button.action,
 .list.three-line > .item-list > .content > .detail > .badge,
 .list.three-line > .item-list > .content > .detail > .checkbox-control,
-.list.three-line > .item-list > .content > .detail > .switch {
+.list.three-line > .item-list > .content > .detail > .switch,
+.list.three-line > .item-list > .content > .detail > .radiobutton {
     top: 16px; }
 
 .list > .item-list > .content > .detail > .emphasis {
@@ -5763,7 +5779,9 @@ p > .link {
 .list > .item-list > .content > .detail > .badge ~ .title,
 .list > .item-list > .content > .detail > .badge ~ .description,
 .list > .item-list > .content > .detail > .checkbox-control ~ .title,
-.list > .item-list > .content > .detail > .checkbox-control ~ .description {
+.list > .item-list > .content > .detail > .checkbox-control ~ .description,
+.list > .item-list > .content > .detail > .radiobutton ~ .title,
+.list > .item-list > .content > .detail > .radiobutton ~ .description {
     width: calc(100% - 40px); }
 
 .list > .item-list > .content > .detail > .switch ~ .title,
@@ -6188,6 +6206,7 @@ p > .link {
 .radiobutton {
     position: relative;
     float: left;
+    height: 24px;
     margin: 8px 0; }
 
 .radiobutton > input[type="radio"] {

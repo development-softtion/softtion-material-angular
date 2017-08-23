@@ -194,7 +194,7 @@ body.dark {
     color: var(--light-secondary-font); }
 
 .autocomplete.active > .content > input:focus ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .autocomplete > .content > i {
     color: var(--dark-secondary-font); }

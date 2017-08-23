@@ -1,54 +1,64 @@
 /*!
  * Softtion Material Animated
- * v0.6.5
+ * v0.7.1
  * @license MIT
  * Author: Softtion Developers
- * Updated: 20/Nov/2016
+ * Updated: 23/Aug/2017
  */
 
 /** Timing Effects Material */
 
-.standard-curve { /* Standard curve */
-    -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+.standard-curve { 
     -webkit-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-    -o-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-    transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-    -ms-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1); }
+       -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1); }
 
-.easing-out { /* Deceleration curve */
-    -moz-transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+.deceleration-curve { 
     -webkit-transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
-    -o-transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
-    transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
-    -ms-transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1); }
+       -moz-transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+            transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1); }
 
-.easing-in { /* Acceleration curve */
-    -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+.acceleration-curve {
     -webkit-transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
-    -o-transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
-    transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
-    -ms-transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1); }
+       -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+            transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1); }
 
-.sharp-curve { /* Sharp curve */
-    -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1);
+.sharp-curve { 
     -webkit-transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1);
-    -o-transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1);
-    transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1);
-    -ms-transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1); }
+       -moz-transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1);
+            transition-timing-function: cubic-bezier(0.4, 0.0, 0.6, 1); }
 
 .animate {
-    -moz-animation-duration: 0.325s;
-    -webkit-animation-duration: 0.325s;
-    -o-animation-duration: 0.325s;
-    animation-duration: 0.325s; 
-    -ms-animation-duration: 0.325s; }
+    -webkit-animation-duration: 325ms;
+       -moz-animation-duration: 325ms;
+            animation-duration: 325ms; }
 
 .animate.infinite {
-    -moz-animation-iteration-count: infinite;
     -webkit-animation-iteration-count: infinite;
-    -o-animation-iteration-count: infinite;
-    -ms-iteration-count: infinite;
-    animation-iteration-count: infinite; }
+       -moz-animation-iteration-count: infinite;
+            animation-iteration-count: infinite; }
+
+/** RIPPLE SQUARECENTER LOW */
+
+@keyframes rippleSquarecenterLow {
+    0% {
+        transform: scale(0); }
+    20% {
+        transform: scale(0.75); }
+    100% {
+        opacity: 0;
+        transform: scale(0.75); }
+}
+
+@-webkit-keyframes rippleSquarecenterLow {
+    0% {
+        -webkit-transform: scale(0); }
+    20% {
+        -webkit-transform: scale(0.75); }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(0.75); }
+}
 
 /** RIPPLE SQUARECENTER */
 

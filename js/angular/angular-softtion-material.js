@@ -249,9 +249,16 @@
 
                             $scope.suggestionsFilter = []; 
                             $scope.suggestionTemp = undefined; 
-                            $scope.valueInput = ""; 
-                            $scope.clearSuggestion = true;
                             $scope.inputActive = false; 
+                            $scope.clearSuggestion = true;
+                            
+                            $scope.$watch(function () {
+                                return $scope.select;
+                            }, function (newValue) {
+                                if (softtion.isUndefined(newValue)) {
+                                    $scope.valueInput = ""; 
+                                } // Se limpio componente AutoComplete
+                            });
 
                             $scope.describeSuggestion = function (suggestion) {
                                 if (typeof suggestion === "string") {
@@ -374,21 +381,19 @@
                                 if (focusLi) {
                                     focusLi = false; // Se ha enfocado Lista
                                 } else {
-                                    if ($scope.valueInput === "") {
-                                        $element.removeClass("active"); list.removeClass("active");
-                                    } else if (softtion.isUndefined($scope.select) && !softtion.isString($scope.valueInput)) {
-                                        $element.removeClass("active"); 
-                                    } else if (this.suggestionsFilter.length === 0) {
-                                        list.removeClass("active"); $scope.select = undefined;
+                                    if (this.suggestionsFilter.length === 0) {
+                                        $scope.select = undefined;
                                         $scope.clearSuggestion = true;
-                                    } else {
-                                        list.removeClass("active"); 
-                                    }
+                                    } // No hay opciones posibles para selección
                                     
-                                    $scope.inputActive = false; // Desactivando vista del componente
+                                    $scope.inputActive = false; 
+                                    $element.removeClass("active");
+                                    list.removeClass("active");
 
                                     if (softtion.isFunction($scope.blurEvent)) {
-                                        $scope.blurEvent({$event: $event, $selected: $scope.select});
+                                        $scope.blurEvent({
+                                            $event: $event, $selected: $scope.select
+                                        });
                                     } // Evento 'focus' sobre el inpur en el componente
                                 }
                             };
@@ -446,8 +451,9 @@
                             };
                             
                             $scope.clearAutocomplet = function () {
-                                $scope.select = undefined; $scope.valueInput = ""; 
-                                $scope.clearSuggestion = true; $element.removeClass("active"); 
+                                $scope.select = undefined; 
+                                $element.removeClass("active"); 
+                                $scope.clearSuggestion = true; 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
                                     $scope.changedEvent({
@@ -463,11 +469,8 @@
                             };
                             
                             $scope.getValueModel = function () {
-                                if (softtion.isDefined($scope.select)) {
-                                    return $scope.describeSuggestion($scope.select);
-                                } else {
-                                    return $scope.valueInput;
-                                }
+                                return (softtion.isDefined($scope.select)) ?
+                                    $scope.describeSuggestion($scope.select) : $scope.valueInput;
                             };
                         }
                     };
@@ -3839,8 +3842,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Componente sin texto
-                                    
                                 if ($scope.valueArea === "") { 
                                     $scope.value = undefined; 
                                 } // Estableciendo Model indefinido
@@ -3933,7 +3934,7 @@
                             };
 
                             $scope.blurArea = function ($event) {
-                                validateTextModel(true); // Validando Model
+                                validateTextModel(true); $element.removeClass("active");
                                 
                                 $scope.valueReal = false; $scope.areaActive = false; 
                                 
@@ -4720,7 +4721,8 @@
                             };
                             
                             $scope.getValueModel = function () {
-                                return (softtion.isDefined($scope.select)) ? $scope.describeSuggestion($scope.select) : "";
+                                return (softtion.isDefined($scope.select)) ? 
+                                    $scope.describeSuggestion($scope.select) : "";
                             };
                         }
                     };
@@ -5271,7 +5273,12 @@
                 directive: ["SofttionMaterial", function (SofttionMaterial) {
                     return {
                         restrict: "C",
+                        $scope: {
+                            disabledRipple: "=?"
+                        },
                         link: function ($scope, $element) {
+                            if ($scope.disabledRipple) { return; } // No Ripple
+                            
                             var items = $element.find("li > .content");
                             
                             angular.forEach(items, function (item) {
@@ -5569,8 +5576,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Componente sin texto
-                                    
                                 if ($scope.valueArea === "") { 
                                     $scope.value = undefined; 
                                 } // Estableciendo Model indefinido
@@ -5663,7 +5668,7 @@
                             };
 
                             $scope.blurArea = function ($event) {
-                                validateTextModel(true); // Validando Model
+                                validateTextModel(true); $element.removeClass("active");
                                 
                                 $scope.valueReal = false; $scope.areaActive = false; 
                                 
@@ -5866,8 +5871,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Sin texto
-                                    
                                 if ($scope.valueInput === "") { 
                                     $scope.value = undefined; 
                                 } // Dejando Model indefinido
@@ -5972,6 +5975,7 @@
 
                             $scope.blurInput = function ($event) {
                                 validateTextModel(true); $scope.inputActive = false;
+                                $element.removeClass("active"); 
                                 
                                 callbackFnEvent($event, $scope.blurEvent); // Evento blur
                                 
@@ -6139,8 +6143,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Componente sin texto
-                                    
                                 if ($scope.valueArea === "") { 
                                     $scope.value = undefined; 
                                 } // Estableciendo Model indefinido
@@ -6233,7 +6235,7 @@
                             };
 
                             $scope.blurArea = function ($event) {
-                                validateTextModel(true); // Validando Model
+                                validateTextModel(true); $element.removeClass("active");
                                 
                                 $scope.valueReal = false; $scope.areaActive = false; 
                                 
@@ -6439,8 +6441,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Sin texto
-                                    
                                 if ($scope.valueInput === "") { 
                                     $scope.value = undefined; 
                                 } // Dejando Model indefinido
@@ -6545,6 +6545,7 @@
 
                             $scope.blurInput = function ($event) {
                                 validateTextModel(true); $scope.inputActive = false;
+                                $element.removeClass("active"); // Sin texto
                                 
                                 callbackFnEvent($event, $scope.blurEvent); // Evento blur
                                 
@@ -6715,8 +6716,6 @@
                             };
                             
                             function textEmpty() {
-                                $element.removeClass("active"); // Componente sin texto
-                                    
                                 if ($scope.valueArea === "") { 
                                     $scope.value = undefined; 
                                 } // Estableciendo Model indefinido
@@ -6809,7 +6808,7 @@
                             };
 
                             $scope.blurArea = function ($event) {
-                                validateTextModel(true); // Validando Model
+                                validateTextModel(true); $element.removeClass("active");
                                 
                                 $scope.valueReal = false; $scope.areaActive = false; 
                                 
