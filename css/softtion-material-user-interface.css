@@ -5832,9 +5832,6 @@ p > .link {
     float: left;
     box-sizing: border-box; }
 
-.list-paragraph > li {
-    display: flex; }
-
 .list-paragraph > .subheader {
     display: block;
     width: 100%;
@@ -5851,6 +5848,15 @@ p > .link {
     padding: 8px; 
     height: 40px; }
 
+.list-paragraph > li {
+    display: flex; }
+
+.list-paragraph.floating-actions > li {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: 48px; }
+
 .list-paragraph > li > p {
     display: block;
     margin: 0px;
@@ -5862,6 +5868,24 @@ p > .link {
     width: 40px;
     padding: 4px 8px; }
 
+.list-paragraph.floating-actions > li > .actions {
+    position: absolute;
+    width: 100%;
+    bottom: 0px; 
+    box-sizing: border-box;
+    will-change: transform;
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: transform 120ms 0ms var(--standard-curve);
+       -moz-transition: transform 120ms 0ms var(--standard-curve);
+            transition: transform 120ms 0ms var(--standard-curve); }
+
+.list-paragraph.floating-actions > li:hover > .actions {
+    -webkit-transform: translateY(0%); 
+       -moz-transform: translateY(0%); 
+            transform: translateY(0%); }
+
 .list-paragraph > li > .actions > button.action {
     padding: 8px;
     height: 40px;
@@ -5869,6 +5893,14 @@ p > .link {
 
 .list-paragraph > li > .actions > button.action:first-child {
     margin-top: 0px; }
+
+.list-paragraph.floating-actions > li > .actions > button.action {
+    float: right;
+    margin-right: 8px;
+    margin-top: 0px; }
+
+.list-paragraph.floating-actions > li > .actions > button.action:first-child {
+    margin-right: 0px; }
 
 /** MENU */
 

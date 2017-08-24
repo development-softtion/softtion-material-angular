@@ -196,9 +196,9 @@
                     var listAutocomplete = softtion.html("ul").
                         addChildren(
                             softtion.html("li").addClass(["truncate"]).
-                                addAttribute("ng-repeat","suggestion in suggestionsFilter track by $index").
                                 addAttribute("tabindex","-1").
-                                addAttribute("ng-mousedown", "selectSuggestion(suggestion)").
+                                addAttribute("ng-repeat","suggestion in suggestionsFilter track by $index").
+                                addAttribute("ng-click", "selectSuggestion(suggestion)").
                                 addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
                                 addAttribute("ng-bind-html", "renderSuggestion(suggestion)")
                         ).addChildren(
@@ -233,9 +233,9 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            changedEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?"
+                            changedEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -386,9 +386,8 @@
                                         $scope.clearSuggestion = true;
                                     } // No hay opciones posibles para selección
                                     
-                                    $scope.inputActive = false; 
-                                    $element.removeClass("active");
-                                    list.removeClass("active");
+                                    $scope.inputActive = false; $element.removeClass("active");
+                                    list.removeClass("active"); $scope.valueInput = "";
 
                                     if (softtion.isFunction($scope.blurEvent)) {
                                         $scope.blurEvent({
@@ -451,8 +450,7 @@
                             };
                             
                             $scope.clearAutocomplet = function () {
-                                $scope.select = undefined; 
-                                $element.removeClass("active"); 
+                                $scope.select = undefined; $element.removeClass("active"); 
                                 $scope.clearSuggestion = true; 
                                 
                                 if (softtion.isFunction($scope.changedEvent)) {
@@ -492,7 +490,7 @@
                             views: "@",
                             
                             // Eventos
-                            viewEvent: "&?"
+                            viewEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var selectorFAB = SofttionMaterial.Selectors.FAB,
@@ -886,12 +884,12 @@
                             minDate: "=?",
                             maxDate: "=?",
                             parentDialog: "@",
-                            disabledDate: "&?",
+                            disabledDate: "&",
                             
                             // Eventos
-                            moveEvent: "&?",
-                            removeEvent: "&?",
-                            editEvent: "&?"
+                            moveEvent: "&",
+                            removeEvent: "&",
+                            editEvent: "&"
                         }, 
                         link: function ($scope, $element) {
                             var table = $element.find(".body"), 
@@ -1469,7 +1467,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "&?"
+                            clickEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -1513,7 +1511,7 @@
                             stopPropagation: "=?",
                             
                             // Eventos
-                            clickEvent: "&?"
+                            clickEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='checkbox']");
@@ -1556,7 +1554,7 @@
                             stopPropagation: "=?",
                             
                             // Eventos
-                            clickEvent: "&?"
+                            clickEvent: "&"
                         },
                         link: function ($scope) {
                             $scope.clickLabel = function ($event) { 
@@ -1645,9 +1643,9 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            changedEvent: "&?"
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            changedEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -1933,8 +1931,8 @@
                             time: "=ngModel", 
                             
                             // Eventos
-                            selectEvent: "&?",
-                            cancelEvent: "&?"
+                            selectEvent: "&",
+                            cancelEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -2146,8 +2144,8 @@
                             parent: "@",
                             
                             // Eventos
-                            selectEvent: "&?",
-                            cancelEvent: "&?"
+                            selectEvent: "&",
+                            cancelEvent: "&"
                         },
                         link: function ($scope, $element) {
                             if (softtion.isString($scope.parent)) {
@@ -2241,10 +2239,10 @@
                             parent: "@",
                             
                             // Eventos
-                            showEvent: "&?",
-                            selectEvent: "&?",
-                            cancelEvent: "&?",
-                            iconEvent: "&?"
+                            showEvent: "&",
+                            selectEvent: "&",
+                            cancelEvent: "&",
+                            iconEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var value = $element.find(".value");
@@ -2337,8 +2335,8 @@
                             selectMultiple: "=?",
                             selectAll: "=?",
                             keySelect: "@",
-                            ngSelect: "&?",
-                            ngSelectAll: "&?"
+                            ngSelect: "&",
+                            ngSelectAll: "&"
                         },
                         link: function ($scope, $element) {
                             var selectedBefore = undefined; // Objeto seleccionado
@@ -2650,11 +2648,11 @@
                             minDate: "=?",
                             maxDate: "=?",
                             yearRange: "@",
-                            disabledDate: "&?",
+                            disabledDate: "&",
                             
                             // Eventos
-                            selectEvent: "&?",
-                            cancelEvent: "&?"
+                            selectEvent: "&",
+                            cancelEvent: "&"
                         },
                         link: function ($scope, $elememt) {
                             // Componentes
@@ -2983,14 +2981,14 @@
                             date: "=ngModel",
                             minDate: "=?",
                             maxDate: "=?",
-                            disabledDate: "&?",
+                            disabledDate: "&",
                             yearRange: "@",
                             showActive: "=",
                             parent: "@",
                             
                             // Eventos
-                            selectEvent: "&?",
-                            cancelEvent: "&?"
+                            selectEvent: "&",
+                            cancelEvent: "&"
                         },
                         link: function ($scope, $element) {
                             if (softtion.isString($scope.parent)) {
@@ -3096,13 +3094,13 @@
                             maxDate: "=?",
                             yearRange: "=?",
                             parent: "@",
-                            disabledDate: "&?",
+                            disabledDate: "&",
                             
                             // Eventos
-                            showEvent: "&?",
-                            selectEvent: "&?",
-                            cancelEvent: "&?",
-                            iconEvent: "&?"
+                            showEvent: "&",
+                            selectEvent: "&",
+                            cancelEvent: "&",
+                            iconEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var value = $element.find(".value"),
@@ -3314,8 +3312,8 @@
                             ngDisabled: "=?",
                             textDescription: "@",
                             
-                            holdEvent: "&?",
-                            clickrightEvent: "&?"
+                            holdEvent: "&",
+                            clickrightEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
@@ -3496,8 +3494,8 @@
                             textDescription: "@",
                             
                             // Eventos
-                            holdEvent: "&?",
-                            clickrightEvent: "&?"
+                            holdEvent: "&",
+                            clickrightEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
@@ -3803,10 +3801,11 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -3962,15 +3961,17 @@
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
                                 
-                                callbackFnEvent($event, $scope.changeEvent);
+                                if ($event.keyCode === 13) {
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.keypressEvent);
+                                } // Hay un cambio en el valor
                             };
                             
                             $scope.keyupArea = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {
@@ -4034,9 +4035,9 @@
                             disabledRemove: "=?",
                             
                             // Eventos
-                            removeEvent: "&?",
-                            holdEvent: "&?",
-                            clickrightEvent: "&?"
+                            removeEvent: "&",
+                            holdEvent: "&",
+                            clickrightEvent: "&"
                         },
                         link: function ($scope, $element) {
                             $scope.removeImage = function ($index) {
@@ -4374,7 +4375,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "&?"
+                            clickEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var input = $element.find("input[type='radio']");
@@ -4445,7 +4446,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            changedEvent: "&?"
+                            changedEvent: "&"
                         },
                         link: function ($scope, $element) {
                             $scope.value = isNaN($scope.value) ? 0 : $scope.value;
@@ -4578,10 +4579,10 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            changedEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?"
+                            clickEvent: "&",
+                            changedEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -4814,10 +4815,10 @@
                             helperPermanent: "=?",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            changedEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?"
+                            clickEvent: "&",
+                            changedEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -5319,7 +5320,7 @@
                             ngDisabled: "=?",
                             
                             // Eventos
-                            clickEvent: "&?"
+                            clickEvent: "&"
                         },
                         link: function ($scope, $element) { 
                             $scope.clickLabel = function ($event) { 
@@ -5345,7 +5346,7 @@
                             disabledOverflow: "=?",
                             
                             // Eventos
-                            viewEvent: "&?"
+                            viewEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -5537,10 +5538,11 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -5696,15 +5698,17 @@
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
                                 
-                                callbackFnEvent($event, $scope.changeEvent);
+                                if ($event.keyCode === 13) {
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.keypressEvent);
+                                } // Hay un cambio en el valor
                             };
                             
                             $scope.keyupArea = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {
@@ -5801,11 +5805,12 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            enterEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            enterEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -6004,16 +6009,14 @@
                                 if ($event.keyCode === 13) {
                                     callbackFnEvent($event, $scope.enterEvent);
                                 } else {
-                                    callbackFnEvent($event, $scope.changeEvent);
+                                    callbackFnEvent($event, $scope.keypressEvent);
                                 } // No se presiono tecla 'Enter' en el input
                             };
                             
                             $scope.keyupInput = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {
@@ -6106,10 +6109,11 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -6263,15 +6267,17 @@
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
                                 
-                                callbackFnEvent($event, $scope.changeEvent);
+                                if ($event.keyCode === 13) {
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.keypressEvent);
+                                } // Hay un cambio en el valor
                             };
                             
                             $scope.keyupArea = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {
@@ -6369,11 +6375,12 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            enterEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            enterEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -6574,16 +6581,14 @@
                                 if ($event.keyCode === 13) {
                                     callbackFnEvent($event, $scope.enterEvent);
                                 } else {
-                                    callbackFnEvent($event, $scope.changeEvent);
+                                    callbackFnEvent($event, $scope.keypressEvent);
                                 } // No se presiono tecla 'Enter' en el input
                             };
                             
                             $scope.keyupInput = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {
@@ -6647,7 +6652,7 @@
                     var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
                         setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
 
-                    var textHidden = softtion.html("div").
+                    var textHidden = softtion.html("p").
                         addClass("textarea-hidden").setText("{{valueHidden}}");
                     
                     content.addChildren(textArea).addChildren(lineShadow).
@@ -6677,10 +6682,12 @@
                             helperText: "@",
                             
                             // Eventos
-                            clickEvent: "&?",
-                            blurEvent: "&?",
-                            focusEvent: "&?",
-                            changeEvent: "&?"
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            enterEvent: "&",
+                            keypressEvent: "&",
+                            keyupEvent: "&"
                         },
                         link: function ($scope, $element) {
                             // Componentes
@@ -6836,15 +6843,17 @@
                                     } // Cancelando el evento
                                 } // Se definío numero correctamente
                                 
-                                callbackFnEvent($event, $scope.changeEvent);
+                                if ($event.keyCode === 13) {
+                                    callbackFnEvent($event, $scope.enterEvent);
+                                } else {
+                                    callbackFnEvent($event, $scope.keypressEvent);
+                                } // Hay un cambio en el valor
                             };
                             
                             $scope.keyupArea = function ($event) {
                                 validateTextModel(false); // Validando campo
                                 
-                                if ($event.keyCode === 8) {
-                                    callbackFnEvent($event, $scope.changeEvent);
-                                } // Se borró un carácter del input
+                                callbackFnEvent($event, $scope.keyupEvent);
                             };
                             
                             $scope.getValueModel = function () {

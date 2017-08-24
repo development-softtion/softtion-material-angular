@@ -2032,12 +2032,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** LIST PARAGRAPH */
 
-.list-paragraph > li {
-    border-bottom: 1px solid var(--light-background-border); }
-
-.dark .list-paragraph > li {
-    border-bottom: 1px solid var(--dark-background-border); }
-
 .list-paragraph > .subheader {
     color: var(--dark-secondary-font); }
 
@@ -2067,6 +2061,20 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .list-paragraph > .subheader.theme-secondary > button.action:before {
     background-color: var(--theme-secondary-background); }
+
+.list-paragraph > li {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.dark .list-paragraph > li {
+    border-bottom: 1px solid var(--dark-background-border); }
+
+.list-paragraph.floating-actions > li > .actions {
+    background: var(--light-background-component);
+    border-top: 1px solid var(--light-background-border); }
+
+.dark .list-paragraph.floating-actions > li > .actions {
+    background: var(--dark-background-component);
+    border-top: 1px solid var(--dark-background-border); }
 
 /** MENU */
 
