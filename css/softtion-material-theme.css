@@ -2062,6 +2062,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .list-paragraph > .subheader.theme-secondary > button.action:before {
     background-color: var(--theme-secondary-background); }
 
+.list-paragraph > .subheader.theme-secondary > .checkbox-control > label:before {
+    background-color: var(--theme-secondary-background); }
+
+.list-paragraph > .subheader.theme-primary > .radiobutton > label:before {
+    background-color: var(--theme-primary-background); }
+
+.list-paragraph > .subheader.theme-primary > .radiobutton > input[type="radio"]:checked + label:after {
+    border: 2px solid var(--theme-primary-background); }
+
 .list-paragraph > li {
     border-bottom: 1px solid var(--light-background-border); }
 

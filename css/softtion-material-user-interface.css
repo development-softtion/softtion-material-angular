@@ -5835,18 +5835,43 @@ p > .link {
 .list-paragraph > .subheader {
     display: block;
     width: 100%;
-    height: 40px;
-    line-height: 40px;
+    height: 48px;
+    line-height: 48px;
     padding: 0px 8px;
     font-weight: 700;
     font-size: 16px;
     box-sizing: border-box; }
 
+.list-paragraph.floating-actions > .subheader {
+    min-height: 48px; 
+    max-height: 48px; }
+
 .list-paragraph > .subheader > button.action {
     position: absolute;
     right: 0px;
     padding: 8px; 
-    height: 40px; }
+    height: 48px; }
+
+.list-paragraph > .subheader > .checkbox-control {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    margin: 0px; }
+
+.list-paragraph > .subheader > .radiobutton {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    margin: 0px; }
+
+.list-paragraph > .subheader > .radiobutton > label {
+    position: initial;
+    padding-left: 24px; }
+
+.list-paragraph .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
+    -webkit-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+            animation: rippleSquarecenterLow 750ms var(--standard-curve); }
 
 .list-paragraph > li {
     display: flex; }
