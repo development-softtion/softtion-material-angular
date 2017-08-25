@@ -231,6 +231,7 @@
                             disabledFocusclear: "=?",
                             helperText: "@",
                             helperPermanent: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             changedEvent: "&",
@@ -258,6 +259,15 @@
                                 if (softtion.isUndefined(newValue)) {
                                     $scope.valueInput = ""; 
                                 } // Se limpio componente AutoComplete
+                            });
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.select = undefined; $scope.valueInput = ""; 
+                                    $scope.clearModel = false;
+                                }
                             });
 
                             $scope.describeSuggestion = function (suggestion) {
@@ -3767,6 +3777,7 @@
                         addAttribute("ng-disabled","ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedArea").
                         addAttribute("style", "{{heightStyle()}}").
                         addAttribute("placeholder","{{placeholder}}");
 
@@ -3799,6 +3810,9 @@
                             maxLength: "=?",
                             placeholder: "@",
                             helperText: "@",
+                            focusedArea: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -3821,6 +3835,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.valueHidden = ""; $scope.value = undefined; 
+                                    $scope.valueArea = ""; $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -3945,6 +3968,9 @@
                             };
 
                             $scope.keypressArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -3969,6 +3995,9 @@
                             };
                             
                             $scope.keyupArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -5485,6 +5514,7 @@
                         addAttribute("ng-disabled","ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedArea").
                         addAttribute("style", "{{heightStyle()}}").
                         addAttribute("placeholder","{{placeholder}}");
 
@@ -5536,6 +5566,9 @@
                             maxLength: "=?",
                             placeholder: "@",
                             helperText: "@",
+                            focusedArea: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -5558,6 +5591,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.valueHidden = ""; $scope.value = undefined; 
+                                    $scope.valueArea = ""; $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -5682,6 +5724,9 @@
                             };
 
                             $scope.keypressArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -5706,6 +5751,9 @@
                             };
                             
                             $scope.keyupArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -5740,6 +5788,7 @@
                         addAttribute("ng-disabled", "ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedInput").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var value = softtion.html("p").addClass(["value"]).
@@ -5803,6 +5852,9 @@
                             iconFunction: "=?",
                             placeholder: "@",
                             helperText: "@",
+                            focusedInput: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -5825,6 +5877,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.value = undefined; $scope.valueInput = ""; 
+                                    $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -5990,6 +6051,9 @@
                             };
 
                             $scope.keypressInput = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -6014,6 +6078,9 @@
                             };
                             
                             $scope.keyupInput = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -6056,6 +6123,7 @@
                         addAttribute("ng-disabled","ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedArea").
                         addAttribute("style", "{{heightStyle()}}").
                         addAttribute("placeholder","{{placeholder}}");
 
@@ -6107,6 +6175,9 @@
                             maxLength: "=?",
                             placeholder: "@",
                             helperText: "@",
+                            focusedArea: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6127,6 +6198,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.valueHidden = ""; $scope.value = undefined; 
+                                    $scope.valueArea = ""; $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -6251,6 +6331,9 @@
                             };
 
                             $scope.keypressArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -6275,6 +6358,9 @@
                             };
                             
                             $scope.keyupArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -6306,6 +6392,7 @@
                         addAttribute("ng-disabled", "ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedInput").
                         addAttribute("placeholder", "{{placeholder}}");
 
                     var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -6373,6 +6460,9 @@
                             iconFunction: "=?",
                             placeholder: "@",
                             helperText: "@",
+                            focusedInput: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6397,6 +6487,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.value = undefined; $scope.valueInput = ""; 
+                                    $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -6552,7 +6651,7 @@
 
                             $scope.blurInput = function ($event) {
                                 validateTextModel(true); $scope.inputActive = false;
-                                $element.removeClass("active"); // Sin texto
+                                $element.removeClass("active");
                                 
                                 callbackFnEvent($event, $scope.blurEvent); // Evento blur
                                 
@@ -6562,6 +6661,9 @@
                             };
 
                             $scope.keypressInput = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -6586,6 +6688,9 @@
                             };
                             
                             $scope.keyupInput = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -6625,6 +6730,7 @@
                         addAttribute("ng-disabled","ngDisabled").
                         addAttribute("ng-class", "{holderhide: isHaveText()}").
                         addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedArea").
                         addAttribute("style", "{{heightStyle()}}").
                         addAttribute("placeholder","{{placeholder}}");
 
@@ -6680,6 +6786,9 @@
                             iconDescription: "@",
                             placeholder: "@",
                             helperText: "@",
+                            focusedArea: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6703,6 +6812,15 @@
                                     });
                                 } // Se definio una función para invocar
                             };
+                            
+                            $scope.$watch(function () {
+                                return $scope.clearModel;
+                            }, function (newValue) {
+                                if (newValue === true) {
+                                    $scope.valueHidden = ""; $scope.value = undefined; 
+                                    $scope.valueArea = ""; $scope.clearModel = false;
+                                }
+                            });
 
                             // Atributos de control
                             $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -6827,6 +6945,9 @@
                             };
 
                             $scope.keypressArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { $event.preventDefault(); } 
+                                
                                 var validate = softtion.validateCharacter({
                                     keyCode: $event.keyCode, 
                                     type: $scope.type, 
@@ -6851,6 +6972,9 @@
                             };
                             
                             $scope.keyupArea = function ($event) {
+                                // Desactivando teclado
+                                if ($scope.keyDisabled) { return; } 
+                                
                                 validateTextModel(false); // Validando campo
                                 
                                 callbackFnEvent($event, $scope.keyupEvent);
@@ -7047,8 +7171,9 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            var disabledAutoclose = 
-                                $scope.$eval($attrs.disabledAutoclose);
+                            var disabledAutoclose = $scope.$eval(
+                                    $attrs.disabledAutoclose
+                                );
                             
                             $element.on("click", function (event) {
                                 $dropdown.set($attrs.dropdown).
@@ -7057,6 +7182,28 @@
                                 if (!disabledAutoclose) { 
                                     event.stopPropagation(); 
                                 } // Desactivar Autocerrado
+                            });
+                        }
+                    };
+                }]
+            },
+            
+            FocusedElement: {
+                name: "focusedElement",
+                directive: ["$parse", "$timeout", function ($parse, $timeout) {
+                    return {
+                        restrict: "A",
+                        link: function ($scope, $element, $attrs) {
+                            var $focusedElement = $parse($attrs.focusedElement);
+                            
+                            $scope.$watch($focusedElement, function (value) {
+                                if (value === true) { $element.focus(); } 
+                            });
+                            
+                            $element.on("blur.focused-element", function () {
+                                $timeout(function () {
+                                    $scope.$apply($focusedElement.assign($scope, false));
+                                });
                             });
                         }
                     };
