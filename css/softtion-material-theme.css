@@ -2085,6 +2085,19 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background: var(--dark-background-component);
     border-top: 1px solid var(--dark-background-border); }
 
+.list-paragraph.floating-actions > li > .actions.opacity {
+    border-top: none;
+    background: rgba(0, 0, 0, 0.16); }
+
+.dark .list-paragraph.floating-actions > li > .actions.opacity {
+    background: rgba(255, 255, 255, 0.24); }
+
+.list-paragraph.floating-actions > li > .actions.opacity > button {
+    background: var(--light-background); }
+
+.dark .list-paragraph.floating-actions > li > .actions.opacity > button {
+    background: var(--dark-background-component); }
+
 /** MENU */
 
 .menu > li.option {

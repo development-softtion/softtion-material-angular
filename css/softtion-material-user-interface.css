@@ -5925,6 +5925,9 @@ p > .link {
 .list-paragraph.floating-actions > li > .actions > button.action:first-child {
     margin-right: 0px; }
 
+.list-paragraph.floating-actions > li > .actions.opacity > button {
+    border-radius: 50%; }
+
 /** MENU */
 
 .menu {
