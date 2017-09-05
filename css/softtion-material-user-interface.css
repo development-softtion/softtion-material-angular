@@ -3517,6 +3517,11 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td.right {
     text-align: right; }
 
+.datatable > .content > table > thead > tr > th.button-header,
+.datatable > .content > table > tbody > tr > td.button-action {
+    width: 56px; 
+    padding: 0px; }
+
 .datatable > .content > table tbody tr {
     -webkit-transition: background-color 160ms 0ms var(--sharp-curve);
        -moz-transition: background-color 160ms 0ms var(--sharp-curve);
@@ -3571,10 +3576,17 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transform: scale(1);
             transform: scale(1); }
 
+.datatable > .content > table > thead > tr > th.checkbox-header,
+.datatable > .content > table > tbody > tr > td.checkbox-element {
+    width: 40px;
+    padding: 0px; }
+
 .datatable > .content > table > thead > tr > th > .checkbox-select {
+    padding: 0 6px;
     margin-top: 17px; }
 
 .datatable > .content > table > tbody > tr > td > .checkbox-select {
+    padding: 0 6px;
     margin-top: 13px; }
 
 /** DATEPICKER */
