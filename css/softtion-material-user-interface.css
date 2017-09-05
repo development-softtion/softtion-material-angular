@@ -853,6 +853,13 @@ input[type=number]::-webkit-outer-spin-button {
     float: left;
     box-sizing: border-box; }
 
+.block-16 {
+    position: relative;
+    width: 100%;
+    padding: 0px 16px;
+    float: left;
+    box-sizing: border-box; }
+
 .container {
     overflow: auto; 
     padding: 4px; }
@@ -1060,7 +1067,8 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
         left: 256px; 
         width: calc(100% - 256px); }
     
-    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content {
+    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content,
+    body.body-overflow-none-sidenav > .app-body > .sidenav ~ .app-content {
         overflow: auto; }
 }
 
@@ -6892,7 +6900,16 @@ p > .link {
     visibility: visible; }
 
 .app-body > .sidenav {
-    z-index: 5; }
+    z-index: 5;
+    will-change: transform, -webkit-transform, -moz-transform;
+    -webkit-transition: -webkit-transform 250ms 0ms var(--deceleration-curve);
+       -moz-transition: -moz-transform 250ms 0ms var(--deceleration-curve);
+            transition: transform 250ms 0ms var(--deceleration-curve); }
+
+.app-body > .app-bar.element-hidden.hide ~ .sidenav {
+    -webkit-transform: translateY(-56px);
+       -moz-transform: translateY(-56px);
+            transform: translateY(-56px); }
 
 @media only screen and (min-width : 961px) {
     
@@ -6915,6 +6932,11 @@ p > .link {
 
     .app-body > .sidenav.condense {
         width: 256px;  }
+
+    .app-body > .app-bar.element-hidden.hide ~ .sidenav {
+        -webkit-transform: translateY(-64px);
+           -moz-transform: translateY(-64px);
+                transform: translateY(-64px); }
 }
 
 @media only screen and (min-width : 721px) and (max-width : 960px) {
@@ -8612,6 +8634,123 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
        -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
             animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
+/** TEXTFIELD BORDERED */
+
+.textfield-bordered {
+    position: relative;
+    float: left;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textfield-bordered > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    overflow-y: hidden;
+    padding: 8px 0px 20px 0px; }
+
+.textfield-bordered > .content > .box {
+    padding-bottom: 2px;
+    border-radius: 4px; }
+
+.textfield-bordered:hover > .content > .box {
+    padding-bottom: 0px; }
+
+.textfield-bordered:hover > .content.focused > .box,
+.textfield-bordered > .content.focused > .box {
+    padding-bottom: 0px; }
+
+.textfield-bordered > .content > .box > label {
+    position: absolute;
+    top: 28px;
+    left: 16px;
+    width: calc(100% - 32px);
+    height: 18px;
+    font-size: 16px;
+    cursor: text;
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
+
+.textfield-bordered > .content > .box > label.active {
+    cursor: none;
+    top: 16px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
+
+.textfield-bordered > .content > .box > label > span {
+    margin-left: 2px; }
+
+.textfield-bordered > .content > .box > input {
+    width: calc(100% - 30px);
+    height: 30px;
+    line-height: 24px;
+    padding: 20px 15px 0px 15px;
+    font-size: 16px;
+    border: none;
+    outline: none; 
+    cursor: text;
+    background-color: transparent; }
+
+.textfield-bordered > .content.focused > .box > input {
+    width: calc(100% - 28px);
+    padding: 20px 14px 0px 14px; }
+
+.textfield-bordered > .content > .box > input.iconaction {
+    width: calc(100% - 60px); }
+
+.textfield-bordered > .content > .box > input::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textfield-bordered.active > .content > .box > input::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textfield-bordered > .content > .box > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.textfield-bordered > .content > .box > .value {
+    position: absolute;
+    top: 30px;
+    left: 16px;
+    width: calc(100% - 32px);
+    height: 32px;
+    line-height: 32px;
+    margin: 0px;
+    font-size: 16px;
+    overflow: hidden; 
+    white-space: nowrap; }
+
+.textfield-bordered.active > .content > .box > input:focus ~ .value {
+    display: none; }
+
+.textfield-bordered > .content > .box > input.iconaction ~ .value {
+    width: calc(100% - 64px); }
+
+.textfield-bordered > .content > .box > i.action {
+    position: absolute;
+    top: 32px;
+    right: 16px; 
+    padding: 0px;
+    cursor: pointer; 
+    z-index: 2; }
+
+.textfield-bordered > .content > .box > input:disabled ~ i.action {
+    cursor: not-allowed; }
+
+.textfield-bordered > .content > span {
+    position: absolute;
+    left: 16px;
+    bottom: 0px;
+    width: calc(100% - 32px);
+    font-size: 12px; }
+
+.textfield-bordered > .content > span.counter {
+    right: 16px;
+    left: initial;
+    width: auto;
+    padding-left: 2px; }
+
 /** TEXTFIELD MULTILINE */
 
 .textfield-multiline {
@@ -8942,10 +9081,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .dark .app-bar.floating > .toolbar:last-child {
     box-shadow: var(--dark-shadow-appbar-floating); }
 
-.app-bar.hide > .toolbar {
+.app-bar.hide > .toolbar:first-child {
     margin-top: -56px; }
 
-.app-bar.floating.hide > .toolbar {
+.app-bar.floating.hide > .toolbar:first-child {
     margin-top: -48px; }
 
 .toolbar.flexible {
@@ -8956,12 +9095,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     min-height: 112px;
     max-height: 112px; }
 
-.app-bar.hide > .toolbar.flexible {
+.app-bar.hide > .toolbar.flexible:first-child {
     margin-top: 0px; 
     min-height: 56px;
     max-height: 56px; }
 
-.app-bar.floating.hide > .toolbar.flexible {
+.app-bar.floating.hide > .toolbar.flexible:first-child {
     margin-top: 8px; 
     min-height: 48px;
     max-height: 48px; }
@@ -8980,17 +9119,17 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     .toolbar.flexible > .title {
         margin-top: 64px; }
     
-    .app-bar.hide > .toolbar {
+    .app-bar.hide > .toolbar:first-child {
         margin-top: -64px; }
 
-    .app-bar.floating.hide > .toolbar {
+    .app-bar.floating.hide > .toolbar:first-child {
         margin-top: -48px; }
 
-    .app-bar.hide > .toolbar.flexible {
+    .app-bar.hide > .toolbar.flexible:first-child {
         min-height: 64px;
         max-height: 64px; }
 
-    .app-bar.floating.hide > .toolbar.flexible {
+    .app-bar.floating.hide > .toolbar.flexible:first-child {
         min-height: 48px;
         max-height: 48px; }
 }

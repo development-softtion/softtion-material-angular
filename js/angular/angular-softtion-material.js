@@ -519,6 +519,13 @@
                                     $element.innerHeight() : $element.outerHeight(true);
                             
                             if (!$scope.fixed) {
+                                if (
+                                    $element.find(".toolbar:first-child").exists() ||
+                                    $element.find(".search-box:first-child").exists()
+                                ) {
+                                    $element.addClass("element-hidden");
+                                } // Componente contiene elemento ocultable
+                                
                                 appContent.scroll(function () {
                                     var heightMin = (($window.width() > 960) ? 64 : 56),
                                         positionNew = appContent.scrollTop();
@@ -536,7 +543,7 @@
 
                                     position = positionNew; // Nueva posición del scroll
                                 });
-                            }
+                            } // Appbar se va ocultar en el Scroll
                             
                             appContent.css("padding-top", heightElement);
                             sidenav.css("top", heightElement); 
@@ -6118,6 +6125,111 @@
                 }
             },
             
+            TextFieldBordered: {
+                route: "softtion/template/textfield-bordered.html",
+                name: "textfieldBordered",
+                html: function () {
+                    var content = softtion.html("div").addClass("content").
+                        addAttribute("ng-class", "{focused: inputActive, disabled: ngDisabled}");
+                    
+                    var box = softtion.html("div").addClass("box");
+                    
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "{{typeInput}}").
+                        addAttribute("ng-model", "valueInput").
+                        addAttribute("ng-click", "clickInput($event)").
+                        addAttribute("ng-blur", "blurInput($event)").
+                        addAttribute("ng-focus", "focusInput($event)").
+                        addAttribute("ng-keypress", "keypressInput($event)").
+                        addAttribute("ng-keyup", "keyupInput($event)").
+                        addAttribute("ng-readonly", "ngReadonly").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
+                        addAttribute("ng-trim", "ngTrim").
+                        addAttribute("focused-element", "focusedInput").
+                        addAttribute("placeholder", "{{placeholder}}");
+
+                    var value = softtion.html("p").addClass(["value"]).
+                        setText("{{getValueModel()}}").
+                        addAttribute("ng-hide", "hideValue").
+                        addAttribute("ng-click", "clickLabel($event)");
+                
+                    var iconAction = softtion.html("i").addClass("action").
+                        setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+                        addAttribute("ng-click", "clickAction($event)");
+
+                    var label = softtion.html("label").
+                        setText("{{label}}").addClass("truncate").
+                        addAttribute("ng-class", "isActiveLabel()").
+                        addAttribute("ng-click", "clickLabel($event)").
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
+
+                    var spanError = softtion.html("span").addClass(["error", "truncate"]).
+                        setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
+                
+                    var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                        setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+                
+                    var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
+                        setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
+                    
+                    box.addChildren(input).addChildren(value).
+                        addChildren(iconAction).addChildren(label);
+                        
+                    content.addChildren(box).addChildren(spanHelper).
+                        addChildren(spanError).addChildren(spanCounter);
+                
+                    return content.create(); // Componente Textfield Bordered
+                },        
+                defineInput: function (typeInput) {
+                    switch (typeInput) {
+                        default: return "text";
+                        case (TextType.DECIMAL): return "number";
+                        case (TextType.NUMBER): return "number";
+                        case (TextType.PASSWORD): return "password";
+                    }
+                },        
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.TextFieldBordered.route,
+                        scope: {
+                            value: "=ngModel", 
+                            label: "@", 
+                            type: "@",
+                            required: "=?",
+                            ngTrim: "=?",
+                            uppercase: "=?",
+                            ngDisabled: "=?",
+                            ngReadonly: "=?",
+                            minLength: "=?",
+                            maxLength: "=?",
+                            iconDescription: "@",
+                            iconAction: "@",
+                            placeholder: "@",
+                            helperText: "@",
+                            focusedInput: "=?",
+                            keyDisabled: "=?",
+                            clearModel: "=?",
+                            
+                            // Eventos
+                            clickEvent: "&",
+                            blurEvent: "&",
+                            focusEvent: "&",
+                            enterEvent: "&",
+                            keyupEvent: "&",
+                            keypressEvent: "&",
+                            iconEvent: "&"
+                        },
+                        link: function ($scope, $element) {
+                            defineInputComponent($scope, $element, Material.components.TextFieldBordered);
+                        }
+                    };
+                }
+            },
+            
             TextFieldMultiline: {
                 route: "softtion/template/textfield-multiline.html",
                 name: "textfieldMultiline",
@@ -6916,7 +7028,7 @@
                             var leftContent = parseInt(appContent.css("left")),
                                 topContent = parseInt(appContent.css("padding-top"));
                     
-                            left = left - leftContent; top = top - topContent; 
+                            left = left - leftContent; //top = top - topContent; 
                         } // Desplazando elemento en AppContent
                         
                         if (settings.moveLeft) {

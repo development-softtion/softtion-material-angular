@@ -1235,6 +1235,24 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .datatable > .header {
     background-color: var(--dark-background-appbar); }
 
+.datatable > .header.theme-primary {
+    background-color: var(--theme-primary-background); }
+
+.datatable > .header.theme-secondary {
+    background-color: var(--theme-secondary-background); }
+
+.datatable > .header.theme-primary > .title,
+.datatable > .header.theme-primary > .actions > button {
+    color: var(--theme-primary-font-active); }
+
+.datatable > .header.theme-secondary > .title,
+.datatable > .header.theme-secondary > .actions > button {
+    color: var(--theme-secondary-font-active); }
+
+.datatable > .header.theme-primary > .actions > button::before,
+.datatable > .header.secondary > .actions > button::before {
+    color: var(--light-ripple); }
+
 .datatable > .content > table {
     background: var(--light-background-component); }
 
@@ -3429,6 +3447,115 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--dark-secondary-font); }
 
 .dark .textfield > .content > span.counter {
+    background-color: var(--dark-background);
+    color: var(--light-secondary-font); }
+
+/** TEXTFIELD BORDERED */
+
+.textfield-bordered > .content > .box {
+    border: 1px solid var(--light-background-border); }
+
+.dark .textfield-bordered > .content > .box {
+    border: 1px solid var(--dark-background-border); }
+
+.textfield-bordered:hover > .content > .box {
+    border: 2px solid var(--dark-primary-font); }
+
+.dark .textfield-bordered:hover > .content > .box {
+    border: 2px solid var(--light-primary-font); }
+
+.dark .textfield-bordered > .content.focused > .box,
+.textfield-bordered > .content.focused > .box {
+    border: 2px solid var(--theme-secondary-background); }
+
+.textfield-bordered.active.error > .content.focused > .box {
+    border: 2px solid var(--theme-error-background); }
+
+.textfield-bordered > .content.disabled > .box,
+.textfield-bordered:hover > .content.disabled > .box {
+    background-color: var(--light-background-statusbar);
+    border: 1px solid var(--light-background-border); }
+
+.dark .textfield-bordered > .content.disabled > .box,
+.dark .textfield-bordered:hover > .content.disabled > .box {
+    background-color: var(--dark-background-component);
+    border: 1px solid var(--dark-background-border); }
+
+.textfield-bordered > .content > .box > label {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-bordered > .content > .box > label {
+    color: var(--light-secondary-font); }
+
+.textfield-bordered > .content.disabled > .box > label {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield-bordered > .content.disabled > .box > label {
+    color: var(--light-disabled-font); }
+
+.textfield-bordered.active > .content > .box > input:focus ~ label {
+    color: var(--theme-secondary-font); }
+
+.textfield-bordered.active.error > .content > .box > input:focus ~ label, 
+.textfield-bordered.error > .content > .box > label,
+.textfield-bordered.active > .content > .box > input:focus ~ label > span {
+    color: var(--theme-error-font); }
+
+.textfield-bordered > .content > .box > input {
+    color: transparent;
+    background-color: transparent; }
+
+.textfield-bordered.active > .content > .box > input:focus {
+    color: var(--dark-primary-font); }
+
+.dark .textfield-bordered.active > .content > .box > input:focus {
+    color: var(--light-primary-font); }
+
+.dark .textfield-bordered > .content > .box > input {
+    color: var(--light-primary-font); }
+
+.textfield-bordered > .content > .box > input:disabled {
+    color: var(--dark-disabled-font); }
+
+.textfield-bordered > .content > .box > input::selection {
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-active); }
+
+.textfield-bordered.active > .content > .box > input:focus ~ .value {
+    color: transparent; }
+
+.textfield-bordered > .content > .box > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield-bordered > .content > .box > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.textfield-bordered > .content > .box > i {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-bordered > .content > .box > i {
+    color: var(--light-secondary-font); }
+
+.textfield-bordered > .content > .box > input:disabled ~ i {
+    color: var(--dark-disabled-font); }
+
+.dark .textfield-bordered > .content > .box > input:disabled ~ i {
+    color: var(--light-disabled-font); }
+
+.textfield-bordered > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-bordered > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.textfield-bordered > .content > span.error {
+    color: var(--theme-error-font); }
+
+.textfield-bordered > .content > span.counter {
+    background-color: var(--light-background);
+    color: var(--dark-secondary-font); }
+
+.dark .textfield-bordered > .content > span.counter {
     background-color: var(--dark-background);
     color: var(--light-secondary-font); }
 
