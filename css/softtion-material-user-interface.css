@@ -945,10 +945,18 @@ input[type=number]::-webkit-outer-spin-button {
     .sidenav.permanent ~ .app-body {
         left: 320px;
         width: calc(100% - 320px); } 
+
+    .sidenav.permanent.condense ~ .app-body {
+        left: 256px;
+        width: calc(100% - 256px); } 
     
     .sidenav.persistent.show ~ .app-body {
         left: 320px;
         width: calc(100% - 320px); } 
+    
+    .sidenav.persistent.condense.show ~ .app-body {
+        left: 256px;
+        width: calc(100% - 256px); } 
 }
 
 /** APP CONTENT */
@@ -1036,8 +1044,13 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
         left: 320px; 
         width: calc(100% - 320px); }
     
+    .app-body > .sidenav.condense ~ .app-content {
+        left: 256px; 
+        width: calc(100% - 256px); }
+    
     body.body-overflow-none-sidenav > .sidenav.permanent ~ .app-body > .app-content,
-    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content {
+    body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content,
+    body.body-overflow-none-sidenav > .app-body > .sidenav ~ .app-content {
         overflow: auto; }
 }
 
@@ -5584,7 +5597,8 @@ p > .link {
 
 .list {
     padding: 0px;
-    margin: 0px; }
+    margin: 0px;
+    overflow: hidden; }
 
 .list > .subheader {
     font-weight: 700;
@@ -5934,7 +5948,7 @@ p > .link {
     padding: 0px;
     margin: 0px; }
 
-.menu > li.option {
+.menu > .option {
     position: relative;
     display: flex;
     overflow: hidden;
@@ -5946,35 +5960,35 @@ p > .link {
     font-size: 16px;
     box-sizing: border-box; }
 
-.menu > li.option > span {
+.menu > .option > span {
     display: block;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap; }
 
-.menu > li.option.align-icon > span {
+.menu > .option.align-icon > span {
     margin-left: 40px; }
 
-.menu > li.option.align-icon > i + span {
+.menu > .option.align-icon > i + span {
     margin-left: 0px; }
 
-.menu > li.option > i {
+.menu > .option > i {
     height: inherit;
     line-height: inherit;
     float: left;
     text-align: left;
     margin-right: 16px; }
 
-.menu > li.option > span + i {
+.menu > .option > span + i {
     float: right;
     margin-left: 16px;
     margin-right: 0px; }
 
-.menu > li.option > i + i {
+.menu > .option > i + i {
     display: none; }
 
-.menu > li.divider {
+.menu > .divider {
     padding: 0px; }
 
 /** PROGRESS BAR */
@@ -6885,13 +6899,22 @@ p > .link {
     .sidenav.persistent {
         width: 320px; }
     
+    .sidenav.persistent.condense {
+        width: 256px; }
+    
     .sidenav.permanent {
         width: 320px;
         visibility: visible; }
+    
+    .sidenav.permanent.condense {
+        width: 256px; }
 
     .app-body > .sidenav {
         width: 320px;
         visibility: visible; }
+
+    .app-body > .sidenav.condense {
+        width: 256px;  }
 }
 
 @media only screen and (min-width : 721px) and (max-width : 960px) {
@@ -6968,6 +6991,9 @@ p > .link {
     -webkit-transition: -webkit-transform 200ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
             transition: transform 200ms 0ms var(--standard-curve); }
+
+.sidenav.condense > .content {
+    max-width: 256px; }
 
 .sidenav.show > .content {
     box-shadow: var(--shadow-16);
@@ -7183,6 +7209,9 @@ p > .link {
     line-height: 48px;
     font-size: 16px;
     font-weight: 500; }
+
+.sidenav.condense > .content .sidenav-item > .detail > a {
+    font-size: 14px; }
 
 .sidenav > .content .sidenav-item > .detail > a > i {
     float: left;

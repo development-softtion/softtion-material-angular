@@ -6777,6 +6777,7 @@
                     settingsElement: function (origin, dropdown, classElement) {
                         var settings = {
                                 top: 0, left: 0, moveLeft: false,
+                                moveContent: false,
                                 innerWidth: window.innerWidth, 
                                 innerHeight: window.innerHeight
                             },  
@@ -6815,12 +6816,12 @@
                     settingsDropdown: function (dropdown, origin) {
                         var settings = {
                             top: 0, left: 0, moveLeft: true,
-                            moveScroll: true,
+                            moveScroll: true, moveContent: false,
                             innerWidth: window.innerWidth, 
                             innerHeight: window.innerHeight
                         }; // Configuración estandar para posición
                         
-                        if (origin.exists()) {
+                        if (softtion.isDefined(origin) && origin.exists()) {
                             if (origin.parents(".form-navigation").exists()) {
                                 return this.settingsElement(origin, dropdown, ".form-navigation");
                             } // Elemento está contenido en un FormNavigation
@@ -6831,6 +6832,10 @@
                             
                             if (origin.parents(".app-bar").exists()) {
                                 dropdown.appendTo(origin.parents(".app-bar")); settings.moveScroll = false;
+                            } // Elemento está contenido en un Appbar
+                            
+                            if (origin.parents(".app-content").exists()) {
+                                settings.moveContent = true;
                             } // Elemento está contenido en un Appbar
                         
                             return angular.extend(settings, origin.offset()); 
@@ -6907,8 +6912,16 @@
                             default: originEffect = "0 0"; break;
                         } // Definiendo inicio del efecto
                         
+                        if (settings.moveContent) {
+                            var leftContent = parseInt(appContent.css("left")),
+                                topContent = parseInt(appContent.css("padding-top"));
+                    
+                            left = left - leftContent; top = top - topContent; 
+                        } // Desplazando elemento en AppContent
+                        
                         if (settings.moveLeft) {
-                            dropdown.removeClass("fixed"); left = left - leftBody; 
+                            dropdown.removeClass("fixed"); 
+                            left = left - leftBody; 
                             
                             if (settings.moveScroll) {
                                 top = top + appContent.scrollTop(); 
@@ -7696,7 +7709,7 @@
                             // Colores de fondo
                             propertyStyle("--theme-primary-background", theme["500"]);
                             propertyStyle("--theme-primary-background-light", theme["300"]);
-                            propertyStyle("--theme-primary-background-dark", theme["900"]);
+                            propertyStyle("--theme-primary-background-dark", theme["800"]);
                             
                             // Colores de estado
                             propertyStyle("--theme-primary-background-focus", theme["700"]);
@@ -7738,7 +7751,7 @@
                             // Colores de fondo
                             propertyStyle("--theme-secondary-background", theme["500"]);
                             propertyStyle("--theme-secondary-background-light", theme["300"]);
-                            propertyStyle("--theme-secondary-background-dark", theme["900"]);
+                            propertyStyle("--theme-secondary-background-dark", theme["800"]);
                             
                             // Colores de estado
                             propertyStyle("--theme-secondary-background-focus", theme["700"]);
