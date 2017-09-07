@@ -271,6 +271,19 @@
             CryptoJS.AES.decrypt(valueEncrypt, keyPassword).toString(CryptoJS.enc.Utf8);
     };
     
+    Softtion.prototype.getMIME = function (extension) {
+        switch (extension) {
+            case ("jpg") : return "image/jpg";
+            case ("jpeg") : return "image/jpeg";
+            case ("png") : return "image/png";
+            case ("gif") : return "image/gif";
+            case ("svg") : return "image/svg+xml";
+            case ("pdf") : return "application/pdf";
+            case ("txt") : return "text/plain";
+            default: ""; // Extensión desconocida
+        }
+    };
+    
     var TypeCharacter = {
         characterSymbols: [
             33, 34, 35, 36, 37, 38, 39, 40, 40, 41, 42, 43, 44, 
