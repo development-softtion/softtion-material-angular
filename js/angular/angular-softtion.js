@@ -5,6 +5,8 @@
  Updated: 05/Ene/2016
 */
 
+/* global URL */
+
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular, jQuery);
@@ -103,8 +105,104 @@
             ).then(config["done"], config["error"]);
         };
         
-        this.create = function (url) {
-            return new HttpRestful(url, $http); // Creando objeto restful
+        function create(url) {
+            return new HttpRestful(url, $http); // Objeto RestFul
+        };
+        
+        return {
+            create: create
         };
     }]);
+
+    function httpFileService ($http, $timeout, $window) {
+        function download(attrs) {
+            var functionSuccess = function (response) {
+                var fileBlob = new Blob(
+                        [response.data], { type: attrs.type }
+                    ),
+                    fileUrl = URL.createObjectURL(fileBlob),
+                    
+                    element = "<a class='file-download'><a/>",
+                    elementAttrs = { href: fileUrl, download: attrs.nameFile };
+
+                angular.element(element, elementAttrs).appendTo("body")[0].click();
+
+                $timeout(function () {
+                    URL.revokeObjectURL(fileUrl); 
+                }, 10000);
+
+                if (softtion.isFunction(attrs.success)) {
+                    attrs.success(fileBlob); 
+                } // Se descargo archivo correctamente
+            };
+            
+            var functionError = function (error) {
+                if (softtion.isFunction(attrs.error)) { 
+                    attrs.error(error); 
+                } // Error al tratar de descargar archivo
+            };
+            
+            $http.get(
+                attrs.url, { responseType: "arraybuffer" }
+            ).then(functionSuccess, functionError);
+        };
+        
+        function print(attrs) {
+            var functionSuccess = function (response) {
+                var fileBlob = new Blob(
+                        [response.data], { type: attrs.type }
+                    ),
+                    fileUrl = URL.createObjectURL(fileBlob);
+            
+                $window.open(fileUrl).print();
+
+                if (softtion.isFunction(attrs.success)) {
+                    attrs.success(fileBlob); 
+                } // Se descargo archivo correctamente
+            };
+            
+            var functionError = function (error) {
+                if (softtion.isFunction(attrs.error)) { 
+                    attrs.error(error); 
+                } // Error al tratar de descargar archivo
+            };
+            
+            $http.get(
+                attrs.url, { responseType: "arraybuffer" }
+            ).then(functionSuccess, functionError);
+        };
+        
+        function viewPreview(attrs) {
+            var functionSuccess = function (response) {
+                var fileBlob = new Blob(
+                        [response.data], { type: attrs.type }
+                    ),
+                    fileUrl = URL.createObjectURL(fileBlob);
+            
+                $window.open(fileUrl);
+
+                if (softtion.isFunction(attrs.success)) {
+                    attrs.success(fileBlob); 
+                } // Se descargo archivo correctamente
+            };
+            
+            var functionError = function (error) {
+                if (softtion.isFunction(attrs.error)) { 
+                    attrs.error(error); 
+                } // Error al tratar de descargar archivo
+            };
+            
+            $http.get(
+                attrs.url, { responseType: "arraybuffer" }
+            ).then(functionSuccess, functionError);
+        };
+            
+        return {
+            download: download,
+            print: print,
+            viewPreview: viewPreview
+        };
+    };
+
+    ngSofttion.service("$httpFile", ["$http", "$timeout", "$window", httpFileService]);
 });
