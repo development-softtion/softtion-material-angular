@@ -71,7 +71,7 @@ input:not([type="image"]), textarea {
 h1, h2, h3, h4, h5, h6, b {
     font-weight: 700; }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
     margin: 0px; }
 
 body {
@@ -2529,7 +2529,8 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .support-content {
     box-sizing: border-box;
     width: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 16px 16px 24px 16px; }
 
 .card > .primary-title + .support-content,
@@ -5595,8 +5596,7 @@ img.center.density-height {
 /** LINK */
 
 .link {
-    display: block;
-    width: 100%;
+    float: left;
     height: 20px;
     line-height: 20px;
     font-size: 16px;
@@ -5605,10 +5605,14 @@ img.center.density-height {
 
 p > .link {
     display: initial;
+    float: initial;
     width: auto;
     height: auto;
     line-height: inherit;
     font-size: inherit; }
+
+p.link > a {
+    font-size: 16px; }
 
 .link:hover {
     text-decoration: underline; }
