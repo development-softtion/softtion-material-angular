@@ -509,7 +509,7 @@
                 (this.getHours() === 0) ? 12 : this.getHours();
 
             $formato = $formato.replace("dd",softtion.leadingChar(this.getDate(),"0",2));
-            $formato = $formato.replace("mm",softtion.leadingChar(this.getMonth() + 1),"0",2);
+            $formato = $formato.replace("mm",softtion.leadingChar((this.getMonth() + 1),"0",2));
             $formato = $formato.replace("aa",softtion.leadingChar(this.getFullYear(),"0",4));
 
             $formato = $formato.replace("mn",softtion.get(softtion.MONTHS_OF_YEAR)[this.getMonth()]);
