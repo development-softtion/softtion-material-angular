@@ -120,6 +120,12 @@ body {
 body.dark {
     background-color: var(--dark-background); }
 
+.theme-primary-font {
+    color: var(--theme-primary-font) !important; }
+
+.theme-secondary-font {
+    color: var(--theme-secondary-font) !important; }
+
 /** COMPONENTS GLOBALS */
 
 .backdrop {
@@ -2114,6 +2120,32 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background: var(--light-background); }
 
 .dark .list-paragraph.floating-actions > li > .actions.opacity > button {
+    background: var(--dark-background-component); }
+
+/** LIST SIMPLE */
+
+.list-simple.bordered > li {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.dark .list-simple.bordered > li {
+    border-bottom: 1px solid var(--dark-background-border); }
+
+.list-simple > li > .actions {
+    background-color: var(--light-background); }
+
+.dark .list-simple > li > .actions {
+    background-color: var(--dark-background); }
+
+.list-simple > li > .actions.opacity {
+    background-color: rgba(0, 0, 0, 0.16); }
+
+.dark .list-simple > li > .actions.opacity {
+    background-color: rgba(255, 255, 255, 0.24); }
+
+.list-simple > li > .actions.opacity > button {
+    background: var(--light-background); }
+
+.dark .list-simple > li > .actions.opacity > button {
     background: var(--dark-background-component); }
 
 /** MENU */
