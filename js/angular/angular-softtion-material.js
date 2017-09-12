@@ -918,7 +918,7 @@
                             softtion.html("span").addClass("effect")
                         ).create();
                 },             
-                directive: ["SofttionMaterial", function (SofttionMaterial) {
+                directive: ["$softtionMaterial", function ($softtionMaterial) {
                     return {
                         restrict: "C",
                         scope: {
@@ -928,8 +928,8 @@
                             viewEvent: "&"
                         },
                         link: function ($scope, $element) {
-                            var selectorFAB = SofttionMaterial.Selectors.FAB,
-                                selectorNav = SofttionMaterial.Selectors.BottomNav; 
+                            var selectorFAB = $softtionMaterial.Selectors.FAB,
+                                selectorNav = $softtionMaterial.Selectors.BottomNav; 
                             
                             // Componentes
                             var rippleBox = angular.element(
@@ -3738,7 +3738,7 @@
                     
                     return input + content; // Componente FileChooser
                 },
-                directive: ["$timeout", "$sce", "SofttionMaterial", function ($timeout, $sce, SofttionMaterial) {
+                directive: ["$timeout", "$sce", "$softtionMaterial", function ($timeout, $sce, $softtionMaterial) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.Filechooser.route,
@@ -3752,7 +3752,7 @@
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
-                                imagesFormat = SofttionMaterial.File.imagesFormat,
+                                imagesFormat = $softtionMaterial.File.imagesFormat,
                                 viewPreview = $element.find(".view-preview"),
                                 heightStart = (viewPreview.height() - 16);                                
                             
@@ -3815,11 +3815,11 @@
                             };
                             
                             $scope.getIconFile = function (typeFile) {
-                                return SofttionMaterial.File.getIconFile(typeFile);
+                                return $softtionMaterial.File.getIconFile(typeFile);
                             };
                             
                             $scope.getIconComponent = function (typeFile) {
-                                var icon = SofttionMaterial.File.getIconComponent(typeFile),
+                                var icon = $softtionMaterial.File.getIconComponent(typeFile),
                                         
                                     heightPreview = viewPreview.height(),
                                     height = (heightPreview > 0) ? 
@@ -3917,7 +3917,7 @@
                     
                     return input + content + actionAdd; // Componente FileChooser Multiple
                 },
-                directive: ["$timeout", "SofttionMaterial", function ($timeout, SofttionMaterial) {
+                directive: ["$timeout", "$softtionMaterial", function ($timeout, $softtionMaterial) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.FilechooserMultiple.route,
@@ -3934,7 +3934,7 @@
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
-                                imagesFormat = SofttionMaterial.File.imagesFormat;
+                                imagesFormat = $softtionMaterial.File.imagesFormat;
                             
                             $scope.iconButton = $scope.iconButton || "attachment";
                             $scope.textDescription = $scope.textDescription || 
@@ -3998,11 +3998,11 @@
                             };
                             
                             $scope.getIconFile = function (typeFile) {
-                                return SofttionMaterial.File.getIconFile(typeFile);
+                                return $softtionMaterial.File.getIconFile(typeFile);
                             };
                             
                             $scope.getIconComponent = function (typeFile) {
-                                return SofttionMaterial.File.getIconComponent(typeFile).create();
+                                return $softtionMaterial.File.getIconComponent(typeFile).create();
                             };
                             
                             $scope.fileHold = function (file, $event, $index) {
@@ -5542,7 +5542,7 @@
             
             StepperHorizontal: {
                 name: "stepperHorizontal",
-                directive: ["SofttionMaterial", function (SofttionMaterial) {
+                directive: ["$softtionMaterial", function ($softtionMaterial) {
                     return {
                         restrict: "C",
                         $scope: {
@@ -5555,11 +5555,11 @@
                             
                             angular.forEach(items, function (item) {
                                 var element = angular.element(item),
-                                    box = SofttionMaterial.Ripple.box(),
-                                    effect = SofttionMaterial.Ripple.effect();
+                                    box = $softtionMaterial.Ripple.box(),
+                                    effect = $softtionMaterial.Ripple.effect();
 
                                 box.append(effect); element.append(box);
-                                SofttionMaterial.Ripple.event(box, effect);
+                                $softtionMaterial.Ripple.event(box, effect);
                             });
                         }
                     };
@@ -7707,11 +7707,11 @@
                     
                     this.get = function () { return snackbarProvider; };
                     
-                    var fnProvider = function ($rootScope, SofttionMaterial) { 
-                        Softtion = SofttionMaterial; $scope = $rootScope; return snackbarProvider; 
+                    var fnProvider = function ($rootScope, $softtionMaterial) { 
+                        Softtion = $softtionMaterial; $scope = $rootScope; return snackbarProvider; 
                     };
                     
-                    this.$get = ["$rootScope", "SofttionMaterial", fnProvider];
+                    this.$get = ["$rootScope", "$softtionMaterial", fnProvider];
                 }
             },
             
@@ -7799,11 +7799,11 @@
                     
                     this.get = function () { return toastProvider; };
                     
-                    var providerToast = function (SofttionMaterial) { 
-                        Softtion = SofttionMaterial; return toastProvider; 
+                    var providerToast = function ($softtionMaterial) { 
+                        Softtion = $softtionMaterial; return toastProvider; 
                     };
                     
-                    this.$get = ["SofttionMaterial", providerToast];
+                    this.$get = ["$softtionMaterial", providerToast];
                 }
             },
             
@@ -8054,7 +8054,7 @@
         }
     });
     
-    ngMaterial.constant("SofttionMaterial", {
+    ngMaterial.constant("$softtionMaterial", {
         VERSION: "1.0.4",
         Selectors: {
             FAB: "button.floating:not(.static), .fab-speed-dial," 
