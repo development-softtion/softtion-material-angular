@@ -115,14 +115,14 @@
     }]);
 
     function httpFileService ($http, $timeout, $window) {
-        function download(attrs) {
-            var functionSuccess = function (response) {
+        function download(attrs) { console.log(attrs);
+            var functionSuccess = function (response) { 
                 var fileBlob = new Blob(
                         [response.data], { type: attrs.type }
                     ),
                     fileUrl = URL.createObjectURL(fileBlob),
                     
-                    element = "<a class='file-download'><a/>",
+                    element = "<a/>",
                     elementAttrs = { href: fileUrl, download: attrs.nameFile };
 
                 angular.element(element, elementAttrs).appendTo("body")[0].click();
@@ -136,7 +136,7 @@
                 } // Se descargo archivo correctamente
             };
             
-            var functionError = function (error) {
+            var functionError = function (error) { 
                 if (softtion.isFunction(attrs.error)) { 
                     attrs.error(error); 
                 } // Error al tratar de descargar archivo
