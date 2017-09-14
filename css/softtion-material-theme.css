@@ -1837,16 +1837,16 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .form.flat {
     border: 1px solid var(--dark-background-border); }
 
-.form > .header > .title.theme-primary {
+.form > .header > .detail > .title.theme-primary {
     color: var(--theme-primary-font); }
 
-.form > .header > .title.theme-secondary {
+.form > .header > .detail > .title.theme-secondary {
     color: var(--theme-secondary-font); }
 
-.form > .header > .subtitle {
+.form > .header > .detail > .subtitle {
     color: var(--dark-secondary-font); }
 
-.dark .form > .header > .subtitle {
+.dark .form > .header > .detail > .subtitle {
     color: var(--light-secondary-font); }
 
 /** FORM NAVIGATION */

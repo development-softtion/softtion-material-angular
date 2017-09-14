@@ -5028,8 +5028,13 @@ button.raised:focus:after, button.flat:focus:after {
 
 .form > .header {
     position: relative;
+    display: flex;
+    display: -webkit-box;
+    -webkit-box-align: center;
     float: left;
     width: 100%;
+    height: 72px;
+    overflow: hidden;
     padding: 16px 16px 8px 16px;
     box-sizing: border-box; }
 
@@ -5044,7 +5049,8 @@ button.raised:focus:after, button.flat:focus:after {
 .form > .header > .nav-icon > button.action:before {
     left: calc(50% - 8px); }
 
-.form > .header > .title, .form > .header > .subtitle {
+.form > .header > .detail > .title, 
+.form > .header > .detail > .subtitle {
     display: block;
     float: left;
     width: 100%;
@@ -5053,33 +5059,32 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     text-overflow: ellipsis; }
 
-.form > .header > .nav-icon ~ .title,
-.form > .header > .nav-icon ~ .subtitle {
-    width: calc(100% - 56px); }
-
-.form > .header > .title {
+.form > .header > .detail > .title {
     font-size: 20px;
     height: 20px;
     line-height: 20px;
     font-weight: 500;
     margin-bottom: 4px; }
 
-.form > .header.hide-subtitle > .title {
-    margin-bottom: 0px; }
-
-.form > .header > .nav-icon ~ .title {
+.form > .header > .nav-icon ~ .detail > .title {
     margin-top: 4px; }
 
-.form > .header.hide-subtitle > .nav-icon ~ .title {
-    margin-top: 14px; }
-
-.form > .header > .subtitle {
+.form > .header > .detail > .subtitle {
     font-size: 16px;
     height: 18px;
     line-height: 18px; }
 
-.form > .header.hide-subtitle > .subtitle {
-    display: none; }
+.form > .header > .actions {
+    position: absolute;
+    top: 16px;
+    right: 16px; }
+
+.form > .header > .actions > button {
+    padding: 8px; 
+    width: 48px;
+    height: 48px;
+    float: right;
+    margin-left: 4px; }
 
 .form > .content {
     position: relative;
@@ -9290,6 +9295,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: 20px;
     line-height: inherit; }
 
+.toolbar > .nav-icon + .title {
+    margin-left: 8px; }
+
 .toolbar > .detail ~ .title, .toolbar > .logo ~ .title {
     display: none; }
 
@@ -9550,6 +9558,31 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     .toolbar > .actions > button.action.menu-action > .badge {
         top: 14px;
         right: 6px; }
+}
+
+.toolbar > .avatars {
+    display: flex;
+    padding: 0px;
+    margin: 0px;
+    margin-right: 4px;
+    min-height: inherit; 
+    max-height: inherit;
+    line-height: inherit; }
+
+.toolbar > .avatars:first-child {
+    margin-left: 8px; }
+    
+.toolbar > .avatars > .avatar {
+    width: 40px;
+    height: 40px;
+    margin: 8px 4px; }
+
+@media only screen and (min-width : 961px) {
+    
+    .toolbar > .avatars > .avatar {
+        width: 48px;
+        height: 48px;
+        margin: 8px 4px; }
 }
 
 /** TOOLTIP */
