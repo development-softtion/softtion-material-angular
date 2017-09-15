@@ -90,14 +90,26 @@
                 $scope.clearModel = false;
             }
         });
+        
+        $scope.$watch(function () {
+            return $scope.value;
+        }, function (newValue) { 
+            if ($scope.inputStart) {
+                validateValue(newValue); // Validando model
+
+                if (softtion.isDefined(newValue)) {
+                    $scope.valueInput = ($scope.inputActive) ? newValue : ""; 
+                } // Limpiando texto en input del componente
+            } // Componente iniciado
+        });
 
         // Atributos de control
         $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
         $scope.typeInput = handler.defineInput($scope.type || "text");
-        $scope.valueInput = "";  $scope.isIconAction = false;
+        $scope.valueInput = ""; $scope.isIconAction = false;
         $scope.errorActive = false; $scope.isErrorActive = false; 
-        $scope.inputActive = false; $scope.viewPassword = false;
+        $scope.inputActive = false; $scope.viewPassword = false; $scope.inputStart = false;
 
         if (softtion.isString($scope.value)) { 
             $element.addClass("active"); 
@@ -153,7 +165,7 @@
 
         function validateTextModel(assign) {
             var lengthText = $scope.valueInput.length;
-
+            
             if (!softtion.isString($scope.valueInput)) {
                 if (assign) { 
                     textEmpty(); 
@@ -169,6 +181,25 @@
 
                 if (assign) { defineModel(); } // Estableciendo Model
             } // Todo esta correcto
+        };
+        
+        function validateValue(newValue) {
+            if (softtion.isUndefined(newValue) && $scope.required) {
+                $scope.isErrorActive = false;
+                $scope.errorInput("Este campo es requerido"); return;
+            } // El campo es requerido en el componente
+            
+            if (softtion.isDefined(newValue)) {
+                var lengthText = newValue.toString().length;
+
+                if (lengthText < $scope.minLength) {
+                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
+                    $scope.isErrorActive = true; return;
+                } // El campo es requiere una cantida de caracteres en el componente
+            } // Ya se encuentra definido el Valor
+            
+            $scope.isErrorActive = false; $scope.errorActive = false; 
+            $element.removeClass("error"); // Valor cumple con los requisitos
         };
 
         $scope.successInput = function (value) {
@@ -236,6 +267,7 @@
             } // Cambiando valor del texto en el Input
 
             $element.addClass("active"); $scope.inputActive = true; 
+            $scope.inputStart = true; // Iniciando componente
 
             callbackFnEvent($event, $scope.focusEvent); // Evento focus
         };
@@ -245,10 +277,6 @@
             $element.removeClass("active");
 
             callbackFnEvent($event, $scope.blurEvent); // Evento blur
-
-            if (softtion.isDefined($scope.value)) {
-                $scope.valueInput = ""; 
-            } // Limpiando texto en input del componente
         };
 
         $scope.keypressInput = function ($event) {
@@ -294,8 +322,13 @@
             if (($scope.type === "password") && !$scope.viewPassword) {
                 var length = value.length; value = "";
 
-                for (var i = 0; i < length; i++) { value += "•"; }
-            } // Contenido del input es tipo password
+                for (var i = 0; i < length; i++) { 
+                    value += String.fromCharCode(8226); 
+                } // Cargando el caracter password '•'
+            } else if(softtion.isFunction($scope.formatValue) 
+                    && softtion.isString(value)) {
+                value = $scope.formatValue({$value: value});
+            } // Se establecio formato para el componente de texto
 
             return value; // Retornando el valor a mostrar
         };
@@ -324,12 +357,25 @@
                 $scope.valueArea = ""; $scope.clearModel = false;
             }
         });
+        
+        $scope.$watch(function () {
+            return $scope.value;
+        }, function (newValue) { 
+            if ($scope.areaStart) {
+                validateValue(newValue); // Validando model
+
+                if (softtion.isDefined(newValue)) {
+                    $scope.valueArea = ($scope.areaActive) ? newValue : ""; 
+                } // Limpiando texto en input del componente
+            } // Componente iniciado
+        });
 
         // Atributos de control
         $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
         $scope.valueArea = ""; $scope.valueReal = false;
         $scope.areaActive = false; $scope.valueHidden = "";
+        $scope.areaStart = false;
 
         if (softtion.isString($scope.value)) { 
             $element.addClass("active"); 
@@ -372,6 +418,25 @@
 
                 if (assign) { defineModel(); } // Estableciendo Model
             } // Todo esta correcto
+        };
+        
+        function validateValue(newValue) {
+            if (softtion.isUndefined(newValue) && $scope.required) {
+                $scope.isErrorActive = false;
+                $scope.errorInput("Este campo es requerido"); return;
+            } // El campo es requerido en el componente
+            
+            if (softtion.isDefined(newValue)) {
+                var lengthText = newValue.toString().length;
+
+                if (lengthText < $scope.minLength) {
+                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
+                    $scope.isErrorActive = true; return;
+                } // El campo es requiere una cantida de caracteres en el componente
+            } // Ya se encuentra definido el Valor
+            
+            $scope.isErrorActive = false; $scope.errorActive = false; 
+            $element.removeClass("error"); // Valor cumple con los requisitos
         };
 
         $scope.errorArea = function (message) {
@@ -427,7 +492,7 @@
             } // Cambiando valor del texto en el textarea
 
             $scope.areaActive = true; $scope.valueReal = true; 
-            $element.addClass("active"); 
+            $element.addClass("active"); $scope.areaStart = true;
 
             callbackFnEvent($event, $scope.focusEvent); // Evento focus
         };
@@ -5913,6 +5978,7 @@
                             focusedInput: "=?",
                             keyDisabled: "=?",
                             clearModel: "=?",
+                            formatValue: "&",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6108,6 +6174,7 @@
                             focusedInput: "=?",
                             keyDisabled: "=?",
                             clearModel: "=?",
+                            formatValue: "&",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6213,6 +6280,7 @@
                             focusedInput: "=?",
                             keyDisabled: "=?",
                             clearModel: "=?",
+                            formatValue: "&",
                             
                             // Eventos
                             clickEvent: "&",
