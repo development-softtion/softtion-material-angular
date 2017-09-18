@@ -18,11 +18,13 @@
     var ngSofttion = angular.module("ngSofttion", []);
     
     ngSofttion.provider("$softtion", function () {
-        
         this.$get = function () { return softtion; };
     });
 
     ngSofttion.service("$restful", ["$http", function ($http) {
+        return {
+            create: create
+        };
         
         function createRoute (selfRestful, id) {
             var url = selfRestful.url;
@@ -108,14 +110,16 @@
         function create(url) {
             return new HttpRestful(url, $http); // Objeto RestFul
         };
-        
-        return {
-            create: create
-        };
     }]);
 
     function httpFileService ($http, $timeout, $window) {
-        function download(attrs) { 
+        return {
+            download: download,
+            print: print,
+            viewPreview: viewPreview
+        };
+        
+        function download(attrs) {
             var functionSuccess = function (response) { 
                 var fileBlob = new Blob(
                         [response.data], { type: attrs.type }
@@ -204,12 +208,6 @@
                     params: attrs["params"] 
                 }
             ).then(functionSuccess, functionError);
-        };
-            
-        return {
-            download: download,
-            print: print,
-            viewPreview: viewPreview
         };
     };
 
