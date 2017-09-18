@@ -921,7 +921,7 @@
                             };
 
                             $scope.renderSuggestion = function (suggestion) {
-                                var value = $scope.functionDescription(suggestion);
+                                var value = $scope.functionDescription({$suggestion: suggestion});
                                 
                                 if (softtion.isUndefined(value)) {
                                     value = !(softtion.isString($scope.keyDescription)) ? 
@@ -1287,7 +1287,7 @@
                             };
 
                             $scope.renderSuggestion = function (suggestion) {
-                                var value = $scope.functionDescription(suggestion);
+                                var value = $scope.functionDescription({$suggestion: suggestion});
                                 
                                 if (softtion.isUndefined(value)) {
                                     value = !(softtion.isString($scope.keyTitle)) ? 
