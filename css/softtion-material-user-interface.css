@@ -1,9 +1,9 @@
 /*!
  * Softtion Material UI
- * v1.1.8
+ * v1.1.9
  * @license MIT
  * Author: Softtion Developers
- * Updated: 31/Jul/2017
+ * Updated: 18/Sep/2017
  */
 
 @import url("fonts/roboto/style-font.css");
@@ -868,44 +868,6 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     height: 1px; }
 
-.avatar {
-    position: relative;
-    width: 48px;
-    height: 48px; 
-    line-height: 48px;
-    border-radius: 50%;
-    font-size: 24px;
-    user-select: none; }
-
-.avatar.action {
-    cursor: pointer; }
-
-.avatar.action:before {
-    content: "";
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    display: block;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
-    border-radius: 50%;
-    z-index: -1; }
-
-.avatar > span, .avatar > i {
-    display: block;
-    width: inherit;
-    height: inherit;
-    line-height: inherit;
-    text-align: center;
-    font-size: inherit;
-    border-radius: 50%; }
-
-.avatar > span {
-    text-transform: uppercase; }
-
-.avatar > img {
-    border-radius: 50%; }
-
 /** APP BAR */
 
 .app-bar {
@@ -1246,6 +1208,266 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     -webkit-animation: borderTextfieldIcon 225ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 225ms var(--sharp-curve);
             animation: borderTextfieldIcon 225ms var(--sharp-curve); }
+
+/** AUTOCOMPLETE RECORD */
+
+.autocomplete-record {
+    position: relative;
+    display: table;
+    float: left;
+    overflow-x: hidden;
+    overflow-y: auto; }
+
+.autocomplete-record > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    padding: 8px 0px 12px 0px; }
+
+.autocomplete-record > .content > label {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    line-height: 18px;
+    font-size: 16px;
+    cursor: text;
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
+
+.autocomplete-record > .content > label.active {
+    cursor: none;
+    top: 8px;
+    height: 14px;
+    line-height: 12px;
+    font-size: 12px; }
+
+.autocomplete-record > .content > input {
+    width: calc(100% - 24px);
+    cursor: text;
+    height: 32px;
+    padding: 12px 0px 8px 0px;
+    font-size: 16px;
+    line-height: 32px;
+    border: none;
+    outline: none; 
+    background-color: transparent; }
+
+.autocomplete-record > .content > input::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.autocomplete-record.active > .content > input::-webkit-input-placeholder {
+    visibility: visible; }
+
+.autocomplete-record > .content > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.autocomplete-record > .content > .value {
+    position: absolute;
+    top: 20px;
+    margin: 0px;
+    width: calc(100% - 24px);
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    overflow: hidden; }
+
+.autocomplete-record.active > .content > input:focus ~ .value {
+    display: none; }
+
+.autocomplete-record > .content > .line-shadow {
+    position: absolute;
+    left: 0; 
+    z-index: 1;
+    bottom: 18px; 
+    width: 100%; }
+
+.autocomplete-record > .content > .line-shadow-active {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    width: 0%;
+    z-index: 2;
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+            transform: translateX(-50%); }
+
+.autocomplete-record.active > .content > input:focus ~ .line-shadow-active {
+    width: 100%; 
+    -webkit-animation: borderTextfield 225ms var(--sharp-curve);
+       -moz-animation: borderTextfield 225ms var(--sharp-curve);
+            animation: borderTextfield 225ms var(--sharp-curve); }
+
+.autocomplete-record > .content > i.action {
+    position: absolute;
+    top: 26px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 18px; 
+    font-weight: 900;
+    text-align: center; }
+
+.autocomplete-record > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-size: 12px; }
+
+.autocomplete-record > .content > ul {
+    position: absolute;
+    top: 52px;
+    max-width: 0%;
+    max-height: 0px;
+    overflow: hidden;
+    overflow-y: auto;
+    z-index: 4;
+    box-shadow: var(--shadow-2); 
+    -webkit-transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve);
+       -moz-transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve);
+            transition: max-height 225ms 0ms var(--sharp-curve), 
+                max-width 225ms 0ms var(--sharp-curve); }
+
+.autocomplete-record > .content > ul.active {
+    max-width: 100%;
+    max-height: 252px; }
+
+.autocomplete-record > .content > ul > li {
+    padding: 0px 16px;
+    cursor: pointer;
+    height: 56px;
+    font-size: 14px;
+    line-height: 56px; }
+
+.autocomplete-record > .content > ul > li > .avatar {
+    float: left;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 8px 16px 8px 0px; }
+
+.autocomplete-record > .content > ul > li > .detail {
+    float: left;
+    width: calc(100% - 56px);
+    padding: 8px 0px;
+    box-sizing: border-box;
+    cursor: pointer; }
+
+.autocomplete-record > .content > ul > li > .detail > .title { 
+    display: block;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    cursor: pointer; }
+
+.autocomplete-record > .content > ul > li > .detail.hidesubtitle > .title { 
+    height: 40px;
+    line-height: 40px; }
+
+.autocomplete-record > .content > ul > li > .detail > .subtitle { 
+    display: block;
+    width: 100%;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    cursor: pointer; }
+
+.autocomplete-record > .content > ul > li > .detail.hidesubtitle > .subtitle { 
+    display: none; }
+
+.autocomplete-record > .content > ul > li > .detail > .title > b { 
+    font-weight: 400;
+    font-family: softtion-material; }
+
+.autocomplete-record > .content > ul > li:focus {
+    outline: none; }
+
+.autocomplete-record > .content > i.icon-description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px; }
+
+.autocomplete-record > .content > i.icon-description ~ .value,
+.autocomplete-record > .content > i.icon-description ~ input { 
+    padding-left: 40px;
+    width: calc(100% - 64px); }
+
+.autocomplete-record > .content > i.icon-description ~ label,
+.autocomplete-record > .content > i.icon-description ~ ul,
+.autocomplete-record > .content > i.icon-description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.autocomplete-record > .content > i.icon-description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.autocomplete-record > .content > i.icon-description ~ .line-shadow-active {
+    left: calc(50% + 20px); }
+
+.autocomplete-record.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+    width: calc(100% - 40px); 
+    -webkit-animation: borderTextfieldIcon 225ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 225ms var(--sharp-curve);
+            animation: borderTextfieldIcon 225ms var(--sharp-curve); }
+
+/** AVATAR */
+
+.avatar {
+    position: relative;
+    width: 48px;
+    height: 48px; 
+    line-height: 48px;
+    border-radius: 50%;
+    font-size: 24px;
+    user-select: none; }
+
+.avatar.action {
+    cursor: pointer; }
+
+.avatar.action:before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    display: block;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border-radius: 50%;
+    z-index: -1; }
+
+.avatar > span, .avatar > i {
+    display: block;
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    text-align: center;
+    font-size: inherit;
+    border-radius: 50%; }
+
+.avatar > span {
+    text-transform: uppercase; }
+
+.avatar > img {
+    border-radius: 50%; }
+
+.avatar > .badge {
+    font-size: 10px;
+    top: -2px;
+    right: -2px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 50%; }
 
 /** BADGE */
 

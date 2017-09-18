@@ -1,9 +1,9 @@
 /*
  * Softtion Material Theme
- * v1.1.5
+ * v1.1.9
  * @license MIT
  * Author: Softtion Developers
- * Updated: 21/Jul/2017
+ * Updated: 18/Sep/2017
  */
 :root {
     
@@ -140,31 +140,6 @@ body.dark {
 .dark .divider {
     background-color: var(--dark-background-border); }
 
-.avatar > span, .avatar > i {
-    background-color: var(--theme-secondary-background); }
-
-.avatar.transparent > span, .avatar.transparent > i {
-    background-color: transparent !important;
-    color: var(--dark-secondary-font) !important; }
-
-.dark .avatar.transparent > i, .dark .avatar.transparent > span {
-    color: var(--light-primary-font) !important; }
-
-.avatar.action:hover > span, .avatar.action:hover > i {
-    background-color: var(--theme-secondary-background-dark); }
-
-.dark .avatar.action:hover > span, .dark .avatar.action:hover > i {
-    background-color: var(--theme-secondary-background-light); }
-
-.avatar.action:hover:before {
-    background-color: rgba(189, 189, 189, 0.78); }
-
-.dark .avatar.action:hover:before {
-    background-color: rgba(224, 224, 224, 0.45); }
-
-.avatar > span, .avatar > i {
-    color: var(--theme-secondary-font-active); }
-
 /** APP BAR */
 
 .app-bar {
@@ -298,6 +273,147 @@ body.dark {
 
 .autocomplete > .content > ul > li.not-found {
     color: var(--theme-error-font); }
+
+/** AUTOCOMPLETE RECORD */
+
+.autocomplete-record > .content > label {
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > label {
+    color: var(--light-secondary-font); }
+
+.autocomplete-record.active > .content > input:focus ~ label {
+    color: var(--theme-secondary-font); }
+
+.autocomplete-record > .content > i {
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > i {
+    color: var(--light-secondary-font); }
+
+.autocomplete-record > .content > input {
+    color: transparent; }
+
+.autocomplete-record.active > .content > input:focus {
+    color: var(--dark-primary-font); }
+
+.dark .autocomplete-record.active > .content > input:focus {
+    color: var(--light-primary-font); }
+
+.autocomplete-record > .content > input::selection {
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-active); }
+
+.autocomplete-record.active > .content > input:focus ~ .value {
+    color: transparent; }
+
+.autocomplete-record > .content > input:disabled ~ .value {
+    color: var(--dark-disabled-font); }
+
+.dark .autocomplete-record > .content > input:disabled ~ .value  {
+    color: var(--light-disabled-font); }
+
+.autocomplete-record > .content > .line-shadow {
+    border-bottom: 1px solid var(--light-background-border); }
+
+.autocomplete-record:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--dark-primary-font); }
+
+.dark .autocomplete-record > .content > .line-shadow {
+    border-bottom: 1px solid var(--dark-background-border); }
+
+.dark .autocomplete-record:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--light-primary-font); }
+
+.autocomplete-record > .content > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--light-background-border); }
+
+.dark .autocomplete-record > .content > input:disabled ~ .line-shadow {
+    border-bottom: 1px dashed var(--dark-background-border); }
+
+.autocomplete-record > .content > .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.autocomplete-record.active > .content > input:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-secondary-background); }
+
+.autocomplete-record.active.error > .content > input:focus ~ .line-shadow-active {
+    border-bottom: 2px solid var(--theme-error-background); }
+
+.autocomplete-record > .content > input:disabled ~ .line-shadow-active {
+    border-bottom: 2px solid transparent; }
+
+.autocomplete-record > .content > i.action {
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > i.action {
+    color: var(--light-primary-font); }
+
+.autocomplete-record > .content > span.help {
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > span.help {
+    color: var(--light-secondary-font); }
+
+.autocomplete-record > .content > ul { 
+    background-color: var(--light-background-component); }
+
+.dark .autocomplete-record > .content > ul { 
+    background-color: var(--dark-background-component); }
+
+.autocomplete-record > .content > ul > li { 
+    color: var(--dark-primary-font); }
+
+.dark .autocomplete-record > .content > ul > li { 
+    color: var(--light-primary-font); }
+
+.autocomplete-record > .content > ul > li:focus {
+    background-color: var(--light-background-focus); }
+
+.autocomplete-record > .content > ul > li:hover {
+    background-color: var(--light-background-hover); }
+
+.autocomplete-record > .content > ul > li.not-found {
+    color: var(--theme-error-font); }
+
+.autocomplete-record > .content > ul > li > .detail > .title > b { 
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > ul > li > .detail > .title > b { 
+    color: var(--light-disabled-font); }
+
+.autocomplete-record > .content > ul > li > .detail > .subtitle { 
+    color: var(--dark-secondary-font); }
+
+.dark .autocomplete-record > .content > ul > li > .detail > .subtitle { 
+    color: var(--light-disabled-font); }
+
+/** AVATAR */
+
+.avatar > span, .avatar > i {
+    background-color: var(--theme-secondary-background); }
+
+.avatar.transparent > span, .avatar.transparent > i {
+    background-color: transparent !important;
+    color: var(--dark-secondary-font) !important; }
+
+.dark .avatar.transparent > i, .dark .avatar.transparent > span {
+    color: var(--light-primary-font) !important; }
+
+.avatar.action:hover > span, .avatar.action:hover > i {
+    background-color: var(--theme-secondary-background-dark); }
+
+.dark .avatar.action:hover > span, .dark .avatar.action:hover > i {
+    background-color: var(--theme-secondary-background-light); }
+
+.avatar.action:hover:before {
+    background-color: rgba(189, 189, 189, 0.78); }
+
+.dark .avatar.action:hover:before {
+    background-color: rgba(224, 224, 224, 0.45); }
+
+.avatar > span, .avatar > i {
+    color: var(--theme-secondary-font-active); }
 
 /** BADGE */
 
