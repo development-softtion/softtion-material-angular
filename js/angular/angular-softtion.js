@@ -115,7 +115,7 @@
     }]);
 
     function httpFileService ($http, $timeout, $window) {
-        function download(attrs) { console.log(attrs);
+        function download(attrs) { 
             var functionSuccess = function (response) { 
                 var fileBlob = new Blob(
                         [response.data], { type: attrs.type }
@@ -143,7 +143,10 @@
             };
             
             $http.get(
-                attrs.url, { responseType: "arraybuffer" }
+                attrs.url, { 
+                    responseType: "arraybuffer", 
+                    params: attrs["params"] 
+                }
             ).then(functionSuccess, functionError);
         };
         
@@ -168,7 +171,10 @@
             };
             
             $http.get(
-                attrs.url, { responseType: "arraybuffer" }
+                attrs.url, { 
+                    responseType: "arraybuffer", 
+                    params: attrs["params"] 
+                }
             ).then(functionSuccess, functionError);
         };
         
@@ -193,7 +199,10 @@
             };
             
             $http.get(
-                attrs.url, { responseType: "arraybuffer" }
+                attrs.url, { 
+                    responseType: "arraybuffer", 
+                    params: attrs["params"] 
+                }
             ).then(functionSuccess, functionError);
         };
             
