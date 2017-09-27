@@ -2345,7 +2345,8 @@
                         templateUrl: Material.components.Catalog.route,
                         scope: {
                             gallery: "=",
-                            views: "@?"
+                            views: "@?",
+                            clickEfect: "=?"
                         },
                         link: function ($scope, $element) {
                             var $catalog = $element;
@@ -2363,11 +2364,9 @@
                                 widthContent = $content.width();
                                 lengthContent = $content.length; 
                                 $active = angular.element($content[0]).addClass("active");
-                                console.log($active);
                                 min = Math.trunc(lengtViews/2);
                                 max = lengthContent - min;
                                 if($scope.views%2 !== 0) max--;
-                                console.log("min: " + min +"; max: " + max);
                             }
                             
                             function showButtons(index){
@@ -2375,7 +2374,8 @@
                                 $scope.activePrev = (index >= 0);
                             }
                             
-                            function slide(current){
+                            function slide(current, slide){
+                                var $slide = (softtion.isDefined(slide)) ? slide : true;
                                 var $current = angular.element(current);
                                 var index = $current.index();
                                 var _translate = 0;
@@ -2394,7 +2394,8 @@
                                     else if (index > max){
                                         _translate -= widthContent * (max - min);
                                     }
-                                        $container.css("transform","translateX(" + _translate + "px)"); 
+                                    if($slide)
+                                    $container.css("transform","translateX(" + _translate + "px)"); 
                                 }
                                
                             }
@@ -2410,7 +2411,7 @@
                             function choose(e){
                                 var current = e.currentTarget;
                                 if(!angular.element(current).hasClass("active"))
-                                    slide(current);
+                                    slide(current, $scope.clickEfect);
                             }
                             
                             function triggerAction(e, index){

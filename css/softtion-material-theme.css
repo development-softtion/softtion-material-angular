@@ -974,160 +974,22 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** CATALOG **/
 
-.catalog{
-    position: relative;
-    height: auto;
-    width: 100%;
-    overflow: hidden;
-    padding: 0 44px;
-    box-sizing: border-box;
-    background-color: #f5f5f5;
-}
-
 .catalog > .arrow{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 44px;
-    z-index: 2;
-    cursor: pointer;
     background-color: rgba(0,0,0,0.2);
-    opacity: 0;
-}
-
-.catalog:hover > .arrow{
-    opacity: 1;
-}
-
-.catalog > .arrow.next{
-    right: 0;
-}
-
-.catalog > .arrow.prev{
-    left: 0;
-}
-
-.catalog > .arrow:before{
-    font-family: "Material Icons";
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 44px;
-    width: 44px; height: 44px;
     color: rgba(255,255,255,0.6);
 }
 
-.catalog > .arrow.prev:before{
-    content: "keyboard_arrow_left";
-}
-
-.catalog > .arrow.next:before{
-    content: "keyboard_arrow_right";
-}
-
-.catalog > .container{
-    position: relative;
-    width: 100%; height: auto;
-    overflow: unset;
-    margin: 0; padding: 16px 0;
-    display: flex;
-    transition: transform 0.325s cubic-bezier(0.6, 0.0, 0.2, 1);
-    transform: translateX(0);
-}
-
-.catalog > .container > .content{
-    position: relative;
-    top: 0;
-    flex-basis: calc(100% / 5);
-    flex-grow: 1; 
-    flex-shrink: 0;
-    width: 50%;
-    cursor: pointer;
-}
-
-.catalog > .container > .content:before{
-    content: "";
-    display: block;
-    width: 100%;
-    padding-top: 100%;
-}
-
-.catalog > .container > .content > img{
-    display: block;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%; height: auto;
-    transition: width 0.325s cubic-bezier(0.6, 0.0, 0.2, 1);
-}
-
-.catalog > .container > .content.active > img{
-    width: 100%;
-}
-
 .catalog > .container > .content > .detail{
-    position: absolute;
-    opacity: 0;
-    bottom: 0; left: 0;
-    width: 100%;
     background-color: rgba(0,0,0,0.54);
-    transition: opacity 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)
-}
-
-.catalog > .container > .content.active > .detail{
-    opacity: 1;
-}
-
-.catalog > .container > .content > .detail > .primary-title{
-    overflow-y: auto;
-    width: 100%;
-    padding: 24px 16px 16px 16px;
-    box-sizing: border-box;
-}
-
-.catalog > .container > .content > .detail > .primary-title > .content{
-    float: left;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .catalog > .container > .content > .detail > .primary-title > .content > .title,
 .catalog > .container > .content > .detail > .primary-title > .content > .subtitle{
-    display: block;
-    width: 100%;
-    margin: 0px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     color: var(--light-primary-font);
-}
-
-.catalog > .container > .content > .detail > .primary-title > .content > .title{
-    font-size: 24px;
-    line-height: 20px;
-    height: 24px;
-}
-
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle{
-    height: 14px;
-    line-height: 12px;
-    font-size: 14px;
-}
-
-.catalog > .container > .content > .detail > .actions{
-    overflow-y: auto;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 8px 8px;
 }
 
 .catalog > .container > .content > .detail > .actions > button{
     color: var(--light-primary-font);
-    margin-left: 8px;
-}
-
-.catalog > .container > .content > .detail > .actions > button.right{
-    float: right;
 }
 
 /** CHECKBOX */
