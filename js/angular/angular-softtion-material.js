@@ -2304,6 +2304,7 @@
                     var container = softtion.html("div").addClass("container")
                     .addChildren(
                         softtion.html("div").addClass("content")
+                        .addAttribute("ng-click", "choose($event)")
                         .addAttribute("ng-repeat", "photo in gallery")
                         .addChildren(
                             softtion.html("img").addAttribute("ng-src", "{{photo.src}}")
@@ -2350,13 +2351,10 @@
                             var $catalog = $element;
                             var $container = $catalog.find('.container');
                             var $content = undefined;
+                            var $active = undefined;
                             
-                            var matrix = $container.css('transform');
-                            var values = matrix.split('(')[1].split(')')[0].split(',');
-                            var translateX = values[4];
                             var widthContent, lengthContent; 
                             var lengtViews = $scope.views || 3;
-                            
                             var min, max;
                             
                             function initValues(){
@@ -2364,10 +2362,10 @@
                                 $content.css({"flex-basis" : "calc(100% /" + lengtViews + ")"});
                                 widthContent = $content.width();
                                 lengthContent = $content.length; 
-                                angular.element($content[0]).addClass("active");
+                                $active = angular.element($content[0]).addClass("active");
+                                console.log($active);
                                 min = Math.trunc(lengtViews/2);
                                 max = lengthContent - min - 1;
-                                //showButtons(0);
                                 console.log("min: " + min +"; max: " + max);
                             }
                             
@@ -2376,36 +2374,42 @@
                                 $scope.activePrev = (index >= 0);
                             }
                             
-                            function slide(way){
-                                var $active = $container.find('.active');
-                                var index = $active.index();
-                                //showButtons(index);
-                                switch(way){ 
-                                    case("next") :
-                                        if(index >= min && index < max){
-                                            translateX -= widthContent;
-                                            $container.css("transform","translateX(" + translateX + "px)");                                
-                                        }
-                                        if(index < lengthContent - 1)
-                                        $active.removeClass("active").next().addClass("active");
-                                    break;
-                                    case("prev") : 
-                                        if(index > min && index <= max){
-                                            translateX += widthContent;
-                                            $container.css("transform","translateX(" + translateX + "px)");                                
-                                        }
-                                        if(index > 0)
-                                        $active.removeClass("active").prev().addClass("active");
-                                    break;
+                            function slide(current){
+                                var $current = angular.element(current);
+                                var index = $current.index();
+                                var _translate = 0;
+                                showButtons(index);
+                                
+                                if(index >= 0 && index <= lengthContent - 1){
+                                    $current.addClass("active");
+                                    $active.removeClass("active");
+                                    $active = $current;
+                                    if(index >= min && index <= max){
+                                        _translate = widthContent * (min - index);
+                                    }
+                                    else if (index < min){
+                                        _translate = 0;
+                                    }
+                                    else if (index > max){
+                                        _translate -= widthContent * (max - min);
+                                    }
+                                        $container.css("transform","translateX(" + _translate + "px)"); 
                                 }
+                               
                             }
                             
                             function next(){
-                               slide("next");
+                                slide($active.next());
                             }
                             
                             function prev(){
-                               slide("prev");                                
+                                slide($active.prev());                                
+                            }
+                            
+                            function choose(e){
+                                var current = e.currentTarget;
+                                if(!angular.element(current).hasClass("active"))
+                                    slide(current);
                             }
                             
                             function triggerAction(e, index){
@@ -2417,6 +2421,8 @@
                             $scope.next = next;
                             
                             $scope.prev = prev;
+                            
+                            $scope.choose = choose;
                             
                             $scope.triggerAction = triggerAction;
                             
