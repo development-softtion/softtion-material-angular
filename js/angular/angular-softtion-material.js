@@ -2365,7 +2365,8 @@
                                 $active = angular.element($content[0]).addClass("active");
                                 console.log($active);
                                 min = Math.trunc(lengtViews/2);
-                                max = lengthContent - min - 1;
+                                max = lengthContent - min;
+                                if($scope.views%2 !== 0) max--;
                                 console.log("min: " + min +"; max: " + max);
                             }
                             
