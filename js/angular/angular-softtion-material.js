@@ -2297,8 +2297,10 @@
                 name: "catalog",
                 html: function () {
                     var arrowPrev = softtion.html("div").addClass(["arrow", "prev"])
+                        .addAttribute("ng-class", "{hidden : !activePrev}")
                         .addAttribute("ng-click", "prev()");
                     var arrowNext = softtion.html("div").addClass(["arrow", "next"])
+                        .addAttribute("ng-class", "{hidden : !activeNext}")
                         .addAttribute("ng-click", "next()");
 
                     var container = softtion.html("div").addClass("container")
@@ -2335,7 +2337,19 @@
                             )
                             
                         )
+                    )
+                    .addChildren(
+                        softtion.html("div").addClass(["content", "action"])
+                        .addAttribute("ng-click", "clickAction()")
+                        .addChildren(
+                            softtion.html("div").addClass("content")
+                                .addChildren(
+                                softtion.html("p").addClass("title")
+                                .setText("{{titleAction}}")
+                            )
+                        )
                     );
+                        
 
                     return container + arrowPrev + arrowNext;
                 },
@@ -2346,44 +2360,60 @@
                         scope: {
                             gallery: "=",
                             views: "@?",
-                            clickEfect: "=?"
+                            clickEfect: "=?",
+                            clickAction: "=?",
+                            titleAction: "@?"
                         },
                         link: function ($scope, $element) {
+                            $scope.activeNext = true;
+                            $scope.activePrev = false;
+                            $scope.activeAction = false;
+                            
                             var $catalog = $element;
                             var $container = $catalog.find('.container');
                             var $content = undefined;
                             var $active = undefined;
                             
                             var widthContent, lengthContent; 
-                            var lengtViews = $scope.views || 3;
+                            var lengtViews = 0;
                             var min, max;
+                            var firstTime = true;
                             
                             function initValues(){
+                                
+                                $container.css("opacity", 0);
+                                
+                                lengtViews = $scope.views || 3;
+                                if(screen.width < 640) lengtViews = 1;
+                                if(screen.width >= 640 && screen.width <= 961) lengtViews = 3;
+                                
+                                if(!$scope.clickAction) $container.children(".action").remove();
                                 if (!$content) $content = $container.children('.content');
                                 $content.css({"flex-basis" : "calc(100% /" + lengtViews + ")"});
+                                
                                 widthContent = $content.width();
                                 lengthContent = $content.length; 
-                                $active = angular.element($content[0]).addClass("active");
+                                
+                                if(firstTime) angular.element($content[0]).addClass("active");
+                                
+                                $active = $container.children(".active");
                                 min = Math.trunc(lengtViews/2);
                                 max = lengthContent - min;
                                 if($scope.views%2 !== 0) max--;
-                            }
-                            
-                            function showButtons(index){
-                                $scope.activeNext = (index < lengthContent);
-                                $scope.activePrev = (index >= 0);
+                                
+                                slide($active,true);
+                                setTimeout(function(){$container.css("opacity", 1);},400);
+                                firstTime = false;
                             }
                             
                             function slide(current, slide){
-                                var $slide = (softtion.isDefined(slide)) ? slide : true;
                                 var $current = angular.element(current);
                                 var index = $current.index();
                                 var _translate = 0;
-                                showButtons(index);
                                 
                                 if(index >= 0 && index <= lengthContent - 1){
-                                    $current.addClass("active");
                                     $active.removeClass("active");
+                                    $current.addClass("active");
                                     $active = $current;
                                     if(index >= min && index <= max){
                                         _translate = widthContent * (min - index);
@@ -2394,10 +2424,22 @@
                                     else if (index > max){
                                         _translate -= widthContent * (max - min);
                                     }
-                                    if($slide)
-                                    $container.css("transform","translateX(" + _translate + "px)"); 
+                                    slideEfect(_translate, slide);
                                 }
-                               
+                            }
+                            
+                            function slideEfect(value, slide){
+                                var $slide = (softtion.isDefined(slide)) ? slide : true;
+                                if($slide)
+                                $container.css("transform","translateX(" + value + "px)"); 
+                                showButtons();
+                            }
+                            
+                             
+                            function showButtons(){
+                                var index = $active.index();
+                                $scope.activeNext = (index < lengthContent-1);
+                                $scope.activePrev = (index > 0);
                             }
                             
                             function next(){
@@ -2429,6 +2471,8 @@
                             $scope.triggerAction = triggerAction;
                             
                             setTimeout(initValues, 100);
+                            
+                            angular.element(window).resize(initValues);
                         }
                     };
                 }

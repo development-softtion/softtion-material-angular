@@ -3030,6 +3030,7 @@ button.raised:focus:after, button.flat:focus:after {
     height: auto;
     width: 100%;
     overflow: hidden;
+    padding: 0 16px;
     box-sizing: border-box;
 }
 
@@ -3087,7 +3088,7 @@ button.raised:focus:after, button.flat:focus:after {
 .catalog > .container > .content{
     position: relative;
     top: 0;
-    flex-basis: calc(100% / 5);
+    flex-basis: 0;
     flex-grow: 1; 
     flex-shrink: 0;
     width: 50%;
@@ -3176,6 +3177,46 @@ button.raised:focus:after, button.flat:focus:after {
 
 .catalog > .container > .content > .detail > .actions > button.right{
     float: right;
+}
+
+.catalog > .container > .content.action > .content{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%; height: 85%;
+}
+
+.catalog > .container > .content.action.active > .content{
+    width: calc(100% - 4px); 
+    height: calc(100% - 4px);
+}
+
+.catalog > .container > .content.action > .content > .title{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 900;
+    text-align: center;
+}
+
+@media only screen and (max-width : 961px) 
+{
+    .catalog{
+        padding: 0 16px;
+    }
+    
+    .catalog > .arrow{
+        opacity: 1;
+    }
+    
+    .catalog > .arrow.next{
+        right: 8px;
+    }
+
+    .catalog > .arrow.prev{
+        left: 8px;
+    }
 }
 
 /** CHECKBOX */

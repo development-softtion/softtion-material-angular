@@ -992,6 +992,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--light-primary-font);
 }
 
+.catalog > .container > .content.action > .content{
+    border: 2px #424242 dashed;
+    background-color: rgba(255,255,255,0.54);
+}
+
 /** CHECKBOX */
 
 .checkbox > label {
