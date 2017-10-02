@@ -2292,6 +2292,192 @@
                 }]
             },
             
+            Catalog: {
+                route: "softtion/template/catalog.html",
+                name: "catalog",
+                html: function () {
+                    var arrowPrev = softtion.html("div").addClass(["arrow", "prev"])
+                        .addAttribute("ng-class", "{hidden : !activePrev}")
+                        .addAttribute("ng-click", "prev()");
+                    var arrowNext = softtion.html("div").addClass(["arrow", "next"])
+                        .addAttribute("ng-class", "{hidden : !activeNext}")
+                        .addAttribute("ng-click", "next()");
+
+                    var container = softtion.html("div").addClass("container")
+                    .addChildren(
+                        softtion.html("div").addClass("content")
+                        .addAttribute("ng-click", "choose($event)")
+                        .addAttribute("ng-repeat", "photo in gallery")
+                        .addChildren(
+                            softtion.html("img").addAttribute("ng-src", "{{photo.src}}")
+                        )
+                        .addChildren(
+                            softtion.html("div").addClass("detail")
+                            .addChildren(
+                                softtion.html("div").addClass("primary-title")
+                                .addChildren(
+                                    softtion.html("div").addClass("content")
+                                    .addChildren(
+                                        softtion.html("p").addClass("title").setText("{{photo.title}}")
+                                    )
+                                    .addChildren(
+                                        softtion.html("p").addClass("subtitle").setText("{{photo.subtitle}}")
+                                    )
+                                )
+                            )
+                            .addChildren(
+                                softtion.html("div").addClass("actions")
+                                .addAttribute("ng-class", "{hidden: photo.actions.length == 0}")
+                                .addChildren(
+                                    softtion.html("button").addAttribute("ng-repeat", "action in photo.actions")
+                                    .addClass(["{{action.type}}", "right"])
+                                    .setText("{{action.title}}")
+                                    .addAttribute("ng-click", "triggerAction($event, $index)")
+                                )
+                            )
+                            
+                        )
+                    )
+                    .addChildren(
+                        softtion.html("div").addClass(["content", "action"])
+                        .addAttribute("ng-click", "clickAction()")
+                        .addChildren(
+                            softtion.html("div").addClass("content")
+                                .addChildren(
+                                softtion.html("p").addClass("title")
+                                .setText("{{titleAction}}")
+                            )
+                        )
+                    );
+                        
+
+                    return container + arrowPrev + arrowNext;
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Catalog.route,
+                        scope: {
+                            gallery: "=",
+                            views: "@?",
+                            clickEfect: "=?",
+                            clickAction: "=?",
+                            titleAction: "@?"
+                        },
+                        link: function ($scope, $element) {
+                            $scope.activeNext = true;
+                            $scope.activePrev = false;
+                            $scope.activeAction = false;
+                            
+                            var $catalog = $element;
+                            var $container = $catalog.find('.container');
+                            var $content = undefined;
+                            var $active = undefined;
+                            
+                            var widthContent, lengthContent; 
+                            var lengtViews = 0;
+                            var min, max;
+                            var firstTime = true;
+                            
+                            function initValues(){
+                                
+                                $container.css("opacity", 0);
+                                
+                                lengtViews = $scope.views || 3;
+                                if(screen.width < 640) lengtViews = 1;
+                                if(screen.width >= 640 && screen.width <= 961) lengtViews = 3;
+                                
+                                if(!$scope.clickAction) $container.children(".action").remove();
+                                if (!$content) $content = $container.children('.content');
+                                $content.css({"flex-basis" : "calc(100% /" + lengtViews + ")"});
+                                
+                                widthContent = $content.width();
+                                lengthContent = $content.length; 
+                                
+                                if(firstTime) angular.element($content[0]).addClass("active");
+                                
+                                $active = $container.children(".active");
+                                min = Math.trunc(lengtViews/2);
+                                max = lengthContent - min;
+                                if($scope.views%2 !== 0) max--;
+                                
+                                slide($active,true);
+                                setTimeout(function(){$container.css("opacity", 1);},400);
+                                firstTime = false;
+                            }
+                            
+                            function slide(current, slide){
+                                var $current = angular.element(current);
+                                var index = $current.index();
+                                var _translate = 0;
+                                
+                                if(index >= 0 && index <= lengthContent - 1){
+                                    $active.removeClass("active");
+                                    $current.addClass("active");
+                                    $active = $current;
+                                    if(index >= min && index <= max){
+                                        _translate = widthContent * (min - index);
+                                    }
+                                    else if (index < min){
+                                        _translate = 0;
+                                    }
+                                    else if (index > max){
+                                        _translate -= widthContent * (max - min);
+                                    }
+                                    slideEfect(_translate, slide);
+                                }
+                            }
+                            
+                            function slideEfect(value, slide){
+                                var $slide = (softtion.isDefined(slide)) ? slide : true;
+                                if($slide)
+                                $container.css("transform","translateX(" + value + "px)"); 
+                                showButtons();
+                            }
+                            
+                             
+                            function showButtons(){
+                                var index = $active.index();
+                                $scope.activeNext = (index < lengthContent-1);
+                                $scope.activePrev = (index > 0);
+                            }
+                            
+                            function next(){
+                                slide($active.next());
+                            }
+                            
+                            function prev(){
+                                slide($active.prev());                                
+                            }
+                            
+                            function choose(e){
+                                var current = e.currentTarget;
+                                if(!angular.element(current).hasClass("active"))
+                                    slide(current, $scope.clickEfect);
+                            }
+                            
+                            function triggerAction(e, index){
+                                var contentIndex = angular.element(e.currentTarget).parents(".content").index();
+                                var action = $scope.gallery[contentIndex].actions[index].action;
+                                if(action) action();
+                            }
+                            
+                            $scope.next = next;
+                            
+                            $scope.prev = prev;
+                            
+                            $scope.choose = choose;
+                            
+                            $scope.triggerAction = triggerAction;
+                            
+                            setTimeout(initValues, 100);
+                            
+                            angular.element(window).resize(initValues);
+                        }
+                    };
+                }
+            },
+            
             CheckBox: {
                 route: "softtion/template/checkbox.html",
                 name: "checkbox",
