@@ -259,14 +259,28 @@
         };
     })();
     
+    Softtion.prototype.generateUrl = function (url, prefixs) {
+        var urlFinal = url; // Iniciando URL
+        
+        if (this.isArray(prefixs)) {
+            prefixs.forEach(function (prefix) {
+                urlFinal += "/" + prefix;
+            });
+        } else if (this.isString(prefixs)) {
+            urlFinal += "/" + prefixs;
+        } // Se establecio un solo prefijo
+        
+        return urlFinal; // Retornando url establecida
+    };
+    
     window.softtion = new Softtion(); // Agregando softtion como Global
     
-    Softtion.prototype.encrypt = function (value, keyPassword) {
+    Softtion.prototype.encode = function (value, keyPassword) {
         return (typeof CryptoJS === "undefined") ? value :
             CryptoJS.AES.encrypt(value, keyPassword).toString();
     };
     
-    Softtion.prototype.decrypt = function (valueEncrypt, keyPassword) {
+    Softtion.prototype.decode = function (valueEncrypt, keyPassword) {
         return (typeof CryptoJS === "undefined") ? valueEncrypt :
             CryptoJS.AES.decrypt(valueEncrypt, keyPassword).toString(CryptoJS.enc.Utf8);
     };

@@ -7179,12 +7179,12 @@
                         });
                     };
                     
-                    var dialog = new Dialog();
+                    var $dialog = new Dialog();
                     
-                    this.get = function () { return dialog; };
+                    this.get = function () { return $dialog; };
 
                     this.$get = ["$body", function ($bodyElement) { 
-                        $body = $bodyElement; return dialog; 
+                        $body = $bodyElement; return $dialog; 
                     }];
                 }
             },
@@ -7756,43 +7756,6 @@
                         }); // Ocultando progress circular del documento
                     };
                     
-                    ProgressCircular.prototype.refreshInstance = function () {
-                        if (softtion.isUndefined(circularRefresh)) {
-                            circularRefresh = angular.element(
-                                softtion.html("div").
-                                    addClass("refresh-progress-circular").
-                                    addChildren(
-                                        softtion.html("div").addClass(
-                                            ["progress-circular", "indeterminate"]
-                                        ).addChildren(
-                                            softtion.html("svg").
-                                                addAttribute("viewBox", "0 0 32 32").
-                                                addChildren(softtion.html("circle"))
-                                        )
-                                    ).create()
-                            );
-
-                            var appBar = angular.element(".app-bar");
-
-                            (appBar.exists()) ? appBar.append(circularRefresh) :
-                                angular.element(".app-content").append(circularRefresh);
-                        } // Ya se encuentra instanciado
-                        
-                        return this; // Retornando como interfaz fluida
-                    };
-
-                    ProgressCircular.prototype.refreshShow = function () {
-                        executeIfExists(circularRefresh, function () {
-                            circularRefresh.addClass("show"); 
-                        }); // Visualizando progress circular para refrescar
-                    };
-
-                    ProgressCircular.prototype.refreshHide = function () {
-                        executeIfExists(circularRefresh, function () {
-                            circularRefresh.removeClass("show"); 
-                        }); // Ocultando progress circular para refrescar
-                    };
-                    
                     ProgressCircular.prototype.determinate = function (time, round) {
                         executeIfExists(progressCircular, function () {
                             if (progressCircular.hasClass("indeterminate")) {
@@ -7815,6 +7778,39 @@
                         });
                     };
 
+                    ProgressCircular.prototype.showRefresh = function () {
+                        if (softtion.isUndefined(circularRefresh)) {
+                            circularRefresh = angular.element(
+                                softtion.html("div").
+                                    addClass("refresh-progress-circular").
+                                    addChildren(
+                                        softtion.html("div").addClass(
+                                            ["progress-circular", "indeterminate"]
+                                        ).addChildren(
+                                            softtion.html("svg").
+                                                addAttribute("viewBox", "0 0 32 32").
+                                                addChildren(softtion.html("circle"))
+                                        )
+                                    ).create()
+                            );
+
+                            var appBar = angular.element(".app-bar");
+
+                            (appBar.exists()) ? appBar.append(circularRefresh) :
+                                angular.element(".app-content").append(circularRefresh);
+                        } // No se encuentra instanciado en el documento
+                        
+                        executeIfExists(circularRefresh, function () {
+                            circularRefresh.addClass("show"); 
+                        }); // Visualizando progress circular para refrescar
+                    };
+
+                    ProgressCircular.prototype.hideRefresh = function () {
+                        executeIfExists(circularRefresh, function () {
+                            circularRefresh.removeClass("show"); 
+                        }); // Ocultando progress circular para refrescar
+                    };
+
                     var progressCircularProvider = new ProgressCircular();
                     
                     this.$get = function () { return progressCircularProvider; };
@@ -7822,6 +7818,65 @@
                     this.get = function () { return progressCircularProvider; };
                 }
                 
+            },
+            
+            ProgressPane: {
+                name: "$progressPane",
+                method: function () {
+                    var progressPane = undefined,
+                        label = undefined,
+                        $body = undefined;
+                    
+                    var ProgressPane = function () {};
+                    
+                    function createProgressPane() {
+                        var label = softtion.html("label");
+                        
+                        var bar = softtion.html("div").
+                            addClass(["progress-bar", "show", "indeterminate"]);
+                    
+                        var content = softtion.html("div").
+                            addClass("content").
+                            addChildren(label).addChildren(bar);
+                    
+                        return softtion.html("div").addClass("progress-pane").
+                            addChildren(content).create();
+                    }
+
+                    ProgressPane.prototype.show = function (text) {
+                        if (softtion.isUndefined(progressPane)) {
+                            progressPane = angular.element(createProgressPane());
+                            label = progressPane.find("label");
+                            $body.append(progressPane); // Insertando
+                        }
+                        
+                        executeIfExists(progressPane, function () {
+                            label.html(text); // Agregando texto
+                            
+                            if (!progressPane.hasClass("show")) {
+                                $body.addClass("body-overflow-none"); 
+                                progressPane.addClass("show"); // No scroll
+                            } // ProgressPane no se encuentra activo
+                        });
+                    };
+
+                    ProgressPane.prototype.hide = function () {
+                        executeIfExists(progressPane, function () {
+                            if (progressPane.hasClass("show")) {
+                                $body.removeClass("body-overflow-none"); 
+                                progressPane.removeClass("show"); // Scroll
+                            } // ProgressPane se encuentra activo
+                        });
+                    };
+                    
+                    var $progressPane = new ProgressPane();
+                    
+                    this.get = function () { return $progressPane; };
+
+                    this.$get = ["$body", function ($bodyElement) { 
+                        $body = $bodyElement; return $progressPane; 
+                    }];
+                }
             },
             
             Sidenav: {

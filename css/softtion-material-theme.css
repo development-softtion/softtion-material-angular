@@ -940,6 +940,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .card.flat {
     border: 1px solid var(--dark-background-border); }
 
+.dialog > .card {
+    border: none; }
+
 .card > .rich-media > .content > .actions,
 .card > .rich-media > .content > .primary-title {
     background-color: rgba(0, 0, 0, 0.54); }
@@ -2097,6 +2100,20 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .grid-list > .cell > .content > button.action:before {
     background-color: var(--light-ripple); }
+
+/** HEADER */
+
+.header {
+    background-color: var(--light-background); }
+
+.dark .header {
+    background-color: var(--dark-background); }
+
+.header > .detail > .subtitle {
+    color: var(--dark-secondary-font); }
+
+.dark .header > .detail > .subtitle {
+    color: var(--light-secondary-font); }
 
 /** LINK */
 
