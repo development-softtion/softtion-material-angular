@@ -1865,6 +1865,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .form.flat {
     border: 1px solid var(--dark-background-border); }
 
+.form > .header {
+    background-color: transparent; }
+
 .form > .header > .detail > .title.theme-primary {
     color: var(--theme-primary-font); }
 

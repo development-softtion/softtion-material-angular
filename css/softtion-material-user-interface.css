@@ -5173,6 +5173,10 @@ button.raised:focus:after, button.flat:focus:after {
 .form > .header > .nav-icon > button.action:before {
     left: calc(50% - 8px); }
 
+.form > .header > .detail {
+    float: initial;
+    box-sizing: initial; }
+
 .form > .header > .detail > .title, 
 .form > .header > .detail > .subtitle {
     display: block;
