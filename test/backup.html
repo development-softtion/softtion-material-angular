@@ -444,15 +444,62 @@
         </div>
     </li>
 </ul>
+    
+<!-- AUTOCOMPLETE RECORD -->
+<div class="autocomplete-record small" label="Autocomplete test" changed-event="xd($selected)"
+    ng-model="friend" suggestions="friends" key-title="name" key-subtitle="email" key-img="img"></div>
 
 <!-- CATALOG -->
-<!-- views: cantidad de im·genes a mostrar -->
-<!-- gallery: gallerÌa de im·genes en el controlador -->
-<!-- title-action: tÌtulo de opciÛn punteada al final -->
-<!-- click-action: acciÛn a ejectuar al dar click en opciÛn punteada al final -->
+<!-- views: cantidad de imÔøΩgenes a mostrar -->
+<!-- gallery: gallerÔøΩa de imÔøΩgenes en el controlador -->
+<!-- title-action: tÔøΩtulo de opciÔøΩn punteada al final -->
+<!-- click-action: acciÔøΩn a ejectuar al dar click en opciÔøΩn punteada al final -->
 <!-- click-efect: boolean, valor predefinido true -->
 <!-- click-efect: determina si se realiza el efecto slide cuando se selecciona imagen con click -->
  <div class="catalog" views="5" gallery="catalogGallery" 
     title-action="Ver todas" click-action="showAll"
     click-efect="false">
+</div>
+
+
+<!-- BOTTOM NAVIGATION -->
+<div id="views" class="views-bottom-navigation">
+    <div id="descripcion" class="content">
+
+    </div>
+    <div id="construccion" class="content">
+
+    </div>
+    <div id="estadisticas" class="content">
+
+    </div>
+</div>
+
+<div class="bottom-navigation" views="#views">
+    <ul class="content">
+        <li view="#descripcion">
+            <div class="content">
+                <i>home</i>
+                <p class="title">Descripci√≥n</p>
+            </div>
+        </li>
+        <li view="#construccion">
+            <div class="content">
+                <i>build</i>
+                <p class="title">Construcci√≥n</p>
+            </div>
+        </li>
+        <li view="#runas">
+            <div class="content">
+                <i>device_hub</i>
+                <p class="title">Runas</p>
+            </div>
+        </li>
+        <li view="#estadisticas">
+            <div class="content">
+                <i>equalizer</i>
+                <p class="title">Estad√≠sticas</p>
+            </div>
+        </li>
+    </ul>
 </div>

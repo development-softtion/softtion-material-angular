@@ -101,7 +101,15 @@
                 if (softtion.isDefined(newValue)) {
                     $scope.valueInput = ($scope.inputActive) ? newValue : ""; 
                 } // Limpiando texto en input del componente
-            } // Componente iniciado
+            } // Componente ya se ha iniciado (enfocado)
+        });
+        
+        $scope.$watch(function () {
+            return $scope.valueInput;
+        }, function (newValue, oldValue) { 
+            if (newValue !== oldValue) {
+                $scope.inputEvent({$value: newValue});
+            } // Input a cambiado su valor
         });
 
         // Atributos de control
@@ -294,7 +302,7 @@
             });
 
             if (!validate) {
-                    $event.preventDefault();
+                $event.preventDefault();
             } // Cancelando el evento
 
             if (!isNaN($scope.maxLength)) {
@@ -376,13 +384,21 @@
                 } // Limpiando texto en input del componente
             } // Componente iniciado
         });
+        
+        $scope.$watch(function () {
+            return $scope.valueArea;
+        }, function (newValue, oldValue) { 
+            if (newValue !== oldValue) {
+                $scope.areaEvent({$value: newValue});
+            } // Input a cambiado su valor
+        });
 
         // Atributos de control
         $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
 
         $scope.valueArea = ""; $scope.valueReal = false;
         $scope.areaActive = false; $scope.valueHidden = "";
-        $scope.areaStart = false;
+        $scope.areaStart = false; $scope.pressEnter = false;
 
         if (softtion.isString($scope.value)) { 
             $element.addClass("active"); 
@@ -454,8 +470,10 @@
         $scope.heightStyle = function () {
             $scope.valueHidden = ($scope.valueReal) ? 
                 $scope.valueArea : $scope.value;
-
-            return "height: " + hidden.height() + "px;";
+                
+            return ($scope.pressEnter) ?
+                "height: " + (hidden.height() + 18) + "px;" :
+                "height: " + hidden.height() + "px;";
         };
 
         $scope.isActiveLabel = function () {
@@ -508,6 +526,7 @@
             validateTextModel(true); $element.removeClass("active");
 
             $scope.valueReal = false; $scope.areaActive = false; 
+            $scope.pressEnter = false;
 
             callbackFnEvent($event, $scope.blurEvent); // Evento blur
 
@@ -535,9 +554,12 @@
                     $event.preventDefault();
                 } // Cancelando el evento
             } // Se definío numero correctamente
+            
+            $scope.pressEnter = false;
 
             if ($event.keyCode === 13) {
                 callbackFnEvent($event, $scope.enterEvent);
+                $scope.pressEnter = true; // Presiono enter
             } else {
                 callbackFnEvent($event, $scope.keypressEvent);
             } // Hay un cambio en el valor
@@ -728,6 +750,7 @@
                             helperText: "@",
                             helperPermanent: "=?",
                             searchMode: "=?",
+                            rows: "=?",
                             
                             // Eventos
                             changedEvent: "&",
@@ -773,6 +796,11 @@
                                     $scope.valueInput = ""; 
                                 } // Se limpio componente AutoComplete
                             });
+                            
+                            if (softtion.isNumber($scope.rows)) {
+                                var rows = ((parseInt($scope.rows) * 48) + 24) + "px";
+                                propertyStyle("--maxheight-autocomplete", rows);
+                            } // Se ha definido núemro de filas a mostrar
                             
                             $scope.getValueSuggestion = function (suggestion) {
                                 return !(softtion.isString($scope.keyDescription)) ? 
@@ -1084,6 +1112,7 @@
                             helperText: "@",
                             helperPermanent: "=?",
                             searchMode: "=?",
+                            rows: "=?",
                             
                             // Eventos
                             changedEvent: "&",
@@ -1127,6 +1156,11 @@
                                     $scope.valueInput = ""; 
                                 } // Se limpio componente AutoComplete
                             });
+                            
+                            if (softtion.isNumber($scope.rows)) {
+                                var rows = ((parseInt($scope.rows) * 56) + 28) + "px";
+                                propertyStyle("--maxheight-autocomplete-record", rows);
+                            } // Se ha definido núemro de filas a mostrar
                             
                             $scope.getValueSuggestion = function (suggestion) {
                                 return !(softtion.isString($scope.keyTitle)) ? 
@@ -1445,7 +1479,7 @@
                                         viewActive.removeClass("opacity").removeClass("active");
                                     } // Ocultando componente activo
                                     
-                                    view.addClass("active").addClass("opacity-bottom");
+                                    view.addClass("active");
                                 } // Componente exite y esta oculto
                                 
                                 var effect = rippleBox.find(".effect"); rippleBox.addClass("show"); 
@@ -4243,7 +4277,8 @@
                             blurEvent: "&",
                             focusEvent: "&",
                             keyupEvent: "&",
-                            keypressEvent: "&"
+                            keypressEvent: "&",
+                            areaEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineAreaComponent($scope, $element);
@@ -4797,7 +4832,7 @@
                         setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
 
                     var list = softtion.html("ul").
-                        addAttribute("ng-class", "{active: showList, show: !showList && startShow}").
+                        addAttribute("ng-class", "{show: showList, hide: !showList && startShow}").
                         addChildren(
                             softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                                 addAttribute("ng-if", "clearSuggestion").
@@ -4835,6 +4870,7 @@
                             iconDescription: "@",
                             helperText: "@",
                             helperPermanent: "=?",
+                            rows: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -4849,6 +4885,13 @@
                                 value = $element.find(".value"), list = $element.find("ul");
                             
                             insertIconDescription($scope, input); // Icono Descriptivo
+                            
+                            if (softtion.isNumber($scope.rows)) {
+                                var rows = ((parseInt($scope.rows) * 48) + 24) + "px";
+                                propertyStyle("--maxheight-select", rows);
+                                
+                                $element.addClass("height-costum"); // Clase
+                            } // Se ha definido número de filas a mostrar en la Lista
                             
                             var clickComponent = function (target) {
                                 return (label.is(target) || input.is(target) || value.is(target) || list.is(target))
@@ -5013,7 +5056,7 @@
                         setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
 
                     var listSelect = softtion.html("ul").
-                        addAttribute("ng-class", "{active: showList, show: !showList && startShow}").
+                        addAttribute("ng-class", "{show: showList, hide: !showList && startShow}").
                         addChildren(
                             softtion.html("li").addClass(["truncate"]).
                                 addAttribute("ng-repeat","suggestion in suggestions").
@@ -5059,6 +5102,7 @@
                             iconDescription: "@",
                             helperText: "@",
                             helperPermanent: "=?",
+                            rows: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -5073,6 +5117,13 @@
                                 value = $element.find(".value"), list = $element.find("ul");
                         
                             insertIconDescription($scope, input); // Icono Descriptivo
+                            
+                            if (softtion.isNumber($scope.rows)) {
+                                var rows = ((parseInt($scope.rows) * 48) + 24) + "px";
+                                propertyStyle("--maxheight-select", rows);
+                                
+                                $element.addClass("height-costum"); // Clase
+                            } // Se ha definido número de filas a mostrar en la Lista
                         
                             // Atributos
                             var describeValues = Material.components.SelectMultiple.describeValues;
@@ -5781,7 +5832,8 @@
                             blurEvent: "&",
                             focusEvent: "&",
                             keyupEvent: "&",
-                            keypressEvent: "&"
+                            keypressEvent: "&",
+                            areaEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineAreaComponent($scope, $element);
@@ -5886,7 +5938,8 @@
                             enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
-                            iconEvent: "&"
+                            iconEvent: "&",
+                            inputEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineInputComponent($scope, $element, Material.components.TextBox);
@@ -5976,7 +6029,8 @@
                             blurEvent: "&",
                             focusEvent: "&",
                             keyupEvent: "&",
-                            keypressEvent: "&"
+                            keypressEvent: "&",
+                            areaEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineAreaComponent($scope, $element);
@@ -6082,7 +6136,8 @@
                             enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
-                            iconEvent: "&"
+                            iconEvent: "&",
+                            inputEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineInputComponent($scope, $element, Material.components.TextField);
@@ -6188,7 +6243,8 @@
                             enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
-                            iconEvent: "&"
+                            iconEvent: "&",
+                            inputEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineInputComponent($scope, $element, Material.components.TextFieldBordered);
@@ -6242,7 +6298,7 @@
                     var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
                         setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
 
-                    var textHidden = softtion.html("p").
+                    var textHidden = softtion.html("div").
                         addClass("textarea-hidden").setText("{{valueHidden}}");
                     
                     content.addChildren(textArea).addChildren(lineShadow).
@@ -6280,7 +6336,8 @@
                             focusEvent: "&",
                             enterEvent: "&",
                             keypressEvent: "&",
-                            keyupEvent: "&"
+                            keyupEvent: "&",
+                            areaEvent: "&"
                         },
                         link: function ($scope, $element) {
                             defineAreaComponent($scope, $element);

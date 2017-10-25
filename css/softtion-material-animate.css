@@ -648,11 +648,33 @@
 @-webkit-keyframes closeSelect {
     0% {
         max-width: 100%;
-        max-height: 288px; 
+        max-height: 288px;
         opacity: 1; }
     100% {
         max-width: 100%;
         max-height: 288px;  
+        opacity: 0; }
+}
+
+@keyframes closeSelectHeightCostum {
+    0% {
+        max-width: 100%;
+        max-height: var(--maxheight-select);
+        opacity: 1; }
+    100% {
+        max-width: 100%;
+        max-height: var(--maxheight-select);
+        opacity: 0; }
+}
+
+@-webkit-keyframes closeSelectHeightCostum {
+    0% {
+        max-width: 100%;
+        max-height: var(--maxheight-select);
+        opacity: 1; }
+    100% {
+        max-width: 100%;
+        max-height: var(--maxheight-select);
         opacity: 0; }
 }
 
