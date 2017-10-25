@@ -1792,6 +1792,38 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .filechooser-multiple > .action-add > i {
     color: var(--dark-secondary-font); }
 
+/** FILECHOOSER PERFIL */
+
+.filechooser-perfil {
+    background-color: var(--light-background-statusbar); }
+
+.dark .filechooser-perfil {
+    background-color: var(--dark-background-component); }
+
+.filechooser-perfil > i {
+    color: var(--dark-secondary-font); }
+
+.dark .filechooser-perfil > i {
+    color: var(--light-primary-font); }
+
+.filechooser-perfil > .actions {
+    background-color: rgba(0, 0, 0, 0.48); }
+
+.dark .filechooser-perfil > .actions {
+    background-color: rgba(255, 255, 255, 0.64); }
+
+.filechooser-perfil > .actions > button {
+    color: var(--light-primary-font); }
+
+.dark .filechooser-perfil > .actions > button {
+    color: var(--dark-secondary-font); }
+
+.filechooser-perfil > .actions > button:before {
+    background-color: var(--light-ripple); }
+
+.dark .filechooser-perfil > .actions > button:before {
+    background-color: var(--dark-ripple); }
+
 /** FLEXIBLE BOX */
 
 .flexible-box > .banner:before {
@@ -1865,7 +1897,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .dark .form.flat {
     border: 1px solid var(--dark-background-border); }
 
-.form > .header {
+.form > .header, .dark .form > .header {
     background-color: transparent; }
 
 .form > .header > .detail > .title.theme-primary {

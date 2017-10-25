@@ -4024,6 +4024,131 @@
                 }]
             },
             
+            FilechooserPerfil: {
+                route: "softtion/template/filechooser-perfil.html",
+                name: "filechooserPerfil",
+                html: function () {
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "file");
+                
+                    var icon = softtion.html("i").setText("person").
+                        addAttribute("ng-hide", "isImgDefine()");
+                
+                    var img = softtion.html("img", false).
+                        addAttribute("ng-src", "{{ngSrc}}").
+                        addAttribute("ng-hide", "!isImgDefine()");
+                    
+                    var actions = softtion.html("div").addClass("actions").
+                        addChildren(
+                            softtion.html("button").addClass("action").
+                                addChildren(
+                                    softtion.html("i").setText("folder").
+                                        addAttribute("ng-click", "selectFile()")
+                                )
+                        ).addChildren(
+                            softtion.html("button").addClass("action").
+                                addChildren(
+                                    softtion.html("i").setText("delete").
+                                        addAttribute("ng-click", "deleteFile()")
+                                )
+                        );
+                    
+                    return input + img + icon + actions; // Componente FileChooser
+                },
+                directive: ["$timeout", "$sce", "$softtionMaterial", function ($timeout, $sce, $softtionMaterial) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.FilechooserPerfil.route,
+                        scope: {
+                            file: "=ngModel",
+                            ngDisabled: "=?",
+                            ngSrc: "=?",
+                            
+                            changedEvent: "&"
+                        },
+                        link: function ($scope, $element) {
+                            var fileInput = $element.find("input[type=file]"),
+                                icon = $element.children("i"); 
+                            
+                            $scope.file = undefined; // Archivos seleccionado
+                            
+                            var imgTypes = [
+                                "image/jpeg", 
+                                "image/jpg", 
+                                "image/png", 
+                                "image/gif", 
+                                "image/svg+xml"
+                            ];
+                            
+                            var processFile = function (file) {
+                                var reader = new FileReader();
+                                
+                                reader.onloadstart = function ($event) {
+                                    // En Inicio
+                                };  
+        
+                                reader.onprogress = function ($event) {
+                                    // En progreso
+                                };
+        
+                                reader.onload = function ($event) {
+                                    $scope.$apply(function () {
+                                        var fileResult = $event.target.result; 
+                                        $scope.ngSrc = fileResult; // IMG
+                                        
+                                        file["base64"] = fileResult; $scope.file = file;
+                                        
+                                        $scope.changedEvent({$file: file});
+                                    });
+                                };
+                                
+                                reader.onerror = function (event) {
+                                    // Error
+                                };
+
+                                reader.onabort = function (event) {
+                                    // Cancelar
+                                };
+                                
+                                $timeout(function () { reader.readAsDataURL(file); }, 250);
+        
+                                return reader; // Retornando procesador de Archivo
+                            };
+                            
+                            $element.resize(function () {
+                                var fontSize = $element.width() - 48; // Tamaño
+                                
+                                icon.css("font-size", fontSize + "px");
+                                icon.css("line-height", fontSize + "px");
+                            });
+                            
+                            fileInput.change(function ($event) {
+                                var files = fileInput[0].files; // Archivos
+                                
+                                if (files.length) {
+                                    console.log(files[0].type); 
+                                    
+                                    if (imgTypes.indexOf(files[0].type) !== -1) {
+                                        processFile(files[0]);
+                                    } // El archivo es una imagen
+                                } // Se cambio ha seleccionado un archivo
+                            });
+                            
+                            $scope.selectFile = function () { fileInput.click(); };
+                            
+                            $scope.isImgDefine = function () {
+                                return softtion.isString($scope.ngSrc);
+                            };
+                            
+                            $scope.deleteFile = function () {
+                                $scope.ngSrc = ""; $scope.file = undefined;
+                                $scope.changedEvent({$file: undefined});
+                            };
+                        }
+                    };
+                }]
+            },
+            
             FlexibleBox: {
                 name: "flexibleBox",
                 backgroundColor: function () {
