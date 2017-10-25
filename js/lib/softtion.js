@@ -92,6 +92,10 @@
         return ((this.isDefined(string)) && (typeof string === "string") && (string !== ""));
     };
     
+    Softtion.prototype.isNumber = function (number) {
+        return ((this.isDefined(number)) && (!isNaN(number)));
+    };
+    
     Softtion.prototype.isjQuery = function (object) {
         return ((this.isDefined(object)) && (object instanceof jQuery));
     };

@@ -50,6 +50,10 @@
     
     --time-progress-circular: 5s;
     --round-progress-circular: 990deg;
+    
+    --maxheight-autocomplete: 240px;
+    --maxheight-autocomplete-record: 252px;
+    --maxheight-select: 288px;
 }
 
 [draggable] {
@@ -1163,7 +1167,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 
 .autocomplete > .content > ul.active {
     max-width: 100%;
-    max-height: 240px; }
+    max-height: var(--maxheight-autocomplete); }
 
 .autocomplete > .content > ul > li {
     padding: 0px 16px;
@@ -1337,7 +1341,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 
 .autocomplete-record > .content > ul.active {
     max-width: 100%;
-    max-height: 252px; }
+    max-height: var(--maxheight-autocomplete-record); }
 
 .autocomplete-record > .content > ul > li {
     padding: 0px 16px;
@@ -7021,7 +7025,7 @@ p.link > a {
             transition: max-height 200ms 0ms var(--deceleration-curve), 
                 max-width 200ms 0ms var(--deceleration-curve); }
 
-.select > .content > ul.show {
+.select > .content > ul.hide {
     -webkit-transition: none;
        -moz-transition: none;
             transition: none;
@@ -7029,10 +7033,18 @@ p.link > a {
        -moz-animation: closeSelect 200ms var(--acceleration-curve);  
             animation: closeSelect 200ms var(--acceleration-curve); }
 
-.select > .content > ul.active {
+.select.height-costum > .content > ul.hide {
+    -webkit-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);
+       -moz-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);  
+            animation: closeSelectHeightCostum 200ms var(--acceleration-curve); }
+
+.select > .content > ul.show {
     max-width: 100%;
-    max-height: 288px; 
+    max-height: 288px;
     opacity: 1; }
+
+.select.height-costum > .content > ul.show {
+    max-height: var(--maxheight-select); }
 
 .select > .content > ul > li {
     padding: 0px 16px;
@@ -7185,7 +7197,7 @@ p.link > a {
             transition: max-height 200ms 0ms var(--deceleration-curve), 
                 max-width 200ms 0ms var(--deceleration-curve); }
 
-.select-multiple > .content > ul.show {
+.select-multiple > .content > ul.hide {
     -webkit-transition: none;
        -moz-transition: none;
             transition: none;
@@ -7193,10 +7205,18 @@ p.link > a {
        -moz-animation: closeSelect 200ms var(--acceleration-curve); 
             animation: closeSelect 200ms var(--acceleration-curve); }
 
-.select-multiple > .content > ul.active {
+.select-multiple.height-costum > .content > ul.hide {
+    -webkit-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);
+       -moz-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);  
+            animation: closeSelectHeightCostum 200ms var(--acceleration-curve); }
+
+.select-multiple > .content > ul.show {
     max-width: 100%;
     max-height: 288px;
     opacity: 1; }
+
+.select-multiple.height-costum > .content > ul.show {
+    max-height: var(--maxheight-select); }
 
 .select-multiple > .content > ul > li {
     padding: 0px 16px;
@@ -8170,11 +8190,11 @@ p.link > a {
 
 .stepper-mobile {
     position: fixed;
-    z-index: 4;
     left: 0px;
     bottom: 0px;
     width: 100%;
     height: 48px;
+    z-index: 4;
     will-change: transform, -webkit-transform, -moz-transform;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
@@ -9882,6 +9902,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: 100%;
     border: none; }
 
+/** VIEWS */
+
+.views {
+    position: relative;
+    width: 100%; }
+
+.views > .content {
+    display: none;
+    width: 100%; } 
+
+.views > .content.active {
+    display: block;
+    -webkit-animation: fadeIn 120ms var(--sharp-curve);
+       -moz-animation: fadeIn 120ms var(--sharp-curve);
+            animation: fadeIn 120ms var(--sharp-curve); }
+
 /** VIEWS TAB */
 
 .views-content-tab {
@@ -9916,20 +9952,14 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .views-bottom-navigation {
     position: relative;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden; }
+    width: 100%; }
 
 .views-bottom-navigation > .content {
     display: none;
-    width: 100%;
-    overflow-y: auto;
-    -webkit-animation-duration: 120ms;
-       -moz-animation-duration: 120ms;
-            animation-duration: 120ms; 
-    -webkit-animation-timing-function: var(--sharp-curve);
-       -moz-animation-timing-function: var(--sharp-curve);
-            animation-timing-function: var(--sharp-curve); }
+    width: 100%; }
 
 .views-bottom-navigation > .content.active {
-    display: block; }
+    display: block;
+    -webkit-animation: fadeIn 120ms var(--sharp-curve);
+       -moz-animation: fadeIn 120ms var(--sharp-curve);
+            animation: fadeIn 120ms var(--sharp-curve); }
