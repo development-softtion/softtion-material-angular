@@ -2303,6 +2303,20 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .progress-circular > svg > circle {
     stroke: var(--theme-secondary-background); }
 
+/** PROGRESS PANE */
+
+.progress-pane {
+    background-color: rgba(0, 0, 0, 0.64); }
+
+.dark .progress-pane {
+    background-color: rgba(255, 255, 255, 0.64); }
+
+.progress-pane > .content > label {
+    color: var(--light-primary-font); }
+
+.dark .progress-pane > .content > label {
+    color: var(--dark-primary-font); }
+
 /** RADIOBUTTON */
 
 .radiobutton > label {

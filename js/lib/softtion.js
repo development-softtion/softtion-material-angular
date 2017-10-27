@@ -17,6 +17,8 @@
     
     var Softtion = function () { }; // Clase Softtion
     
+    var BreakException = {};
+    
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
     Softtion.prototype.MONTHS_OF_YEAR = "NAME_MONTHS_OF_YEAR";
@@ -156,15 +158,28 @@
     
     Softtion.prototype.required = function (object, attributes) {
         if (this.isArray(attributes)) {
-            var success = true, self = this; // Objeto Softtion
+            var keyError = undefined, 
+                response = {},
+                self = this; // Objeto Softtion
             
-            attributes.forEach(function (key) {
-                success = success && self.isDefined(self.findKey(object, key));
-            });
+            try {
+                attributes.forEach(function (key) {
+                    keyError = key; // Clave a validar
+                    
+                    if (!self.isDefined(self.findKey(object, key)))
+                        throw BreakException;
+                });
+                
+                response = { success: true };
+            } catch (ex) {
+                response = { success: false, key: keyError };
+            }
             
-            return success; // Resultado de la validación
+            return response; // Respuesta del proceso
         } else {
-            return this.isDefined(this.findKey(object, attributes)); }
+            return (this.isDefined(this.findKey(object, attributes))) ?
+                { success: true } : { success: false, key: attributes };
+        }
     };
     
     Softtion.prototype.cleanValues = function (object) {

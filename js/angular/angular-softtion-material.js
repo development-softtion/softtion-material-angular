@@ -950,10 +950,10 @@
                                     } // La selección realizada es diferente a la anterior
                                 } else {
                                     input.focus();  // Enfoncando componente de Texto
-
+                                    
                                     $scope.changedEvent({
                                         $nameEvent: "selected", 
-                                        $old: $scope.old, $selected: $scope.select
+                                        $old: $scope.old, $selected: suggestion
                                     });
                                 }
                             };
@@ -962,9 +962,10 @@
                                 var value = $scope.functionDescription({$suggestion: suggestion});
                                 
                                 if (softtion.isUndefined(value)) {
-                                    value = !(softtion.isString($scope.keyDescription)) ? 
-                                        JSON.stringify(suggestion) :
-                                        softtion.findKey(suggestion, $scope.keyDescription);
+                                    value = softtion.isString(suggestion) ? suggestion :
+                                        !(softtion.isString($scope.keyDescription)) ? 
+                                            JSON.stringify(suggestion) :
+                                            softtion.findKey(suggestion, $scope.keyDescription);
                                 } // Se ha definido función para describir contenido
 
                                 // Valor digitado para filtrar

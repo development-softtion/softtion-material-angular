@@ -149,8 +149,19 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     src: url("fonts/Material-Design-Icons.woff2") format("woff2"); }
 
+@font-face {
+    font-family: "Social Icons";
+    font-style: normal;
+    font-weight: 400;
+    src: url("fonts/Social-Icons.otf") format("opentype"); }
+
 .material-icon, i {
-    font-family: "Material Icons";
+    font-family: "Material Icons"; }
+
+.social-icon, socicon {
+    font-family: "Social Icons"; }
+
+.material-icon, i, .social-icon, socicon {
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -6679,6 +6690,39 @@ p.link > a {
        -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
             animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
+/** PROGRESS PANE */
+
+.progress-pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 24;
+    display: none; }
+
+.progress-pane.show {
+    display: block; }
+
+.progress-pane > .content {
+    position: absolute;
+    top: calc(50% - 16px);
+    left: 10%;
+    width: 80%; }
+
+.progress-pane > .content > label {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 8px; }
+
 /** RADIOBUTTON */
 
 .radiobutton {
@@ -9683,7 +9727,8 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .toolbar > .logo {
     width: 100%;
     margin: 8px 0px;
-    height: 40px; }
+    height: 40px;
+    margin-left: 16px; }
 
 .toolbar > .title ~ .logo, .toolbar > .detail ~ .logo {
     display: none; }
@@ -9770,6 +9815,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     max-height: inherit;
     line-height: inherit; }
 
+.toolbar > .tabs + .actions {
+    margin-left: 8px; }
+
 .toolbar > .actions > button.action {
     padding: 16px 12px;
     box-sizing: content-box;
@@ -9834,6 +9882,14 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
         height: 48px;
         margin: 8px 4px; }
 }
+
+.toolbar > .tabs {
+    height: inherit; 
+    line-height: inherit; }
+
+.toolbar > .tabs > .tab {
+    height: inherit; 
+    line-height: inherit; }
 
 /** TOOLTIP */
 
