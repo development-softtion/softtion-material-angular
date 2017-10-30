@@ -398,7 +398,9 @@
 
         $scope.valueArea = ""; $scope.valueReal = false;
         $scope.areaActive = false; $scope.valueHidden = "";
-        $scope.areaStart = false; $scope.pressEnter = false;
+        $scope.areaStart = false; // Area inicializado
+        
+        $scope.pressEnter = false; $scope.countEnter = 0;
 
         if (softtion.isString($scope.value)) { 
             $element.addClass("active"); 
@@ -471,8 +473,10 @@
             $scope.valueHidden = ($scope.valueReal) ? 
                 $scope.valueArea : $scope.value;
                 
+            var heightEnter = $scope.countEnter * 18;
+                
             return ($scope.pressEnter) ?
-                "height: " + (hidden.height() + 18) + "px;" :
+                "height: " + (hidden.height() + heightEnter) + "px;" :
                 "height: " + hidden.height() + "px;";
         };
 
@@ -555,13 +559,24 @@
                 } // Cancelando el evento
             } // Se definío numero correctamente
             
-            $scope.pressEnter = false;
+            $scope.pressEnter = false; // No se ha presionado enter
 
             if ($event.keyCode === 13) {
+                var length = $scope.valueArea.length,
+                    cursorPosition = area.getCursorPosition();
+                
+                if (cursorPosition === 0) {
+                    $event.preventDefault();
+                } // Esta posicionado al comienzo del texto
+                
+                if (length <= cursorPosition) {
+                    $scope.pressEnter = true; $scope.countEnter++;
+                } // No se encuentra al final de Elemento
+            
                 callbackFnEvent($event, $scope.enterEvent);
-                $scope.pressEnter = true; // Presiono enter
             } else {
-                callbackFnEvent($event, $scope.keypressEvent);
+                $scope.countEnter = 0; // Se reinicia el contador
+                callbackFnEvent($event, $scope.keypressEvent); 
             } // Hay un cambio en el valor
         };
 
@@ -570,7 +585,7 @@
             if ($scope.keyDisabled) { return; } 
 
             validateTextModel(false); // Validando campo
-
+            
             callbackFnEvent($event, $scope.keyupEvent);
         };
 
@@ -4076,15 +4091,25 @@
                     var actions = softtion.html("div").addClass("actions").
                         addChildren(
                             softtion.html("button").addClass("action").
+                                addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
                                     softtion.html("i").setText("folder").
                                         addAttribute("ng-click", "selectFile()")
                                 )
                         ).addChildren(
                             softtion.html("button").addClass("action").
+                                addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
                                     softtion.html("i").setText("delete").
                                         addAttribute("ng-click", "deleteFile()")
+                                )
+                        ).addChildren(
+                            softtion.html("button").addClass("action").
+                                addAttribute("ng-hide", "!saveEnabled").
+                                addAttribute("ng-disabled", "ngDisabled").
+                                addChildren(
+                                    softtion.html("i").setText("save").
+                                        addAttribute("ng-click", "saveFile()")
                                 )
                         );
                     
@@ -4098,13 +4123,15 @@
                             file: "=ngModel",
                             ngDisabled: "=?",
                             ngSrc: "=?",
+                            saveEnabled: "=?",
                             
-                            changedEvent: "&"
+                            changedEvent: "&",
+                            saveEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
                                 icon = $element.children("i"); 
-                            
+                        
                             $scope.file = undefined; // Archivos seleccionado
                             
                             var imgTypes = [
@@ -4177,7 +4204,14 @@
                             
                             $scope.deleteFile = function () {
                                 $scope.ngSrc = ""; $scope.file = undefined;
+                                fileInput[0].value = "";
                                 $scope.changedEvent({$file: undefined});
+                            };
+                            
+                            $scope.saveFile = function () {
+                                if (softtion.isDefined($scope.file)) {
+                                    $scope.saveEvent({$file: $scope.file});
+                                } // Hay una imagen seleccionada
                             };
                         }
                     };

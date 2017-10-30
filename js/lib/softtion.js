@@ -156,6 +156,15 @@
         delete object[key]; // Eliminando parametro del objeto
     };
     
+    Softtion.prototype.nl2br = function (str, is_xhtml) {
+        if (this.isString(str)) {
+            var breakTag = (this.parseBoolean(is_xhtml)) ? "<br />" : "<br>",
+                regex = /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g;
+        
+            return (str).replace(regex, '$1' + breakTag + '$2');
+        } // Hay un texto establecido para realizar el cambio de etiqueta
+    };
+    
     Softtion.prototype.required = function (object, attributes) {
         if (this.isArray(attributes)) {
             var keyError = undefined, 
@@ -180,10 +189,6 @@
             return (this.isDefined(this.findKey(object, attributes))) ?
                 { success: true } : { success: false, key: attributes };
         }
-    };
-    
-    Softtion.prototype.cleanValues = function (object) {
-        jQuery.each(object, function (key) { object[key] = undefined; });
     };
     
     Softtion.prototype.leadingChar = function (word, character, size, option) {

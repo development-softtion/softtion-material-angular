@@ -1033,6 +1033,18 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
         left: 256px; 
         width: calc(100% - 256px); }
     
+    .app-body > .sidenav.temporary ~ .app-content {
+        left: 0px; 
+        width: 100%; }
+    
+    .app-body > .sidenav.temporary.show ~ .app-content {
+        left: 320px; 
+        width: calc(100% - 320px); }
+    
+    .app-body > .sidenav.condense.temporary.show ~ .app-content {
+        left: 256px; 
+        width: calc(100% - 256px); }
+    
     body.body-overflow-none-sidenav > .sidenav.permanent ~ .app-body > .app-content,
     body.body-overflow-none-sidenav > .sidenav.persistent ~ .app-body > .app-content,
     body.body-overflow-none-sidenav > .app-body > .sidenav ~ .app-content {
@@ -1042,6 +1054,14 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 @media only screen and (min-width : 721px) and (max-width : 960px) {
     
     .app-body > .sidenav ~ .app-content {
+        left: 256px; 
+        width: calc(100% - 256px); }
+    
+    .app-body > .sidenav.temporary ~ .app-content {
+        left: 0px; 
+        width: 100%; }
+    
+    .app-body > .sidenav.temporary.show ~ .app-content {
         left: 256px; 
         width: calc(100% - 256px); }
     
@@ -2180,9 +2200,10 @@ button.raised:focus:after, button.flat:focus:after {
 
 .button-group {
     position: relative;
+    width: 100%;
     float: left;
-    padding: 24px 8px 8px 8px;
-    overflow: auto;
+    padding: 8px;
+    overflow-y: auto;
     box-sizing: border-box; }
 
 .button-group > button.right {
@@ -4077,9 +4098,6 @@ button.raised:focus:after, button.flat:focus:after {
 .dropdown {
     position: absolute;
     margin: 8px 0px 0px 0px;
-    min-width: 140px;
-    max-width: 280px;
-    max-height: 280px;
     overflow-y: auto;
     z-index: 4;
     box-shadow: var(--shadow-4);
@@ -4111,7 +4129,10 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 16; }
 
 .dropdown > .menu {
-    padding: 8px 0px; }
+    padding: 8px 0px;
+    min-width: 140px;
+    max-width: 280px;
+    max-height: 280px; }
 
 /** EXPANSION PANEL */ 
 
@@ -7345,6 +7366,14 @@ p.link > a {
     .app-body > .sidenav {
         width: 320px;
         visibility: visible; }
+    
+    .app-body > .sidenav.temporary {
+        width: 0%;
+        visibility: hidden; }
+    
+    .app-body > .sidenav.temporary.show {
+        width: 320px;
+        visibility: visible; }
 
     .app-body > .sidenav.condense {
         width: 256px;  }
@@ -7361,6 +7390,14 @@ p.link > a {
         width: 256px; }
 
     .app-body > .sidenav {
+        width: 256px;
+        visibility: visible; }
+    
+    .app-body > .sidenav.temporary {
+        width: 0%;
+        visibility: hidden; }
+    
+    .app-body > .sidenav.temporary.show {
         width: 256px;
         visibility: visible; }
 }
@@ -9965,11 +10002,13 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 100%; }
 
 .views > .content {
-    display: none;
-    width: 100%; } 
+    width: 100%;
+    height: 0px;
+    visibility: hidden; } 
 
 .views > .content.active {
-    display: block;
+    visibility: visible;
+    height: auto;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
             animation: fadeIn 120ms var(--sharp-curve); }

@@ -199,6 +199,24 @@
             return { top: top, left: left }; // Posicion en contenido
         },
         
+        getCursorPosition: function() {
+            var element = jQuery(this).get(0), position = -1;
+            
+            if ("selectionStart" in element) {
+                position = element.selectionStart;
+            } else if ("selection" in document) {
+                element.focus();
+                
+                var selection = document.selection.createRange(),
+                    length = document.selection.createRange().text.length;
+            
+                selection.moveStart('character', -element.value.length);
+                position = selection.text.length - length;
+            }
+            
+            return position; // Posición del cursor en componente texto
+        },
+        
         // Eventos
         
         hasEventListener: function (eventName, namespace) {
