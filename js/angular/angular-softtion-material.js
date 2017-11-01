@@ -355,6 +355,10 @@
             area = $element.find("textarea");
 
         insertIconDescription($scope, area); // Icono descriptivo
+        
+        hidden.resize(function () {
+            area.css("height", hidden.height() + "px");
+        });
 
         var callbackFnEvent = function ($event, $function) {
             $function({ $event: $event, $value: $scope.valueArea });
@@ -398,7 +402,7 @@
 
         $scope.valueArea = ""; $scope.valueReal = false;
         $scope.areaActive = false; $scope.valueHidden = "";
-        $scope.areaStart = false; // Area inicializado
+        $scope.areaStart = false; $scope.heightEnd = 0;
         
         $scope.pressEnter = false; $scope.countEnter = 0;
 
@@ -473,11 +477,19 @@
             $scope.valueHidden = ($scope.valueReal) ? 
                 $scope.valueArea : $scope.value;
                 
-            var heightEnter = $scope.countEnter * 18;
+            var heightEnter = $scope.countEnter * 18,
+                heightArea = 0; // Alto del area
+            
+            if (hidden.height() > 0) {
+                $scope.heightEnd = hidden.height();
+                heightArea = hidden.height();
+            } else {
+                heightArea = $scope.heightEnd;
+            }
                 
             return ($scope.pressEnter) ?
-                "height: " + (hidden.height() + heightEnter) + "px;" :
-                "height: " + hidden.height() + "px;";
+                "height: " + (heightArea + heightEnter) + "px;" :
+                "height: " + heightArea + "px;";
         };
 
         $scope.isActiveLabel = function () {
@@ -530,7 +542,7 @@
             validateTextModel(true); $element.removeClass("active");
 
             $scope.valueReal = false; $scope.areaActive = false; 
-            $scope.pressEnter = false;
+            $scope.pressEnter = false; $scope.countEnter = 0;
 
             callbackFnEvent($event, $scope.blurEvent); // Evento blur
 
@@ -3045,8 +3057,10 @@
                                                 addChildren(
                                                     softtion.html("td").addClass("day").
                                                         addAttribute("ng-repeat", "day in week").
-                                                        addAttribute("ng-class","{disabled : dayDisabled(day.value), today: isToday(day.value)}").
-                                                        addAttribute("ng-click", "selectDay(day.value, $event)").
+                                                        addAttribute("ng-class",
+                                                            "{disabled : dayDisabled(day.value), today: isToday(day.value)," +
+                                                            " active: isActiveDay(day.value), selected: isSelectedDay(day.value)}"
+                                                        ).addAttribute("ng-click", "selectDay(day.value)").
                                                         setText("{{day.value}}")
                                                 )
                                         )
@@ -3176,9 +3190,29 @@
                             var table = $elememt.find(".content table.days-month"),
                                 listYears = $elememt.find(".content .year"),
                                 listMonths = $elememt.find(".content .months");
+                        
+                            function init(date) {
+                                dateDayStart.setFullYear(date.getFullYear()); 
+                                dateDayStart.setDate(1); 
+                                dateDayStart.setMonth(date.getMonth()); 
+                                                        
+                                $scope.year = date.getFullYear();
+                                $scope.day = date.getDate();
+                                $scope.month = date.getMonth();
+                            
+                                $scope.monthText = nameMonths[$scope.month];
+                            
+                                $scope.daysMonth = createCalendar(
+                                    $scope.year, 
+                                    $scope.month, 
+                                    dateDayStart.getDay(), 
+                                    countDaysMonths[$scope.month]
+                                );
+                            }
                             
                             // Atributos
                             var countDaysMonths = softtion.get(softtion.DAYS_OF_MONTHS),
+                                today = new Date().normalize("date"), 
                                 dateDayStart = new Date().normalize("date"),
                                 yearRange = ($scope.yearRange) ? parseInt($scope.yearRange) : 10,
                                 nameDaysWeek = softtion.get(softtion.DAYS_OF_WEEK),
@@ -3188,20 +3222,20 @@
                                 createYears = Material.components.Datepicker.createYears,
                                 fontSize = parseInt(angular.element(document.body).css("font-size"));
                             
-                            var today = new Date().normalize("date");
-                                                        
-                            $scope.year = today.getFullYear();
-                            $scope.day = today.getDate();
-                            $scope.month = today.getMonth();
+                            $scope.$watch(function () {
+                                return $scope.date;
+                            }, function (newValue, oldValue) {
+                                if (softtion.isDate(newValue)) {
+                                    init(newValue); 
+                                } else if (softtion.isDefined(newValue)) {
+                                    $scope.date = oldValue;
+                                } // Valor definido no es una fecha
+                            });
+                            
                             $scope.enabledSelectYear = false;
                             $scope.enabledSelectMonth = false;
-                            dateDayStart.setDate(1); // Primer dia del mes
                             
-                            $scope.monthText = nameMonths[$scope.month];
-                            
-                            $scope.daysMonth = createCalendar(
-                                $scope.year, $scope.month, dateDayStart.getDay(), countDaysMonths[$scope.month]
-                            );
+                            init(today); // Iniciando calendario
                     
                             $scope.months = MANAGER_DATETIME.MONTHS;
                     
@@ -3247,7 +3281,8 @@
                                 $scope.$apply(updateYears); // Agregando años
                             });
                             
-                            // Eventos para controlar años
+                            // FUNCIONES PARA CONTROL DE AÑOS
+                            
                             $scope.isYearActive = function (year) {
                                 return ($scope.year === year);
                             };
@@ -3274,13 +3309,16 @@
                                     $scope.year = year; dateDayStart.setYear($scope.year);
                                     var countDaysMonth = countDaysMonths[$scope.month];
                                     
-                                    $scope.daysMonth = createCalendar($scope.year, $scope.month, dateDayStart.getDay(), countDaysMonth);
+                                    $scope.daysMonth = createCalendar(
+                                        $scope.year, $scope.month, dateDayStart.getDay(), countDaysMonth
+                                    );
                                 } // Cambio de año en el Componente
                                 
                                 $scope.activeYear(false); // Desactivando selección de Año
                             };
                              
-                            // Eventos para controlar meses
+                            // FUNCIONES PARA CONTROL DE MESES
+                            
                             $scope.prevMonthEnabled = function () {
                                 if (softtion.isDate($scope.minDate)) {
                                     var month = $scope.month - 1, year = $scope.year;
@@ -3403,7 +3441,8 @@
                                 $scope.activeMonth(false); // Desactivando selección del Mes
                             };
                             
-                            // Eventos para controlar dias
+                            // FUNCIONES PARA CONTROL DE DÍAS
+                            
                             $scope.describeDaySelect = function () {
                                 var dateDescribe = (softtion.isDate($scope.date)) ?
                                     $scope.date : new Date().normalize("date");
@@ -3440,14 +3479,29 @@
                                 $scope.activeMonth(false); $scope.activeYear(false);
                             };
                             
-                            $scope.selectDay = function (day, $event) {
-                                var dayElement = angular.element($event.currentTarget);
-                                
-                                dayElement.parents("tbody").find(".day").removeClass("active");
-                                dayElement.addClass("active"); $scope.day = day;
+                            $scope.selectDay = function (day) {
+                                $scope.selectDate = new Date($scope.year, $scope.month, day);
+                                $scope.day = day; // Estableciendo dia seleccionado
                             };
                             
-                            // Eventos para controlar fecha final
+                            $scope.isActiveDay = function (day) {
+                                if (softtion.isDefined(day) && softtion.isDate($scope.selectDate)) {
+                                    return $scope.selectDate.equalsDate($scope.year, $scope.month, day);
+                                } // Se ha definido el dia a comparar
+                                
+                                return false; // No es el dia de Hoy
+                            };
+                            
+                            $scope.isSelectedDay = function (day) {
+                                if (softtion.isDefined(day) && softtion.isDate($scope.date)) {
+                                    return $scope.date.equalsDate($scope.year, $scope.month, day);
+                                } // Se ha definido el dia a comparar
+                                
+                                return false; // No es el dia de Hoy
+                            };
+                            
+                            // FUNCIONES PARA CONTROL DE LA FECHA
+                            
                             $scope.setDate = function () {
                                 $scope.date = new Date($scope.year, $scope.month, $scope.day);
                                 $scope.selectEvent({$date: $scope.date});
@@ -3473,13 +3527,13 @@
                             softtion.html("div").addClass("box").
                                 addChildren(
                                     softtion.html("div").addClass("datepicker").
-                                        addAttribute("ng-model","date").
+                                        addAttribute("ng-model", "date").
                                         addAttribute("disabled-date", "disabledDatePicker($date)").
-                                        addAttribute("select-event","selectComponent($date)").
-                                        addAttribute("cancel-event","cancelComponent($date)").
-                                        addAttribute("min-date","minDate").
-                                        addAttribute("max-date","maxDate").
-                                        addAttribute("year-range","{{yearRange}}")
+                                        addAttribute("select-event", "selectComponent($date)").
+                                        addAttribute("cancel-event", "cancelComponent($date)").
+                                        addAttribute("min-date", "minDate").
+                                        addAttribute("max-date", "maxDate").
+                                        addAttribute("year-range", "{{yearRange}}")
                                 )
                         );
                     
@@ -3565,15 +3619,15 @@
                         setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
                     
                     var dialog = softtion.html("div").addClass("datepicker-dialog").
-                        addAttribute("ng-model","datePicker").
+                        addAttribute("ng-model","date").
                         addAttribute("show-active", "show").
-                        addAttribute("select-event","selectDialog($date)").
-                        addAttribute("cancel-event","cancelDialog($date)").
+                        addAttribute("select-event", "selectDialog($date)").
+                        addAttribute("cancel-event", "cancelDialog($date)").
                         addAttribute("parent", "{{parent}}").
-                        addAttribute("min-date","minDate").
-                        addAttribute("max-date","maxDate").
+                        addAttribute("min-date", "minDate").
+                        addAttribute("max-date", "maxDate").
                         addAttribute("disabled-date", "disabledDateDialog($date)").
-                        addAttribute("year-range","{{yearRange}}");
+                        addAttribute("year-range", "{{yearRange}}");
                 
                     content.addChildren(value).addChildren(lineShadow).
                         addChildren(label).addChildren(buttonClear).addChildren(spanHelper);
@@ -4436,6 +4490,7 @@
                             clickEvent: "&",
                             blurEvent: "&",
                             focusEvent: "&",
+                            enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
                             areaEvent: "&"
@@ -5991,6 +6046,7 @@
                             clickEvent: "&",
                             blurEvent: "&",
                             focusEvent: "&",
+                            enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
                             areaEvent: "&"
@@ -6188,6 +6244,7 @@
                             clickEvent: "&",
                             blurEvent: "&",
                             focusEvent: "&",
+                            enterEvent: "&",
                             keyupEvent: "&",
                             keypressEvent: "&",
                             areaEvent: "&"

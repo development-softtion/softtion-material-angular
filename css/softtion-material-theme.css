@@ -1379,7 +1379,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .datepicker > .content > .days-month > tbody td.today {
     color: var(--theme-secondary-font); }
 
-.datepicker > .content > .days-month > tbody td.active {
+.datepicker > .content > .days-month > tbody td.selected {
+    color: var(--theme-primary-font); }
+
+.datepicker > .content > .days-month > tbody td.active,
+.datepicker > .content > .days-month > tbody td.active.selected {
     color: var(--theme-primary-font-active);
     background-color: var(--theme-primary-background); }
 
