@@ -4169,7 +4169,7 @@
                     
                     return input + img + icon + actions; // Componente FileChooser
                 },
-                directive: ["$timeout", "$sce", "$softtionMaterial", function ($timeout, $sce, $softtionMaterial) {
+                directive: ["$timeout", function ($timeout) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.FilechooserPerfil.route,
@@ -6668,7 +6668,7 @@
                 }]
             },
             
-            Video: {
+            VideoYoutube: {
                 route: "softtion/template/video-youtube.html",
                 name: "videoYoutube",
                 html: function () {
@@ -6679,17 +6679,22 @@
                 directive: function () {
                     return {
                         restrict: "C",
-                        templateUrl: Material.components.Video.route,
+                        templateUrl: Material.components.VideoYoutube.route,
                         scope: {
                             allowfullscreen: "=?",
-                            src: "@"
+                            ngSrc: "=?"
                         },
                         link: function ($scope, $element) {
                             var $iframe = $element.children("iframe");
                             
-                            var allowfullscreen = $scope.$eval($scope.allowfullscreen);
+                            $scope.$watch(function (){
+                                return $scope.ngSrc;
+                            }, function (newValue) {
+                                if (softtion.isString(newValue)) {
+                                    $iframe.attr("src", newValue);
+                                } // Se ha definido una ruta correctamente
+                            });
                             
-                            $iframe.attr("src", $scope.src);
                             $iframe.attr("allowfullscreen", $scope.allowfullscreen);
                         }
                     };

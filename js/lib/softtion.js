@@ -17,8 +17,6 @@
     
     var Softtion = function () { }; // Clase Softtion
     
-    var BreakException = {};
-    
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
     Softtion.prototype.MONTHS_OF_YEAR = "NAME_MONTHS_OF_YEAR";
@@ -165,6 +163,8 @@
         } // Hay un texto establecido para realizar el cambio de etiqueta
     };
     
+    Softtion.prototype.BreakException = {};
+    
     Softtion.prototype.required = function (object, attributes) {
         if (this.isArray(attributes)) {
             var keyError = undefined, 
@@ -176,7 +176,7 @@
                     keyError = key; // Clave a validar
                     
                     if (!self.isDefined(self.findKey(object, key)))
-                        throw BreakException;
+                        throw self.BreakException;
                 });
                 
                 response = { success: true };
@@ -421,6 +421,193 @@
             default: return true; // Se aceptan cualquier caracter
         }
     };
+    
+    var DIGITS = {
+        0: "",                  //   0
+        1: "UN",                //   1
+        2: "DOS",               //   2
+        3: "TRÉS",              //   3
+        4: "CUATRO",            //   4
+        5: "CINCO",             //   5
+        6: "SEíS",              //   6
+        7: "SIETE",             //   7
+        8: "OCHO",              //   8
+        9: "NUEVE",             //   9
+        10: "DÍEZ",             //  10
+        11: "ONCE",             //  11
+        12: "DOCE",             //  12
+        13: "TRECE",            //  13
+        14: "CATORCE",          //  14
+        15: "QUINCE",           //  15
+        16: "DIECISÉIS",        //  16
+        17: "DIECISIETE",       //  17
+        18: "DIECIOCHO",        //  18
+        19: "DIECINUEVE",       //  19
+        20: "VEINTE",           //  20
+        21: "VIENTIUNO",        //  21
+        22: "VIENTIDOS",        //  22
+        23: "VEINTITRÉS",       //  23
+        24: "VEINTICUATRO",     //  24
+        25: "VEINTICINCO",      //  25
+        26: "VEINTISEÍS",       //  26
+        27: "VEINTISIETE",      //  27
+        28: "VEINTIOCHO",       //  28
+        29: "VEINTINUEVE",      //  29
+        30: "TREINTA",          //  30
+        40: "CUARENTA",         //  40
+        50: "CINCUENTA",        //  50
+        60: "SESENTA",          //  60
+        70: "SETENTA",          //  70
+        80: "OCHENTA",          //  80
+        90: "NOVENTA",          //  90
+        100: "CIEN",            // 100
+        200: "DOSCIENTOS",      // 200
+        300: "TRECIENTOS",      // 300
+        400: "CUATROCIENTOS",   // 400
+        500: "QUINIENTOS",      // 500
+        600: "SEISCIENTOS",     // 600
+        700: "SETECIENTOS",     // 700
+        800: "OCHOCIENTOS",     // 800
+        900: "NOVECIENTOS"      // 900
+    },
+        QUANTITIES = {
+            1: "MIL",
+            10: "MIL",
+            2: "MILLÓN",
+            20: "MILLÓNES",
+            3: "MIL",
+            30: "MIL", 
+            4: "BILLÓN", 
+            40: "BILLÓNES",
+            5: "MIL", 
+            50: "MIL", 
+            6: "TRILLÓN", 
+            60: "TRILLONES",
+            7: "MIL",
+            70: "MIL"
+        };
+        
+    Softtion.prototype.getMonetaryExpression = function (number) {
+        var $number = "", contador = 0, 
+            numberString = number.toString(),
+            length = numberString.length;
+            
+        for (var index = 1; index <= length; index++) {
+            if (contador === 3) { 
+                $number = "." + $number; contador = 0;
+            } // Agregando punto en la cifra
+
+            $number = numberString.charAt(length - index) + $number; 
+            
+            contador++; // Aumentando
+        } // Recorriendo el número expresarlo monetariamente
+
+        return $number; // Retornando expresado monetariamente
+    };
+    
+//    softtion.processNumber = {
+//        getThreeDigits : function (number) {
+//            try {
+//                if ((number.length > 3) || (number.length < 1)) {
+//                    throw 'el número establecido para proceso no es de tres cifras.';
+//                } /* Excepción */
+//                
+//                number = softtion.character.addBefore({word : number, character : '0', size : 3}); 
+//                var $cifras = creatorCifras(), _cifraDescrita = '';
+//                var _centena = parseInt(number.substring(0,1));
+//                var _decenaUnidad = parseInt(number.substring(1,3));
+//                
+//                if (_centena !== 0) {
+//                    _cifraDescrita = _cifraDescrita + $cifras[_centena * 100];
+//                    
+//                    if (_centena === 1 && _decenaUnidad !== 0) {
+//                        _cifraDescrita = _cifraDescrita + 'TO ';
+//                    } /* Añadimos caracteres en caso de ser Centana de 100 */
+//                    
+//                    else { _cifraDescrita = _cifraDescrita + ' '; } /* Agregamos espacio descripción */
+//                }
+//                
+//                if (_decenaUnidad !== 0) {
+//                    var temporal = $cifras[_decenaUnidad]; 
+//                
+//                    if (temporal) {
+//                        if (temporal.length > 0) {
+//                            _cifraDescrita = _cifraDescrita + temporal;
+//                        } /* La cifra es diferente de Cero */
+//                    }
+//
+//                    else {
+//                        var decena = parseInt(number.substring(1,2)) * 10;
+//                        var unidad = parseInt(number.substring(2,3));
+//
+//                        _cifraDescrita = _cifraDescrita + $cifras[decena];
+//                        _cifraDescrita = _cifraDescrita + " Y " + $cifras[unidad];
+//                    } /* Se desgloza el número para realizar descripción */
+//                }
+//                
+//                return _cifraDescrita.trim(); /* Retornando cifra de tres dígitos */
+//            }
+//            
+//            catch (err) { 
+//                console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+//            } /* Error generado */
+//        },
+//        
+//        getDescription : function (number) {
+//            try {
+//                if (softtion.isEmpty(number)) {
+//                    throw 'el número puede no estar definido, instanciado ó no contiene caracteres.';
+//                } /* Excepción */
+//                
+//                if (parseInt(number) !== 0) {
+//                    number = String(parseInt(number)); /* Removiendo ceros */
+//                    var _numeroDescrito = '', _posicionFinal = number.length, _index = 0; 
+//
+//                    while (_posicionFinal > 0) {
+//                        var _posicionInicial = _posicionFinal - 3; /* Posición inicial del corte */
+//
+//                        if (_posicionInicial < 0) { _posicionInicial = 0; } /* Controlando desbordamiento */
+//
+//                        var $cantidades = creatorCantidades(); // Descripcion de Cantidades
+//                        var _cifraNumerica = number.substring(_posicionInicial,_posicionFinal);
+//                        var _cifraDescrita = softtion.processNumber.getThreeDigits(_cifraNumerica);
+//
+//                        if (_cifraDescrita.length > 0) {
+//                            if (_index > 0) {
+//                                if (parseInt(_cifraNumerica) > 1) {
+//                                    _cifraDescrita = _cifraDescrita + ' ' + $cantidades[_index * 10];
+//                                } /* La cifra a describir es plural */
+//
+//                                else {
+//                                    /* Solo se requiere descriptor de cantidad */
+//                                    if (_index%2 !== 0) { _cifraDescrita = $cantidades[_index]; }
+//
+//                                    /* Se requiere descriptor de cantidad y cifra */
+//                                    else { _cifraDescrita = _cifraDescrita + ' ' + $cantidades[_index]; }
+//                                } /* La cifra a describir es singular */
+//                            } /* La cifra pertenece a unidades de mil ó superiores */
+//
+//                            _numeroDescrito = _cifraDescrita + ' ' + _numeroDescrito;
+//                        } /* La cifra no contiene descripción */
+//
+//                        else if ((_index > 1) && (_index%2 === 0)) {
+//                            _numeroDescrito = $cantidades[_index * 10] + ' ' +  _numeroDescrito;
+//                        } /* Se requiere descrición plural de la sección del número */
+//
+//                        _index++; _posicionFinal = _posicionInicial; /* Reconfigurando variables */
+//                    }
+//
+//                    return _numeroDescrito.trim(); /* Retornando descripción del número */
+//                }
+//                
+//                else { return 'CERO'; } /* El número a describir es cero */
+//            } /* Describiendo número */
+//            
+//            catch (err) { 
+//                console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+//            } /* Error generado */
+//        }
+//    };
     
     // Extendiendo Objetos de JavaScript
     
