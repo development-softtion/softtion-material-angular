@@ -4805,6 +4805,37 @@ button.raised:focus:after, button.flat:focus:after {
     text-overflow: ellipsis;
     white-space: nowrap; }
 
+/** FILECHOOSER AUDIO */
+
+.filechooser-audio {
+    position: relative;
+    float: left;
+    width: 100%;
+    margin: 8px 0px;
+    user-select: none; }
+
+.filechooser-audio > input[type=file] {
+    position: absolute;
+    width: 0%;
+    height: 0%;
+    visibility: hidden;
+    opacity: 0; }
+
+.filechooser-audio > .actions {
+    position: relative;
+    float: left;
+    width: 100%; 
+    padding: 0px 8px;
+    box-sizing: border-box; }
+
+.filechooser-audio > .actions > button {
+    float: right;
+    height: 48px;
+    padding: 12px 8px; }
+
+.filechooser-audio > .actions > button + button {
+    margin-right: 8px; }
+
 /** FILECHOOSER MULTIPLE */
 
 .filechooser-multiple {

@@ -1190,6 +1190,17 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .filechooser .content > .detail > .avatar > i { 
     color: var(--secondary-font); }
 
+/** FILECHOOSER AUDIO */
+
+.filechooser-audio > .actions {
+    background-color: rgba(0, 0, 0, 0.48); }
+
+.filechooser-audio > .actions > button {
+    color: var(--alternative-primary-font); }
+
+.filechooser-audio > .actions > button:before {
+    background-color: var(--alternative-ripple); }
+
 /** FILECHOOSER MULTIPLE */
 
 .filechooser-multiple > .content {
