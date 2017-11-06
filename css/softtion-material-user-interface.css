@@ -1070,6 +1070,64 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
         overflow: auto; }
 }
 
+/** AUDIO */
+
+.audio {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box; }
+
+.audio > .content {
+    width: 100%; }
+
+.audio > .content > .player {
+    float: left;
+    height: 44px; 
+    padding: 4px; }
+
+.audio > .content > .player > i {
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+    line-height: 36px; }
+
+.audio > .content > .stopper,
+.audio > .content > .muted {
+    float: left;
+    height: 32px; 
+    padding: 4px;
+    margin: 6px 4px; }
+
+.audio > .content > .detail {
+    position: relative;
+    float: left; 
+    width: calc(100% - 124px);
+    height: 44px; 
+    padding: 0px 4px;
+    box-sizing: border-box; }
+
+.audio > .content > .detail > .progress-bar {
+    margin-top: 20px; }
+
+.audio > .content > .detail > label {
+    position: absolute;
+    display: block; 
+    font-size: 11px; }
+
+.audio > .content > .detail > .name {
+    top: 2px;
+    left: 4px; }
+
+.audio > .content > .detail > .current-time {
+    left: 4px;
+    bottom: 2px; }
+
+.audio > .content > .detail > .duration {
+    right: 4px;
+    bottom: 2px; }
+
 /** AUTOCOMPLETE */
 
 .autocomplete {

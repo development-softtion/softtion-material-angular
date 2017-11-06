@@ -703,6 +703,151 @@
                 }
             },
             
+            Audio: {
+                route: "softtion/template/audio.html",
+                name: "audio",
+                html: function () {
+                    var audio = softtion.html("audio").
+                        addAttribute("src", "{{src}}");
+                    
+                    var content = softtion.html("div").addClass("content");
+                    
+                    content.addChildren(
+                            softtion.html("button").
+                                addClass(["action", "player"]).
+                                addAttribute("ng-click", "play()").
+                                addAttribute("ng-disabled", "errorAudio").
+                                addChildren(
+                                    softtion.html("i").
+                                        setText("{{getIconPlay()}}")
+                                )
+                        ).addChildren(
+                            softtion.html("button").
+                                addClass(["action", "stopper"]).
+                                addAttribute("ng-click", "stop()").
+                                addAttribute("ng-disabled", "errorAudio").
+                                addChildren(
+                                    softtion.html("i").setText("stop")
+                                )
+                        ).addChildren(
+                            softtion.html("div").addClass("detail").
+                                addChildren(
+                                    softtion.html("div").
+                                        addClass(["progress-bar", "show"])
+                                ).addChildren(
+                                    softtion.html("label").addClass("name").
+                                        setText("{{name}}")
+                                ).addChildren(
+                                    softtion.html("label").addClass("current-time").
+                                        setText("{{getCurrentTime()}}")
+                                ).addChildren(
+                                    softtion.html("label").addClass("duration").
+                                        setText("{{getDuration()}}")
+                                )
+                        ).addChildren(
+                            softtion.html("button").
+                                addClass(["action", "muted"]).
+                                addAttribute("ng-click", "muted()").
+                                addAttribute("ng-disabled", "errorAudio").
+                                addChildren(
+                                    softtion.html("i").
+                                        setText("{{getIconMute()}}")
+                                )
+                        );
+                
+                    return audio + content; // Retornando componente
+                },
+                directive: ["$progressBar", function ($progressBar) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Audio.route,
+                        scope: {
+                            src: "@",
+                            name: "@"
+                        },
+                        link: function ($scope, $element) {
+                            var audio = $element.children("audio")[0],
+                                progressBar = $element.find(".progress-bar");
+                        
+                            $scope.errorAudio = true,
+                            $scope.isPlay = false;
+                            $scope.duration = 0;
+                            $scope.currentTime = 0;
+                            
+                            function describeTimeAudio(secondsAudio) {
+                                var minutes = parseInt(secondsAudio / 60),
+                                    seconds = parseInt(secondsAudio - (minutes * 60));
+                            
+                                return softtion.leadingChar(minutes, '0', 2) + 
+                                    ":" + softtion.leadingChar(seconds, '0', 2);
+                            }
+                            
+                            audio.onloadeddata = function () {
+                                $scope.$apply(function () {
+                                    $scope.errorAudio = false;
+                                    $scope.duration = audio.duration;
+                                });
+                            };
+                            
+                            audio.onerror = function () {
+                                $scope.$apply(function () {
+                                    console.log("Error");
+                                    $scope.errorAudio = true;
+                                });
+                            };
+                            
+                            audio.ontimeupdate = function () {
+                                $scope.$apply(function () {
+                                    $scope.currentTime = audio.currentTime;
+                                    
+                                    if ($scope.currentTime > 0) {
+                                        var percentage = $scope.currentTime * 100;
+                                        percentage = parseInt(percentage / $scope.duration);
+                                        
+                                        $progressBar.set(progressBar).setPercentage(percentage);
+                                    } else {
+                                        $progressBar.set(progressBar).setPercentage(0);
+                                    } // La canción se ha detenido completamente
+                                });
+                            };
+                            
+                            $scope.play = function () {
+                                $scope.isPlay = !$scope.isPlay; // Cambiando estado
+                                ($scope.isPlay) ? audio.play() : audio.pause();
+                            };
+                            
+                            $scope.stop = function () {
+                                if ($scope.isPlay) {
+                                    audio.pause();
+                                } // La canción se esta reproducciendo
+                                
+                                audio.currentTime = 0; $scope.isPlay = false;
+                            };
+                            
+                            $scope.muted = function () {
+                                audio.muted = !audio.muted;
+                            };
+                            
+                            $scope.getIconPlay = function () {
+                                return (!$scope.isPlay) ? "play_circle_outline" : "pause_circle_outline";
+                            };
+                            
+                            $scope.getIconMute = function () {
+                                return (!audio.muted) ? "volume_up" : "volume_off";
+                            };
+                            
+                            $scope.getCurrentTime = function () {
+                                return describeTimeAudio($scope.currentTime);
+                            };
+                            
+                            $scope.getDuration = function () {
+                                return describeTimeAudio($scope.duration);
+                            };
+                        }
+                    };
+                }]
+            },
+            
             AutoComplete: {
                 route: "softtion/template/autocomplete.html",
                 name: "autocomplete",
@@ -3958,6 +4103,125 @@
                 }]
             },
             
+            FilechooserAudio: {
+                route: "softtion/template/filechooser-audio.html",
+                name: "filechooserAudio",
+                html: function () {
+                    var input = softtion.html("input", false).
+                        addAttribute("type", "file");
+                
+                    var audio = softtion.html("div").addClass("audio").
+                        addAttribute("ng-hide", "audioLoad").
+                        addAttribute("name", "{{nameAudio}}");
+                    
+                    var actions = softtion.html("div").addClass("actions").
+                        addChildren(
+                            softtion.html("button").addClass("action").
+                                addAttribute("ng-disabled", "ngDisabled").
+                                addChildren(
+                                    softtion.html("i").setText("search").
+                                        addAttribute("ng-click", "selectFile()")
+                                )
+                        ).addChildren(
+                            softtion.html("button").addClass("action").
+                                addAttribute("ng-disabled", "ngDisabled").
+                                addChildren(
+                                    softtion.html("i").setText("delete").
+                                        addAttribute("ng-click", "deleteFile()")
+                                )
+                        ).addChildren(
+                            softtion.html("button").addClass("action").
+                                addAttribute("ng-hide", "!saveEnabled").
+                                addAttribute("ng-disabled", "ngDisabled").
+                                addChildren(
+                                    softtion.html("i").setText("save").
+                                        addAttribute("ng-click", "saveFile()")
+                                )
+                        );
+                    
+                    return input + audio + actions; // Componente FileChooser
+                },
+                directive: ["$timeout", function ($timeout) {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.FilechooserAudio.route,
+                        scope: {
+                            file: "=ngModel",
+                            ngDisabled: "=?",
+                            saveEnabled: "=?",
+                            
+                            changedEvent: "&",
+                            saveEvent: "&"
+                        },
+                        link: function ($scope, $element) {
+                            var fileInput = $element.find("input[type=file]"), audio;
+                        
+                            $scope.file = undefined; // Archivos seleccionado
+                            
+                            var audiosTypes = [
+                                "audio/mp3"
+                            ];
+                            
+                            var processFile = function (file) {
+                                var reader = new FileReader();
+        
+                                reader.onloadend = function () {
+                                    $scope.$apply(function () {
+                                        var src = window.URL.createObjectURL(file);
+                                        
+                                        if (softtion.isUndefined(audio)) {
+                                            audio = $element.find("audio");
+                                        } // Se ha definido elemento audio
+                                        
+                                        audio.prop("src", src);
+                                        
+                                        $scope.nameAudio = file.name;
+                                        $scope.file = file; // Archivo
+                                        
+                                        $scope.changedEvent({$file: file});
+                                    });
+                                };
+                                
+                                $timeout(function () { reader.readAsDataURL(file); }, 500);
+        
+                                return reader; // Retornando procesador de Archivo
+                            };
+                            
+                            fileInput.change(function ($event) {
+                                var files = fileInput[0].files; // Archivos
+                                
+                                if (files.length) {
+                                    console.log(files[0].type); 
+                                    
+                                    if (audiosTypes.indexOf(files[0].type) !== -1) {
+                                        processFile(files[0]);
+                                    } // El archivo es una imagen
+                                } // Se cambio ha seleccionado un archivo
+                            });
+                            
+                            $scope.selectFile = function () { fileInput.click(); };
+                            
+                            $scope.deleteFile = function () {
+                                $scope.file = undefined; fileInput[0].value = "";
+                                $scope.nameAudio = ""; // Quitando nombre
+                                
+                                if (softtion.isDefined(audio)) {
+                                    audio.prop("src", null);
+                                } // Se ha definido elemento audio
+                                
+                                $scope.changedEvent({$file: undefined});
+                            };
+                            
+                            $scope.saveFile = function () {
+                                if (softtion.isDefined($scope.file)) {
+                                    $scope.saveEvent({$file: $scope.file});
+                                } // Hay una imagen seleccionada
+                            };
+                        }
+                    };
+                }]
+            },
+            
             FilechooserMultiple: {
                 route: "softtion/template/filechooser-multiple.html",
                 name: "filechooserMultiple",
@@ -6803,6 +7067,56 @@
                 }]
             },
             
+            MaterialBackground: {
+                name: "materialBackground",
+                directive: ["$materialTheme", function ($materialTheme) {
+                    return {
+                        restrict: "A",
+                        link: function ($scope, $element, $attrs) {
+                            var background = $attrs.materialBackground;
+                            
+                            if (softtion.isString(background)) {
+                                var properties = background.split(":");
+                                
+                                if (properties.has(2)) {
+                                    var theme = $materialTheme.get(),
+                                        color = theme[properties[0]][properties[1]];
+                                
+                                    if (softtion.isString(color)) {
+                                        $element.css("background-color", color);
+                                    } // Se ha definido color correctamente
+                                }
+                            }
+                        }
+                    };
+                }]
+            },
+            
+            MaterialFont: {
+                name: "materialFont",
+                directive: ["$materialTheme", function ($materialTheme) {
+                    return {
+                        restrict: "A",
+                        link: function ($scope, $element, $attrs) {
+                            var fontColor = $attrs.materialFont;
+                            
+                            if (softtion.isString(fontColor)) {
+                                var properties = fontColor.split(":");
+                                
+                                if (properties.has(2)) {
+                                    var theme = $materialTheme.get(),
+                                        color = theme[properties[0]][properties[1]];
+                                
+                                    if (softtion.isString(color)) {
+                                        $element.css("color", color);
+                                    } // Se ha definido color correctamente
+                                }
+                            }
+                        }
+                    };
+                }]
+            },
+            
             Sidenav: {
                 name: "sidenav",
                 directive: ["$sidenav", function ($sidenav) {
@@ -7392,6 +7706,8 @@
                             
                             if (autoclose) {
                                 $body.on(nameEvent, function ($event) {
+                                    $event.stopPropagation(); // Cancelando propagación
+                                    
                                     if (dropdown.find($event.target).length === 0) {
                                         self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
@@ -7411,6 +7727,8 @@
                             
                             if (autoclose) {
                                 $body.on(nameEvent, function ($event) {
+                                    $event.stopPropagation(); // Cancelando propagación
+                                    
                                     if (dropdown.find($event.target).length === 0) {
                                         self.set(dropdown).hide(); $body.off(nameEvent);
                                     } // Se debe cerrar el dropdown de manera automatica
@@ -7597,7 +7915,7 @@
                             if (percentage > 100) {
                                 percentage = 100;
                             } // No debe sobrepasar el 100%
-
+                            
                             !(progressBar.hasClass("buffering")) ?
                                 progressBar.children(".bar").css("width", percentage + "%") :
                                 setPercentageBuffering(progressBar, percentage);
@@ -8107,15 +8425,18 @@
                 }
             },
             
-            ThemeMaterial: {
-                name: "$themeMaterial",
-                method: ["ColorMaterial", function (ColorMaterial) {
+            MaterialTheme: {
+                name: "$materialTheme",
+                method: ["$materialColor", function ($materialColor) {
                         
-                    var ThemeMaterial = function () {};
+                    function MaterialTheme() {};
                     
-                    ThemeMaterial.prototype.setPrimary = function (nameTheme) {
-                        var theme = ColorMaterial.background[nameTheme],
-                            border = ColorMaterial.border, ripple = ColorMaterial.ripple;
+                    var $materialTheme = $materialColor.background; 
+                    
+                    MaterialTheme.prototype.setPrimary = function (themeName) {
+                        var theme = $materialTheme[themeName],
+                            border = $materialColor.border, 
+                            ripple = $materialColor.ripple;
                             
                         if (softtion.isDefined(theme)) {
                             // Colores de fondo
@@ -8132,7 +8453,7 @@
                             propertyStyle("--theme-primary-background-border", border[theme.baseColor]);
                             
                             // Colores de fuente
-                            var font = ColorMaterial.font[theme.baseColor];
+                            var font = $materialColor.font[theme.baseColor];
                             
                             propertyStyle("--theme-primary-font", theme["500"]);
                             propertyStyle("--theme-primary-font-disabledcolor", theme["100"]);
@@ -8146,8 +8467,8 @@
                         } // Tema de la paleta encontrado, cargando
                     };
                     
-                    ThemeMaterial.prototype.setError = function (nameTheme) {
-                        var theme = ColorMaterial.background[nameTheme];
+                    MaterialTheme.prototype.setError = function (themeName) {
+                        var theme = $materialTheme[themeName];
                             
                         if (softtion.isDefined(theme)) {
                             propertyStyle("--theme-error-background", theme["500"]);
@@ -8155,9 +8476,10 @@
                         } // Tema de la paleta encontrado, cargando
                     };
                     
-                    ThemeMaterial.prototype.setSecondary = function (nameTheme) {
-                        var theme = ColorMaterial.background[nameTheme],
-                            border = ColorMaterial.border, ripple = ColorMaterial.ripple;
+                    MaterialTheme.prototype.setSecondary = function (themeName) {
+                        var theme = $materialTheme[themeName],
+                            border = $materialColor.border, 
+                            ripple = $materialColor.ripple;
                             
                         if (softtion.isDefined(theme)) {
                             // Colores de fondo
@@ -8171,10 +8493,10 @@
                             propertyStyle("--theme-secondary-background-disabled", theme["100"]);
                             
                             // Color de borde
-                            propertyStyle("--theme-secondary-background-border", border[theme.font]);
+                            propertyStyle("--theme-secondary-background-border", border[theme.baseColor]);
                             
                             // Colores de fuente
-                            var font = ColorMaterial.font[theme.baseColor];
+                            var font = $materialColor.font[theme.baseColor];
                             
                             propertyStyle("--theme-secondary-font", theme["500"]);
                             propertyStyle("--theme-secondary-font-disabledcolor", theme["100"]);
@@ -8188,107 +8510,144 @@
                         } // Tema de la paleta encontrado, cargando
                     };
                     
-                    var themeMaterial = new ThemeMaterial();
+                    MaterialTheme.prototype.get = function () {
+                        return $materialTheme;
+                    };
                     
-                    this.$get = function () { return themeMaterial; };
+                    MaterialTheme.prototype.register = function (name, theme) {
+                        var validate = softtion.required(theme, [
+                            "50", "100", "200", "300", "400", "500", 
+                            "600", "700", "800", "900", "baseColor"
+                        ]);
+                        
+                        if (validate.success) {
+                            $materialTheme[name] = theme; return this;
+                        } // Definio correctamente el tema
+                    };
+                    
+                    var materialTheme = new MaterialTheme();
+                    
+                    this.$get = function () { 
+                        return materialTheme; 
+                    };
                     
                     this.setPrimary = function (nameTheme) {
-                        themeMaterial.setPrimary(nameTheme); return this;
+                        materialTheme.setPrimary(nameTheme); return this;
                     };
                     
                     this.setError = function (nameTheme) {
-                        themeMaterial.setError(nameTheme); return this;
+                        materialTheme.setError(nameTheme); return this;
                     };
                     
                     this.setSecondary = function (nameTheme) {
-                        themeMaterial.setSecondary(nameTheme); return this;
+                        materialTheme.setSecondary(nameTheme); return this;
+                    };
+                    
+                    this.register = function (name, theme) {
+                        materialTheme.register(name, theme); return this;
                     };
                 }]
             }
         }
     };
 
-    ngMaterial.constant("ColorMaterial", {
+    ngMaterial.constant("$materialColor", {
         background: {
             red: {
                 50:  "#ffebee", 100: "#ffcdd2", 200: "#ef9a9a", 300: "#e57373", 
                 400: "#ef5350", 500: "#f44336", 600: "#e53935", 700: "#d32f2f", 
-                800: "#c62828", 900: "#b71c1c", baseColor: "light"
+                800: "#c62828", 900: "#b71c1c", baseColor: "light", 
+                A100: "#ff8a80", A200: "#ff5252", A400: "#ff1744", A700: "#d50000"
             },
             pink: {
                 50:  "#fce4ec", 100: "#f8bbd0", 200: "#f48fb1", 300: "#f06292", 
                 400: "#ec407a", 500: "#e91e63", 600: "#d81b60", 700: "#c2185b", 
-                800: "#ad1457", 900: "#880e4f", baseColor: "light"
+                800: "#ad1457", 900: "#880e4f", baseColor: "light", 
+                A100: "#ff80ab", A200: "#ff4081", A400: "#f50057", A700: "#c51162"
             },
             purple: {
                 50:  "#f3e5f5", 100: "#e1bee7", 200: "#ce93d8", 300: "#ba68c8", 
                 400: "#ab47bc", 500: "#9c27b0", 600: "#8e24aa", 700: "#7b1fa2", 
-                800: "#6a1b9a", 900: "#4a148c", baseColor: "light"
+                800: "#6a1b9a", 900: "#4a148c", baseColor: "light", 
+                A100: "#ea80fc", A200: "#e040fb", A400: "#d500f9", A700: "#aa00ff"
             },
             deepPurple: {
                 50:  "#ede7f6", 100: "#d1c4e9", 200: "#b39ddb", 300: "#9575cd", 
                 400: "#7e57c2", 500: "#673ab7", 600: "#5e35b1", 700: "#512da8", 
-                800: "#4527a0", 900: "#311b92", baseColor: "light"
+                800: "#4527a0", 900: "#311b92", baseColor: "light", 
+                A100: "#b388ff", A200: "#7c4dff", A400: "#651fff", A700: "#6200ae"
             },
             indigo: {
                 50:  "#e8eaf6", 100: "#c5cae9", 200: "#9fa8da", 300: "#7986cb", 
                 400: "#5c6bc0", 500: "#3f51b5", 600: "#3949ab", 700: "#303f9f", 
-                800: "#283593", 900: "#1a237e", baseColor: "light"
+                800: "#283593", 900: "#1a237e", baseColor: "light", 
+                A100: "#8c9eff", A200: "#536dfe", A400: "#3d5afe", A700: "#304ffe"
             },
             blue: {
                 50:  "#e3f2fd", 100: "#bbdefb", 200: "#90caf9", 300: "#64b5f6", 
                 400: "#42a5f5", 500: "#2196f3", 600: "#1e88e5", 700: "#1976d2", 
-                800: "#1565c0", 900: "#0d47a1", baseColor: "light"
+                800: "#1565c0", 900: "#0d47a1", baseColor: "light", 
+                A100: "#82b1ff", A200: "#448aff", A400: "#2979ff", A700: "#2962ff"
             },
             lightBlue: {
                 50:  "#e1f5fe", 100: "#b3e5fc", 200: "#81d4fa", 300: "#4fc3f7", 
                 400: "#29b6f6", 500: "#03a9f4", 600: "#039be5", 700: "#0288d1", 
-                800: "#0277bd", 900: "#01579b", baseColor: "alternativeDark"
+                800: "#0277bd", 900: "#01579b", baseColor: "combined", 
+                A100: "#80d8ff", A200: "#40c4ff", A400: "#00b0ff", A700: "#0091ea"
             },
             cyan: {
                 50:  "#e0f7fa", 100: "#b2ebf2", 200: "#80deea", 300: "#4dd0e1", 
                 400: "#26c6da", 500: "#00bcd4", 600: "#00acc1", 700: "#0097a7", 
-                800: "#00838f", 900: "#006064", baseColor: "alternativeDark"
+                800: "#00838f", 900: "#006064", baseColor: "combined", 
+                A100: "#84ffff", A200: "#18ffff", A400: "#00e5ff", A700: "#00b8d4"
             },
             teal: {
                 50:  "#e0f2f1", 100: "#b2dfdb", 200: "#80cbc4", 300: "#4db6ac", 
                 400: "#26a69a", 500: "#009688", 600: "#00897b", 700: "#00796b", 
-                800: "#00695c", 900: "#004d40", baseColor: "light"
+                800: "#00695c", 900: "#004d40", baseColor: "light", 
+                A100: "#a7ffeb ", A200: "#64ffda", A400: "#1de9b6", A700: "#00bfa5"
             },
             green: {
                 50:  "#e8f5e9", 100: "#c8e6c9", 200: "#a5d6a7", 300: "#81c784", 
                 400: "#66bb6a", 500: "#4caf50", 600: "#43a047", 700: "#388e3c", 
-                800: "#2e7d32", 900: "#1b5e20", baseColor: "light"
+                800: "#2e7d32", 900: "#1b5e20", baseColor: "light", 
+                A100: "#b9f6ca", A200: "#69f0ae", A400: "#00e676", A700: "#00c853"
             },
             lightGreen: {
                 50:  "#f1f8e9", 100: "#dcedc8", 200: "#c5e1a5", 300: "#aed581", 
                 400: "#9ccc65", 500: "#8bc34a", 600: "#7cb342", 700: "#689f38", 
-                800: "#558b2f", 900: "#33691e", baseColor: "alternativeDark"
+                800: "#558b2f", 900: "#33691e", baseColor: "combined", 
+                A100: "#ccff90", A200: "#b2ff59", A400: "#76ff03", A700: "#64dd17"
             },
             lime: {
                 50:  "#f9fbe7", 100: "#f0f4c3", 200: "#e6ee9c", 300: "#dce775", 
                 400: "#d4e157", 500: "#cddc39", 600: "#c0ca33", 700: "#afb42b", 
-                800: "#9e9d24", 900: "#827717", baseColor: "alternativeDark"
+                800: "#9e9d24", 900: "#827717", baseColor: "combined", 
+                A100: "#f4ff81", A200: "#eeff41", A400: "#c6ff00", A700: "#aeea00"
             },
             yellow: {
                 50:  "#fffde7", 100: "#fff9c4", 200: "#fff59d", 300: "#fff176", 
                 400: "#ffee58", 500: "#ffeb3b", 600: "#fdd835", 700: "#fbc02d", 
-                800: "#f9a825", 900: "#f57f17", baseColor: "dark"
+                800: "#f9a825", 900: "#f57f17", baseColor: "dark", 
+                A100: "#ffff8d", A200: "#ffff00", A400: "#ffea00", A700: "#ffd600"
             },
             amber: {
                 50:  "#fff8e1", 100: "#ffecb3", 200: "#ffe082", 300: "#ffd54f", 
                 400: "#ffca28", 500: "#ffc107", 600: "#ffb300", 700: "#ffa000", 
-                800: "#ff8f00", 900: "#ff6f00", baseColor: "dark"
+                800: "#ff8f00", 900: "#ff6f00", baseColor: "dark", 
+                A100: "#ffe57f", A200: "#ffd740", A400: "#ffc400", A700: "#ffab00"
             },
             orange: {
                 50:  "#fff3e0", 100: "#ffe0b2", 200: "#ffcc80", 300: "#ffb74d", 
                 400: "#ffa726", 500: "#ff9800", 600: "#fb8c00", 700: "#f57c00", 
-                800: "#ef6c00", 900: "#e65100", baseColor: "alternativeDark"
+                800: "#ef6c00", 900: "#e65100", baseColor: "combined", 
+                A100: "#ffd180", A200: "#ffab40", A400: "#ffab40", A700: "#ff6d00"
             },
             deepOrange: {
                 50:  "#fbe9e7", 100: "#ffccbc", 200: "#ffab91", 300: "#ff8a65", 
                 400: "#ff7043", 500: "#ff5722", 600: "#f4511e", 700: "#e64a19", 
-                800: "#d84315", 900: "#bf360c", baseColor: "light"
+                800: "#d84315", 900: "#bf360c", baseColor: "light", 
+                A100: "#ff9e80", A200: "#ff6e40", A400: "#ff3d00", A700: "#dd2c00"
             },
             brown: {
                 50:  "#efebe9", 100: "#d7ccc8", 200: "#bcaaa4", 300: "#a1887f", 
@@ -8298,7 +8657,7 @@
             grey: {
                 50:  "#fafafa", 100: "#f5f5f5", 200: "#eeeeee", 300: "#e0e0e0", 
                 400: "#bdbdbd", 500: "#9e9e9e", 600: "#757575", 700: "#616161", 
-                800: "#424242", 900: "#212121", baseColor: "alternativeDark"
+                800: "#424242", 900: "#212121", baseColor: "combined"
             },
             blueGrey: {
                 50:  "#eceff1", 100: "#cfd8dc", 200: "#b0bec5", 300: "#90a4ae", 
@@ -8319,7 +8678,7 @@
                 secondary: "rgba(0, 0, 0, 0.54)",
                 disabled: "rgba(0, 0, 0, 0.38)"
             },
-            alternativeDark: {
+            combined: {
                 primary: "rgba(0, 0, 0, 0.87)",
                 alternative: "rgba(255, 255, 255, 1)",
                 secondary: "rgba(0, 0, 0, 0.54)",
@@ -8328,11 +8687,13 @@
         },
         border: {
             dark: "rgba(0, 0, 0, 0.12)",
-            light: "rgba(255, 255, 255, 0.12)"
+            light: "rgba(255, 255, 255, 0.12)",
+            combined: "rgba(0, 0, 0, 0.12)"
         },
         ripple: {
             dark: "rgba(0, 0, 0, 0.38)",
-            light: "rgba(255, 255, 255, 0.5)"
+            light: "rgba(255, 255, 255, 0.5)",
+            combined: "rgba(0, 0, 0, 0.38)"
         }
     });
     

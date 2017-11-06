@@ -3,7 +3,7 @@
  (c) 2017 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 10/Oct/2017
+ Updated: 4/Nov/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -469,7 +469,7 @@
             directive: ["ManagerCalendar", function (ManagerCalendar) {
                 return {
                     restrict: "C",
-                    templateUrl: Material.components.Calendar.route,
+                    templateUrl: Calendar.route,
                     scope: {
                         managerCalendar: "=ngModel",
                         disabledMove: "=?",
@@ -480,6 +480,7 @@
                         maxDate: "=?",
                         parentDialog: "@",
                         disabledDate: "&",
+                        startComponent: "&",
 
                         // Eventos
                         moveEvent: "&",
@@ -531,6 +532,8 @@
 
                         $scope.managerCalendar = 
                             ManagerCalendar.instance(EventsCalendar);
+                    
+                        $scope.startComponent({$calendar: $scope.managerCalendar});
 
                         $scope.$watch(function () {
                             return $scope.managerCalendar;

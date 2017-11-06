@@ -5,8 +5,6 @@
  Update: 20/Juli/2017
  */
 
-/* global CryptoJS */
-
 (function (factory) {
     if (typeof jQuery === "function") {
         factory(window, jQuery); // jQuery ya se encuentra cargado
@@ -300,13 +298,13 @@
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     Softtion.prototype.encode = function (value, keyPassword) {
-        return (typeof CryptoJS === "undefined") ? value :
-            CryptoJS.AES.encrypt(value, keyPassword).toString();
+        return (typeof window.CryptoJS === "undefined") ? value :
+            window.CryptoJS.AES.encrypt(value, keyPassword).toString();
     };
     
-    Softtion.prototype.decode = function (valueEncrypt, keyPassword) {
-        return (typeof CryptoJS === "undefined") ? valueEncrypt :
-            CryptoJS.AES.decrypt(valueEncrypt, keyPassword).toString(CryptoJS.enc.Utf8);
+    Softtion.prototype.decode = function (value, keyPassword) {
+        return (typeof window.CryptoJS === "undefined") ? value :
+            window.CryptoJS.AES.decrypt(value, keyPassword).toString(window.CryptoJS.enc.Utf8);
     };
     
     Softtion.prototype.getMIME = function (extension) {
@@ -505,109 +503,103 @@
         return $number; // Retornando expresado monetariamente
     };
     
-//    softtion.processNumber = {
-//        getThreeDigits : function (number) {
-//            try {
-//                if ((number.length > 3) || (number.length < 1)) {
-//                    throw 'el número establecido para proceso no es de tres cifras.';
-//                } /* Excepción */
-//                
-//                number = softtion.character.addBefore({word : number, character : '0', size : 3}); 
-//                var $cifras = creatorCifras(), _cifraDescrita = '';
-//                var _centena = parseInt(number.substring(0,1));
-//                var _decenaUnidad = parseInt(number.substring(1,3));
-//                
-//                if (_centena !== 0) {
-//                    _cifraDescrita = _cifraDescrita + $cifras[_centena * 100];
-//                    
-//                    if (_centena === 1 && _decenaUnidad !== 0) {
-//                        _cifraDescrita = _cifraDescrita + 'TO ';
-//                    } /* Añadimos caracteres en caso de ser Centana de 100 */
-//                    
-//                    else { _cifraDescrita = _cifraDescrita + ' '; } /* Agregamos espacio descripción */
-//                }
-//                
-//                if (_decenaUnidad !== 0) {
-//                    var temporal = $cifras[_decenaUnidad]; 
-//                
-//                    if (temporal) {
-//                        if (temporal.length > 0) {
-//                            _cifraDescrita = _cifraDescrita + temporal;
-//                        } /* La cifra es diferente de Cero */
-//                    }
-//
-//                    else {
-//                        var decena = parseInt(number.substring(1,2)) * 10;
-//                        var unidad = parseInt(number.substring(2,3));
-//
-//                        _cifraDescrita = _cifraDescrita + $cifras[decena];
-//                        _cifraDescrita = _cifraDescrita + " Y " + $cifras[unidad];
-//                    } /* Se desgloza el número para realizar descripción */
-//                }
-//                
-//                return _cifraDescrita.trim(); /* Retornando cifra de tres dígitos */
-//            }
-//            
-//            catch (err) { 
-//                console.error('Softtion - Uncaught TypeError: ' + err); return null; 
-//            } /* Error generado */
-//        },
-//        
-//        getDescription : function (number) {
-//            try {
-//                if (softtion.isEmpty(number)) {
-//                    throw 'el número puede no estar definido, instanciado ó no contiene caracteres.';
-//                } /* Excepción */
-//                
-//                if (parseInt(number) !== 0) {
-//                    number = String(parseInt(number)); /* Removiendo ceros */
-//                    var _numeroDescrito = '', _posicionFinal = number.length, _index = 0; 
-//
-//                    while (_posicionFinal > 0) {
-//                        var _posicionInicial = _posicionFinal - 3; /* Posición inicial del corte */
-//
-//                        if (_posicionInicial < 0) { _posicionInicial = 0; } /* Controlando desbordamiento */
-//
-//                        var $cantidades = creatorCantidades(); // Descripcion de Cantidades
-//                        var _cifraNumerica = number.substring(_posicionInicial,_posicionFinal);
-//                        var _cifraDescrita = softtion.processNumber.getThreeDigits(_cifraNumerica);
-//
-//                        if (_cifraDescrita.length > 0) {
-//                            if (_index > 0) {
-//                                if (parseInt(_cifraNumerica) > 1) {
-//                                    _cifraDescrita = _cifraDescrita + ' ' + $cantidades[_index * 10];
-//                                } /* La cifra a describir es plural */
-//
-//                                else {
-//                                    /* Solo se requiere descriptor de cantidad */
-//                                    if (_index%2 !== 0) { _cifraDescrita = $cantidades[_index]; }
-//
-//                                    /* Se requiere descriptor de cantidad y cifra */
-//                                    else { _cifraDescrita = _cifraDescrita + ' ' + $cantidades[_index]; }
-//                                } /* La cifra a describir es singular */
-//                            } /* La cifra pertenece a unidades de mil ó superiores */
-//
-//                            _numeroDescrito = _cifraDescrita + ' ' + _numeroDescrito;
-//                        } /* La cifra no contiene descripción */
-//
-//                        else if ((_index > 1) && (_index%2 === 0)) {
-//                            _numeroDescrito = $cantidades[_index * 10] + ' ' +  _numeroDescrito;
-//                        } /* Se requiere descrición plural de la sección del número */
-//
-//                        _index++; _posicionFinal = _posicionInicial; /* Reconfigurando variables */
-//                    }
-//
-//                    return _numeroDescrito.trim(); /* Retornando descripción del número */
-//                }
-//                
-//                else { return 'CERO'; } /* El número a describir es cero */
-//            } /* Describiendo número */
-//            
-//            catch (err) { 
-//                console.error('Softtion - Uncaught TypeError: ' + err); return null; 
-//            } /* Error generado */
-//        }
-//    };
+    Softtion.prototype.getThreeDigits = function (number) {
+        try {
+            var $number = String(number); // Corvirtiendo a String
+            
+            if (($number.length > 3) || ($number.length < 1)) {
+                throw "el número establecido para proceso no es de tres cifras.";
+            } // Excepción encontrada en el número
+
+            $number = this.leadingChar($number, "0", 3); 
+            
+            var numberDescription= "", // Número descrito
+                tenUnity = parseInt($number.substring(1,3)), 
+                hundred = parseInt($number.substring(0,1));
+
+            if (hundred !== 0) {
+                numberDescription += DIGITS[hundred * 100];
+
+                numberDescription += 
+                    (hundred === 1 && tenUnity !== 0) ? "TO " :  " "; 
+            } // Describiendo la centena del número
+
+            if (tenUnity !== 0) {
+                if (DIGITS[tenUnity]) {
+                    numberDescription += DIGITS[tenUnity];
+                } else {
+                    var ten = parseInt($number.substring(1, 2)) * 10,
+                        unity = parseInt($number.substring(2, 3));
+
+                    numberDescription += DIGITS[ten];
+                    numberDescription += " Y " + DIGITS[unity];
+                } // Se desgloza el número en decenas y unidades
+            }
+
+            return numberDescription.trim(); // Retornando descripción del número
+        }
+        catch (err) { 
+            console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+        } // Error encontrado en el número
+    };
+        
+    Softtion.prototype.getNumberDescription = function (number) {
+        try {
+            if (this.isUndefined(number)) {
+                throw 'el número puede no estar definido, instanciado ó no contiene caracteres.';
+            } // Excepción encontrada en el número
+            
+            number = isNaN(number) ? parseInt(number) : number;
+
+            if (number !== 0) {
+                var $number = String(number), // Corvirtiendo a String
+                    numberDescription = "", 
+                    endPosition = $number.length, index = 0; 
+
+                while (endPosition > 0) {
+                    var startPosicion = endPosition - 3; // Posición inicial
+
+                    if (startPosicion < 0) { 
+                        startPosicion = 0;
+                    } // Controlando desbordamiento
+
+                    var numericDigit = $number.substring(startPosicion, endPosition),
+                        digitDescription = this.getThreeDigits(numericDigit);
+
+                    if (this.isString(digitDescription)) {
+                        if (index > 0) {
+                            if (parseInt(numericDigit) > 1) {
+                                digitDescription += " " + QUANTITIES[index * 10];
+                            } // La cifra a describir es plural
+                            else {
+                                if (index%2 !== 0) { 
+                                    digitDescription = QUANTITIES[index]; 
+                                } // Solo se requiere descriptor de cantidad
+                                else { 
+                                    digitDescription += " " + QUANTITIES[index]; 
+                                } // Se requiere descriptor de cantidad y cifra
+                            } // La cifra a describir es singular
+                        } // La cifra pertenece a unidades de mil ó superiores
+
+                        numberDescription = digitDescription + " " + numberDescription;
+                    } // La cifra no contiene descripción
+                    else if ((index > 1) && (index%2 === 0)) {
+                        numberDescription = QUANTITIES[index * 10] + " " +  numberDescription;
+                    } // Se requiere descrición plural de la sección del número
+
+                    index++; endPosition = startPosicion; // Reconfigurando variables
+                }
+
+                return numberDescription.trim(); // Retornando descripción del número
+            }
+            else { 
+                return "CERO"; 
+            } // El número a describir es el '0'
+        } 
+        catch (err) { 
+            console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+        } // Error encontrado en el número
+    };
     
     // Extendiendo Objetos de JavaScript
     
