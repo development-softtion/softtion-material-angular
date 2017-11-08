@@ -6109,8 +6109,10 @@
                         restrict: "C",
                         scope: {
                             views: "@",
+                            elementScroll: "@",
                             disabledPositionStart: "=?",
                             disabledOverflow: "=?",
+                            positionScroll: "@",
                             
                             // Eventos
                             viewEvent: "&"
@@ -6124,6 +6126,8 @@
                                 stripe = angular.element(
                                     softtion.html("div").addClass("stripe").create()
                                 );
+                            
+                            $scope.elementScroll = $scope.elementScroll || ".app-content";
                             
                             if (tabs.exists()) {
                                 tabs.attr("tabindex", "-1"); // Componentes enfocables
@@ -6211,8 +6215,14 @@
                                     } // Vista actualmente activa
                                     
                                     if (!$scope.disabledPositionStart) {
-                                        angular.element(".app-content").scrollTop(0); 
-                                    } // No es necesario subir vista
+                                        var elementScroll = angular.element($scope.elementScroll),
+                                            positionScroll = parseInt($scope.positionScroll);
+                                        
+                                        if (!isNaN(positionScroll) && 
+                                            (positionScroll < elementScroll.scrollTop())) {
+                                            elementScroll.scrollTop(positionScroll); 
+                                        } // Reposicionando scroll
+                                    } // No es necesario reposicionar scroll de elemento establecido
                                     
                                     if (left < $element.scrollLeft() || (width + left) > widthTab) {
                                         $element.animate({ scrollLeft: left }, 175, "standardCurve");                                         

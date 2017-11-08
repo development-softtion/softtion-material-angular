@@ -744,9 +744,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .checkbox-select.active > label:after {
     border: 2px solid var(--background-core); }
 
-.dark .checkbox-select.active > label:after {
-    border: 2px solid var(--dark-background); }
-
 /** CHIP */
 
 .chip {
@@ -762,7 +759,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .chip:hover {
     background-color: rgba(0, 0, 0, 0.54);
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .chip.theme-primary:hover {
     background-color: var(--theme-secondary-background-hover);
@@ -786,7 +783,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .chip > .action > i {
     background-color: rgba(0, 0, 0, 0.54);
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .chip.theme-primary > .action > i {
     background-color: var(--theme-secondary-background-dark);
@@ -1336,7 +1333,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .form.flat {
     border: 1px solid var(--background-border); }
 
-.form > .header, .dark .form > .header {
+.form > .header {
     background-color: transparent; }
 
 .form > .header > .detail > .title.theme-primary {
@@ -1454,7 +1451,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .list > .item-list > .content > .avatar > span,
 .list > .item-list > .content > .avatar > i {
     background-color: var(--secondary-font);
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .list > .item-list > .content > .detail {
     border-bottom-color: transparent; }
@@ -1933,7 +1930,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background: #323232; }
 
 .snackbar > .body { 
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .snackbar > .action > span {
     color: var(--theme-primary-font); }
@@ -2030,10 +2027,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .stepper-horizontal > ul > li > .content > .detail > .title,
 .stepper-horizontal > ul > li > .content > .detail > .optional {
-    color: var(--secondary-font); }
-
-.dark .stepper-horizontal > ul > li > .content > .detail > .title,
-.dark .stepper-horizontal > ul > li > .content > .detail > .optional {
     color: var(--secondary-font); }
 
 .app-bar.theme-primary > .stepper-horizontal li > .content > .detail > .title,
@@ -2209,10 +2202,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textarea:hover > .content > .box {
     border: 2px solid var(--primary-font); }
 
-.dark .textarea:hover > .content > .box {
-    border: 2px solid var(--primary-font); }
-
-.dark .textarea > .content.focused > .box,
 .textarea > .content.focused > .box {
     border: 2px solid var(--theme-secondary-background); }
 
@@ -2278,7 +2267,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: rgba(231, 231, 231, 1);
     border-bottom: 2px solid var(--primary-font); }
 
-.dark .textbox > .content.focused > .box,
 .textbox > .content.focused > .box {
     border-bottom: 2px solid var(--theme-secondary-background); }
 
