@@ -825,6 +825,23 @@ input[type=number]::-webkit-outer-spin-button {
 .margin-bottom-16 {
     margin-bottom: 16px !important; }
 
+.margin-button-floating {
+    margin-bottom: 88px !important; }
+
+.margin-footer-buttons {
+    margin-bottom: 56px !important; }
+
+.line-text {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px; }
+
+.line-text > span {
+    font-weight: 700; }
+
 /** EFFECTS MATERIAL */
 
 .ripple-box {
@@ -1070,6 +1087,29 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
         overflow: auto; }
 }
 
+/** ATTRIBUTE */
+
+.attribute {
+    width: 100%;
+    overflow: auto; }
+
+.attribute > .name,
+.attribute > .value {
+    display: block;
+    height: 15px;
+    float: left;
+    line-height: 15px; }
+
+.attribute > .name {
+    width: 60%; }
+
+.attribute > .name.bold {
+    font-weight: 500; }
+
+.attribute > .value {
+    width: 40%;
+    text-align: right; }
+
 /** AUDIO */
 
 .audio {
@@ -1117,8 +1157,13 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     font-size: 11px; }
 
 .audio > .content > .detail > .name {
+    display: block;
+    width: calc(100% - 8px);
     top: 2px;
-    left: 4px; }
+    left: 4px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;}
 
 .audio > .content > .detail > .current-time {
     left: 4px;
@@ -1191,6 +1236,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     height: 32px;
     line-height: 32px;
     font-size: 16px;
+    cursor: text;
     overflow: hidden; }
 
 .autocomplete.active > .content > input:focus ~ .value {
@@ -1365,6 +1411,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     height: 32px;
     line-height: 32px;
     font-size: 16px;
+    cursor: text;
     overflow: hidden; }
 
 .autocomplete-record.active > .content > input:focus ~ .value {
@@ -3349,16 +3396,22 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     width: 50%;
     border: none;
-    height: 32px;
+    height: 0px;
     line-height: 24px;
     outline: 0;
     font-size: 16px;
     padding: 0px;
     background-color: transparent; }
 
-.chip-input > .content > .box > input:disabled,
-.chip-input.hide-input > .content > .box > input {
+.chip-input > .content > .box.empty > input,
+.chip-input > .content > .box.focused > input {
+    height: 32px; }
+
+.chip-input > .content > .box > input:disabled {
     height: 0px; }
+
+.chip-input > .content > .box.empty > input:disabled {
+    height: 32px; }
 
 .chip-input > .content > .box > input::-webkit-input-placeholder {
     visibility: hidden; }
@@ -3382,7 +3435,7 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transform: translateX(-50%);
             transform: translateX(-50%); }
 
-.chip-input.active > .content > .box.focused ~ .line-shadow-active {
+.chip-input > .content.active > .box.focused ~ .line-shadow-active {
     width: 100%; 
     -webkit-animation: borderTextfield 160ms var(--sharp-curve);
        -moz-animation: borderTextfield 160ms var(--sharp-curve);
@@ -3442,7 +3495,7 @@ button.raised:focus:after, button.flat:focus:after {
 .chip-input > .content > i.icon-description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.chip-input.active > .content > i.icon-description ~ .box.focused ~ .line-shadow-active {
+.chip-input > .content.active > i.icon-description ~ .box.focused ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 160ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 160ms var(--sharp-curve);
@@ -4665,22 +4718,28 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 4px; }
 
 .filechooser > .content > .select-file {
-    cursor: pointer; }
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    cursor: pointer;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+            transform: translateY(-50%); }
 
 .filechooser > .content > .select-file > i {
     width: 100%;
     height: 64px;
     line-height: 64px;
     text-align: center;
-    font-size: 60px;
-    margin-top: 16px; }
+    font-size: 60px; }
 
 .filechooser > .content > .select-file > p {
     display: block;
-    width: 100%;
+    width: calc(100% - 16px);
     text-align: center;
     font-size: 16px;
-    margin-top: 8px; }
+    margin: 8px 8px 0px 8px; }
 
 .filechooser > .content > .select-file > p.disabled {
     text-decoration: line-through; }
@@ -4805,6 +4864,24 @@ button.raised:focus:after, button.flat:focus:after {
     text-overflow: ellipsis;
     white-space: nowrap; }
 
+.filechooser .content > .detail.actionable > .name {
+    width: calc(100% - 80px); }
+
+.filechooser .content > .detail > button.action {
+    display: none;
+    float: right;
+    padding: 4px;
+    height: 32px;
+    margin-left: 4px; }
+
+.filechooser .content > .detail > button.action:not(:active):before {
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
+
+.filechooser .content > .detail.actionable > button.action {
+    display: block; }
+
 /** FILECHOOSER AUDIO */
 
 .filechooser-audio {
@@ -4823,18 +4900,23 @@ button.raised:focus:after, button.flat:focus:after {
 
 .filechooser-audio > .actions {
     position: relative;
+    display: flex;
     float: left;
     width: 100%; 
     padding: 0px 8px;
     box-sizing: border-box; }
 
-.filechooser-audio > .actions > button {
-    float: right;
+.filechooser-audio > .actions > label {
+    width: 100%;
     height: 48px;
-    padding: 12px 8px; }
+    line-height: 48px; 
+    padding-left: 8px;
+    box-sizing: border-box; }
 
-.filechooser-audio > .actions > button + button {
-    margin-right: 8px; }
+.filechooser-audio > .actions > button {
+    height: 48px;
+    padding: 12px 8px; 
+    margin-left: 8px; }
 
 /** FILECHOOSER MULTIPLE */
 
@@ -5399,7 +5481,7 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     width: 100%;
     float: left;
-    padding: 16px 16px 8px 16px;
+    padding: 16px;
     box-sizing: border-box; }
 
 .form > .header + .content {
@@ -5550,6 +5632,10 @@ button.raised:focus:after, button.flat:focus:after {
 .footer-buttons > button.raised {
     display: none; }
 
+.footer-buttons > button.action {
+    padding: 6px;
+    height: 36px; }
+
 /** FULLWIDTH FIELD */
 
 .fullwidth-field {
@@ -5600,6 +5686,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     cursor: text;
     width: 100%;
+    cursor: text;
     overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -5800,12 +5887,16 @@ button.raised:focus:after, button.flat:focus:after {
 
 .grid-list > .cell > .background {
     position: absolute;
+    display: flex;
     top: 0px;
     width: 100%;
     height: 100%; 
     overflow: hidden;
     padding: 2px;
     box-sizing: border-box; }
+
+.grid-list > .cell > .background > img {
+    margin: auto; }
 
 .grid-list > .cell > .background > img.center.density-width {
     width: calc(100% - 4px); }
@@ -5974,6 +6065,8 @@ img.center.density-height {
     width: 100%;
     height: 48px;
     line-height: 48px;
+    padding-left: 4px;
+    box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
@@ -6005,12 +6098,6 @@ img.center.density-height {
     padding: 4px;
     width: 40px;
     height: 40px; }
-
-.label > .actions > button:last-child {
-    padding-right: 0px; }
-
-.label > .actions > button:last-child:before {
-    left: calc(50% + 4px); }
 
 /** LINK */
 
@@ -6062,6 +6149,9 @@ p.link > a {
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
+
+.list > .item-list.actionable {
+    cursor: pointer; }
 
 .list > .item-list.slide, .list > .item-list.slide label {
     cursor: pointer; }
@@ -6116,6 +6206,9 @@ p.link > a {
     font-size: 16px;
     height: 16px;
     line-height: 16px; }
+
+.list > .item-list.actionable > .content > .detail > .title {
+    cursor: pointer; }
 
 .list.two-line > .item-list > .content > .detail > .title,
 .list.three-line > .item-list > .content > .detail > .title {
@@ -8683,7 +8776,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     height: inherit;
     line-height: inherit;
     color: inherit;
-    text-decoration: none; }
+    text-decoration: none;
+    -webkit-user-drag: none;
+       -moz-user-drag: none;
+            user-drag: none; }
 
 .tabs > .stripe {
     position: absolute;
@@ -8784,6 +8880,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     line-height: 18px;
     font-size: 16px;
     margin: 0px;
+    cursor: text;
     cursor: text;
     overflow: hidden;
     white-space: pre-wrap;
@@ -8896,6 +8993,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     line-height: 32px;
     margin: 0px;
     font-size: 16px;
+    cursor: text;
     overflow: hidden; 
     white-space: nowrap; }
 
@@ -9115,6 +9213,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     line-height: 32px;
     font-size: 16px;
     width: 100%;
+    cursor: text;
     overflow: hidden; 
     white-space: nowrap; }
 
@@ -9293,6 +9392,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin: 0px;
     font-size: 16px;
     overflow: hidden; 
+    cursor: text;
     white-space: nowrap; }
 
 .textfield-bordered.active > .content > .box > input:focus ~ .value {
@@ -9398,6 +9498,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: 16px;
     cursor: text;
     width: 100%;
+    cursor: text;
     overflow: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -9558,16 +9659,28 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 0px; 
     padding: 0px; }
 
-.textfield-readonly > .content > i.icon-description ~ input { 
+.textfield-readonly > .content > .img-icon {
+    display: block;
+    position: absolute;
+    top: 24px;
+    left: 0px;
+    width: 24px;
+    height: 24px; }
+
+.textfield-readonly > .content > i.icon-description ~ input,
+.textfield-readonly > .content > .img-icon ~ input { 
     padding-left: 40px;
     width: calc(100% - 40px); }
 
 .textfield-readonly > .content > i.icon-description ~ label,
-.textfield-readonly > .content > i.icon-description ~ span {
+.textfield-readonly > .content > .img-icon ~ label,
+.textfield-readonly > .content > i.icon-description ~ span,
+.textfield-readonly > .content > .img-icon ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-readonly > .content > i.icon-description ~ .line-shadow {
+.textfield-readonly > .content > i.icon-description ~ .line-shadow,
+.textfield-readonly > .content > .img-icon ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
@@ -9892,9 +10005,8 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .toolbar > .logo {
     width: 100%;
-    margin: 8px 0px;
-    height: 40px;
-    margin-left: 16px; }
+    margin: 8px 0px 8px 16px;
+    height: 40px; }
 
 .toolbar > .title ~ .logo, .toolbar > .detail ~ .logo {
     display: none; }
@@ -9989,6 +10101,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     box-sizing: content-box;
     margin-right: 1px; }
 
+.toolbar > .actions > button.raised,
+.toolbar > .actions > button.flat {
+    margin: 10px 6px 0px 0px; }
+
 .app-bar.floating > .toolbar > .actions > button.action { 
     padding: 12px; }
 
@@ -10011,6 +10127,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     
     .toolbar > .actions > button.action {
         padding: 20px 12px; }
+
+    .toolbar > .actions > button.raised,
+    .toolbar > .actions > button.flat {
+        margin: 14px 6px 0px 0px; }
 
     .toolbar > .actions > button.action > .badge {
         top: 14px;

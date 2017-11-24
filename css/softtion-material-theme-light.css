@@ -123,6 +123,12 @@ body {
 .divider {
     background-color: var(--background-border); }
 
+.line-text.subtitle {
+    color: var(--secondary-font); }
+
+.line-text > span {
+    color: var(--theme-primary-font); }
+
 /** APP BAR */
 
 .app-bar {
@@ -810,7 +816,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .chip-input > .content > label {
     color: var(--secondary-font); }
 
-.chip-input.active > .content > .box.focused ~ label {
+.chip-input > .content.active > .box.focused ~ label {
     color: var(--theme-primary-font); }
 
 .chip-input > .content > i {
@@ -832,7 +838,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .chip-input > .content > .line-shadow-active {
     border-bottom: 2px solid transparent; }
 
-.chip-input.active > .content > .box.focused ~ .line-shadow-active {
+.chip-input > .content.active > .box.focused ~ .line-shadow-active {
     border-bottom: 2px solid var(--theme-secondary-background); }
 
 .chip-input > .content > .box.disabled ~ .line-shadow-active {
@@ -853,7 +859,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .clockpicker > .title > .time > .minute,
 .clockpicker > .title > .time > .am-pm > div.am,
 .clockpicker > .title > .time > .am-pm > div.pm {
-    color: var(--secondary-font); }
+    color: var(--alternative-secondary-font); }
 
 .clockpicker > .title > .time > .hour.active,
 .clockpicker > .title > .time > .minute.active, 
@@ -861,7 +867,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .clockpicker > .title > .time > .am-pm > div.pm.active,
 .clockpicker > .content > .plate > .hours > .tick.active,
 .clockpicker > .content > .plate > .minutes > .tick.active {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .clockpicker > .content > .plate {
     background-color: var(--background-active); }
@@ -972,10 +978,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-primary-font-active); }
 
 .datepicker > .title > .year, .datepicker > .title > .day {
-    color: var(--secondary-font); }
+    color: var(--alternative-secondary-font); }
 
 .datepicker > .title > .year.active, .datepicker > .title > .day.active {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .datepicker > .content > .month > .button-left.disabled,
 .datepicker > .content > .month > .button-right.disabled,
@@ -1191,6 +1197,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .filechooser-audio > .actions {
     background-color: rgba(0, 0, 0, 0.48); }
+
+.filechooser-audio > .actions > label {
+    color: var(--alternative-primary-font); }
 
 .filechooser-audio > .actions > button {
     color: var(--alternative-primary-font); }
@@ -1422,10 +1431,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .grid-list > .cell > .content > .detail > .title,
 .grid-list > .cell > .content > button.action > i,
 .grid-list > .cell > .content > .detail > .subtitle {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .grid-list > .cell > .content > button.action:before {
-    background-color: var(--ripple); }
+    background-color: var(--alternative-ripple); }
 
 /** HEADER */
 
@@ -1614,7 +1623,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: rgba(0, 0, 0, 0.64); }
 
 .progress-pane > .content > label {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 /** RADIOBUTTON */
 

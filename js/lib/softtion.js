@@ -48,6 +48,7 @@
                     ALPHABETIC: "alphabetic",
                     NUMBER: "number",
                     MONEY: "money",
+                    MATH: "math",
                     NOTHING: "nothing",
                     ALPHANUMBER: "alphanumber",
                     ALPHASPACE: "alphaspace",
@@ -189,6 +190,23 @@
         }
     };
     
+    Softtion.prototype.forEach = function (array, fn) {
+        if (!this.isArray(array)) { return; } // No es array
+        
+        var index = 0, stop, 
+            self = this; // Objeto Softtion;
+        
+        try {
+            array.forEach(function (value) {
+                stop = fn(value, index); index++;
+
+                if (stop === true) {
+                    throw self.BreakException;
+                } // Se forzo detención
+            });
+        } catch (ex) {} // Se forzo detención
+    };
+    
     Softtion.prototype.leadingChar = function (word, character, size, option) {
         var newWord = String(word); option = option || "before";
         
@@ -318,6 +336,11 @@
             case ("txt") : return "text/plain";
             default: ""; // Extensión desconocida
         }
+    };
+    
+    Softtion.prototype.newTabPage = function (url) {
+        var a = document.createElement("a");
+        a.target = "_blank"; a.href = url; a.click(); 
     };
     
     var TypeCharacter = {
@@ -486,6 +509,8 @@
         };
         
     Softtion.prototype.getMonetaryExpression = function (number) {
+        if (this.isUndefined(number)) { return ""; } // Indefinido
+        
         var $number = "", contador = 0, 
             numberString = number.toString(),
             length = numberString.length;

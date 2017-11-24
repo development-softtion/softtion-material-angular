@@ -1,9 +1,9 @@
 /*
- Angular Softtion Material v1.2.1
+ Angular Softtion Material v1.2.5
  (c) 2016 - 2017 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 18/Sep/2017
+ Updated: 23/Nov/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -21,6 +21,17 @@
             var icon = angular.element(
                 softtion.html("i").addClass("icon-description").
                     setText($scope.iconDescription).create()
+            );
+            
+            icon.insertBefore($component); return icon; // Icono
+        } // Icono descriptivo, se debe insertar el icono antes del input
+    };
+    
+    function insertImgIcon ($scope, $component) {
+        if (softtion.isString($scope.imgIcon)) {
+            var icon = angular.element(
+                softtion.html("img", false).addClass("img-icon").
+                    addAttribute("src", $scope.imgIcon).create()
             );
             
             icon.insertBefore($component); return icon; // Icono
@@ -76,7 +87,9 @@
         insertIconDescription($scope, input); // Icono descriptivo
         
         var callbackFnEvent = function ($event, $function) {
-            $function({ $event: $event, $value: $scope.valueInput });
+            $function({ 
+                $event: $event, $value: $scope.valueInput, $model: $scope.value 
+            });
         };
 
         $scope.$watch(function () {
@@ -142,6 +155,10 @@
 
             switch ($scope.type) {
                 case (TextType.MONEY):
+                    $scope.successInput(parseInt($scope.valueInput));
+                break;
+                
+                case (TextType.MATH):
                     $scope.successInput(parseInt($scope.valueInput));
                 break;
 
@@ -329,16 +346,17 @@
 
         $scope.getValueModel = function () {
             var value = (softtion.isDefined($scope.value)) ? 
-                $scope.value : $scope.valueInput;                                    
-
+                $scope.value : $scope.valueInput;
+                
             if (($scope.type === "password") && !$scope.viewPassword) {
                 var length = value.length; value = "";
 
                 for (var i = 0; i < length; i++) { 
                     value += String.fromCharCode(8226); 
                 } // Cargando el caracter password '•'
-            } else if(softtion.isString(value)) {
-                var valueTemp = $scope.formatValue({$value: value});
+            } else if (softtion.isDefined(value)) {
+                var json = { $model: value, $value: String(value) },
+                    valueTemp = $scope.formatValue(json);
                 
                 if (softtion.isDefined(valueTemp)) {
                     value = valueTemp;
@@ -763,7 +781,8 @@
                         templateUrl: Material.components.Audio.route,
                         scope: {
                             src: "@",
-                            name: "@"
+                            name: "@",
+                            playAutomatic: "=?"
                         },
                         link: function ($scope, $element) {
                             var audio = $element.children("audio")[0],
@@ -785,14 +804,20 @@
                             audio.onloadeddata = function () {
                                 $scope.$apply(function () {
                                     $scope.errorAudio = false;
+                                    $scope.isPlay = false;
                                     $scope.duration = audio.duration;
+                                    
+                                    if ($scope.playAutomatic) {
+                                        $scope.play();
+                                    } // Reproducción automatica
                                 });
                             };
                             
                             audio.onerror = function () {
                                 $scope.$apply(function () {
-                                    console.log("Error");
                                     $scope.errorAudio = true;
+                                    $scope.duration = 0;
+                                    $scope.isPlay = false;
                                 });
                             };
                             
@@ -1977,60 +2002,57 @@
                 route: "softtion/template/catalog.html",
                 name: "catalog",
                 html: function () {
-                    var arrowPrev = softtion.html("div").addClass(["arrow", "prev"])
-                        .addAttribute("ng-class", "{hidden : !activePrev}")
-                        .addAttribute("ng-click", "prev()");
-                    var arrowNext = softtion.html("div").addClass(["arrow", "next"])
-                        .addAttribute("ng-class", "{hidden : !activeNext}")
-                        .addAttribute("ng-click", "next()");
+                    var arrowPrev = softtion.html("div").
+                            addClass(["arrow", "prev"]).
+                            addAttribute("ng-class", "{hidden : !activePrev()}").
+                            addAttribute("ng-click", "prev()"),
+                
+                        arrowNext = softtion.html("div").
+                            addClass(["arrow", "next"]).
+                            addAttribute("ng-class", "{hidden : !activeNext()}").
+                            addAttribute("ng-click", "next()"),
+                
+                        detail = softtion.html("div").addClass("detail").
+                            addChildren(
+                                softtion.html("div").addClass("primary-title").
+                                    addChildren(
+                                        softtion.html("div").addClass("content").
+                                            addChildren(
+                                                softtion.html("p").addClass("title").
+                                                    setText("{{photo.title}}")
+                                            ).addChildren(
+                                                softtion.html("p").addClass("subtitle").
+                                                    setText("{{photo.subtitle}}")
+                                            )
+                                    )
+                            ).addChildren(
+                                softtion.html("div").addClass("actions").
+                                    addAttribute("ng-class", "{hidden: actions.length === 0}").
+                                    addChildren(
+                                        softtion.html("button").
+                                            addAttribute("ng-repeat", "action in actions").
+                                            addClass(["flat", "right"]).
+                                            setText("{{action.label}}").
+                                            addAttribute(
+                                                "ng-click", "clickAction(action.name, photo, $index)"
+                                            )
+                                    )
+                            );
 
-                    var container = softtion.html("div").addClass("container")
-                    .addChildren(
-                        softtion.html("div").addClass("content")
-                        .addAttribute("ng-click", "choose($event)")
-                        .addAttribute("ng-repeat", "photo in gallery")
-                        .addChildren(
-                            softtion.html("img").addAttribute("ng-src", "{{photo.src}}")
-                        )
-                        .addChildren(
-                            softtion.html("div").addClass("detail")
-                            .addChildren(
-                                softtion.html("div").addClass("primary-title")
-                                .addChildren(
-                                    softtion.html("div").addClass("content")
-                                    .addChildren(
-                                        softtion.html("p").addClass("title").setText("{{photo.title}}")
-                                    )
-                                    .addChildren(
-                                        softtion.html("p").addClass("subtitle").setText("{{photo.subtitle}}")
-                                    )
-                                )
-                            )
-                            .addChildren(
-                                softtion.html("div").addClass("actions")
-                                .addAttribute("ng-class", "{hidden: photo.actions.length == 0}")
-                                .addChildren(
-                                    softtion.html("button").addAttribute("ng-repeat", "action in photo.actions")
-                                    .addClass(["{{action.type}}", "right"])
-                                    .setText("{{action.title}}")
-                                    .addAttribute("ng-click", "triggerAction($event, $index)")
-                                )
-                            )
-                            
-                        )
-                    )
-                    .addChildren(
-                        softtion.html("div").addClass(["content", "action"])
-                        .addAttribute("ng-click", "clickAction()")
-                        .addChildren(
-                            softtion.html("div").addClass("content")
-                                .addChildren(
-                                softtion.html("p").addClass("title")
-                                .setText("{{titleAction}}")
-                            )
-                        )
-                    );
-                        
+                    var container = softtion.html("div").
+                            addClass("container").
+                            addAttribute("ng-style", "positionContent()").
+                            addChildren(
+                                softtion.html("div").addClass("content").
+                                    addAttribute("ng-click", "select($index)").
+                                    addAttribute("ng-style", "styleContent()").
+                                    addAttribute("ng-class", "{active: isActiveContent($index)}").
+                                    addAttribute("ng-repeat", "photo in gallery track by $index").
+                                    addChildren(
+                                        softtion.html("img", false).
+                                            addAttribute("ng-src", "{{photo.src}}")
+                                    ).addChildren(detail)
+                    );  
 
                     return container + arrowPrev + arrowNext;
                 },
@@ -2040,120 +2062,105 @@
                         templateUrl: Material.components.Catalog.route,
                         scope: {
                             gallery: "=",
+                            actions: "=?",
                             views: "@?",
-                            clickEfect: "=?",
-                            clickAction: "=?",
-                            titleAction: "@?"
+                            eventAction: "&"
                         },
-                        link: function ($scope, $element) {
-                            $scope.activeNext = true;
-                            $scope.activePrev = false;
-                            $scope.activeAction = false;
+                        link: function ($scope, $element) {                            
+                            var $container = $element.find(".container");
                             
-                            var $catalog = $element;
-                            var $container = $catalog.find('.container');
-                            var $content = undefined;
-                            var $active = undefined;
+                            $scope.index = 0;
                             
-                            var widthContent, lengthContent; 
-                            var lengtViews = 0;
-                            var min, max;
-                            var firstTime = true;
+                            if (!softtion.isArray($scope.gallery)) {
+                                $scope.gallery = [];
+                            } // Se debe definir una array en galeria
                             
-                            function initValues(){
+                            if (!softtion.isArray($scope.actions)) {
+                                $scope.actions = [];
+                            } // Se debe definir una array en acciones
+                            
+                            function getCountViews() {
+                                var countViews = parseInt($scope.views);
                                 
-                                $container.css("opacity", 0);
+                                if (isNaN(countViews)) {
+                                    countViews = 3;
+                                } // No definio correctamente las vistas
                                 
-                                lengtViews = $scope.views || 3;
-                                if(screen.width < 640) lengtViews = 1;
-                                if(screen.width >= 640 && screen.width <= 961) lengtViews = 3;
-                                
-                                if(!$scope.clickAction) $container.children(".action").remove();
-                                if (!$content) $content = $container.children('.content');
-                                $content.css({"flex-basis" : "calc(100% /" + lengtViews + ")"});
-                                
-                                widthContent = $content.width();
-                                lengthContent = $content.length; 
-                                
-                                if(firstTime) angular.element($content[0]).addClass("active");
-                                
-                                $active = $container.children(".active");
-                                min = Math.trunc(lengtViews/2);
-                                max = lengthContent - min;
-                                if($scope.views%2 !== 0) max--;
-                                
-                                slide($active,true);
-                                setTimeout(function(){$container.css("opacity", 1);},400);
-                                firstTime = false;
+                                return countViews; // Cantidad de vistas
                             }
                             
-                            function slide(current, slide){
-                                var $current = angular.element(current);
-                                var index = $current.index();
-                                var _translate = 0;
+                            $scope.styleContent = function () {
+                                return {
+                                    "flex-basis": "calc(100% / " + getCountViews() + ")"
+                                };
+                            };
+                            
+                            $scope.isActiveContent = function ($index) {
+                                return ($index === $scope.index);
+                            };
+                            
+                            $scope.activePrev = function () {
+                                return ($scope.index > 0);
+                            };
+                            
+                            $scope.prev = function () {
+                                if ($scope.index > 0) {
+                                    $scope.index--;
+                                } // Aun no ha llegado al inicio de Lista              
+                            };
+                            
+                            $scope.activeNext = function () {
+                                return ($scope.index < ($scope.gallery.length - 1));
+                            };
+                            
+                            $scope.next = function () {
+                                var length = $scope.gallery.length - 1;
+                                    
+                                if ($scope.index < (length)) {
+                                    $scope.index++;
+                                } // Aun no ha llegado al final de Lista
+                            };
+                            
+                            $scope.select = function ($index) {
+                                if ($scope.index !== $index) {
+                                    $scope.index = $index;
+                                } // Se ha seleccionado otro elemento
+                            };
+                            
+                            $scope.positionContent = function () {
+                                var $content = $container.find(".content"),
+                                    countViews = getCountViews(),
+                                    min = Math.trunc(countViews / 2),
+                                    countItems = $scope.gallery.length,
+                                    max = countItems - 1 - min;
+                            
+                                if ($scope.views%2 !== 0) { max--; }
                                 
-                                if(index >= 0 && index <= lengthContent - 1){
-                                    $active.removeClass("active");
-                                    $current.addClass("active");
-                                    $active = $current;
-                                    if(index >= min && index <= max){
-                                        _translate = widthContent * (min - index);
-                                    }
-                                    else if (index < min){
-                                        _translate = 0;
-                                    }
-                                    else if (index > max){
-                                        _translate -= widthContent * (max - min);
-                                    }
-                                    slideEfect(_translate, slide);
+                                var widthContent = 0, translate;
+                                
+                                if ($content) {
+                                    widthContent = $content.width();
                                 }
-                            }
+                                
+                                if ($scope.index < min) {
+                                    translate = 0;
+                                } else if ($scope.index > max) {
+                                    translate = ($scope.index > countViews) ?
+                                        widthContent * (max - min + 1) * (-1) : 0;
+                                } else {
+                                    translate = widthContent * (min - $scope.index);
+                                } // Index se encuentra en la Mitad
+                                
+                                return {
+                                    "-webkit-transform": "translateX(" + translate + "px)",
+                                       "-moz-transform": "translateX(" + translate + "px)",
+                                            "transform": "translateX(" + translate + "px)"
+                                };
+                            };
                             
-                            function slideEfect(value, slide){
-                                var $slide = (softtion.isDefined(slide)) ? slide : true;
-                                if($slide)
-                                $container.css("transform","translateX(" + value + "px)"); 
-                                showButtons();
-                            }
-                            
-                             
-                            function showButtons(){
-                                var index = $active.index();
-                                $scope.activeNext = (index < lengthContent-1);
-                                $scope.activePrev = (index > 0);
-                            }
-                            
-                            function next(){
-                                slide($active.next());
-                            }
-                            
-                            function prev(){
-                                slide($active.prev());                                
-                            }
-                            
-                            function choose(e){
-                                var current = e.currentTarget;
-                                if(!angular.element(current).hasClass("active"))
-                                    slide(current, $scope.clickEfect);
-                            }
-                            
-                            function triggerAction(e, index){
-                                var contentIndex = angular.element(e.currentTarget).parents(".content").index();
-                                var action = $scope.gallery[contentIndex].actions[index].action;
-                                if(action) action();
-                            }
-                            
-                            $scope.next = next;
-                            
-                            $scope.prev = prev;
-                            
-                            $scope.choose = choose;
-                            
-                            $scope.triggerAction = triggerAction;
-                            
-                            setTimeout(initValues, 100);
-                            
-                            angular.element(window).resize(initValues);
+                            $scope.clickAction = function (name, $item, $index) {
+                                $scope.eventAction({ $name: name, $item: $item, $index: $index });
+                            };
                         }
                     };
                 }
@@ -2292,10 +2299,13 @@
                 route: "softtion/template/chip-input.html",
                 name: "chipInput",
                 html: function () {
-                    var content = softtion.html("div").addClass("content");
+                    var content = softtion.html("div").addClass("content").
+                        addAttribute("ng-class", "{active: inputActive}");
                     
                     var box = softtion.html("div").addClass("box").
-                        addAttribute("ng-class", "{focused: inputActive, disabled: ngDisabled}");
+                        addAttribute(
+                            "ng-class", "{focused: inputActive, disabled: ngDisabled, empty: isEmpty()}"
+                        );
                     
                     var chips = softtion.html("div").addClass("chips").
                         addChildren(
@@ -2372,10 +2382,6 @@
                             $scope.maxCount = !isNaN($scope.maxCount) ? $scope.maxCount : -1;
                             $scope.inputActive = false; // Componente Activo
                             
-                            if ($scope.listValue.length > 0) { 
-                                $element.addClass("active"); 
-                            } // La lista contiene elementos definidos
-                            
                             $element.click(function ($event) { 
                                 input.focus(); // Enfocando componente de Texto
                             });
@@ -2390,6 +2396,10 @@
                                 } // Se debe reajustar el tamaño del Input
                                 
                                 return widthInput; // Retornando ancho
+                            };
+                            
+                            $scope.isEmpty = function () {
+                                return $scope.listValue.isEmpty();
                             };
                             
                             $scope.clickLabel = function ($event) {
@@ -2409,20 +2419,13 @@
                             };
                             
                             $scope.focusInput = function ($event) { 
-                                $element.addClass("active"); $scope.inputActive = true;
-                                $element.removeClass("hide-input");
+                                $scope.inputActive = true; // Activando input
                                 
                                 $scope.focusEvent({$event: $event, $values: $scope.listValue});
                             };
                             
                             $scope.blurInput = function ($event) { 
                                 $scope.valueInput = undefined; $scope.inputActive = false;
-                                
-                                if ($scope.listValue.length > 0) {
-                                    $element.addClass("hide-input"); 
-                                } else {
-                                    $element.removeClass("active"); 
-                                } // No tiene opciones escritas
                                 
                                 $scope.blurEvent({$event: $event, $values: $scope.listValue});
                             };
@@ -3954,8 +3957,8 @@
                                 addAttribute("ng-hide", "!isSelectedFile()").
                                 addChildren(
                                     softtion.html("div").addClass(["file"]).
-                                        addAttribute("ng-touchhold", "fileHold(file, $event, $index)").
-                                        addAttribute("ng-clickright", "fileRight(file, $event, $index)").
+                                        addAttribute("ng-touchhold", "fileHold($event)").
+                                        addAttribute("ng-clickright", "fileRight($event)").
                                         addAttribute("tabindex", "-1").
                                         addChildren(
                                             softtion.html("div").addClass("content").
@@ -3979,6 +3982,7 @@
 
                                                 addChildren(
                                                     softtion.html("div").addClass("detail").
+                                                        addAttribute("ng-class", "{actionable: isIconAction()}").
                                                         addChildren(
                                                             softtion.html("div").addClass("avatar").
                                                                 addChildren(
@@ -3986,6 +3990,12 @@
                                                                 )
                                                         ).addChildren(
                                                             softtion.html("label").addClass("name").setText("{{file.name}}")
+                                                        ).addChildren(
+                                                            softtion.html("button").addClass("action").
+                                                                addAttribute("ng-click", "clickIconAction($event)").
+                                                                addChildren(
+                                                                    softtion.html("i").setText("{{iconAction}}")
+                                                                )
                                                         )
                                                 )
                                         )
@@ -4002,9 +4012,12 @@
                             file: "=ngModel",
                             ngDisabled: "=?",
                             textDescription: "@",
+                            iconAction: "@",
+                            fileTypes: "=?",
                             
                             holdEvent: "&",
-                            clickrightEvent: "&"
+                            clickrightEvent: "&",
+                            actionEvent: "&"
                         },
                         link: function ($scope, $element) {
                             var fileInput = $element.find("input[type=file]"),
@@ -4019,28 +4032,12 @@
                             
                             var processFile = function (file) {
                                 var reader = new FileReader();
-                                
-                                reader.onloadstart = function ($event) {
-                                    // En Inicio
-                                };  
-        
-                                reader.onprogress = function ($event) {
-                                    // En progreso
-                                };
         
                                 reader.onload = function ($event) {
                                     $scope.$apply(function () {
                                         var fileResult = $event.target.result; 
                                         file["base64"] = fileResult; $scope.file = file;
                                     });
-                                };
-                                
-                                reader.onerror = function (event) {
-                                    // Error
-                                };
-
-                                reader.onabort = function (event) {
-                                    // Cancelar
                                 };
                                 
                                 $timeout(function () { reader.readAsDataURL(file); }, 250);
@@ -4052,7 +4049,18 @@
                                 var files = fileInput[0].files; // Archivos
                                 
                                 if (files.length) {
-                                    console.log(files[0].type); processFile(files[0]);
+                                    console.log(files[0].type); 
+                                    
+                                    if (!softtion.isArray($scope.fileTypes)) {
+                                        processFile(files[0]);
+                                    } else if ($scope.fileTypes.isEmpty()) {
+                                        processFile(files[0]);
+                                    } else {
+                                        if ($scope.fileTypes.indexOf(files[0].type) !== -1) {
+                                            processFile(files[0]);
+                                        } // Se han definido filtro de tipo de Archivos
+                                    }
+                                    
                                 } // Se cambio archivo a seleccionar
                             });
                             
@@ -4087,16 +4095,20 @@
                                 return $sce.trustAsHtml(icon.addAttribute("style", style).create());
                             };
                             
-                            $scope.fileHold = function (file, $event, $index) {
-                                $scope.holdEvent({
-                                    $file: file, $event: $event, $index: $index
-                                });
+                            $scope.fileHold = function ($event) {
+                                $scope.holdEvent({ $file: $scope.file, $event: $event });
                             };
                             
-                            $scope.fileRight = function (file, $event, $index) {
-                                $scope.clickrightEvent({
-                                    $file: file, $event: $event, $index: $index
-                                });
+                            $scope.fileRight = function ($event) {
+                                $scope.clickrightEvent({ $file: $scope.file, $event: $event });
+                            };
+                            
+                            $scope.isIconAction = function () {
+                                return softtion.isString($scope.iconAction);
+                            };
+                            
+                            $scope.clickIconAction = function ($event) {
+                                $scope.actionEvent({ $file: $scope.file, $event: $event });
                             };
                         }
                     };
@@ -4112,18 +4124,24 @@
                 
                     var audio = softtion.html("div").addClass("audio").
                         addAttribute("ng-hide", "audioLoad").
+                        addAttribute("src", "{{src}}").
                         addAttribute("name", "{{nameAudio}}");
                     
                     var actions = softtion.html("div").addClass("actions").
                         addChildren(
+                            softtion.html("label").addClass("truncate").
+                                setText("{{nameAudio}}")
+                        ).addChildren(
                             softtion.html("button").addClass("action").
+                                addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
-                                    softtion.html("i").setText("search").
-                                        addAttribute("ng-click", "selectFile()")
+                                    softtion.html("i").setText("save").
+                                        addAttribute("ng-click", "saveFile()")
                                 )
                         ).addChildren(
                             softtion.html("button").addClass("action").
+                                addAttribute("ng-hide", "!isSelectFile()").
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
                                     softtion.html("i").setText("delete").
@@ -4131,11 +4149,10 @@
                                 )
                         ).addChildren(
                             softtion.html("button").addClass("action").
-                                addAttribute("ng-hide", "!saveEnabled").
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
-                                    softtion.html("i").setText("save").
-                                        addAttribute("ng-click", "saveFile()")
+                                    softtion.html("i").setText("file_upload").
+                                        addAttribute("ng-click", "selectFile()")
                                 )
                         );
                     
@@ -4147,6 +4164,8 @@
                         templateUrl: Material.components.FilechooserAudio.route,
                         scope: {
                             file: "=ngModel",
+                            src: "@",
+                            nameAudio: "@",
                             ngDisabled: "=?",
                             saveEnabled: "=?",
                             
@@ -4158,9 +4177,7 @@
                         
                             $scope.file = undefined; // Archivos seleccionado
                             
-                            var audiosTypes = [
-                                "audio/mp3"
-                            ];
+                            var audiosTypes = [ "audio/mp3" ];
                             
                             var processFile = function (file) {
                                 var reader = new FileReader();
@@ -4216,6 +4233,10 @@
                                 if (softtion.isDefined($scope.file)) {
                                     $scope.saveEvent({$file: $scope.file});
                                 } // Hay una imagen seleccionada
+                            };
+                            
+                            $scope.isSelectFile = function () {
+                                return softtion.isDefined($scope.file);
                             };
                         }
                     };
@@ -4399,7 +4420,7 @@
                     var input = softtion.html("input", false).
                         addAttribute("type", "file");
                 
-                    var icon = softtion.html("i").setText("person").
+                    var icon = softtion.html("i").setText("{{icon}}").
                         addAttribute("ng-hide", "isImgDefine()");
                 
                     var img = softtion.html("img", false).
@@ -4411,19 +4432,20 @@
                             softtion.html("button").addClass("action").
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
-                                    softtion.html("i").setText("folder").
+                                    softtion.html("i").setText("file_upload").
                                         addAttribute("ng-click", "selectFile()")
                                 )
                         ).addChildren(
                             softtion.html("button").addClass("action").
                                 addAttribute("ng-disabled", "ngDisabled").
+                                addAttribute("ng-hide", "!isSelectFile()").
                                 addChildren(
                                     softtion.html("i").setText("delete").
                                         addAttribute("ng-click", "deleteFile()")
                                 )
                         ).addChildren(
                             softtion.html("button").addClass("action").
-                                addAttribute("ng-hide", "!saveEnabled").
+                                addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addChildren(
                                     softtion.html("i").setText("save").
@@ -4439,6 +4461,7 @@
                         templateUrl: Material.components.FilechooserPerfil.route,
                         scope: {
                             file: "=ngModel",
+                            icon: "@",
                             ngDisabled: "=?",
                             ngSrc: "=?",
                             saveEnabled: "=?",
@@ -4451,6 +4474,7 @@
                                 icon = $element.children("i"); 
                         
                             $scope.file = undefined; // Archivos seleccionado
+                            $scope.icon = $scope.icon || "person";
                             
                             var imgTypes = [
                                 "image/jpeg", 
@@ -4462,14 +4486,6 @@
                             
                             var processFile = function (file) {
                                 var reader = new FileReader();
-                                
-                                reader.onloadstart = function ($event) {
-                                    // En Inicio
-                                };  
-        
-                                reader.onprogress = function ($event) {
-                                    // En progreso
-                                };
         
                                 reader.onload = function ($event) {
                                     $scope.$apply(function () {
@@ -4482,20 +4498,12 @@
                                     });
                                 };
                                 
-                                reader.onerror = function (event) {
-                                    // Error
-                                };
-
-                                reader.onabort = function (event) {
-                                    // Cancelar
-                                };
-                                
                                 $timeout(function () { reader.readAsDataURL(file); }, 250);
         
                                 return reader; // Retornando procesador de Archivo
                             };
                             
-                            $element.resize(function () {
+                            icon.resize(function () {
                                 var fontSize = $element.width() - 48; // Tamaño
                                 
                                 icon.css("font-size", fontSize + "px");
@@ -4530,6 +4538,10 @@
                                 if (softtion.isDefined($scope.file)) {
                                     $scope.saveEvent({$file: $scope.file});
                                 } // Hay una imagen seleccionada
+                            };
+                            
+                            $scope.isSelectFile = function () {
+                                return softtion.isDefined($scope.file);
                             };
                         }
                     };
@@ -6870,6 +6882,7 @@
                             value: "=ngModel", 
                             label: "@",
                             iconDescription: "@",
+                            imgIcon: "@",
                             helperText: "@",
                             helperPermanent: "=?"
                         },
@@ -6877,6 +6890,7 @@
                             var input = $element.find("input");
                             
                             insertIconDescription($scope, input); // Icono
+                            insertImgIcon($scope, input); // Icono
                             
                             $scope.isActiveLabel = function () {
                                 return softtion.isDefined($scope.value);

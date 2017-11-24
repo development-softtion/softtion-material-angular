@@ -13,7 +13,7 @@
     } // No se ha cargado Softtion y Angular
 })(function (softtion, angular, jQuery) {
     
-    var ngSofttion = angular.module("ngSofttion", []);
+    var ngSofttion = angular.module("ngSofttion");
     
     //https://github.com/oldtimeguitarguy/angular-middleware
     var $mappings = {}, $bypassAll = false, $globalMiddleware = { middleware: [] }, globalAfter;
