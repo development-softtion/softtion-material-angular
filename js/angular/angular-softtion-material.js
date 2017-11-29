@@ -726,7 +726,8 @@
                 name: "audio",
                 html: function () {
                     var audio = softtion.html("audio").
-                        addAttribute("src", "{{src}}");
+                        addAttribute("src", "{{src}}").
+                        addAttribute("preload", "auto");
                     
                     var content = softtion.html("div").addClass("content");
                     
@@ -782,16 +783,25 @@
                         scope: {
                             src: "@",
                             name: "@",
-                            playAutomatic: "=?"
+                            playAutomatic: "=?",
+                            audioElement: "=?"
                         },
                         link: function ($scope, $element) {
                             var audio = $element.children("audio")[0],
                                 progressBar = $element.find(".progress-bar");
                         
+                            $scope.$watch(function () {
+                                return $scope.audioElement;
+                            }, function (newValue, oldValue) {
+                                var isAudio = newValue instanceof window.HTMLAudioElement;
+                                $scope.audioElement = (isAudio) ? newValue : oldValue;
+                            });
+                        
                             $scope.errorAudio = true,
                             $scope.isPlay = false;
                             $scope.duration = 0;
                             $scope.currentTime = 0;
+                            $scope.audioElement = audio;
                             
                             function describeTimeAudio(secondsAudio) {
                                 var minutes = parseInt(secondsAudio / 60),
@@ -836,6 +846,14 @@
                                 });
                             };
                             
+                            audio.onended = function () {
+                                $scope.$apply(function () {
+                                    $scope.isPlay = false; 
+                                    audio.currentTime = 0;
+                                    $scope.currentTime = 0;
+                                });
+                            };
+                            
                             $scope.play = function () {
                                 $scope.isPlay = !$scope.isPlay; // Cambiando estado
                                 ($scope.isPlay) ? audio.play() : audio.pause();
@@ -847,6 +865,7 @@
                                 } // La canción se esta reproducciendo
                                 
                                 audio.currentTime = 0; $scope.isPlay = false;
+                                $scope.currentTime = 0;
                             };
                             
                             $scope.muted = function () {
@@ -4125,6 +4144,7 @@
                     var audio = softtion.html("div").addClass("audio").
                         addAttribute("ng-hide", "audioLoad").
                         addAttribute("src", "{{src}}").
+                        addAttribute("audio-element", "audioElement").
                         addAttribute("name", "{{nameAudio}}");
                     
                     var actions = softtion.html("div").addClass("actions").
@@ -4166,6 +4186,7 @@
                             file: "=ngModel",
                             src: "@",
                             nameAudio: "@",
+                            audioElement: "=?",
                             ngDisabled: "=?",
                             saveEnabled: "=?",
                             
@@ -4504,7 +4525,7 @@
                             };
                             
                             icon.resize(function () {
-                                var fontSize = $element.width() - 48; // Tamaño
+                                var fontSize = $element.height() - 48; // Tamaño
                                 
                                 icon.css("font-size", fontSize + "px");
                                 icon.css("line-height", fontSize + "px");

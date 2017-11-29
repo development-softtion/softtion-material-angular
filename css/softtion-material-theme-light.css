@@ -1195,6 +1195,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** FILECHOOSER AUDIO */
 
+.filechooser-audio > .audio {
+    background-color: var(--background-core); }
+
 .filechooser-audio > .actions {
     background-color: rgba(0, 0, 0, 0.48); }
 
@@ -1567,6 +1570,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .menu > li.option.active, .menu > li.option.active > i {
     color: var(--theme-primary-font); }
+
+/** MESSAGE */
+
+.message > i, .message > p {
+    color: var(--secondary-font); }
 
 /** PROGRESS BAR */
 

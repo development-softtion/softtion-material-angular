@@ -807,6 +807,9 @@ input[type=number]::-webkit-outer-spin-button {
 .clear-both {
     clear: both; }
 
+.margin-auto {
+    margin: auto; }
+
 .margin-vertical-8 {
     margin: 8px 0px !important; }
 
@@ -2560,6 +2563,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box;
     width: 100%;
     padding: 16px; 
+    overflow-x: hidden;
     overflow-y: auto; }
 
 .card > .area-action ~ .optional-header {
@@ -2575,9 +2579,22 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 36px;
     font-size: 18px; }
 
+.card > .optional-header > button.action {
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    float: right; }
+
 .card > .optional-header > .detail {
+    width: 100%;
     float: left;
     box-sizing: border-box; }
+
+.card > .optional-header > .avatar + .detail {
+    width: calc(100% - 36px); }
+
+.card > .optional-header > button.action + .detail {
+    width: calc(100% - 40px); }
 
 .card > .optional-header > .detail > .title, 
 .card > .optional-header > .detail > .subtitle {
@@ -2588,7 +2605,10 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-weight: 500; }
+    font-weight: 400; }
+
+.card > .optional-header > .detail > .title {
+    font-weight: 700; }
 
 .card > .optional-header > .avatar ~ .detail {
     padding-left: 16px;
@@ -2745,6 +2765,7 @@ button.raised:focus:after, button.flat:focus:after {
     right: 0px; }
 
 .card > .rating {
+    width: 100%;
     padding: 0px 16px;
     margin: 4px 0px;
     box-sizing: border-box; }
@@ -5130,6 +5151,9 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     padding-top: 100%; }
 
+.filechooser-perfil.rectangle:before { 
+    padding-top: 56.75%; }
+
 .filechooser-perfil > input[type=file] {
     position: absolute;
     width: 0%;
@@ -5626,6 +5650,9 @@ button.raised:focus:after, button.flat:focus:after {
     float: right; 
     margin: 6px 4px; }
 
+.footer-buttons > button.left {
+    float: left; }
+
 .footer-buttons > button:nth-child(1) {
     margin-right: 8px; }
 
@@ -5635,6 +5662,14 @@ button.raised:focus:after, button.flat:focus:after {
 .footer-buttons > button.action {
     padding: 6px;
     height: 36px; }
+
+.footer-buttons > .rating {
+    width: auto;
+    float: left;
+    margin: 4px 4px 0px 4px; }
+
+.footer-buttons > .rating.right {
+    float: right; }
 
 /** FULLWIDTH FIELD */
 
@@ -6575,6 +6610,29 @@ p.link > a {
 .menu > .divider {
     padding: 0px; }
 
+/** MESSAGE */
+
+.message {
+    position: relative;
+    width: 100%;
+    float: left;
+    overflow: hidden; }
+
+.message > i {
+    text-align: center;
+    width: 72px;
+    height: 72px;
+    line-height: 72px;
+    font-size: 72px;
+    margin-left: calc(50% - 36px);
+    margin-bottom: 4px; }
+
+.message > p {
+    padding: 0px 16px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 4px; }
+
 /** PROGRESS BAR */
 
 .progress-bar {
@@ -7029,9 +7087,13 @@ p.link > a {
 
 .rating {
     position: relative;
-    width: 100%;
-    overflow-x: hidden;
-    overflow-y: auto; }
+    width: 160px;
+    overflow-y: auto; 
+    padding: 0px 8px; }
+
+body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
+    width: 0px; 
+    height: 0px; }
 
 .rating.right {
     float: initial; }
