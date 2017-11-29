@@ -726,7 +726,6 @@
                 name: "audio",
                 html: function () {
                     var audio = softtion.html("audio").
-                        addAttribute("src", "{{src}}").
                         addAttribute("preload", "auto");
                     
                     var content = softtion.html("div").addClass("content");
@@ -781,12 +780,12 @@
                         restrict: "C",
                         templateUrl: Material.components.Audio.route,
                         scope: {
-                            src: "@",
+                            ngSrc: "@",
                             name: "@",
                             playAutomatic: "=?",
                             audioElement: "=?"
                         },
-                        link: function ($scope, $element) {
+                        link: function ($scope, $element, $attrs) {
                             var audio = $element.children("audio")[0],
                                 progressBar = $element.find(".progress-bar");
                         
@@ -796,8 +795,25 @@
                                 var isAudio = newValue instanceof window.HTMLAudioElement;
                                 $scope.audioElement = (isAudio) ? newValue : oldValue;
                             });
+                            
+                            $attrs.$observe("ngSrc", function () {
+                                if (softtion.isString($scope.ngSrc)) {
+                                    $scope.errorAudio = false;
+                                    $scope.isLoadAudio = false;
+                                    
+                                    restorePlay(); $scope.duration = 0;
+                                    
+                                    if ($scope.playAutomatic) {
+                                        audio.src = $scope.ngSrc;
+                                    } // Reproducción automatica
+                                } else {
+                                    audio.src = ""; restorePlay(); $scope.duration = 0;
+                                } // No ha definido correctamente la ruta
+                            });
                         
-                            $scope.errorAudio = true,
+                            $scope.isLoadAudio = false;
+                            $scope.errorAudio = true;
+                            
                             $scope.isPlay = false;
                             $scope.duration = 0;
                             $scope.currentTime = 0;
@@ -811,23 +827,30 @@
                                     ":" + softtion.leadingChar(seconds, '0', 2);
                             }
                             
+                            function restorePlay(paused) {
+                                if ($scope.isPlay && !paused) {
+                                    audio.pause();
+                                } // La canción se esta reproducciendo
+                                
+                                $scope.isPlay = false; // Detener reproducción
+                                audio.currentTime = 0; $scope.currentTime = 0;
+                            }
+                            
                             audio.onloadeddata = function () {
                                 $scope.$apply(function () {
-                                    $scope.errorAudio = false;
+                                    $scope.isLoadAudio = true;
+                                    
                                     $scope.isPlay = false;
                                     $scope.duration = audio.duration;
                                     
-                                    if ($scope.playAutomatic) {
-                                        $scope.play();
-                                    } // Reproducción automatica
+                                    $scope.play(); // Reproduciendo
                                 });
                             };
                             
                             audio.onerror = function () {
                                 $scope.$apply(function () {
-                                    $scope.errorAudio = true;
-                                    $scope.duration = 0;
-                                    $scope.isPlay = false;
+                                    $scope.errorAudio = true; $scope.duration = 0;
+                                    $scope.isPlay = false; $scope.isLoadAudio = false;
                                 });
                             };
                             
@@ -847,25 +870,20 @@
                             };
                             
                             audio.onended = function () {
-                                $scope.$apply(function () {
-                                    $scope.isPlay = false; 
-                                    audio.currentTime = 0;
-                                    $scope.currentTime = 0;
-                                });
+                                $scope.$apply(function () { restorePlay(true); });
                             };
                             
                             $scope.play = function () {
+                                if (!$scope.isLoadAudio) {
+                                    audio.src = $scope.ngSrc; return;
+                                } // No se ha cargado audio
+                                
                                 $scope.isPlay = !$scope.isPlay; // Cambiando estado
                                 ($scope.isPlay) ? audio.play() : audio.pause();
                             };
                             
                             $scope.stop = function () {
-                                if ($scope.isPlay) {
-                                    audio.pause();
-                                } // La canción se esta reproducciendo
-                                
-                                audio.currentTime = 0; $scope.isPlay = false;
-                                $scope.currentTime = 0;
+                                restorePlay(); // Reiniciando audio
                             };
                             
                             $scope.muted = function () {
@@ -4142,15 +4160,15 @@
                         addAttribute("type", "file");
                 
                     var audio = softtion.html("div").addClass("audio").
-                        addAttribute("ng-hide", "audioLoad").
-                        addAttribute("src", "{{src}}").
-                        addAttribute("audio-element", "audioElement").
-                        addAttribute("name", "{{nameAudio}}");
+                        addAttribute("ng-src", "{{ngSrc}}").
+                        addAttribute("name", "{{name}}").
+                        addAttribute("play-automatic", "playAutomatic").
+                        addAttribute("audio-element", "audioElement");
                     
                     var actions = softtion.html("div").addClass("actions").
                         addChildren(
                             softtion.html("label").addClass("truncate").
-                                setText("{{nameAudio}}")
+                                setText("{{label}}")
                         ).addChildren(
                             softtion.html("button").addClass("action").
                                 addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
@@ -4178,15 +4196,18 @@
                     
                     return input + audio + actions; // Componente FileChooser
                 },
-                directive: ["$timeout", function ($timeout) {
+                directive: ["$timeout", "$sce", function ($timeout, $sce) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.FilechooserAudio.route,
                         scope: {
                             file: "=ngModel",
-                            src: "@",
-                            nameAudio: "@",
+                            ngSrc: "@",
+                            name: "@",
+                            playAutomatic: "=?",
                             audioElement: "=?",
+                            
+                            label: "@",
                             ngDisabled: "=?",
                             saveEnabled: "=?",
                             
@@ -4194,7 +4215,7 @@
                             saveEvent: "&"
                         },
                         link: function ($scope, $element) {
-                            var fileInput = $element.find("input[type=file]"), audio;
+                            var fileInput = $element.find("input[type=file]");
                         
                             $scope.file = undefined; // Archivos seleccionado
                             
@@ -4207,13 +4228,9 @@
                                     $scope.$apply(function () {
                                         var src = window.URL.createObjectURL(file);
                                         
-                                        if (softtion.isUndefined(audio)) {
-                                            audio = $element.find("audio");
-                                        } // Se ha definido elemento audio
+                                        $scope.ngSrc = $sce.trustAsResourceUrl(src);
                                         
-                                        audio.prop("src", src);
-                                        
-                                        $scope.nameAudio = file.name;
+                                        $scope.name = file.name;
                                         $scope.file = file; // Archivo
                                         
                                         $scope.changedEvent({$file: file});
@@ -4240,12 +4257,8 @@
                             $scope.selectFile = function () { fileInput.click(); };
                             
                             $scope.deleteFile = function () {
-                                $scope.file = undefined; fileInput[0].value = "";
-                                $scope.nameAudio = ""; // Quitando nombre
-                                
-                                if (softtion.isDefined(audio)) {
-                                    audio.prop("src", null);
-                                } // Se ha definido elemento audio
+                                $scope.file = undefined; $scope.name = "";
+                                fileInput[0].value = ""; $scope.ngSrc = ""; 
                                 
                                 $scope.changedEvent({$file: undefined});
                             };
@@ -4340,6 +4353,7 @@
                             multiple: "=?",
                             ngDisabled: "=?",
                             textDescription: "@",
+                            fileTypes: "=?",
                             
                             // Eventos
                             holdEvent: "&",
@@ -4361,28 +4375,12 @@
                             
                             var processFile = function (file) {
                                 var reader = new FileReader();
-                                
-                                reader.onloadstart = function ($event) {
-                                    // En Inicio
-                                };  
-        
-                                reader.onprogress = function ($event) {
-                                    // En progreso
-                                };
         
                                 reader.onload = function ($event) {
                                     $scope.$apply(function () {
                                         var fileResult = $event.target.result; 
                                         file["base64"] = fileResult; $scope.files.push(file);
                                     });
-                                };
-                                
-                                reader.onerror = function (event) {
-                                    // Error
-                                };
-
-                                reader.onabort = function (event) {
-                                    // Cancelar
                                 };
                                 
                                 $timeout(function () { reader.readAsDataURL(file); }, 250);
@@ -4395,7 +4393,17 @@
                                 
                                 if (files.length) {
                                     angular.forEach(files, function (file) {
-                                        console.log(file.type); processFile(file);
+                                        console.log(file.type); 
+                                        
+                                        if (!softtion.isArray($scope.fileTypes)) {
+                                            processFile(file);
+                                        } else if ($scope.fileTypes.isEmpty()) {
+                                            processFile(file);
+                                        } else {
+                                            if ($scope.fileTypes.indexOf(files[0].type) !== -1) {
+                                                processFile(file);
+                                            } // Se han definido filtro de tipo de Archivos
+                                        }
                                     });
                                 } // Se cambio archivo a seleccionar
                             });
