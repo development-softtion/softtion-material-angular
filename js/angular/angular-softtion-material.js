@@ -624,6 +624,26 @@
         };
     };
     
+    ngMaterial.filter("filterDictionary", filterDictionary);
+    
+    function filterDictionary() {
+        return function (array, filter) {
+            var result = []; // Lista de array a generar
+            
+            if (!softtion.isString(filter)) {
+                return array;
+            } // No ha digitado filtro
+                               
+            angular.forEach(array, function (item) {
+                if (~item.toLowerCase().indexOf(filter)) { 
+                    result.push(item); 
+                } // Se encontro coincidencia, se agregara opción
+            });
+            
+            return result; // Retornando array filtrado
+        };
+    }
+    
     var MANAGER_DATETIME = {
         MONTHS: [
             { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
@@ -2869,7 +2889,7 @@
                                 )
                         );
                     
-                    return dialog.create(); // Componente DatepickerDialog
+                    return dialog.create(); // Componente ClockpickerDialog
                 },
                 directive: ["$body", function ($body) {
                     return {
@@ -3913,6 +3933,63 @@
                             
                             $scope.clearDate = function () {
                                 $scope.date = undefined; $element.removeClass("active"); 
+                            };
+                        }
+                    };
+                }
+            },
+            
+            Dictionary: {
+                route: "softtion/template/dictionary.html",
+                name: "dictionary",
+                html: function () {
+                    var content = softtion.html("div").addClass("content");
+                    
+                    var textField = softtion.html("div").
+                        addClass("textfield").
+                        addAttribute("ng-model", "valueInput").
+                        addAttribute("label", "{{label}}").
+                        addAttribute("keyup-event", "keyupEvent($value)");
+                
+                    var itemList = softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("detail").
+                                addChildren(
+                                    softtion.html("label").
+                                        addClass("title").setText("{{item}}")
+                                )
+                        );
+                
+                    var list = softtion.html("ul").
+                        addClass("list").addChildren(
+                            softtion.html("li").
+                                addClass(["item-list", "actionable"]).
+                                addAttribute("ng-repeat", "item in list | filterDictionary:filter").
+                                addAttribute("ng-click", "clickItem(item)").
+                                addChildren(itemList)
+                        );
+                
+                    content.addChildren(textField).addChildren(list);
+                
+                    return content.create(); // Componente Dictionary
+                },
+                directive: function () {
+                    return {
+                        restrict: "C",
+                        templateUrl: Material.components.Dictionary.route,
+                        scope: {
+                            list: "=ngModel",
+                            label: "@",
+                            
+                            selectEvent: "&"
+                        },
+                        link: function ($scope) {
+                            $scope.keyupEvent = function ($value) {
+                                $scope.filter = $value;
+                            };
+                            
+                            $scope.clickItem = function ($item) {
+                                $scope.selectEvent({$item: $item});
                             };
                         }
                     };

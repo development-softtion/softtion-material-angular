@@ -4365,6 +4365,20 @@ button.raised:focus:after, button.flat:focus:after {
     float: right; 
     margin-left: 8px; }
 
+/** DICTIONARY */
+
+.dictionary {
+    position: relative;
+    float: left; }
+
+.dictionary > .content {
+    position: relative;
+    float: left; 
+    width: 100%; }
+
+.dictionary > .content > .textfield {
+    width: 100%; }
+
 /** DROPDOWN */
 
 .dropdown {
