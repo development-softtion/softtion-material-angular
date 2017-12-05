@@ -109,6 +109,15 @@ html, body ,input, textarea {
 body {
     background-color: var(--background-core); }
 
+.primary-font {
+    color: var(--primary-font) !important; }
+
+.secondary-font {
+    color: var(--secondary-font) !important; }
+
+.disabled-font {
+    color: var(--secondary-font) !important; }
+
 .theme-primary-font {
     color: var(--theme-primary-font) !important; }
 
@@ -2026,7 +2035,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-error-font); }
 
 .stepper-horizontal > ul > li > .content > .indicator > span {
-    color: var(--primary-font);
+    color: var(--alternative-primary-font);
     background-color: var(--secondary-font); }
 
 .stepper-horizontal > ul > li.active > .content > .indicator > span {
@@ -2039,7 +2048,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--theme-primary-background); }
 
 .stepper-horizontal > ul > li.disabled > .content > .indicator > span {
-    color: var(--disabled-font);
+    color: var(--alternative-disabled-font);
     background-color: var(--disabled-font); }
 
 .stepper-horizontal > ul > li > .content > .detail > .title,
