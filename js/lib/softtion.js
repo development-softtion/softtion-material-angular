@@ -15,6 +15,8 @@
     
     var Softtion = function () { }; // Clase Softtion
     
+    window.softtion = new Softtion(); // Agregando softtion como Global
+    
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
     Softtion.prototype.MONTHS_OF_YEAR = "NAME_MONTHS_OF_YEAR";
@@ -239,24 +241,6 @@
         jQuery("html, body").animate({ scrollTop: 0 }, speed || 0);
     };
     
-    Softtion.prototype.print = function (title, html, css) {
-        var docPrint = window.open('', (title || ''), 'width=600,height=400');
-        docPrint.document.write("<html><head><title>" + (title || '') + "</title>");
-        
-        if (css) {
-            docPrint.document.write(css);
-        } // '<link rel="stylesheet" href="main.css" type="text/css"/>'
-            
-        docPrint.document.write("</head><body>");
-        docPrint.document.write(html);
-        docPrint.document.write("</body></html>");
-        
-        docPrint.document.close(); // necessary for IE >= 10
-        docPrint.focus(); // necessary for IE >= 10
-        
-        docPrint.print(); docPrint.close(); return true;
-    };
-    
     Softtion.prototype.createDateOfPHP = function (timestamp) { 
         return new Date(timestamp * 1000); 
     };
@@ -312,8 +296,6 @@
         
         return urlFinal; // Retornando url establecida
     };
-    
-    window.softtion = new Softtion(); // Agregando softtion como Global
     
     Softtion.prototype.encode = function (value, keyPassword) {
         return (typeof window.CryptoJS === "undefined") ? value :
@@ -641,11 +623,15 @@
         Array.prototype.last = function () {
             return this.isEmpty() ? null : this[this.length - 1];
         };
-        
+
         Array.prototype.has = function (count) { 
             return (this.length === count); 
         };
         
+        Array.prototype.hasItem = function (item) {
+            return (this.indexOf(item) !== -1);
+        };
+
         Array.prototype.contains = function (count) { 
             return (this.length >= count); 
         };
@@ -661,33 +647,33 @@
         Array.prototype.removeObject = function (object) {
             return this.remove(this.indexOf(object)); // Retornando interfaz fluida
         };
-        
+
         Array.prototype.concat = function (object) {
             var self = this; // Objeto collection
-            
+
             if (softtion.isArray(object)) {
                 object.forEach(function (item) { self.push(item); });
             } else if (softtion.isDefined(object)) { self.push(object); }
-            
+
             return self; // Retornando interfaz fluida
         };
-        
-        Array.prototype.filter = function (functionFilter) {
+
+        Array.prototype.filtrate = function (functionFilter) {
             var arrayFilter = new Array(), index = 0;
-            
+
             if (softtion.isFunction(functionFilter)) {
                 this.forEach(function (item) {
                     if (functionFilter(item)) { 
                         arrayFilter.push(item, index); 
                     }
-                    
+
                     index++; // Aumentando index del item
                 });
             } // Se ha definido función para filtrar
-            
+
             return arrayFilter; // Retornando array filtrado
         };
-        
+
         Array.prototype.for = function (callbackFor) {
             if (softtion.isFunction(callbackFor)) {
                 var notStop = true, index = 0;
@@ -698,7 +684,7 @@
                 }
             }
         };
-        
+
         // Métodos de Softtion para los objetos 'Date'
 
         Date.prototype.toJSON = function (option) {
@@ -741,7 +727,7 @@
                     this.setFullYear(1900); this.setMonth(1); this.setDate(1); 
                 break;
             }
-            
+
             return this; // Retoranando interfaz fluida
         };
 
@@ -823,7 +809,7 @@
                 }
             }
         };
-        
+
         Date.prototype.equalsDate = function (year, month, day) {
             if (this.getDate() !== day) {
                 return false; } // Comparando dias de las fechas
@@ -837,49 +823,49 @@
         Date.prototype.isLeapYear = function () { 
             return softtion.isLeapYear(this.getFullYear());
         };
-        
+
         Date.prototype.increase = function (type, valueIncrease) {
             var $valueDate; // Tipo de dato a incrementar
-            
+
             switch (type) {
                 case ("hour") :
                     $valueDate = this.getHours() + valueIncrease;
                     this.setHours(($valueDate > 23) ? 0 : $valueDate);
                 break;
-                
+
                 case ("minute") :
                     $valueDate = this.getMinutes() + valueIncrease;
                     this.setMinutes(($valueDate > 59) ? 0 : $valueDate);
                 break;
-                
+
                 case ("second") :
                     $valueDate = this.getSeconds() + valueIncrease;
                     this.setSeconds(($valueDate > 59) ? 0 : $valueDate);
                 break;
             }
         };
-        
+
         Date.prototype.decrease = function (type, valueIncrease) {
             var $valueDate; // Tipo de dato a incrementar
-            
+
             switch (type) {
                 case ("hour") :
                     $valueDate = this.getHours() - valueIncrease;
                     this.setHours(($valueDate < 0) ? 23 : $valueDate);
                 break;
-                
+
                 case ("minute") :
                     $valueDate = this.getMinutes() - valueIncrease;
                     this.setMinutes(($valueDate < 0) ? 59 : $valueDate);
                 break;
-                
+
                 case ("second") :
                     $valueDate = this.getSeconds() - valueIncrease;
                     this.setSeconds(($valueDate < 0) ? 59 : $valueDate);
                 break;
             }
         };
-        
+
         // Métodos de Softtion para los objetos 'String'
 
         String.prototype.isFull = function () { return (this.length > 0); };
@@ -921,7 +907,7 @@
             this.id = undefined; this.classes = new Array();
             this.attributes = new Array(); 
             this.text = ""; this.childrens = new Array();
-            
+
             return this; // Retornando componente para Fluent
         };
 
@@ -1041,18 +1027,20 @@
         HtmlElement.prototype.tojQuery = function () { 
             return jQuery(this.create());
         };
-        
+
         HtmlElement.prototype.toString = function () {
             return this.create();
         };
 
-        softtion.html = function (tag, closed) {
+        Softtion.prototype.html = function (tag, closed) {
             return new HtmlElement(tag, closed);
         };
     })(window.softtion);
     
+    // Funciones para redondear números
+    
     (function () {
-        
+    
         function decimalAdjust(type, value, exp) {
             // Si el exp no está definido o es cero...
             if (typeof exp === 'undefined' || +exp === 0) {

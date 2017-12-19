@@ -2518,6 +2518,9 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     padding-top: 56.25%; }
 
+.card > .rich-media.auto:before {
+    padding-top: 0px; }
+
 .card > .rich-media.square:before {
     padding-top: 100%; }
 
@@ -2527,6 +2530,9 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0;
     right: 0;
     bottom: 0; }
+
+.card > .rich-media.auto > .background {
+    position: relative; }
 
 .card > .rich-media > .description {
     display: -webkit-box;
@@ -3031,198 +3037,169 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** CATALOG **/
 
-.catalog{
+.catalog {
     position: relative;
     height: auto;
     width: 100%;
     overflow: hidden;
     padding: 0 16px;
-    box-sizing: border-box;
-}
+    box-sizing: border-box; }
 
-.catalog > .arrow{
+.catalog > .arrow {
     position: absolute;
     top: 50%;
-    transform: translate(0, -50%);
-    height: 44px;
-    width: 44px;
+    height: 48px;
+    width: 48px;
     z-index: 2;
     cursor: pointer;
-    border-radius: 50%;
     opacity: 0;
-}
+    border-radius: 50%;
+    -webkit-transform: translate(0, -50%);
+       -moz-transform: translate(0, -50%);
+            transform: translate(0, -50%); }
 
-.catalog:hover > .arrow{
-    opacity: 1;
-}
+.catalog:hover > .arrow {
+    opacity: 1; }
 
-.catalog > .arrow.next{
-    right: 0px;
-}
+.catalog > .arrow.next {
+    right: 0px; }
 
-.catalog > .arrow.prev{
-    left: 0px;
-}
+.catalog > .arrow.prev {
+    left: 0px; }
 
-.catalog > .arrow:before{
+.catalog > .arrow:before {
     font-family: "Material Icons";
-    font-size: 44px;
-    line-height: 44px;
-    width: 44px; height: 44px;
-    text-align: center;
-}
+    width: 48px; 
+    height: 48px;
+    font-size: 48px;
+    line-height: 48px;
+    text-align: center; }
 
-.catalog > .arrow.prev:before{
-    content: "keyboard_arrow_left";
-}
+.catalog > .arrow.prev:before {
+    content: "keyboard_arrow_left"; }
 
-.catalog > .arrow.next:before{
-    content: "keyboard_arrow_right";
-}
+.catalog > .arrow.next:before {
+    content: "keyboard_arrow_right"; }
 
-.catalog > .container{
-    position: relative;
-    width: 100%; height: auto;
-    overflow: unset;
-    margin: 0; padding: 16px;
+.catalog > .container {
     display: flex;
-    transition: transform 0.325s cubic-bezier(0.6, 0.0, 0.2, 1);
-    transform: translateX(0);
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0; 
+    padding: 16px;
+    overflow: unset;
     box-sizing: border-box;
-}
+    -webkit-transition: transform 325ms 0ms var(--standard-curve);
+       -moz-transition: transform 325ms 0ms var(--standard-curve);
+            transition: transform 325ms 0ms var(--standard-curve);
+    -webkit-transform: translateX(0);
+       -moz-transform: translateX(0);
+            transform: translateX(0); }
 
-.catalog > .container > .content{
+.catalog > .container > .content {
     position: relative;
     top: 0;
-    flex-basis: 0;
-    flex-grow: 1; 
-    flex-shrink: 0;
     width: 50%;
+    flex-basis: 0;
+    flex-grow: 0; 
+    flex-shrink: 0;
     cursor: pointer;
     overflow: hidden;
-    border-radius: 2px;
-}
+    border-radius: 2px; }
 
-.catalog > .container > .content:before{
+.catalog > .container > .content:before {
+    display: block;
     content: "";
-    display: block;
     width: 100%;
-    padding-top: 100%;
-}
+    padding-top: 100%; }
 
-.catalog > .container > .content > img{
+.catalog > .container > .content > img {
+    position: absolute;
     display: block;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%; height: auto;
-    transition: width 0.325s cubic-bezier(0.6, 0.0, 0.2, 1);
-}
+    top: 50%; 
+    left: 50%;
+    width: 85%; 
+    height: auto;
+    -webkit-transition: width 325ms 0ms var(--standard-curve);
+       -moz-transition: width 325ms 0ms var(--standard-curve);
+            transition: width 325ms 0ms var(--standard-curve);
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
 
-.catalog > .container > .content.active > img{
+.catalog > .container > .content.active > img {
+    width: 100%; }
+
+.catalog > .container > .content > .detail {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-}
-
-.catalog > .container > .content > .detail{
-    position: absolute;
     opacity: 0;
-    bottom: 0; left: 0;
-    width: 100%;
-    transition: opacity 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)
-}
+    -webkit-transition: opacity 500ms 0ms var(--standard-curve);
+       -moz-transition: opacity 500ms 0ms var(--standard-curve);
+            transition: opacity 500ms 0ms var(--standard-curve); }
 
-.catalog > .container > .content.active > .detail{
-    opacity: 1;
-}
+.catalog > .container > .content.active > .detail {
+    opacity: 1; }
 
-.catalog > .container > .content > .detail > .primary-title{
-    overflow-y: auto;
+.catalog > .container > .content > .detail > .primary-title {
     width: 100%;
     padding: 24px 16px 16px 16px;
     box-sizing: border-box;
-}
+    overflow-y: auto; }
 
-.catalog > .container > .content > .detail > .primary-title > .content{
-    float: left;
+.catalog > .container > .content > .detail > .primary-title > .content {
     width: 100%;
-    box-sizing: border-box;
-}
+    float: left;
+    box-sizing: border-box; }
 
 .catalog > .container > .content > .detail > .primary-title > .content > .title,
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle{
+.catalog > .container > .content > .detail > .primary-title > .content > .subtitle {
     display: block;
     width: 100%;
     margin: 0px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    white-space: nowrap; }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .title{
-    font-size: 24px;
-    line-height: 20px;
-    height: 24px;
-}
+.catalog > .container > .content > .detail > .primary-title > .content > .title {
+    font-size: 20px;
+    height: 20px;
+    line-height: 20px; }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle{
+.catalog > .container > .content > .detail > .primary-title > .content > .subtitle {
+    margin-top: 4px;
     height: 14px;
-    line-height: 12px;
-    font-size: 14px;
-}
+    line-height: 14px;
+    font-size: 14px; }
 
-.catalog > .container > .content > .detail > .actions{
-    overflow-y: auto;
+.catalog > .container > .content > .detail > .actions {
     width: 100%;
-    box-sizing: border-box;
     padding: 8px 8px;
-}
+    box-sizing: border-box;
+    overflow-y: auto; }
 
-.catalog > .container > .content > .detail > .actions > button{
-    margin-left: 8px;
-}
+.catalog > .container > .content > .detail > .actions > button {
+    margin-left: 8px; }
 
-.catalog > .container > .content > .detail > .actions > button.right{
-    float: right;
-}
+.catalog > .container > .content > .detail > .actions > button.right {
+    float: right; }
 
-.catalog > .container > .content.action > .content{
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%; height: 85%;
-}
-
-.catalog > .container > .content.action.active > .content{
-    width: calc(100% - 4px); 
-    height: calc(100% - 4px);
-}
-
-.catalog > .container > .content.action > .content > .title{
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    font-weight: 900;
-    text-align: center;
-}
-
-@media only screen and (max-width : 961px) 
-{
-    .catalog{
-        padding: 0 16px;
-    }
+@media only screen and (max-width : 961px) {
     
-    .catalog > .arrow{
-        opacity: 1;
-    }
+    .catalog {
+        padding: 0 16px; }
     
-    .catalog > .arrow.next{
-        right: 8px;
-    }
+    .catalog > .arrow {
+        opacity: 1; }
+    
+    .catalog > .arrow.next {
+        right: 8px; }
 
-    .catalog > .arrow.prev{
-        left: 8px;
-    }
+    .catalog > .arrow.prev {
+        left: 8px; }
 }
 
 /** CHECKBOX */
@@ -8671,6 +8648,19 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .stepper-horizontal.alternative li > .content > .detail > .title,
 .stepper-horizontal.alternative li > .content > .detail > .optional {
     text-align: center; }
+
+@media only screen and (max-width: 360px) {
+    
+    .stepper-horizontal > ul > li,
+    .stepper-horizontal > ul > li:last-child {
+        display: none; }
+    
+    .stepper-horizontal > ul > li.active {
+        display: flex; }
+    
+    .stepper-horizontal > ul > li.active:last-child {
+        display: list-item; }
+}
 
 /** STEPPER MOBILE */
 

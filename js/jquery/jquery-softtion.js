@@ -592,9 +592,7 @@
                     return window.setTimeout(fn, 20);
                 };
                 
-            return function (fn) {
-                return raf(fn);
-            };
+            return function (fn) { return raf(fn); };
         })();
 
         var cancelFrame = (function () {
@@ -603,9 +601,7 @@
                 window.webkitCancelAnimationFrame ||
                 window.clearTimeout;
             
-            return function (id) {
-                return cancel(id);
-            };
+            return function (id) { return cancel(id); };
         })();
 
         function resetTriggers(element) {

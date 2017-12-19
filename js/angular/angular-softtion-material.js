@@ -659,7 +659,7 @@
         components: {
             AppBar: {
                 name: "appBar",
-                directive: function () {
+                directive: ["$appBody", "$appContent", function ($appBody, $appContent) {
                     return {
                         restrict: "C",
                         scope: {
@@ -667,9 +667,7 @@
                         },
                         link: function ($scope, $element) {
                                 // Componentes
-                            var appBody = angular.element(".app-body"),
-                                appContent = angular.element(".app-content"),
-                                sidenav = appBody.children(".sidenav"),
+                            var sidenav = $appBody.children(".sidenav"),
                                 $window = angular.element(window),
                                 
                                 // Atributos
@@ -677,17 +675,16 @@
                                 heightElement = (!$element.hasClass("floating")) ?
                                     $element.innerHeight() : $element.outerHeight(true);
                             
-                            if (!$scope.fixed) {
-                                if (
-                                    $element.find(".toolbar:first-child").exists() ||
-                                    $element.find(".search-box:first-child").exists()
-                                ) {
+                            
+                            if ($element.find(".toolbar:first-child").exists() ||
+                                $element.find(".search-box:first-child").exists()) {
                                     $element.addClass("element-hidden");
-                                } // Componente contiene elemento ocultable
-                                
-                                appContent.scroll(function () {
+                            } // Componente contiene elemento ocultable de primero
+
+                            $appContent.scroll(function () {
+                                if (!$scope.fixed) {
                                     var heightMin = (($window.width() > 960) ? 64 : 56),
-                                        positionNew = appContent.scrollTop();
+                                        positionNew = $appContent.scrollTop();
 
                                     if ((positionNew > heightMin)) {
                                         if (position < positionNew) {
@@ -701,44 +698,44 @@
                                     } // Revelando componente, se llego al inicio
 
                                     position = positionNew; // Nueva posición del scroll
-                                });
-                            } // Appbar se va ocultar en el Scroll
+                                } // Appbar se va ocultar en el Scroll
+                            });
                             
-                            appContent.css("padding-top", heightElement);
+                            $appContent.css("padding-top", heightElement);
                             sidenav.css("top", heightElement); 
                             
                             if ($window.width() > 960) { 
-                                appContent.addClass("pd-64"); sidenav.addClass("pd-64");
+                                $appContent.addClass("pd-64"); sidenav.addClass("pd-64");
                             } else {
-                                appContent.addClass("pd-56"); sidenav.addClass("pd-56"); 
+                                $appContent.addClass("pd-56"); sidenav.addClass("pd-56"); 
                             } // Pantalla es mayor a 960px
                             
                             $window.resize(function () {
                                 if ($window.width() > 960) {
-                                    if (!appContent.hasClass("pd-64")) {
-                                        var paddingTop = parseInt(appContent.css("padding-top"));
+                                    if (!$appContent.hasClass("pd-64")) {
+                                        var paddingTop = parseInt($appContent.css("padding-top"));
                                         
                                         sidenav.css("top", (paddingTop + 8) + "px");
-                                        appContent.css("padding-top", (paddingTop + 8) + "px");
+                                        $appContent.css("padding-top", (paddingTop + 8) + "px");
                                     } // AppBar de 64px Mínimo
                                     
                                     sidenav.addClass("pd-64").removeClass("pd-56");
-                                    appContent.addClass("pd-64").removeClass("pd-56");
+                                    $appContent.addClass("pd-64").removeClass("pd-56");
                                 } else {
-                                    if (!appContent.hasClass("pd-56")) {
-                                        var paddingTop = parseInt(appContent.css("padding-top"));
+                                    if (!$appContent.hasClass("pd-56")) {
+                                        var paddingTop = parseInt($appContent.css("padding-top"));
                                         
                                         sidenav.css("top", (paddingTop - 8) + "px");
-                                        appContent.css("padding-top", (paddingTop - 8) + "px");
+                                        $appContent.css("padding-top", (paddingTop - 8) + "px");
                                     } // AppBar de 56px Mínimo
                                     
                                     sidenav.addClass("pd-56").removeClass("pd-64");
-                                    appContent.addClass("pd-56").removeClass("pd-64");
+                                    $appContent.addClass("pd-56").removeClass("pd-64");
                                 }
                             });
                         }
                     };
-                }
+                }]
             },
             
             Audio: {
@@ -2113,7 +2110,7 @@
 
                     return container + arrowPrev + arrowNext;
                 },
-                directive: function () {
+                directive: ["$window", function ($window) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.Catalog.route,
@@ -2121,12 +2118,14 @@
                             gallery: "=",
                             actions: "=?",
                             views: "@?",
+                            widthViewOne: "@",
+                            
                             eventAction: "&"
                         },
                         link: function ($scope, $element) {                            
                             var $container = $element.find(".container");
                             
-                            $scope.index = 0;
+                            $scope.index = 0; $scope.width = $window.innerWidth;
                             
                             if (!softtion.isArray($scope.gallery)) {
                                 $scope.gallery = [];
@@ -2135,6 +2134,10 @@
                             if (!softtion.isArray($scope.actions)) {
                                 $scope.actions = [];
                             } // Se debe definir una array en acciones
+                            
+                            var widthViewOne = parseInt($scope.widthViewOne);
+
+                            $scope.widthOne = (isNaN(widthViewOne)) ? 360 : widthViewOne; 
                             
                             function getCountViews() {
                                 var countViews = parseInt($scope.views);
@@ -2147,9 +2150,11 @@
                             }
                             
                             $scope.styleContent = function () {
-                                return {
-                                    "flex-basis": "calc(100% / " + getCountViews() + ")"
-                                };
+                                return !($scope.width > $scope.widthOne) ? {
+                                        "flex-basis": "calc(100%)"
+                                    } : {
+                                        "flex-basis": "calc(100% / " + getCountViews() + ")"
+                                    };
                             };
                             
                             $scope.isActiveContent = function ($index) {
@@ -2184,7 +2189,24 @@
                                 } // Se ha seleccionado otro elemento
                             };
                             
-                            $scope.positionContent = function () {
+                            function positionContentSmall() {
+                                var $content = $container.find(".content");
+                                
+                                var widthContent = 0, translate = 0;
+                                
+                                if ($content) {
+                                    widthContent = $content.width(); }
+                                
+                                translate = $scope.index * widthContent * -1;
+                                
+                                return {
+                                    "-webkit-transform": "translateX(" + translate + "px)",
+                                       "-moz-transform": "translateX(" + translate + "px)",
+                                            "transform": "translateX(" + translate + "px)"
+                                };
+                            }
+                            
+                            function positionContentNormal() {
                                 var $content = $container.find(".content"),
                                     countViews = getCountViews(),
                                     min = Math.trunc(countViews / 2),
@@ -2196,8 +2218,7 @@
                                 var widthContent = 0, translate;
                                 
                                 if ($content) {
-                                    widthContent = $content.width();
-                                }
+                                    widthContent = $content.width(); }
                                 
                                 if ($scope.index < min) {
                                     translate = 0;
@@ -2213,14 +2234,24 @@
                                        "-moz-transform": "translateX(" + translate + "px)",
                                             "transform": "translateX(" + translate + "px)"
                                 };
+                                
+                            }
+                            
+                            $scope.positionContent = function () {
+                                return !($scope.width > $scope.widthOne) ? 
+                                    positionContentSmall() : positionContentNormal();
                             };
                             
                             $scope.clickAction = function (name, $item, $index) {
                                 $scope.eventAction({ $name: name, $item: $item, $index: $index });
                             };
+                            
+                            angular.element($window).resize(function() {
+                                $scope.width = $window.innerWidth; $scope.$digest();
+                            });
                         }
                     };
-                }
+                }]
             },
             
             CheckBox: {
@@ -4971,9 +5002,12 @@
                     return {
                         restrict: "E",
                         scope: {
-                            disabledResponsive: "=?"
+                            disabledResponsive: "=?",
+                            density: "@"
                         },
                         link: function ($scope, $element) {
+                            var valuesDensity = [ "width", "height" ];
+                            
                             if ($scope.disabledResponsive) { 
                                 $element.addClass("active"); return; 
                             } // No se desea configurar imagen
@@ -4985,8 +5019,12 @@
                                 $fnMaterial.setDensity($element, width, height);
                             };
                             
-                            ($element[0].complete) ? defineDensity() :
-                                $element.on("load", function () { defineDensity(); });
+                            if (valuesDensity.hasItem($scope.density)) {
+                                $element.addClass("density-" + $scope.density).addClass("active");
+                            } else {
+                                ($element[0].complete) ? defineDensity() :
+                                    $element.on("load", function () { defineDensity(); });
+                            } // Cargando densidad por dimensiones de imagen
                         }
                     };
                 }]
@@ -7428,6 +7466,36 @@
                 }
             },
             
+            AppBody: {
+                name: "$appBody",
+                method: function () {
+                    var $appBody = undefined; // Elemento
+                    
+                    this.$get = function () { 
+                        if (softtion.isUndefined($appBody)) {
+                            $appBody = angular.element(".app-body");
+                        } // Definiendo AppBody
+                        
+                        return $appBody; // Retornando elemento
+                    };
+                }
+            },
+            
+            AppContent: {
+                name: "$appContent",
+                method: function () {
+                    var $appContent = undefined; // Elemento
+                    
+                    this.$get = function () { 
+                        if (softtion.isUndefined($appContent)) {
+                            $appContent = angular.element(".app-content");
+                        } // Definiendo AppContent
+                        
+                        return $appContent; // Retornando elemento
+                    };
+                }
+            },
+            
             Body: {
                 name: "$body",
                 method: function () {
@@ -7574,10 +7642,105 @@
             
             Dropdown: {
                 name: "$dropdown",
-                handler: {
-                    settingsElement: function (origin, dropdown, classElement) {
+                method: function () {
+                    var belowOrigin = true, 
+                        $body = undefined,
+                        $appBody = undefined,
+                        $appContent = undefined,
+                        dropdown = undefined, 
+                        origin = undefined;
+                
+                    var Dropdown = function () { };
+
+                    Dropdown.prototype.set = function (dropdownElement) { 
+                        dropdown = instanceElement(dropdownElement, "dropdown"); 
+                        
+                        return this; // Retornando interfaz fluida
+                    };
+                    
+                    Dropdown.prototype.setBelowOrigin = function (belowDropdown) {
+                        belowOrigin = belowDropdown; return this;
+                    };
+
+                    Dropdown.prototype.isShow = function () {
+                        return (softtion.isDefined(dropdown)) ? 
+                            dropdown.hasClass("show") : false; 
+                    };
+
+                    Dropdown.prototype.show = function (originElement, autoclose) {
+                        var self = this, // Instancia del proveedor
+                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
+                        
+                        executeIfExists(dropdown, function () {
+                            origin = originElement; show(); 
+                            
+                            if (autoclose) {
+                                var dropdownNow = dropdown; // Actual a cerrar
+                                
+                                $body.on(nameEvent, function ($event) {
+                                    $event.stopPropagation(); // Cancelando propagación
+                                    
+                                    if (dropdown.find($event.target).length === 0) {
+                                        self.set(dropdownNow).hide(); $body.off(nameEvent);
+                                    } // Se cerrará dropdown de manera automatica
+                                });
+                            }
+                        });
+                    };
+
+                    Dropdown.prototype.showEvent = function (event, autoclose) {
+                        var element = angular.element(event.currentTarget);
+
+                        this.show(element, autoclose); 
+
+                        if (autoclose) { event.stopPropagation(); }
+                    };
+                    
+                    Dropdown.prototype.showXY = function (left, top, autoclose) {
+                        var self = this, // Instancia del proveedor
+                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
+                        
+                        executeIfExists(dropdown, function () {
+                            showXY(left, top); // Desplegando en la posición
+                            
+                            if (autoclose) {
+                                var dropdownNow = dropdown; // Actual a cerrar
+                                
+                                $body.on(nameEvent, function ($event) {
+                                    $event.stopPropagation(); // Cancelando propagación
+                                    
+                                    if (dropdown.find($event.target).length === 0) {
+                                        self.set(dropdownNow).hide(); $body.off(nameEvent);
+                                    } // Se cerrará dropdown de manera automatica
+                                });
+                            }
+                        });
+                    };
+
+                    Dropdown.prototype.hide = function () {
+                        if (this.isShow()) { 
+                            dropdown.removeClass("show");
+                        } // Esta abierto el dropdown
+                    };
+                    
+                    var dropdownProvider = new Dropdown();
+
+                    this.$get = ["$body", "$appBody", "$appContent", provider];
+                    
+                    function provider(body, appBody, appContent) { 
+                        $body = body;
+                        $appBody = appBody;
+                        $appContent = appContent;
+                        
+                        return dropdownProvider; // Proveedor
+                    }
+                    
+                    this.get = function () { return dropdownProvider; };
+                    
+                    function settingsElement(classElement) {
                         var settings = {
-                                top: 0, left: 0, moveLeft: false,
+                                top: 0, left: 0,
+                                moveLeft: false,
                                 moveContent: false,
                                 innerWidth: window.innerWidth, 
                                 innerHeight: window.innerHeight
@@ -7612,48 +7775,46 @@
                         }
 
                         return angular.extend(settings, position);
-                    },
+                    }
                     
-                    settingsDropdown: function (dropdown, origin) {
+                    function settingsDropdown() {
+                        // Configuración estandar para posicionamiento
                         var settings = {
-                            top: 0, left: 0, moveLeft: true,
-                            moveScroll: true, moveContent: false,
+                            top: 0, left: 0, 
+                            moveLeft: true,
+                            moveScroll: true,
+                            moveContent: false,
                             innerWidth: window.innerWidth, 
                             innerHeight: window.innerHeight
-                        }; // Configuración estandar para posición
+                        }; 
                         
                         if (softtion.isDefined(origin) && origin.exists()) {
                             if (origin.parents(".form-navigation").exists()) {
-                                return this.settingsElement(origin, dropdown, ".form-navigation");
+                                return settingsElement(".form-navigation");
                             } // Elemento está contenido en un FormNavigation
                             
                             if (origin.parents(".bottom-sheet").exists()) {
-                                return this.settingsElement(origin, dropdown, ".bottom-sheet");
+                                return settingsElement(".bottom-sheet");
                             } // Elemento está contenido en un BottomSheet
                             
                             if (origin.parents(".app-bar").exists()) {
-                                dropdown.appendTo(origin.parents(".app-bar")); settings.moveScroll = false;
-                            } // Elemento está contenido en un Appbar
+                                dropdown.appendTo(origin.parents(".app-bar"));
+                                settings.moveScroll = false;
+                            } // Elemento está contenido en un AppBar
                             
                             if (origin.parents(".app-content").exists()) {
                                 settings.moveContent = true;
-                            } // Elemento está contenido en un Appbar
+                            } // Elemento está contenido en un AppContent
                         
                             return angular.extend(settings, origin.offset()); 
                         } // Se definío elemento que disparó despliegue del dropdown
                         
                         return settings; // Configuración por defecto
-                    },
+                    }
                     
-                    hide: function (dropdown) { dropdown.removeClass("show"); },
-                    
-                    show: function (options) {
-                        var handler = Material.providers.Dropdown.handler,
-                            appContent = angular.element(".app-content"),
-                            dropdown = options.dropdown, 
-                            origin = options.origin,
-                            settings = handler.settingsDropdown(dropdown, origin),
-                            leftBody = parseInt(angular.element(".app-body").css("left"));
+                    function show() {
+                        var settings = settingsDropdown(),
+                            leftBody = parseInt($appBody.css("left"));
                         
                         var heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
@@ -7681,7 +7842,7 @@
                         }
 
                         // Definiendo posicion eje Y
-                        if (options.belowOrigin) { 
+                        if (belowOrigin) { 
                             if ((posOriginY + heightDropdown) <= (settings.innerHeight)) {
                                 top = posOriginY;
                                 transformOrigin = transformOrigin + 4;
@@ -7714,8 +7875,8 @@
                         } // Definiendo inicio del efecto
                         
                         if (settings.moveContent) {
-                            var leftContent = parseInt(appContent.css("left")),
-                                topContent = parseInt(appContent.css("padding-top"));
+                            var leftContent = parseInt($appContent.css("left")),
+                                topContent = parseInt($appContent.css("padding-top"));
                     
                             left = left - leftContent; //top = top - topContent; 
                         } // Desplazando elemento en AppContent
@@ -7725,7 +7886,7 @@
                             left = left - leftBody; 
                             
                             if (settings.moveScroll) {
-                                top = top + appContent.scrollTop(); 
+                                top = top + $appContent.scrollTop(); 
                             } // Desplazando con Scroll
                         } else {
                             dropdown.addClass("fixed");
@@ -7737,12 +7898,9 @@
                             "-webkit-transform-origin": originEffect,
                             "transform-origin": originEffect
                          }); 
-                    },
+                    }
                     
-                    showXY: function (options, left, top) {
-                        var dropdown = options.dropdown;
-                        dropdown.addClass("show"); // Activando dropdown
-                        
+                    function showXY(left, top) {
                         var heightDropdown = dropdown.innerHeight(),
                             widthDropdown = dropdown.innerWidth(),
                             transformOrigin = 0, originEffect;
@@ -7759,7 +7917,7 @@
                         }
 
                         // Definiendo posicion del eje Y
-                        if (options.belowOrigin) { 
+                        if (belowOrigin) { 
                             if ((top + heightDropdown) <= (window.innerHeight)) {
                                 transformOrigin = transformOrigin + 4;
                             } else if ((top - heightDropdown) > 0) {
@@ -7795,91 +7953,9 @@
                             "-webkit-transform-origin": originEffect,
                             "transform-origin": originEffect
                          }); 
+                         
+                        dropdown.addClass("show"); // Activando dropdown
                     }
-                },
-                method: function () {
-                    var belowOrigin = true, 
-                        $body = undefined,
-                        dropdown = undefined, 
-                        origin = undefined;
-                    
-                    var Dropdown = function () { };
-
-                    Dropdown.prototype.set = function (dropdownElement) { 
-                        dropdown = instanceElement(dropdownElement, "dropdown"); 
-                        
-                        return this; // Retornando interfaz fluida
-                    };
-                    
-                    Dropdown.prototype.setBelowOrigin = function (belowOriginDropdown) {
-                        belowOrigin = belowOriginDropdown; return this;
-                    };
-
-                    Dropdown.prototype.isVisible = function () {
-                        if (softtion.isDefined(dropdown)) {
-                            return dropdown.hasClass("show");
-                        } // Esta definido el Dropdown
-
-                        return false; // Se desconoce el Componente
-                    };
-
-                    Dropdown.prototype.show = function (originElement, autoclose) {
-                        var self = this, // Instancia del proveedor
-                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
-                        
-                        executeIfExists(dropdown, function () {
-                            origin = originElement; // Estableciendo origen
-                            
-                            Material.providers.Dropdown.handler.show({
-                                origin: origin, belowOrigin: belowOrigin, dropdown: dropdown
-                            }); 
-                            
-                            if (autoclose) {
-                                $body.on(nameEvent, function ($event) {
-                                    $event.stopPropagation(); // Cancelando propagación
-                                    
-                                    if (dropdown.find($event.target).length === 0) {
-                                        self.set(dropdown).hide(); $body.off(nameEvent);
-                                    } // Se debe cerrar el dropdown de manera automatica
-                                });
-                            }
-                        });
-                    };
-                    
-                    Dropdown.prototype.showXY = function (left, top, autoclose) {
-                        var self = this, // Instancia del proveedor
-                            nameEvent = "click.hidedropdown-" + softtion.getGUID();
-                        
-                        executeIfExists(dropdown, function () {
-                            Material.providers.Dropdown.handler.showXY({
-                                belowOrigin: belowOrigin, dropdown: dropdown
-                            }, left, top); 
-                            
-                            if (autoclose) {
-                                $body.on(nameEvent, function ($event) {
-                                    $event.stopPropagation(); // Cancelando propagación
-                                    
-                                    if (dropdown.find($event.target).length === 0) {
-                                        self.set(dropdown).hide(); $body.off(nameEvent);
-                                    } // Se debe cerrar el dropdown de manera automatica
-                                });
-                            }
-                        });
-                    };
-
-                    Dropdown.prototype.hide = function () {
-                        if (this.isVisible()) { 
-                            Material.providers.Dropdown.handler.hide(dropdown); 
-                        } // Esta abierto el dropdown en el Provedor
-                    };
-                    
-                    var dropdownProvider = new Dropdown();
-
-                    this.$get = ["$body", function ($bodyElement) { 
-                        $body = $bodyElement; return dropdownProvider;
-                    }];
-                    
-                    this.get = function () { return dropdownProvider; };
                 }
             },
             
@@ -8926,7 +9002,7 @@
                     $element.addClass("density-height") :
                     $element.addClass("density-width");
 
-                $element.addClass("active"); // Activando
+                $element.addClass("active"); // Activando imagen
             }
         };
     });
