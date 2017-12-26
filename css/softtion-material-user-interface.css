@@ -2456,6 +2456,11 @@ button.raised:focus:after, button.flat:focus:after {
 .button-group > button.right {
     float: right; }
 
+.button-group > button.action {
+    padding: 6px;
+    width: 36px;
+    height: 36px; }
+
 /** CARD */
 
 .card {
@@ -5792,6 +5797,11 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 6px;
     height: 36px; }
 
+.footer-buttons > button.action:not(:active):before {
+    -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+            animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
+
 .footer-buttons > .rating {
     width: auto;
     float: left;
@@ -6696,6 +6706,24 @@ p.link > a {
     padding: 0px;
     margin: 0px; }
 
+.menu > .subheader {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    font-weight: 700;
+    height: 48px;
+    line-height: 48px;
+    padding: 0px 24px;
+    font-size: 16px;
+    box-sizing: border-box; }
+
+.menu > .subheader > span {
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
 .menu > .option {
     position: relative;
     display: flex;
@@ -6705,7 +6733,7 @@ p.link > a {
     height: 48px;
     line-height: 48px;
     padding: 0px 24px;
-    font-size: 16px;
+    font-size: 14px;
     box-sizing: border-box; }
 
 .menu > .option > span {

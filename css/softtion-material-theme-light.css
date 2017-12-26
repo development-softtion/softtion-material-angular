@@ -1563,6 +1563,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** MENU */
 
+.menu > li.subheader {
+    color: var(--secondary-font); }
+
 .menu > li.option {
     color: var(--primary-font); }
 
@@ -2215,7 +2218,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-ripple); }
 
 .app-bar > .tabs > .stripe, .tabs > .stripe {
-    background-color: var(--dark-background-component); }
+    background-color: var(--primary-font); }
 
 .app-bar.theme-primary > .toolbar > .tabs > .stripe, 
 .tabs.theme-primary > .stripe {
@@ -2653,7 +2656,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 /** TOAST */
 
 .toast > .body { 
-    color: var(--primary-font);
+    color: var(--alternative-primary-font);
     background: #323232; }
 
 /** TOOLTIP */

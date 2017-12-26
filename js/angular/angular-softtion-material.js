@@ -538,14 +538,20 @@
         };
 
         $scope.clickLabel = function () {
-            area.focus(); // Se activa el componente 
+            if (!$scope.ngReadonly) {
+                area.focus();
+            } // Componente sin restricciones
         };
 
         $scope.clickArea = function ($event) {
-            callbackFnEvent($event, $scope.clickEvent); // Evento click
+            if (!$scope.ngReadonly) {
+                $event.preventDefault();
+            } // Componente solo lectura
+            
+            callbackFnEvent($event, $scope.clickEvent);
         };
 
-        $scope.focusArea = function ($event) {
+        $scope.focusArea = function ($event) {            
             if (softtion.isDefined($scope.value)) {
                 $scope.valueArea = $scope.value.toString();
             } // Cambiando valor del texto en el textarea
