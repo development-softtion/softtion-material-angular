@@ -110,6 +110,7 @@
             switch (value) {
                 case ("true"): return true;
                 case ("false"): return false;
+                case ("undefined"): return false;
                 case (1): return true;
                 case (0): return false;
                 case ("1"): return true;

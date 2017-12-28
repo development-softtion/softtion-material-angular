@@ -960,7 +960,10 @@
 
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-class", "{active: isActiveLabel()}").
-                        addClass("truncate").addAttribute("ng-click", "clickLabel()");
+                        addClass("truncate").addAttribute("ng-click", "clickLabel()").
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
 
                     var value = softtion.html("p").addClass(["value"]).
                         setText("{{getValueModel()}}").
@@ -1298,7 +1301,10 @@
 
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-class", "{active: isActiveLabel()}").
-                        addClass("truncate").addAttribute("ng-click", "clickLabel()");
+                        addClass("truncate").addAttribute("ng-click", "clickLabel()").
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
 
                     var value = softtion.html("p").addClass(["value"]).
                         setText("{{getValueModel()}}").
@@ -5465,7 +5471,10 @@
 
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-class", "{active: isActiveLabel()}").
-                        addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]);
+                        addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]).
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
 
                     var value = softtion.html("p").addClass(["value", "truncate"]).
                         setText("{{getValueModel()}}").
@@ -5514,6 +5523,7 @@
                         scope: {
                             select: "=ngModel", 
                             label: "@",
+                            required: "=?",
                             keyDescription: "@",
                             suggestions: "=",
                             ngDisabled: "=?",
@@ -5690,7 +5700,10 @@
 
                     var label = softtion.html("label").setText("{{label}}").
                         addAttribute("ng-class", "{active: isActiveLabel()}").
-                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]);
+                        addAttribute("ng-click","clickLabel($event)").addClass(["truncate"]).
+                        addChildren(
+                            softtion.html("span").setText("*").addAttribute("ng-if","required")
+                        );
 
                     var value = softtion.html("p").addClass(["value", "truncate"]).
                         setText("{{getValueModel()}}").
@@ -5748,6 +5761,7 @@
                         scope: {
                             selects: "=ngModel", 
                             label: "@",
+                            required: "=?",
                             ngDisabled: "=?",
                             keyDescription: "@",
                             suggestions: "=",

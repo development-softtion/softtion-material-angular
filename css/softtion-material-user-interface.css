@@ -1350,6 +1350,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     line-height: 12px;
     font-size: 12px; }
 
+.autocomplete > .content > label > span {
+    margin-left: 2px; }
+
 .autocomplete > .content > input {
     width: calc(100% - 24px);
     cursor: text;
@@ -1524,6 +1527,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     height: 14px;
     line-height: 12px;
     font-size: 12px; }
+
+.autocomplete-record > .content > label > span {
+    margin-left: 2px; }
 
 .autocomplete-record > .content > input {
     width: calc(100% - 24px);
@@ -4329,9 +4335,12 @@ button.raised:focus:after, button.flat:focus:after {
             transform: translateY(0) scale(1); }
 
 .dialog > .box > .title {
-    padding: 0px 24px 20px 24px;
+    padding: 24px 24px 20px 24px;
     font-size: 20px;
     font-weight: 500; }
+
+.dialog.alert > .box > .title {
+    padding-top: 0px; }
 
 .dialog > .box > .content {
     font-size: 15px;
@@ -6222,6 +6231,14 @@ img.center.density-height {
        -moz-transform: translateX(-50%); 
             transform: translateX(-50%); }
 
+img.center-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
+
 /** LABEL */
 
 .label {
@@ -7425,6 +7442,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     height: 14px;
     line-height: 12px; }
 
+.select > .content > label > span {
+    margin-left: 2px; }
+
 .select > .content > input {
     width: calc(100% - 36px);
     cursor: pointer;
@@ -7594,6 +7614,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     height: 14px;
     line-height: 12px;
     font-size: 12px; }
+
+.select-multiple > .content > label > span {
+    margin-left: 2px; }
 
 .select-multiple > .content > input {
     width: calc(100% - 36px);
