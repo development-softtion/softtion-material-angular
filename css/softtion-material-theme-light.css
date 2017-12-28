@@ -1323,22 +1323,22 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .flexible-content > .banner > .detail > .title,
 .flexible-content > .banner > .detail > .subtitle {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .flexible-content > .banner > .nav-icon > button {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .flexible-content > .banner > .nav-icon > button:before {
-    background-color: var(--ripple); }
+    background-color: var(--alternative-ripple); }
 
-.flexible-content > .banner.font-darken > .detail > .title,
-.flexible-content > .banner.font-darken > .detail > .subtitle {
+.flexible-content > .banner.alternative > .detail > .title,
+.flexible-content > .banner.alternative > .detail > .subtitle {
     color: var(--primary-font); }
 
-.flexible-content > .banner.font-darken > .nav-icon > button {
+.flexible-content > .banner.alternative > .nav-icon > button {
     color: var(--primary-font); }
 
-.flexible-content > .banner.font-darken > .nav-icon > button:before {
+.flexible-content > .banner.alternative > .nav-icon > button:before {
     background-color: var(--ripple); }
 
 .flexible-content > .box {

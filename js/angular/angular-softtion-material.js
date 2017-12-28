@@ -322,10 +322,9 @@
                 $event.preventDefault();
             } // Cancelando el evento
 
-            if (!isNaN($scope.maxLength)) {
-                if ($scope.valueInput.length === $scope.maxLength) {
+            if (!isNaN($scope.maxLength) && 
+                 $scope.valueInput.length >= $scope.maxLength) {
                     $event.preventDefault();
-                } // Cancelando el evento
             } // Se definío numero correctamente
 
             if ($event.keyCode === 13) {
@@ -589,10 +588,9 @@
                 $event.preventDefault(); 
             } // Cancelando el evento
 
-            if (!isNaN($scope.maxLength)) {
-                if ($scope.valueArea.length === $scope.maxLength) {
+            if (!isNaN($scope.maxLength) &&
+                 $scope.valueArea.length >= $scope.maxLength) {
                     $event.preventDefault();
-                } // Cancelando el evento
             } // Se definío numero correctamente
             
             $scope.pressEnter = false; // No se ha presionado enter
@@ -665,83 +663,90 @@
         components: {
             AppBar: {
                 name: "appBar",
-                directive: ["$appBody", "$appContent", function ($appBody, $appContent) {
-                    return {
-                        restrict: "C",
-                        scope: {
-                            fixed: "=?"
-                        },
-                        link: function ($scope, $element) {
-                                // Componentes
-                            var sidenav = $appBody.children(".sidenav"),
-                                $window = angular.element(window),
-                                
-                                // Atributos
-                                position = 0, hideClass = "hide",
-                                heightElement = (!$element.hasClass("floating")) ?
-                                    $element.innerHeight() : $element.outerHeight(true);
-                            
-                            
-                            if ($element.find(".toolbar:first-child").exists() ||
-                                $element.find(".search-box:first-child").exists()) {
-                                    $element.addClass("element-hidden");
-                            } // Componente contiene elemento ocultable de primero
+                directive: ["$appBody", "$appContent", "$windowResize", 
+                    function ($appBody, $appContent, $windowResize) {
+                        return {
+                            restrict: "C",
+                            scope: {
+                                fixed: "=?"
+                            },
+                            link: function ($scope, $element) {
+                                    // Componentes
+                                var sidenav = $appBody.children(".sidenav"),
+                                    $window = angular.element(window),
 
-                            $appContent.scroll(function () {
-                                if (!$scope.fixed) {
-                                    var heightMin = (($window.width() > 960) ? 64 : 56),
-                                        positionNew = $appContent.scrollTop();
+                                    // Atributos
+                                    position = 0, hideClass = "hide",
+                                    heightElement = (!$element.hasClass("floating")) ?
+                                        $element.innerHeight() : $element.outerHeight(true);
 
-                                    if ((positionNew > heightMin)) {
-                                        if (position < positionNew) {
-                                            $element.addClass(hideClass); // Ocultando barra 
-                                            $element.children(".dropdown").removeClass("show");
-                                        } else {
+
+                                if ($element.find(".toolbar:first-child").exists() ||
+                                    $element.find(".search-box:first-child").exists()) {
+                                        $element.addClass("element-hidden");
+                                } // Componente contiene elemento ocultable de primero
+
+                                $appContent.scroll(function () {
+                                    if (!$scope.fixed) {
+                                        var heightMin = (($window.width() > 960) ? 64 : 56),
+                                            positionNew = $appContent.scrollTop();
+
+                                        if ((positionNew > heightMin)) {
+                                            if (position < positionNew) {
+                                                $element.addClass(hideClass); // Ocultando barra 
+                                                $element.children(".dropdown").removeClass("show");
+                                            } else {
+                                                $element.removeClass(hideClass);
+                                            } // Revelando componente
+                                        } else if (positionNew === 0) {
                                             $element.removeClass(hideClass);
-                                        } // Revelando componente
-                                    } else if (positionNew === 0) {
-                                        $element.removeClass(hideClass);
-                                    } // Revelando componente, se llego al inicio
+                                        } // Revelando componente, se llego al inicio
 
-                                    position = positionNew; // Nueva posición del scroll
-                                } // Appbar se va ocultar en el Scroll
-                            });
-                            
-                            $appContent.css("padding-top", heightElement);
-                            sidenav.css("top", heightElement); 
-                            
-                            if ($window.width() > 960) { 
-                                $appContent.addClass("pd-64"); sidenav.addClass("pd-64");
-                            } else {
-                                $appContent.addClass("pd-56"); sidenav.addClass("pd-56"); 
-                            } // Pantalla es mayor a 960px
-                            
-                            $window.resize(function () {
-                                if ($window.width() > 960) {
-                                    if (!$appContent.hasClass("pd-64")) {
-                                        var paddingTop = parseInt($appContent.css("padding-top"));
-                                        
-                                        sidenav.css("top", (paddingTop + 8) + "px");
-                                        $appContent.css("padding-top", (paddingTop + 8) + "px");
-                                    } // AppBar de 64px Mínimo
-                                    
-                                    sidenav.addClass("pd-64").removeClass("pd-56");
-                                    $appContent.addClass("pd-64").removeClass("pd-56");
+                                        position = positionNew; // Nueva posición del scroll
+                                    } // Appbar se va ocultar en el Scroll
+                                });
+
+                                $appContent.css("padding-top", heightElement);
+                                sidenav.css("top", heightElement); 
+
+                                if ($window.width() > 960) { 
+                                    $appContent.addClass("pd-64"); sidenav.addClass("pd-64");
                                 } else {
-                                    if (!$appContent.hasClass("pd-56")) {
-                                        var paddingTop = parseInt($appContent.css("padding-top"));
-                                        
-                                        sidenav.css("top", (paddingTop - 8) + "px");
-                                        $appContent.css("padding-top", (paddingTop - 8) + "px");
-                                    } // AppBar de 56px Mínimo
+                                    $appContent.addClass("pd-56"); sidenav.addClass("pd-56"); 
+                                } // Pantalla es mayor a 960px
+
+                                var keyAppBarWR = "wr-appbar-" + softtion.getGUID();
+
+                                $windowResize.addListener(keyAppBarWR, function ($window) {
+                                    if (!softtion.isInPage($element[0])) {
+                                        $windowResize.removeListener(keyAppBarWR); return;
+                                    } // Componente no se encuentra definido
                                     
-                                    sidenav.addClass("pd-56").removeClass("pd-64");
-                                    $appContent.addClass("pd-56").removeClass("pd-64");
-                                }
-                            });
-                        }
-                    };
-                }]
+                                    if ($window.width() > 960) {
+                                        if (!$appContent.hasClass("pd-64")) {
+                                            var paddingTop = parseInt($appContent.css("padding-top"));
+
+                                            sidenav.css("top", (paddingTop + 8) + "px");
+                                            $appContent.css("padding-top", (paddingTop + 8) + "px");
+                                        } // AppBar de 64px Mínimo
+
+                                        sidenav.addClass("pd-64").removeClass("pd-56");
+                                        $appContent.addClass("pd-64").removeClass("pd-56");
+                                    } else {
+                                        if (!$appContent.hasClass("pd-56")) {
+                                            var paddingTop = parseInt($appContent.css("padding-top"));
+
+                                            sidenav.css("top", (paddingTop - 8) + "px");
+                                            $appContent.css("padding-top", (paddingTop - 8) + "px");
+                                        } // AppBar de 56px Mínimo
+
+                                        sidenav.addClass("pd-56").removeClass("pd-64");
+                                        $appContent.addClass("pd-56").removeClass("pd-64");
+                                    }
+                                });
+                            }
+                        };
+                    }]
             },
             
             Audio: {
@@ -2116,7 +2121,7 @@
 
                     return container + arrowPrev + arrowNext;
                 },
-                directive: ["$window", function ($window) {
+                directive: ["$window", "$windowResize", function ($window, $windowResize) {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.Catalog.route,
@@ -2251,9 +2256,15 @@
                             $scope.clickAction = function (name, $item, $index) {
                                 $scope.eventAction({ $name: name, $item: $item, $index: $index });
                             };
+
+                            var keyCatalogWR = "wr-catalog-" + softtion.getGUID();
                             
-                            angular.element($window).resize(function() {
-                                $scope.width = $window.innerWidth; $scope.$digest();
+                            $windowResize.addListener(keyCatalogWR, function(window) {
+                                if (!softtion.isInPage($element[0])) {
+                                    $windowResize.removeListener(keyCatalogWR); return;
+                                } // Componente no se encuentra definido
+                                
+                                $scope.width = window.width(); // Ajustando ancho
                             });
                         }
                     };
@@ -8759,6 +8770,50 @@
                         materialTheme.register(name, theme); return this;
                     };
                 }]
+            },
+            
+            WindowResize: {
+                name: "$windowResize",
+                method: function () {
+                    
+                    var WindowResize = function () { },
+                            
+                        // Atributos
+                        $scope = undefined,
+                        window = undefined,
+                        listeners = {};
+                        
+                    var $windowResize = new WindowResize();
+                    
+                    WindowResize.prototype.addListener = function (key, listener) {
+                        if (softtion.isFunction(listener)) {
+                            listeners[key] = listener;
+                        } // Se agrego una nueva función en la Lista
+                    };
+                    
+                    WindowResize.prototype.removeListener = function (key) {
+                        softtion.removeKey(listeners, key);
+                    };
+                    
+                    this.get = function () { return $windowResize; };
+                    
+                    var fnProvider = function ($rootScope, $window) { 
+                        $scope = $rootScope;  // Asignando $scope
+                        window = angular.element($window);
+                        
+                        window.resize(function (event) {
+                            $scope.$apply(function () {
+                                angular.forEach(listeners, function (fn) {
+                                    fn(window, event, $window);
+                                });
+                            });
+                        });
+                        
+                        return $windowResize; // Retornando clase
+                    };
+                    
+                    this.$get = ["$rootScope", "$window", fnProvider];
+                }
             }
         }
     };
@@ -9001,14 +9056,14 @@
     
     ngMaterial.service("$fnMaterial", function () {
         return {
-            setDensity: function ($element, width, height) {
+            setDensity: function (image, width, height) {
                 var density = height / width; // Calculando
 
                 (density > 1) ?
-                    $element.addClass("density-height") :
-                    $element.addClass("density-width");
+                    image.addClass("density-height") :
+                    image.addClass("density-width");
 
-                $element.addClass("active"); // Activando imagen
+                image.addClass("active"); // Activando imagen
             }
         };
     });
