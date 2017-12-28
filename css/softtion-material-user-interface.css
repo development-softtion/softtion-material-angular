@@ -6889,8 +6889,14 @@ p.link > a {
     z-index: 3; }
 
 .app-bar > .progress-bar, .toolbar > .progress-bar {
-    bottom: 0px; 
     position: absolute; }
+
+.app-bar > .progress-bar {
+    bottom: -4px; }
+
+.app-bar.element-hidden.hide > .progress-bar, 
+.toolbar > .progress-bar {
+    bottom: 0px; }
 
 /** PROGRESS BUTTON FLOATING */
 
