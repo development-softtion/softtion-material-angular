@@ -1,9 +1,9 @@
 /*
- Angular Softtion Material v1.2.5
+ Angular Softtion Material v1.2.6
  (c) 2016 - 2017 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 23/Nov/2017
+ Updated: 02/Ene/2018
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -1899,7 +1899,8 @@
                     var content = softtion.html("div").
                         addClass("slide").addAttribute("ng-repeat", "slide in gallery").
                         addAttribute(
-                            "ng-class", "{active: slideActive($index), before: slideBefore($index), after: slideAfter($index)}"
+                            "ng-class", "{active: slideActive($index), before:" +
+                            "slideBefore($index), after: slideAfter($index)}"
                         ).
                         addChildren(
                             softtion.html("img", false).addClass("center").
@@ -1907,32 +1908,41 @@
                         );
 
                     content.addChildren(
-                        softtion.html("div").addClass(["detail", "{{positionContent}}"]).
-                            addAttribute("ng-style", "{color: fontColor}").
+                        softtion.html("div").addClass(["detail", "{{position}}"]).
                             addChildren(
-                                softtion.html("label").addClass("title").setText("{{slide.title}}")
+                                softtion.html("label").addClass("title").
+                                    setText("{{slide.title}}")
                             ).
                             addChildren(
-                                softtion.html("h2").addClass("subtitle").setText("{{slide.subTitle}}")
+                                softtion.html("label").addClass("subtitle").
+                                    setText("{{slide.subTitle}}")
+                            ).
+                            addChildren(
+                                softtion.html("div").addClass("actions").
+                                    addChildren(
+                                        softtion.html("button").addClass("flat").
+                                            addAttribute("ng-repeat", "action in actions").
+                                            addAttribute(
+                                                "ng-click", "clickAction(action, slide, $parent.$index)"
+                                            ).setText("{{action.label}}")
+                                    )
                             )
                     );
 
-                    var buttonPrev = softtion.html("a").addClass(["arrow", "prev", "{{positionContent}}"]).
+                    var buttonPrev = softtion.html("a").addClass(["arrow", "prev", "{{position}}"]).
                         addAttribute("ng-click", "prev()").
                         addAttribute("ng-class", "{disabled: transitionActive}").
                         addAttribute("ng-if", "beforeActive()").
                         addChildren(
-                            softtion.html("i").setText("chevron_left").
-                                addAttribute("ng-style", "{color: fontColor}")
+                            softtion.html("i").setText("chevron_left")
                         );
 
-                    var buttonNext = softtion.html("a").addClass(["arrow", "next", "{{positionContent}}"]).
+                    var buttonNext = softtion.html("a").addClass(["arrow", "next", "{{position}}"]).
                         addAttribute("ng-click", "next()").
                         addAttribute("ng-class", "{disabled: transitionActive}").
                         addAttribute("ng-if", "afterActive()").
                         addChildren(
-                            softtion.html("i").setText("chevron_right").
-                                addAttribute("ng-style", "{color: fontColor}")
+                            softtion.html("i").setText("chevron_right")
                         );
                 
                     return content + buttonPrev + buttonNext;
@@ -1946,8 +1956,11 @@
                             disabledInterval: "=?",
                             time: "=?",
                             height: "@",
-                            positionContent: "@",
-                            fontColor: "@"
+                            position: "@positionContent",
+                            actions: "=?",
+                            
+                            // Escuchador
+                            eventListener: "&"
                         },
                         link: function ($scope, $element) {
                             var intervalCarousel = undefined; $scope.index = 0; 
@@ -1955,8 +1968,6 @@
                             $scope.time = isNaN($scope.time) ? 4000 : $scope.time;
                             
                             $scope.transitionActive = false; // Desactiva cambio
-                            
-                            $scope.fontColor = $scope.fontColor || "#ffffff";
                             
                             $element.css("padding-top", $scope.height || "56.6%");
                             
@@ -2064,6 +2075,13 @@
                             $scope.prev = function () {
                                 $interval.cancel(intervalCarousel); prev(); startInterval();
                             };
+                            
+                            $scope.clickAction = function (action, item, $index) {
+                                $scope.eventListener({
+                                    $event: "clickAction", $item: item,
+                                    $index: $index, $action: action.event
+                                });
+                            };
                         }
                     };
                 }]
@@ -2085,14 +2103,19 @@
                 
                         detail = softtion.html("div").addClass("detail").
                             addChildren(
-                                softtion.html("div").addClass("primary-title").
+                                softtion.html("div").addClass("content").
                                     addChildren(
-                                        softtion.html("div").addClass("content").
+                                        softtion.html("p").addClass("title").
+                                            setText("{{photo.title}}")
+                                    ).addChildren(
+                                        softtion.html("p").addClass("subtitle").
                                             addChildren(
-                                                softtion.html("p").addClass("title").
-                                                    setText("{{photo.title}}")
+                                                softtion.html("img", false).
+                                                    addAttribute("ng-hide", "!photo.icon").
+                                                    addAttribute("disable-responsive", "true").
+                                                    addAttribute("ng-src", "{{photo.icon}}")
                                             ).addChildren(
-                                                softtion.html("p").addClass("subtitle").
+                                                softtion.html("span").
                                                     setText("{{photo.subtitle}}")
                                             )
                                     )

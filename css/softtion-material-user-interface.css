@@ -2975,10 +2975,11 @@ button.raised:focus:after, button.flat:focus:after {
 .carousel.two-slide > .slide.after {
     left: -100%; }
 
-.carousel > .slide > .detail, .carousel > .slide > .detail.center {
+.carousel > .slide > .detail {
     position: absolute;
     top: 50%;
     left: 80px;
+    width: calc(100% - 160px);
     z-index: 3; 
     -webkit-transform: translate(0%, -50%);
        -moz-transform: translate(0%, -50%);
@@ -2997,6 +2998,14 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transform: none;
             transform: none; }
 
+.carousel > .slide > .detail > .title,
+.carousel > .slide > .detail > .subtitle {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
 .carousel > .slide > .detail > .title {
     font-size: 36px;
     font-weight: 700; }
@@ -3004,6 +3013,17 @@ button.raised:focus:after, button.flat:focus:after {
 .carousel > .slide > .detail > .subtitle {
     font-size: 16px;
     font-weight: 100; }
+
+.carousel > .slide > .detail > .actions {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto; }
+
+.carousel > .slide > .detail > .actions > button {
+    margin: 8px 0px; }
+
+.carousel > .slide > .detail > .actions > button + button {
+    margin-left: 8px; }
 
 .carousel > .arrow, .carousel > .arrow.center {
     position: absolute;
@@ -3155,19 +3175,15 @@ button.raised:focus:after, button.flat:focus:after {
 .catalog > .container > .content.active > .detail {
     opacity: 1; }
 
-.catalog > .container > .content > .detail > .primary-title {
-    width: 100%;
-    padding: 24px 16px 16px 16px;
-    box-sizing: border-box;
-    overflow-y: auto; }
-
-.catalog > .container > .content > .detail > .primary-title > .content {
+.catalog > .container > .content > .detail > .content {
+    position: relative;
     width: 100%;
     float: left;
+    padding: 16px 12px;
     box-sizing: border-box; }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .title,
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle {
+.catalog > .container > .content > .detail > .content > .title,
+.catalog > .container > .content > .detail > .content > .subtitle {
     display: block;
     width: 100%;
     margin: 0px;
@@ -3175,16 +3191,22 @@ button.raised:focus:after, button.flat:focus:after {
     text-overflow: ellipsis;
     white-space: nowrap; }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .title {
+.catalog > .container > .content > .detail > .content > .title {
     font-size: 20px;
     height: 20px;
     line-height: 20px; }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle {
+.catalog > .container > .content > .detail > .content > .subtitle {
     margin-top: 4px;
-    height: 14px;
-    line-height: 14px;
+    height: 16px;
+    line-height: 16px;
     font-size: 14px; }
+
+.catalog > .container > .content > .detail > .content > .subtitle > img {
+    width: 16px;
+    height: auto;
+    float: left;
+    margin-right: 4px; }
 
 .catalog > .container > .content > .detail > .actions {
     width: 100%;

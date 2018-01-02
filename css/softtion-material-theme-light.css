@@ -662,11 +662,29 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** CAROUSEL */
 
-.carousel > .slide > .detail {
+.carousel > .slide > .detail > .subtitle,
+.carousel > .slide > .detail > .title,
+.carousel > .slide > .detail > .actions > button,
+.carousel > .arrow {
+    color: var(--alternative-primary-font); }
+
+.carousel > .slide > .detail > .actions > button:before {
+    background-color: var(--alternative-ripple); }
+
+.carousel > .slide.contrast > .detail > .subtitle,
+.carousel > .slide.contrast > .detail > .title,
+.carousel > .slide.contrast > .detail > .actions > button,
+.carousel > .arrow.contrast {
     color: var(--primary-font); }
+
+.carousel > .slide.contrast > .detail > .actions > button:before {
+    background-color: var(--ripple); }
 
 .carousel > .arrow:hover {
     background-color: rgba(255, 255, 255, 0.2); }
+
+.carousel > .arrow.contrast:hover {
+    background-color: rgba(0, 0, 0, 0.2); }
 
 /** CATALOG **/
 
@@ -677,8 +695,8 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .catalog > .container > .content > .detail {
     background-color: rgba(0, 0, 0, 0.54); }
 
-.catalog > .container > .content > .detail > .primary-title > .content > .title,
-.catalog > .container > .content > .detail > .primary-title > .content > .subtitle {
+.catalog > .container > .content > .detail > .content > .title,
+.catalog > .container > .content > .detail > .content > .subtitle {
     color: var(--alternative-primary-font); }
 
 .catalog > .container > .content > .detail > .actions > button {
