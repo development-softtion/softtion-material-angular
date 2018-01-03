@@ -1486,6 +1486,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .link {
     color: var(--theme-primary-font); }
 
+.link.disabled {
+    color: var(--theme-primary-font-disabledcolor); }
+
 /** LIST */
 
 .list {

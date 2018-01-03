@@ -5899,7 +5899,7 @@
 
                             $scope.toggleSuggestions = function () {
                                 if (!$scope.ngDisabled) {
-                                    (list.hasClass("active")) ? 
+                                    ($scope.showList) ? 
                                         $scope.hideSuggestions() : $scope.showSuggestions();
                                 } // No esta desactivado el componente
                             };

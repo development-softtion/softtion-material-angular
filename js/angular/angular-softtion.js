@@ -112,7 +112,7 @@
         return {
             download: download,
             print: print,
-            viewPreview: viewPreview
+            preview: preview
         };
         
         function download(attrs) {
@@ -128,7 +128,11 @@
 
                     angular.element(element, elementAttrs).appendTo("body")[0].click();
 
-                    $timeout(function () { URL.revokeObjectURL(fileUrl); }, 10000); resolve(fileBlob); 
+                    $timeout(function () { 
+                        URL.revokeObjectURL(fileUrl); 
+                    }, 10000); // Eliminando URL
+                    
+                    resolve(fileBlob); // Todo correcto
                 }).catch(function (error) { reject(error); });
             });
         };
@@ -139,9 +143,7 @@
                     responseType: "arraybuffer", 
                     params: attrs["params"] 
                 }).then(function (response) {
-                    var fileBlob = new Blob(
-                            [response.data], { type: attrs.type }
-                        ),
+                    var fileBlob = new Blob([response.data], { type: attrs.type }),
                         fileUrl = URL.createObjectURL(fileBlob);
 
                     $window.open(fileUrl).print(); resolve(fileBlob); 
@@ -149,15 +151,13 @@
             });
         };
         
-        function viewPreview(attrs) {
+        function preview(attrs) {
             return $q(function (resolve, reject) {
                 $http.get(attrs.url, { 
                     responseType: "arraybuffer", 
-                    params: attrs["params"] 
+                    params: attrs.params
                 }).then(function (response) {
-                    var fileBlob = new Blob(
-                            [response.data], { type: attrs.type }
-                        ),
+                    var fileBlob = new Blob([response.data], { type: attrs.type }),
                         fileUrl = URL.createObjectURL(fileBlob);
 
                     $window.open(fileUrl); resolve(fileBlob); 

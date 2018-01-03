@@ -6322,6 +6322,9 @@ img.center-content {
     font-weight: 500; 
     cursor: pointer; }
 
+.link.disabled {
+    pointer-events: none; }
+
 p > .link {
     display: initial;
     float: initial;
