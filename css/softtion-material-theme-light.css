@@ -662,6 +662,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** CAROUSEL */
 
+.carousel.contrast > .slide > .detail {
+    background-color: rgba(0, 0, 0, 0.54); }
+
 .carousel > .slide > .detail > .subtitle,
 .carousel > .slide > .detail > .title,
 .carousel > .slide > .detail > .actions > button,
@@ -671,20 +674,17 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .carousel > .slide > .detail > .actions > button:before {
     background-color: var(--alternative-ripple); }
 
-.carousel > .slide.contrast > .detail > .subtitle,
-.carousel > .slide.contrast > .detail > .title,
-.carousel > .slide.contrast > .detail > .actions > button,
-.carousel > .arrow.contrast {
-    color: var(--primary-font); }
-
-.carousel > .slide.contrast > .detail > .actions > button:before {
-    background-color: var(--ripple); }
-
 .carousel > .arrow:hover {
     background-color: rgba(255, 255, 255, 0.2); }
 
-.carousel > .arrow.contrast:hover {
-    background-color: rgba(0, 0, 0, 0.2); }
+.carousel.contrast > .arrow {
+    background-color: rgba(0, 0, 0, 0.54); }
+
+.carousel.contrast > .arrow:hover {
+    background-color: rgba(255, 255, 255, 0.5); }
+
+.carousel.contrast > .arrow:hover {
+    color: var(--primary-font); }
 
 /** CATALOG **/
 
@@ -851,7 +851,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--secondary-font); }
 
 .chip-input > .content.active > .box.focused ~ label {
-    color: var(--theme-primary-font); }
+    color: var(--theme-secondary-font); }
 
 .chip-input > .content > i {
     color: var(--secondary-font); }

@@ -1896,8 +1896,8 @@
                 route: "softtion/template/carousel.html",
                 name: "carousel",
                 html: function () {
-                    var content = softtion.html("div").
-                        addClass("slide").addAttribute("ng-repeat", "slide in gallery").
+                    var content = softtion.html("div").addClass("slide").
+                        addAttribute("ng-repeat", "slide in gallery").
                         addAttribute(
                             "ng-class", "{active: slideActive($index), before:" +
                             "slideBefore($index), after: slideAfter($index)}"

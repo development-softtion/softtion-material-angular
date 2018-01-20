@@ -162,13 +162,13 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: "Social Icons"; }
 
 .material-icon, i, .social-icon, socicon {
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
     display: inline-block;
     width: 24px;
     height: 24px;
+    font-size: 24px;
     line-height: inherit;
+    font-weight: normal;
+    font-style: normal;
     text-transform: none;
     letter-spacing: normal;
     word-wrap: normal;
@@ -179,17 +179,14 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "liga"; }
 
-.material-icon.mi-100 { 
-    font-size: 14px; }
+.material-icon.x2, i.x2  {
+    font-size: 48px; }
 
-.material-icon.mi-200 {
-    font-size: 28px; }
+.material-icon.x3, i.x3  {
+    font-size: 72px; }
 
-.material-icon.mi-300 {
-    font-size: 42px; }
-
-.material-icon.mi-400 { 
-    font-size: 56px; }
+.material-icon.x4, i.x4  {
+    font-size: 96px; }
 
 /** LAYOUTS, DIMENSIONS, TOOLS */
 
@@ -943,6 +940,18 @@ input[type=number]::-webkit-outer-spin-button {
 .align-justify {
     text-align: justify !important; }
 
+.font-16 {
+    font-size: 16px; }
+
+.font-18 {
+    font-size: 18px; }
+
+.font-20 {
+    font-size: 20px; }
+
+.font-24 {
+    font-size: 24px; }
+
 .clear-both {
     clear: both; }
 
@@ -950,10 +959,12 @@ input[type=number]::-webkit-outer-spin-button {
     margin: auto; }
 
 .margin-vertical-8 {
-    margin: 8px 0px !important; }
+    margin-bottom: 8px !important;
+    margin-top: 8px !important; }
 
 .margin-vertical-16 {
-    margin: 16px 0px !important; }
+    margin-bottom: 16px !important;
+    margin-top: 16px !important; }
 
 .margin-top-8 {
     margin-top: 8px !important; }
@@ -2985,6 +2996,11 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transform: translate(0%, -50%);
             transform: translate(0%, -50%); }
 
+.carousel > .slide > .detail {
+    padding: 8px 8px 0px 8px;
+    border-radius: 4px;
+    box-sizing: border-box; }
+
 .carousel > .slide > .detail.top {
     top: 16px;
     -webkit-transform: none;
@@ -3013,6 +3029,9 @@ button.raised:focus:after, button.flat:focus:after {
 .carousel > .slide > .detail > .subtitle {
     font-size: 16px;
     font-weight: 100; }
+
+.carousel.contrast > .slide > .detail > .subtitle {
+    margin-bottom: 8px; }
 
 .carousel > .slide > .detail > .actions {
     width: 100%;
@@ -3192,7 +3211,8 @@ button.raised:focus:after, button.flat:focus:after {
     white-space: nowrap; }
 
 .catalog > .container > .content > .detail > .content > .title {
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 500;
     height: 20px;
     line-height: 20px; }
 
@@ -3200,7 +3220,7 @@ button.raised:focus:after, button.flat:focus:after {
     margin-top: 4px;
     height: 16px;
     line-height: 16px;
-    font-size: 14px; }
+    font-size: 13px; }
 
 .catalog > .container > .content > .detail > .content > .subtitle > img {
     width: 16px;
@@ -5779,10 +5799,10 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
             transition: transform 200ms 0ms var(--standard-curve); }
 
-.form-navigation.x150 > .content {
+.form-navigation.x2 > .content {
     max-width: 400px; }
 
-.form-navigation.x200 > .content {
+.form-navigation.x3 > .content {
     max-width: 480px; }
 
 .form-navigation.show > .content {
