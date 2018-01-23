@@ -1115,6 +1115,9 @@ input[type=number]::-webkit-outer-spin-button {
     overflow: auto;
     overflow-x: hidden; }
 
+.app-content:focus {
+    outline: 0 !important; }
+
 body.body-overflow-none > .app-body > .app-content, 
 body.body-overflow-none-sidenav > .app-body > .app-content {
     overflow: hidden; }
@@ -1290,8 +1293,29 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     padding: 0px 4px;
     box-sizing: border-box; }
 
-.audio > .content > .detail > .progress-bar {
-    margin-top: 20px; }
+.audio > .content > .detail > .progress-audio {
+    position: relative;
+    width: 100%; 
+    height: 4px;
+    margin-top: 20px;
+    overflow: hidden; }
+
+.audio > .content > .detail > .progress-audio > .bar {
+    position: absolute;
+    top: 0;
+    width: 0; 
+    height: 4px; }
+
+.audio > .content > .detail > .progress-audio > .bar.stripe {
+    width: 100% !important;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 255, 255, 0.32) 25%,
+        transparent 25%, transparent 50%, rgba(255, 255, 255, 0.32) 50%, 
+        rgba(255, 255, 255, 0.32) 75%, transparent 75%, transparent);
+    background-size: 24px 24px;
+    -webkit-animation: progressAudioStripe 325ms linear infinite;
+       -moz-animation: progressAudioStripe 325ms linear infinite;
+            animation: progressAudioStripe 325ms linear infinite; }
 
 .audio > .content > .detail > label {
     position: absolute;
@@ -6261,6 +6285,353 @@ img.center-content {
        -moz-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
+/** ITEM-LIST */
+
+.item-list {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 48px;
+    box-sizing: border-box;
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
+
+.item-list.actionable {
+    cursor: pointer; }
+
+.two-line > .item-list, .item-list.two-line {
+    height: 72px; }
+
+.three-line > .item-list, .item-list.three-line {
+    height: 92px; }
+
+.item-list > .content, .item-list > .content > .detail {
+    position: relative;
+    overflow: hidden; }
+
+.item-list > .content {
+    z-index: 2; }
+
+.item-list > .content > .avatar {
+    position: absolute;
+    top: 8px; 
+    left: 16px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    z-index: 2;
+    font-size: 18px; }
+
+.two-line > .item-list > .content > .avatar,
+.item-list.two-line  > .content > .avatar,
+.three-line > .item-list > .content > .avatar,
+.item-list.three-line > .content > .avatar {
+    width: 48px;
+    top: 12px; 
+    left: 12px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 28px; }
+
+.two-line > .item-list > .content > .avatar > i,
+.item-list.two-line > .content > .avatar > i,
+.three-line > .item-list > .content > .avatar > i,
+.item-list.three-line > .content > .avatar > i {
+    font-size: 24px; }
+
+.item-list > .content > .detail {
+    border-bottom-width: 0px;
+    border-bottom-style: solid;
+    padding: 16px;
+    box-sizing: border-box; }
+
+.bordered > .item-list > .content > .detail,
+.item-list.bordered > .content > .detail {
+    border-bottom-width: 1px; }
+
+ .item-list > .content > .detail > .title {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    font-weight: 500;
+    width: 100%;
+    font-size: 16px;
+    height: 16px;
+    line-height: 16px; }
+
+.item-list.actionable > .content > .detail > .title {
+    cursor: pointer; }
+
+.two-line > .item-list > .content > .detail > .title,
+.item-list.two-line > .content > .detail > .title,
+.three-line > .item-list > .content > .detail > .title,
+.item-list.three-line > .content > .detail > .title {
+    height: 20px;
+    line-height: 20px; }
+
+.item-list > .content > .detail > .description {
+    display: none;
+    width: 100%;
+    margin: 0px;
+    font-size: 14px;
+    max-height: 20px;
+    margin: 1px 0px;
+    line-height: 20px; 
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis; }
+
+.two-line > .item-list > .content > .detail > .description,
+.item-list.two-line > .content > .detail > .description,
+.three-line > .item-list > .content > .detail > .description,
+.item-list.three-line > .content > .detail > .description {
+    display: -webkit-box; }
+
+.two-line > .item-list > .content > .detail > .description,
+.item-list.two-line > .content > .detail > .description {
+    -webkit-line-clamp: 1; }
+
+.three-line > .item-list > .content > .detail > .description,
+.item-list.three-line > .content > .detail > .description {
+    max-height: 40px;
+    -webkit-line-clamp: 2; }
+
+.three-line > .item-list > .content > .detail > .description
+.item-list.three-line > .content > .detail > .description {
+    line-height: 18px; 
+    margin: 0px;
+    max-height: 36px; }
+
+.item-list > .content > .detail > button.action {
+    position: absolute; 
+    top: 12px;
+    right: 4px; 
+    padding: 0px 12px;
+    cursor: pointer; }
+
+.item-list > .content > .detail > button.action > .badge {
+    display: none; }
+
+.item-list > .content > .detail > .checkbox-control {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.item-list > .content > .detail > .radiobutton {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.item-list > .content > .detail > .radiobutton > label {
+    padding-left: 24px; }
+
+.radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
+    -webkit-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+       -moz-animation: rippleSquarecenterLow 750ms var(--standard-curve);
+            animation: rippleSquarecenterLow 750ms var(--standard-curve); }
+
+.item-list > .content > .detail > .switch {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    margin: 0px; }
+
+.item-list > .content > .detail > .badge {
+    right: 16px;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    margin: 0px 2px;
+    line-height: 20px;
+    font-size: 11px; }
+
+.two-line > .item-list > .content > .detail > button.action,
+.item-list.two-line > .content > .detail > button.action,
+.two-line > .item-list > .content > .detail > .badge,
+.item-list.two-line > .content > .detail > .badge,
+.two-line > .item-list > .content > .detail > .checkbox-control,
+.item-list.two-line > .content > .detail > .checkbox-control,
+.two-line > .item-list > .content > .detail > .switch,
+.item-list.two-line > .content > .detail > .switch,
+.two-line > .item-list > .content > .detail > .radiobutton,
+.item-list.two-line > .content > .detail > .radiobutton {
+    top: 24px !important; }
+
+.three-line > .item-list > .content > .detail > button.action,
+.item-list.three-line > .content > .detail > button.action,
+.three-line > .item-list > .content > .detail > .badge,
+.item-list.three-line > .content > .detail > .badge,
+.three-line > .item-list > .content > .detail > .checkbox-control,
+.item-list.three-line > .content > .detail > .checkbox-control,
+.three-line > .item-list > .content > .detail > .switch,
+.item-list.three-line > .content > .detail > .switch,
+.three-line > .item-list > .content > .detail > .radiobutton,
+.item-list.three-line > .content > .detail > .radiobutton {
+    top: 16px; }
+
+.item-list > .content > .detail > .emphasis {
+    display: none;
+    position: absolute; 
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    height: 16px;
+    line-height: 16px;
+    max-width: 32px;
+    overflow: hidden;
+    white-space: nowrap; }
+
+.two-line > .item-list > .content > .detail > .emphasis,
+.item-list.two-line > .content > .detail > .emphasis,
+.three-line > .item-list > .content > .detail > .emphasis,
+.item-list.three-line > .content > .detail > .emphasis {
+    display: block; }
+
+.item-list > .content > .detail > button ~ .emphasis,
+.item-list > .content > .detail > .checkbox-control ~ .emphasis,
+.item-list > .content > .detail > .radiobutton ~ .emphasis, 
+.item-list > .content > .detail > .badge ~ .emphasis, 
+.item-list > .content > .detail > .switch ~ .emphasis {
+    display: none !important; }
+
+.item-list > .content > .avatar ~ .detail,
+.item-list > .content > .action ~ .detail {
+    padding-left: 72px; }
+
+.two-line > .item-list > .content > .avatar ~ .detail,
+.item-list.two-line > .content > .avatar ~ .detail,
+.three-line > .item-list > .content > .avatar ~ .detail,
+.item-list.three-line > .content > .avatar ~ .detail {
+    padding-left: 0px;
+    margin-left: 72px; }
+
+.item-list > .content > .detail > .emphasis ~ .title {
+    width: calc(100% - 40px); }
+
+.item-list > .content > .detail > button.action ~ .title,
+.item-list > .content > .detail > button.action ~ .description,
+.item-list > .content > .detail > .badge ~ .title,
+.item-list > .content > .detail > .badge ~ .description,
+.item-list > .content > .detail > .checkbox-control ~ .title,
+.item-list > .content > .detail > .checkbox-control ~ .description,
+.item-list > .content > .detail > .radiobutton ~ .title,
+.item-list > .content > .detail > .radiobutton ~ .description {
+    width: calc(100% - 40px); }
+
+.item-list > .content > .detail > .switch ~ .title,
+.item-list > .content > .detail > .switch ~ .description {
+    width: calc(100% - 56px) !important; }
+
+.two-line > .item-list > .content > .detail > .emphasis ~ button,
+.item-list.two-line > .content > .detail > .emphasis ~ button,
+.two-line > .item-list > .content > .detail > .emphasis ~ .checkbox-control,
+.item-list.two-line > .content > .detail > .emphasis ~ .checkbox-control,
+.two-line > .item-list > .content > .detail > .emphasis ~ .radiobutton,
+.item-list.two-line > .content > .detail > .emphasis ~ .radiobutton,
+.two-line > .item-list > .content > .detail > .emphasis ~ .switch,
+.item-list.two-line > .content > .detail > .emphasis ~ .switch,
+.two-line > .item-list > .content > .detail > .emphasis ~ .badge,
+.item-list.two-line > .content > .detail > .emphasis ~ .badge {
+    display: none; }
+
+.item-list > .content > .detail > button ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .checkbox-control ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .badge ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .radiobutton ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .switch ~ *:not(.title):not(.description) {
+    display: none; }
+
+.three-line > .item-list > .content > .detail > button + *:not(.title):not(.description),
+.item-list.three-line > .content > .detail > button + *:not(.title):not(.description),
+.three-line > .item-list > .content > .detail > .checkbox-control + *:not(.title):not(.description),
+.item-list.three-line > .content > .detail > .checkbox-control + *:not(.title):not(.description),
+.three-line > .item-list > .content > .detail > .badge + *:not(.title):not(.description),
+.item-list.three-line > .content > .detail > .badge + *:not(.title):not(.description),
+.three-line > .item-list > .content > .detail > .radiobutton + *:not(.title):not(.description),
+.item-list.three-line > .content > .detail > .radiobutton + *:not(.title):not(.description),
+.three-line > .item-list > .content > .detail > .switch + *:not(.title):not(.description),
+.item-list.three-line > .content > .detail > .switch + *:not(.title):not(.description) {
+    display: block;
+    bottom: 16px;
+    top: initial; }
+
+.item-list > .content > .detail > button + .checkbox-control ~ *:not(.title):not(.description),
+.item-list > .content > .detail > button + .badge ~ *:not(.title):not(.description),
+.item-list > .content > .detail > button + .radiobutton ~ *:not(.title):not(.description), 
+.item-list > .content > .detail > button + .switch ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .checkbox-control + button ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .checkbox-control + .badge ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .checkbox-control + .radiobutton ~ *:not(.title):not(.description), 
+.item-list > .content > .detail > .checkbox-control + .switch ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .badge + button ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .badge + .checkbox-control ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .badge + .radiobutton ~ *:not(.title):not(.description), 
+.item-list > .content > .detail > .badge + .switch ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .radiobutton + button ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .radiobutton + .checkbox-control ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .radiobutton + .badge ~ *:not(.title):not(.description), 
+.item-list > .content > .detail > .radiobutton + .switch ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .switch + button ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .switch + .checkbox-control ~ *:not(.title):not(.description),
+.item-list > .content > .detail > .switch + .badge ~ *:not(.title):not(.description), 
+.item-list > .content > .detail > .switch + .radiobutton~ *:not(.title):not(.description) {
+    display: none !important; }
+
+.item-list > .content > .detail > .emphasis ~ button.action,
+.item-list > .content > .detail > .emphasis ~ .badge {
+    top: initial;
+    bottom: 16px; }
+
+.item-list.two-line + .divider, .item-list.three-line + .divider {
+    margin-left: 72px;
+    width: calc(100% - 72px); }
+
+.item-list > .content > .actions {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 48px;
+    padding: 0px 12px;
+    box-sizing: border-box;
+    z-index: 3; 
+    will-change: transform;
+    -webkit-transform: translateY(100%);
+       -moz-transform: translateY(100%);
+            transform: translateY(100%);
+    -webkit-transition: transform 120ms 0ms var(--standard-curve);
+       -moz-transition: transform 120ms 0ms var(--standard-curve);
+            transition: transform 120ms 0ms var(--standard-curve);}
+
+.item-list:hover > .content > .actions {
+    -webkit-transform: translateY(0%); 
+       -moz-transform: translateY(0%); 
+            transform: translateY(0%); }
+
+.item-list > .content > .actions > button {
+    float: left;
+    margin-top: 6px; }
+
+.item-list > .content > .actions > button.right {
+    float: right; }
+
+.item-list > .content > .actions > button.raised {
+    box-shadow: none; }
+
+.item-list > .content > .actions > button.action {
+    padding: 6px;
+    height: 36px; }
+
+.item-list > .content > .actions > button + button {
+    margin-left: 4px; }
+
+.item-list > .content > .actions > button.right + button {
+    margin-left: 0px;
+    margin-right: 4px; }
+
 /** LABEL */
 
 .label {
@@ -6356,238 +6727,6 @@ p.link > a {
 
 .list > .divider {
     margin: 4px 0px; }
-
-.list > .item-list {
-    position: relative;
-    overflow: hidden;
-    height: auto;
-    box-sizing: border-box;
-    -webkit-transition: height 160ms 0ms var(--standard-curve);
-       -moz-transition: height 160ms 0ms var(--standard-curve);
-            transition: height 160ms 0ms var(--standard-curve); }
-
-.list > .item-list.actionable {
-    cursor: pointer; }
-
-.list > .item-list.slide, .list > .item-list.slide label {
-    cursor: pointer; }
-
-.list > .item-list > .content {
-    z-index: 2; }
-
-.list > .item-list > .content, .list > .item-list > .content > .detail {
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden; }
-
-.list > .item-list > .content > .avatar {
-    position: absolute;
-    top: 8px; 
-    left: 16px;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    z-index: 2;
-    font-size: 18px; }
-
-.list.two-line > .item-list > .content > .avatar,
-.list.three-line > .item-list > .content > .avatar {
-    width: 48px;
-    top: 12px; 
-    left: 12px;
-    height: 48px;
-    line-height: 48px;
-    font-size: 28px; }
-
-.list.two-line > .item-list > .content > .avatar > i,
-.list.three-line > .item-list > .content > .avatar > i {
-    font-size: 24px; }
-
-.list > .item-list > .content > .detail {
-    border-bottom-width: 0px;
-    border-bottom-style: solid;
-    padding: 16px;
-    box-sizing: border-box; }
-
-.list.bordered > .item-list > .content > .detail {
-    border-bottom-width: 1px; }
-
-.list > .item-list > .content > .detail > .title {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    white-space: nowrap;
-    font-weight: 500;
-    width: 100%;
-    font-size: 16px;
-    height: 16px;
-    line-height: 16px; }
-
-.list > .item-list.actionable > .content > .detail > .title {
-    cursor: pointer; }
-
-.list.two-line > .item-list > .content > .detail > .title,
-.list.three-line > .item-list > .content > .detail > .title {
-    height: 20px;
-    line-height: 20px; }
-
-.list > .item-list > .content > .detail > .description {
-    display: none;
-    width: 100%;
-    margin: 0px;
-    font-size: 14px;
-    max-height: 20px;
-    margin: 1px 0px;
-    line-height: 20px; 
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis; }
-
-.list.two-line > .item-list > .content > .detail > .description,
-.list.three-line > .item-list > .content > .detail > .description {
-    display: -webkit-box; }
-
-.list.two-line > .item-list > .content > .detail > .description {
-    -webkit-line-clamp: 1; }
-
-.list.three-line > .item-list > .content > .detail > .description {
-    line-height: 18px; 
-    margin: 0px;
-    max-height: 36px; }
-
-.list > .item-list > .content > .detail > button.action {
-    position: absolute; 
-    top: 12px;
-    right: 4px; 
-    padding: 0px 12px;
-    cursor: pointer; }
-
-.list > .item-list > .content > .detail > button.action > .badge {
-    display: none; }
-
-.list > .item-list > .content > .detail > .checkbox-control {
-    position: absolute;
-    right: 16px;
-    top: 12px;
-    margin: 0px; }
-
-.list > .item-list > .content > .detail > .radiobutton {
-    position: absolute;
-    right: 16px;
-    top: 12px;
-    margin: 0px; }
-
-.list > .item-list > .content > .detail > .radiobutton > label {
-    padding-left: 24px; }
-
-.list .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
-    -webkit-animation: rippleSquarecenterLow 750ms var(--standard-curve);
-       -moz-animation: rippleSquarecenterLow 750ms var(--standard-curve);
-            animation: rippleSquarecenterLow 750ms var(--standard-curve); }
-
-.list > .item-list > .content > .detail > .switch {
-    position: absolute;
-    right: 16px;
-    top: 12px;
-    margin: 0px; }
-
-.list > .item-list > .content > .detail > .badge {
-    right: 16px;
-    top: 14px;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 11px; }
-
-.list.two-line > .item-list > .content > .detail > button.action,
-.list.two-line > .item-list > .content > .detail > .badge,
-.list.two-line > .item-list > .content > .detail > .checkbox-control,
-.list.two-line > .item-list > .content > .detail > .switch,
-.list.two-line > .item-list > .content > .detail > .radiobutton {
-    top: 24px !important; }
-
-.list.three-line > .item-list > .content > .detail > button.action,
-.list.three-line > .item-list > .content > .detail > .badge,
-.list.three-line > .item-list > .content > .detail > .checkbox-control,
-.list.three-line > .item-list > .content > .detail > .switch,
-.list.three-line > .item-list > .content > .detail > .radiobutton {
-    top: 16px; }
-
-.list > .item-list > .content > .detail > .emphasis {
-    display: none;
-    position: absolute; 
-    top: 16px;
-    right: 16px;
-    font-size: 10px;
-    height: 16px;
-    line-height: 16px;
-    max-width: 32px;
-    overflow: hidden;
-    white-space: nowrap; }
-
-.list.three-line > .item-list > .content > .detail > .emphasis {
-    display: block; }
-
-.list > .item-list > .content > .avatar ~ .detail,
-.list > .item-list > .content > .action ~ .detail {
-    padding-left: 72px; }
-
-.list.two-line > .item-list > .content > .avatar ~ .detail,
-.list.three-line > .item-list > .content > .avatar ~ .detail {
-    padding-left: 0px;
-    margin-left: 72px; }
-
-.list > .item-list > .content > .detail > button.action ~ .title,
-.list > .item-list > .content > .detail > button.action ~ .description,
-.list > .item-list > .content > .detail > .badge ~ .title,
-.list > .item-list > .content > .detail > .badge ~ .description,
-.list > .item-list > .content > .detail > .checkbox-control ~ .title,
-.list > .item-list > .content > .detail > .checkbox-control ~ .description,
-.list > .item-list > .content > .detail > .radiobutton ~ .title,
-.list > .item-list > .content > .detail > .radiobutton ~ .description {
-    width: calc(100% - 40px); }
-
-.list > .item-list > .content > .detail > .switch ~ .title,
-.list > .item-list > .content > .detail > .switch ~ .description {
-    width: calc(100% - 56px); }
-
-.list > .item-list > .content > .detail > .emphasis ~ button.action,
-.list > .item-list > .content > .detail > .emphasis ~ .badge {
-    top: initial;
-    bottom: 16px; }
-
-.list.two-line > .divider, .list.three-line > .divider {
-    width: calc(100% - 72px);
-    margin-left: 72px; }
-
-.list > .item-list > .slide-action {
-    position: absolute;
-    top: 0; 
-    left: 0;
-    width: 100%;
-    height: 100%; 
-    z-index: 1; }
-
-.list > .item-list > .slide-action > i {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-    line-height: inherit;
-    -webkit-transform: translate(0, -50%);
-       -moz-transform: translate(0, -50%);
-            transform: translate(0, -50%); }
-
-.list > .item-list > .slide-action > .confirm-button {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    -webkit-transform: translate(0, -50%);
-       -moz-transform: translate(0, -50%);
-            transform: translate(0, -50%); }
 
 /** LIST PARAGRAPH */
 
@@ -9457,12 +9596,40 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
+.textfield.inline > .content > label {
+    top: 16px;
+    width: calc(50% - 4px); }
+
+.textfield.inline.l20 > .content > label {
+    width: calc(20% - 4px); }
+
+.textfield.inline.l30 > .content > label {
+    width: calc(30% - 4px); }
+
+.textfield.inline.l40 > .content > label {
+    width: calc(40% - 4px); }
+
+.textfield.inline.l60 > .content > label {
+    width: calc(60% - 4px); }
+
+.textfield.inline.l70 > .content > label {
+    width: calc(70% - 4px); }
+
+.textfield.inline.l80 > .content > label {
+    width: calc(80% - 4px); }
+
 .textfield > .content > label.active {
     cursor: none;
     top: 8px;
     height: 14px;
     line-height: 12px;
     font-size: 12px; }
+
+.textfield.inline > .content > label.active {
+    top: 16px;
+    line-height: 18px;
+    height: 18px;
+    font-size: 16px; }
 
 .textfield > .content > label > span {
     margin-left: 2px; }
@@ -9479,8 +9646,58 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     outline: none; 
     background-color: transparent; }
 
+.textfield.inline > .content > input {
+    padding-top: 0px;
+    width: 50%;
+    margin-left: 50%; }
+
+.textfield.inline.l20 > .content > input {
+    width: 80%;
+    margin-left: 20%; }
+
+.textfield.inline.l30 > .content > input {
+    width: 70%;
+    margin-left: 30%; }
+
+.textfield.inline.l40 > .content > input {
+    width: 60%;
+    margin-left: 40%; }
+
+.textfield.inline.l60 > .content > input {
+    width: 40%;
+    margin-left: 60%; }
+
+.textfield.inline.l70 > .content > input {
+    width: 30%;
+    margin-left: 70%; }
+
+.textfield.inline.l80 > .content > input {
+    width: 20%;
+    margin-left: 80%; }
+
 .textfield > .content > input.iconaction {
     width: calc(100% - 28px); }
+
+.textfield.inline > .content > input.iconaction {
+    width: calc(50% - 28px); }
+
+.textfield.inline.l20 > .content > input.iconaction {
+    width: calc(80% - 28px); }
+
+.textfield.inline.l30 > .content > input.iconaction {
+    width: calc(70% - 28px); }
+
+.textfield.inline.l40 > .content > input.iconaction {
+    width: calc(60% - 28px); }
+
+.textfield.inline.l60 > .content > input.iconaction {
+    width: calc(40% - 28px); }
+
+.textfield.inline.l70 > .content > input.iconaction {
+    width: calc(30% - 28px); }
+
+.textfield.inline.l80 > .content > input.iconaction {
+    width: calc(20% - 28px); }
 
 .textfield > .content > input::-webkit-input-placeholder {
     visibility: hidden; }
@@ -9503,6 +9720,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     overflow: hidden; 
     white-space: nowrap; }
 
+.textfield.inline > .content > .value {
+    top: 9px; }
+
 .textfield.active > .content > input:focus ~ .value {
     display: none; }
 
@@ -9512,9 +9732,65 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield > .content > .line-shadow {
     position: absolute;
     left: 0; 
-    z-index: 1;
     bottom: 18px; 
-    width: 100%; }
+    width: 100%;
+    z-index: 1; }
+
+.textfield.inline > .content > .value,
+.textfield.inline > .content > .line-shadow {
+    left: 50%; 
+    width: 50%; }
+
+.textfield.inline.l20 > .content > .value,
+.textfield.inline.l20 > .content > .line-shadow {
+    left: 20%; 
+    width: 80%; }
+
+.textfield.inline.l30 > .content > .value,
+.textfield.inline.l30 > .content > .line-shadow {
+    left: 30%; 
+    width: 70%; }
+
+.textfield.inline.l40 > .content > .value,
+.textfield.inline.l40 > .content > .line-shadow {
+    left: 40%; 
+    width: 60%; }
+
+.textfield.inline.l60 > .content > .value,
+.textfield.inline.l60 > .content > .line-shadow {
+    left: 60%; 
+    width: 40%; }
+
+.textfield.inline.l70 > .content > .value,
+.textfield.inline.l70 > .content > .line-shadow {
+    left: 70%; 
+    width: 30%; }
+
+.textfield.inline.l80 > .content > .value,
+.textfield.inline.l80 > .content > .line-shadow {
+    left: 80%; 
+    width: 20%; }
+
+.textfield.inline > .content > input.iconaction ~ .value {
+    width: calc(50% - 28px); }
+
+.textfield.inline.l20 > .content > input.iconaction ~ .value {
+    width: calc(80% - 28px); }
+
+.textfield.inline.l30 > .content > input.iconaction ~ .value {
+    width: calc(70% - 28px); }
+
+.textfield.inline.l40 > .content > input.iconaction ~ .value {
+    width: calc(60% - 28px); }
+
+.textfield.inline.l60 > .content > input.iconaction ~ .value {
+    width: calc(40% - 28px); }
+
+.textfield.inline.l70 > .content > input.iconaction ~ .value {
+    width: calc(30% - 28px); }
+
+.textfield.inline.l80 > .content > input.iconaction ~ .value {
+    width: calc(20% - 28px); }
 
 .textfield > .content > .line-shadow-active {
     position: absolute;
@@ -9526,11 +9802,74 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
        -moz-transform: translateX(-50%);
             transform: translateX(-50%); }
 
+.textfield.inline > .content > .line-shadow-active {
+    left: 75%; }
+
+.textfield.inline.l20 > .content > .line-shadow-active {
+    left: 60%; }
+
+.textfield.inline.l30 > .content > .line-shadow-active {
+    left: 65%; }
+
+.textfield.inline.l40 > .content > .line-shadow-active {
+    left: 70%; }
+
+.textfield.inline.l60 > .content > .line-shadow-active {
+    left: 80%; }
+
+.textfield.inline.l70 > .content > .line-shadow-active {
+    left: 85%; }
+
+.textfield.inline.l80 > .content > .line-shadow-active {
+    left: 90%; }
+
 .textfield.active > .content > input:focus ~ .line-shadow-active {
     width: 100%; 
     -webkit-animation: borderTextfield 200ms var(--sharp-curve);
        -moz-animation: borderTextfield 200ms var(--sharp-curve);
             animation: borderTextfield 200ms var(--sharp-curve); }
+
+.textfield.inline.active > .content > input:focus ~ .line-shadow-active {
+    width: 50%; 
+    -webkit-animation: borderTextfieldInline 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline 200ms var(--sharp-curve);
+            animation: borderTextfieldInline 200ms var(--sharp-curve); }
+
+.textfield.inline.l20.active > .content > input:focus ~ .line-shadow-active {
+    width: 80%; 
+    -webkit-animation: borderTextfieldInline20 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline20 200ms var(--sharp-curve);
+            animation: borderTextfieldInline20 200ms var(--sharp-curve); }
+
+.textfield.inline.l30.active > .content > input:focus ~ .line-shadow-active {
+    width: 70%; 
+    -webkit-animation: borderTextfieldInline30 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline30 200ms var(--sharp-curve);
+            animation: borderTextfieldInline30 200ms var(--sharp-curve); }
+
+.textfield.inline.l40.active > .content > input:focus ~ .line-shadow-active {
+    width: 60%; 
+    -webkit-animation: borderTextfieldInline40 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline40 200ms var(--sharp-curve);
+            animation: borderTextfieldInline40 200ms var(--sharp-curve); }
+
+.textfield.inline.l60.active > .content > input:focus ~ .line-shadow-active {
+    width: 40%; 
+    -webkit-animation: borderTextfieldInline60 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline60 200ms var(--sharp-curve);
+            animation: borderTextfieldInline60 200ms var(--sharp-curve); }
+
+.textfield.inline.l70.active > .content > input:focus ~ .line-shadow-active {
+    width: 30%; 
+    -webkit-animation: borderTextfieldInline70 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline70 200ms var(--sharp-curve);
+            animation: borderTextfieldInline70 200ms var(--sharp-curve); }
+
+.textfield.inline.l80.active > .content > input:focus ~ .line-shadow-active {
+    width: 20%; 
+    -webkit-animation: borderTextfieldInline80 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldInline80 200ms var(--sharp-curve);
+            animation: borderTextfieldInline80 200ms var(--sharp-curve); }
 
 .textfield > .content > i.action {
     position: absolute;
@@ -9540,8 +9879,17 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     cursor: pointer; 
     z-index: 2; }
 
+.textfield.inline > .content > i.action {
+    top: 12px; }
+
 .textfield > .content > input:disabled ~ i.action {
     cursor: not-allowed; }
+
+.textfield > .content > .checkbox-control {
+    position: absolute;
+    top: 24px;
+    right: 2px;
+    margin: 0px; }
 
 .textfield > .content > span {
     position: absolute;

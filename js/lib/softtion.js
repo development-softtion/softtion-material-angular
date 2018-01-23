@@ -13,9 +13,10 @@
     } // No se ha cargado jQuery
 })(function (window, jQuery) {
     
-    var Softtion = function () { }; // Clase Softtion
+    var Softtion = function () { },
+        softtion = new Softtion(); // Clase Softtion
     
-    window.softtion = new Softtion(); // Agregando softtion como Global
+    window.softtion = softtion; // Agregando softtion como Global
     
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
@@ -607,6 +608,62 @@
         catch (err) { 
             console.error('Softtion - Uncaught TypeError: ' + err); return null; 
         } // Error encontrado en el número
+    };
+    
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+    Softtion.prototype.deviceIs = {
+        get: function () { return userAgent; }, // DISPOSITIVO
+        
+        // DISPOSITIVOS WINDOWS
+        windowPhone: function () {
+            return softtion.isDefined(userAgent.match(/IEMobile/i));
+        },
+        windowTablet: function () {
+            return this.window() && (!this.windowPhone() &&
+                softtion.isDefined(userAgent.match(/touch/i)));
+        },
+        
+        // DISPOSITIVOS ANDROID
+        androidPhone : function () {
+            return this.android() && softtion.isDefined(userAgent.match(/mobile/i));
+        },
+        androidTablet : function () {
+            return this.android() && !softtion.isDefined(userAgent.match(/mobile/i));
+        },
+        
+        // DISPOSITIVOS IOS
+        iPhone: function () {
+            return softtion.isDefined(userAgent.match(/iPhone/i));
+        },
+        iPad: function () {
+            return softtion.isDefined(userAgent.match(/iPad/i));
+        },
+        iPod: function () {
+            return softtion.isDefined(userAgent.match(/iPod/i));
+        },
+        
+        // SISTEMAS OPERATIVOS
+        window: function () {
+            return softtion.isDefined(userAgent.match(/Window/i));
+        },
+        android: function () {
+            return !this.window() && softtion.isDefined(userAgent.match(/Android/i));
+        },
+        iOS: function () {
+            return this.iPhone() || this.iPad() || this.iPod();
+        },
+        
+        // DISPOSITIVOS
+        tablet: function () {
+            return this.androidTablet() || this.iPad() || this.windowTablet();
+        },
+        mobile: function () {
+            return this.androidPhone() || this.iPhone() || this.iPod() || this.windowPhone();
+        },
+        pc: function () {
+            return !this.tablet() && !this.mobile();
+        }
     };
     
     // Extendiendo Objetos de JavaScript

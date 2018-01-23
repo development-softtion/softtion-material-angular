@@ -15,638 +15,6 @@
     
     var ngMaterial = angular.module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]),
         TextType = softtion.get(softtion.TEXTCONTROL);
-
-    function insertIconDescription ($scope, $component) {
-        if (softtion.isString($scope.iconDescription)) {
-            var icon = angular.element(
-                softtion.html("i").addClass("icon-description").
-                    setText($scope.iconDescription).create()
-            );
-            
-            icon.insertBefore($component); return icon; // Icono
-        } // Icono descriptivo, se debe insertar el icono antes del input
-    };
-    
-    function insertImgIcon ($scope, $component) {
-        if (softtion.isString($scope.imgIcon)) {
-            var icon = angular.element(
-                softtion.html("img", false).addClass("img-icon").
-                    addAttribute("src", $scope.imgIcon).create()
-            );
-            
-            icon.insertBefore($component); return icon; // Icono
-        } // Icono descriptivo, se debe insertar el icono antes del input
-    };
-                    
-    function propertyStyle (key, value) {
-        document.documentElement.style.setProperty(key, value);
-    };
-    
-    function instanceElement (object, hasClass) {
-        var $element = undefined;
-        
-        if (softtion.isString(object)) {
-            $element = angular.element(object);
-        } else if (softtion.isjQuery(object)) {
-            $element = object;
-        } // Objeto es una instancia de jQuery
-        
-        if (softtion.isDefined(object) && softtion.isString(hasClass)) {
-            if (!$element.hasClass(hasClass)) {
-                $element = undefined;
-            } // Objeto no contiene la clase establecida
-        }
-        
-        return $element; // Retornando elemento
-    };
-    
-    function executeIfExists (object, callback) {
-        if (softtion.isDefined(object)) { callback(); }
-    };
-    
-    function isDateDisabled(date, minDate, maxDate, $fnValidate) {
-        var validateCostum = false;
-        
-        if (softtion.isFunction($fnValidate)) {
-            validateCostum = $fnValidate({$date: date});
-            validateCostum = validateCostum || false;
-        } // Realizando validación Personal
-        
-        return validateCostum || // Personalizada
-            (softtion.isDate(minDate) && 
-            date.getTime() < minDate.getTime()) ||
-           (softtion.isDate(maxDate) &&
-            date.getTime() > maxDate.getTime());
-    };
-    
-    function defineInputComponent($scope, $element, handler) {
-        // Componentes
-        var input = $element.find("input"),
-            regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
-
-        insertIconDescription($scope, input); // Icono descriptivo
-        
-        var callbackFnEvent = function ($event, $function) {
-            $function({ 
-                $event: $event, $value: $scope.valueInput, $model: $scope.value 
-            });
-        };
-
-        $scope.$watch(function () {
-            return $scope.clearModel;
-        }, function (newValue) {
-            if (newValue === true) {
-                $scope.value = undefined; $scope.valueInput = ""; 
-                $scope.clearModel = false;
-            }
-        });
-        
-        $scope.$watch(function () {
-            return $scope.value;
-        }, function (newValue) { 
-            if ($scope.inputStart) {
-                if (softtion.isUndefined(newValue) && !$scope.inputActive) {
-                    return;
-                } // Componente no se encuentra enfocado
-                
-                validateValue(newValue); // Validando model
-
-                if (softtion.isDefined(newValue)) {
-                    $scope.valueInput = ($scope.inputActive) ? newValue : ""; 
-                } // Limpiando texto en input del componente
-            } // Componente ya se ha iniciado (enfocado)
-        });
-        
-        $scope.$watch(function () {
-            return $scope.valueInput;
-        }, function (newValue, oldValue) { 
-            if (newValue !== oldValue) {
-                $scope.inputEvent({$value: newValue});
-            } // Input a cambiado su valor
-        });
-
-        // Atributos de control
-        $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
-
-        $scope.typeInput = handler.defineInput($scope.type || "text");
-        $scope.valueInput = ""; $scope.isIconAction = false;
-        $scope.errorActive = false; $scope.isErrorActive = false; 
-        $scope.inputActive = false; $scope.viewPassword = false; 
-        
-        $scope.inputStart = false; // Input no inicializado
-
-        if (softtion.isString($scope.value)) { 
-            $element.addClass("active"); 
-        } // Se ha definido un valor en el Model
-
-        if ($scope.type === "password") {
-            $scope.isIconAction = true;
-            $scope.iconAction = "visibility";
-        } else {
-            if (softtion.isString($scope.iconAction)) {
-                $scope.isIconAction = true;
-            } // Icono de acción definido por el usuario
-        }
-
-        function defineModel() {
-            if ($scope.uppercase) {
-                $scope.valueInput = $scope.valueInput.toUpperCase();
-            } // Se desea texto en mayuscula
-
-            switch ($scope.type) {
-                case (TextType.MONEY):
-                    $scope.successInput(parseInt($scope.valueInput));
-                break;
-                
-                case (TextType.MATH):
-                    $scope.successInput(parseInt($scope.valueInput));
-                break;
-
-                case (TextType.DECIMAL): 
-                    $scope.successInput(parseFloat($scope.valueInput)); 
-                break;
-
-                case (TextType.EMAIL):
-                    if (regexEmail.test($scope.valueInput)) {
-                        $scope.successInput($scope.valueInput);
-                    } else {
-                        $scope.errorInput("Texto digitado no es email");
-                    } // Error en el correo
-                break;
-
-                default: 
-                    $scope.successInput($scope.valueInput);
-                break;
-            } // Definiendo tipo de dato del modelo
-        };
-
-        function textEmpty() {
-            if ($scope.valueInput === "") { 
-                $scope.value = undefined; 
-            } // Dejando Model indefinido
-
-            if ($scope.required) {
-                $scope.isErrorActive = true;
-                $scope.errorInput("Este campo es requerido"); 
-            } // Texto es requerido
-        };
-
-        function validateTextModel(assign) {
-            var lengthText = $scope.valueInput.length;
-            
-            if (!softtion.isString($scope.valueInput)) {
-                if (assign) { 
-                    textEmpty(); 
-                } // Componente sin texto
-            } else if (lengthText < $scope.minLength) {
-                if (assign || $scope.isErrorActive) {
-                    $scope.isErrorActive = true;
-                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
-                }
-            } else {
-                $scope.isErrorActive = false; $scope.errorActive = false; 
-                $element.removeClass("error");
-
-                if (assign) { defineModel(); } // Estableciendo Model
-            } // Todo esta correcto
-        };
-        
-        function validateValue(newValue) {
-            if (softtion.isUndefined(newValue) && $scope.required) {
-                $scope.isErrorActive = false;
-                $scope.errorInput("Este campo es requerido"); return;
-            } // El campo es requerido en el componente
-            
-            if (softtion.isDefined(newValue)) {
-                var lengthText = newValue.toString().length;
-
-                if (lengthText < $scope.minLength) {
-                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
-                    $scope.isErrorActive = true; return;
-                } // El campo es requiere una cantida de caracteres en el componente
-            } // Ya se encuentra definido el Valor
-            
-            $scope.isErrorActive = false; $scope.errorActive = false; 
-            $element.removeClass("error"); // Valor cumple con los requisitos
-        };
-
-        $scope.successInput = function (value) {
-            $scope.value = value; // Definiendo Model
-        };
-
-        $scope.errorInput = function (message) {
-            $scope.errorActive = true; $element.addClass("error"); 
-            $scope.errorText = message; $scope.value = undefined; 
-        };
-
-        $scope.isActiveLabel = function () {
-            return ($scope.inputActive || 
-                softtion.isString($scope.valueInput) || 
-                softtion.isDefined($scope.value));
-        };
-
-        $scope.isCounterAllowed = function () {
-            return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
-        };
-
-        $scope.textCounter = function () {
-            var lengthText = 0; // Cantidad de caracteres
-
-            if ($scope.inputActive) {
-                lengthText = $scope.valueInput.length;
-            } else {
-                lengthText = (softtion.isDefined($scope.value)) ?
-                    lengthText = $scope.value.length :
-                    lengthText = $scope.valueInput.length;
-            } // Componente no se encuentra enfocado
-
-            return lengthText + "/" + $scope.maxLength;
-        };
-
-        $scope.isHaveText = function () {
-            return softtion.isString($scope.valueInput) || softtion.isDefined($scope.value);
-        };
-
-        $scope.clickLabel = function () { 
-            input.focus(); // Enfocando el input
-        };
-
-        $scope.clickInput = function ($event) {
-            callbackFnEvent($event, $scope.clickEvent); // Evento click
-        };
-
-        $scope.clickAction = function ($event) {
-            if ($scope.ngDisabled) {
-                return;
-            } // Componente esta desactivado
-
-            if ($scope.type === "password") {
-                $scope.viewPassword = !$scope.viewPassword; // Definiendo visibilidad
-
-                $scope.typeInput = $scope.viewPassword ? "text" : "password";
-                $scope.iconAction = $scope.viewPassword ? "visibility_off" : "visibility";
-            } else {
-                callbackFnEvent($event, $scope.iconEvent); // Evento icon
-            }
-        };
-
-        $scope.focusInput = function ($event) {
-            if (softtion.isDefined($scope.value)) {
-                $scope.valueInput = $scope.value.toString();
-            } // Cambiando valor del texto en el Input
-
-            $element.addClass("active"); $scope.inputActive = true; 
-            $scope.inputStart = true; // Iniciando componente
-
-            callbackFnEvent($event, $scope.focusEvent); // Evento focus
-        };
-
-        $scope.blurInput = function ($event) {
-            validateTextModel(true); $scope.inputActive = false;
-            $element.removeClass("active");
-
-            callbackFnEvent($event, $scope.blurEvent); // Evento blur
-        };
-
-        $scope.keypressInput = function ($event) {
-            // Desactivando teclado
-            if ($scope.keyDisabled) { $event.preventDefault(); } 
-
-            var validate = softtion.validateCharacter({
-                keyCode: $event.keyCode, 
-                type: $scope.type, 
-                inputValue: $scope.valueInput
-            });
-
-            if (!validate) {
-                $event.preventDefault();
-            } // Cancelando el evento
-
-            if (!isNaN($scope.maxLength) && 
-                 $scope.valueInput.length >= $scope.maxLength) {
-                    $event.preventDefault();
-            } // Se definío numero correctamente
-
-            if ($event.keyCode === 13) {
-                callbackFnEvent($event, $scope.enterEvent);
-            } else {
-                callbackFnEvent($event, $scope.keypressEvent);
-            } // No se presiono tecla 'Enter' en el input
-        };
-
-        $scope.keyupInput = function ($event) {
-            // Desactivando teclado
-            if ($scope.keyDisabled) { return; } 
-
-            validateTextModel(false); // Validando campo
-
-            callbackFnEvent($event, $scope.keyupEvent);
-        };
-
-        $scope.getValueModel = function () {
-            var value = (softtion.isDefined($scope.value)) ? 
-                $scope.value : $scope.valueInput;
-                
-            if (($scope.type === "password") && !$scope.viewPassword) {
-                var length = value.length; value = "";
-
-                for (var i = 0; i < length; i++) { 
-                    value += String.fromCharCode(8226); 
-                } // Cargando el caracter password '•'
-            } else if (softtion.isDefined(value)) {
-                var json = { $model: value, $value: String(value) },
-                    valueTemp = $scope.formatValue(json);
-                
-                if (softtion.isDefined(valueTemp)) {
-                    value = valueTemp;
-                } // Se definio valor desde otro contexto
-            } // Se establecio formato para el componente de texto
-
-            return value; // Retornando el valor a mostrar
-        };
-    };
-    
-    function defineAreaComponent($scope, $element) {
-        // Componentes
-        var hidden = $element.find(".textarea-hidden"),
-            area = $element.find("textarea");
-
-        insertIconDescription($scope, area); // Icono descriptivo
-        
-        hidden.resize(function () {
-            area.css("height", hidden.height() + "px");
-        });
-
-        var callbackFnEvent = function ($event, $function) {
-            $function({ $event: $event, $value: $scope.valueArea });
-        };
-
-        $scope.$watch(function () {
-            return $scope.clearModel;
-        }, function (newValue) {
-            if (newValue === true) {
-                $scope.valueHidden = ""; $scope.value = undefined; 
-                $scope.valueArea = ""; $scope.clearModel = false;
-            }
-        });
-        
-        $scope.$watch(function () {
-            return $scope.value;
-        }, function (newValue) { 
-            if ($scope.areaStart) {
-                if (softtion.isUndefined(newValue) && !$scope.areaActive) {
-                    return;
-                } // Componente no se encuentra enfocado
-                
-                validateValue(newValue); // Validando model
-
-                if (softtion.isDefined(newValue)) {
-                    $scope.valueArea = ($scope.areaActive) ? newValue : ""; 
-                } // Limpiando texto en input del componente
-            } // Componente iniciado
-        });
-        
-        $scope.$watch(function () {
-            return $scope.valueArea;
-        }, function (newValue, oldValue) { 
-            if (newValue !== oldValue) {
-                $scope.areaEvent({$value: newValue});
-            } // Input a cambiado su valor
-        });
-
-        // Atributos de control
-        $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
-
-        $scope.valueArea = ""; $scope.valueReal = false;
-        $scope.areaActive = false; $scope.valueHidden = "";
-        $scope.areaStart = false; $scope.heightEnd = 0;
-        
-        $scope.pressEnter = false; $scope.countEnter = 0;
-
-        if (softtion.isString($scope.value)) { 
-            $element.addClass("active"); 
-        } // Se ha definido un valor en el Model
-
-        function defineModel() {
-            if ($scope.uppercase) {
-                $scope.valueArea = $scope.valueArea.toUpperCase();
-            } // Se desea el texto en mayusculas
-
-            $scope.value = $scope.valueArea; // Definiendo Model
-        };
-
-        function textEmpty() {
-            if ($scope.valueArea === "") { 
-                $scope.value = undefined; 
-            } // Estableciendo Model indefinido
-
-            if ($scope.required) {
-                $scope.isErrorActive = true;
-                $scope.errorArea("Este campo es requerido");
-            } // Texto es requerido
-        };
-
-        function validateTextModel(assign) {
-            var lengthText = $scope.valueArea.length;
-
-            if (!softtion.isString($scope.valueArea)) {
-                if (assign) {
-                    textEmpty();
-                } // No hay texto
-            } else if (lengthText < $scope.minLength) {
-                if (assign || $scope.isErrorActive) {
-                    $scope.isErrorActive = true;
-                    $scope.errorArea("Este campo requiere minimo " + $scope.minLength + " caracteres");
-                }
-            } else { 
-                $scope.isErrorActive = false; $scope.errorActive = false; 
-                $element.removeClass("error");
-
-                if (assign) { defineModel(); } // Estableciendo Model
-            } // Todo esta correcto
-        };
-        
-        function validateValue(newValue) {
-            if (softtion.isUndefined(newValue) && $scope.required) {
-                $scope.isErrorActive = false;
-                $scope.errorInput("Este campo es requerido"); return;
-            } // El campo es requerido en el componente
-            
-            if (softtion.isDefined(newValue)) {
-                var lengthText = newValue.toString().length;
-
-                if (lengthText < $scope.minLength) {
-                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
-                    $scope.isErrorActive = true; return;
-                } // El campo es requiere una cantida de caracteres en el componente
-            } // Ya se encuentra definido el Valor
-            
-            $scope.isErrorActive = false; $scope.errorActive = false; 
-            $element.removeClass("error"); // Valor cumple con los requisitos
-        };
-
-        $scope.errorArea = function (message) {
-            $scope.errorActive = true; $element.addClass("error"); 
-            $scope.errorText = message; $scope.value = undefined; 
-        };
-
-        $scope.heightStyle = function () {
-            $scope.valueHidden = ($scope.valueReal) ? 
-                $scope.valueArea : $scope.value;
-                
-            var heightEnter = $scope.countEnter * 18,
-                heightArea = 0; // Alto del area
-            
-            if (hidden.height() > 0) {
-                $scope.heightEnd = hidden.height();
-                heightArea = hidden.height();
-            } else {
-                heightArea = $scope.heightEnd;
-            }
-                
-            return ($scope.pressEnter) ?
-                "height: " + (heightArea + heightEnter) + "px;" :
-                "height: " + heightArea + "px;";
-        };
-
-        $scope.isActiveLabel = function () {
-            return ($scope.areaActive || softtion.isString($scope.valueArea)
-                || softtion.isDefined($scope.value));
-        };
-
-        $scope.isCounterAllowed = function () {
-            return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
-        };
-
-        $scope.textCounter = function () {
-            var lengthText = 0; // Cantidad de caracteres
-
-            if ($scope.areaActive) {
-                lengthText = $scope.valueArea.length;
-            } else {
-                lengthText = (softtion.isDefined($scope.value)) ?
-                    lengthText = $scope.value.length :
-                    lengthText = $scope.valueArea.length;
-            } // Componente no se encuentra enfocado
-
-            return lengthText + "/" + $scope.maxLength;
-        };
-
-        $scope.isHaveText = function () {
-            return softtion.isString($scope.valueArea) || softtion.isDefined($scope.value);
-        };
-
-        $scope.clickLabel = function () {
-            if (!$scope.ngReadonly) {
-                area.focus();
-            } // Componente sin restricciones
-        };
-
-        $scope.clickArea = function ($event) {
-            if (!$scope.ngReadonly) {
-                $event.preventDefault();
-            } // Componente solo lectura
-            
-            callbackFnEvent($event, $scope.clickEvent);
-        };
-
-        $scope.focusArea = function ($event) {            
-            if (softtion.isDefined($scope.value)) {
-                $scope.valueArea = $scope.value.toString();
-            } // Cambiando valor del texto en el textarea
-
-            $scope.areaActive = true; $scope.valueReal = true; 
-            $element.addClass("active"); $scope.areaStart = true;
-
-            callbackFnEvent($event, $scope.focusEvent); // Evento focus
-        };
-
-        $scope.blurArea = function ($event) {
-            validateTextModel(true); $element.removeClass("active");
-
-            $scope.valueReal = false; $scope.areaActive = false; 
-            $scope.pressEnter = false; $scope.countEnter = 0;
-
-            callbackFnEvent($event, $scope.blurEvent); // Evento blur
-
-            if (softtion.isDefined($scope.value)) {
-                $scope.valueArea = ""; 
-            } // Limpiando texto en textarea del componente
-        };
-
-        $scope.keypressArea = function ($event) {
-            // Desactivando teclado
-            if ($scope.keyDisabled) { $event.preventDefault(); } 
-
-            var validate = softtion.validateCharacter({
-                keyCode: $event.keyCode, 
-                type: $scope.type, 
-                inputValue: $scope.valueArea
-            });
-
-            if (!validate) { 
-                $event.preventDefault(); 
-            } // Cancelando el evento
-
-            if (!isNaN($scope.maxLength) &&
-                 $scope.valueArea.length >= $scope.maxLength) {
-                    $event.preventDefault();
-            } // Se definío numero correctamente
-            
-            $scope.pressEnter = false; // No se ha presionado enter
-
-            if ($event.keyCode === 13) {
-                var length = $scope.valueArea.length,
-                    cursorPosition = area.getCursorPosition();
-                
-                if (cursorPosition === 0) {
-                    $event.preventDefault();
-                } // Esta posicionado al comienzo del texto
-                
-                if (length <= cursorPosition) {
-                    $scope.pressEnter = true; $scope.countEnter++;
-                } // No se encuentra al final de Elemento
-            
-                callbackFnEvent($event, $scope.enterEvent);
-            } else {
-                $scope.countEnter = 0; // Se reinicia el contador
-                callbackFnEvent($event, $scope.keypressEvent); 
-            } // Hay un cambio en el valor
-        };
-
-        $scope.keyupArea = function ($event) {
-            // Desactivando teclado
-            if ($scope.keyDisabled) { return; } 
-
-            validateTextModel(false); // Validando campo
-            
-            callbackFnEvent($event, $scope.keyupEvent);
-        };
-
-        $scope.getValueModel = function () {
-            return (softtion.isDefined($scope.value)) ? $scope.value : $scope.valueArea;
-        };
-    };
-    
-    ngMaterial.filter("filterDictionary", filterDictionary);
-    
-    function filterDictionary() {
-        return function (array, filter) {
-            var result = []; // Lista de array a generar
-            
-            if (!softtion.isString(filter)) {
-                return array;
-            } // No ha digitado filtro
-                               
-            angular.forEach(array, function (item) {
-                if (~item.toLowerCase().indexOf(filter)) { 
-                    result.push(item); 
-                } // Se encontro coincidencia, se agregara opción
-            });
-            
-            return result; // Retornando array filtrado
-        };
-    }
     
     var MANAGER_DATETIME = {
         MONTHS: [
@@ -753,57 +121,52 @@
                 route: "softtion/template/audio.html",
                 name: "audio",
                 html: function () {
-                    var audio = softtion.html("audio").
-                        addAttribute("preload", "auto");
-                    
                     var content = softtion.html("div").addClass("content");
                     
                     content.addChildren(
-                            softtion.html("button").
-                                addClass(["action", "player"]).
-                                addAttribute("ng-click", "play()").
-                                addAttribute("ng-disabled", "errorAudio").
-                                addChildren(
-                                    softtion.html("i").
-                                        setText("{{getIconPlay()}}")
-                                )
-                        ).addChildren(
-                            softtion.html("button").
-                                addClass(["action", "stopper"]).
-                                addAttribute("ng-click", "stop()").
-                                addAttribute("ng-disabled", "errorAudio").
-                                addChildren(
-                                    softtion.html("i").setText("stop")
-                                )
-                        ).addChildren(
-                            softtion.html("div").addClass("detail").
-                                addChildren(
-                                    softtion.html("div").
-                                        addClass(["progress-bar", "show"])
-                                ).addChildren(
-                                    softtion.html("label").addClass("name").
-                                        setText("{{name}}")
-                                ).addChildren(
-                                    softtion.html("label").addClass("current-time").
-                                        setText("{{getCurrentTime()}}")
-                                ).addChildren(
-                                    softtion.html("label").addClass("duration").
-                                        setText("{{getDuration()}}")
-                                )
-                        ).addChildren(
-                            softtion.html("button").
-                                addClass(["action", "muted"]).
-                                addAttribute("ng-click", "muted()").
-                                addAttribute("ng-disabled", "errorAudio").
-                                addChildren(
-                                    softtion.html("i").
-                                        setText("{{getIconMute()}}")
-                                )
-                        );
+                        softtion.html("button").addClass(["action", "player"]).
+                            addAttribute("ng-click", "play()").
+                            addAttribute("ng-disabled", "errorAudio").
+                            addChildren(
+                                softtion.html("i").setText("{{getIconPlay()}}")
+                            )
+                    ).addChildren(
+                        softtion.html("button").addClass(["action", "stopper"]).
+                            addAttribute("ng-click", "stop()").
+                            addAttribute("ng-disabled", "errorAudio").
+                            addChildren(
+                                softtion.html("i").setText("stop")
+                            )
+                    ).addChildren(
+                        softtion.html("div").addClass("detail").
+                            addChildren(
+                                softtion.html("div").addClass("progress-audio").
+                                    addChildren(
+                                        softtion.html("div").addClass("bar").
+                                            addAttribute("ng-class", "{stripe: isLoading}").
+                                            addAttribute("ng-style", "{width: widthProgress}")
+                                    )
+                            ).addChildren(
+                                softtion.html("label").addClass("name").setText("{{name}}")
+                            ).addChildren(
+                                softtion.html("label").addClass("current-time").
+                                    setText("{{getCurrentTime()}}")
+                            ).addChildren(
+                                softtion.html("label").addClass("duration").
+                                    setText("{{getDuration()}}")
+                            )
+                    ).addChildren(
+                        softtion.html("button").addClass(["action", "muted"]).
+                            addAttribute("ng-click", "muted()").
+                            addAttribute("ng-disabled", "errorAudio").
+                            addChildren(
+                                softtion.html("i").setText("{{getIconMute()}}")
+                            )
+                    );
                 
-                    return audio + content; // Retornando componente
+                    return content.create(); // Retornando componente
                 },
-                directive: ["$progressBar", function ($progressBar) {
+                directive: function () {
                     return {
                         restrict: "C",
                         templateUrl: Material.components.Audio.route,
@@ -811,17 +174,24 @@
                             ngSrc: "@",
                             name: "@",
                             playAutomatic: "=?",
-                            audioElement: "=?"
+                            restoreAudio: "=?"
                         },
                         link: function ($scope, $element, $attrs) {
-                            var audio = $element.children("audio")[0],
-                                progressBar = $element.find(".progress-bar");
+                            var audio = createInstanceAudio();
+                        
+                            $scope.isLoadAudio = false;
+                            $scope.errorAudio = true;
+                            
+                            $scope.isPlay = false;
+                            $scope.duration = 0;
+                            $scope.currentTime = 0;
                         
                             $scope.$watch(function () {
-                                return $scope.audioElement;
-                            }, function (newValue, oldValue) {
-                                var isAudio = newValue instanceof window.HTMLAudioElement;
-                                $scope.audioElement = (isAudio) ? newValue : oldValue;
+                                return $scope.restoreAudio;
+                            }, function (newValue) {
+                                if (newValue) {
+                                    audio.src = ""; $scope.restoreAudio = false;
+                                } // Se debe restaurar el Audio
                             });
                             
                             $attrs.$observe("ngSrc", function () {
@@ -833,26 +203,66 @@
                                     
                                     if ($scope.playAutomatic) {
                                         audio.src = $scope.ngSrc;
+                                    
+                                        if (!softtion.deviceIs.pc()) {
+                                            audio.play();
+                                        } // Dispositivo no es un PC
                                     } // Reproducción automatica
                                 } else {
                                     audio.src = ""; restorePlay(); $scope.duration = 0;
                                 } // No ha definido correctamente la ruta
                             });
-                        
-                            $scope.isLoadAudio = false;
-                            $scope.errorAudio = true;
                             
-                            $scope.isPlay = false;
-                            $scope.duration = 0;
-                            $scope.currentTime = 0;
-                            $scope.audioElement = audio;
-                            
+                            function createInstanceAudio() {
+                                var audio = new Audio(); // Objeto Audio
+
+                                audio.onloadeddata = function () {
+                                    $scope.$apply(function () {
+                                        $scope.isLoadAudio = true;
+                                        $scope.isLoading = false;
+
+                                        $scope.isPlay = false;
+                                        $scope.duration = audio.duration;
+
+                                        $scope.play(); // Reproduciendo
+                                    });
+                                };
+
+                                audio.onerror = function () {
+                                    $scope.$apply(function () {
+                                        $scope.errorAudio = true; $scope.duration = 0;
+                                        $scope.isPlay = false; $scope.isLoadAudio = false;
+                                    });
+                                };
+
+                                audio.ontimeupdate = function () {
+                                    $scope.$apply(function () {
+                                        $scope.currentTime = audio.currentTime;
+
+                                        if ($scope.currentTime > 0) {
+                                            var percentage = $scope.currentTime * 100;
+                                            percentage = parseInt(percentage / $scope.duration);
+                                            
+                                            $scope.widthProgress = percentage + "%";
+                                        } else {
+                                            $scope.widthProgress = 0 + "%";
+                                        } // La canción se ha detenido completamente
+                                    });
+                                };
+
+                                audio.onended = function () {
+                                    $scope.$apply(function () { restorePlay(true); });
+                                };
+                                
+                                return audio; // Retornando Instancia generada
+                            }
+                                                        
                             function describeTimeAudio(secondsAudio) {
                                 var minutes = parseInt(secondsAudio / 60),
                                     seconds = parseInt(secondsAudio - (minutes * 60));
                             
-                                return softtion.leadingChar(minutes, '0', 2) + 
-                                    ":" + softtion.leadingChar(seconds, '0', 2);
+                                return softtion.leadingChar(minutes, "0", 2) + 
+                                    ":" + softtion.leadingChar(seconds, "0", 2);
                             }
                             
                             function restorePlay(paused) {
@@ -860,54 +270,21 @@
                                     audio.pause();
                                 } // La canción se esta reproducciendo
                                 
-                                $scope.isPlay = false; // Detener reproducción
                                 audio.currentTime = 0; $scope.currentTime = 0;
+                                $scope.isPlay = false; // Detener reproducción
                             }
-                            
-                            audio.onloadeddata = function () {
-                                $scope.$apply(function () {
-                                    $scope.isLoadAudio = true;
-                                    
-                                    $scope.isPlay = false;
-                                    $scope.duration = audio.duration;
-                                    
-                                    $scope.play(); // Reproduciendo
-                                });
-                            };
-                            
-                            audio.onerror = function () {
-                                $scope.$apply(function () {
-                                    $scope.errorAudio = true; $scope.duration = 0;
-                                    $scope.isPlay = false; $scope.isLoadAudio = false;
-                                });
-                            };
-                            
-                            audio.ontimeupdate = function () {
-                                $scope.$apply(function () {
-                                    $scope.currentTime = audio.currentTime;
-                                    
-                                    if ($scope.currentTime > 0) {
-                                        var percentage = $scope.currentTime * 100;
-                                        percentage = parseInt(percentage / $scope.duration);
-                                        
-                                        $progressBar.set(progressBar).setPercentage(percentage);
-                                    } else {
-                                        $progressBar.set(progressBar).setPercentage(0);
-                                    } // La canción se ha detenido completamente
-                                });
-                            };
-                            
-                            audio.onended = function () {
-                                $scope.$apply(function () { restorePlay(true); });
-                            };
                             
                             $scope.play = function () {
                                 if (!$scope.isLoadAudio) {
-                                    audio.src = $scope.ngSrc; return;
+                                    audio.src = $scope.ngSrc; $scope.isLoading = true;
+                                    
+                                    if (!softtion.deviceIs.pc()) {
+                                        audio.play();
+                                    } // Dispositivo no es un PC
+                                } else {
+                                    $scope.isPlay = !$scope.isPlay; // Cambiando estado
+                                    ($scope.isPlay) ? audio.play() : audio.pause();
                                 } // No se ha cargado audio
-                                
-                                $scope.isPlay = !$scope.isPlay; // Cambiando estado
-                                ($scope.isPlay) ? audio.play() : audio.pause();
                             };
                             
                             $scope.stop = function () {
@@ -935,7 +312,7 @@
                             };
                         }
                     };
-                }]
+                }
             },
             
             AutoComplete: {
@@ -2381,7 +1758,7 @@
                                 } // Se detendrá activación del evento
                                 
                                 $scope.checked = !$scope.checked; input.focus();
-                                $scope.clickEvent({$event: $event});
+                                $scope.clickEvent({$event: $event, $checked: $scope.checked});
                                 
                                 if ($scope.stopPropagation) {
                                     $event.stopPropagation();
@@ -5076,165 +4453,6 @@
                 }]
             },
             
-            ItemList: {
-                name: "itemList",
-                slideAction: function (itemList) {
-                    var slideAction = softtion.html("div", true).
-                        addClass("slide-action").tojQuery();
-                    
-                    itemList.append(slideAction); return slideAction;
-                },
-                elementSlideAction: function (slideAction, slideIcon, slideLabel) {
-                    var icon = softtion.html("i").setText(slideIcon).tojQuery();
-
-                    var button = softtion.html("button").setText(slideLabel).
-                        addClass(["confirm-button", "flat"]).tojQuery();
-
-                    slideAction.append(icon); slideAction.append(button); 
-                    
-                    return { icon: icon, button: button }; // Retornando elementos
-                },
-                directive: ["$parse", function ($parse) {
-                    return {
-                        restrict: "C",
-                        compile: function ($element, $attrs) {
-                                // Padre del componente
-                            var parent = $element.parent(), 
-                                    
-                                // Función al completar Slide
-                                fn = $parse($attrs["ngSlide"]), 
-                                slideEnabled = softtion.parseBoolean(
-                                    parent.attr("slide-enabled")
-                                ),
-                                slideFunction = softtion.parseBoolean(
-                                    parent.attr("slide-function")
-                                ),
-                                slideConfirmable = softtion.parseBoolean(
-                                    parent.attr("slide-confirmable")
-                                ),
-                                slideIcon = parent.attr("slide-icon"),
-                                slideLabel = parent.attr("slide-label");
-                                
-                            var fnItemList = Material.components.ItemList;
-                            
-                            return function ($scope, $element) {
-                                if (slideEnabled) {
-                                    $element.addClass("slide"); // Item permite Slide
-                                    
-                                    function slideEvent($element, $event) {
-                                        if (ejecuteEvent) {
-                                            $element.css("height", "0"); // Ocultando elemento
-
-                                            var callback = function () {
-                                                fn($scope, { $element: $element, $event: $event });
-                                            };
-
-                                            $scope.$apply(callback); // Disparando evento
-                                        }
-                                    }
-
-                                    var content = $element.children(".content"),
-                                        slideAction, icon, confirmButton, ejecuteEvent = false,
-                                        initialPosition, finalPosition, slided = 0,
-                                        posInitialX, posFinalX, moveActive = false;
-
-                                    if (!$element.children(".slide-action").exists()) {
-                                        slideAction = fnItemList.slideAction($element);
-                                    } // Insertando contenedor slideAction en el componente
-
-                                    if (slideConfirmable) {
-                                        var elements = fnItemList.elementSlideAction(slideAction, slideIcon, slideLabel);
-
-                                        icon = elements.icon; confirmButton = elements.button;
-
-                                        confirmButton.on("click.confirmButton", function (event) {
-                                            ejecuteEvent = true; slideEvent($element, event); event.stopPropagation();
-                                        });
-
-                                        slideAction.on("click.slideAction", function () {
-                                            content.css({left: "0px"}); $element.css("height", "auto"); 
-                                        });
-                                    } // Insertando elementos en slideAction del componente
-
-                                    function start(event) {
-                                        var typeEvent = event.type; moveActive = true;
-
-                                        initialPosition = content.position(); finalPosition = content.position();
-
-                                        content.transition("none"); slided = 0;
-
-                                        posInitialX = (typeEvent === "touchstart") ?
-                                            event.changedTouches[0].clientX : event.clientX;
-
-                                        slideAction.css("height", content.height() + "px");
-                                        $element.css("height", content.height() + "px");
-                                    } // Función cuando se presiona el componente
-
-                                    function move(event) {
-                                        if (!moveActive) { return; } // No esta activo el evento
-
-                                        var typeEvent = event.type; // Tipo de evento
-
-                                        if (typeEvent === "mouseleave") {
-                                            finish(event); event.stopPropagation(); return false;
-                                        } // Se ha salido del componente
-
-                                        finalPosition = content.position();
-
-                                        posFinalX = (typeEvent === "touchmove") ?
-                                                event.changedTouches[0].clientX : event.clientX;
-
-                                        slided = (slideFunction) ? posFinalX - posInitialX : 
-                                                (posFinalX - posInitialX) / 8;
-
-                                        if (slideConfirmable) {
-                                            icon.css({left: "initial", right: "initial"});
-                                            confirmButton.css({left: "initial", right: "initial"});
-
-                                            var floatElement = (slided > 0) ?
-                                                {alert: "left", button: "right"} :
-                                                {alert: "right", button: "left"};
-
-                                            icon.css(floatElement.alert, "20px"); 
-                                            confirmButton.css(floatElement.button, "20px");
-                                        }
-
-                                        content.css({left: slided + "px", top: initialPosition.top + "px"});
-                                    } // Función cuando se mueve el componente
-
-                                    function finish() {
-                                        moveActive = false; // Fin del arrastre del slide
-
-                                        content.transition("left 0.325s var(--standard-curve)");
-
-                                        var width = content.width() / 2,
-                                            traslation = finalPosition.left - initialPosition.left,
-                                            left = (traslation > 0) ? "100%" : "-100%";
-
-                                        if (slideFunction) {
-                                            if (Math.abs(traslation) >= width) {
-                                                content.css({left: left}); 
-
-                                                if (!slideConfirmable) { ejecuteEvent = true; }
-                                            } else {
-                                                content.css({left: initialPosition.left});
-                                            }
-                                        } else {
-                                            content.css({left: "0px"}); $element.css("height", "auto");
-                                        }
-                                    } // Función cuando se suelta el componente
-
-                                    content.transitionend(function (event) { slideEvent($element, event); });
-
-                                    content.pointermove(move); content.mouseleave(move);
-                                    content.pointerdown(start); content.pointerup(finish);
-                                }
-                            };
-                        }
-                    };
-                }]
-            },
-            
             ProgressBar: {
                 name: "progressBar",
                 directive: ["$progressBar", function ($progressBar) {
@@ -5997,257 +5215,6 @@
                 }
             },
             
-            Slider: {
-                route: "softtion/template/slider.html",
-                name: "slider",
-                html: function () {
-                    var content = softtion.html("div").addClass("content").
-                            addAttribute("ng-class", "{iconactive: iconActive(),"
-                                + " deslice: desliceActive, disabled: ngDisabled,"
-                                + " full: isValueFull(), showcase: showcase}").
-                            addAttribute("ng-mouseout", "outContent()").
-                            addAttribute("ng-mouseleave", "outContent()").
-                            addChildren(
-                                softtion.html("i").setText("{{getIconValue()}}").
-                                    addAttribute("ng-click", "clickIcon()")
-                            ).addChildren(
-                                softtion.html("div").addClass("track").
-                                    addAttribute("ng-pointerdown", "trackPointerDown($event)").
-                                    addAttribute("ng-pointerup", "trackPointerUp($event)").
-                                    addAttribute("ng-pointermove", "trackPointerMove($event)").
-                                    addChildren(
-                                        softtion.html("div").addClass("track-off")
-                                    ).addChildren(
-                                        softtion.html("div").addClass("track-on").
-                                        addAttribute("ng-style", "getPercentajeValue()")
-                                    ).addChildren(
-                                        softtion.html("div").addClass("thumb").
-                                            addAttribute("ng-class", "{off: isValueOff(), active: slideActive}").
-                                            addAttribute("ng-style", "getPositionThumb()").
-                                            addChildren(
-                                                softtion.html("span").
-                                                setText("{{value|number:0}}")
-                                            )
-                                    )
-                            ).addChildren(
-                                softtion.html("div").addClass("showcase-input").
-                                addChildren(
-                                    softtion.html("input").
-                                    addAttribute("type", "number").
-                                    addAttribute("ng-model", "valueInput").
-                                    addAttribute("ng-disabled", "ngDisabled").
-                                    addAttribute("ng-keyup", "keyUpInput()")
-                                ).addChildren(
-                                    softtion.html("div").addClass("line-shadow")
-                                )
-                            );
-
-                    var label = softtion.html("label").setText("{{label}}").
-                        addAttribute("ng-class", "{active: isLabelActive()}");
-                    
-                    return label + content; // Componente Slider
-                },
-                directive: ["$timeout", function ($timeout) {
-                    return {
-                        restrict: "C",
-                        templateUrl: Material.components.Slider.route,
-                        scope: {
-                            value: "=ngModel",
-                            ngDisabled: "=?",
-                            label: "@",
-                            icon: "@",
-                            emptyIcon: "@",
-                            fullIcon: "@",
-                            minValue: "=?",
-                            maxValue: "=?",
-                            slided: "=?",
-                            showcase: "=?"
-                        },
-                        link: function ($scope, $element) {
-                                // Componentes
-                            var $content = $element.find(".content"),
-                                $trackOff = $content.find(".track"),
-                                $thumb = $content.find(".thumb"),
-                                $trackOn = $content.find(".track-on");
-                                
-                                // Atributos
-                            var initialPosition, initialX, finalX, range, time;
-                            
-                            $scope.desliceActive = false;
-                            $scope.slideActive = false; 
-                            $scope.maxValue = $scope.maxValue || 100;
-                            $scope.minValue = $scope.minValue || 0;
-                            range = $scope.maxValue - $scope.minValue;
-                            
-                            $scope.value = isNaN($scope.value) ? 
-                                $scope.minValue : $scope.value;
-                                
-                            $scope.valueInput = parseInt($scope.value);
-
-                            $scope.fullIcon = $scope.fullIcon || $scope.icon;
-                            $scope.emptyIcon = $scope.emptyIcon || $scope.icon;
-                            
-                            $scope.$watch(function () {
-                                return $scope.value;
-                            }, function (newValue) {
-                                var between = softtion.isBetween(
-                                    newValue, $scope.minValue, $scope.maxValue
-                                );
-                            
-                                if (!between) {
-                                    if (newValue < $scope.minValue) {
-                                        $scope.value = $scope.minValue;
-                                    } // Valor es menor que el rango
-                                    
-                                    if (newValue > $scope.maxValue) {
-                                        $scope.value = $scope.maxValue;
-                                    } // Valor es mayor que el rango
-                                }
-                                
-                                $scope.valueInput = Math.round($scope.value);
-                            });
-
-                            $scope.iconActive = function () {
-                                return softtion.isString($scope.icon);
-                            };
-                            
-                            $scope.isLabelActive = function () {
-                                return softtion.isString($scope.label); 
-                            };
-
-                            $scope.getIconValue = function () {
-                                if ($scope.value <= $scope.minValue) {
-                                    return $scope.emptyIcon;
-                                } else if ($scope.value >= $scope.maxValue) {
-                                    return $scope.fullIcon;
-                                } else {
-                                    return $scope.icon;
-                                } // Icono por defecto establecido
-                            };
-
-                            $scope.isValueOff = function () {
-                                return ($scope.value <= $scope.minValue);
-                            };
-                            
-                            $scope.isValueFull = function () {
-                                return ($scope.value >= $scope.maxValue);
-                            };
-
-                            $scope.clickIcon = function () {
-                                if ($scope.ngDisabled) { return; } // Inactivo
-                                
-                                $scope.value = $scope.minValue; // Mínimo valor
-                            };
-                            
-                            var startSlide = function ($event) {
-                                var offsetX,
-                                    typeEvent = $event.type || $event.originalEvent.type;
-                                
-                                if (typeEvent === "touchstart") {
-                                    var position = $event.changedTouches[0];
-                                    
-                                    initialX = position.clientX;
-                                    offsetX = position.clientX - $trackOff.offset().left; 
-                                } else {
-                                    offsetX = $event.offsetX; initialX = $event.clientX;
-                                } // No es un evento Touch
-
-                                offsetX = ($element.hasClass("discrete")) ? offsetX + 4 : offsetX;
-                                
-                                return offsetX; // Posición inicial para arrastre
-                            };
-                            
-                            $scope.trackPointerDown = function ($event) {
-                                if ($scope.ngDisabled) { return; } // Inactivo
-                                
-                                var offsetX = startSlide($event),
-                                    $target = angular.element($event.target);
-                                
-                                initialPosition = ($target.is($thumb)) ? 
-                                    $trackOn.width() : offsetX;
-                                    
-                                setValueSlide(initialPosition / $trackOff.width());
-                                
-                                $scope.slideActive = true; // Inicio de arrastre
-                            };
-
-                            var setValueSlide = function (position) {
-                                if (position >= 0 && position <= 1) {
-                                    $scope.value = Math.round(position * range + $scope.minValue);
-                                } // Definiendo valor por Posición
-                            };
-                            
-                            $scope.trackPointerMove = function ($event) {
-                                if (!$scope.slideActive) { return; } // No ha iniciado Slide
-                                
-                                var typeEvent = $event.type || $event.originalEvent.type;
-                                
-                                if (typeEvent === "mouseout" || typeEvent === "mouseleave") {
-                                    $event.stopPropagation();
-                                } // Se ha salido del componente Slide en arrastre
-
-                                finalX = (typeEvent === "touchmove") ? 
-                                    $event.changedTouches[0].clientX : $event.clientX;
-
-                                $scope.desliceActive = true; // Se activo el arrastre
-                                var finalPosition = initialPosition + (finalX - initialX);
-
-                                if ((finalPosition > 0) && (finalPosition < $trackOff.width())) {
-                                    setValueSlide(finalPosition / $trackOff.width());
-                                } else if (finalPosition < 0) {
-                                    setValueSlide(0);
-                                } else if (finalPosition >= $trackOff.width()) {
-                                    (!$element.hasClass("discret")) ?
-                                        setValueSlide(1) :
-                                        setValueSlide(finalPosition / $trackOff.width());
-                                }
-                            };
-                            
-                            $scope.trackPointerUp = function () {
-                                $scope.slideActive = false; $scope.desliceActive = false; 
-                            };
-                            
-                            $scope.outContent = function () { 
-                                $scope.slideActive = false; $scope.desliceActive = false; 
-                            };
-
-                            $scope.getPercentajeValue = function () {
-                                $scope.percentage = ($scope.value - $scope.minValue) / range * 100;
-
-                                ($scope.value >= $scope.maxValue) ?
-                                    $element.addClass("full") : $element.removeClass("full");
-
-                                return {width: $scope.percentage + '%'}; // Porcentaje del Valor
-                            };
-
-                            $scope.getPositionThumb = function () {
-                                var percentage = ($element.hasClass("discrete")) ?
-                                    $scope.percentage + "%" : 
-                                    "calc(" + $scope.percentage + "% - 8px)";
-                                
-                                return {left: percentage}; // Posicion del Thumb
-                            };
-                                
-                            var setValueInput = function () {
-                                if (softtion.isUndefined($scope.valueInput)) {
-                                    $scope.valueInput = $scope.value;
-                                } else {
-                                    $scope.value = $scope.valueInput;
-                                } // Se ha definido correctamente valor en Input
-                            };
-                            
-                            $scope.keyUpInput = function () {
-                                if (softtion.isDefined(time)) {
-                                    $timeout.cancel(time);
-                                } // Cancelando función actual
-                                
-                                time = $timeout(setValueInput, 500);
-                            };
-                        }
-                    };
-                }]
-            },
-            
             StepperHorizontal: {
                 name: "stepperHorizontal",
                 directive: ["$softtionMaterial", function ($softtionMaterial) {
@@ -6599,15 +5566,7 @@
                         addChildren(spanError).addChildren(spanCounter);
 
                     return content.create(); // Componente Textfield
-                },        
-                defineInput: function (typeInput) {
-                    switch (typeInput) {
-                        default: return "text";
-                        case (TextType.DECIMAL): return "number";
-                        case (TextType.NUMBER): return "number";
-                        case (TextType.PASSWORD): return "password";
-                    }
-                },        
+                },
                 directive: function () {
                     return {
                         restrict: "C",
@@ -6642,7 +5601,7 @@
                             inputEvent: "&"
                         },
                         link: function ($scope, $element) {
-                            defineInputComponent($scope, $element, Material.components.TextBox);
+                            defineInputComponent($scope, $element);
                         }
                     };
                 }
@@ -6756,8 +5715,9 @@
                         addAttribute("ng-keyup", "keyupInput($event)").
                         addAttribute("ng-readonly", "ngReadonly").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addAttribute("ng-class", "{holderhide: isHaveText(), iconaction: isIconAction}").
-                        addAttribute("ng-trim", "ngTrim").
+                        addAttribute("ng-class", 
+                            "{holderhide: isHaveText(), iconaction: isIconAction || checkboxActive}"
+                        ).addAttribute("ng-trim", "ngTrim").
                         addAttribute("focused-element", "focusedInput").
                         addAttribute("placeholder", "{{placeholder}}");
 
@@ -6772,6 +5732,11 @@
                     var iconAction = softtion.html("i").addClass("action").
                         setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
                         addAttribute("ng-click", "clickAction($event)");
+                
+                    var checkBox = softtion.html("div").addClass("checkbox-control").
+                        addAttribute("ng-if", "checkboxActive").
+                        addAttribute("ng-model", "checkboxModel").
+                        addAttribute("click-event", "clickCheckbox($checked)");
 
                     var label = softtion.html("label").
                         setText("{{label}}").addClass("truncate").
@@ -6792,20 +5757,12 @@
                     
                     content.addChildren(input).addChildren(lineShadow).
                         addChildren(lineActive).addChildren(value).
-                        addChildren(iconAction).addChildren(label).
-                        addChildren(spanHelper).addChildren(spanError).
-                        addChildren(spanCounter);
+                        addChildren(iconAction).addChildren(checkBox).
+                        addChildren(label).addChildren(spanHelper).
+                        addChildren(spanError).addChildren(spanCounter);
 
                     return content.create(); // Componente Textfield
-                },        
-                defineInput: function (typeInput) {
-                    switch (typeInput) {
-                        default: return "text";
-                        case (TextType.DECIMAL): return "number";
-                        case (TextType.NUMBER): return "number";
-                        case (TextType.PASSWORD): return "password";
-                    }
-                },        
+                },
                 directive: function () {
                     return {
                         restrict: "C",
@@ -6829,6 +5786,8 @@
                             keyDisabled: "=?",
                             clearModel: "=?",
                             formatValue: "&",
+                            checkboxModel: "=?ngModelCheckbox",
+                            checkboxActive: "=?",
                             
                             // Eventos
                             clickEvent: "&",
@@ -6841,7 +5800,7 @@
                             inputEvent: "&"
                         },
                         link: function ($scope, $element) {
-                            defineInputComponent($scope, $element, Material.components.TextField);
+                            defineInputComponent($scope, $element);
                         }
                     };
                 }
@@ -6905,14 +5864,6 @@
                 
                     return content.create(); // Componente Textfield Bordered
                 },        
-                defineInput: function (typeInput) {
-                    switch (typeInput) {
-                        default: return "text";
-                        case (TextType.DECIMAL): return "number";
-                        case (TextType.NUMBER): return "number";
-                        case (TextType.PASSWORD): return "password";
-                    }
-                },        
                 directive: function () {
                     return {
                         restrict: "C",
@@ -6948,7 +5899,7 @@
                             inputEvent: "&"
                         },
                         link: function ($scope, $element) {
-                            defineInputComponent($scope, $element, Material.components.TextFieldBordered);
+                            defineInputComponent($scope, $element);
                         }
                     };
                 }
@@ -8855,6 +7806,651 @@
         }
     };
 
+    function insertIconDescription ($scope, $component) {
+        if (softtion.isString($scope.iconDescription)) {
+            var icon = angular.element(
+                softtion.html("i").addClass("icon-description").
+                    setText($scope.iconDescription).create()
+            );
+            
+            icon.insertBefore($component); return icon; // Icono
+        } // Icono descriptivo, se debe insertar el icono antes del input
+    }
+    
+    function insertImgIcon ($scope, $component) {
+        if (softtion.isString($scope.imgIcon)) {
+            var icon = angular.element(
+                softtion.html("img", false).addClass("img-icon").
+                    addAttribute("src", $scope.imgIcon).create()
+            );
+            
+            icon.insertBefore($component); return icon; // Icono
+        } // Icono descriptivo, se debe insertar el icono antes del input
+    }
+                    
+    function propertyStyle (key, value) {
+        document.documentElement.style.setProperty(key, value);
+    };
+    
+    function instanceElement (object, hasClass) {
+        var $element = undefined;
+        
+        if (softtion.isString(object)) {
+            $element = angular.element(object);
+        } else if (softtion.isjQuery(object)) {
+            $element = object;
+        } // Objeto es una instancia de jQuery
+        
+        if (softtion.isDefined(object) && softtion.isString(hasClass)) {
+            if (!$element.hasClass(hasClass)) {
+                $element = undefined;
+            } // Objeto no contiene la clase establecida
+        }
+        
+        return $element; // Retornando elemento
+    }
+    
+    function executeIfExists (object, callback) {
+        if (softtion.isDefined(object)) { callback(); }
+    }
+    
+    function isDateDisabled(date, minDate, maxDate, $fnValidate) {
+        var validateCostum = false;
+        
+        if (softtion.isFunction($fnValidate)) {
+            validateCostum = $fnValidate({$date: date});
+            validateCostum = validateCostum || false;
+        } // Realizando validación Personal
+        
+        return validateCostum || // Personalizada
+            (softtion.isDate(minDate) && 
+            date.getTime() < minDate.getTime()) ||
+           (softtion.isDate(maxDate) &&
+            date.getTime() > maxDate.getTime());
+    }
+    
+    function getTypeInput(typeInput) {
+        switch (typeInput) {
+            case (TextType.DECIMAL): return "number";
+            case (TextType.NUMBER): return "number";
+            case (TextType.PASSWORD): return "password";
+            default: return "text";
+        }
+    }
+    
+    function defineInputComponent($scope, $element) {
+        // Componentes
+        var input = $element.find("input"),
+            regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+
+        insertIconDescription($scope, input); // Icono descriptivo
+        
+        var callbackFnEvent = function ($event, $function) {
+            $function({ 
+                $event: $event, $value: $scope.valueInput, $model: $scope.value 
+            });
+        };
+
+        $scope.$watch(function () {
+            return $scope.clearModel;
+        }, function (newValue) {
+            if (newValue === true) {
+                $scope.value = undefined; $scope.valueInput = ""; 
+                $scope.clearModel = false;
+            }
+        });
+        
+        $scope.$watch(function () {
+            return $scope.value;
+        }, function (newValue) { 
+            if ($scope.inputStart) {
+                if (softtion.isUndefined(newValue) && !$scope.inputActive) {
+                    return;
+                } // Componente no se encuentra enfocado
+                
+                validateValue(newValue); // Validando model
+
+                if (softtion.isDefined(newValue)) {
+                    $scope.valueInput = ($scope.inputActive) ? newValue : ""; 
+                } // Limpiando texto en input del componente
+            } // Componente ya se ha iniciado (enfocado)
+        });
+        
+        $scope.$watch(function () {
+            return $scope.valueInput;
+        }, function (newValue, oldValue) { 
+            if (newValue !== oldValue) {
+                $scope.inputEvent({$value: newValue});
+            } // Input a cambiado su valor
+        });
+
+        // Atributos de control
+        $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
+
+        $scope.typeInput = getTypeInput($scope.type || "text");
+        $scope.valueInput = ""; $scope.isIconAction = false;
+        $scope.errorActive = false; $scope.isErrorActive = false; 
+        $scope.inputActive = false; $scope.viewPassword = false; 
+        
+        $scope.inputStart = false; // Input no inicializado
+
+        if (softtion.isString($scope.value)) { 
+            $element.addClass("active"); 
+        } // Se ha definido un valor en el Model
+
+        if ($scope.type === "password") {
+            $scope.isIconAction = true;
+            $scope.iconAction = "visibility";
+        } else {
+            if (softtion.isString($scope.iconAction)) {
+                $scope.isIconAction = true;
+            } // Icono de acción definido por el usuario
+        }
+
+        function defineModel() {
+            if ($scope.uppercase) {
+                $scope.valueInput = $scope.valueInput.toUpperCase();
+            } // Se desea texto en mayuscula
+
+            switch ($scope.type) {
+                case (TextType.MONEY):
+                    $scope.successInput(parseInt($scope.valueInput));
+                break;
+                
+                case (TextType.MATH):
+                    $scope.successInput(parseInt($scope.valueInput));
+                break;
+
+                case (TextType.DECIMAL): 
+                    $scope.successInput(parseFloat($scope.valueInput)); 
+                break;
+
+                case (TextType.EMAIL):
+                    if (regexEmail.test($scope.valueInput)) {
+                        $scope.successInput($scope.valueInput);
+                    } else {
+                        $scope.errorInput("Texto digitado no es email");
+                    } // Error en el correo
+                break;
+
+                default: 
+                    $scope.successInput($scope.valueInput);
+                break;
+            } // Definiendo tipo de dato del modelo
+        };
+
+        function textEmpty() {
+            if ($scope.valueInput === "") { 
+                $scope.value = undefined; 
+            } // Dejando Model indefinido
+
+            if ($scope.required) {
+                $scope.isErrorActive = true;
+                $scope.errorInput("Este campo es requerido"); 
+            } // Texto es requerido
+        };
+
+        function validateTextModel(assign) {
+            var lengthText = $scope.valueInput.length;
+            
+            if (!softtion.isString($scope.valueInput)) {
+                if (assign) { 
+                    textEmpty(); 
+                } // Componente sin texto
+            } else if (lengthText < $scope.minLength) {
+                if (assign || $scope.isErrorActive) {
+                    $scope.isErrorActive = true;
+                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres");
+                }
+            } else {
+                $scope.isErrorActive = false; $scope.errorActive = false; 
+                $element.removeClass("error");
+
+                if (assign) { defineModel(); } // Estableciendo Model
+            } // Todo esta correcto
+        };
+        
+        function validateValue(newValue) {
+            if (softtion.isUndefined(newValue) && $scope.required) {
+                $scope.isErrorActive = false;
+                $scope.errorInput("Este campo es requerido"); return;
+            } // El campo es requerido en el componente
+            
+            if (softtion.isDefined(newValue)) {
+                var lengthText = newValue.toString().length;
+
+                if (lengthText < $scope.minLength) {
+                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
+                    $scope.isErrorActive = true; return;
+                } // El campo es requiere una cantida de caracteres en el componente
+            } // Ya se encuentra definido el Valor
+            
+            $scope.isErrorActive = false; $scope.errorActive = false; 
+            $element.removeClass("error"); // Valor cumple con los requisitos
+        };
+
+        $scope.successInput = function (value) {
+            $scope.value = value; // Definiendo Model
+        };
+
+        $scope.errorInput = function (message) {
+            $scope.errorActive = true; $element.addClass("error"); 
+            $scope.errorText = message; $scope.value = undefined; 
+        };
+
+        $scope.isActiveLabel = function () {
+            return ($scope.inputActive || 
+                softtion.isString($scope.valueInput) || 
+                softtion.isDefined($scope.value));
+        };
+
+        $scope.isCounterAllowed = function () {
+            return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
+        };
+
+        $scope.textCounter = function () {
+            var lengthText = 0; // Cantidad de caracteres
+
+            if ($scope.inputActive) {
+                lengthText = $scope.valueInput.length;
+            } else {
+                lengthText = (softtion.isDefined($scope.value)) ?
+                    lengthText = $scope.value.length :
+                    lengthText = $scope.valueInput.length;
+            } // Componente no se encuentra enfocado
+
+            return lengthText + "/" + $scope.maxLength;
+        };
+
+        $scope.isHaveText = function () {
+            return softtion.isString($scope.valueInput) || softtion.isDefined($scope.value);
+        };
+
+        $scope.clickLabel = function () { 
+            input.focus(); // Enfocando el input
+        };
+
+        $scope.clickInput = function ($event) {
+            callbackFnEvent($event, $scope.clickEvent); // Evento click
+        };
+        
+        $scope.clickCheckbox = function ($checked) {
+            if ($checked) { input.focus(); }
+            
+            $scope.checkboxModel = $checked;
+        };
+
+        $scope.clickAction = function ($event) {
+            if ($scope.ngDisabled) {
+                return;
+            } // Componente esta desactivado
+
+            if ($scope.type === "password") {
+                $scope.viewPassword = !$scope.viewPassword; // Definiendo visibilidad
+
+                $scope.typeInput = $scope.viewPassword ? "text" : "password";
+                $scope.iconAction = $scope.viewPassword ? "visibility_off" : "visibility";
+            } else {
+                callbackFnEvent($event, $scope.iconEvent); // Evento icon
+            }
+        };
+
+        $scope.focusInput = function ($event) {
+            if (softtion.isDefined($scope.value)) {
+                $scope.valueInput = $scope.value.toString();
+            } // Cambiando valor del texto en el Input
+
+            $element.addClass("active"); $scope.inputActive = true; 
+            $scope.inputStart = true; // Iniciando componente
+
+            callbackFnEvent($event, $scope.focusEvent); // Evento focus
+        };
+
+        $scope.blurInput = function ($event) {
+            validateTextModel(true); $scope.inputActive = false;
+            $element.removeClass("active");
+
+            callbackFnEvent($event, $scope.blurEvent); // Evento blur
+        };
+
+        $scope.keypressInput = function ($event) {
+            // Desactivando teclado
+            if ($scope.keyDisabled) { $event.preventDefault(); } 
+
+            var validate = softtion.validateCharacter({
+                keyCode: $event.keyCode, 
+                type: $scope.type, 
+                inputValue: $scope.valueInput
+            });
+
+            if (!validate) {
+                $event.preventDefault();
+            } // Cancelando el evento
+
+            if (!isNaN($scope.maxLength) && 
+                 $scope.valueInput.length >= $scope.maxLength) {
+                    $event.preventDefault();
+            } // Se definío numero correctamente
+
+            if ($event.keyCode === 13) {
+                callbackFnEvent($event, $scope.enterEvent);
+            } else {
+                callbackFnEvent($event, $scope.keypressEvent);
+            } // No se presiono tecla 'Enter' en el input
+        };
+
+        $scope.keyupInput = function ($event) {
+            // Desactivando teclado
+            if ($scope.keyDisabled) { return; } 
+
+            validateTextModel(false); // Validando campo
+
+            callbackFnEvent($event, $scope.keyupEvent);
+        };
+
+        $scope.getValueModel = function () {
+            var value = (softtion.isDefined($scope.value)) ? 
+                $scope.value : $scope.valueInput;
+                
+            if (($scope.type === "password") && !$scope.viewPassword) {
+                var length = value.length; value = "";
+
+                for (var i = 0; i < length; i++) { 
+                    value += String.fromCharCode(8226); 
+                } // Cargando el caracter password '•'
+            } else if (softtion.isDefined(value)) {
+                var json = { $model: value, $value: String(value) },
+                    valueTemp = $scope.formatValue(json);
+                
+                if (softtion.isDefined(valueTemp)) {
+                    value = valueTemp;
+                } // Se definio valor desde otro contexto
+            } // Se establecio formato para el componente de texto
+
+            return value; // Retornando el valor a mostrar
+        };
+    }
+    
+    function defineAreaComponent($scope, $element) {
+        // Componentes
+        var hidden = $element.find(".textarea-hidden"),
+            area = $element.find("textarea");
+
+        insertIconDescription($scope, area); // Icono descriptivo
+        
+        hidden.resize(function () {
+            area.css("height", hidden.height() + "px");
+        });
+
+        var callbackFnEvent = function ($event, $function) {
+            $function({ $event: $event, $value: $scope.valueArea });
+        };
+
+        $scope.$watch(function () {
+            return $scope.clearModel;
+        }, function (newValue) {
+            if (newValue === true) {
+                $scope.valueHidden = ""; $scope.value = undefined; 
+                $scope.valueArea = ""; $scope.clearModel = false;
+            }
+        });
+        
+        $scope.$watch(function () {
+            return $scope.value;
+        }, function (newValue) { 
+            if ($scope.areaStart) {
+                if (softtion.isUndefined(newValue) && !$scope.areaActive) {
+                    return;
+                } // Componente no se encuentra enfocado
+                
+                validateValue(newValue); // Validando model
+
+                if (softtion.isDefined(newValue)) {
+                    $scope.valueArea = ($scope.areaActive) ? newValue : ""; 
+                } // Limpiando texto en input del componente
+            } // Componente iniciado
+        });
+        
+        $scope.$watch(function () {
+            return $scope.valueArea;
+        }, function (newValue, oldValue) { 
+            if (newValue !== oldValue) {
+                $scope.areaEvent({$value: newValue});
+            } // Input a cambiado su valor
+        });
+
+        // Atributos de control
+        $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
+
+        $scope.valueArea = ""; $scope.valueReal = false;
+        $scope.areaActive = false; $scope.valueHidden = "";
+        $scope.areaStart = false; $scope.heightEnd = 0;
+        
+        $scope.pressEnter = false; $scope.countEnter = 0;
+
+        if (softtion.isString($scope.value)) { 
+            $element.addClass("active"); 
+        } // Se ha definido un valor en el Model
+
+        function defineModel() {
+            if ($scope.uppercase) {
+                $scope.valueArea = $scope.valueArea.toUpperCase();
+            } // Se desea el texto en mayusculas
+
+            $scope.value = $scope.valueArea; // Definiendo Model
+        };
+
+        function textEmpty() {
+            if ($scope.valueArea === "") { 
+                $scope.value = undefined; 
+            } // Estableciendo Model indefinido
+
+            if ($scope.required) {
+                $scope.isErrorActive = true;
+                $scope.errorArea("Este campo es requerido");
+            } // Texto es requerido
+        };
+
+        function validateTextModel(assign) {
+            var lengthText = $scope.valueArea.length;
+
+            if (!softtion.isString($scope.valueArea)) {
+                if (assign) {
+                    textEmpty();
+                } // No hay texto
+            } else if (lengthText < $scope.minLength) {
+                if (assign || $scope.isErrorActive) {
+                    $scope.isErrorActive = true;
+                    $scope.errorArea("Este campo requiere minimo " + $scope.minLength + " caracteres");
+                }
+            } else { 
+                $scope.isErrorActive = false; $scope.errorActive = false; 
+                $element.removeClass("error");
+
+                if (assign) { defineModel(); } // Estableciendo Model
+            } // Todo esta correcto
+        };
+        
+        function validateValue(newValue) {
+            if (softtion.isUndefined(newValue) && $scope.required) {
+                $scope.isErrorActive = false;
+                $scope.errorInput("Este campo es requerido"); return;
+            } // El campo es requerido en el componente
+            
+            if (softtion.isDefined(newValue)) {
+                var lengthText = newValue.toString().length;
+
+                if (lengthText < $scope.minLength) {
+                    $scope.errorInput("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
+                    $scope.isErrorActive = true; return;
+                } // El campo es requiere una cantida de caracteres en el componente
+            } // Ya se encuentra definido el Valor
+            
+            $scope.isErrorActive = false; $scope.errorActive = false; 
+            $element.removeClass("error"); // Valor cumple con los requisitos
+        };
+
+        $scope.errorArea = function (message) {
+            $scope.errorActive = true; $element.addClass("error"); 
+            $scope.errorText = message; $scope.value = undefined; 
+        };
+
+        $scope.heightStyle = function () {
+            $scope.valueHidden = ($scope.valueReal) ? 
+                $scope.valueArea : $scope.value;
+                
+            var heightEnter = $scope.countEnter * 18,
+                heightArea = 0; // Alto del area
+            
+            if (hidden.height() > 0) {
+                $scope.heightEnd = hidden.height();
+                heightArea = hidden.height();
+            } else {
+                heightArea = $scope.heightEnd;
+            }
+                
+            return ($scope.pressEnter) ?
+                "height: " + (heightArea + heightEnter) + "px;" :
+                "height: " + heightArea + "px;";
+        };
+
+        $scope.isActiveLabel = function () {
+            return ($scope.areaActive || softtion.isString($scope.valueArea)
+                || softtion.isDefined($scope.value));
+        };
+
+        $scope.isCounterAllowed = function () {
+            return (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
+        };
+
+        $scope.textCounter = function () {
+            var lengthText = 0; // Cantidad de caracteres
+
+            if ($scope.areaActive) {
+                lengthText = $scope.valueArea.length;
+            } else {
+                lengthText = (softtion.isDefined($scope.value)) ?
+                    lengthText = $scope.value.length :
+                    lengthText = $scope.valueArea.length;
+            } // Componente no se encuentra enfocado
+
+            return lengthText + "/" + $scope.maxLength;
+        };
+
+        $scope.isHaveText = function () {
+            return softtion.isString($scope.valueArea) || softtion.isDefined($scope.value);
+        };
+
+        $scope.clickLabel = function () {
+            if (!$scope.ngReadonly) {
+                area.focus();
+            } // Componente sin restricciones
+        };
+
+        $scope.clickArea = function ($event) {
+            if (!$scope.ngReadonly) {
+                $event.preventDefault();
+            } // Componente solo lectura
+            
+            callbackFnEvent($event, $scope.clickEvent);
+        };
+
+        $scope.focusArea = function ($event) {            
+            if (softtion.isDefined($scope.value)) {
+                $scope.valueArea = $scope.value.toString();
+            } // Cambiando valor del texto en el textarea
+
+            $scope.areaActive = true; $scope.valueReal = true; 
+            $element.addClass("active"); $scope.areaStart = true;
+
+            callbackFnEvent($event, $scope.focusEvent); // Evento focus
+        };
+
+        $scope.blurArea = function ($event) {
+            validateTextModel(true); $element.removeClass("active");
+
+            $scope.valueReal = false; $scope.areaActive = false; 
+            $scope.pressEnter = false; $scope.countEnter = 0;
+
+            callbackFnEvent($event, $scope.blurEvent); // Evento blur
+
+            if (softtion.isDefined($scope.value)) {
+                $scope.valueArea = ""; 
+            } // Limpiando texto en textarea del componente
+        };
+
+        $scope.keypressArea = function ($event) {
+            // Desactivando teclado
+            if ($scope.keyDisabled) { $event.preventDefault(); } 
+
+            var validate = softtion.validateCharacter({
+                keyCode: $event.keyCode, 
+                type: $scope.type, 
+                inputValue: $scope.valueArea
+            });
+
+            if (!validate) { 
+                $event.preventDefault(); 
+            } // Cancelando el evento
+
+            if (!isNaN($scope.maxLength) &&
+                 $scope.valueArea.length >= $scope.maxLength) {
+                    $event.preventDefault();
+            } // Se definío numero correctamente
+            
+            $scope.pressEnter = false; // No se ha presionado enter
+
+            if ($event.keyCode === 13) {
+                var length = $scope.valueArea.length,
+                    cursorPosition = area.getCursorPosition();
+                
+                if (cursorPosition === 0) {
+                    $event.preventDefault();
+                } // Esta posicionado al comienzo del texto
+                
+                if (length <= cursorPosition) {
+                    $scope.pressEnter = true; $scope.countEnter++;
+                } // No se encuentra al final de Elemento
+            
+                callbackFnEvent($event, $scope.enterEvent);
+            } else {
+                $scope.countEnter = 0; // Se reinicia el contador
+                callbackFnEvent($event, $scope.keypressEvent); 
+            } // Hay un cambio en el valor
+        };
+
+        $scope.keyupArea = function ($event) {
+            // Desactivando teclado
+            if ($scope.keyDisabled) { return; } 
+
+            validateTextModel(false); // Validando campo
+            
+            callbackFnEvent($event, $scope.keyupEvent);
+        };
+
+        $scope.getValueModel = function () {
+            return (softtion.isDefined($scope.value)) ? $scope.value : $scope.valueArea;
+        };
+    }
+    
+    function filterDictionary() {
+        return function (array, filter) {
+            var result = []; // Lista de array a generar
+            
+            if (!softtion.isString(filter)) {
+                return array;
+            } // No ha digitado filtro
+                               
+            angular.forEach(array, function (item) {
+                if (~item.toLowerCase().indexOf(filter)) { 
+                    result.push(item); 
+                } // Se encontro coincidencia, se agregara opción
+            });
+            
+            return result; // Retornando array filtrado
+        };
+    }
+
     ngMaterial.constant("$materialColor", {
         background: {
             red: {
@@ -9105,18 +8701,25 @@
         };
     });
     
+    ngMaterial.filter("filterDictionary", filterDictionary);
+    
     // Rutas virtuales de los componentes SofttionMaterial
-    ngMaterial.run(["$templateCache", function ($templateCache) {
-        if (!("ontouchstart" in window)) {
-            angular.element("body").addClass("not-touch");
-        } // No soporta eventos Touch
-        
-        angular.forEach(Material.components, function (component) {
-            if (softtion.isDefined(component["route"])) {
-                $templateCache.put(component.route, component.html());
-            }
-        });
-    }]);
+    ngMaterial.run(["$templateCache", "$appContent",
+        function ($templateCache, $appContent) {
+            if (!("ontouchstart" in window)) {
+                angular.element("body").addClass("not-touch");
+            } // No soporta eventos Touch
+
+            angular.forEach(Material.components, function (component) {
+                if (softtion.isDefined(component["route"])) {
+                    $templateCache.put(component.route, component.html());
+                }
+            });
+
+            $appContent.attr("tabindex", "-1"); // Haciendo enfocable
+            setTimeout(function () { $appContent.focus(); }, 325);
+        }
+    ]);
     
     // Directivas de SofttionMaterial
     angular.forEach(Material.components, function (component) {
