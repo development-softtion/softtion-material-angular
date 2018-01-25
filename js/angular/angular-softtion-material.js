@@ -173,11 +173,11 @@
                         scope: {
                             ngSrc: "@",
                             name: "@",
-                            playAutomatic: "=?",
-                            restoreAudio: "=?"
+                            audio: "=?ngAudio",
+                            playAutomatic: "=?"
                         },
                         link: function ($scope, $element, $attrs) {
-                            var audio = createInstanceAudio();
+                            $scope.audio = createInstanceAudio();
                         
                             $scope.isLoadAudio = false;
                             $scope.errorAudio = true;
@@ -187,11 +187,11 @@
                             $scope.currentTime = 0;
                         
                             $scope.$watch(function () {
-                                return $scope.restoreAudio;
-                            }, function (newValue) {
-                                if (newValue) {
-                                    audio.src = ""; $scope.restoreAudio = false;
-                                } // Se debe restaurar el Audio
+                                return $scope.audio;
+                            }, function (newValue, oldValue) {
+                                if (!(newValue instanceof Audio)) {
+                                    $scope.audio = oldValue;
+                                } // No se admite el cambio de objeto
                             });
                             
                             $attrs.$observe("ngSrc", function () {
@@ -202,14 +202,14 @@
                                     restorePlay(); $scope.duration = 0;
                                     
                                     if ($scope.playAutomatic) {
-                                        audio.src = $scope.ngSrc;
+                                        $scope.audio.src = $scope.ngSrc;
                                     
                                         if (!softtion.deviceIs.pc()) {
-                                            audio.play();
+                                            $scope.audio.play();
                                         } // Dispositivo no es un PC
                                     } // Reproducción automatica
                                 } else {
-                                    audio.src = ""; restorePlay(); $scope.duration = 0;
+                                    $scope.audio.src = ""; restorePlay(); $scope.duration = 0;
                                 } // No ha definido correctamente la ruta
                             });
                             
@@ -267,23 +267,23 @@
                             
                             function restorePlay(paused) {
                                 if ($scope.isPlay && !paused) {
-                                    audio.pause();
+                                    $scope.audio.pause();
                                 } // La canción se esta reproducciendo
                                 
-                                audio.currentTime = 0; $scope.currentTime = 0;
+                                $scope.audio.currentTime = 0; $scope.currentTime = 0;
                                 $scope.isPlay = false; // Detener reproducción
                             }
                             
                             $scope.play = function () {
                                 if (!$scope.isLoadAudio) {
-                                    audio.src = $scope.ngSrc; $scope.isLoading = true;
+                                    $scope.audio.src = $scope.ngSrc; $scope.isLoading = true;
                                     
                                     if (!softtion.deviceIs.pc()) {
-                                        audio.play();
+                                        $scope.audio.play();
                                     } // Dispositivo no es un PC
                                 } else {
                                     $scope.isPlay = !$scope.isPlay; // Cambiando estado
-                                    ($scope.isPlay) ? audio.play() : audio.pause();
+                                    ($scope.isPlay) ? $scope.audio.play() : $scope.audio.pause();
                                 } // No se ha cargado audio
                             };
                             
@@ -292,7 +292,7 @@
                             };
                             
                             $scope.muted = function () {
-                                audio.muted = !audio.muted;
+                                $scope.audio.muted = !$scope.audio.muted;
                             };
                             
                             $scope.getIconPlay = function () {
@@ -300,7 +300,7 @@
                             };
                             
                             $scope.getIconMute = function () {
-                                return (!audio.muted) ? "volume_up" : "volume_off";
+                                return (!$scope.audio.muted) ? "volume_up" : "volume_off";
                             };
                             
                             $scope.getCurrentTime = function () {
@@ -1533,9 +1533,9 @@
                         templateUrl: Material.components.Catalog.route,
                         scope: {
                             gallery: "=",
-                            actions: "=?",
-                            views: "@?",
+                            views: "@",
                             widthViewOne: "@",
+                            actions: "=?",
                             
                             eventAction: "&"
                         },
@@ -1626,24 +1626,18 @@
                             function positionContentNormal() {
                                 var $content = $container.find(".content"),
                                     countViews = getCountViews(),
-                                    min = Math.trunc(countViews / 2),
-                                    countItems = $scope.gallery.length,
-                                    max = countItems - 1 - min;
-                            
-                                if ($scope.views%2 !== 0) { max--; }
+                                    countActive = Math.trunc(countViews / 2),
+                                    widthContent = 0, translate,
+                                    countItems = $scope.gallery.length;
                                 
-                                var widthContent = 0, translate;
+                                if ($content) { widthContent = $content.width(); }
                                 
-                                if ($content) {
-                                    widthContent = $content.width(); }
-                                
-                                if ($scope.index < min) {
+                                if ($scope.index < countActive || countItems <= countViews) {
                                     translate = 0;
-                                } else if ($scope.index > max) {
-                                    translate = ($scope.index > countViews) ?
-                                        widthContent * (max - min + 1) * (-1) : 0;
+                                } else if (($scope.index + countActive) >= countItems) {
+                                    translate = widthContent * (countItems - (countActive * 2) - 1) * (-1);
                                 } else {
-                                    translate = widthContent * (min - $scope.index);
+                                    translate = widthContent * (countActive - $scope.index);
                                 } // Index se encuentra en la Mitad
                                 
                                 return {
@@ -3693,8 +3687,8 @@
                     var audio = softtion.html("div").addClass("audio").
                         addAttribute("ng-src", "{{ngSrc}}").
                         addAttribute("name", "{{name}}").
-                        addAttribute("play-automatic", "playAutomatic").
-                        addAttribute("audio-element", "audioElement");
+                        addAttribute("ng-audio", "ngAudio").
+                        addAttribute("play-automatic", "playAutomatic");
                     
                     var actions = softtion.html("div").addClass("actions").
                         addChildren(
@@ -3735,8 +3729,8 @@
                             file: "=ngModel",
                             ngSrc: "@",
                             name: "@",
+                            ngAudio: "=?",
                             playAutomatic: "=?",
-                            audioElement: "=?",
                             
                             label: "@",
                             ngDisabled: "=?",
@@ -6246,20 +6240,22 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            var background = $attrs.materialBackground;
-                            
-                            if (softtion.isString(background)) {
-                                var properties = background.split(":");
+                            $attrs.$observe("materialBackground", function () {
+                                var background = $attrs.materialBackground;
                                 
-                                if (properties.has(2)) {
-                                    var theme = $materialTheme.get(),
-                                        color = theme[properties[0]][properties[1]];
+                                if (softtion.isString(background)) {
+                                    var properties = background.split(":");
                                 
-                                    if (softtion.isString(color)) {
-                                        $element.css("background-color", color);
-                                    } // Se ha definido color correctamente
+                                    if (properties.has(2)) {
+                                        var theme = $materialTheme.get(),
+                                            color = theme[properties[0]][properties[1]];
+
+                                        if (softtion.isString(color)) {
+                                            $element.css("background-color", color);
+                                        } // Se ha definido color correctamente
+                                    }
                                 }
-                            }
+                            });
                         }
                     };
                 }]
@@ -6271,20 +6267,22 @@
                     return {
                         restrict: "A",
                         link: function ($scope, $element, $attrs) {
-                            var fontColor = $attrs.materialFont;
-                            
-                            if (softtion.isString(fontColor)) {
-                                var properties = fontColor.split(":");
-                                
-                                if (properties.has(2)) {
-                                    var theme = $materialTheme.get(),
-                                        color = theme[properties[0]][properties[1]];
-                                
-                                    if (softtion.isString(color)) {
-                                        $element.css("color", color);
-                                    } // Se ha definido color correctamente
+                            $attrs.$observe("materialFont", function () {
+                                var fontColor = $attrs.materialFont;
+
+                                if (softtion.isString(fontColor)) {
+                                    var properties = fontColor.split(":");
+
+                                    if (properties.has(2)) {
+                                        var theme = $materialTheme.get(),
+                                            color = theme[properties[0]][properties[1]];
+
+                                        if (softtion.isString(color)) {
+                                            $element.css("color", color);
+                                        } // Se ha definido color correctamente
+                                    }
                                 }
-                            }
+                            });
                         }
                     };
                 }]
