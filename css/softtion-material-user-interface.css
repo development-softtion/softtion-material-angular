@@ -2514,12 +2514,8 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transition: box-shadow 120ms 0ms var(--sharp-curve);
             transition: box-shadow 120ms 0ms var(--sharp-curve); }
 
-.card.flat {
-    border-radius: 0px;
-    box-shadow: none;
-    box-sizing: border-box; }
-
-.dialog > .card {
+.card.bordered, .card.flat,
+.dialog > .card, .dialog > .box > .card {
     border-radius: 0px;
     box-shadow: none;
     box-sizing: border-box; }

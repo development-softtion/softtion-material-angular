@@ -636,11 +636,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .card {
     background-color: var(--background-component); }
 
-.card.flat {
+.card.bordered {
     border: 1px solid var(--background-border); }
 
-.dialog > .card {
-    border: none; }
+.dialog > .card, .dialog > .box > .card {
+    border: none !important; }
 
 .card > .rich-media > .content > .actions,
 .card > .rich-media > .content > .primary-title {
@@ -1305,7 +1305,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: rgba(0, 0, 0, 0.87); }
 
 .filechooser-multiple > .action-add > i {
-    color: var(--secondary-font); }
+    color: var(--alternative-secondary-font); }
 
 /** FILECHOOSER PERFIL */
 

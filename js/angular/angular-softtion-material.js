@@ -6328,8 +6328,7 @@
                     var Alert = function () {
                         var self = this; // Objeto Alert
 
-                        $dialog = softtion.html("div").
-                            addClass(["dialog", "alert"]).tojQuery();
+                        $dialog = softtion.html("div").addClass(["dialog", "alert"]).tojQuery();
 
                         $backdrop = softtion.html("div").addClass("backdrop").tojQuery();
 
@@ -6456,8 +6455,6 @@
                     
                     var alertProvider = new Alert();
                     
-                    this.get = function () { return alertProvider; };
-                    
                     var fnProvider = function ($bodyElement, $rootScope) { 
                         $bodyElement.append($dialog); // Dialog
                         $body = $bodyElement; $scope = $rootScope; 
@@ -6466,6 +6463,48 @@
                     };
                     
                     this.$get = ["$body", "$rootScope", fnProvider];
+                    
+                    this.getInstance = function () { return alertProvider; };
+
+                    this.setTitle = function (title) {
+                        return alertProvider.setTitle(title);
+                    };
+
+                    this.setContent = function (content) {
+                        return alertProvider.setContent(content);
+                    };
+
+                    this.setLabelPositive = function (label) {
+                        return alertProvider.setLabelPositive(label);
+                    };
+
+                    this.setLabelNegative = function (label) {
+                        return alertProvider.setLabelNegative(label);
+                    };
+                    
+                    this.isEnabledNegative = function (enabled) {
+                        return alertProvider.isEnabledNegative(enabled);
+                    };
+
+                    this.isEnabledBackdrop = function (enabled) {
+                        return alertProvider.isEnabledBackdrop(enabled);
+                    };
+
+                    this.setFunctionPositive = function (fnPositive) {
+                        return alertProvider.setFunctionPositive(fnPositive);
+                    };
+
+                    this.setFunctionNegative = function (fnNegative) {
+                        return alertProvider.setFunctionNegative(fnNegative);
+                    };
+
+                    this.setSettings = function (options) {
+                        return alertProvider.setSettings(options);
+                    };
+
+                    this.show = function () { alertProvider.show(); };
+
+                    this.hide = function () { alertProvider.hide(); };
                 }
             },
             
@@ -7539,6 +7578,10 @@
                     };
                     
                     this.$get = ["$rootScope", "$softtionMaterial", fnProvider];
+                    
+                    this.show = function (text, optionsAction) {
+                        snackbarProvider.show(text, optionsAction);
+                    };
                 }
             },
             
