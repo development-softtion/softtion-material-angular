@@ -1,8 +1,10 @@
+
 /* !
- Softtion v1.2.6
- (c) 2015-2017 Softtion Developers, http://www.softtion.com.co
+ Softtion v1.3.2
+ (c) 2015-2018 Softtion Developers, http://www.softtion.com.co
  License: MIT
- Update: 20/Juli/2017
+ Create: 24/May/2015
+ Update: 31/Ene/2018
  */
 
 (function (factory) {
@@ -15,6 +17,29 @@
     
     var Softtion = function () { },
         softtion = new Softtion(); // Clase Softtion
+    
+    var timeElapsedAttrs = [{ 
+            divisor: 1000, comparator: 60, key: "seconds",
+            singular: "segundo", plural: "segundos" 
+        }, { 
+            divisor: 60, comparator: 60, key: "minutes",
+            singular: "minuto", plural: "minutos" 
+        }, { 
+            divisor: 60, comparator: 24, key: "hours",
+            singular: "hora", plural: "horas" 
+        }, { 
+            divisor: 24, comparator: 7, key: "days",
+            singular: "día", plural: "días" 
+        }, { 
+            divisor: 7, comparator: 4, key: "weeks",
+            singular: "semana", plural: "semanas" 
+        }, { 
+            divisor: 30, comparator: 12, key: "months",
+            singular: "mes", plural: "meses" 
+        }, { 
+            divisor: 12, comparator: 9999, key: "years",
+            singular: "año", plural: "años" 
+        }];
     
     window.softtion = softtion; // Agregando softtion como Global
     
@@ -130,7 +155,7 @@
             return undefined; 
         } // No se establecieron atributos para busqueda
 
-        var arrayKeys = keys.split('.');
+        var arrayKeys = keys.split(".");
         
         if (arrayKeys.has(1)) { 
             return object[arrayKeys.first()]; 
@@ -162,7 +187,7 @@
             var breakTag = (this.parseBoolean(is_xhtml)) ? "<br />" : "<br>",
                 regex = /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g;
         
-            return (str).replace(regex, '$1' + breakTag + '$2');
+            return (str).replace(regex, "$1" + breakTag + "$2");
         } // Hay un texto establecido para realizar el cambio de etiqueta
     };
     
@@ -364,7 +389,7 @@
 
         decimal: function (keyCode, inputValue) { 
             return (keyCode === 46) ? 
-                (inputValue.indexOf('.') === -1) :  // Punto
+                (inputValue.indexOf(".") === -1) :  // Punto
                 this.numeric(keyCode);              // Numeros
         },
         
@@ -378,7 +403,7 @@
         
         email: function (keyCode, inputValue) { 
             if (keyCode === 64) {
-                return (inputValue.indexOf('@') === -1);
+                return (inputValue.indexOf("@") === -1);
             } else if (keyCode === 32) {
                 return false;
             } else {
@@ -666,6 +691,30 @@
         }
     };
     
+    Softtion.prototype.getTimeFormatElapsed = function (milliseconds) {
+        var label, prefix = (milliseconds > 0) ? 
+                { singular: "Falta", plural: "Faltan" } : 
+                { singular: "Hace", plural: "Hace" };
+        
+        milliseconds = milliseconds || 0;
+        var result = Math.abs(milliseconds); // Redefiniendo
+        
+        this.forEach(timeElapsedAttrs, function (item) {
+            var value = Math.roundDecimal(result / item.divisor);
+            
+            if (value < item.comparator) {
+                var key = (value === 1) ? item.singular : item.plural,
+                    myPrefix = (value === 1) ? prefix.singular : prefix.plural;
+                    
+                label = myPrefix + " " + value + " " + key; return true;
+            } else if (item.key !== "weeks") {
+                result = value;
+            } // Se debe reasignar el valor obtenido
+        });
+        
+        return label; // Retornando tiempo transcurrido en el formato
+    };
+    
     // Extendiendo Objetos de JavaScript
     
     (function (softtion) {
@@ -923,6 +972,13 @@
                 break;
             }
         };
+        
+        Date.prototype.getDifferenceFormat = function (date) {
+            date = date || new Date(); // Redifiniendo date
+            var difference = this.getTime() - date.getTime();
+            
+            return softtion.getTimeFormatElapsed(difference);
+        };
 
         // Métodos de Softtion para los objetos 'String'
 
@@ -1101,39 +1157,39 @@
     
         function decimalAdjust(type, value, exp) {
             // Si el exp no está definido o es cero...
-            if (typeof exp === 'undefined' || +exp === 0) {
+            if (typeof exp === "undefined" || +exp === 0) {
                 return Math[type](value);
             }
-            value = +value;
-            exp = +exp;
+            value = +value; exp = +exp;
+            
             // Si el valor no es un número o el exp no es un entero...
-            if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+            if (isNaN(value) || !(typeof exp === "number" && exp % 1 === 0)) {
                 return NaN;
             }
             // Shift
-            value = value.toString().split('e');
-            value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+            value = value.toString().split("e");
+            value = Math[type](+(value[0] + "e" + (value[1] ? (+value[1] - exp) : -exp)));
             // Shift back
-            value = value.toString().split('e');
-            return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+            value = value.toString().split("e");
+            return +(value[0] + "e" + (value[1] ? (+value[1] + exp) : exp));
         }
 
         // Decimal round
         if (!Math.roundDecimal) {
             Math.roundDecimal = function (value, exp) {
-                return decimalAdjust('round', value, exp);
+                return decimalAdjust("round", value, exp);
             };
         }
         // Decimal floor
         if (!Math.floorDecimal) {
             Math.floorDecimal = function (value, exp) {
-                return decimalAdjust('floor', value, exp);
+                return decimalAdjust("floor", value, exp);
             };
         }
         // Decimal ceil
         if (!Math.ceilDecimal) {
             Math.ceilDecimal = function (value, exp) {
-                return decimalAdjust('ceil', value, exp);
+                return decimalAdjust("ceil", value, exp);
             };
         }
     })();

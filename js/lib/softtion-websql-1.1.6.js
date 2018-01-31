@@ -1,11 +1,11 @@
-/* !
- * Softtion WebSQL v1.1.6
- * License: MIT
- * (c) 2015-2017 Softtion Developers
- * Update: 03/Enero/2017
- */
 
-/* global Model */
+/* !
+ * Softtion SQLite v1.2.5
+ * License: MIT
+ * (c) 2015-2018 Softtion Developers
+ * Create: 12/Jul/2015
+ * Update: 31/Ene/2018
+ */
 
 (function (factory) {
     if (typeof jQuery === "function" && typeof window.softtion === "object") {
@@ -15,120 +15,91 @@
     } // No se ha cargado jQuery y Softtion
 })(function (jQuery, softtion) {
     
-    var WebSQL = {
-        is: function (type, object) {
-            switch (type) {
-                case ("filter"):
-                    return (softtion.isDefined(object) && object instanceof IFilter);
-                    
-                case ("relation"):
-                    return (softtion.isDefined(object) && object instanceof Relation);
-                
-                default: return false;
-            }
+    var $sqLite = getInstanceSQLite();
+    
+    softtion.sqLite = $sqLite || {};
+
+    var ErrorSQL = {
+            CONNECTION: "No se ha establecido instancia de conexión",
+            PARAMETERS: "No se han definido los parámetros requeridos del comando",
+            RELATIONS: "No se pudo cargar las relaciones de la consulta"
         },
+        operatorsLogic = ["AND", "OR"], 
+        operatorsOrder = ["ASC", "DESC"],
+        Relations = {
+            HAS_ONE: "HAS_ONE", HAS_MANY: "HAS_MANY"
+        };
+    
+    function defineOperatorLogic(operatorLogic) {
+        return operatorsLogic.hasItem(operatorLogic) ? operatorLogic : "AND";
+    }
+    
+    function defineOperatorOrder(operatorOrder) {
+        return operatorsOrder.hasItem(operatorOrder) ? operatorOrder : "ASC";
+    }
+    
+    function getInstanceSQLite() {
+        var fnWebSQL = function () {};
         
-        functionError: function (sqlError) {
-            console.log('Código (' + sqlError.code + '): ' + sqlError.message);
-        },
+        fnWebSQL.isSupported = isSupported; 
+        fnWebSQL.openDatabase = openDatabase;
+        fnWebSQL.insert = insert;
+        fnWebSQL.update = update;
+        fnWebSQL.delete = fnDelete;
+        fnWebSQL.select = select;
         
-        callback: function (callbackResult, value) {
-            if (softtion.isFunction(callbackResult)) { 
-                callbackResult(value); 
-            } // Se ha definido funcion para enviar resultado
-        },
+        function isSupported() {
+            return softtion.isDefined(window.openDatabase);
+        };
+            
+        function openDatabase(options) {
+            return new DB(options);
+        };
         
-        commandCreateTable: function (options) {
-            var $command = "CREATE TABLE "; // Inicio del comando
-            $command += (!options.exists) ? "IF NOT EXISTS " : "";
-
-            $command += options.name + " ("; // Nombre de tabla
-            var indexLast = options.columns.length - 1; // Última columna 
-
-            options.columns.forEach(function (column) {
-                $command += options.columns[indexLast] === column ? column : column + ",";
-            });
-
-            return $command + ");"; // Retornando comando final
-        },
+        function insert(connection) { 
+            var $connection = (connection instanceof DB) ?
+                connection.getConnection() : connection;
+            
+            return new Insert($connection); // Comando INSERT
+        };
         
-        createFilter: function (filter, column, operator, values, negation) {
-            switch (filter) {
-                case ("isNull"): 
-                    return new IsNull(column, negation);
-                    
-                case ("condition"): 
-                    return new Condition(column, operator, values[0]);
-                    
-                case ("in"): 
-                    return new In(column, values, negation);
-                    
-                case ("between"): 
-                    return new Between(column, values[0], values[1], negation);
-                    
-                case ("like"): 
-                    return new Like(column, values[0], negation);
-            };
-        },
+        function update(connection) { 
+            var $connection = (connection instanceof DB) ?
+                connection.getConnection() : connection;
+            
+            return new Update($connection); // Comando UPDATE
+        };
         
-        addFilter: function (filter, model, column, operator, values) {
-            model.whereModel = model.whereModel || new Where();
-
-            var $filter = this.createFilter(filter, column, operator, values, model.activeNot), 
-                $logic = model.whereModel.isEmpty() ? undefined : model.activeOr ? "OR" : "AND";
-
-            model.whereModel.addFilter($filter, $logic);
-            model.activeOr = false; model.activeNot = false; 
-        },
+        function fnDelete(connection) { 
+            var $connection = (connection instanceof DB) ?
+                connection.getConnection() : connection;
+            
+            return new Delete($connection); // Comando DELETE
+        };
         
-        createRelation: function (select, list, indexList, indexRelation, callbackResult) {
-            var $object = list[indexList], $relation = select.relations[indexRelation];
-
-            softtion.websql.select({
-                tables : [$relation.get("table")], 
-                connection : select.options.connection
-            }).setWhere(
-                new Where().addFilter(
-                    new Condition($relation.get("foreign"),"=",$object[$relation.get("local")])
-                )
-            ).execute(function (result) {
-                if (result.success) { 
-                    switch ($relation.get("type")) {
-                        case ("hasOne"):
-                            $object[$relation.get("variable") || $relation.get("table")] = 
-                                (result.data.isEmpty()) ? null : result.data[0]; 
-                        break;
-
-                        default :
-                            $object[$relation.get("variable") || $relation.get("table")] = result.data; 
-                        break;
-                    }
-                }
-
-                indexRelation++; // Se aumenta indice para seguir relacionando
-
-                if (indexRelation < select.relations.length) {
-                    // Cargando relaciones en el Objeto
-                    this.createRelation(select, list, indexList, indexRelation, callbackResult);
-                } else {
-                    indexRelation = 0; indexList++; // Siguiente objeto de la lista
-
-                    if (indexList < list.length) {
-                        // Cargando relaciones en el objeto
-                        this.createRelation(select, list, indexList, indexRelation, callbackResult);
-                    } else {
-                        WebSQL.callback(callbackResult,{ success: true, data: list });
-                    } // Finalizando proceso Relacional
-                } // Ya se argaron todas las relaciones establecidas
-            });
-        }
-    };
+        function select(connection) { 
+            var $connection = (connection instanceof DB) ?
+                connection.getConnection() : connection;
+            
+            return new Select($connection); // Comando SELECT
+        };
+        
+        return fnWebSQL; // Retornando objeto WebSQL
+    }
+    
+    function isFilter(filter) {
+        return (softtion.isDefined(filter) && filter instanceof IFilter);
+    }
+    
+    function isRelation(relation) {
+        return (softtion.isDefined(relation) && relation instanceof Relation);
+    }
     
     // Interfaz IFilter
     
     var IFilter = function () { };
     
-    IFilter.prototype.getDescription = function () {};
+    IFilter.prototype.getSentence = function () {};
     IFilter.prototype.getValues = function () {};
 
     // Clase Condition
@@ -142,12 +113,12 @@
     Condition.prototype = new IFilter();
     Condition.prototype.constructor = Condition;
 
-    Condition.prototype.getDescription = function () {
+    Condition.prototype.getSentence = function () {
         return "(" + this.column + " " + this.operator + " ?)"; 
     };
 
     Condition.prototype.getValues = function () { 
-        return softtion.parseArray(this.value);
+        return [this.value];
     };
 
     // Clase Like
@@ -161,7 +132,7 @@
     Like.prototype = new IFilter();
     Like.prototype.constructor = Like;
 
-    Like.prototype.getDescription = function () { 
+    Like.prototype.getSentence = function () { 
         return "(" + this.column + (this.negation ? " NOT" : "") + " LIKE ?)"; 
     };
 
@@ -180,12 +151,14 @@
     In.prototype = new IFilter();
     In.prototype.constructor = In;
 
-    In.prototype.getDescription = function () {
-        var $filter = "(" + this.column + (this.negation ? " NOT" : "") + " IN (";
+    In.prototype.getSentence = function () {
+        var filter = "(" + this.column + 
+            (this.negation ? " NOT" : "") + " IN (",
+            count = this.value.length - 1;
         
-        for (var $i = 0; $i < (this.value.length - 1); $i++) { $filter += "?,"; }
+        for (var i = 0; i < count; i++) { filter += "?,"; }
 
-        return $filter + "?))"; // Retornando filter completado
+        return filter + "?))"; // Retornando filter
     };
 
     In.prototype.getValues = function () { 
@@ -204,7 +177,7 @@
     Between.prototype = new IFilter();
     Between.prototype.constructor = Between;
 
-    Between.prototype.getDescription = function () {
+    Between.prototype.getSentence = function () {
         return "(" + this.column + (this.negation ? " NOT" : "") + " BETWEEN ? AND ?)";
     };
 
@@ -222,7 +195,7 @@
     IsNull.prototype = new IFilter();
     IsNull.prototype.constructor = IsNull;
     
-    IsNull.prototype.getDescription = function () {
+    IsNull.prototype.getSentence = function () {
         return "(" + this.column + " IS" + (this.negation ? " NOT" : "") + " NULL";
     };
 
@@ -239,109 +212,123 @@
     Filters.prototype = new IFilter();
     Filters.prototype.constructor = Filters;
 
-    Filters.prototype.addCondition = function (filter, operatorLogic) {
-        if (WebSQL.is("filter", filter)) {
-            this.filters.push({ filter : filter, operatorLogic : operatorLogic });
+    Filters.prototype.addFilter = function (filter, operatorLogic) {
+        if (isFilter(filter)) {
+            operatorLogic = defineOperatorLogic(operatorLogic);
+            
+            this.filters.push({ 
+                filter : filter, operatorLogic : operatorLogic 
+            });
         } // Agregando filtro para clausula
         
-        return this; // Retornando para recursividad
+        return this; // Retornando interfaz fluida
     };
 
-    Filters.prototype.getDescription = function () {
+    Filters.prototype.getSentence = function () {
         if (this.filters.isEmpty()) {
             return null;
         } // No se han definido condiciones para clausula Where
 
-        var $filter = "(", $index = 1; // Inicializando filtro
+        var description = "(", index = 1; // Inicializando filtro
         
         if (this.filters.has(1)) {
-            $filter += this.filters.first().filter.getDescription();
+            var filter = this.filters.first().filter;
+            description += filter.getDescription();
         } else {
-            this.filters.forEach(function (filterJson) { 
-                var $operator = ($index === 1) ? "" :
-                    (!softtion.isDefined(filterJson.operatorLogic))
-                    ? (" " + filterJson.operatorLogic + " ") : "";
+            this.filters.forEach(function (json) { 
+                var operator = (index === 1) ? "" :
+                    (!softtion.isDefined(json.operatorLogic))
+                    ? (" " + json.operatorLogic + " ") : "";
                 
-                if (softtion.isDefined(filterJson.condition)) {
-                    $filter += $operator + filterJson.filter.getDescription(); $index++;
+                if (softtion.isDefined(json.condition)) {
+                    var filter = json.filter;
+                    description += operator + filter.getDescription();
+                    
+                    index++; // Siguiente item de la lista
                 }
             }); // Recorriendo la lista de condiciones para clausula Where
         }
 
-        return $filter + ")"; // Retornando filter completado
+        return description + ")"; // Retornando filter completado
     };
     
     Filters.prototype.getValues = function () {
-        var $values = new Array(); // Valores
+        var values = new Array(); // Valores
         
-        this.filters.forEach(function (conditionJson) {
-            $values = $values.concat(conditionJson.condition.getValues());
+        this.filters.forEach(function (json) {
+            var condition = json.condition;
+            values = values.concat(condition.getValues());
         });
         
-        return $values; // Retornando lista de Valores
+        return values; // Retornando lista de Valores
     };
 
     // Interfaz IClause
 
     var IClause = function () { };
     
-    IClause.prototype.getDescription = function () { return ""; };
-    IClause.prototype.getValues = function () { return []; };
+    IClause.prototype.getSentence = function () { 
+        return null;
+    };
+    
+    IClause.prototype.getValues = function () { 
+        return []; 
+    };
 
     // Clase Where
-    
+        
     var Where = function () { 
-        this.filters = new Array(); // Lista de filtros para clausula
+        this.filters = new Array(); // Lista de filtros de clausula
     };
 
     Where.prototype = new IClause();
     Where.prototype.constructor = Where;
 
-    Where.prototype.addFilter = function (filter, operatorLogic) {
-        if (WebSQL.is("filter", filter)) {
-            this.filters.push({ filter : filter, operatorLogic : operatorLogic });
+    Where.prototype.addFilter = function (filter, operator) {
+        if (isFilter(filter)) {
+            operator = defineOperatorLogic(operator);
+            
+            this.filters.push({
+                filter: filter, operatorLogic: operator
+            });
         } // Agregando filtro para la clausula Where
 
-        return this; // Retornando para recursividad
+        return this; // Retornando interfaz fluida
     };
     
     Where.prototype.isEmpty = function () { 
         return this.filters.isEmpty(); 
     };
-    
-    Where.prototype.setOperatorLogic = function (operatorLogic) {
-        this.filters.last().operatorLogic = operatorLogic;
-    };
 
-    Where.prototype.getDescription = function () {
-        if (this.filters.isEmpty()) { 
-            return "";
-        } // No se han definido filtros para clausula Where
-
-        var $clause = "WHERE (", $index = 1; // Inicializando filtro
+    Where.prototype.getSentence = function () {
+        var filters = this.filters; // Filtros de la clausula
         
-        if (this.filters.has(1)) {
-            $clause += this.filters.first().filter.getDescription();
+        if (filters.isEmpty()) { 
+            return null;
+        } // No han definido filtros WHERE
+
+        var clause = "WHERE "; // Inicializando clausula
+        
+        if (filters.has(1)) {
+            clause += filters.first().filter.getSentence();
         } else {
-            this.filters.forEach(function (filterWhere) { 
-                var $operator = ($index === 1) ? "" :
-                    (softtion.isDefined(filterWhere.operatorLogic))
-                    ? (" " + filterWhere.operatorLogic + " ") : "";
+            softtion.forEach(filters, function (item, index) {
+                if (index !== 0) {
+                    clause += " " + item.operatorLogic + " ";
+                } // No es el primero de la lista
+                
+                clause += item.filter.getSentence();
+            });
+        } // Existen mas de un filtro en la clausula
 
-                if (softtion.isDefined(filterWhere.filter)) {
-                    $clause += $operator + filterWhere.filter.getDescription(); $index++; 
-                }
-            }); // Recorriendo lista de filtros de la clausula Where
-        }
-
-        return $clause + ")"; // Retornando clausula completada
+        return clause.trim(); // Retornando clausula constituida
     };
 
     Where.prototype.getValues = function () {
         var values = new Array(); // Valores
 
-        this.filters.forEach(function (filterWhere) {
-            values = values.concat(filterWhere.filter.getValues());
+        this.filters.forEach(function (item) {
+            values = values.concat(item.filter.getValues());
         });
 
         return values; // Retornando valores de la claúsula
@@ -350,740 +337,1130 @@
     // Clase GroupBy
     
     var GroupBy = function () {
-        this.column = undefined; // Columnas para agrupar
+        this.columns = new Array(); // Columnas para agrupar
     };
 
     GroupBy.prototype = new IClause();
     GroupBy.prototype.constructor = GroupBy;
     
-    GroupBy.prototype.setColumn = function (column) {
-        this.column = column; return this; // Retornando para recursividad
+    GroupBy.prototype.addColumn = function (column) {
+        if (!this.columns.hasItem(column)) {
+            this.columns.push(column); 
+        } // La columna no ha sido agregada
+        
+        return this; // Retornando interfaz fluida
     };
     
-    GroupBy.prototype.getDescription = function () {
-        if (softtion.isUndefined(this.column)) { 
-            return null;
-        } // No se han definido columna para clausula GroupBy
+    GroupBy.prototype.getSentence = function () {
+        var columns = this.columns; // Columnas de la clausula
         
-        return "GROUP BY " + this.column; // Retornando clausula completada
+        if (columns.isEmpty()) { 
+            return null;
+        } // No se han definido columna GROUP BY
+
+        var clause = "GROUP BY "; // Inicializando clausula
+        
+        softtion.forEach(columns, function (column, index) {
+            clause += column +
+                (((index + 1) !== columns.length) ? ", " : ""); 
+        });
+
+        return clause; // Retornando clausula constituida
     };
     
     // Clase OrderBy
     
     var OrderBy = function () {
-        this.columns = new Array(); // Lista de columnas para Ordenar
+        this.columns = new Array(); // Lista de columnas
     };
 
     OrderBy.prototype = new IClause();
     OrderBy.prototype.constructor = OrderBy;
     
-    OrderBy.prototype.addColumn = function (columnName, operatorOrder) {
-        if (softtion.isDefined(columnName)) {
-            this.columns.push({ name : columnName, operatorOrder : operatorOrder });
+    OrderBy.prototype.addColumn = function (column, operator) {
+        if (softtion.isDefined(column)) {
+            operator = defineOperatorOrder(operator);
+            
+            this.columns.push({ 
+                name: column, operatorOrder: operator 
+            });
         } // Agregando columnas para la clausula OrderBy
 
-        return this; // Retornando para recursividad
+        return this; // Retornando interfaz fluida
     };
     
-    OrderBy.prototype.getDescription = function () {
-        if (this.columns.isEmpty()) { 
-            return "";
-        } // No se han definido columnas para clausula OrderBy
+    OrderBy.prototype.getSentence = function () {
+        var columns = this.columns; // Columnas de la clausula
         
-        var $clause = "ORDER BY "; // Iniciando clausula
-        
-        for (var $i = 0; $i < (this.columns.length - 1); $i++) {
-            var $column = this.columns[$i], // Columna
-                $operator = $column.operatorOrder || 'ASC';
-            
-            $clause += $column.name + " " + $operator + ", "; 
-        } // Recorriendo lista de Columnas de Clausula
-        
-        var $lastColumn = this.columns.last(); // Ultima o Primera columna
-        $clause += $lastColumn.name + " " + ($lastColumn.operatorOrder || 'ASC'); 
+        if (columns.isEmpty()) { 
+            return null;
+        } // No han definido columnas ORDER BY
 
-        return $clause; // Retornando clausula completada
+        var clause = "ORDER BY "; // Inicializando clausula
+        
+        softtion.forEach(columns, function (column, index) {
+            clause += column.name + " " + column.operatorOrder +
+                (((index + 1) !== columns.length) ? ", " : ""); 
+        });
+
+        return clause; // Retornando clausula constituida
     };
     
     // Clase Relation
     
     var Relation = function () {
         this.table = undefined; 
-        this.local = undefined; 
-        this.foreign = undefined;
+        this.localKey = undefined; 
+        this.foreignKey = undefined;
         this.type = undefined; 
-        this.variable = undefined;
-    };
-
-    Relation.prototype.set = function (attributte, value) {
-        switch (attributte) {
-            case ('table') : this.table = value; break;
-            case ('local') : this.local = value; break;
-            case ('foreign') : this.foreign = value; break;
-            case ('type') : this.type = value; break;
-            case ('variable') : this.variable = value; break;
-        }
-
-        return this; // Retornando interfaz fluida
-    };
-
-    Relation.prototype.get = function (attributte) {
-        switch (attributte) {
-            case ('table') : return this.table;
-            case ('local') : return this.local;
-            case ('foreign') : return this.foreign;
-            case ('type') : return this.type;
-            case ('variable') : return this.variable;
-        }
+        this.variableKey = undefined;
     };
     
-    var Database = function (options) {
-        var $defaults = {
-            version: '1.0.0',
-            descripcion: 'Database Softtion',
-            size: 2 * 1024 * 1024
-        };
-
-        var $options = jQuery.extend({}, $defaults, options);
-
-        this.database = window.openDatabase(
-            $options.name,          // Nombre de Base de Datos
-            $options.version,       // Versión de Base de Datos
-            $options.description,   // Descripción de Base de Datos
-            $options.size           // Tamaño de Base de Datos
-        );
+    Relation.prototype.getTable = function () {
+        return this.table;
     };
-
-    Database.prototype.getConnection = function () {
-        return this.database;
+    
+    Relation.prototype.setTable = function (table) {
+        this.table = table; return this;
     };
-
-    Database.prototype.createTable = function (options, callbackResult) {
-        var $command = WebSQL.commandCreateTable(options);
-
-        if (this.database) {
-            this.database.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, [], 
-                    function (sqlTransaccion) { 
-                        WebSQL.callback(callbackResult, true);
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.functionError(sqlError); WebSQL.callback(callbackResult, false);
-                    }
-                );
-            });
-        }
+    
+    Relation.prototype.getLocalKey = function () {
+        return this.localKey;
     };
-
-    Database.prototype.dropTable = function (table, callbackResult) {
-        var $command = "DROP TABLE " + table; // Comando
-
-        if (this.database) {
-            this.database.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, [], 
-                    function (sqlTransaccion) { 
-                        WebSQL.callback(callbackResult, true);
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.functionError(sqlError); WebSQL.callback(callbackResult, false);
-                    }
-                );
-            });
-        }
+    
+    Relation.prototype.setLocalKey = function (localKey) {
+        this.localKey = localKey; return this;
     };
-
-    softtion.openDatabase = function (options) {
-        return new Database(options); // Creando handler de Base de datos
+    
+    Relation.prototype.getForeignKey = function () {
+        return this.foreignKey;
+    };
+    
+    Relation.prototype.setForeignKey = function (foreignKey) {
+        this.foreignKey = foreignKey; return this;
+    };
+    
+    Relation.prototype.getType = function () {
+        return this.type;
+    };
+    
+    Relation.prototype.setType = function (type) {
+        this.type = type; return this;
+    };
+    
+    Relation.prototype.getVariableKey = function () {
+        return this.variableKey;
+    };
+    
+    Relation.prototype.setVariableKey = function (variableKey) {
+        this.variableKey = variableKey; return this;
     };
 
     // Interfaz ICommand
 
     var ICommand = function () { 
-        this.clauses = [];          // Clausulas
-        this.where = undefined;     // Clausula Where
+        this.connection = undefined;
+        this.table = undefined;
+        this.columns = new Array();
+        this.values = new Array();
     };
     
     ICommand.prototype.getCommand = function () {};
-    ICommand.prototype.execute = function (callback) {};
+    ICommand.prototype.execute = function () {};
+    
+    ICommand.prototype.setConnection = function (connection) {
+        this.connection = connection; return this;
+    };
+    
+    ICommand.prototype.setTable = function (table) {
+        this.table = table; return this;
+    };
+    
+    ICommand.prototype.setColumns = function (columns) {
+        this.columns = columns; return this;
+    };
+    
+    ICommand.prototype.setValues = function (values) {
+        this.values = values; return this;
+    };
 
-    //<editor-fold defaultstate="collapsed" desc="Modelo para gestionar Comando INSERT">
+    // Interfaz IWhere
 
-    var Insert = function (options) { 
-        var $defaults = { 
-            table : undefined,
-            columns : new Array(), 
-            values : new Array(), 
-            connection : undefined 
-        };
+    var IWhere = function () { 
+        this.whereClause = undefined;
+        this.filters = [];
+        this.isGroupFilter = false;
+    };
+
+    IWhere.prototype = new ICommand();
+    IWhere.prototype.constructor = IWhere;
+    
+    function getInstanceWhere(where) {
+        var verify = (
+            softtion.isDefined(where) && where instanceof Where
+        );
+
+        return (verify) ? where : new Where(); // Retornando Where
+    }
+    
+    var OperatorsLogicName = { AND: "AND", OR: "OR" },
+        FiltersName = {
+            CONDITION: "CONDITION",
+            IS_NULL: "IS_NULL",
+            BETWEEN: "BETWEEN",
+            IN: "IN", LIKE: "LIKE"
+        },
+        FilterFactory = function (filterName, attrs) {
+            switch (filterName) {
+                case (FiltersName.IS_NULL): 
+                    return new IsNull(attrs.column, attrs.negation);
+
+                case (FiltersName.CONDITION): 
+                    return new Condition(
+                        attrs.column, attrs.operator, attrs.values[0]
+                    );
+
+                case (FiltersName.IN): 
+                    return new In(
+                        attrs.column, attrs.values, attrs.negation
+                    );
+
+                case (FiltersName.BETWEEN): 
+                    return new Between(
+                        attrs.column, attrs.values[0], attrs.values[1], attrs.negation
+                    );
+
+                case (FiltersName.LIKE): 
+                    return new Like(
+                        attrs.column, attrs.values[0], attrs.negation
+                    );
+            };
+    };
+    
+    function defineFilterWhere(attrs) {
+        var command = attrs.command, // Instancia del comando
+            operatorLogic = attrs.operatorLogic,
+            filter = FilterFactory(
+                attrs.filterName, attrs.filterAttrs
+            );
         
-        this.options = jQuery.extend({}, $defaults, options);
+        command.whereClause = getInstanceWhere(command.whereClause); 
+        
+        if (command.isGroupFilter) {
+            command.filters.push({
+                filter: filter, operatorLogic: operatorLogic
+            });
+        } else {
+            command.whereClause.addFilter(filter, operatorLogic);
+        }
+    }
+    
+    // WHERE: CONDITION FILTER
+    
+    IWhere.prototype.where = function (column, operator, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.CONDITION,
+            filterAttrs: {
+                column: column, operator: operator, values: [value]
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhere = function (column, operator, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.CONDITION,
+            filterAttrs: {
+                column: column, operator: operator, values: [value]
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    // WHERE: IS NULL FILTER
+    
+    IWhere.prototype.whereIsNull = function (column) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.IS_NULL,
+            filterAttrs: { column: column, negation: false }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.whereIsNotNull = function (column) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.IS_NULL,
+            filterAttrs: { column: column, negation: true }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereIsNull = function (column) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.IS_NULL,
+            filterAttrs: { column: column, negation: false }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereIsNotNull = function (column) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.IS_NULL,
+            filterAttrs: { column: column, negation: true }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    // WHERE: IN FILTER
+    
+    IWhere.prototype.whereIn = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.IN,
+            filterAttrs: { 
+                column: column, values: values, negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.whereNotIn = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.IN,
+            filterAttrs: { 
+                column: column, values: values, negation: true 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereIn = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.IN,
+            filterAttrs: { 
+                column: column, values: values, negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereNotIn = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.IN,
+            filterAttrs: { 
+                column: column, values: values, negation: true
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    // WHERE: BETWEEN FILTER
+    
+    IWhere.prototype.whereBetween = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.BETWEEN,
+            filterAttrs: { 
+                column: column, values: values, negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.whereNotBetween = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.BETWEEN,
+            filterAttrs: { 
+                column: column, values: values, negation: true 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereBetween = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.BETWEEN,
+            filterAttrs: { 
+                column: column, values: values, negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereNotBetween = function (column, values) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.BETWEEN,
+            filterAttrs: { 
+                column: column, values: values, negation: true
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    // WHERE: LIKE FILTER
+    
+    IWhere.prototype.whereLike = function (column, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.LIKE,
+            filterAttrs: { 
+                column: column, values: [value], negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.whereNotLike = function (column, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.AND,
+            filterName: FiltersName.LIKE,
+            filterAttrs: { 
+                column: column, values: [value], negation: true 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereLike = function (column, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.LIKE,
+            filterAttrs: { 
+                column: column, values: [value], negation: false 
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+    
+    IWhere.prototype.orWhereNotLike = function (column, value) {
+        defineFilterWhere({
+            command: this,
+            operatorLogic: OperatorsLogicName.OR,
+            filterName: FiltersName.LIKE,
+            filterAttrs: { 
+                column: column, values: [value], negation: true
+            }
+        }); // Agregando filtro
+        
+        return this; // Retornando iterfaz fluida
+    };
+
+    // Interfaz IWhere
+
+    var ISelect = function () { 
+        this.orderByClause = undefined;
+        this.groupByClause = undefined;
+    };
+
+    ISelect.prototype = new IWhere();
+    ISelect.prototype.constructor = ISelect;
+    
+    function getInstanceOrderBy(orderBy) {
+        var verify = (
+            softtion.isDefined(orderBy) && orderBy instanceof OrderBy
+        );
+
+        return (verify) ? orderBy : new OrderBy(); // Retornando OrderBy
+    }
+    
+    function getInstanceGroupBy(groupBy) {
+        var verify = (
+            softtion.isDefined(groupBy) && groupBy instanceof GroupBy
+        );
+
+        return (verify) ? groupBy : new GroupBy(); // Retornando GroupBy
+    }
+    
+    ISelect.prototype.orderBy = function (column, operator) {
+        this.orderByClause = getInstanceOrderBy(this.orderByClause); 
+        this.orderByClause.addColumn(column, operator); return this;
+    };
+    
+    ISelect.prototype.groupBy = function (column) {
+        this.groupByClause = getInstanceGroupBy(this.groupByClause); 
+        this.groupByClause.addColumn(column); return this;
+    };
+
+    // Clase Insert
+    
+    var Insert = function (connection) {
+        this.setConnection(connection);
     };
 
     Insert.prototype = new ICommand();
     Insert.prototype.constructor = Insert;
 
     Insert.prototype.getCommand = function () {
-        var $table = this.options.table,
-            $columns = this.options.columns,
-            $values = this.options.values;
+        var table = this.table, columns = this.columns,
+            values = this.values;
         
-        if (softtion.isUndefined($table) || softtion.isUndefined($values)) {
+        if (softtion.isUndefined(table) || 
+            softtion.isArrayEmpty(values)) {
             return null;
-        } // Comando no tiene tabla, ni valores definidos
+        } // Comando contiene atributos indefinidos
 
-        var $command = "INSERT INTO " + $table; 
+        var command = "INSERT INTO " + table; // Iniciando
 
-        if (!$columns.isEmpty()) {
-            $command += " ("; // Definición de Columnas
-            
-            for (var $i = 0; $i < ($columns.length - 1); $i++) {
-                $command += $columns[$i] + ","; 
-            } // Cargando lista de columnas para el Comando
-            
-            $command += $columns.last() + ")";
+        if (!softtion.isArrayEmpty(columns)) {
+            command += " ("; // Iniciando cargue columnas
+    
+            softtion.forEach(columns, function (column, index) {
+                command += column +
+                    (((index + 1) !== columns.length) ? ", " : ")"); 
+            });
         } // Se establecieron los nombres de las columnas
 
-        $command += " VALUES ("; // Cargando los valores a insertar
-
-        for (var $i = 0; $i < ($values.length - 1); $i++) {
-            $command += "?,"; 
-        } // Recorriendo la lista de Valores
+        command += " VALUES ("; // Iniciando cargue de columnas
         
-        $command += "?)"; return $command; // Retornando comando INSERT
+        softtion.forEach(values, function (value, index) {
+            command += "?" + (((index + 1) !== values.length) ? ", " : ")"); 
+        });
+        
+        return command; // Retornando comando INSERT
     };
 
-    Insert.prototype.execute = function (callbackResult) {
-        var $command = this.getCommand(); // Comando generado
+    Insert.prototype.execute = function () {
+        var self = this; // Instancia Database
+        
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = self.getCommand(); // Comando generado
+                
+                if (softtion.isDefined(command)) {
+                    var values = self.values; // Valores
 
-        if ($command !== null) {
-            var $values = this.options.values; // Valores de la Sentencia
-
-            this.options.connection.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, $values, 
-                    function (sqlTransaccion) { 
-                        WebSQL.callback(callbackResult, { success: true });
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.callback(callbackResult, { success: false, error: sqlError });
-                    }
-                );
+                    connection.transaction(function (sqlTransaction) {
+                        sqlTransaction.executeSql(command, values, 
+                            function () { 
+                                resolve({ success: true });
+                            },
+                            function (sqlTransaccion, sqlError) {
+                                reject({ sqlError: sqlError });
+                            }
+                        );
+                    });
+                } else {
+                    resolve({ success: false,  message: ErrorSQL.PARAMETERS });
+                } // No se definieron parametros de sentencia
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión definida
+        });
+    };
+    
+    Insert.prototype.setJson = function (json) {
+        if (softtion.isDefined(json)) {
+            var columns = [], values = []; // Columnas y valores
+            
+            jQuery.each(json, function (key, item) {
+                columns.push(key); values.push(item);
             });
-
-            return true; // Commando ejecutado correctamente
-        }
-
-        return false; // Commando no se ha generado correctamente
-    };
-
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Modelo para gestionar Comando UPDATE">
-
-    var Update = function (options) { 
-        var $defaults = { 
-            connection : undefined,  
-            table : undefined, 
-            columns : new Array(), 
-            values : new Array(),
-            where : undefined
-        };
+            
+            this.setColumns(columns); this.setValues(values);
+        } // Se establecio correctamente un objeto
         
-        this.options = jQuery.extend({}, $defaults, options);
+        return this; // Retornando interfaz fluida
     };
 
-    Update.prototype = new ICommand();
+    // Clase Update
+
+    var Update = function (connection) { 
+        this.setConnection(connection);
+    };
+
+    Update.prototype = new IWhere();
     Update.prototype.constructor = Update;
 
     Update.prototype.getCommand = function () {
-        var $table = this.options.table,
-            $columns = this.options.columns,
-            $where = this.options.where;
+        var table = this.table, columns = this.columns;
         
-        if (softtion.isUndefined($table) || $columns.isEmpty()) {
+        if (softtion.isUndefined(table) || 
+            softtion.isArrayEmpty(columns)) {
             return null;
-        } // Comando no tiene tabla, ni columnas definidas
+        } // Comando contiene atributos indefinidos
 
-        var $command = "UPDATE " + $table + " SET ";
+        var command = "UPDATE " + table + " SET ";
+    
+        softtion.forEach(columns, function (column, index) {
+            command += column + "=?"; 
+            
+            if ((index + 1) !== columns.length) {
+                command += ", "; 
+            } // Aun no se termina de cargar columnas
+        });
         
-        for (var $i = 0; $i < ($columns.length - 1); $i++) {
-            $command += $columns[$i] + "=?,"; 
-        } // Cargando columnas para ejecutar Comando
-        
-        $command += $columns.last() + "=?";
+        if (softtion.isDefined(this.whereClause)) { 
+            command += " " + this.whereClause.getSentence();
+        } // Cargando Clausula WHERE del comando
 
-        if (softtion.isDefined($where)) { 
-            $command += " " + $where.getDescription();
-        }
-
-        return $command; // Retornando comando UPDATE
+        return command; // Retornando comando UPDATE
     };
 
-    Update.prototype.execute = function (callbackResult) {
-        var $command = this.getCommand(); // Comando generado
+    Update.prototype.execute = function () {
+        var self = this; // Instancia Database
+        
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = self.getCommand(); // Comando
+                
+                if (softtion.isDefined(command)) {
+                    var values = self.values, // Valores
+                        where = self.whereClause;
 
-        if ($command !== null) {
-            var $values = this.options.values; // Valores de la Sentencia
+                    if (softtion.isDefined(where)) {
+                        values = values.concat(where.getValues());
+                    } // Agrengado valores de Clausula WHERE
 
-            if (this.options.where) {
-                $values = $values.concat(this.options.where.getValues());
-            } // Agrengado valores de Clausula WHERE
-
-            this.options.connection.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, $values,
-                    function (sqlTransaccion, sqlResultSet) { 
-                        WebSQL.callback(callbackResult, { success: true, rowsAffected: sqlResultSet.rowsAffected });
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.callback(callbackResult, { success: false, rowsAffected: -1, error: sqlError });
-                    }
-                );
+                    connection.transaction(function (sqlTransaction) {
+                        sqlTransaction.executeSql(command, values, 
+                            function (sqlTransaccion, sqlResultSet) { 
+                                resolve({ 
+                                    success: true,
+                                    rowsAffected: sqlResultSet.rowsAffected
+                                });
+                            },
+                            function (sqlTransaccion, sqlError) {
+                                reject({ sqlError: sqlError, rowsAffected: -1 });
+                            }
+                        );
+                    });
+                } else {
+                    resolve({ success: false, message: ErrorSQL.PARAMETERS });
+                } // No se definieron parametros de sentencia
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión definida
+        });
+    };
+    
+    Update.prototype.setJson = function (json) {
+        if (softtion.isDefined(json)) {
+            var columns = [], values = []; // Columnas y valores
+            
+            jQuery.each(json, function (key, item) {
+                columns.push(key); values.push(item);
             });
-
-            return true; // Commando ejecutado correctamente
-        }
-
-        return false; // Commando no se ha generado correctamente
-    };
-
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Modelo para gestionar Comando DELETE">
-
-    var Delete = function (options) { 
-        var $defaults = { 
-            table : undefined, 
-            connection : undefined, 
-            where : undefined
-        };
+            
+            this.setColumns(columns); this.setValues(values);
+        } // Se establecio correctamente un objeto
         
-        this.options = jQuery.extend({}, $defaults, options);
+        return this; // Retornando interfaz fluida
     };
 
-    Delete.prototype = new ICommand();
+    // Clase Delete
+
+    var Delete = function (connection) { 
+        this.setConnection(connection);
+    };
+
+    Delete.prototype = new IWhere();
     Delete.prototype.constructor = Delete;
 
     Delete.prototype.getCommand = function () {
-        var $table = this.options.table, $where = this.options.where;
+        var table = this.table; // Tabla del comando
         
-        if (softtion.isUndefined($table)) {
+        if (softtion.isUndefined(table)) {
             return null;
         } // Comando no tiene tabla definida
 
-        var $command = "DELETE FROM " + $table; // Iniciando 
+        var command = "DELETE FROM " + table; // Iniciando 
         
-        if (softtion.isDefined($where)) { 
-            $command += " " + $where.getDescription(); 
-        }
+        if (softtion.isDefined(this.whereClause)) { 
+            command += " " + this.whereClause.getSentence(); 
+        } // Cargando Clausula WHERE del comando
         
-        return $command; // Retornando comando DELETE
+        return command; // Retornando comando DELETE
     };
 
-    Delete.prototype.execute = function (callbackResult) {
-        var $command = this.getCommand(); // Comando generado
-
-        if ($command !== null) {
-            var $values = []; // Valores de la Sentencia
-
-            if (this.options.where) {
-                $values = $values.concat(this.options.where.getValues()); 
-            } // Agrengado valores de Clausula WHERE
-
-            this.options.connection.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, $values,
-                    function (sqlTransaccion, sqlResultSet) { 
-                        WebSQL.callback(callbackResult,{ success: true, rowsAffected: sqlResultSet.rowsAffected });
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.callback(callbackResult,{ success: false, rowsAffected: -1, error: sqlError });
-                    }
-                );
-            });
-
-            return true; // Commando ejecutado correctamente
-        }
-
-        return false; // Commando no se ha generado correctamente
-    };
-
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Modelo para gestionar Comando SELECT">
-
-    var Select = function (options) { 
-        var $defaults = { 
-            tables: new Array(),   // Lista de tablas
-            columns: new Array(),  // Columnas para filtrar
-            values: new Array(),   // Valores
-            connection: undefined,      // Conexión base de Datos
-            distinct: false,            // Distinct
-            where: undefined,           // Clausula Where
-            groupBy: undefined,         // Clausula GroupBy
-            orderBy: undefined,         // Clausula OrderBy
-            relations: new Array() // Relaciones entre Tablas
-        };
+    Delete.prototype.execute = function () {
+        var self = this; // Instancia Database
         
-        this.options = jQuery.extend({}, $defaults, options);
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = self.getCommand(); // Comando
+                
+                if (softtion.isDefined(command)) {
+                    var where = self.whereClause, values;
+
+                    if (softtion.isDefined(where)) {
+                        values = where.getValues();
+                    } // Agrengado valores de Clausula WHERE
+
+                    connection.transaction(function (sqlTransaction) {
+                        sqlTransaction.executeSql(command, values, 
+                            function (sqlTransaccion, sqlResultSet) { 
+                                resolve({ 
+                                    success: true,
+                                    rowsAffected: sqlResultSet.rowsAffected
+                                });
+                            },
+                            function (sqlTransaccion, sqlError) {
+                                reject({ sqlError: sqlError, rowsAffected: -1 });
+                            }
+                        );
+                    });
+                } else {
+                    resolve({ success: false, message: ErrorSQL.PARAMETERS });
+                } // No se definieron parametros de sentencia
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión definida
+        });
     };
 
-    Select.prototype = new ICommand();
+    // Clase Select
+
+    var Select = function (connection) {
+        this.tables = []; // Tablas
+        this.distinct = false;
+        this.relations = [];
+        
+        this.setConnection(connection);
+    };
+
+    Select.prototype = new ISelect();
     Select.prototype.constructor = Select;
     
-    Select.prototype.set = function (key, value) {
-        switch (key) {
-            case ("where"): 
-                this.options.where = value; break;
-                
-            case ("clauses"): 
-                this.options.clauses = value; break;
-        }
+    Select.prototype.setTable = function (table) {
+        if (!this.tables.hasItem(table)) {
+            this.tables.push(table);
+        } // No ha definido esta tabla en el comando
         
-        return this; // Retornando interfaz fluida
+        return this; // Retornando intefaz fluida
     };
-
-    Select.prototype.addRelation = function (relation) {
-        if (WebSQL.is("relation", relation)) {
-            this.relations.push(relation); 
-        } // Agregando relacion en la Variable
-
-        return this; // Retornando interfaz fluida
+    
+    Select.prototype.setTables = function (tables) {
+        if (softtion.isArray(tables)) {
+            this.tables = tables;
+        } // Tablas establecidas es un Array
+        
+        return this; // Retornando intefaz fluida
+    };
+    
+    Select.prototype.setDistinct = function (distinct) {
+        this.distinct = distinct; return this;
+    };
+//
+    Select.prototype.getRelations = function () {
+        return this.relations;
     };
 
     Select.prototype.hasOne = function (table, local, foreign, variable) {
-        this.addRelation(new Relation().
-            set("table", table).
-            set("local", local).
-            set("foreign", foreign).
-            set("variable", variable).
-            set("type", "hasOne")
+        this.relations.push(
+            new Relation().
+                setTable(table).setLocalKey(local).
+                setForeignKey(foreign).setVariableKey(variable).
+                setType(Relations.HAS_ONE)
         );
 
         return this; // Retornando interfaz fluida
     };
-
+    
     Select.prototype.hasMany = function (table, local, foreign, variable) {
-        this.addRelation(new Relation().
-            set("table", table).
-            set("local", local).
-            set("foreign", foreign).
-            set("variable", variable).
-            set("type", "hasMany")
+        this.relations.push(
+            new Relation().
+                setTable(table).setLocalKey(local).
+                setForeignKey(foreign).setVariableKey(variable).
+                setType(Relations.HAS_MANY)
         );
 
         return this; // Retornando interfaz fluida
     };
 
     Select.prototype.getCommand = function () {
-        var $tables = this.options.tables,
-            $distinct = this.options.distinct,
-            $columns = this.options.columns,
-            $where = this.options.where,
-            $groupBy = this.options.groupBy,
-            $orderBy = this.options.orderBy;
+        var tables = this.tables, 
+            distinct = this.distinct,
+            columns = this.columns;
         
-        if (softtion.isArrayEmpty($tables)) {
+        if (softtion.isArrayEmpty(tables)) {
             return null;
         } // El comando no tiene tablas definidas
 
-        var $command = "SELECT" + (($distinct) ? " DISTINCT " : " ");
+        var command = "SELECT" + ((distinct) ? " DISTINCT " : " ");
         
-        if (softtion.isArrayEmpty($columns)) {
-            $command += "*"; // No definío columnas, se establece el comodín
+        if (softtion.isArrayEmpty(columns)) {
+            command += "*"; // No definío columnas
         } else {
-            for (var $i = 0; $i < ($columns.length - 1); $i++) {
-                $command += $columns[$i] + ","; 
-            } // Cargando columnas para el comando
-            
-            $command += $columns.last();
+            softtion.forEach(columns, function (column, index) {
+                command += column +
+                    (((index + 1) !== columns.length) ? ", " : ""); 
+            });
         } // Se establecen las columnas definidas en el Comando
 
-        $command += " FROM "; // Cargando tabla de consulta
+        command += " FROM "; // Cargando tabla de consulta
         
-        for (var $i = 0; $i < ($tables.length - 1); $i++) {
-            $command += $tables[$i] + ","; 
-        } // Cargando tablas para el Comando
-            
-        $command += $tables.last();
+        softtion.forEach(tables, function (table, index) {
+            command += table +
+                (((index + 1) !== tables.length) ? ", " : ""); 
+        });
 
-        if (softtion.isDefined($where)) {
-            $command += " " + $where.getDescription();
-        } // Where definido
-        
-        if (softtion.isDefined($groupBy)) { 
-            $command += " " + $groupBy.getDescription();
-        } // GroupBy definido
-        
-        if (softtion.isDefined($orderBy)) { 
-            $command += " " + $orderBy.getDescription(); 
-        } // OrderBy definido
+        if (softtion.isDefined(this.whereClause)) {
+            command += " " + this.whereClause.getSentence();
+        } // Cargando Clausula WHERE del comando
 
-        return $command; // Retornando sentencia SELECT
+        if (softtion.isDefined(this.groupByClause)) {
+            command += " " + this.groupByClause.getSentence();
+        } // Cargando Clausula GROUP BY del comando
+
+        if (softtion.isDefined(this.orderByClause)) {
+            command += " " + this.orderByClause.getSentence();
+        } // Cargando Clausula ORDER BY del comando
+
+        return command; // Retornando sentencia SELECT
     };
-
-    Select.prototype.execute = function (callbackResult) {
-        var $command = this.getCommand(); // Comando generado
-
-        if ($command !== null) {
-            var $select = this, $values = [], $relations = this.options.relations;
-
-            if (this.options.where) {
-                $values = $values.concat(this.options.where.getValues()); 
-            } // Agrengado valores de Clausula WHERE
+    
+    function setRelatedObjects
+         (select, objects, index, indexRelation, promise) {
+             
+        var relations = select.getRelations(),
+            object = objects[index], 
+            relation = relations[indexRelation],
             
-            this.options.connection.transaction(function (sqlTransaction) {
-                sqlTransaction.executeSql($command, $values,
-                    function (sqlTransaccion, sqlResultSet) { 
-                        var $objects = new Array(); // Objetos resultante
-
-                        if (sqlResultSet.rows.length !== 0) {
-                            jQuery.each(sqlResultSet.rows, function (key, object) {
-                                $objects.push(object); 
-                            });
-                        } // Se encontraron resultados en la Consulta
-
-                        if (!$objects.isEmpty() && !softtion.isArrayEmpty($relations)) {
-                            WebSQL.createRelation($select, $objects, 0, 0, callbackResult);
-                        } else { 
-                            WebSQL.callback(callbackResult, { success: true, data: $objects });
-                        } // No se establecieron parametros para realizar Relaciones
-                    },
-                    function (sqlTransaccion, sqlError) {
-                        WebSQL.callback(callbackResult, { success: false, data: undefined, error: sqlError });
+            // PARAMETROS DE LA RELACIÓN
+            column = relation.getForeignKey(),
+            value = object[relation.getLocalKey()];
+    
+        $sqLite.select().
+            setConnection(select.connection).
+            setTable(relation.getTable()).
+            where(column, "=", value).execute().
+            then((result) => {
+                if (result.success) {
+                    var typeRelation = relation.getType(),
+                        data = result.data,
+                        key = relation.getVariableKey() || relation.getTable();
+                    
+                    switch (typeRelation) {
+                        case (Relations.HAS_ONE) :
+                            object[key] = (data.isEmpty()) ? null : data[0];
+                        break;
+                        
+                        case (Relations.HAS_MANY) : object[key] = data; break;
                     }
-                );
+                }
+                
+                indexRelation++; // Incrementa indice de Relacion
+
+                if (indexRelation < relations.length) {
+                    setRelatedObjects(
+                        select, objects, index, indexRelation, promise
+                    );
+                } else {
+                    indexRelation = 0; index++; // Siguiente item
+
+                    if (index < objects.length) {
+                        setRelatedObjects(
+                            select, objects, index, indexRelation, promise
+                        );
+                    } else {
+                        promise.resolve({ success: true, data: objects });
+                    } // Finalizando proceso Relacional
+                } // Ya se cargaron todas las relaciones establecidas
+            }).catch((result) => {
+                result["message"] = ErrorSQL.RELATIONS;
+        
+                promise.reject(result); // Resultado final
             });
+    }
 
-            return true; // Commando ejecutado correctamente
-        }
+    Select.prototype.execute = function () {
+        var self = this; // Instancia del comando SELECT
+        
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = self.getCommand(); // Comando
+                
+                if (softtion.isDefined(command)) {
+                    var where = self.whereClause, values;
 
-        return false; // Commando no se ha generado correctamente
+                    if (softtion.isDefined(where)) {
+                        values = where.getValues();
+                    } // Agrengado valores de Clausula WHERE
+
+                    connection.transaction((sqlTransaction) => {
+                        sqlTransaction.executeSql(command, values, 
+                            (sqlTransaccion, sqlResultSet) => { 
+                                var datas = [], // Resultado
+                                    rows = sqlResultSet.rows;
+                                
+                                if (rows.length > 0) {
+                                    jQuery.each(rows, (index, row) => {
+                                        datas.push(row);
+                                    });
+                                } // Cargando datos generados
+                                
+                                if (!datas.isEmpty() && !self.relations.isEmpty()) {
+                                    var promise = {
+                                        resolve: resolve, reject: reject
+                                    };
+                                    
+                                    setRelatedObjects(self, datas, 0, 0, promise);
+                                } else {
+                                    resolve({ success: true, data: datas });
+                                } // No hay objetos relacionales
+                            },
+                            
+                            (sqlTransaccion, sqlError) => {
+                                reject({ sqlError: sqlError });
+                            }
+                        );
+                    });
+                } else {
+                    resolve({ success: false, message: ErrorSQL.PARAMETERS });
+                } // No se definieron parametros de sentencia
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión definida
+        });
+    };
+    
+    // Clase ColumnTable
+    
+    var ColumnTable = function () {
+        this.name = undefined; this.type = undefined;
+        this.autoIncrement = false;
+        this.primaryKey = false; this.notNull = false; 
+    };
+    
+    ColumnTable.prototype.setName = function (name) {
+        this.name = name; return this;
+    };
+    
+    ColumnTable.prototype.setType = function (type) {
+        this.type = type; return this;
+    };
+    
+    ColumnTable.prototype.setAutoIncrement = function (autoIncrement) {
+        this.autoIncrement = autoIncrement; return this;
+    };
+    
+    ColumnTable.prototype.setPrimaryKey = function (primaryKey) {
+        this.primaryKey = primaryKey; return this;
+    };
+    
+    ColumnTable.prototype.setNotNull = function (notNull) {
+        this.notNull = notNull; return this;
+    };
+    
+    ColumnTable.prototype.getSentence = function () {
+        var sentence = this.name + " " + this.type;
+        
+        if (this.primaryKey) {
+            sentence += " PRIMARY KEY";
+        } // Columna es llave primaria
+        
+        if (this.autoIncrement) {
+            sentence += " AUTOINCREMENT";
+        } // Columna debe auto incrementar
+        
+        if (this.notNull) {
+            sentence += " NOT NULL";
+        } // Columna no debe ser Nula
+        
+        return sentence; // Retornando columna
+    };
+    
+    // Clase Table
+    
+    var Table = function (name) {
+        this.name = name; this.columns = [];
+        this.columnsName = []; // Nombre de columnas
+        
+        this.connection = undefined;
+        this.notExists = false;
+    };
+    
+    Table.prototype.setConnection = function (connection) {
+        this.connection = connection; return this;
+    };
+    
+    Table.prototype.setNotExists = function (notExists) {
+        this.notExists = notExists; return this;
+    };
+    
+    Table.prototype.getName = function () {
+        return this.name;
+    };
+    
+    Table.prototype.addColumn = function (attrs) {
+        if (softtion.isString(attrs.name) && softtion.isString(attrs.type)) {
+            if (!this.columnsName.hasItem(attrs.name)) {
+                
+                // Agregando columna de tabla
+                this.columns.push(
+                    new ColumnTable().
+                        setName(attrs.name).setType(attrs.type).
+                        setPrimaryKey(attrs.primaryKey).
+                        setAutoIncrement(attrs.autoIncrement).
+                        setNotNull(attrs.notNull)
+                );
+        
+                this.columnsName.push(name);
+            } // Columna no ha sido registrada
+        } // Se establecieron parametros necesarios correctamente
+        
+        return this; // Retornando interfaz fluida
+    };
+    
+    Table.prototype.getColumns = function () {
+        return this.columns;
+    };
+    
+    Table.prototype.getSentence = function () {
+        var columns = this.columns; // Columnas
+        
+        if (!softtion.isString(this.name) && columns.isEmpty()) {
+            return null;
+        } // No ha definido parametros correctamente
+        
+        var command = "CREATE TABLE" + // Iniciando comando
+            ((!this.notExists) ? " IF NOT EXISTS" : ""); 
+
+        command += " " + this.name + " ("; // Nombre de tabla
+        
+        softtion.forEach(columns, function (column, index) {
+            
+            command += column.getSentence() +
+                (((index + 1) !== columns.length) ? ", " : ""); 
+        });
+
+        return command + ");"; // Retornando comando final
+    };
+    
+    Table.prototype.create = function () {
+        var self = this; // Instancia de la Tabla
+        
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = self.getSentence();
+                
+                if (softtion.isDefined(command)) {
+                    connection.transaction(function (sqlTransaction) {
+                        sqlTransaction.executeSql(command, [], 
+                            function () { 
+                                resolve({ success: true });
+                            },
+                            function (sqlTransaccion, sqlError) {
+                                reject({ sqlError: sqlError });
+                            }
+                        );
+                    });
+                } else {
+                    resolve({ success: false, message: ErrorSQL.PARAMETERS });
+                } // Parametros establecidos son insuficientes
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión
+        });
     };
 
-    //</editor-fold>
+    Table.prototype.drop = function (table) {
+        var self = this; // Instancia Database
+        
+        return new Promise(function (resolve, reject) {
+            var connection = self.connection;
+            
+            if (softtion.isDefined(connection)) {
+                var command = "DROP TABLE " + table; // Comando DROP
+                
+                connection.transaction(function (sqlTransaction) {
+                    sqlTransaction.executeSql(command, [], 
+                        function () { 
+                            resolve({ success: true });
+                        },
+                        function (sqlTransaccion, sqlError) {
+                            reject({ sqlError: sqlError });
+                        }
+                    );
+                });
+            } else {
+                resolve({ success: false, message: ErrorSQL.CONNECTION });
+            } // No hay instancia de la conexión
+        });
+    };
+    
+    // Clase DB
+    
+    var DB = function ($options) {
+        this.connection = undefined;
+        
+        if ($sqLite.isSupported()) {
+            var defaults = {
+                descripcion: "Softtion",
+                version: "1.0.0", 
+                size: 2 * 1024 * 1024
+            };
 
-    softtion.websql = {
-        insert: function (options) { 
-            return new Insert(options); 
-        },
-        update: function (options) { 
-            return new Update(options); 
-        },
-        delete: function (options) { 
-            return new Delete(options); 
-        },
-        select: function (options) { 
-            return new Select(options); 
-        }
-    };
-    
-    // Clase Model
-    
-    Model = function (nameTable) { 
-        this.table = nameTable; 
-        this.primaryKey = "id";
-        
-        this.whereModel = undefined; 
-        this.groupByModel = undefined;
-        this.orderByModel = undefined;
-        
-        this.activeOr = false; 
-        this.activeNot = false; 
-        
-        this.command = "select";
-    };
-    
-    // Métodos de la clase Model
-    
-    Model.prototype.set = function (key, value) {
-        switch (key) {
-            case ("connection"): 
-                this.connection = value; break;
-                
-            case ("table"): 
-                this.table = value; break;
-                
-            case ("command"): 
-                this.command = value; break;
+            var options = jQuery.extend({}, defaults, $options);
             
-            case ("columns"): 
-                this.columns = value; break;
-                
-            case ("values"): 
-                this.values = value; break;
-        }
+            this.connection = window.openDatabase(
+                options.name, options.version,
+                options.description, options.size           
+            );
+        } // Navegador soporta WebSQL, iniciando DB
+    };
+
+    DB.prototype.getConnection = function () {
+        return this.connection;
     };
     
-    Model.prototype.get = function (key) {
-        switch (key) {
-            case ("connection"): 
-                return this.connection;
-                
-            case ("table"): 
-                return this.table;
-                
-            case ("command"): 
-                return this.command;
-            
-            case ("columns"): 
-                return this.columns;
-                
-            case ("values"): 
-                return this.values;
-                
-            case ("primaryKey"): 
-                return this.primaryKey;
-        }
-    };
-    
-    Model.prototype.or = function () {
-        this.activeOr = true; return this;
-    };
-    
-    Model.prototype.not = function () { 
-        this.activeNot = true; return this;
-    };
-    
-    // Comando 'Insert'
-    
-    Model.prototype.insert = function (values, columns, callback) {
-        var $self = this; // Objeto Model
-        
-        new Insert({
-            table: $self.get('table'), 
-            connection: $self.get('connection'),
-            columns: columns || new Array(), 
-            values: values
-        }).execute(callback);
-    };
-    
-    Model.prototype.insertJson = function (objectJson, callback) {
-        var $columns = new Array(), 
-            $values = new Array(), $self = this; 
-        
-        jQuery.each(objectJson, function (key, value) { 
-            $columns.push(key); $values.push(value); 
-        }); // Recorriendo el objeto para establecer columnas
-        
-        $self.insert($values, $columns, callback);
-    };
-    
-    // Comando 'Select'
-    
-    Model.prototype.select = function (columns) { 
-        this.set("command","select"); this.set("columns",columns); 
-        return this; // Retornando para recursividad
-    };
-    
-    // Comando 'Update'
-    
-    Model.prototype.update = function (columns, values) {
-        this.set("command","update"); // Estableciendo Comando
-        this.set("columns",columns); this.set("values",values); 
-        return this; // Retornando para recursividad
-    };
-    
-    Model.prototype.updateJson = function (objectJson) {
-        var $columns = new Array(), 
-            $values = new Array(), $self = this; 
-        
-        jQuery.each(objectJson, function (key, value) { 
-            $columns.push(key); $values.push(value); 
-        }); // Recorriendo el objeto para establecer columnas
-        
-        return $self.update($columns, $values);
-    };
-    
-    // Comando 'Delete'
-    
-    Model.prototype.delete = function () { 
-        this.set("command","delete"); return this; // Retornando para recursividad
-    };
-    
-    // Clausula 'Where'
-    
-    Model.prototype.where = function (column, operator, value) {
-        WebSQL.addFilter("condition", this, column, operator, [value]); return this;
-    };
-    
-    Model.prototype.in = function (column, values) {
-        WebSQL.addFilter("in", this, column, null, values); return this; 
-    };
-    
-    Model.prototype.between = function (column, since, until) {
-        WebSQL.addFilter("between", this, column, null, [since, until]); return this; 
-    };
-    
-    Model.prototype.like = function (column, value) {
-        WebSQL.addFilter("like", this, column, null, [value]); return this; 
-    };
-    
-    Model.prototype.isNull = function (column) {
-        WebSQL.addFilter("isNull", this, column, null, null); return this; 
-    };
-    
-    // Clausula 'GroupBy'
-    
-    Model.prototype.groupBy = function (column) {
-        this.groupByModel = this.groupByModel || new GroupBy();
-        this.groupByModel.setColumn(column); return this;
-    };
-    
-    // Clausula 'OrderBy'
-    
-    Model.prototype.orderBy = function (column, operatorOrder) {
-        this.orderByModel = this.orderByModel || new OrderBy();
-        this.orderByModel.addColumn(column,operatorOrder); return this;
-    };
-    
-    // Método para ejecutar comando configurado
-    
-    Model.prototype.resultSet = function (callback) {
-        switch (this.get("command")) {
-            case ("select") :
-                new Select({
-                    connection: this.get("connection"),
-                    tables: softtion.parseArray(this.get("table")),
-                    columns: this.get("columns") || new Array(),
-                    where: this.whereModel,
-                    groupBy: this.groupByModel,
-                    orderBy: this.orderByModel
-                }).execute(callback);
-                
-                this.orderByModel = undefined; this.groupByModel = undefined;
-            break;
-            
-            case ("update") :
-                new Update({
-                    connection: this.get("connection"),
-                    table: this.get("table"),
-                    values: this.get("values"),
-                    columns: this.get("columns") || new Array(),
-                    where: this.whereModel
-                }).execute(callback);
-            break;
-            
-            case ("delete") :
-                new Delete({
-                    table: this.get('table'), 
-                    connection: this.get('connection'),
-                    where: this.whereModel
-                }).execute(callback);
-            break;
-        }
-        
-        this.whereModel = undefined; this.set("command","select");
-    };
-    
-    Model.prototype.all = function (callback) {
-        this.set("command","select"); this.resultSet(callback);
-    };
-    
-    Model.prototype.find = function (value, callback) {
-        var primaryKey = this.get("primaryKey");
-        
-        if (softtion.isString(primaryKey)) {
-            this.where(primaryKey, "=", value).resultSet(callback);
-        } else {
-            callback({ success: false, data: "No ha definido PRIMARY KEY" });
-        } // No se ha definido llave primaria
+    DB.prototype.table = function (name) {
+        return new Table(name).setConnection(this.connection);
     };
 });

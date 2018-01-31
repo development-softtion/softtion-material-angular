@@ -1,11 +1,10 @@
+
 /*
- Angular Softtion v1.0.0
- (c) 2016 Softtion Developers, http://angular.softtion.com.co
+ Angular Softtion v1.1.8
+ (c) 2016-2018 Softtion Developers, http://angular.softtion.com.co
  License: MIT
  Updated: 05/Ene/2016
 */
-
-/* global URL */
 
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
@@ -13,7 +12,7 @@
     } else {
         throw new Error("Softtion Angular requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
-})(function (softtion, angular, jQuery) {
+})(function (softtion, angular) {
     
     var ngSofttion = angular.module("ngSofttion", []);
 
@@ -167,4 +166,10 @@
     };
 
     ngSofttion.service("$httpFile", ["$q", "$http", "$timeout", "$window", httpFileService]);
+    
+    if (softtion.isDefined(softtion.sqLite)) {
+        ngSofttion.service("$sqLite", function () {
+            return softtion.sqLite;
+        });
+    } // Se ha cargado Libreria de SQLite de Softtion
 });
