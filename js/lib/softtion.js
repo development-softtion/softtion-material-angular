@@ -812,8 +812,8 @@
 
                 default :
                     return { 
-                        date : this.json("date"), 
-                        time : this.json("time") 
+                        date : this.toJson("date"), 
+                        time : this.toJson("time") 
                     };
             }
         };
@@ -823,11 +823,12 @@
         };
 
         Date.prototype.normalize = function (option) {
-            var $option = option || "date";
+            option = option || "date";
 
-            switch ($option) {
+            switch (option) {
                 case ("date") :
-                    this.setHours(0); this.setMinutes(0); this.setSeconds(0); this.setMilliseconds(0);
+                    this.setHours(0); this.setMinutes(0);
+                    this.setSeconds(0); this.setMilliseconds(0);
                 break;
 
                 case ("time") :
@@ -835,28 +836,53 @@
                 break;
             }
 
-            return this; // Retoranando interfaz fluida
+            return this; // Retornando interfaz fluida
         };
 
-        Date.prototype.getFormat = function (formato) {
-            var $formato = formato || "dd-mm-aa hh:ii:ss"; // Estableciendo formato
-            var $hora = (this.getHours() > 12) ? (this.getHours() - 12) : 
+        Date.prototype.getFormat = function (format) {
+            var formato = format || "dd-mm-aa hh:ii:ss"; // Formato
+            var hora = (this.getHours() > 12) ? (this.getHours() - 12) : 
                 (this.getHours() === 0) ? 12 : this.getHours();
 
-            $formato = $formato.replace("dd",softtion.leadingChar(this.getDate(),"0",2));
-            $formato = $formato.replace("mm",softtion.leadingChar((this.getMonth() + 1),"0",2));
-            $formato = $formato.replace("aa",softtion.leadingChar(this.getFullYear(),"0",4));
+            formato = formato.replace(
+                "dd", softtion.leadingChar(this.getDate(), "0", 2)
+            ); // Número del día de la fecha
+        
+            formato = formato.replace(
+                "mm", softtion.leadingChar((this.getMonth() + 1), "0", 2)
+            ); // Número del mes de la fecha
+    
+            formato = formato.replace(
+                "aa", softtion.leadingChar(this.getFullYear(), "0", 4)
+            ); // Número del año de la fecha
 
-            $formato = $formato.replace("mn",softtion.get(softtion.MONTHS_OF_YEAR)[this.getMonth()]);
-            $formato = $formato.replace("ww",softtion.get(softtion.DAYS_OF_WEEK)[this.getDay()]);
+            formato = formato.replace(
+                "mn", softtion.get(softtion.MONTHS_OF_YEAR)[this.getMonth()]
+            ); // Nombre del mes de la fecha
+    
+            formato = formato.replace(
+                "ww", softtion.get(softtion.DAYS_OF_WEEK)[this.getDay()]
+            ); // Nombre de la semana de la fecha
 
-            $formato = $formato.replace("hh",softtion.leadingChar(this.getHours(),"0",2));
-            $formato = $formato.replace("ii",softtion.leadingChar(this.getMinutes(),"0",2));
-            $formato = $formato.replace("ss",softtion.leadingChar(this.getSeconds(),"0",2));
-            $formato = $formato.replace("hz",softtion.leadingChar($hora,"0",2));
-            $formato = $formato.replace("zz",(this.getHours() > 11) ? "PM" : "AM"); 
+            formato = formato.replace(
+                "hh", softtion.leadingChar(this.getHours(), "0", 2)
+            ); // Número de hora de la fecha
+    
+            formato = formato.replace(
+                "ii", softtion.leadingChar(this.getMinutes(), "0", 2)
+            ); // Número de minuto de la fecha
+    
+            formato = formato.replace(
+                "ss", softtion.leadingChar(this.getSeconds(), "0", 2)
+            ); // Número de segundo de la fecha
+    
+            formato = formato.replace(
+                "hz", softtion.leadingChar(hora, "0", 2)
+            ); // Número de hora de la fecha
+    
+            formato = formato.replace("zz", (this.getHours() > 11) ? "PM" : "AM"); 
 
-            return $formato; // Retornando formato de la Fecha establecido
+            return formato; // Retornando formato de la Fecha establecido
         };
 
         Date.prototype.code = function (type) {
@@ -891,7 +917,7 @@
                         return this.getHours() === date.getHours();
 
                     case ("datetime") :
-                        return this.equals(date,"date") && this.equals(date,"time");
+                        return this.equals(date, "date") && this.equals(date, "time");
                 }
             } // Comparando atributos de las fechas
 
@@ -932,43 +958,43 @@
         };
 
         Date.prototype.increase = function (type, valueIncrease) {
-            var $valueDate; // Tipo de dato a incrementar
+            var valueDate; // Tipo de dato a incrementar
 
             switch (type) {
                 case ("hour") :
-                    $valueDate = this.getHours() + valueIncrease;
-                    this.setHours(($valueDate > 23) ? 0 : $valueDate);
+                    valueDate = this.getHours() + valueIncrease;
+                    this.setHours((valueDate > 23) ? 0 : valueDate);
                 break;
 
                 case ("minute") :
-                    $valueDate = this.getMinutes() + valueIncrease;
-                    this.setMinutes(($valueDate > 59) ? 0 : $valueDate);
+                    valueDate = this.getMinutes() + valueIncrease;
+                    this.setMinutes((valueDate > 59) ? 0 : valueDate);
                 break;
 
                 case ("second") :
-                    $valueDate = this.getSeconds() + valueIncrease;
-                    this.setSeconds(($valueDate > 59) ? 0 : $valueDate);
+                    valueDate = this.getSeconds() + valueIncrease;
+                    this.setSeconds((valueDate > 59) ? 0 : valueDate);
                 break;
             }
         };
 
         Date.prototype.decrease = function (type, valueIncrease) {
-            var $valueDate; // Tipo de dato a incrementar
+            var valueDate; // Tipo de dato a incrementar
 
             switch (type) {
                 case ("hour") :
-                    $valueDate = this.getHours() - valueIncrease;
-                    this.setHours(($valueDate < 0) ? 23 : $valueDate);
+                    valueDate = this.getHours() - valueIncrease;
+                    this.setHours((valueDate < 0) ? 23 : valueDate);
                 break;
 
                 case ("minute") :
-                    $valueDate = this.getMinutes() - valueIncrease;
-                    this.setMinutes(($valueDate < 0) ? 59 : $valueDate);
+                    valueDate = this.getMinutes() - valueIncrease;
+                    this.setMinutes((valueDate < 0) ? 59 : valueDate);
                 break;
 
                 case ("second") :
-                    $valueDate = this.getSeconds() - valueIncrease;
-                    this.setSeconds(($valueDate < 0) ? 59 : $valueDate);
+                    valueDate = this.getSeconds() - valueIncrease;
+                    this.setSeconds((valueDate < 0) ? 59 : valueDate);
                 break;
             }
         };
