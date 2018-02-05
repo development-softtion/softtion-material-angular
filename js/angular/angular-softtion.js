@@ -108,66 +108,183 @@
             return new HttpRestful(url, $http); // Objeto RestFul
         };
     }]);
-
-    function httpFileService ($q, $http, $timeout, $window) {
+    
+    function $restful($http) {
         return {
-            download: download,
-            print: print,
-            preview: preview
+            create: create
         };
         
+        function createRoute (selfRestful, id) {
+            var url = selfRestful.url;
+            
+            if (softtion.isDefined(id)) {
+                url += "/" + id;
+            } // Añadiendo identificador en la URL
+            
+            selfRestful.prefixs.forEach(function (prefix) {
+                url += "/" + prefix;
+            }); // Añadiendo prefijos en la URL
+            
+            selfRestful.prefixs = []; // Reseteando prefijos
+            
+            return url; // Ruta final a consumir
+        };
+        
+        var HttpRestful = function (url, $http) {
+            this.url = url; this.$http = $http; this.prefixs = [];
+        };
+        
+        HttpRestful.prototype.prefix = function (prefixs) {
+            this.prefixs = prefixs; return this;
+        };
+        
+        // MÉTODO GET
+        
+        HttpRestful.prototype.all = function (config) {
+            var self = this, $http = self.$http;
+            
+            return $http.get(createRoute(self)).
+                then(config["done"], config["error"]);
+        };
+        
+        HttpRestful.prototype.index = function (config) {
+            var self = this, $http = self.$http;
+            
+            return $http.get(
+                    createRoute(self, config["id"]),
+                    {
+                        params: config["params"]
+                    }
+                ).then(config["done"], config["error"]);
+        };
+        
+        HttpRestful.prototype.show = function (config) {
+            var self = this, $http = self.$http;
+            
+            return $http.get(createRoute(self), config["id"]).
+                then(config["done"], config["error"]);
+        };
+        
+        // MÉTODO POST
+        
+        HttpRestful.prototype.store = function (config) {
+            var self = this, $http = self.$http;
+            
+            return $http.post(
+                createRoute(self, config["id"]), config["data"]
+            ).then(config["done"], config["error"]);
+        };
+        
+        // MÉTODO PUT
+        
+        HttpRestful.prototype.update = function (id, config) {
+            var self = this, $http = self.$http;
+            
+            return $http.put(
+                createRoute(self, id), config["data"]
+            ).then(config["done"], config["error"]);
+        };
+        
+        // MÉTODO DELETE
+        
+        HttpRestful.prototype.destroy = function (id, config) {
+            var self = this, $http = self.$http;
+            
+            return $http.delete(
+                createRoute(self, id)
+            ).then(config["done"], config["error"]);
+        };
+        
+        function create(url) {
+            return new HttpRestful(url, $http); // Objeto RestFul
+        };
+    }
+    
+    ngSofttion.service("$fileHttp", $fileHttpService);
+    
+    $fileHttpService.$inject = [ "$q", "$http", "$timeout", "$window" ];
+    
+    function $fileHttpService($q, $http, $timeout, $window) {
+        
+        // Métodos del servicio 
+        this.download = download;
+        this.print = print;
+        this.preview = preview;
+        
+        function getDataFile(response, type) {
+            var blob = new Blob(
+                    [ response.data ], { type: type }
+                ),
+                
+                URL = $window.URL.createObjectURL(blob);
+        
+            return { blob: blob, url: URL };
+        }
+        
         function download(attrs) {
-            return $q(function (resolve, reject) {
+            return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
                     responseType: "arraybuffer", 
-                    params: attrs["params"] 
-                }).then(function (response) {
-                    var fileBlob = new Blob([response.data], { type: attrs.type }),
-                        fileUrl = $window.URL.createObjectURL(fileBlob),
-                        element = "<a/>",
-                        elementAttrs = { href: fileUrl, download: attrs.nameFile };
+                    params: attrs.params
+                }).then((response) => {
+                    // Generar datos para descargar
+                    var file = getDataFile(response, attrs.type);
+                    
+                    var element = "<a/>",
+                        properties = { 
+                            href: file.url, download: attrs.fileName 
+                        };
 
-                    angular.element(element, elementAttrs).appendTo("body")[0].click();
+                    angular.element(element, properties).
+                        appendTo("body")[0].click();
 
-                    $timeout(function () { 
-                        $window.URL.revokeObjectURL(fileUrl); 
+                    $timeout(() => { 
+                        $window.URL.revokeObjectURL(file.url); 
                     }, 10000); // Eliminando URL
                     
-                    resolve(fileBlob); // Todo correcto
-                }).catch(function (error) { reject(error); });
+                    resolve(file.blob); // Proceso correcto
+                }).catch((error) => { 
+                    reject(error); // Error al descargar archivo
+                });
             });
         };
         
         function print(attrs) {
-            return $q(function (resolve, reject) {
+            return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
                     responseType: "arraybuffer", 
-                    params: attrs["params"] 
-                }).then(function (response) {
-                    var fileBlob = new Blob([response.data], { type: attrs.type }),
-                        fileUrl = $window.URL.createObjectURL(fileBlob);
+                    params: attrs.params
+                }).then((response) => {
+                    // Generar datos para imprimir
+                    var file = getDataFile(response, attrs.type);
 
-                    $window.open(fileUrl).print(); resolve(fileBlob); 
-                }).catch(function (error) { reject(error); });
+                    $window.open(file.url).print(); 
+                    
+                    resolve(file.blob); // Proceso correcto
+                }).catch((error) => { 
+                    reject(error); // Error al imprimir archivo
+                });
             });
         };
         
         function preview(attrs) {
-            return $q(function (resolve, reject) {
+            return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
                     responseType: "arraybuffer", 
                     params: attrs.params
-                }).then(function (response) {
-                    var fileBlob = new Blob([response.data], { type: attrs.type }),
-                        fileUrl = $window.URL.createObjectURL(fileBlob);
+                }).then((response) => {
+                    // Generar datos para visualizar
+                    var file = getDataFile(response, attrs.type);
 
-                    $window.open(fileUrl); resolve(fileBlob); 
-                }).catch(function (error) { reject(error); });
+                    $window.open(file.url); 
+                    
+                    resolve(file.blob); // Proceso correcto
+                }).catch((error) => { 
+                    reject(error); // Error al visualizar archivo
+                });
             });
         };
     };
-
-    ngSofttion.service("$httpFile", ["$q", "$http", "$timeout", "$window", httpFileService]);
     
     // VERIFICANDO INSTANCIA PLUGIN SQLITE DE SOFTTION
     
@@ -289,12 +406,28 @@
                 
                 var promise = q.promise; // Promesa
                 
-                promise.where = (column, operator, value) => {
-                    command.where(column, operator, value); return promise;
+                promise.where = () => {
+                    if (arguments.length > 2) {
+                        command.where(
+                            arguments[0], arguments[1], arguments[2]
+                        );
+                    } else {
+                        command.where(arguments[0], arguments[1]);
+                    } // El operador de la condición es una igualdad
+                    
+                    return promise; // Retornando interfaz fluida
                 };
 
-                promise.orWhere = (column, operator, value) => {
-                    command.orWhere(column, operator, value); return promise;
+                promise.orWhere = () => {
+                    if (arguments.length > 2) {
+                        command.orWhere(
+                            arguments[0], arguments[1], arguments[2]
+                        );
+                    } else {
+                        command.orWhere(arguments[0], arguments[1]);
+                    } // El operador de la condición es una igualdad
+                    
+                    return promise; // Retornando interfaz fluida
                 };
 
                 promise.whereIsNull = (column) => {
@@ -410,12 +543,28 @@
                     command.groupBy(column); return promise;
                 };
                 
-                promise.having = (column, operator, value) => {
-                    command.having(column, operator, value); return promise;
+                promise.having = () => {
+                    if (arguments.length > 2) {
+                        command.having(
+                            arguments[0], arguments[1], arguments[2]
+                        );
+                    } else {
+                        command.having(arguments[0], arguments[1]);
+                    } // El operador de la condición es una igualdad
+                    
+                    return promise; // Retornando interfaz fluida
                 };
 
-                promise.orHaving = (column, operator, value) => {
-                    command.orHaving(column, operator, value); return promise;
+                promise.orHaving = () => {
+                    if (arguments.length > 2) {
+                        command.orHaving(
+                            arguments[0], arguments[1], arguments[2]
+                        );
+                    } else {
+                        command.orHaving(arguments[0], arguments[1]);
+                    } // El operador de la condición es una igualdad
+                    
+                    return promise; // Retornando interfaz fluida
                 };
 
                 promise.havingIsNull = (column) => {

@@ -113,39 +113,24 @@
             return new DB(options);
         };
         
-        function insert(connection) { 
-            var $connection = (connection instanceof DB) ?
-                connection.getConnection() : connection;
-            
-            return new Insert($connection); // Comando INSERT
+        function insert(connection) {
+            return new Insert(connection); // Comando INSERT
         };
         
-        function insertArray(connection) { 
-            var $connection = (connection instanceof DB) ?
-                connection.getConnection() : connection;
-            
-            return new InsertArray($connection); // Comando INSERT
+        function insertArray(connection) {            
+            return new InsertArray(connection); // Comando INSERT
         };
         
-        function update(connection) { 
-            var $connection = (connection instanceof DB) ?
-                connection.getConnection() : connection;
-            
-            return new Update($connection); // Comando UPDATE
+        function update(connection) {
+            return new Update(connection); // Comando UPDATE
         };
         
-        function fnDelete(connection) { 
-            var $connection = (connection instanceof DB) ?
-                connection.getConnection() : connection;
-            
-            return new Delete($connection); // Comando DELETE
+        function fnDelete(connection) {
+            return new Delete(connection); // Comando DELETE
         };
         
-        function select(connection) { 
-            var $connection = (connection instanceof DB) ?
-                connection.getConnection() : connection;
-            
-            return new Select($connection); // Comando SELECT
+        function select(connection) {
+            return new Select(connection); // Comando SELECT
         };
         
         return sqLite; // Retornando objeto WebSQL
@@ -627,7 +612,10 @@
     ICommand.prototype.execute = function () {};
     
     ICommand.prototype.setConnection = function (connection) {
-        this.connection = connection; return this;
+        var $connection = (connection instanceof DB) ?
+            connection.getConnection() : connection;
+        
+        this.connection = $connection; return this;
     };
     
     ICommand.prototype.setTable = function (table) {
@@ -695,26 +683,42 @@
     
     // WHERE: CONDITION FILTER
     
-    IWhere.prototype.where = function (column, operator, value) {
+    IWhere.prototype.where = function () {
+        var operator, value; // Datos para condición
+        
+        if (arguments.length > 2) {
+            operator = arguments[1]; value = arguments[2];
+        } else {
+            operator = "="; value = arguments[1];
+        } // El operador de la condición es una igualdad
+        
         defineFilterWhere({
             command: this,
             operatorLogic: OperatorsLogic.AND,
             filterName: FiltersName.CONDITION,
             filterAttrs: {
-                column: column, operator: operator, values: [value]
+                column: arguments[0], operator: operator, values: [value]
             }
         }); // Agregando filtro
         
         return this; // Retornando interfaz fluida
     };
     
-    IWhere.prototype.orWhere = function (column, operator, value) {
+    IWhere.prototype.orWhere = function () {
+        var operator, value; // Datos para condición
+        
+        if (arguments.length > 2) {
+            operator = arguments[1]; value = arguments[2];
+        } else {
+            operator = "="; value = arguments[1];
+        } // El operador de la condición es una igualdad
+        
         defineFilterWhere({
             command: this,
             operatorLogic: OperatorsLogic.OR,
             filterName: FiltersName.CONDITION,
             filterAttrs: {
-                column: column, operator: operator, values: [value]
+                column: arguments[0], operator: operator, values: [value]
             }
         }); // Agregando filtro
         
@@ -1051,26 +1055,42 @@
     
     // HAVING: CONDITION FILTER
     
-    ISelect.prototype.having = function (column, operator, value) {
+    ISelect.prototype.having = function () {
+        var operator, value; // Datos para condición
+        
+        if (arguments.length > 2) {
+            operator = arguments[1]; value = arguments[2];
+        } else {
+            operator = "="; value = arguments[1];
+        } // El operador de la condición es una igualdad
+        
         defineFilterHaving({
             command: this,
             operatorLogic: OperatorsLogic.AND,
             filterName: FiltersName.CONDITION,
             filterAttrs: {
-                column: column, operator: operator, values: [value]
+                column: arguments[0], operator: operator, values: [value]
             }
         }); // Agregando filtro
         
         return this; // Retornando interfaz fluida
     };
     
-    ISelect.prototype.orHaving = function (column, operator, value) {
+    ISelect.prototype.orHaving = function () {
+        var operator, value; // Datos para condición
+        
+        if (arguments.length > 2) {
+            operator = arguments[1]; value = arguments[2];
+        } else {
+            operator = "="; value = arguments[1];
+        } // El operador de la condición es una igualdad
+        
         defineFilterHaving({
             command: this,
             operatorLogic: OperatorsLogic.OR,
             filterName: FiltersName.CONDITION,
             filterAttrs: {
-                column: column, operator: operator, values: [value]
+                column: arguments[0], operator: operator, values: [value]
             }
         }); // Agregando filtro
         
@@ -1951,7 +1971,10 @@
     };
     
     Table.prototype.setConnection = function (connection) {
-        this.connection = connection; return this;
+        var $connection = (connection instanceof DB) ?
+            connection.getConnection() : connection;
+            
+        this.connection = $connection; return this;
     };
     
     Table.prototype.setNotExists = function (notExists) {
@@ -1983,6 +2006,18 @@
         return this; // Retornando interfaz fluida
     };
     
+    Table.prototype.addColumns = function (columns) {
+        if (!softtion.isArrayEmpty(columns)) {
+            var self = this; // Instancia de Table
+            
+            softtion.forEach(columns, (column) => {
+                self.addColumn(column);
+            });
+        } // Se estableció una lista de columnas
+        
+        return this; // Retornando interfaz fluida
+    };
+    
     Table.prototype.getColumns = function () {
         return this.columns;
     };
@@ -1999,8 +2034,7 @@
 
         command += " " + this.name + " ("; // Nombre de tabla
         
-        softtion.forEach(columns, function (column, index) {
-            
+        softtion.forEach(columns, (column, index) => {
             command += column.getSentence() +
                 (((index + 1) !== columns.length) ? ", " : ""); 
         });
@@ -2011,26 +2045,26 @@
     Table.prototype.create = function () {
         var self = this; // Instancia de la Tabla
         
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             var connection = self.connection;
             
             if (softtion.isDefined(connection)) {
                 var command = self.getSentence();
                 
-                if (softtion.isDefined(command)) {
-                    connection.transaction(function (sqlTransaction) {
-                        sqlTransaction.executeSql(command, [], 
-                            function () { 
-                                resolve({ success: true });
-                            },
-                            function (sqlTransaction, sqlError) {
-                                reject({ sqlError: sqlError });
-                            }
-                        );
-                    });
-                } else {
+                if (softtion.isUndefined(command)) {
                     resolve({ success: false, message: ErrorSQL.PARAMETERS });
                 } // Parametros establecidos son insuficientes
+                
+                connection.transaction((sqlTransaction) => {
+                    sqlTransaction.executeSql(command, [], 
+                        () => { 
+                            resolve({ success: true });
+                        },
+                        (sqlTransaction, sqlError) => {
+                            reject({ sqlError: sqlError });
+                        }
+                    );
+                });
             } else {
                 resolve({ success: false, message: ErrorSQL.CONNECTION });
             } // No hay instancia de la conexión
@@ -2040,18 +2074,18 @@
     Table.prototype.drop = function (table) {
         var self = this; // Instancia Database
         
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             var connection = self.connection;
             
             if (softtion.isDefined(connection)) {
                 var command = "DROP TABLE " + table; // Comando DROP
                 
-                connection.transaction(function (sqlTransaction) {
+                connection.transaction((sqlTransaction) => {
                     sqlTransaction.executeSql(command, [], 
-                        function () { 
+                        () => { 
                             resolve({ success: true });
                         },
-                        function (sqlTransaction, sqlError) {
+                        (sqlTransaction, sqlError) => {
                             reject({ sqlError: sqlError });
                         }
                     );
