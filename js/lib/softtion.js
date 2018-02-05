@@ -107,6 +107,10 @@
         return ((this.isArray(array)) && (array.isEmpty()));
     };
     
+    Softtion.prototype.isArrayNotEmpty = function (array) {
+        return ((this.isArray(array)) && (!array.isEmpty()));
+    };
+    
     Softtion.prototype.isFunction = function (func) {
         return ((this.isDefined(func)) && (typeof func === "function"));
     };
@@ -162,7 +166,7 @@
         } else {
             var value = undefined, object = object;
             
-            jQuery.each(arrayKeys, function (index, key) { 
+            jQuery.each(arrayKeys, (index, key) => { 
                 value = object[key];
                 
                 if (self.isDefined(value)) {
@@ -177,7 +181,8 @@
     };
     
     Softtion.prototype.removeKey = function (object, key) {
-        if (this.isUndefined(object) || this.isUndefined(key)) { return; }
+        if (this.isUndefined(object) || 
+            this.isUndefined(key)) { return; }
         
         delete object[key]; // Eliminando parametro del objeto
     };
@@ -200,11 +205,11 @@
                 self = this; // Objeto Softtion
             
             try {
-                attributes.forEach(function (key) {
+                attributes.forEach((key) => {
                     keyError = key; // Clave a validar
                     
-                    if (!self.isDefined(self.findKey(object, key)))
-                        throw self.BreakException;
+                    if (!self.isDefined(self.findKey(object, key))) {
+                        throw self.BreakException; }
                 });
                 
                 response = { success: true };
@@ -226,7 +231,7 @@
             self = this; // Objeto Softtion;
         
         try {
-            array.forEach(function (value) {
+            array.forEach((value) => {
                 stop = fn(value, index); index++;
 
                 if (stop === true) {
@@ -310,18 +315,16 @@
         };
     })();
     
-    Softtion.prototype.generateUrl = function (url, prefixs) {
-        var urlFinal = url; // Iniciando URL
+    Softtion.prototype.generateUrl = function (baseURL, suffixes) {
+        var URL = baseURL; // Iniciando URL
         
-        if (this.isArray(prefixs)) {
-            prefixs.forEach(function (prefix) {
-                urlFinal += "/" + prefix;
-            });
-        } else if (this.isString(prefixs)) {
-            urlFinal += "/" + prefixs;
-        } // Se establecio un solo prefijo
+        if (this.isArrayNotEmpty(suffixes)) {
+            suffixes.forEach((suffix) => { URL += "/" + suffix; });
+        } else if (this.isString(suffixes)) {
+            URL += "/" + suffixes;
+        } // Se establecio un solo prefijo para URL
         
-        return urlFinal; // Retornando url establecida
+        return URL; // Retornando url generada para recurso
     };
     
     Softtion.prototype.encode = function (value, keyPassword) {
@@ -331,7 +334,8 @@
     
     Softtion.prototype.decode = function (value, keyPassword) {
         return (typeof window.CryptoJS === "undefined") ? value :
-            window.CryptoJS.AES.decrypt(value, keyPassword).toString(window.CryptoJS.enc.Utf8);
+            window.CryptoJS.AES.decrypt(value, keyPassword).
+                toString(window.CryptoJS.enc.Utf8);
     };
     
     Softtion.prototype.getMIME = function (extension) {
@@ -573,14 +577,14 @@
             return numberDescription.trim(); // Retornando descripción del número
         }
         catch (err) { 
-            console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+            console.error("Softtion - Uncaught TypeError: " + err); return null; 
         } // Error encontrado en el número
     };
         
     Softtion.prototype.getNumberDescription = function (number) {
         try {
             if (this.isUndefined(number)) {
-                throw 'el número puede no estar definido, instanciado ó no contiene caracteres.';
+                throw "el número puede no estar definido, instanciado ó no contiene caracteres.";
             } // Excepción encontrada en el número
             
             number = isNaN(number) ? parseInt(number) : number;
@@ -631,7 +635,7 @@
             } // El número a describir es el '0'
         } 
         catch (err) { 
-            console.error('Softtion - Uncaught TypeError: ' + err); return null; 
+            console.error("Softtion - Uncaught TypeError: " + err); return null; 
         } // Error encontrado en el número
     };
     
@@ -699,7 +703,7 @@
         milliseconds = milliseconds || 0;
         var result = Math.abs(milliseconds); // Redefiniendo
         
-        this.forEach(timeElapsedAttrs, function (item) {
+        this.forEach(timeElapsedAttrs, (item) => {
             var value = Math.roundDecimal(result / item.divisor);
             
             if (value < item.comparator) {
@@ -759,18 +763,20 @@
             var self = this; // Objeto collection
 
             if (softtion.isArray(object)) {
-                object.forEach(function (item) { self.push(item); });
-            } else if (softtion.isDefined(object)) { self.push(object); }
+                object.forEach((item) => { self.push(item); });
+            } else if (softtion.isDefined(object)) { 
+                self.push(object);
+            } // Agregando el objeto definido
 
             return self; // Retornando interfaz fluida
         };
 
-        Array.prototype.filtrate = function (functionFilter) {
+        Array.prototype.filtrate = function (fnFilter) {
             var arrayFilter = new Array(), index = 0;
 
-            if (softtion.isFunction(functionFilter)) {
-                this.forEach(function (item) {
-                    if (functionFilter(item)) { 
+            if (softtion.isFunction(fnFilter)) {
+                this.forEach((item) => {
+                    if (fnFilter(item)) { 
                         arrayFilter.push(item, index); 
                     }
 
@@ -781,12 +787,12 @@
             return arrayFilter; // Retornando array filtrado
         };
 
-        Array.prototype.for = function (callbackFor) {
-            if (softtion.isFunction(callbackFor)) {
+        Array.prototype.for = function (fnFor) {
+            if (softtion.isFunction(fnFor)) {
                 var notStop = true, index = 0;
 
                 while ((notStop) && (index < this.length)) {
-                    var result = callbackFor(this[index], index); index++;
+                    var result = fnFor(this[index], index); index++;
                     notStop = softtion.isDefined(result) ? result : true; 
                 }
             }

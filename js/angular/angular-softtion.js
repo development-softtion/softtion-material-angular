@@ -18,187 +18,145 @@
     
     var ngSofttion = angular.module("ngSofttion", []);
 
-    ngSofttion.service("$restful", ["$http", function ($http) {
-        return {
-            create: create
-        };
-        
-        function createRoute (selfRestful, id) {
-            var url = selfRestful.url;
-            
-            if (softtion.isDefined(id)) {
-                url += "/" + id;
-            } // Añadiendo identificador en la URL
-            
-            selfRestful.prefixs.forEach(function (prefix) {
-                url += "/" + prefix;
-            }); // Añadiendo prefijos en la URL
-            
-            selfRestful.prefixs = []; // Reseteando prefijos
-            
-            return url; // Ruta final a consumir
-        };
-        
-        var HttpRestful = function (url, $http) {
-            this.url = url; this.$http = $http; this.prefixs = [];
-        };
-        
-        HttpRestful.prototype.prefix = function (prefixs) {
-            this.prefixs = prefixs; return this;
-        };
-        
-        // MÉTODO GET
-        
-        HttpRestful.prototype.all = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(createRoute(self)).
-                then(config["done"], config["error"]);
-        };
-        
-        HttpRestful.prototype.index = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(
-                    createRoute(self, config["id"]),
-                    {
-                        params: config["params"]
-                    }
-                ).then(config["done"], config["error"]);
-        };
-        
-        HttpRestful.prototype.show = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(createRoute(self), config["id"]).
-                then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO POST
-        
-        HttpRestful.prototype.store = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.post(
-                createRoute(self, config["id"]), config["data"]
-            ).then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO PUT
-        
-        HttpRestful.prototype.update = function (id, config) {
-            var self = this, $http = self.$http;
-            
-            return $http.put(
-                createRoute(self, id), config["data"]
-            ).then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO DELETE
-        
-        HttpRestful.prototype.destroy = function (id, config) {
-            var self = this, $http = self.$http;
-            
-            return $http.delete(
-                createRoute(self, id)
-            ).then(config["done"], config["error"]);
-        };
-        
-        function create(url) {
-            return new HttpRestful(url, $http); // Objeto RestFul
-        };
-    }]);
+    // SERVICIO: $restful
+
+    ngSofttion.service("$restful", $restful);
     
-    function $restful($http) {
-        return {
-            create: create
-        };
+    $restful.$inject = [ "$q", "$http" ];
+    
+    function $restful($q, $http) {
         
-        function createRoute (selfRestful, id) {
-            var url = selfRestful.url;
-            
-            if (softtion.isDefined(id)) {
-                url += "/" + id;
-            } // Añadiendo identificador en la URL
-            
-            selfRestful.prefixs.forEach(function (prefix) {
-                url += "/" + prefix;
-            }); // Añadiendo prefijos en la URL
-            
-            selfRestful.prefixs = []; // Reseteando prefijos
-            
-            return url; // Ruta final a consumir
-        };
+        // Métodos del servicio 
+        this.create = create;
         
-        var HttpRestful = function (url, $http) {
-            this.url = url; this.$http = $http; this.prefixs = [];
-        };
-        
-        HttpRestful.prototype.prefix = function (prefixs) {
-            this.prefixs = prefixs; return this;
-        };
-        
-        // MÉTODO GET
-        
-        HttpRestful.prototype.all = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(createRoute(self)).
-                then(config["done"], config["error"]);
-        };
-        
-        HttpRestful.prototype.index = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(
-                    createRoute(self, config["id"]),
-                    {
-                        params: config["params"]
-                    }
-                ).then(config["done"], config["error"]);
-        };
-        
-        HttpRestful.prototype.show = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.get(createRoute(self), config["id"]).
-                then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO POST
-        
-        HttpRestful.prototype.store = function (config) {
-            var self = this, $http = self.$http;
-            
-            return $http.post(
-                createRoute(self, config["id"]), config["data"]
-            ).then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO PUT
-        
-        HttpRestful.prototype.update = function (id, config) {
-            var self = this, $http = self.$http;
-            
-            return $http.put(
-                createRoute(self, id), config["data"]
-            ).then(config["done"], config["error"]);
-        };
-        
-        // MÉTODO DELETE
-        
-        HttpRestful.prototype.destroy = function (id, config) {
-            var self = this, $http = self.$http;
-            
-            return $http.delete(
-                createRoute(self, id)
-            ).then(config["done"], config["error"]);
-        };
-        
-        function create(url) {
-            return new HttpRestful(url, $http); // Objeto RestFul
+        function create(baseURL) {
+            return new HttpRestful(baseURL, $q, $http);
         };
     }
+        
+    var HttpRestful = function (baseURL, q, http) {
+        this.baseURL = baseURL;     // URL del recurso
+        this.$q = q;                // Servicio Promesa
+        this.$http = http;          // Servicio HTTP
+        this.config = {};           // Configuración de petición
+    };
+    
+    HttpRestful.prototype.getBaseURL = function () {
+        return this.baseURL;
+    };
+    
+    HttpRestful.prototype.setConfig = function (config) {
+        this.config = config; return this;
+    };
+    
+    HttpRestful.prototype.clean = function () {
+        this.config = {}; return this; 
+    };
+        
+    HttpRestful.prototype.getResourceRoute  = function (ID, suffixes) {
+        var URL = this.getBaseURL();
+
+        if (softtion.isDefined(ID)) {
+            URL += "/" + ID;
+        } // Agregando ID de recurso en URL
+
+        URL = softtion.generateUrl(URL, suffixes);
+        
+        return URL; // URL generada del recurso
+    };
+
+    HttpRestful.prototype.resource = function (ID, name) {
+        var self = this, // Instancia 
+            baseURL = this.getResourceRoute(ID, [name]),
+            $q = self.$q, $http = self.$http;
+        
+        return new HttpRestful(baseURL, $q, $http); // Recurso
+    };
+
+    // HTTP GET
+
+    HttpRestful.prototype.catalog = function () {
+        var self = this; // Instancia del objeto
+
+        return self.$q((resolve, reject) => {
+            var URL = self.getResourceRoute();
+            
+            self.$http.get(URL, self.config).
+                then((response) => {
+                    self.clean(); resolve(response);
+                }).catch((error) => {
+                    self.clean(); reject(error);
+                });
+        });
+    };
+
+    HttpRestful.prototype.record = function (ID) {
+        var self = this; // Instancia del objeto
+
+        return self.$q((resolve, reject) => {
+            var URL = self.getResourceRoute(ID);
+            
+            self.$http.get(URL, self.config).
+                then((response) => {
+                    self.clean(); resolve(response);
+                }).catch((error) => {
+                    self.clean(); reject(error);
+                });
+        });
+    };
+
+    // HTTP POST
+
+    HttpRestful.prototype.store = function (data) {
+        var self = this; // Instancia del objeto
+
+        return self.$q((resolve, reject) => {
+            var URL = self.getResourceRoute();
+            
+            self.$http.post(URL, data, self.config).
+                then((response) => {
+                    self.clean(); resolve(response);
+                }).catch((error) => {
+                    self.clean(); reject(error);
+                });
+        });
+    };
+
+    // HTTP PUT
+
+    HttpRestful.prototype.modify = function (ID, data) {
+        var self = this; // Instancia del objeto
+
+        return self.$q((resolve, reject) => {
+            var URL = self.getResourceRoute(ID);
+            
+            self.$http.post(URL, data, self.config).
+                then((response) => {
+                    self.clean(); resolve(response);
+                }).catch((error) => {
+                    self.clean(); reject(error);
+                });
+        });
+    };
+
+    // HTTP DELETE
+
+    HttpRestful.prototype.remove = function (ID) {
+        var self = this; // Instancia del objeto
+
+        return self.$q((resolve, reject) => {
+            var URL = self.getResourceRoute(ID);
+            
+            self.$http.post(URL, self.config).
+                then((response) => {
+                    self.clean(); resolve(response);
+                }).catch((error) => {
+                    self.clean(); reject(error);
+                });
+        });
+    };
+    
+    // SERVICIO: $fileHttp
     
     ngSofttion.service("$fileHttp", $fileHttpService);
     
@@ -366,31 +324,31 @@
                 
                 var promise = q.promise; // Promesa
                 
-                promise.setConnection = (connection) => {
+                promise.setConnection = function (connection) {
                     command.setConnection(connection); return promise;
                 };
                 
-                promise.setTable = (table) => {
+                promise.setTable = function (table) {
                     command.setTable(table); return promise;
                 };
 
-                promise.setColumns = (columns) => {
+                promise.setColumns = function (columns) {
                     command.setColumns(columns); return promise;
                 };
 
-                promise.setValues = (values) => {
+                promise.setValues = function (values) {
                     command.setValues(values); return promise;
                 };
 
-                promise.setJson = (json) => {
+                promise.setJson = function (json) {
                     command.setJson(json); return promise;
                 };
     
-                promise.getCommand = () => {
+                promise.getCommand = function () {
                     return command.getCommand();
                 };
                 
-                promise.execute = () => {
+                promise.execute = function () {
                     command.execute().
                         then(
                             (result) => { q.resolve(result); }
@@ -406,7 +364,7 @@
                 
                 var promise = q.promise; // Promesa
                 
-                promise.where = () => {
+                promise.where = function () {
                     if (arguments.length > 2) {
                         command.where(
                             arguments[0], arguments[1], arguments[2]
@@ -418,7 +376,7 @@
                     return promise; // Retornando interfaz fluida
                 };
 
-                promise.orWhere = () => {
+                promise.orWhere = function () {
                     if (arguments.length > 2) {
                         command.orWhere(
                             arguments[0], arguments[1], arguments[2]
@@ -430,83 +388,83 @@
                     return promise; // Retornando interfaz fluida
                 };
 
-                promise.whereIsNull = (column) => {
+                promise.whereIsNull = function (column) {
                     command.whereIsNull(column); return promise;
                 };
 
-                promise.whereIsNotNull = (column) => {
+                promise.whereIsNotNull = function (column) {
                     command.whereIsNotNull(column); return promise;
                 };
 
-                promise.orWhereIsNull = (column) => {
+                promise.orWhereIsNull = function (column) {
                     command.orWhereIsNull(column); return promise;
                 };
 
-                promise.orWhereIsNotNull = (column) => {
+                promise.orWhereIsNotNull = function (column) {
                     command.orWhereIsNotNull(column); return promise;
                 };
 
-                promise.whereIn = (column, values) => {
+                promise.whereIn = function (column, values) {
                     command.whereIn(column, values); return promise;
                 };
 
-                promise.whereNotIn = (column, values) => {
+                promise.whereNotIn = function (column, values) {
                     command.whereNotIn(column, values); return promise;
                 };
 
-                promise.orWhereIn = (column, values) => {
+                promise.orWhereIn = function (column, values) {
                     command.orWhereIn(column, values); return promise;
                 };
 
-                promise.orWhereNotIn = (column, values) => {
+                promise.orWhereNotIn = function (column, values) {
                     command.orWhereNotIn(column, values); return promise;
                 };
 
-                promise.whereBetween = (column, values) => {
+                promise.whereBetween = function (column, values) {
                     command.whereBetween(column, values); return promise;
                 };
 
-                promise.whereNotBetween = (column, values) => {
+                promise.whereNotBetween = function (column, values) {
                     command.whereNotBetween(column, values); return promise;
                 };
 
-                promise.orWhereBetween = (column, values) => {
+                promise.orWhereBetween = function (column, values) {
                     command.orWhereBetween(column, values); return promise;
                 };
 
-                promise.orWhereNotBetween = (column, values) => {
+                promise.orWhereNotBetween = function (column, values) {
                     command.orWhereNotBetween(column, values); return promise;
                 };
 
-                promise.whereLike = (column, value) => {
+                promise.whereLike = function (column, value) {
                     command.whereLike(column, value); return promise;
                 };
 
-                promise.whereNotLike = (column, value) => {
+                promise.whereNotLike = function (column, value) {
                     command.whereNotLike(column, value); return promise;
                 };
 
-                promise.orWhereLike = (column, value) => {
+                promise.orWhereLike = function (column, value) {
                     command.orWhereLike(column, value); return promise;
                 };
 
-                promise.orWhereNotLike = (column, value) => {
+                promise.orWhereNotLike = function (column, value) {
                     command.orWhereNotLike(column, value); return promise;
                 };
 
-                promise.whereGlob = (column, value) => {
+                promise.whereGlob = function (column, value) {
                     command.whereGlob(column, value); return promise;
                 };
 
-                promise.whereNotGlob = (column, value) => {
+                promise.whereNotGlob = function (column, value) {
                     command.whereNotGlob(column, value); return promise;
                 };
 
-                promise.orWhereGlob = (column, value) => {
+                promise.orWhereGlob = function (column, value) {
                     command.orWhereGlob(column, value); return promise;
                 };
 
-                promise.orWhereNotGlob = (column, value) => {
+                promise.orWhereNotGlob = function (column, value) {
                     command.orWhereNotGlob(column, value); return promise;
                 };
             }
@@ -515,35 +473,35 @@
                 
                 var promise = q.promise; // Promesa
     
-                promise.setTables = (tables) => {
+                promise.setTables = function (tables) {
                     command.setTables(tables); return promise;
                 };
 
-                promise.setDistinct = (distinct) => {
+                promise.setDistinct = function (distinct) {
                     command.setDistinct(distinct); return promise;
                 };
 
-                promise.getRelations = () => {
+                promise.getRelations = function () {
                     return command.getRelations();
                 };
 
-                promise.hasOne = (table, local, foreign, variable) => {
+                promise.hasOne = function (table, local, foreign, variable) {
                     command.hasOne(table, local, foreign, variable); return promise;
                 };
 
-                promise.hasMany = (table, local, foreign, variable) => {
+                promise.hasMany = function (table, local, foreign, variable) {
                     command.hasMany(table, local, foreign, variable); return promise;
                 };
 
-                promise.limit = (rows, offset) => {
+                promise.limit = function (rows, offset) {
                     command.limit(rows, offset); return promise;
                 };
 
-                promise.groupBy = (column) => {
+                promise.groupBy = function (column) {
                     command.groupBy(column); return promise;
                 };
                 
-                promise.having = () => {
+                promise.having = function () {
                     if (arguments.length > 2) {
                         command.having(
                             arguments[0], arguments[1], arguments[2]
@@ -555,7 +513,7 @@
                     return promise; // Retornando interfaz fluida
                 };
 
-                promise.orHaving = () => {
+                promise.orHaving = function () {
                     if (arguments.length > 2) {
                         command.orHaving(
                             arguments[0], arguments[1], arguments[2]
@@ -567,87 +525,87 @@
                     return promise; // Retornando interfaz fluida
                 };
 
-                promise.havingIsNull = (column) => {
+                promise.havingIsNull = function (column) {
                     command.havingIsNull(column); return promise;
                 };
 
-                promise.havingIsNotNull = (column) => {
+                promise.havingIsNotNull = function (column) {
                     command.havingIsNotNull(column); return promise;
                 };
 
-                promise.orHavingIsNull = (column) => {
+                promise.orHavingIsNull = function (column) {
                     command.orHavingIsNull(column); return promise;
                 };
 
-                promise.orHavingIsNotNull = (column) => {
+                promise.orHavingIsNotNull = function (column) {
                     command.orHavingIsNotNull(column); return promise;
                 };
 
-                promise.havingIn = (column, values) => {
+                promise.havingIn = function (column, values) {
                     command.havingIn(column, values); return promise;
                 };
 
-                promise.havingNotIn = (column, values) => {
+                promise.havingNotIn = function (column, values) {
                     command.havingNotIn(column, values); return promise;
                 };
 
-                promise.orHavingIn = (column, values) => {
+                promise.orHavingIn = function (column, values) {
                     command.orHavingIn(column, values); return promise;
                 };
 
-                promise.orHavingNotIn = (column, values) => {
+                promise.orHavingNotIn = function (column, values) {
                     command.orHavingNotIn(column, values); return promise;
                 };
 
-                promise.havingBetween = (column, values) => {
+                promise.havingBetween = function (column, values) {
                     command.havingBetween(column, values); return promise;
                 };
 
-                promise.havingNotBetween = (column, values) => {
+                promise.havingNotBetween = function (column, values) {
                     command.havingNotBetween(column, values); return promise;
                 };
 
-                promise.orHavingBetween = (column, values) => {
+                promise.orHavingBetween = function (column, values) {
                     command.orHavingBetween(column, values); return promise;
                 };
 
-                promise.orHavingNotBetween = (column, values) => {
+                promise.orHavingNotBetween = function (column, values) {
                     command.orHavingNotBetween(column, values); return promise;
                 };
 
-                promise.havingLike = (column, value) => {
+                promise.havingLike = function (column, value) {
                     command.havingLike(column, value); return promise;
                 };
 
-                promise.havingNotLike = (column, value) => {
+                promise.havingNotLike = function (column, value) {
                     command.havingNotLike(column, value); return promise;
                 };
 
-                promise.orHavingLike = (column, value) => {
+                promise.orHavingLike = function (column, value) {
                     command.orHavingLike(column, value); return promise;
                 };
 
-                promise.orHavingNotLike = (column, value) => {
+                promise.orHavingNotLike = function (column, value) {
                     command.orHavingNotLike(column, value); return promise;
                 };
 
-                promise.havingGlob = (column, value) => {
+                promise.havingGlob = function (column, value) {
                     command.havingGlob(column, value); return promise;
                 };
 
-                promise.havingNotGlob = (column, value) => {
+                promise.havingNotGlob = function (column, value) {
                     command.havingNotGlob(column, value); return promise;
                 };
 
-                promise.orHavingGlob = (column, value) => {
+                promise.orHavingGlob = function (column, value) {
                     command.orHavingGlob(column, value); return promise;
                 };
 
-                promise.orHavingNotGlob = (column, value) => {
+                promise.orHavingNotGlob = function (column, value) {
                     command.orHavingNotGlob(column, value); return promise;
                 };
                 
-                promise.orderBy = (column, operator) => {
+                promise.orderBy = function (column, operator) {
                     command.orderBy(column, operator); return promise;
                 };
             }
