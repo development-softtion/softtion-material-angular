@@ -1053,6 +1053,9 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     height: 1px; }
 
+.display-block {
+    display: block !important; }
+
 /** APP BAR */
 
 .app-bar {
@@ -1249,8 +1252,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     width: 100%;
     overflow: auto; }
 
-.attribute > .name,
-.attribute > .value {
+.attribute > .name, .attribute > .value {
     display: block;
     height: 15px;
     float: left;
@@ -7485,8 +7487,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .datatable > .header > .search-box {
     max-width: 50%;
-    margin-top: 8px; 
-    box-shadow: none; }
+    box-shadow: none;
+    margin: 8px 0px; }
 
 .datatable > .header > .title ~ .search-box {
     margin-left: 8px; }
@@ -9593,6 +9595,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     overflow-y: auto; 
     overflow-x: hidden; }
 
+.textfield.align-right { 
+    text-align: initial !important; }
+
 .textfield > .content {
     position: relative;
     width: 100%;
@@ -9661,6 +9666,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     border: none;
     outline: none; 
     background-color: transparent; }
+
+.textfield.align-right > .content > input { 
+    text-align: right; }
 
 .textfield.inline > .content > input {
     padding-top: 0px;
@@ -9735,6 +9743,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     cursor: text;
     overflow: hidden; 
     white-space: nowrap; }
+
+.textfield.align-right > .content > .value { 
+    text-align: right; }
 
 .textfield.inline > .content > .value {
     top: 9px; }
@@ -10251,6 +10262,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     overflow-y: auto; 
     overflow-x: hidden; }
 
+.textfield-readonly.align-right { 
+    text-align: initial !important; }
+
 .textfield-readonly > .content {
     position: relative;
     width: 100%;
@@ -10288,6 +10302,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     border: none;
     outline: none;
     background-color: transparent; }
+
+.textfield-readonly.align-right > .content > input { 
+    text-align: right; }
 
 .textfield-readonly > .content > .line-shadow {
     position: absolute;
