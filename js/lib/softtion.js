@@ -18,6 +18,8 @@
     var Softtion = function () { },
         softtion = new Softtion(); // Clase Softtion
     
+    window.softtion = softtion; // Agregando softtion como Global
+    
     var timeElapsedAttrs = [{ 
             divisor: 1000, comparator: 60, key: "seconds",
             singular: "segundo", plural: "segundos" 
@@ -40,8 +42,6 @@
             divisor: 12, comparator: 9999, key: "years",
             singular: "año", plural: "años" 
         }];
-    
-    window.softtion = softtion; // Agregando softtion como Global
     
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
@@ -152,37 +152,37 @@
         } // El objeto no esta definido en la función
     };
     
-    Softtion.prototype.findKey = function (object, keys) {
-        var self = this; // Objeto Softtion
+    Softtion.prototype.findKey = function (object, pattern) {
+        var self = this; // Instancia de Softtion
         
-        if (this.isUndefined(object) || !this.isString(keys)) { 
+        if (self.isUndefined(object) || 
+            !self.isString(pattern)) { 
             return undefined; 
-        } // No se establecieron atributos para busqueda
+        } // Atributos indefindos para busqueda
 
-        var arrayKeys = keys.split(".");
+        var keys = pattern.split("."); // Lista de claves
         
-        if (arrayKeys.has(1)) { 
-            return object[arrayKeys.first()]; 
-        } else {
-            var value = undefined, object = object;
+        if (!keys.has(1)) {  
+            var value = undefined, result = object;
             
-            jQuery.each(arrayKeys, (index, key) => { 
-                value = object[key];
+            self.forEach(keys, (key) => { 
+                value = result[key];
                 
                 if (self.isDefined(value)) {
-                    object = value; 
+                    result = value; 
                 } else {
-                    value = undefined; return false; 
+                    value = undefined; return true; 
                 } // Objeto no fue encontrado
             });
             
             return value; // Retornando objeto encontrado
-        }
+        } else {
+            return object[keys.first()];
+        } // Solo existe una clave en la lista resultante
     };
     
     Softtion.prototype.removeKey = function (object, key) {
-        if (this.isUndefined(object) || 
-            this.isUndefined(key)) { return; }
+        if (this.isUndefined(object) || this.isUndefined(key)) { return; }
         
         delete object[key]; // Eliminando parametro del objeto
     };
@@ -196,69 +196,77 @@
         } // Hay un texto establecido para realizar el cambio de etiqueta
     };
     
-    Softtion.prototype.BreakException = {};
-    
-    Softtion.prototype.required = function (object, attributes) {
-        if (this.isArray(attributes)) {
-            var keyError = undefined, 
-                response = {},
-                self = this; // Objeto Softtion
+    Softtion.prototype.required = function (object, validationKeys) {
+        var self = this; // Instancia de Softtion
+        
+        if (self.isArray(validationKeys)) {
+            var keyError = undefined; // Clave errada
             
-            try {
-                attributes.forEach((key) => {
-                    keyError = key; // Clave a validar
-                    
-                    if (!self.isDefined(self.findKey(object, key))) {
-                        throw self.BreakException; }
-                });
+            var result = self.forEach(validationKeys, (key) => {
+                keyError = key; // Clave a validar
                 
-                response = { success: true };
-            } catch (ex) {
-                response = { success: false, key: keyError };
-            }
+                var value = self.findKey(object, key);
+                
+                if (!self.isDefined(value)) {
+                    return true;
+                } // Existe una clave indefinida en el objeto
+            });
             
-            return response; // Respuesta del proceso
+            return (result) ? { success: true } : // Sin problemas
+                { success: false, key: keyError };
         } else {
-            return (this.isDefined(this.findKey(object, attributes))) ?
-                { success: true } : { success: false, key: attributes };
-        }
+            var value = self.findKey(object, validationKeys);
+            
+            return (self.isDefined(value)) ?
+                { success: true } : 
+                { success: false, key: validationKeys };
+        } // Se hace validación de clave única
     };
+    
+    var BreakException = {}; // Excepción generada
     
     Softtion.prototype.forEach = function (array, fn) {
-        if (!this.isArray(array)) { return; } // No es array
+        var self = this; // Instancia de Softtion
         
-        var index = 0, stop, 
-            self = this; // Objeto Softtion;
+        if (!self.isArray(array)) { 
+            return; 
+        } // Objeto establecido no es array
         
         try {
-            array.forEach((value) => {
-                stop = fn(value, index); index++;
+            array.forEach((value, index) => {
+                var stop = fn(value, index); // Verificando
 
-                if (stop === true) {
-                    throw self.BreakException;
-                } // Se forzo detención
+                if (stop === true) throw BreakException;
             });
-        } catch (ex) {} // Se forzo detención
+            
+            return true; // Array recorrido correctamente
+        } catch (ex) {
+            return false; // Array no recorrido correctamente
+        } 
     };
     
-    Softtion.prototype.leadingChar = function (word, character, size, option) {
-        var newWord = String(word); option = option || "before";
+    Softtion.prototype.leadingChar = function (type, word, character, size) {
+        type = type || "before"; // Tipo de completación
         
-        switch (option) {
-            case ("before") :
-                for (var i = newWord.length; i < size; i++) { 
-                    newWord = character + newWord; }
-                
-                return newWord; // Retornando nueva Palabra
-                
-            case ("after") :
-                for (var i = newWord.length; i < size; i++) { 
-                    newWord = newWord + character; }
-                
-                return newWord; // Retornando nueva Palabra
-                
-            default : return newWord; // No se definio tipo de Agregación
-        }
+        var $word = String(word), index = $word.length; 
+        
+        for (index; index < size; index++) { 
+            switch (type) {
+                case ("before"): $word = character + $word; break;
+
+                case ("after"):  $word = $word + character; break;
+            }
+        } // Cargando caracteres faltante en la palabra
+        
+        return $word; // Retornando la palabra resultante
+    };
+    
+    Softtion.prototype.leadingCharAfter = function (word, character, size) {
+        return this.leadingChar("after", word, character, size);
+    };
+    
+    Softtion.prototype.leadingCharBefore = function (word, character, size) {
+        return this.leadingChar("before", word, character, size);
     };
         
     Softtion.prototype.redirect = function (url, milliseconds) { 
@@ -376,25 +384,24 @@
         },
 
         numeric: function (keyCode) { 
-            return (keyCode > 47) && (keyCode < 58); // Numeros
+            return (keyCode > 47) && (keyCode < 58);
         },
 
         alphaspace: function (keyCode) { 
-            return this.alphabetic(keyCode) || (keyCode === 32); // Abecedario, Espacio
+            return this.alphabetic(keyCode) || (keyCode === 32);
         },
 
         alphanumeric: function (keyCode) { 
-            return this.alphabetic(keyCode) || this.numeric(keyCode); // Abecedario, Numeros
+            return this.alphabetic(keyCode) || this.numeric(keyCode);
         },
 
         alphanumericspace: function (keyCode) { 
-            return this.alphanumeric(keyCode) || (keyCode === 32); // Abecedario, Numeros, Espacio
+            return this.alphanumeric(keyCode) || (keyCode === 32);
         },
 
-        decimal: function (keyCode, inputValue) { 
+        decimal: function (keyCode, value) { 
             return (keyCode === 46) ? 
-                (inputValue.indexOf(".") === -1) :  // Punto
-                this.numeric(keyCode);              // Numeros
+                (!value.hasItem(".")) : this.numeric(keyCode);
         },
         
         symbol: function (keyCode) {
@@ -405,14 +412,9 @@
             return this.alphanumeric(keyCode) || this.symbol(keyCode);
         },
         
-        email: function (keyCode, inputValue) { 
-            if (keyCode === 64) {
-                return (inputValue.indexOf("@") === -1);
-            } else if (keyCode === 32) {
-                return false;
-            } else {
-                return true;
-            } // Todo es valido para el email
+        email: function (keyCode, value) { 
+            return (keyCode === 64) ?
+                !value.hasItem("@") : !(keyCode === 32);
         },
         
         settings: window.softtion.get(window.softtion.TEXTCONTROL)
@@ -421,34 +423,34 @@
     Softtion.prototype.validateCharacter = function (options) {
         switch (options.type) {
             case (TypeCharacter.settings.ALPHABETIC): 
-                return TypeCharacter.alphabetic(options.keyCode); 
+                return TypeCharacter.alphabetic(options.charCode); 
                 
             case (TypeCharacter.settings.NUMBER):  
-                return TypeCharacter.numeric(options.keyCode);
+                return TypeCharacter.numeric(options.charCode);
                 
             case (TypeCharacter.settings.MONEY):  
-                return TypeCharacter.numeric(options.keyCode);
+                return TypeCharacter.numeric(options.charCode);
                 
             case (TypeCharacter.settings.ALPHANUMBER): 
-                return TypeCharacter.alphanumeric(options.keyCode); 
+                return TypeCharacter.alphanumeric(options.charCode); 
                 
             case (TypeCharacter.settings.ALPHASPACE): 
-                return TypeCharacter.alphaspace(options.keyCode); 
+                return TypeCharacter.alphaspace(options.charCode); 
                 
             case (TypeCharacter.settings.DECIMAL): 
-                return TypeCharacter.decimal(options.keyCode, options.inputValue);
+                return TypeCharacter.decimal(options.charCode, options.value);
                 
             case (TypeCharacter.settings.ALPHANUMBERSPACE): 
-                return TypeCharacter.alphanumericspace(options.keyCode); 
+                return TypeCharacter.alphanumericspace(options.charCode); 
                 
             case (TypeCharacter.settings.SYMBOL): 
-                return TypeCharacter.symbol(options.keyCode); 
+                return TypeCharacter.symbol(options.charCode); 
                 
             case (TypeCharacter.settings.PASSWORD): 
-                return TypeCharacter.password(options.keyCode); 
+                return TypeCharacter.password(options.charCode); 
                 
             case (TypeCharacter.settings.EMAIL): 
-                return TypeCharacter.email(options.keyCode, options.inputValue); 
+                return TypeCharacter.email(options.charCode, options.value); 
                 
             case (TypeCharacter.settings.NOTHING): return false; // No quiere ningun caracter
 
@@ -522,23 +524,22 @@
         };
         
     Softtion.prototype.getMonetaryExpression = function (number) {
-        if (this.isUndefined(number)) { return ""; } // Indefinido
+        if (this.isUndefined(number)) return ""; // Indefinido
         
-        var $number = "", contador = 0, 
-            numberString = number.toString(),
-            length = numberString.length;
+        var expression = "", contador = 0, 
+            $number = number.toString(), length = $number.length;
             
         for (var index = 1; index <= length; index++) {
             if (contador === 3) { 
-                $number = "." + $number; contador = 0;
+                expression = "." + expression; contador = 0;
             } // Agregando punto en la cifra
 
-            $number = numberString.charAt(length - index) + $number; 
+            expression = $number.charAt(length - index) + expression; 
             
             contador++; // Aumentando
         } // Recorriendo el número expresarlo monetariamente
 
-        return $number; // Retornando expresado monetariamente
+        return expression; // Retornando expresado monetariamente
     };
     
     Softtion.prototype.getThreeDigits = function (number) {
@@ -549,32 +550,32 @@
                 throw "el número establecido para proceso no es de tres cifras.";
             } // Excepción encontrada en el número
 
-            $number = this.leadingChar($number, "0", 3); 
+            $number = this.leadingCharBefore($number, "0", 3); 
             
-            var numberDescription= "", // Número descrito
-                tenUnity = parseInt($number.substring(1,3)), 
-                hundred = parseInt($number.substring(0,1));
+            var expression = "", // Número descrito
+                unityTen = parseInt($number.substring(1, 3)), 
+                hundred = parseInt($number.substring(0, 1));
 
             if (hundred !== 0) {
-                numberDescription += DIGITS[hundred * 100];
+                expression += DIGITS[hundred * 100];
 
-                numberDescription += 
-                    (hundred === 1 && tenUnity !== 0) ? "TO " :  " "; 
+                expression += 
+                    (hundred === 1 && unityTen !== 0) ? "TO " :  " "; 
             } // Describiendo la centena del número
 
-            if (tenUnity !== 0) {
-                if (DIGITS[tenUnity]) {
-                    numberDescription += DIGITS[tenUnity];
+            if (unityTen !== 0) {
+                if (DIGITS[unityTen]) {
+                    expression += DIGITS[unityTen];
                 } else {
                     var ten = parseInt($number.substring(1, 2)) * 10,
                         unity = parseInt($number.substring(2, 3));
 
-                    numberDescription += DIGITS[ten];
-                    numberDescription += " Y " + DIGITS[unity];
-                } // Se desgloza el número en decenas y unidades
+                    expression += DIGITS[ten];
+                    expression += " Y " + DIGITS[unity];
+                } // Desglozando número en decenas y unidades
             }
 
-            return numberDescription.trim(); // Retornando descripción del número
+            return expression.trim(); // Retornando descripción del número
         }
         catch (err) { 
             console.error("Softtion - Uncaught TypeError: " + err); return null; 
@@ -590,9 +591,8 @@
             number = isNaN(number) ? parseInt(number) : number;
 
             if (number !== 0) {
-                var $number = String(number), // Corvirtiendo a String
-                    numberDescription = "", 
-                    endPosition = $number.length, index = 0; 
+                var $number = String(number), expression = "", 
+                    index = 0, endPosition = $number.length; 
 
                 while (endPosition > 0) {
                     var startPosicion = endPosition - 3; // Posición inicial
@@ -601,34 +601,35 @@
                         startPosicion = 0;
                     } // Controlando desbordamiento
 
-                    var numericDigit = $number.substring(startPosicion, endPosition),
-                        digitDescription = this.getThreeDigits(numericDigit);
+                    var digits = $number.substring(startPosicion, endPosition),
+                        description = this.getThreeDigits(digits);
 
-                    if (this.isString(digitDescription)) {
+                    if (this.isString(description)) {
                         if (index > 0) {
-                            if (parseInt(numericDigit) > 1) {
-                                digitDescription += " " + QUANTITIES[index * 10];
+                            if (parseInt(digits) > 1) {
+                                description += " " + QUANTITIES[index * 10];
                             } // La cifra a describir es plural
                             else {
                                 if (index%2 !== 0) { 
-                                    digitDescription = QUANTITIES[index]; 
+                                    description = QUANTITIES[index]; 
                                 } // Solo se requiere descriptor de cantidad
                                 else { 
-                                    digitDescription += " " + QUANTITIES[index]; 
+                                    description += " " + QUANTITIES[index]; 
                                 } // Se requiere descriptor de cantidad y cifra
                             } // La cifra a describir es singular
                         } // La cifra pertenece a unidades de mil ó superiores
 
-                        numberDescription = digitDescription + " " + numberDescription;
+                        expression = description + " " + expression;
                     } // La cifra no contiene descripción
+                    
                     else if ((index > 1) && (index%2 === 0)) {
-                        numberDescription = QUANTITIES[index * 10] + " " +  numberDescription;
+                        expression = QUANTITIES[index * 10] + " " +  expression;
                     } // Se requiere descrición plural de la sección del número
 
                     index++; endPosition = startPosicion; // Reconfigurando variables
                 }
 
-                return numberDescription.trim(); // Retornando descripción del número
+                return expression.trim(); // Retornando descripción del número
             }
             else { 
                 return "CERO"; 
@@ -707,10 +708,14 @@
             var value = Math.roundDecimal(result / item.divisor);
             
             if (value < item.comparator) {
-                var key = (value === 1) ? item.singular : item.plural,
-                    myPrefix = (value === 1) ? prefix.singular : prefix.plural;
+                var keyItem = (value === 1) ? 
+                        item.singular : item.plural,
+                    $prefix = (value === 1) ? 
+                        prefix.singular : prefix.plural;
                     
-                label = myPrefix + " " + value + " " + key; return true;
+                label = $prefix + " " + value + " " + keyItem; 
+                
+                return true; // Finalizando recorrido
             } else if (item.key !== "weeks") {
                 result = value;
             } // Se debe reasignar el valor obtenido
@@ -771,31 +776,16 @@
             return self; // Retornando interfaz fluida
         };
 
-        Array.prototype.filtrate = function (fnFilter) {
-            var arrayFilter = new Array(), index = 0;
+        Array.prototype.filtrate = function (fn) {
+            var array = []; // Array filtrado
 
-            if (softtion.isFunction(fnFilter)) {
-                this.forEach((item) => {
-                    if (fnFilter(item)) { 
-                        arrayFilter.push(item, index); 
-                    }
-
-                    index++; // Aumentando index del item
+            if (softtion.isFunction(fn)) {
+                this.forEach((item, index) => {
+                    if (fn(item, index)) array.push(item); 
                 });
             } // Se ha definido función para filtrar
 
-            return arrayFilter; // Retornando array filtrado
-        };
-
-        Array.prototype.for = function (fnFor) {
-            if (softtion.isFunction(fnFor)) {
-                var notStop = true, index = 0;
-
-                while ((notStop) && (index < this.length)) {
-                    var result = fnFor(this[index], index); index++;
-                    notStop = softtion.isDefined(result) ? result : true; 
-                }
-            }
+            return array; // Retornando Array
         };
 
         // Métodos de Softtion para los objetos 'Date'
@@ -851,15 +841,15 @@
                 (this.getHours() === 0) ? 12 : this.getHours();
 
             formato = formato.replace(
-                "dd", softtion.leadingChar(this.getDate(), "0", 2)
+                "dd", softtion.leadingCharBefore(this.getDate(), "0", 2)
             ); // Número del día de la fecha
         
             formato = formato.replace(
-                "mm", softtion.leadingChar((this.getMonth() + 1), "0", 2)
+                "mm", softtion.leadingCharBefore((this.getMonth() + 1), "0", 2)
             ); // Número del mes de la fecha
     
             formato = formato.replace(
-                "aa", softtion.leadingChar(this.getFullYear(), "0", 4)
+                "aa", softtion.leadingCharBefore(this.getFullYear(), "0", 4)
             ); // Número del año de la fecha
 
             formato = formato.replace(
@@ -871,19 +861,19 @@
             ); // Nombre de la semana de la fecha
 
             formato = formato.replace(
-                "hh", softtion.leadingChar(this.getHours(), "0", 2)
+                "hh", softtion.leadingCharBefore(this.getHours(), "0", 2)
             ); // Número de hora de la fecha
     
             formato = formato.replace(
-                "ii", softtion.leadingChar(this.getMinutes(), "0", 2)
+                "ii", softtion.leadingCharBefore(this.getMinutes(), "0", 2)
             ); // Número de minuto de la fecha
     
             formato = formato.replace(
-                "ss", softtion.leadingChar(this.getSeconds(), "0", 2)
+                "ss", softtion.leadingCharBefore(this.getSeconds(), "0", 2)
             ); // Número de segundo de la fecha
     
             formato = formato.replace(
-                "hz", softtion.leadingChar(hora, "0", 2)
+                "hz", softtion.leadingCharBefore(hora, "0", 2)
             ); // Número de hora de la fecha
     
             formato = formato.replace("zz", (this.getHours() > 11) ? "PM" : "AM"); 

@@ -1482,7 +1482,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 
 .autocomplete > .content > ul.active {
     max-width: 100%;
-    max-height: var(--maxheight-autocomplete); }
+    max-height: 288px; }
 
 .autocomplete > .content > ul > li {
     padding: 0px 16px;
