@@ -754,28 +754,6 @@
         opacity: 0; }
 }
 
-@keyframes closeSelectHeightCostum {
-    0% {
-        max-width: 100%;
-        max-height: var(--maxheight-select);
-        opacity: 1; }
-    100% {
-        max-width: 100%;
-        max-height: var(--maxheight-select);
-        opacity: 0; }
-}
-
-@-webkit-keyframes closeSelectHeightCostum {
-    0% {
-        max-width: 100%;
-        max-height: var(--maxheight-select);
-        opacity: 1; }
-    100% {
-        max-width: 100%;
-        max-height: var(--maxheight-select);
-        opacity: 0; }
-}
-
 /** BUTTON FLOATING */
 
 @keyframes buttonFloating {

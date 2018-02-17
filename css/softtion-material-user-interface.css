@@ -50,10 +50,6 @@
     
     --time-progress-circular: 5s;
     --round-progress-circular: 990deg;
-    
-    --maxheight-autocomplete: 240px;
-    --maxheight-autocomplete-record: 252px;
-    --maxheight-select: 288px;
 }
 
 [draggable] {
@@ -1500,31 +1496,33 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete > .content > ul > li:focus {
     outline: none; }
 
-.autocomplete > .content > i.icon-description {
+.autocomplete > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.autocomplete > .content > i.icon-description ~ .value,
-.autocomplete > .content > i.icon-description ~ input { 
+.autocomplete > .content > i.description ~ .value,
+.autocomplete > .content > i.description ~ input { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.autocomplete > .content > i.icon-description ~ label,
-.autocomplete > .content > i.icon-description ~ ul,
-.autocomplete > .content > i.icon-description ~ span {
+.autocomplete > .content > i.description ~ label,
+.autocomplete > .content > i.description ~ ul,
+.autocomplete > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.autocomplete > .content > i.icon-description ~ .line-shadow {
+.autocomplete > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
-.autocomplete > .content > i.icon-description ~ .line-shadow-active {
+.autocomplete > .content > i.description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.autocomplete.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+.autocomplete.active > .content > i.description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 225ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 225ms var(--sharp-curve);
@@ -1662,7 +1660,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 
 .autocomplete-record > .content > ul.active {
     max-width: 100%;
-    max-height: var(--maxheight-autocomplete-record); }
+    max-height: 280px; }
 
 .autocomplete-record > .content > ul > li {
     padding: 0px 16px;
@@ -1715,31 +1713,33 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete-record > .content > ul > li:focus {
     outline: none; }
 
-.autocomplete-record > .content > i.icon-description {
+.autocomplete-record > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.autocomplete-record > .content > i.icon-description ~ .value,
-.autocomplete-record > .content > i.icon-description ~ input { 
+.autocomplete-record > .content > i.description ~ .value,
+.autocomplete-record > .content > i.description ~ input { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.autocomplete-record > .content > i.icon-description ~ label,
-.autocomplete-record > .content > i.icon-description ~ ul,
-.autocomplete-record > .content > i.icon-description ~ span {
+.autocomplete-record > .content > i.description ~ label,
+.autocomplete-record > .content > i.description ~ ul,
+.autocomplete-record > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.autocomplete-record > .content > i.icon-description ~ .line-shadow {
+.autocomplete-record > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
-.autocomplete-record > .content > i.icon-description ~ .line-shadow-active {
+.autocomplete-record > .content > i.description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.autocomplete-record.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+.autocomplete-record.active > .content > i.description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 225ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 225ms var(--sharp-curve);
@@ -3681,33 +3681,35 @@ button.raised:focus:after, button.flat:focus:after {
 .chip-input > .content > .box > .chips > .chip > .action > i {
     top: 4px; }
 
-.chip-input > .content > i.icon-description {
+.chip-input > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.chip-input > .content > i.icon-description ~ .box { 
+.chip-input > .content > i.description ~ .box { 
     padding-left: 40px;
     width: calc(100% - 40px); }
 
-.chip-input > .content > i.icon-description ~ label,
-.chip-input > .content > i.icon-description ~ span {
+.chip-input > .content > i.description ~ label,
+.chip-input > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.chip-input > .content > i.icon-description ~ span.counter {
+.chip-input > .content > i.description ~ span.counter {
     left: initial;
     width: auto; }
 
-.chip-input > .content > i.icon-description ~ .line-shadow {
+.chip-input > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
-.chip-input > .content > i.icon-description ~ .line-shadow-active {
+.chip-input > .content > i.description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.chip-input > .content.active > i.icon-description ~ .box.focused ~ .line-shadow-active {
+.chip-input > .content.active > i.description ~ .box.focused ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 160ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 160ms var(--sharp-curve);
@@ -3878,23 +3880,24 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     font-size: 12px; }
 
-.clockpicker-input > .content > i.icon-description {
+.clockpicker-input > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    cursor: pointer;
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.clockpicker-input > .content > i.icon-description ~ .value { 
+.clockpicker-input > .content > i.description ~ .value { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.clockpicker-input > .content > i.icon-description ~ label,
-.clockpicker-input > .content > i.icon-description ~ span {
+.clockpicker-input > .content > i.description ~ label,
+.clockpicker-input > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.clockpicker-input > .content > i.icon-description ~ .line-shadow {
+.clockpicker-input > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
@@ -4296,23 +4299,23 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     font-size: 12px; }
 
-.datepicker-input > .content > i.icon-description {
+.datepicker-input > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
     cursor: pointer;
     padding: 0px; }
 
-.datepicker-input > .content > i.icon-description ~ .value { 
+.datepicker-input > .content > i.description ~ .value { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.datepicker-input > .content > i.icon-description ~ label,
-.datepicker-input > .content > i.icon-description ~ span {
+.datepicker-input > .content > i.description ~ label,
+.datepicker-input > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.datepicker-input > .content > i.icon-description ~ .line-shadow {
+.datepicker-input > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
@@ -7618,9 +7621,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
             transition: all 120ms 0ms var(--sharp-curve); }
 
 .select > .content > label.active {
-    cursor: none;
-    top: 8px;
     font-size: 12px;
+    top: 8px;
     height: 14px;
     line-height: 12px; }
 
@@ -7646,6 +7648,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 20px;
     width: calc(100% - 36px);
     height: 32px;
+    cursor: pointer;
     line-height: 32px;
     margin: 0px;
     font-size: 16px;
@@ -7716,18 +7719,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
        -moz-animation: closeSelect 200ms var(--acceleration-curve);  
             animation: closeSelect 200ms var(--acceleration-curve); }
 
-.select.height-costum > .content > ul.hide {
-    -webkit-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);
-       -moz-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);  
-            animation: closeSelectHeightCostum 200ms var(--acceleration-curve); }
-
 .select > .content > ul.show {
     max-width: 100%;
     max-height: 288px;
     opacity: 1; }
-
-.select.height-costum > .content > ul.show {
-    max-height: var(--maxheight-select); }
 
 .select > .content > ul > li {
     padding: 0px 16px;
@@ -7742,24 +7737,26 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .select > .content > ul > li:focus {
     outline: none; }
 
-.select > .content > i.icon-description {
+.select > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.select > .content > i.icon-description ~ .value,
-.select > .content > i.icon-description ~ input { 
+.select > .content > i.description ~ .value,
+.select > .content > i.description ~ input { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.select > .content > i.icon-description ~ label,
-.select > .content > i.icon-description ~ ul,
-.select > .content > i.icon-description ~ span {
+.select > .content > i.description ~ label,
+.select > .content > i.description ~ ul,
+.select > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.select > .content > i.icon-description ~ .line-shadow {
+.select > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
@@ -7891,18 +7888,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
        -moz-animation: closeSelect 200ms var(--acceleration-curve); 
             animation: closeSelect 200ms var(--acceleration-curve); }
 
-.select-multiple.height-costum > .content > ul.hide {
-    -webkit-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);
-       -moz-animation: closeSelectHeightCostum 200ms var(--acceleration-curve);  
-            animation: closeSelectHeightCostum 200ms var(--acceleration-curve); }
-
 .select-multiple > .content > ul.show {
     max-width: 100%;
     max-height: 288px;
     opacity: 1; }
-
-.select-multiple.height-costum > .content > ul.show {
-    max-height: var(--maxheight-select); }
 
 .select-multiple > .content > ul > li {
     padding: 0px 16px;
@@ -7920,24 +7909,26 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .select-multiple > .content > ul > li:focus {
     outline: none; }
 
-.select-multiple > .content > i.icon-description {
+.select-multiple > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.select-multiple > .content > i.icon-description ~ .value,
-.select-multiple > .content > i.icon-description ~ input { 
+.select-multiple > .content > i.description ~ .value,
+.select-multiple > .content > i.description ~ input { 
     padding-left: 40px;
     width: calc(100% - 64px); }
 
-.select-multiple > .content > i.icon-description ~ label,
-.select-multiple > .content > i.icon-description ~ ul,
-.select-multiple > .content > i.icon-description ~ span {
+.select-multiple > .content > i.description ~ label,
+.select-multiple > .content > i.description ~ ul,
+.select-multiple > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.select-multiple > .content > i.icon-description ~ .line-shadow {
+.select-multiple > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
@@ -9931,38 +9922,40 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: auto;
     padding-left: 2px; }
 
-.textfield > .content > i.icon-description {
+.textfield > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.textfield > .content > i.icon-description ~ .value,
-.textfield > .content > i.icon-description ~ input { 
+.textfield > .content > i.description ~ .value,
+.textfield > .content > i.description ~ input { 
     padding-left: 40px;
     width: calc(100% - 40px); }
 
-.textfield > .content > i.icon-description ~ input.iconaction,
-.textfield > .content > i.icon-description ~ input.iconaction ~ .value {
+.textfield > .content > i.description ~ input.iconaction,
+.textfield > .content > i.description ~ input.iconaction ~ .value {
     width: calc(100% - 68px); }
 
-.textfield > .content > i.icon-description ~ label,
-.textfield > .content > i.icon-description ~ span {
+.textfield > .content > i.description ~ label,
+.textfield > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield > .content > i.icon-description ~ span.counter {
+.textfield > .content > i.description ~ span.counter {
     left: initial;
     width: auto; }
 
-.textfield > .content > i.icon-description ~ .line-shadow {
+.textfield > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield > .content > i.icon-description ~ .line-shadow-active {
+.textfield > .content > i.description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.textfield.active > .content > i.icon-description ~ input:focus ~ .line-shadow-active {
+.textfield.active > .content > i.description ~ input:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
@@ -10220,35 +10213,37 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield-multiline.align-center > .content > .box > .textarea-hidden {
     text-align: center; }
 
-.textfield-multiline > .content > i.icon-description {
+.textfield-multiline > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
-.textfield-multiline > .content > i.icon-description ~ .value,
-.textfield-multiline > .content > i.icon-description ~ .textarea-hidden,
-.textfield-multiline > .content > i.icon-description ~ textarea { 
+.textfield-multiline > .content > i.description ~ .value,
+.textfield-multiline > .content > i.description ~ .textarea-hidden,
+.textfield-multiline > .content > i.description ~ textarea { 
     padding-left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-multiline > .content > i.icon-description ~ label,
-.textfield-multiline > .content > i.icon-description ~ span {
+.textfield-multiline > .content > i.description ~ label,
+.textfield-multiline > .content > i.description ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-multiline > .content > i.icon-description ~ span.counter {
+.textfield-multiline > .content > i.description ~ span.counter {
     left: initial;
     width: auto; }
 
-.textfield-multiline > .content > i.icon-description ~ .line-shadow {
+.textfield-multiline > .content > i.description ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-multiline > .content > i.icon-description ~ .line-shadow-active {
+.textfield-multiline > .content > i.description ~ .line-shadow-active {
     left: calc(50% + 20px); }
 
-.textfield-multiline.active > .content > i.icon-description ~ textarea:focus ~ .line-shadow-active {
+.textfield-multiline.active > .content > i.description ~ textarea:focus ~ .line-shadow-active {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
@@ -10320,11 +10315,13 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 100%;
     font-size: 12px; }
 
-.textfield-readonly > .content > i.icon-description {
+.textfield-readonly > .content > i.description {
     position: absolute;
     top: 24px;
     left: 0px; 
-    padding: 0px; }
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
 
 .textfield-readonly > .content > .img-icon {
     display: block;
@@ -10334,19 +10331,19 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 24px;
     height: 24px; }
 
-.textfield-readonly > .content > i.icon-description ~ input,
+.textfield-readonly > .content > i.description ~ input,
 .textfield-readonly > .content > .img-icon ~ input { 
     padding-left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-readonly > .content > i.icon-description ~ label,
+.textfield-readonly > .content > i.description ~ label,
 .textfield-readonly > .content > .img-icon ~ label,
-.textfield-readonly > .content > i.icon-description ~ span,
+.textfield-readonly > .content > i.description ~ span,
 .textfield-readonly > .content > .img-icon ~ span {
     left: 40px;
     width: calc(100% - 40px); }
 
-.textfield-readonly > .content > i.icon-description ~ .line-shadow,
+.textfield-readonly > .content > i.description ~ .line-shadow,
 .textfield-readonly > .content > .img-icon ~ .line-shadow {
     left: 40px;
     width: calc(100% - 40px); }
