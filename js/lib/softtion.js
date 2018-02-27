@@ -739,6 +739,10 @@
         Array.prototype.last = function () {
             return this.isEmpty() ? null : this[this.length - 1];
         };
+        
+        Array.prototype.isLastIndex = function (index) {
+            return (this.length === (index + 1)); 
+        };
 
         Array.prototype.has = function (count) { 
             return (this.length === count); 
@@ -754,7 +758,7 @@
 
         Array.prototype.remove = function (index) {
             if (this.contains(index + 1)) { 
-                this.splice(index,1); 
+                this.splice(index, 1); 
             } // Contiene el index a remover
 
             return this; // Retornando interfaz fluida

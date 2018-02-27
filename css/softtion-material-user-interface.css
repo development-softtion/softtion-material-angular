@@ -3721,11 +3721,11 @@ button.raised:focus:after, button.flat:focus:after {
     user-select: none;
     width: 280px; }
 
-.clockpicker-dialog > .box > .clockpicker {
-    height: 0px; }
+.clockpicker-dialog > .dialog > .box > .clockpicker {
+    display: none; }
 
-.clockpicker-dialog.active > .box > .clockpicker {
-    height: auto; }
+.clockpicker-dialog > .dialog.show > .box > .clockpicker {
+    display: block; }
 
 .clockpicker > .title {
     padding: 16px;
@@ -4083,11 +4083,11 @@ button.raised:focus:after, button.flat:focus:after {
     width: 300px; 
     overflow-y: auto; }
 
-.datepicker-dialog > .box > .datepicker {
-    height: 0px; }
+.datepicker-dialog > .dialog > .box > .datepicker {
+    display: none; }
 
-.datepicker-dialog.active > .box > .datepicker {
-    height: auto; }
+.datepicker-dialog > .dialog.show > .box > .datepicker {
+    display: block; }
 
 .datepicker > .title {
     width: 100%; 
@@ -7009,6 +7009,9 @@ p.link > a {
     top: 0;
     width: 0; 
     height: 4px; }
+
+.progress-bar.indeterminate > .bar {
+    display: none !important; }
 
 .progress-bar.reverse > .bar {
     right: 0px; }
@@ -10857,6 +10860,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     padding: 0px 16px;
     border-radius: 3px; 
     z-index: 24;
+    max-width: calc(100% - 56px);
     will-change: opacity;
     -webkit-transition: opacity 200ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 200ms 0ms var(--deceleration-curve);
@@ -10879,9 +10883,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 @media only screen and (min-width : 641px) {
     
     .tooltip-element {
-        font-size: 11px;
+        padding: 0px 8px;
         line-height: 24px;
-        padding: 0px 8px; }
+        font-size: 11px;
+        max-width: calc(100% - 48px); }
     
     .tooltip-element.show {
         height: 24px; }
