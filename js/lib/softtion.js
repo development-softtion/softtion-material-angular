@@ -1063,12 +1063,14 @@
             this.id = id; return this; 
         };
 
-        HtmlElement.prototype.addClass = function (newClass) { 
-            if (softtion.isArray(newClass)) {
-                this.classes = this.classes.concat(newClass); return this;
-            } // Cargando lista Atributos
-
-            this.classes.push(newClass); return this;
+        HtmlElement.prototype.addClass = function (classNew) { 
+            if (softtion.isUndefined(classNew)) return this;
+            
+            this.classes = (softtion.isArray(classNew)) ?
+                this.classes.concat(classNew) : 
+                this.classes.concat([classNew]);
+            
+            return this; // Retornando interfaz fluida
         };
 
         HtmlElement.prototype.addAttribute = function (attribute, value) {
@@ -1174,6 +1176,10 @@
 
         Softtion.prototype.html = function (tag, closed) {
             return new HtmlElement(tag, closed);
+        };
+        
+        Softtion.prototype.htmlElement = function (tag, classes) {
+            return new HtmlElement(tag).addClass(classes).tojQuery();
         };
     })(window.softtion);
     
