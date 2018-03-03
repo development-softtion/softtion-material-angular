@@ -6,8 +6,6 @@
  * Updated: 18/Sep/2017
  */
 
-@import url("fonts/roboto/style-font.css");
-
 :root {
     /** ANIMATION MATERIAL */
     --standard-curve: cubic-bezier(0.4, 0, 0.2, 1);
@@ -2494,8 +2492,15 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-y: auto;
     box-sizing: border-box; }
 
+.button-group > button + button {
+    margin-left: 4px; }
+
 .button-group > button.right {
     float: right; }
+
+.button-group > button.right + button {
+    margin-left: 0px;
+    margin-right: 4px; }
 
 .button-group > button.action {
     padding: 6px;
@@ -10544,6 +10549,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .toolbar > .nav-icon + .title {
     margin-left: 8px; }
+
+.sidenav.persistent.show ~ .app-body > .app-bar > .toolbar > .nav-icon + .title, 
+.sidenav.permanent.show ~ .app-body > .app-bar > .toolbar > .nav-icon + .title {
+    margin-left: 16px; }
 
 .toolbar > .detail ~ .title, .toolbar > .logo ~ .title {
     display: none; }

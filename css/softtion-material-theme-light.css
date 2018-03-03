@@ -58,7 +58,7 @@
     
     --theme-primary-ripple: rgba(255, 255, 255, 0.5);
     
-    --theme-primary-font: #4caf50;
+    --theme-primary-font: #9c27b0;
     --theme-primary-font-disabledcolor: #e1bee7;
     
     /** THEME SECONDARY */
@@ -79,7 +79,7 @@
     
     --theme-secondary-ripple: rgba(255, 255, 255, 0.5);
     
-    --theme-secondary-font: #9c27b0;
+    --theme-secondary-font: #4caf50;
     --theme-secondary-font-disabledcolor: #c8e6c9;
     
     /** THEME ERROR */

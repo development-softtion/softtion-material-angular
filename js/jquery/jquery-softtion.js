@@ -1,170 +1,23 @@
-/* !
- jQuery Softtion v1.4.2
- (c) 2016 Softtion Developers, http://jquery.softtion.com.co
+/*
+ jQuery Softtion v1.5.1
+ (c) 2016 - 2018 Softtion Developers, 
+ http://jquery.softtion.com.co
  License: MIT
- Updated: 20/Jul/2017
+ Updated: 03/Mar/2018
  */
-(function (factory) {
+
+((factory) => {
     if (typeof jQuery === "function" && typeof window.softtion === "object") {
         factory(jQuery, window.softtion);
     } else { 
         throw new Error("jQuery Softtion requiere jQuery y Softtion cargado en la Aplicación");
     } // No se ha cargado jQuery y Softtion
-})(function (jQuery, softtion) {
-    
-    var Module = {
-        getKeyJson: function (attributes, object, defaultValue) {
-            if (softtion.isUndefined(object)) {
-                return defaultValue; 
-            } // El objeto no fue definido o no encontrado
-
-            var value = ""; attributes = attributes.split(" ");
-
-            attributes.for(function (attribute) {
-                var valueAttribute = object[attribute]; // Valor del atributo
-                value += softtion.isUndefined(valueAttribute) ? valueAttribute + " " : "";
-            });
-
-            return (softtion.isString(value)) ? value.trim() :
-                (softtion.isDefined(defaultValue)) ? defaultValue : "N/D";
-        },
-        
-        whichTransition: function (element, transitionEnd) {
-            var transitions = (transitionEnd) ? {
-                estandar: "transitionend",
-                opera: "oTransitionEnd",
-                mozilla: "mozTransitionEnd",
-                WebkitTransition: "webkitTransitionEnd"
-            } : {
-                estandar: "transitionstart",
-                opera: "oTransitionStart",
-                mozilla: "mozTransitionStart",
-                WebkitTransition: "webkitTransitionStart"
-            };
-
-            for (var keyTransition in transitions) {
-                if (element.style[keyTransition] !== undefined) {
-                    return transitions[keyTransition];
-                }
-            }
-        },
-        
-        whichAnimation: function (element, animationEnd) {
-            var animations = (animationEnd) ? {
-                estandar: "animationend",
-                opera: "oAnimationEnd",
-                mozilla: "mozAnimationEnd",
-                WebkitTransition: "webkitAnimationEnd"
-            } : {
-                estandar: "animationstart",
-                opera: "oAnimationStart",
-                mozilla: "mozAnimationStart",
-                WebkitTransition: "webkitAnimationStart"
-            };
-
-            for (var keyTransition in animations) {
-                if (element.style[keyTransition] !== undefined) {
-                    return animations[keyTransition];
-                }
-            }
-        }
-    };
+})((jQuery, softtion) => {
     
     jQuery.fn.extend({
-        exists: function () { 
-            return (jQuery(this).length > 0);
-        },
+        tagName: function () { return jQuery(this).prop("tagName"); },
         
-        tagName: function () {
-            return jQuery(this).prop("tagName"); 
-        },
-        
-        deployHtml: function (options) {
-            var $default = {
-                before: undefined,     // Proceso antes de cargar HTML
-                after: undefined,      // Proceso despues de cargar HTML
-                animated: undefined,   // Animación en el componente
-                url: undefined,        // URL donde se encuentra Html
-                failed: undefined      // Proceso en caso de Error de cargue
-            };
-            
-            var $options = jQuery.extend({}, $default, options),
-                $component = jQuery(this);
-        
-            return jQuery.ajax({
-                type: "GET",
-                mimeType: "text/html; charset=utf-8", 
-                url: $options.url,
-                dataType: "html",
-                async: true,
-                success: function (data) {
-                    if (softtion.isFunction($options.before)) {
-                        $options.before($component); 
-                    } // Ejecutando función antes de cargar
-                    
-                    $component.empty(); // Limpiando componente
-                    
-                    if (softtion.isDefined($options.animated)) {
-                        $component.html(data); $component.animated($options.animated);
-                    } else { 
-                        $component.html(data); 
-                    } // Cargando html en el componente, sin animación
-                    
-                    if (softtion.isFunction($options.after)) { 
-                        $options.after($component); 
-                    } // Ejecutando función desoues de cargar
-                },
-                
-                error: function (jqXHR) {
-                    if (softtion.isFunction($options.failed)) { 
-                        $options.failed(jqXHR, $component); 
-                    } // Ejecutando función error al cargar Componente
-                } 
-            }); 
-        },
-        
-        createJSON: function () {
-            var jsonCreated = {}; // Objeto para crear
-            
-            jQuery(this).each(function () {
-                var $nameKeyData = jQuery(this).data("keyjson");
-                
-                if (softtion.isString($nameKeyData)) {
-                    jsonCreated[$nameKeyData] = jQuery(this).val();
-                }
-            });
-            
-            return jsonCreated; // Retornando objeto creado
-        },
-        
-        valueJSON: function (object, defaultValue) {
-            jQuery(this).each(function () {
-                var component = jQuery(this), keyJson = component.data("keyvalue");
-                
-                if (softtion.isString(keyJson)) {
-                    var keysJson = keyJson.split(".");
-                    
-                    if (keysJson.has(1)) {
-                        component.value(
-                            Module.getKeyJson(keysJson[0], object, defaultValue)
-                        );
-                    } else {
-                        object = undefined; var size = keysJson.length - 1;
-
-                        for (var index = 0; index < size; index++) {
-                            object = softtion.isUndefined(object) ? 
-                                object[keysJson[index]] : object[keysJson[index]];
-
-                            if (softtion.isUndefined(object)) { break; }
-                        }
-
-                        component.value(
-                            Module.getKeyJson(keysJson[size], object, defaultValue)
-                        );
-                    }
-                }
-            });
-        },
+        exists: function () { return jQuery(this).length > 0; },
         
         fixed: function () {
             var element = this[0], 
@@ -210,7 +63,7 @@
                 var selection = document.selection.createRange(),
                     length = document.selection.createRange().text.length;
             
-                selection.moveStart('character', -element.value.length);
+                selection.moveStart("character", -element.value.length);
                 position = selection.text.length - length;
             }
             
@@ -220,28 +73,22 @@
         // Eventos
         
         hasEventListener: function (eventName, namespace) {
-            var element = jQuery(this),
-                returnValue = false,
+            var element = jQuery(this), returnValue = false,
                 events = jQuery._data(element[0], "events");
-        
-            function validateEvents (event, eventName) {
-                return (softtion.isArray(eventName)) ?
-                    (eventName.indexOf(event) !== -1) : (event === eventName);
-            };
                 
             if (events) {
-                jQuery.each(events, function (index, value) {
-                    if (validateEvents(index, eventName)) {
-                        if (namespace) {
-                            jQuery.each(value, function (index, value) {
-                                if (value.namespace === namespace) {
-                                    returnValue = true; return false;
-                                } // Namespace coincide
-                            });
-                        } else {
+                jQuery.each(events, (index, value) => {
+                    if (!validateEvents(index, eventName)) return;
+                    
+                    if (!namespace) {
+                        returnValue = true; return false;
+                    } // No se definio namespace
+                    
+                    jQuery.each(value, (index, value) => {
+                        if (value.namespace === namespace) {
                             returnValue = true; return false;
-                        } // No se definio namespace
-                    } // Evento encontrado en el componente
+                        } // Namespace coincide en el componente
+                    });
                 });
             } // Tiene eventos el componente
             
@@ -251,11 +98,11 @@
         enter: function (callback) {
             var component = jQuery(this); // Componente
             
-            if (component.tagName() === "INPUT") {
-                component.keyup(function (ev) {
-                    if (ev.which === 13) { 
-                        if (softtion.isFunction(callback)) { callback(component); }
-                    } // Presiono la tecla ENTER
+            if (component.tagName() === "INPUT" || component.tagName() === "TEXTAREA") {
+                component.keyup((event) => {
+                    if (event.which !== 13) return; // No Presiono ENTER
+                    
+                    if (softtion.isFunction(callback)) callback(event, component);
                 });
             } // Componente es un INPUT
             
@@ -263,59 +110,65 @@
         },
         
         mousehold: function (callback, time) {
-            time = isNaN(time) ? 1000 : time;
+            time = isNaN(time) ? 1000 : time; // Definiendo tiempo
             
-            var component = jQuery(this), // Componente para evento
-                timeout = undefined;
+            var component = jQuery(this), timeout = undefined;
                 
-            component.mousedown(function (event) {
-                timeout = setTimeout(function () { callback(event); }, time);
+            component.mousedown((event) => {
+                timeout = setTimeout(() => { callback(event); }, time);
             });
             
-            component.mouseup(function () { clearTimeout(timeout); });
+            component.mouseup(() => { clearTimeout(timeout); });
             
-            component.mousemove(function () { clearTimeout(timeout); });
+            component.mousemove(() => { clearTimeout(timeout); });
             
             return component; // Retornando para interfaz fluida
         },
         
         touchstart: function (callback) {
             var component = jQuery(this); // Componente para evento
+            
             component[0].addEventListener("touchstart", callback, false);
+            
             return component; // Retornando para interfaz fluida
         },
         
         touchmove: function (callback) {
             var component = jQuery(this); // Componente para evento
+            
             component[0].addEventListener("touchmove", callback, false);
+            
             return component; // Retornando para interfaz fluida
         },
         
         touchcancel: function (callback) {
             var component = jQuery(this); // Componente para evento
+            
             component[0].addEventListener("touchcancel", callback, false);
+            
             return component; // Retornando para interfaz fluida
         },
         
         touchend: function (callback) {
             var component = jQuery(this); // Componente para evento
+            
             component[0].addEventListener("touchend", callback, false);
+            
             return component; // Retornando para interfaz fluida
         },
         
         touchhold: function (callback, time) {
-            time = isNaN(time) ? 1000 : time;
+            time = isNaN(time) ? 1000 : time; // Definiendo tiempo
             
-            var component = jQuery(this), // Componente para evento
-                timeout = undefined;
+            var component = jQuery(this), timeout = undefined;
                 
-            component.touchstart(function (event) {
-                timeout = setTimeout(function () { callback(event); }, time);
+            component.touchstart((event) => {
+                timeout = setTimeout(() => { callback(event); }, time);
             });
             
-            component.touchend(function () { clearTimeout(timeout); });
+            component.touchend(() => { clearTimeout(timeout); });
             
-            component.touchmove(function () { clearTimeout(timeout); });
+            component.touchmove(() => { clearTimeout(timeout); });
             
             return component; // Retornando para interfaz fluida
         },
@@ -324,7 +177,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            component.mousedown(fn).component.touchstart(fn);
+            component.mousedown(fn).touchstart(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -333,7 +186,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            component.mousemove(fn).component.touchmove(fn);
+            component.mousemove(fn).touchmove(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -342,7 +195,7 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            component.mouseup(fn).component.touchend(fn);
+            component.mouseup(fn).touchend(fn);
             
             return component; // Retornando para interfaz fluida
         },
@@ -351,161 +204,189 @@
             var component = jQuery(this), // Componente para evento
                 fn = function (event) { callback(event); };
             
-            component.mousehold(fn, time).component.touchhold(fn, time);
+            component.mousehold(fn, time).touchhold(fn, time);
             
             return component; // Retornando para interfaz fluida
         },
         
-        transition: function (properties) {
-            jQuery(this).css("-moz-transition", properties);
-            jQuery(this).css("-webkit-transition", properties);
-            jQuery(this).css("transition", properties);
-            jQuery(this).css("-o-transition", properties);
-            jQuery(this).css("-ms-transition", properties);
+        transition: function (transition) {
+            jQuery(this).css({
+                WebkitTransition: transition, MozTransition: transition, transition: transition
+            });
         },
         
-        animation: function (properties) {
-            jQuery(this).css("-moz-animation", properties);
-            jQuery(this).css("-webkit-animation", properties);
-            jQuery(this).css("animation", properties);
-            jQuery(this).css("-o-animation", properties);
-            jQuery(this).css("-ms-animation", properties);
+        animation: function (animation) {
+            jQuery(this).css({
+                WebkitAnimation: animation, MozAnimation: animation, animation: animation
+            });
         },
         
         transitionstart: function (callback) {
             var component = jQuery(this), // Componente para evento
-                transition = Module.whichTransition(this[0], false);
+                transition = getTransitionWhich(this[0], false);
             
-            component.on(transition, callback);
+            component.on(transition, (event) => { callback(event); });
             
             return component; // Retornando para interfaz fluida
         },
         
         transitionend: function (callback) {
             var component = jQuery(this), // Componente para evento
-                transition = Module.whichTransition(this[0], true);
+                transition = getTransitionWhich(this[0], true);
             
-            component.on(transition, callback);
+            component.on(transition, (event) => { callback(event); });
             
             return component; // Retornando para interfaz fluida
         },
         
         animationstart: function (callback) {
             var component = jQuery(this), // Componente para evento
-                animation = Module.whichAnimation(this[0], false);
+                animation = getAnimationWhich(this[0], false);
             
-            component.on(animation, callback);
+            component.on(animation, (event) => { callback(event); });
             
             return component; // Retornando para interfaz fluida
         },
         
         animationend: function (callback) {
             var component = jQuery(this), // Componente para evento
-                animation = Module.whichAnimation(this[0], true);
+                animation = getAnimationWhich(this[0], true);
             
-            component.on(animation, callback);
+            component.on(animation, (event) => { callback(event); });
             
             return component; // Retornando para interfaz fluida
         },
         
         displaceLeft: function (callback) {
-            var draggActive = false, 
-                positionX = -1,
+            var draggActive = false, positionX = -1,
                 component = jQuery(this),
+                
                 triggerCallback = function (name, event) {
-                    if (softtion.isFunction(callback)) {
-                        callback(name, event);
-                    } // Se ha definido una función de llamada
+                    if (softtion.isFunction(callback)) callback(name, event);
                 };
                                 
-            component.on("mousedown", function (event) {
+            component.on("mousedown", (event) => {
                 draggActive = true; positionX = event.originalEvent.x;
                 triggerCallback("start", event); // Inicio 
             });
 
-            component.on("mousemove", function (event) {
-                if (draggActive) {
-                    var positionNew = event.originalEvent.x,
-                        scrollLeft = component.scrollLeft();
+            component.on("mousemove", (event) => {
+                if (!draggActive) return; // Arrastre no esta activado
+                
+                var positionNew = event.originalEvent.x,
+                    scrollLeft = component.scrollLeft();
 
-                    if (positionX > positionNew) {
-                        scrollLeft = scrollLeft + (positionX - positionNew);
-                        component.scrollLeft(scrollLeft);
-                    } else {
-                        scrollLeft = scrollLeft - (positionNew - positionX);
-                        component.scrollLeft(scrollLeft);
-                    } // Moviendo scroll
+                if (positionX > positionNew) {
+                    scrollLeft = scrollLeft + (positionX - positionNew);
+                    component.scrollLeft(scrollLeft);
+                } else {
+                    scrollLeft = scrollLeft - (positionNew - positionX);
+                    component.scrollLeft(scrollLeft);
+                } // Moviendo scroll
 
-                    positionX = positionNew; triggerCallback("displace", event);
-                }
+                positionX = positionNew; triggerCallback("displace", event);
             });
 
-            component.on("mouseup", function (event) {
-                if (draggActive) {
-                    triggerCallback("end", event); 
-                } // Arrastre esta activo
+            component.on("mouseup", (event) => {
+                if (draggActive) triggerCallback("end", event); 
                 
                 draggActive = false; // Finalización de arrastre
             });
 
-            component.on("mouseleave", function (event) { 
-                if (draggActive) {
-                    triggerCallback("leave", event); 
-                } // Arrastre esta activo
+            component.on("mouseleave", (event) => { 
+                if (draggActive) triggerCallback("leave", event); 
                 
                 draggActive = false; // Finalización de arrastre 
             });
         },
         
         displaceTop: function (callback) {
-            var draggActive = false, 
-                positionY = -1,
+            var draggActive = false, positionY = -1,
                 component = jQuery(this),
+                
                 triggerCallback = function (name, event) {
-                    if (softtion.isFunction(callback)) {
-                        callback(name, event);
-                    } // Se ha definido una función de llamada
+                    if (softtion.isFunction(callback)) callback(name, event);
                 };
                                 
-            component.on("mousedown", function (event) {
+            component.on("mousedown", (event) => {
                 draggActive = true; positionY = event.originalEvent.y;
                 triggerCallback("start", event); // Inicio 
             });
 
-            component.on("mousemove", function (event) {
-                if (draggActive) {
-                    var positionNew = event.originalEvent.y,
-                        scrollTop = component.scrollTop();
+            component.on("mousemove", (event) => {
+                if (!draggActive) return; // Arrastre no esta activado
+                
+                var positionNew = event.originalEvent.y,
+                    scrollTop = component.scrollTop();
 
-                    if (positionY > positionNew) {
-                        scrollTop = scrollTop + (positionY - positionNew);
-                        component.scrollTop(scrollTop);
-                    } else {
-                        scrollTop = scrollTop - (positionNew - positionY);
-                        component.scrollTop(scrollTop);
-                    } // Moviendo scroll
+                if (positionY > positionNew) {
+                    scrollTop = scrollTop + (positionY - positionNew);
+                    component.scrollTop(scrollTop);
+                } else {
+                    scrollTop = scrollTop - (positionNew - positionY);
+                    component.scrollTop(scrollTop);
+                } // Moviendo scroll
 
-                    positionY = positionNew; triggerCallback("displace", event);
-                }
+                positionY = positionNew; triggerCallback("displace", event);
             });
 
-            component.on("mouseup", function (event) {
-                if (draggActive) {
-                    triggerCallback("end", event); 
-                } // Arrastre esta activo
+            component.on("mouseup", (event) => {
+                if (draggActive) triggerCallback("end", event); 
                 
                 draggActive = false; // Finalización de arrastre
             });
 
             component.on("mouseleave", function (event) { 
-                if (draggActive) {
-                    triggerCallback("leave", event); 
-                } // Arrastre esta activo
+                if (draggActive) triggerCallback("leave", event); 
                 
                 draggActive = false; // Finalización de arrastre 
             });
         }
     });
+    
+    var transitionsStart = {
+            estandar: "transitionstart",
+            mozilla: "mozTransitionStart",
+            WebkitTransition: "webkitTransitionStart"
+        },
+        transitionsEnd = {
+            estandar: "transitionend",
+            mozilla: "mozTransitionEnd",
+            WebkitTransition: "webkitTransitionEnd"
+        },
+        animationsStart = {
+            estandar: "animationstart",
+            mozilla: "mozAnimationStart",
+            WebkitTransition: "webkitAnimationStart"
+        },
+        animationsEnd = {
+            estandar: "animationend",
+            mozilla: "mozAnimationEnd",
+            WebkitTransition: "webkitAnimationEnd"
+        };
+        
+    function validateEvents (event, eventName) {
+        return (softtion.isArray(eventName)) ?
+            (eventName.indexOf(event) !== -1) : (event === eventName);
+    }
+        
+    function getTransitionWhich(element, transitionEnd) {
+        var transitions = (transitionEnd) ? // Nombres de evento
+                transitionsEnd : transitionsStart;
+
+        for (var key in transitions) {
+            if (element.style[key] !== undefined) return transitions[key];
+        }
+    }
+        
+    function getAnimationWhich(element, animationEnd) {
+        var animations = (animationEnd) ? // Nombres de evento
+                animationsEnd : animationsStart;
+
+        for (var key in animations) {
+            if (element.style[key] !== undefined) return animations[key];
+        }
+    }
     
     jQuery.extend({
         registerCubicBiezer: function (functionName, cubicBezierArray) {
@@ -520,7 +401,7 @@
                     var A = [null, null], B = [null, null], C = [null, null],
                             
                         bezCoOrd = function (t, ax) {
-                            C[ax] = 3 * p1[ax], B[ax] = 3 * (p2[ax] - p1[ax]) - C[ax], A[ax] = 1 - C[ax] - B[ax];
+                            C[ax] = 3 * p1[ax], B[ax] = 3 * (p2[ax] - p1[ax]) - C[ax]; A[ax] = 1 - C[ax] - B[ax];
                             return t * (C[ax] + t * (B[ax] + t * A[ax]));
                         },
                                 
@@ -563,7 +444,7 @@
     jQuery.registerCubicBiezer("sharpCurve", [0.4, 0, 0.6, 1]);
 });
 
-(function (jQuery) {
+((jQuery) => {
     var attachEvent = document.attachEvent,
             stylesCreated = false;
 
@@ -729,4 +610,4 @@
             }
         }
     };
-}(jQuery));
+})(jQuery);

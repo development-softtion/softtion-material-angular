@@ -5,6 +5,7 @@
  License: MIT
  Updated: 17/Feb/2018
 */
+
 ((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular);
@@ -14,7 +15,7 @@
 })((softtion, angular) => {
     
     var ngMaterial = angular.module(
-            "ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]
+            "ngSofttionMaterial", [ "ngSanitize", "ngSofttionEvents" ]
         ),
         TextType = softtion.get(softtion.TEXTCONTROL);
     
@@ -250,7 +251,7 @@
                     }]
                 },
 
-                FocusedElement: Properties.create(Properties.FocusElement),
+                FocusedElement: Properties.create(Properties.FocusedElement),
 
                 FormNavigation: Properties.create(Properties.FormNavigation),
 
@@ -1129,7 +1130,7 @@
                 softtion.html("li").addClass(["truncate"]).
                     addAttribute("tabindex", "-1").
                     addAttribute("ng-repeat", "suggestion in coincidences track by $index").
-                    addAttribute("ng-click", "selectSuggestion(suggestion)").
+                    addAttribute("ng-mousedown", "selectSuggestion(suggestion)").
                     addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
                     addAttribute("ng-bind-html", "renderSuggestion(suggestion)")
             ).addChildren(
@@ -1486,7 +1487,7 @@
                 softtion.html("li").
                     addAttribute("tabindex", "-1").
                     addAttribute("ng-repeat", "suggestion in coincidences track by $index").
-                    addAttribute("ng-click", "selectSuggestion(suggestion)").
+                    addAttribute("ng-mousedown", "selectSuggestion(suggestion)").
                     addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
                     addChildren(
                         softtion.html("div").addClass("avatar").
@@ -1985,9 +1986,11 @@
         return {
             restrict: "C",
             scope: {
-                ngOpen: "=?",
                 marginTop: "@",
-                maxWidth: "@"
+                maxWidth: "@",
+                ngOpen: "=?",
+                ngClose: "=?",
+                eventListener: "&"
             },
             link: function ($scope, $element, $attrs) {
                     // Componentes
@@ -2004,8 +2007,7 @@
                 });
 
                 if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop");
-                    backdrop = angular.element(element.create());
+                    backdrop = softtion.htmlElement("div", "backdrop");
                     
                     $element.append(backdrop); // Agregando Backdrop
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
@@ -2018,6 +2020,23 @@
                             bottomSheet.show(); $scope.ngOpen = false;
                         } // Desplegando BottomSheet
                     });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            bottomSheet.hide(); $scope.ngClose = false;
+                        } // Ocultando BottomSheet
+                    });
+                    
+                $element.transitionend((event) => {
+                    $scope.$apply(() => {
+                        var transition = event.originalEvent.propertyName,
+                            target = event.originalEvent.target;
+                    
+                        if (target === content[0] && transition === "transform")
+                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                    });
+                });
             }
         };
     };
@@ -4058,16 +4077,17 @@
         return {
             restrict: "C",
             scope: {
+                persistent: "=?",
                 ngOpen: "=?",
-                persistent: "=?"
+                ngClose: "=?"
             },
             link: function ($scope, $element) {
                 var backdrop = $element.children(".backdrop"),
-                    dialog = $dialog($element);
+                    dialog = $dialog($element),
+                    box = $element.children(".box");
 
                 if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop");
-                    backdrop = angular.element(element.create());
+                    backdrop = softtion.htmlElement("div", "backdrop");
                     
                     $element.append(backdrop); // Agregando Backdrop
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
@@ -4080,8 +4100,25 @@
                     (newValue) => {
                         if (newValue) {
                             dialog.show(); $scope.ngOpen = false;
-                        } // Desplegando FormNavigation
+                        } // Desplegando Dialog
                     });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            dialog.hide(); $scope.ngClose = false;
+                        } // Ocultando Dialog
+                    });
+                    
+                $element.transitionend((event) => {
+                    $scope.$apply(() => {
+                        var transition = event.originalEvent.propertyName,
+                            target = event.originalEvent.target;
+                    
+                        if (target === box[0] && transition === "transform")
+                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                    });
+                });
             }
         };
     }
@@ -5057,15 +5094,17 @@
         return {
             restrict: "C",
             scope: {
-                ngOpen: "=?" 
+                ngOpen: "=?",
+                ngClose: "=?",
+                eventListener: "&"
             },
             link: function ($scope, $element) {
                 var backdrop = $element.children(".backdrop"),
+                    content = $element.children(".content"),
                     formNavigation = $formNavigation($element);
 
                 if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop");
-                    backdrop = angular.element(element.create());
+                    backdrop = softtion.htmlElement("div", "backdrop");
                     
                     $element.append(backdrop); // Agregando Backdrop
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
@@ -5078,6 +5117,23 @@
                             formNavigation.show(); $scope.ngOpen = false;
                         } // Desplegando FormNavigation
                     });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            formNavigation.hide(); $scope.ngClose = false;
+                        } // Ocultando FormNavigation
+                    });
+                    
+                $element.transitionend((event) => {
+                    $scope.$apply(() => {
+                        var transition = event.originalEvent.propertyName,
+                            target = event.originalEvent.target;
+                    
+                        if (target === content[0] && transition === "transform")
+                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                    });
+                });
             }
         };
     }
@@ -6149,16 +6205,18 @@
         return {
             restrict: "C",
             scope: {
-                ngOpen: "=?" 
+                ngOpen: "=?",
+                ngClose: "=?",
+                eventListener: "&"
             },
             link: function ($scope, $element) {
                 var button = directive.BUTTON_CLOSE().tojQuery(),
                     sidenav = $sidenav($element),
+                    content = $element.children(".content"),
                     backdrop = $element.children(".backdrop");
 
                 if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop");
-                    backdrop = angular.element(element.create());
+                    backdrop = softtion.htmlElement("div", "backdrop");
                     
                     $element.append(backdrop); // Agregando Backdrop
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
@@ -6174,6 +6232,23 @@
                             sidenav.show(); $scope.ngOpen = false;
                         } // Desplegando Sidenav
                     });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            sidenav.hide(); $scope.ngClose = false;
+                        } // Ocultando Sidenav
+                    });
+                    
+                $element.transitionend((event) => {
+                    $scope.$apply(() => {
+                        var transition = event.originalEvent.propertyName,
+                            target = event.originalEvent.target;
+                    
+                        if (target === content[0] && transition === "transform")
+                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                    });
+                });
             }
         };
     }
@@ -8544,7 +8619,7 @@
         switch (name) {
             case (Properties.BottomSheet.NAME): return Properties.BottomSheet;
             case (Properties.Dialog.NAME): return Properties.Dialog;
-            case (Properties.FocusElement.NAME): return Properties.FocusElement;
+            case (Properties.FocusedElement.NAME): return Properties.FocusedElement;
             case (Properties.FormNavigation.NAME): return Properties.FormNavigation;
             case (Properties.MaterialBackground.NAME): return Properties.MaterialBackground;
             case (Properties.MaterialFont.NAME): return Properties.MaterialFont;
@@ -8607,29 +8682,28 @@
         };
     }
     
-    // Propiedad: FocusElement
+    // Propiedad: FocusedElement
     // Version: 1.0.0
     // Update: 28/02/2018
     
-    Properties.FocusElement = FocusElementProperty;
+    Properties.FocusedElement = FocusedElementProperty;
     
-    Properties.FocusElement.NAME = "FocusElement";
-    Properties.FocusElement.VERSION = "1.0.0";
-    Properties.FocusElement.KEY = "focusElement";
+    Properties.FocusedElement.NAME = "FocusedElement";
+    Properties.FocusedElement.VERSION = "1.0.0";
+    Properties.FocusedElement.KEY = "focusedElement";
     
-    Properties.FocusElement.$inject = [ "$parse" ];
+    Properties.FocusedElement.$inject = [ "$parse" ];
     
-    function FocusElementProperty($parse) {
+    function FocusedElementProperty($parse) {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
                 var $focusedElement = $parse($attrs.focusedElement);
-
+                
                 $scope.$watch($focusedElement, (value) => {
                     if (value === true) { 
-                        $element.focus(); // Enfocando
-                        $focusedElement.assign($scope, false);
-                    } // Se debe enfocar elemento
+                        $element.focus(); $focusedElement.assign($scope, false);
+                    } // Se debe enfocar componente establecido
                 });
             }
         };

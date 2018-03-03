@@ -282,7 +282,7 @@
     };
     
     Softtion.prototype.createDateOfPHP = function (timestamp) { 
-        return new Date(timestamp * 1000); 
+        return (softtion.isNumber(timestamp)) ? new Date(timestamp * 1000) : undefined; 
     };
     
     Softtion.prototype.isLeapYear = function (year) {
@@ -306,11 +306,7 @@
     };
     
     Softtion.prototype.isBetween = function (value, minValue, maxValue) {
-        if (value < minValue) { return false; } // Afuera rango
-        
-        if (value > maxValue) { return false; } // Supera rango
-        
-        return true; // Valor se encuentra entre rango determinado
+        return (value < minValue) ? false : !(value > maxValue);
     };
     
     Softtion.prototype.getGUID = (function () {
