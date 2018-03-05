@@ -1185,6 +1185,22 @@
         -webkit-transform: rotate(var(--round-progress-circular)); }
 }
 
+/** PROGRESS DETERIMINATE DASH FAB */
+
+@keyframes progressDeterminateDashFab {
+    0% {
+        transform: rotate(-90deg); }
+    75% {
+        transform: rotate(var(--round-fab-progress-circular)); }
+}
+
+@-webkit-keyframes progressDeterminateDashFab {
+    0% {
+        -webkit-transform: rotate(-90deg); }
+    75% {
+        -webkit-transform: rotate(var(--round-fab-progress-circular)); }
+}
+
 /** PROGRESS INDETERIMINATE ROTATE */
 
 @keyframes progressIndeterminateRotate {

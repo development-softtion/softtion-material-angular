@@ -91,6 +91,8 @@
             SHOW: "show",
             HIDE: "hide",
             HIDDEN: "hidden",
+            START: "start",
+            FINISH: "finish",
             
             SHOW_BOTTOM_NAV: "show-bottom-navigation",
             
@@ -600,59 +602,7 @@
 
                 ProgressBar: Providers.create(Providers.ProgressBar),
 
-                ProgressButtonFloating: {
-                    name: "$progressFAB",
-                    method: function () {
-                        var progressFab = undefined,
-                            circular = undefined,
-                            events = [
-                                "animationend", "oAnimationEnd", "mozAnimationEnd", "webkitAnimationEnd"
-                            ];
-
-                        var ProgressFAB = function () {};
-
-                        ProgressFAB.prototype.set = function (progressElement) {
-                            progressFab = instanceElement(progressElement, "progress-button-floating");
-
-                            executeIfExists(progressFab, function () {
-                                if (progressFab.exists()) {
-                                    circular = progressFab.children(".progress-circular");
-
-                                    if (!circular.hasEventListener(events)) {
-                                        circular.animationend(function () { 
-                                            progressFab.removeClass("start").addClass("finish"); 
-                                        });
-                                    } // No tiene establecido finalización de Animación
-                                } // Componente se ha definido
-                            });
-
-                            return this; // Retornando como interfaz fluida
-                        };
-
-                        ProgressFAB.prototype.determinate = function (time) {
-                            executeIfExists(progressFab, function () {
-                                if (!progressFab.hasClass("finish")) {
-                                    time = isNaN(time) ? 4000 : time;
-                                    setPropertyStyle("--time-progress-circular", time + "ms"); 
-
-                                    progressFab.addClass("start"); // Iniciando
-                                } // Componente no esta finalizado
-                            });
-                        };
-
-                        ProgressFAB.prototype.restore = function () {
-                            executeIfExists(progressFab, function () {
-                                progressFab.removeClass("finish");
-                            }); // Componente esta definido en el Proveedor
-                        };
-
-                        var progressFabProvider = new ProgressFAB();
-
-                        this.$get = function () { return progressFabProvider; };
-
-                        this.get = function () { return progressFabProvider; };
-                    }
-                },
+                ProgressButtonFloating: Providers.create(Providers.ProgressFAB),
 
                 ProgressCircular: Providers.create(Providers.ProgressCircular),
 
@@ -786,9 +736,7 @@
                     searchBox = $element.find(".search-box:first-child"),
                     sidenav = $appBody.children(".sidenav"),
 
-                    // Atributos
-                    position = 0, classHide = "hide",
-                    classBar56 = "pd-56", classBar64 = "pd-64";
+                    position = 0; // Atributos de la directiva
 
                 if (toolbar.exists() || searchBox.exists()) {
                     $element.addClass("element-hidden");
@@ -841,9 +789,9 @@
                 
                 function toogleAppBar(isShow) {
                     if (isShow) {
-                        $element.removeClass(classHide); Listener("show", $scope, []);
+                        $element.removeClass(Classes.HIDE); Listener("show", $scope, []);
                     } else {
-                        $element.addClass(classHide); Listener("hide", $scope, []);
+                        $element.addClass(Classes.HIDE); Listener("hide", $scope, []);
                     } // Se ocultará componente
                 }
                 
@@ -853,14 +801,12 @@
                             (parseInt(topAppContent) + 8):
                             (parseInt(topAppContent) - 8);
                     
-                    if ((width > 960) && !$appContent.hasClass(classBar64)) {
-                        sidenav.css("top", result); 
-                        $appContent.css("padding-top", result);
+                    if ((width > 960) && !$appContent.hasClass(Classes.APPBAR_64)) {
+                        sidenav.css("top", result); $appContent.css("padding-top", result);
                     } // Aplicando aumento de posición en elementos
                     
-                    if ((width <= 960) && !$appContent.hasClass(classBar56)) {
-                        sidenav.css("top", result);
-                        $appContent.css("padding-top", result);
+                    if ((width <= 960) && !$appContent.hasClass(Classes.APPBAR_56)) {
+                        sidenav.css("top", result); $appContent.css("padding-top", result);
                     } // Aplicando disminución de posición en elementos
                 }
             }
@@ -4079,7 +4025,8 @@
             scope: {
                 persistent: "=?",
                 ngOpen: "=?",
-                ngClose: "=?"
+                ngClose: "=?",
+                eventListener: "&"
             },
             link: function ($scope, $element) {
                 var backdrop = $element.children(".backdrop"),
@@ -5432,32 +5379,92 @@
     Directives.ProgressButtonFloating.ROUTE = "softtion/template/progress-button-floating.html";
     
     Directives.ProgressButtonFloating.HTML = function () {
-        var circular = softtion.html("div").addClass("progress-circular");
+        var circular = softtion.html("div").addClass("progress-circular").
+                addAttribute("ng-class", "{indeterminate: indeterminate}");
 
         var success = softtion.html("div").addClass("button-success").
-                addChildren(
-                    softtion.html("i").setText("{{iconFinish}}")
-                );
+                addAttribute("ng-click", "clickSuccess($event)").
+                addAttribute("ng-class", "{disabled: ngDisabled, error: ngError}").
+                addChildren(softtion.html("i").setText("{{iconFinish}}"));
 
         var button = softtion.html("button").addAttribute("ng-disabled", "ngDisabled").
-            addChildren(
-                softtion.html("i").setText("{{iconButton}}")
-            );
+                addAttribute("ng-click", "clickButton($event)").
+                addChildren(softtion.html("i").setText("{{iconButton}}"));
 
         return circular + success + button; // Componente
     };
     
-    function ProgressButtonFloatingDirective() {
+    Directives.ProgressButtonFloating.$inject = [ "$progressFAB" ];
+    
+    function ProgressButtonFloatingDirective($progressFAB) {
         return {
             restrict: "C",
             templateUrl: Directives.ProgressButtonFloating.ROUTE,
             scope: {
                 iconButton: "@",
                 iconFinish: "@",
-                ngDisabled: "=?"
+                ngDisabled: "=?",
+                
+                indeterminate: "=?",
+                duration: "=?",
+                ngStart: "=?",
+                ngFinish: "=?",
+                ngRestore: "=?",
+                ngError: "=?",
+                
+                eventListener: "&"
             },
-            link: function ($scope) {
+            link: function ($scope, $element) {
+                    // Componentes
+                var circular = $element.children(".progress-circular"),
+                    progressFAB = $progressFAB($element);
+                
                 $scope.iconFinish = $scope.iconFinish || "done";
+                
+                $scope.$watch(() => { return $scope.ngStart; },
+                    (newValue) => {
+                        if (!newValue) return; // Componente iniciado
+                        
+                        ($scope.indeterminate) ? progressFAB.show() :
+                            progressFAB.determinate($scope.duration); 
+
+                        $scope.ngStart = false; // Restaurando estado
+                    });
+                
+                $scope.$watch(() => { return $scope.ngFinish; },
+                    (newValue) => {
+                        if (!newValue) return; // Componente finalizado
+                        
+                        progressFAB.finish(); $scope.ngFinish = false;
+                    });
+                
+                $scope.$watch(() => { return $scope.ngRestore; },
+                    (newValue) => {
+                        if (!newValue) return; // Componente restaurado
+                        
+                        progressFAB.restore(); $scope.ngRestore = false;
+                    });
+                    
+                $scope.clickButton = function ($event) {
+                    Listener("action", $scope, [], { $event: $event });
+                };
+                    
+                $scope.clickSuccess = function ($event) {
+                    if ($scope.ngDisabled) return; // Componente bloqueado
+                    
+                    Listener(($scope.ngError) ? "error" : "success", $scope, [], { $event: $event });
+                };
+                
+                circular.animationend((event) => {
+                    progressFAB.finish(); // Finalizando componente
+                    
+                    $scope.$apply(() => { 
+                        var animate = event.originalEvent.animationName;
+                    
+                        if (animate === "progressDeterminateDashFab") 
+                            Listener("determinate", $scope, []);
+                    });
+                });
             }
         };
     }
@@ -7385,6 +7392,7 @@
             case (Providers.Modal.NAME): return Providers.Modal;
             case (Providers.ProgressBar.NAME): return Providers.ProgressBar;
             case (Providers.ProgressCircular.NAME): return Providers.ProgressCircular;
+            case (Providers.ProgressFAB.NAME): return Providers.ProgressFAB;
             case (Providers.ProgressPane.NAME): return Providers.ProgressPane;
             case (Providers.Sidenav.NAME): return Providers.Sidenav;
             case (Providers.Snackbar.NAME): return Providers.Snackbar;
@@ -7926,7 +7934,7 @@
         ProgressBar.prototype.setPercentage = function (percentage) {
             var self = this.element; // ProgressBar
 
-            executeIfExists(self.element, function () { 
+            executeIfExists(self.element, () => { 
                 if (self.element.hasClass(Classes.INDETERMINATE)) return;
 
                 if (isNaN(percentage)) return; // Porcentaje debe ser númerico
@@ -7948,9 +7956,9 @@
             return this; // Retornando como interfaz fluida
         };
 
-        function getInstanceElement(progressBar, element, classEl) {
+        function getInstanceElement(progressBar, element, classElement) {
             return (softtion.isDefined(element)) ? 
-                element : progressBar.element.children(classEl);
+                element : progressBar.element.children(classElement);
         }
 
         function setPercentageBuffering(self, percentage) {
@@ -7969,9 +7977,11 @@
             return new ProgressBar(instanceElement(element, "progress-bar"));
         }
 
-        this.$get = ["$rootScope", function ($rootScope) {
+        function fnProvider($rootScope) {
             $scope = $rootScope; return ProgressBarProvider; 
-        }];
+        }
+
+        this.$get = ["$rootScope", fnProvider]; // Proveedor
     }
     
     // Proveedor: ProgressCircular
@@ -8033,7 +8043,7 @@
                     self.start = true; // Estableciendo iniciación
 
                     self.element.animationend(() => { 
-                        self.hide(); // Ocultando ProgressBar
+                        self.hide(); // Ocultando ProgressCircular
 
                         if (softtion.isFunction(self.fn)) 
                             $scope.$apply(() => { self.fn(); });
@@ -8082,6 +8092,82 @@
         }
 
         this.$get = ["$rootScope", "$appContent", fnProvider];
+    }
+    
+    // Proveedor: ProgressFAB
+    // Version: 1.0.2
+    // Update: 05/03/2018
+    
+    Providers.ProgressFAB = ProgressFABProvider;
+    
+    Providers.ProgressFAB.NAME = "ProgressButtonFloating";
+    Providers.ProgressFAB.VERSION = "1.0.2";
+    Providers.ProgressFAB.KEY = "$progressFAB";
+    
+    function ProgressFABProvider() {
+
+        function ProgressFAB(element) {
+            this.element = element; // ProgressFAB
+        }
+        
+        ProgressFAB.prototype.show = function() {
+            var element = this.element; // Progress FAB
+
+            executeIfExists(element, () => { 
+                if (element.hasClass(Classes.FINISH)) return;
+                
+                element.addClass(Classes.SHOW); // Iniciando
+            });
+
+            return this; // Retornando como interfaz fluida
+        };
+        
+        ProgressFAB.prototype.finish = function() {
+            var element = this.element; // Progress FAB
+
+            executeIfExists(element, () => { 
+                if (element.hasClass(Classes.FINISH)) return;
+                
+                element.removeClass(Classes.SHOW).
+                    removeClass(Classes.START).addClass(Classes.FINISH);
+            });
+
+            return this; // Retornando como interfaz fluida
+        };
+
+        ProgressFAB.prototype.determinate = function (duration) {
+            var element = this.element; // Progress FAB
+
+            executeIfExists(element, () => { 
+                if (element.hasClass(Classes.FINISH)) return;
+                
+                duration = isNaN(duration) ? 4000 : duration;
+                var round = Math.round(duration / 2000);
+                
+                setPropertyStyle("--time-fab-progress-circular", duration + "ms"); 
+                setPropertyStyle("--round-fab-progress-circular", (round * 360 - 90) + "deg"); 
+
+                element.addClass(Classes.START); // Iniciando animación
+            });
+
+            return this; // Retornando como interfaz fluida
+        };
+
+        ProgressFAB.prototype.restore = function () {
+            var element = this.element; // Progress FAB
+
+            executeIfExists(element, () => { 
+                element.removeClass(Classes.FINISH); 
+            });
+
+            return this; // Retornando como interfaz fluida
+        };
+        
+        function ProgressFABProvider(element) {
+            return new ProgressFAB(instanceElement(element, "progress-button-floating"));
+        }
+
+        this.$get = function () { return ProgressFABProvider; };
     }
     
     // Proveedor: ProgressPane
@@ -8501,7 +8587,9 @@
             if (softtion.isUndefined($theme)) return; // No existe Tema
             
             setPropertyStyle("--theme-error-font", $theme[500]);
+            setPropertyStyle("--theme-error-font-disabled", $theme[100]);
             setPropertyStyle("--theme-error-background", $theme[500]);
+            setPropertyStyle("--theme-error-background-disabled", $theme[100]);
         };
 
         MaterialTheme.prototype.setSecondary = function (theme) {
@@ -9611,13 +9699,13 @@
         
         RIPPLE: {
             ELEMENT: function () {
-                return softtion.html("div").addClass("ripple").tojQuery();
+                return softtion.htmlElement("div", "ripple");
             },
             BOX: function () {
-                return softtion.html("div").addClass("ripple-box").tojQuery();
+                return softtion.htmlElement("div", "ripple-box");
             },
             EFFECT: function () {
-                return softtion.html("span").addClass("effect").tojQuery();
+                return softtion.htmlElement("span", "effect");
             },
             DEFINE_EVENT: function (box, effect) {
                 box.click(($event) => {

@@ -84,7 +84,10 @@
     
     /** THEME ERROR */
     --theme-error-background: #f44336;
+    --theme-error-background-disabled: #ffcdd2;
+    
     --theme-error-font: #f44336;
+    --theme-error-font-disabled: #ffcdd2;
 }
 
 /** WHITE AND BLACK */
@@ -1669,14 +1672,23 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .progress-button-floating > .progress-circular > svg > circle {
     stroke: var(--theme-primary-background); }
 
-.progress-button-floating > .button-success {
-    background-color: var(--theme-primary-background-light); }
-
 .progress-button-floating.finish > .button-success {
     background-color: var(--theme-primary-background); }
 
+.progress-button-floating.finish > .button-success.error {
+    background-color: var(--theme-error-background); }
+
+.progress-button-floating.finish > .button-success.disabled {
+    background-color: var(--theme-primary-background-disabled); }
+
+.progress-button-floating.finish > .button-success.disabled.error {
+    background-color: var(--theme-error-background-disabled); }
+
 .progress-button-floating > .button-success > i {
     color: var(--theme-primary-font-alternative); }
+
+.progress-button-floating > .button-success.disabled > i {
+    color: var(--theme-primary-font-disabled); }
 
 .progress-button-floating > button {
     background-color: var(--theme-secondary-background);

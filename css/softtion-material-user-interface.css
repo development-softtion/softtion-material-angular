@@ -48,6 +48,9 @@
     
     --time-progress-circular: 5s;
     --round-progress-circular: 990deg;
+    
+    --time-fab-progress-circular: 5s;
+    --round-fab-progress-circular: 990deg;
 }
 
 [draggable] {
@@ -7144,18 +7147,43 @@ p.link > a {
     pointer-events: none; }
 
 .progress-button-floating.start > .progress-circular > svg {
-    -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
-       -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
-            animation: progressDeterminateDash var(--time-progress-circular) linear; }
+    -webkit-animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear;
+       -moz-animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear;
+            animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear; }
 
 .progress-button-floating > .progress-circular > svg {
     width: 80px;
-    height: 80px; }
+    height: 80px;
+    -webkit-transform: rotate(var(--round-fab-progress-circular));
+       -moz-transform: rotate(var(--round-fab-progress-circular));
+            transform: rotate(var(--round-fab-progress-circular)); }
 
 .progress-button-floating.start > .progress-circular > svg > circle {
-    -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-       -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-            animation: progressDeterminateRotate var(--time-progress-circular) linear; }
+    -webkit-animation: progressDeterminateRotate var(--time-fab-progress-circular) linear;
+       -moz-animation: progressDeterminateRotate var(--time-fab-progress-circular) linear;
+            animation: progressDeterminateRotate var(--time-fab-progress-circular) linear; }
+
+.progress-button-floating.show > .progress-circular.indeterminate > svg {
+    -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
+       -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+            animation: progressIndeterminateRotate 3500ms linear infinite; }
+
+.progress-button-floating.finish > .progress-circular.indeterminate > svg {
+    -webkit-animation: none;
+       -moz-animation: none;
+            animation: none; }
+
+.progress-button-floating.show > .progress-circular.indeterminate > svg > circle {
+    opacity: 1;
+    -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+       -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+            animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
+
+.progress-button-floating.finish > .progress-circular.indeterminate > svg > circle {
+    opacity: 0;
+    -webkit-animation: none;
+       -moz-animation: none;
+            animation: none; }
 
 .progress-button-floating > .button-success {
     position: absolute;
@@ -7167,9 +7195,9 @@ p.link > a {
     border-radius: 50%;
     pointer-events: none; 
     visibility: hidden;
-    -webkit-transition: all 450ms 0ms var(--deceleration-curve);
-       -moz-transition: all 450ms 0ms var(--deceleration-curve);
-            transition: all 450ms 0ms var(--deceleration-curve); }
+    -webkit-transition: all 275ms 0ms var(--deceleration-curve);
+       -moz-transition: all 275ms 0ms var(--deceleration-curve);
+            transition: all 275ms 0ms var(--deceleration-curve); }
 
 .progress-button-floating.start > .button-success {
     visibility: visible; }
@@ -7204,10 +7232,10 @@ p.link > a {
     border-radius: 50%; 
     box-shadow: var(--shadow-6); }
 
-.progress-button-floating > button:hover {
+.progress-button-floating:hover > button {
     box-shadow: var(--shadow-8); }
 
-.progress-button-floating > button:hover:disabled {
+.progress-button-floating:hover > button:disabled {
     box-shadow: var(--shadow-6); }
 
 .progress-button-floating.start > button,
@@ -7240,6 +7268,59 @@ p.link > a {
     visibility: visible; }
 
 /** PROGRESS CIRCULAR */
+
+.progress-circular {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    padding: 4px;
+    box-sizing: border-box; }
+
+.progress-circular > svg { 
+    width: 48px;
+    height: 48px;
+    -webkit-transform: rotate(var(--round-progress-circular));
+       -moz-transform: rotate(var(--round-progress-circular));
+            transform: rotate(var(--round-progress-circular)); }
+
+.progress-circular.show > svg {
+    -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
+       -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+            animation: progressDeterminateDash var(--time-progress-circular) linear; }
+
+.progress-circular > svg > circle {
+    stroke-dasharray: 70, 70;
+    cx: 16;
+    cy: 16;
+    r: 11;
+    opacity: 0;
+    fill: none;
+    stroke-width: 3px; }
+
+.progress-circular.show > svg > circle {
+    -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+       -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+            animation: progressDeterminateRotate var(--time-progress-circular) linear; }
+
+.progress-circular.indeterminate > svg {
+    -webkit-animation: none;
+       -moz-animation: none;
+            animation: none; }
+
+.progress-circular.indeterminate.show > svg {
+    -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
+       -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+            animation: progressIndeterminateRotate 3500ms linear infinite; }
+
+.progress-circular.indeterminate > svg > circle {
+    stroke-dasharray: 65;
+    stroke-dashoffset: 65; }
+
+.progress-circular.indeterminate.show > svg > circle {
+    opacity: 1;
+    -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+       -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+            animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
 .refresh-progress-circular {
     position: absolute;
@@ -7274,64 +7355,20 @@ p.link > a {
 .app-content > .refresh-progress-circular.show {
     top: 12px; }
 
-.progress-circular {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    padding: 4px;
-    box-sizing: border-box; }
-
 .refresh-progress-circular > .progress-circular {
     width: 36px;
     height: 36px; }
-
-.progress-circular > svg { 
-    width: 48px;
-    height: 48px;
-    -webkit-transform: rotate(var(--round-progress-circular));
-       -moz-transform: rotate(var(--round-progress-circular));
-            transform: rotate(var(--round-progress-circular)); }
 
 .refresh-progress-circular > .progress-circular > svg {
     width: 28px;
     height: 28px; }
 
-.progress-circular.show > svg {
-    -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
-       -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
-            animation: progressDeterminateDash var(--time-progress-circular) linear; }
-
-.progress-circular > svg > circle {
-    stroke-dasharray: 70, 70;
-    cx: 16;
-    cy: 16;
-    r: 11;
-    opacity: 0;
-    fill: none;
-    stroke-width: 3px; }
-
-.progress-circular.show > svg > circle {
-    -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-       -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
-            animation: progressDeterminateRotate var(--time-progress-circular) linear; }
-
-.progress-circular.indeterminate > svg {
-    -webkit-animation: none;
-       -moz-animation: none;
-            animation: none; }
-
-.refresh-progress-circular.show > .progress-circular.indeterminate > svg,
-.progress-circular.indeterminate.show > svg {
+.refresh-progress-circular.show > .progress-circular.indeterminate > svg {
     -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
        -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
             animation: progressIndeterminateRotate 3500ms linear infinite; }
 
-.progress-circular.indeterminate > svg > circle {
-    stroke-dasharray: 65;
-    stroke-dashoffset: 65; }
-
-.refresh-progress-circular.show > .progress-circular.indeterminate > svg > circle,
-.progress-circular.indeterminate.show > svg > circle {
+.refresh-progress-circular.show > .progress-circular.indeterminate > svg > circle {
     opacity: 1;
     -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
        -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
