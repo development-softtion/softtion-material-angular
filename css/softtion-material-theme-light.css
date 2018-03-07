@@ -130,6 +130,26 @@ body {
 .theme-error-font {
     color: var(--theme-error-font) !important; }
 
+/** SCROLLBAR */
+
+body.not-touch *::-webkit-scrollbar-track {
+    background-color: transparent; }
+
+body.not-touch *:hover::-webkit-scrollbar-track {
+    background-color: rgba(245, 245, 245, 1); }
+
+body.not-touch *:hover::-webkit-scrollbar-track:vertical {
+    border-left: 1px solid rgba(0, 0, 0, 0.12); }
+
+body.not-touch *:hover::-webkit-scrollbar-track:horizontal {
+    border-top: 1px solid rgba(0, 0, 0, 0.12); }
+
+body.not-touch *::-webkit-scrollbar-thumb {
+    background-color: rgba(66, 66, 66, 0.25); }
+
+body.not-touch *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(66, 66, 66, 0.32); }
+
 /** COMPONENTS GLOBALS */
 
 .backdrop {
@@ -587,49 +607,49 @@ button.floating {
     background-color: var(--background-component);
     color: var(--secondary-font); }
 
-button.floating.theme-primary {
-    background-color: var(--theme-secondary-background);
-    color: var(--theme-secondary-font-active); }
-
-button.floating.theme-secondary {
-    background-color: var(--theme-primary-background);
-    color: var(--theme-primary-font-active); }
-
 button.floating:hover {
     background-color: #eeeeee; }
 
 button.floating:focus  {
     background-color: #e0e0e0; }
 
-button.floating.theme-primary:hover {
-    background-color: var(--theme-secondary-background-hover); }
-
-button.floating.theme-secondary:hover {
-    background-color: var(--theme-primary-background-hover); }
-
-button.floating.theme-primary:focus  {
-    background-color: var(--theme-secondary-background-focus); }
-
-button.floating.theme-secondary:focus  {
-    background-color: var(--theme-primary-background-focus); }
-
 button.floating:disabled, button.floating:hover:disabled {
     color: var(--disabled-font);
     background-color: var(--background-disabled); }
+
+button.floating.theme-primary {
+    background-color: var(--theme-secondary-background);
+    color: var(--theme-secondary-font-active); }
+
+button.raised:before, button.flat:before, button.floating:before {
+    background-color: var(--ripple); }
+
+button.floating.theme-primary:hover {
+    background-color: var(--theme-secondary-background-hover); }
+
+button.floating.theme-primary:focus  {
+    background-color: var(--theme-secondary-background-focus); }
 
 button.floating.theme-primary:disabled, button.floating.theme-primary:disabled:hover {
     color: var(--theme-secondary-font-disabled);
     background-color: var(--theme-secondary-background-disabled); }
 
+button.raised.theme-primary:before, button.floating.theme-primary:before {
+    background-color: var(--theme-secondary-ripple); }
+
+button.floating.theme-secondary {
+    background-color: var(--theme-primary-background);
+    color: var(--theme-primary-font-active); }
+
+button.floating.theme-secondary:hover {
+    background-color: var(--theme-primary-background-hover); }
+
+button.floating.theme-secondary:focus  {
+    background-color: var(--theme-primary-background-focus); }
+
 button.floating.theme-secondary:disabled, button.floating.theme-secondary:disabled:hover {
     color: var(--theme-primary-font-disabled);
     background-color: var(--theme-primary-background-disabled); }
-
-button.raised:before, button.flat:before, button.floating:before {
-    background-color: var(--ripple); }
-
-button.raised.theme-primary:before, button.floating.theme-primary:before {
-    background-color: var(--theme-secondary-ripple); }
 
 button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--theme-primary-ripple); }
@@ -1155,39 +1175,70 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** FAB MENU */
 
-.fab-menu > .box {
+.fab-menu:not(.active) > .orbit-content > .button { 
+    color: var(--secondary-font);
+    background-color: var(--background-component); }
+
+.fab-menu:not(.active) > .orbit-content > .button:hover {
+    background-color: #eeeeee; }
+
+.fab-menu:not(.active) > .orbit-content > .button:focus  {
+    background-color: #e0e0e0; }
+
+.fab-menu:not(.active) > .orbit-content > .button.disabled, 
+.fab-menu:not(.active) > .orbit-content > .button.disabled:hover {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button {
+    color: var(--theme-secondary-font-active);
     background-color: var(--theme-secondary-background); }
 
-.fab-menu:hover > .box {
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button:hover {
     background-color: var(--theme-secondary-background-hover); }
 
-.fab-menu:focus > .box {
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button:focus  {
     background-color: var(--theme-secondary-background-focus); }
 
-.fab-menu:hover.active > .box,
-.fab-menu.active > .box,
-.fab-menu:focus.active > .box{
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button.disabled,
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button.disabled:hover {
+    color: var(--theme-secondary-font-disabled);
+    background-color: var(--theme-secondary-background-disabled); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button {
+    color: var(--theme-primary-font-active);
+    background-color: var(--theme-primary-background); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button:hover {
+    background-color: var(--theme-primary-background-hover); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button:focus  {
+    background-color: var(--theme-primary-background-focus); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button.disabled, 
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button.disabled:hover {
+    color: var(--theme-primary-font-disabled);
+    background-color: var(--theme-primary-background-disabled); }
+
+.fab-menu.active > .orbit-content > .button {
     background-color: transparent; }
 
-.fab-menu > .box > .content > .button-floating > i {
-    color: var(--theme-secondary-font-active); }
-
-.fab-menu > .box > .content > .menu-content > .menu {
+.fab-menu > .content > .menu {
     background-color: var(--background-component); }
 
-/** FAB MENU RAINBOW */
+.fab-menu.theme-primary > .content > .menu > .option:hover {
+    color: var(--theme-secondary-font-active);
+    background-color: var(--theme-secondary-background-light); }
 
-.fab-menu-rainbow > .box {
-    background-color: var(--theme-secondary-background); }
-
-.fab-menu-rainbow.active > .box {
-    background-color: transparent; }
-
-.fab-menu-rainbow > .box > .content > .button-floating > i {
+.fab-menu.theme-primary > .content > .menu > .option:hover > i {
     color: var(--theme-secondary-font-active); }
 
-.fab-menu-rainbow > .box > .content > .menu-content > .menu {
-    background-color: var(--background-component); }
+.fab-menu.theme-secondary > .content > .menu > .option:hover {
+    color: var(--theme-primary-font-active);
+    background-color: var(--theme-primary-background-light); }
+
+.fab-menu.theme-secondary > .content > .menu > .option:hover > i {
+    color: var(--theme-primary-font-active); }
 
 /** FILECHOOSER */
 

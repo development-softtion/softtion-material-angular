@@ -30,80 +30,9 @@
         ]
     };
     
-    var KeysBoard = {
-            BACKSPACE: 8,       // TECLA BORRAR CARACTER
-            TAB: 9,             // TECLA TABULAIÓN
-            ENTER: 13,          // TECLA ENTER
-            SHIFT: 16,          // TECLA SHIFT
-            CTRL: 17,           // TECLA CONTROL
-            ALT: 18,            // TECLA ALT
-            ESC: 27,            // TECLA ESC
-            SPACE: 32,          // TECLA ESPACIO
-            END: 36,            // TECLA FIN
-            HOME: 36,           // TECLA INICIO
-            ARROW_UP: 38,       // TECLA FLECHA ARRIBA
-            ARROW_RIGHT: 39,    // TECLA FLECHA DERECHA
-            ARROW_DOWN: 40,     // TECLA FLECHA ABAJO
-            ARROW_LEFT: 37,     // TECLA FLECHA IZQUIERDA
-            DELETE: 46          // TECLA SUPRIMIR
-        }, 
-            
-        KeysControl = {
-            INPUT: [
-                KeysBoard.BACKSPACE, 
-                KeysBoard.TAB, 
-                KeysBoard.SHIFT, 
-                KeysBoard.CTRL, 
-                KeysBoard.HOME, 
-                KeysBoard.ARROW_UP, 
-                KeysBoard.ARROW_RIGHT, 
-                KeysBoard.ARROW_DOWN, 
-                KeysBoard.ARROW_LEFT, 
-                KeysBoard.DELETE
-            ],
-            
-            AUTOCOMPLETE: [
-                KeysBoard.ENTER,  
-                KeysBoard.ESC, 
-                KeysBoard.END, 
-                KeysBoard.HOME, 
-                KeysBoard.ARROW_UP, 
-                KeysBoard.ARROW_RIGHT, 
-                KeysBoard.ARROW_DOWN, 
-                KeysBoard.ARROW_LEFT
-            ],
-            
-            SELECT: [ 
-                KeysBoard.ENTER, 
-                KeysBoard.SPACE
-            ]
-        },
-                
-        Classes = {
-            BODY_OVERFLOW_NONE: "body-overflow-none",
-            OVERFLOW_NONE: "overflow-none",
-            BODY_OVERFLOW_NONE_NAV: "body-overflow-none-sidenav",
-            
-            APPBAR_56: "pd-56",
-            APPBAR_64: "pd-64",
-    
-            ACTIVE: "active",
-            SHOW: "show",
-            HIDE: "hide",
-            HIDDEN: "hidden",
-            START: "start",
-            FINISH: "finish",
-            
-            SHOW_BOTTOM_NAV: "show-bottom-navigation",
-            
-            INDETERMINATE: "indeterminate",
-            BUFFERING: "buffering",
-            
-            ANIMATED: "animated",
-            OPTIONABLE: "optionable",
-            
-            TWO_LINE: "two-line"
-        };
+    var KeysBoard = getKeysBoard(), 
+        KeysControl = getKeysControl(),
+        Classes = getClasses();
     
     function GET_INSTANCE_SOFTTION_MATERIAL() {
         return {
@@ -155,8 +84,6 @@
                 ExpansionPanel: Directives.create(Directives.ExpansionPanel),
 
                 FabMenu: Directives.create(Directives.FabMenu),
-
-                FabMenuRainbow: Directives.create(Directives.FabMenuRainbow),
 
                 FabSpeedDial: Directives.create(Directives.FabSpeedDial),
 
@@ -623,6 +550,87 @@
         };
     }
     
+    function getKeysBoard() {
+        return {
+            BACKSPACE: 8,       // TECLA BORRAR CARACTER
+            TAB: 9,             // TECLA TABULAIÓN
+            ENTER: 13,          // TECLA ENTER
+            SHIFT: 16,          // TECLA SHIFT
+            CTRL: 17,           // TECLA CONTROL
+            ALT: 18,            // TECLA ALT
+            ESC: 27,            // TECLA ESC
+            SPACE: 32,          // TECLA ESPACIO
+            END: 36,            // TECLA FIN
+            HOME: 36,           // TECLA INICIO
+            ARROW_UP: 38,       // TECLA FLECHA ARRIBA
+            ARROW_RIGHT: 39,    // TECLA FLECHA DERECHA
+            ARROW_DOWN: 40,     // TECLA FLECHA ABAJO
+            ARROW_LEFT: 37,     // TECLA FLECHA IZQUIERDA
+            DELETE: 46          // TECLA SUPRIMIR
+        };
+    }
+            
+    function getKeysControl() {
+        return {
+            INPUT: [
+                KeysBoard.BACKSPACE, 
+                KeysBoard.TAB, 
+                KeysBoard.SHIFT, 
+                KeysBoard.CTRL, 
+                KeysBoard.HOME, 
+                KeysBoard.ARROW_UP, 
+                KeysBoard.ARROW_RIGHT, 
+                KeysBoard.ARROW_DOWN, 
+                KeysBoard.ARROW_LEFT, 
+                KeysBoard.DELETE
+            ],
+            
+            AUTOCOMPLETE: [
+                KeysBoard.ENTER,  
+                KeysBoard.ESC, 
+                KeysBoard.END, 
+                KeysBoard.HOME, 
+                KeysBoard.ARROW_UP, 
+                KeysBoard.ARROW_RIGHT, 
+                KeysBoard.ARROW_DOWN, 
+                KeysBoard.ARROW_LEFT
+            ],
+            
+            SELECT: [ 
+                KeysBoard.ENTER, 
+                KeysBoard.SPACE
+            ]
+        };
+    }
+        
+    function getClasses() {
+        return {
+            BODY_OVERFLOW_NONE: "body-overflow-none",
+            OVERFLOW_NONE: "overflow-none",
+            BODY_OVERFLOW_NONE_NAV: "body-overflow-none-sidenav",
+            
+            APPBAR_56: "pd-56",
+            APPBAR_64: "pd-64",
+    
+            ACTIVE: "active",
+            SHOW: "show",
+            HIDE: "hide",
+            HIDDEN: "hidden",
+            START: "start",
+            FINISH: "finish",
+            
+            SHOW_BOTTOM_NAV: "show-bottom-navigation",
+            
+            INDETERMINATE: "indeterminate",
+            BUFFERING: "buffering",
+            
+            ANIMATED: "animated",
+            OPTIONABLE: "optionable",
+            
+            TWO_LINE: "two-line"
+        };
+    }
+    
     // DIRECTIVAS DE SOFTTION MATERIAL
     
     function Directives(name) { 
@@ -651,7 +659,6 @@
             case (Directives.Dictionary.NAME): return Directives.Dictionary;
             case (Directives.ExpansionPanel.NAME): return Directives.ExpansionPanel;
             case (Directives.FabMenu.NAME): return Directives.FabMenu;
-            case (Directives.FabMenuRainbow.NAME): return Directives.FabMenuRainbow;
             case (Directives.FabSpeedDial.NAME): return Directives.FabSpeedDial;
             case (Directives.Filechooser.NAME): return Directives.Filechooser;
             case (Directives.FilechooserAudio.NAME): return Directives.FilechooserAudio;
@@ -735,8 +742,10 @@
                 var toolbar = $element.find(".toolbar:first-child"),
                     searchBox = $element.find(".search-box:first-child"),
                     sidenav = $appBody.children(".sidenav"),
-
-                    position = 0; // Atributos de la directiva
+                    
+                    // Atributos
+                    listener = new Listener($scope, []), position = 0, 
+                    appBarWR = "wr-appbar-" + softtion.getGUID();
 
                 if (toolbar.exists() || searchBox.exists()) {
                     $element.addClass("element-hidden");
@@ -774,8 +783,6 @@
                     position = positionNew; // Nueva posición del scroll
                 });
                 
-                var appBarWR = "wr-appbar-" + softtion.getGUID();
-
                 $windowResize.addListener(appBarWR, (window) => {
                     if (!softtion.isInPage($element[0])) {
                         $windowResize.removeListener(appBarWR); return;
@@ -789,10 +796,10 @@
                 
                 function toogleAppBar(isShow) {
                     if (isShow) {
-                        $element.removeClass(Classes.HIDE); Listener("show", $scope, []);
+                        $element.removeClass(Classes.HIDE); listener.launch("show");
                     } else {
-                        $element.addClass(Classes.HIDE); Listener("hide", $scope, []);
-                    } // Se ocultará componente
+                        $element.addClass(Classes.HIDE); listener.launch("hide");
+                    } // Se ocultará Appbar en el documento
                 }
                 
                 function setPositionWidth(width) {
@@ -1125,7 +1132,8 @@
                     list = $element.find("ul");
 
                     // Atributos
-                var focusLi = false, searchStart = false;
+                var focusLi = false, searchStart = false,
+                    listener = new Listener($scope, Listener.AUTOCOMPLETE);
 
                 $scope.coincidences = []; $scope.old = undefined; 
                 $scope.inputActive = false; $scope.instance = false;
@@ -1185,7 +1193,7 @@
                 $scope.clickLabel = function () { input.focus(); };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.AutoComplete, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.focusInput = function ($event) {
@@ -1193,10 +1201,9 @@
                         $scope.input = describeSuggestion($scope.select);
                     } // Cambiando valor del texto en el Input
 
-                    $scope.inputActive = true; $element.addClass("active"); 
+                    $scope.inputActive = true; $element.addClass(Classes.ACTIVE); 
 
-                    Listener("focus", $scope, Listener.KEYS.AutoComplete, { $event: $event });
-
+                    listener.launch("focus", { $event: $event });
                     searchSuggestions($scope.input); // Buscar sugerencias
                 };
 
@@ -1208,11 +1215,11 @@
                     if ($scope.coincidences.length === 0) {
                         $scope.select = undefined;
                     } // No hay opciones posibles para selección
+                    
+                    $scope.input = ""; $element.removeClass(Classes.ACTIVE);
+                    $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
 
-                    $scope.inputActive = false; $element.removeClass("active");
-                    list.removeClass("active"); $scope.input = "";
-
-                    Listener("blur", $scope, Listener.KEYS.AutoComplete, { $event: $event });
+                    listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keydownInput = function ($event) {
@@ -1247,7 +1254,7 @@
                     switch ($event.originalEvent.which) {
                         case (KeysBoard.ENTER): $scope.selectSuggestion(suggestion); break;
 
-                        case (KeysBoard.ESC): list.removeClass("active"); break;
+                        case (KeysBoard.ESC): list.removeClass(Classes.ACTIVE); break;
 
                         case (KeysBoard.ARROW_UP):
                             (option.prev().length) ? option.prev().focus() : input.focus();
@@ -1268,12 +1275,9 @@
                     if (!$scope.searchMode) {
                         $scope.input = describeSuggestion(suggestion);
 
-                        if ($scope.old !== $scope.select) {
-                            Listener("changed", $scope, Listener.KEYS.AutoComplete);
-                        } // La selección realizada es diferente a la anterior
+                        if ($scope.old !== $scope.select) listener.launch("changed");
                     } else {
-                        input.focus();  // Enfoncando componente de Texto
-                        Listener("selected", $scope, Listener.KEYS.AutoComplete);
+                        input.focus(); listener.launch("selected");
 
                         $scope.select = undefined; // Limpiando selección
                     }
@@ -1313,9 +1317,7 @@
 
                 $scope.clearAutocomplet = function () {
                     $element.removeClass("active"); 
-                    $scope.select = undefined;
-
-                    Listener("clear", $scope, Listener.KEYS.AutoComplete);
+                    $scope.select = undefined; listener.launch("clear");
 
                     if (!$scope.disabledFocusclear) input.focus(); 
                 };
@@ -1494,8 +1496,9 @@
                 var input = $element.find("input"), 
                     list = $element.find("ul");
 
-                // Atributos de control
-                var focusLi = false, searchStart = false;
+                    // Atributos de control
+                var listener = new Listener($scope, Listener.AUTOCOMPLETE),
+                    focusLi = false, searchStart = false;
 
                 $scope.coincidences = []; $scope.old = undefined; 
                 $scope.instance = false; $scope.inputActive = false;
@@ -1568,7 +1571,7 @@
                 $scope.clickLabel = function () { input.focus(); };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.AutoComplete, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.focusInput = function ($event) {
@@ -1577,8 +1580,7 @@
                     } // Cambiando valor del texto en el Input
 
                     $scope.inputActive = true; $element.addClass("active"); 
-
-                    Listener("focus", $scope, Listener.KEYS.AutoComplete, { $event: $event });
+                    listener.launch("focus", { $event: $event });
 
                     searchSuggestions($scope.input); // Buscar sugerencias
                 };
@@ -1592,10 +1594,10 @@
                         $scope.select = undefined;
                     } // No hay opciones posibles para selección
 
-                    $scope.inputActive = false; $element.removeClass("active");
-                    list.removeClass("active"); $scope.input = "";
+                    $element.removeClass("active"); $scope.input = "";
+                    $scope.inputActive = false; list.removeClass("active"); 
 
-                    Listener("blur", $scope, Listener.KEYS.AutoComplete, { $event: $event });
+                    listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keydownInput = function ($event) {
@@ -1651,12 +1653,9 @@
                     if (!$scope.searchMode) { 
                         $scope.input = getValueSuggestion(suggestion);
 
-                        if ($scope.old !== $scope.select) {
-                            Listener("changed", $scope, Listener.KEYS.AutoComplete);
-                        } // La selección realizada es diferente a la anterior
+                        if ($scope.old !== $scope.select) listener.launch("changed");
                     } else { 
-                        input.focus(); // Enfoncando componente de Texto
-                        Listener("selected", $scope, Listener.KEYS.AutoComplete);
+                        input.focus(); listener.launch("selected");
 
                         $scope.select = undefined; // Limpiando selección
                     }
@@ -1695,9 +1694,7 @@
 
                 $scope.clearAutocomplet = function () {
                     $element.removeClass("active"); 
-                    $scope.select = undefined;
-
-                    Listener("clear", $scope, Listener.KEYS.AutoComplete);
+                    $scope.select = undefined; listener.launch("clear");
 
                     if (!$scope.disabledFocusclear) input.focus();
                 };
@@ -1747,10 +1744,12 @@
         return softtion.html("div").addClass("ripple-box").
             addChildren(
                 softtion.html("span").addClass("effect")
-            );
+            ).create(); // Instanciando efecto Ripple
     };
     
-    function BottomNavigationDirective($softtionMaterial) {
+    Directives.BottomNavigation.$inject = [ "$body", "$appContent" ];
+    
+    function BottomNavigationDirective($body, $appContent) {
         var directive = Directives.BottomNavigation; // Directiva
         
         return {
@@ -1760,32 +1759,19 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var selectorFAB = $softtionMaterial.Selectors.FAB,
-                    selectorNav = $softtionMaterial.Selectors.BottomNav; 
-
                     // Componentes
-                var rippleBox = angular.element(directive.RIPPLE().create()),
+                var rippleBox = angular.element(directive.RIPPLE()),
                     items = $element.find(".content > li"),
                     itemActive = $element.find(".content > li.active:first"), 
-                    actionButton = angular.element(selectorFAB),
-                    elementsNav = angular.element(selectorNav),
-                    views = angular.element($scope.views),
-                    appContent = angular.element(".app-content"), 
-                    snackbar, toast;
-
-                $element.append(rippleBox); // Agregando ripple
+                    views = angular.element($scope.views);
 
                     // Atributos
-                var classColor = "default", position = 0,
-                    classHide = "hide", classShow = "show-bottom-navigation";
-
-                if (actionButton.exists()) {
-                    actionButton.addClass("show-bottom-navigation");
-                } // Cambiando posición original
-
-                if (elementsNav.exists()) {
-                    elementsNav.addClass("show-bottom-navigation");
-                } // Cambiando posición original
+                var listener = new Listener($scope, []), // Listener
+                    classColor = "default", position = 0,
+                    scrollEvent = "scroll.bottomnav-" + softtion.getGUID();
+            
+                $body.addClass(Classes.SHOW_BOTTOM_NAV);
+                $element.append(rippleBox); // Agregando ripple
 
                 items.attr("tab-index", "-1"); items.removeClass("active"); 
 
@@ -1826,7 +1812,7 @@
                     var view = views.find(item.attr("view"));
 
                     if (view.exists() && !view.hasClass("active")) {
-                        appContent.scrollTop(0); // Posición inicial
+                        $appContent.scrollTop(0); // Posición inicial
                         var viewActive = views.find(".content.active");
 
                         if (viewActive.exists()) {
@@ -1862,56 +1848,26 @@
                         setTimeout(function () { rippleBox.removeClass("animated").removeClass("show"); }, 325);
                     }// BottomNavigation permite cambio de Color
 
-                    Listener("view", $scope, [], { $event: $event });
+                    listener.launch("view", { $event: $event });
                 });
 
-                var nameEvent = "scroll.bottom-navigation",
-                    defineElements = function () {
-                        snackbar = angular.element(".snackbar");
-                        toast = angular.element(".toast");
-                        actionButton = angular.element(selectorFAB);
-                        elementsNav = angular.element(selectorNav);
-                    },
-                    defineStatusElement = function (status) {
-                        if (!status) {
-                            snackbar.removeClass(classShow);
-                            toast.removeClass(classShow);
-                            actionButton.removeClass(classShow);
-                            elementsNav.removeClass(classShow);
-                        } else {
-                            snackbar.addClass(classShow);
-                            toast.addClass(classShow);
-                            actionButton.addClass(classShow);
-                            elementsNav.addClass(classShow);
-                        } // Se visualiza Bottom Navigation 
-                    };
+                $appContent.on(scrollEvent, scrollBottomEvent);
 
-                var scrollBottomNav = function () {
-                    var element = angular.element(this); defineElements();
-
+                function scrollBottomEvent() {
                     if (!softtion.isInPage($element[0])) {
-                        appContent.off(nameEvent, scrollBottomNav);
-                        defineStatusElement(false); return; 
-                    } // No existe el bottom navigation en el documento
+                        $appContent.off(scrollEvent, scrollBottomEvent);
+                        $body.removeClass(Classes.SHOW_BOTTOM_NAV); return; 
+                    } // Bottom Navigation no esta en documento
+                    
+                    var element = angular.element(this), 
+                        positionNew = element.scrollTop(); // Posicion
 
-                    var positionNew = element.scrollTop(); // Posicion actual
-
-                    if (position < positionNew) {
-                        defineStatusElement(false); $element.addClass(classHide);
-                    } else {
-                        defineStatusElement(true); $element.removeClass(classHide);
-                    } // Se visualiza BottomNavigation oculto
+                    (position < positionNew) ? 
+                        $body.removeClass(Classes.SHOW_BOTTOM_NAV) :
+                        $body.addClass(Classes.SHOW_BOTTOM_NAV);
 
                     position = positionNew; // Posición nueva del scroll
-                };
-
-                appContent.on(nameEvent, scrollBottomNav);
-
-                var flexibleContent = $element.parents(".flexible-content");
-
-                if (flexibleContent.exists()) {
-                    flexibleContent.children(".box").on(nameEvent, scrollBottomNav);
-                } // Elemento se encuentra insertado en un Flexible Content
+                }
             }
         };
     }
@@ -1943,6 +1899,9 @@
                 var backdrop = $element.children(".backdrop"),
                     bottomSheet = $bottomSheet($element),
                     content = $element.children(".content");
+                    
+                    // Atributos
+                var listener = new Listener($scope, []);
             
                 $attrs.$observe("marginTop", () => {
                     content.css("max-height", "calc(100% - " + $scope.marginTop + ")");
@@ -1980,7 +1939,9 @@
                             target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                            listener.launch(
+                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
+                            );
                     });
                 });
             }
@@ -2107,7 +2068,9 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var intervalCarousel = undefined; // Interval
+                    // Atributos
+                var listener = new Listener($scope, []),
+                    intervalCarousel = undefined;
                 
                 $scope.index = 0; $scope.isContainedTwo = false; 
                 $scope.containedTwo = "next";
@@ -2176,7 +2139,7 @@
                 };
 
                 $scope.clickAction = function (action, item, $index) {
-                    Listener("action", $scope, [], {
+                    listener.launch("action", {
                         $item: item, $index: $index, $action: action
                     });
                 };
@@ -2315,6 +2278,7 @@
                 var container = $element.find(".container"),
                 
                     // Atributos
+                    listener = new Listener($scope, []),
                     keyCatalog = "wr-catalog-" + softtion.getGUID();
 
                 $scope.index = 0; $scope.width = $window.innerWidth;
@@ -2371,7 +2335,7 @@
                 };
 
                 $scope.clickAction = function (action, $item, $index) {
-                    Listener("action", $scope, [], {
+                    listener.launch("action", {
                         $item: $item, $index: $index, $action: action
                     });
                 };
@@ -2464,18 +2428,21 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var input = $element.find("input[type='checkbox']");
+                    
+                    // Atributos
+                var listener = new Listener($scope, Listener.CHECKBOX);
 
                 $scope.clickCheckbox = function ($event) {
-                    Listener("click", $scope, Listener.KEYS.CheckBox, { $event: $event });
+                    listener.launch("click", { $event: $event });
                 };
 
                 $scope.clickLabel = function ($event) { 
-                    if (!$scope.ngDisabled) {
-                        $scope.checked = !$scope.checked; input.focus();
-
-                        Listener("click", $scope, Listener.KEYS.CheckBox, { $event: $event });
-                    } // No se permite el cambio de la Propiedad
+                    if ($scope.ngDisabled) return; // Inactivo
+                    
+                    $scope.checked = !$scope.checked; input.focus();
+                    listener.launch("click", { $event: $event });
                 };
             }
         };
@@ -2517,20 +2484,22 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var input = $element.find("input[type='checkbox']");
+                
+                    // Atributos
+                var listener = new Listener($scope, Listener.CHECKBOX);
 
                 $scope.clickCheckbox = function ($event) {
-                    if ($scope.preventDefault) return; // Se cancela el evento
-
-                    Listener("click", $scope, Listener.KEYS.CheckBox, { $event: $event });
+                    if ($scope.preventDefault) return; // Evento cancelado
+                    listener.launch("click", { $event: $event });
                 };
 
                 $scope.clickLabel = function ($event) { 
-                    if ($scope.preventDefault) return; // Se cancela el evento
+                    if ($scope.preventDefault) return; // Evento cancelado
 
                     $scope.checked = !$scope.checked; input.focus();
-
-                    Listener("click", $scope, Listener.KEYS.CheckBox, { $event: $event });
+                    listener.launch("click", { $event: $event });
 
                     if ($scope.stopPropagation) $event.stopPropagation();
                 };
@@ -2566,10 +2535,13 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, []);
+                
                 $scope.clickLabel = function ($event) { 
-                    if ($scope.preventDefault) return; // Se cancela el evento
+                    if ($scope.preventDefault) return; // Evento cancelado
 
-                    Listener("click", $scope, [], { $event: $event });
+                    listener.launch("click", { $event: $event });
 
                     if ($scope.stopPropagation) $event.stopPropagation();
                 };
@@ -2664,10 +2636,13 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                // Componentes
+                    // Componentes
                 var input = $element.find("input"),
                     box = $element.find(".box"),
                     chips = $element.find(".chips");
+                    
+                    // Atributos
+                var listener = new Listener($scope, Listener.CHIP_INPUT);
 
                 $scope.inputActive = false; // Componente Activo
                 
@@ -2716,7 +2691,7 @@
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.ChipInput, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.clickInput = function ($event) {
@@ -2725,12 +2700,12 @@
 
                 $scope.focusInput = function ($event) { 
                     $scope.inputActive = true; // Activando input
-                    Listener("focus", $scope, Listener.KEYS.ChipInput, { $event: $event });
+                    listener.launch("focus", { $event: $event });
                 };
 
                 $scope.blurInput = function ($event) { 
                     $scope.input = undefined; $scope.inputActive = false;
-                    Listener("blur", $scope, Listener.KEYS.ChipInput, { $event: $event });
+                    listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keydownInput = function ($event) {
@@ -2746,19 +2721,17 @@
 
                         $scope.values.push($scope.input); // Item
 
-                        Listener("add", $scope, Listener.KEYS.ChipInput, 
-                            { $event: $event, $item: $scope.input });
+                        listener.launch("add", { $event: $event, $item: $scope.input });
 
                         $scope.input = undefined; // Limpiando
                     } // Se va agregar texto escrito en el componente
                 };
 
                 $scope.removeItem = function (index) {
-                    if (!$scope.ngDisabled) {
-                        var item = $scope.values[index]; $scope.values.remove(index); 
-
-                        Listener("remove", $scope, Listener.KEYS.ChipInput, { $item: item });
-                    }
+                    if (!$scope.ngDisabled) return; // Desactivado
+                    
+                    $scope.values.remove(index); // Removiendo
+                    listener.launch("remove", { $item: $scope.values[index] });
                 };
             }
         };
@@ -2946,15 +2919,8 @@
                     canvas = plate.find(".canvas");
 
                     // Atributos
-                $scope.clockValues = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
-
-                $scope.selection = undefined;
-                $scope.hourValue = undefined;
-                $scope.minuteValue = undefined;
-                $scope.isPM = false; $scope.isHours = true;
-
-                var time = new Date(), // Tiempo actual
-                    selectionActive = false, 
+                var time = new Date(), selectionActive = false, 
+                    listener = new Listener($scope, Listener.CLOCKPICKER),
                     attributes = {
                         dialRadius: 116, 
                         radius: 96,
@@ -2963,6 +2929,13 @@
                         tickRadius: 14
                     },
                     component = directive.paintSelector(canvas, attributes);
+            
+                $scope.clockValues = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+
+                $scope.selection = undefined;
+                $scope.hourValue = undefined;
+                $scope.minuteValue = undefined;
+                $scope.isPM = false; $scope.isHours = true;
                     
                 $scope.hour = (time.getHours() === 0) ?
                     12 : (time.getHours() > 12) ? 
@@ -3040,13 +3013,11 @@
 
                     $scope.time.setHours(hour); $scope.time.setMinutes($scope.minute);
 
-                    this.setSelection(true); // Reiniciando selección
-                    Listener("select", $scope, Listener.KEYS.ClockPicker);
+                    this.setSelection(true); listener.launch("select");
                 };
 
                 $scope.cancel = function () {
-                    this.setSelection(true); // Reiniciando selección
-                    Listener("cancel", $scope, Listener.KEYS.ClockPicker);
+                    this.setSelection(true); listener.launch("cancel");
                 };
 
                 function calculatePosition($event) {
@@ -3130,7 +3101,11 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var parent = angular.element($scope.parent); // Padre
+                
+                    // Atributos
+                var listener = new Listener($scope, Listener.CLOCKPICKER);
                 
                 if (parent.exists()) $element.appendTo(parent); 
 
@@ -3142,8 +3117,7 @@
                     });
 
                 $scope.clockListener = function ($model, $listener) {
-                    $scope.showActive = false; $scope.time = $model;
-                    Listener($listener, $scope, Listener.KEYS.ClockPicker);
+                    $scope.showActive = false; $scope.time = $model; listener.launch($listener);
                 };
             }
         };
@@ -3219,12 +3193,14 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, Listener.CLOCKPICKER);
+                
                 $scope.format = $scope.format || "hz:ii zz";
                 $scope.show = false; // Dialog inicia oculto
 
-                if (softtion.isUndefined($scope.time) && $scope.autoStart) {
-                    $scope.time = new Date(); 
-                } // Se desea iniciar automaticamente el tiempo
+                if (softtion.isUndefined($scope.time) && $scope.autoStart) 
+                    $scope.time = new Date();  // Tiempo del dispositivo
 
                 $scope.$watch(() => { return $scope.time; }, 
                     (newValue, oldValue) => {
@@ -3255,22 +3231,21 @@
                 };
 
                 $scope.showDialog = function ($event) {
-                    if (!$scope.ngDisabled) {
-                        $scope.show = true; 
-                        Listener("show", $scope, Listener.KEYS.ClockPicker, { $event: $event });
-                    }
+                    if (!$scope.ngDisabled) return; // Desactivado
+                    
+                    $scope.show = true; listener.launch("show", { $event: $event });
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.ClockPicker, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.clockDialogListener = function ($model, $listener) {
-                    $scope.time = $model; Listener($listener, $scope, Listener.KEYS.ClockPicker);
+                    $scope.time = $model; listener.launch($listener);
                 };
 
                 $scope.clearTime = function () {
-                    $scope.time = undefined; Listener("clear", $scope, Listener.KEYS.ClockPicker);
+                    $scope.time = undefined; listener.launch("clear");
                 };
             }
         };
@@ -3479,7 +3454,8 @@
                     listMonths = $elememt.find(".content .months");
 
                     // Atributos
-                var DAYS_MONTHS = softtion.get(softtion.DAYS_OF_MONTHS),
+                var listener = new Listener($scope, Listener.DATEPICKER),
+                    DAYS_MONTHS = softtion.get(softtion.DAYS_OF_MONTHS),
                     today = new Date(), dateStart = new Date(),
                     yearRange = ($scope.yearRange) ? parseInt($scope.yearRange) : 10,
                     DAYS_WEEK = softtion.get(softtion.DAYS_OF_WEEK),
@@ -3760,13 +3736,10 @@
                 // FUNCIONES PARA CONTROL DE LA FECHA
 
                 $scope.setDate = function () {
-                    $scope.date = new Date($scope.year, $scope.month, $scope.day);
-                    Listener("select", $scope, Listener.KEYS.DatePicker);
+                    $scope.date = getDate(); listener.launch("select");
                 };
 
-                $scope.cancel = function () {
-                    Listener("cancel", $scope, Listener.KEYS.DatePicker);
-                };
+                $scope.cancel = function () { listener.launch("cancel"); };
 
                 function initDatePicker(date) {
                     dateStart.setFullYear(date.getFullYear()); 
@@ -3782,6 +3755,10 @@
                     $scope.daysMonth = directive.createCalendar(
                         $scope.year, $scope.month, dateStart.getDay(), DAYS_MONTHS[$scope.month]
                     );
+                }
+                
+                function getDate() {
+                    return new Date($scope.year, $scope.month, $scope.day);
                 }
     
                 function validateDateEnabled(date) {
@@ -3845,7 +3822,11 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var parent = angular.element($scope.parent); // Padre
+                
+                    // Atributos
+                var listener = new Listener($scope, Listener.DATEPICKER);
                 
                 if (parent.exists()) $element.appendTo(parent); 
 
@@ -3856,8 +3837,7 @@
                     });
 
                 $scope.dateListener = function ($model, $listener) {
-                    $scope.showActive = false; $scope.date = $model;
-                    Listener($listener, $scope, Listener.KEYS.DatePicker);
+                    $scope.showActive = false; $scope.date = $model; listener.launch($listener);
                 };
 
                 $scope.ngDisabledDatePicker = function ($date) {
@@ -3946,12 +3926,14 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, Listener.DATEPICKER);
+                
                 $scope.format = $scope.format || "ww, dd de mn del aa";
                 $scope.show = false; // Dialog inicia oculto
 
-                if (softtion.isUndefined($scope.date) && $scope.autoStart) {
-                    $scope.date = new Date(); 
-                } // Se desea iniciar automaticamente la fecha
+                if (softtion.isUndefined($scope.date) && $scope.autoStart)
+                    $scope.date = new Date(); // Fecha del dispositivo
 
                 $scope.$watch(() => { return $scope.time; }, 
                     (newValue, oldValue) => {
@@ -3982,26 +3964,25 @@
                 };
 
                 $scope.showDialog = function ($event) {
-                    if (!$scope.ngDisabled) {
-                        $scope.show = true; 
-                        Listener("show", $scope, Listener.KEYS.DatePicker, { $event: $event });
-                    }
+                    if (!$scope.ngDisabled) return; // Desactivado
+                        
+                    $scope.show = true; listener.launch("show", { $event: $event });
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.DatePicker, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.dateDialogListener = function ($model, $listener) {
-                    $scope.date = $model; Listener($listener, $scope, Listener.KEYS.DatePicker);
+                    $scope.date = $model; listener.launch($listener);
                 };
 
                 $scope.ngDisabledDateDialog = function ($date) {
-                    return $scope.ngDisabledDate({$date: $date});
+                    return $scope.ngDisabledDate({ $date: $date });
                 };
 
                 $scope.clearDate = function () {
-                    $scope.date = undefined; Listener("clear", $scope, Listener.KEYS.DatePicker);
+                    $scope.date = undefined; listener.launch("clear");
                 };
             }
         };
@@ -4029,9 +4010,13 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var backdrop = $element.children(".backdrop"),
                     dialog = $dialog($element),
                     box = $element.children(".box");
+                    
+                    // Atributos
+                var listener = new Listener($scope, []);
 
                 if (!backdrop.exists()) {
                     backdrop = softtion.htmlElement("div", "backdrop");
@@ -4063,7 +4048,9 @@
                             target = event.originalEvent.target;
                     
                         if (target === box[0] && transition === "transform")
-                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                            listener.launch(
+                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
+                            );
                     });
                 });
             }
@@ -4079,7 +4066,7 @@
     Directives.Dictionary.NAME = "Dictionary";
     Directives.Dictionary.VERSION = "1.0.0";
     Directives.Dictionary.KEY = "dictionary";
-    Directives.Dictionary.ROUTE = "softtion/template/dictionary.html",
+    Directives.Dictionary.ROUTE = "softtion/template/dictionary.html";
                     
     Directives.Dictionary.HTML = function () {
         var content = softtion.html("div").addClass("content");
@@ -4120,12 +4107,15 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, []);
+                
                 $scope.inputListener = function ($listener, $value) {
                     if ($listener === "keyUp") $scope.filter = $value;
                 };
 
                 $scope.clickItem = function ($item) {
-                    Listener("select", $scope, [], { $item: $item });
+                    listener.launch("select", { $item: $item });
                 };
             }
         };
@@ -4197,105 +4187,73 @@
     Directives.FabMenu.NAME = "FabMenu";
     Directives.FabMenu.VERSION = "1.0.0";
     Directives.FabMenu.KEY = "fabMenu";
+    Directives.FabMenu.ROUTE = "softtion/template/fab-menu.html";
     
-    Directives.FabMenu.$inject = [ "$body" ];
+    Directives.FabMenu.HTML = function () {
+        var orbit = softtion.html("div").addClass("orbit-content").
+            addChildren(
+                softtion.html("div").addClass("button").
+                    addAttribute("tab-index", "-1").
+                    addAttribute("ng-click", "openMenu()").
+                    addAttribute("ng-class", "{disabled: ngDisabled}").
+                    addChildren(
+                        softtion.html("i").setText("{{icon}}")
+                    )
+            );
+        
+        var content = softtion.html("div").addClass("content").
+            addChildren(
+                softtion.html("ul").addClass("menu").
+                    addChildren(
+                        softtion.html("li").addClass("option").
+                            addAttribute("ng-repeat", "item in options").
+                            addAttribute("ng-click", "closeMenu(item)").
+                            addChildren(
+                                softtion.html("i").setText("{{item.icon}}").
+                                    addAttribute("ng-if", "isIconDefined(item.icon)")
+                            ).
+                            addChildren(
+                                softtion.html("span").setText("{{item.label}}")
+                            )
+                    )
+            );
+
+        return orbit + content; // Componente
+    };
     
-    function FabMenuDirective($body) {
+    function FabMenuDirective() {
         return {
             restrict: "C", 
+            templateUrl: Directives.FabMenu.ROUTE,
             scope: {
+                options: "=?",
+                icon: "@",
+                ngDisabled: "=?",
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var button = $element.find(".button-floating"),
-                    box = $element.children(".box"),
-                    backdrop = $element.children(".backdrop");
-
-                $element.attr("tab-index", "-1"); // Enfocable
-
-                if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop").create();
-                    backdrop = angular.element(element); $element.append(backdrop);
-                } // No existe backdrop en el componente
-
-                box.on("click.fab-menu", () => {
-                    if (!$element.hasClass("active")) return;
-                    
-                    $element.removeClass("active"); // Cerrando
-                    $body.removeClass(Classes.BODY_OVERFLOW_NONE);
-                    
-                    Listener("hide", $scope, []); // Ocultando
-                });
-
-                button.on("click.fab-menu", ($event) => {
-                    $body.addClass(Classes.BODY_OVERFLOW_NONE); 
-                    $element.addClass("active"); $event.stopPropagation();
-                    
-                    Listener("show", $scope, []); // Desplegando
-                });
-
-                backdrop.on("click.fab-menu", () => {
-                    $element.removeClass("active"); 
-                    $body.removeClass(Classes.BODY_OVERFLOW_NONE);
-                    
-                    Listener("hide", $scope, []); // Ocultando
-                });
-            }
-        };
-    }
-    
-    // Directiva: FabMenuRainbow
-    // Version: 1.0.0
-    // Update: 26/02/2018
-    
-    Directives.FabMenuRainbow = FabMenuRainbowDirective;
-    
-    Directives.FabMenuRainbow.NAME = "FabMenuRainbow";
-    Directives.FabMenuRainbow.VERSION = "1.0.0";
-    Directives.FabMenuRainbow.KEY = "fabMenuRainbow";
-    
-    Directives.FabMenuRainbow.$inject = [ "$body" ];
-    
-    function FabMenuRainbowDirective($body) {
-        return {
-            restrict: "C", 
-            scope: {
-                eventListener: "&"
-            },
-            link: function ($scope, $element) {
-                var button = $element.find(".button-floating"),
-                    box = $element.children(".box"),
-                    backdrop = angular.element(".backdrop.fab-backdrop");
-
-                if (!backdrop.exists()) {
-                    var element = softtion.html("div").addClass("backdrop").create();
-                    backdrop = angular.element(element); $element.append(backdrop);
-                } // No existe backdrop en el componente
+                var listener = new Listener($scope, []); // Listener
                 
-                $element.attr("tab-index", "-1"); // Enfocable
-
-                box.on("click.fab-rainbow", () => {
-                    if (!$element.hasClass("active")) return;
+                $scope.$watch(() => { return $scope.options; },
+                    (newValue) => {
+                        if (softtion.isUndefined(newValue)) return; // Indefinido
+                        
+                        if (!softtion.isArray(newValue)) $scope.options = [];
+                    });
                     
-                    $element.removeClass("active"); backdrop.removeClass("active");
-                    $body.removeClass(Classes.BODY_OVERFLOW_NONE);
+                $scope.isIconDefined = function (icon) {
+                    return softtion.isString(icon);
+                };
                     
-                    Listener("hide", $scope, []); // Ocultando
-                });
-
-                button.on("click.fab-rainbow", (event) => {
-                    $element.addClass("active").addClass("start"); 
-                    $body.addClass(Classes.BODY_OVERFLOW_NONE);
-                    backdrop.addClass("active"); event.stopPropagation();
+                $scope.openMenu = function () {
+                    $element.addClass(Classes.START).addClass(Classes.ACTIVE);
+                    listener.launch("show"); // Desplegando FabMenu
+                };
                     
-                    Listener("show", $scope, []); // Desplegando
-                });
-
-                backdrop.on("click.fab-rainbow", () => {
-                    $element.removeClass("active"); backdrop.removeClass("active");
-                    
-                    Listener("hide", $scope, []); // Ocultando
-                });
+                $scope.closeMenu = function (item) {
+                    $element.removeClass(Classes.ACTIVE); // Ocultando
+                    listener.launch(item.action, { $item: item }); 
+                };
             }
         };
     }
@@ -4423,7 +4381,9 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var fileInput = $element.find("input[type=file]"),
+                    // Atributos
+                var listener = new Listener($scope, Listener.FILECHOOSER),
+                    fileInput = $element.find("input[type=file]"),
                     imagesFormat = $material.File.imagesFormat,
                     viewPreview = $element.find(".view-preview"),
                     heightStart = (viewPreview.height() - 16);                                
@@ -4441,8 +4401,7 @@
                             var fileResult = $event.target.result; 
                             file["base64"] = fileResult; 
 
-                            $scope.file = file; // Archivo seleccionado
-                            Listener("changed", $scope, Listener.KEYS.FileChooser);
+                            $scope.file = file; listener.launch("changed");
                         });
                     };
 
@@ -4492,11 +4451,11 @@
                 };
 
                 $scope.fileHold = function ($event) {
-                    Listener("hold", $scope, Listener.KEYS.FileChooser, { $event: $event });
+                    listener.launch("hold", { $event: $event });
                 };
 
                 $scope.fileRight = function ($event) {
-                    Listener("clickRight", $scope, Listener.KEYS.FileChooser, { $event: $event });
+                    listener.launch("clickRight", { $event: $event });
                 };
 
                 $scope.isIconAction = function () {
@@ -4504,7 +4463,7 @@
                 };
 
                 $scope.clickIconAction = function ($event) {
-                    Listener("action", $scope, Listener.KEYS.FileChooser, { $event: $event });
+                    listener.launch("action", { $event: $event });
                 };
             }
         };
@@ -4581,7 +4540,9 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var fileInput = $element.find("input[type=file]");
+                    // Atributos
+                var listener = new Listener($scope, Listener.FILECHOOSER),
+                    fileInput = $element.find("input[type=file]");
 
                 $scope.file = undefined; // Archivos seleccionado
 
@@ -4595,10 +4556,9 @@
                             var src = window.URL.createObjectURL(file);
 
                             $scope.ngSrc = $sce.trustAsResourceUrl(src);
-
                             $scope.name = file.name; $scope.file = file; 
 
-                            Listener("changed", $scope, Listener.KEYS.FileChooser);
+                            listener.launch("changed"); // Cambio de archivo
                         });
                     };
 
@@ -4624,16 +4584,14 @@
                 $scope.selectFile = function () { fileInput.click(); };
 
                 $scope.deleteFile = function () {
-                    $scope.file = undefined; $scope.name = "";
                     fileInput[0].value = ""; $scope.ngSrc = ""; 
+                    $scope.file = undefined; $scope.name = "";
 
-                    Listener("remove", $scope, Listener.KEYS.FileChooser);
+                    listener.launch("remove"); // Archivo removido
                 };
 
                 $scope.saveFile = function () {
-                    if (softtion.isDefined($scope.file)) {
-                        Listener("save", $scope, Listener.KEYS.FileChooser);
-                    } // Hay una imagen seleccionada
+                    if (softtion.isDefined($scope.file)) listener.launch("save");
                 };
             }
         };
@@ -4730,7 +4688,8 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var fileInput = $element.find("input[type=file]"),
+                var listener = new Listener($scope, Listener.FILECHOOSER_MULTIPLE),
+                    fileInput = $element.find("input[type=file]"),
                     imagesFormat = $material.File.imagesFormat;
 
                 $scope.iconButton = $scope.iconButton || "attachment";
@@ -4740,6 +4699,13 @@
                 $scope.files = []; // Lista de archivos seleccionados
 
                 if ($scope.multiple) fileInput.attr("multiple", "");
+                
+                $scope.$watch(() => { return $scope.fileTypes; },
+                    (newValue) => {
+                        if (softtion.isUndefined(newValue)) return;
+                        
+                        if (!softtion.isArray(newValue)) $scope.fileTypes = [];
+                    });
 
                 function processFile(file) {
                     var reader = new FileReader(); // Procesador de archivos
@@ -4761,30 +4727,20 @@
                 fileInput.change(() => {
                     var files = fileInput[0].files; // Archivos
 
-                    if (files.length) {
+                    if (files.length) // Se cambio archivo a seleccionar
                         angular.forEach(files, (file) => {
-                            if (!softtion.isArray($scope.fileTypes)) {
-                                processFile(file);
-                            } else if ($scope.fileTypes.isEmpty()) {
-                                processFile(file);
-                            } else {
-                                if ($scope.fileTypes.hasItem(files[0].type)) {
-                                    processFile(file);
-                                } // Se han definido filtro de tipo de Archivos
-                            }
+                            if (!$scope.fileTypes.hasItem(files[0].type) &&
+                                !$scope.fileTypes.isEmpty()) return;
+                                    
+                            processFile(file); // Se puede procesar seleccionado
                         });
-                    } // Se cambio archivo a seleccionar
                 });
 
                 $scope.selectFile = function () { fileInput.click(); };
 
                 $scope.removeFile = function (file, $index) {
                     $scope.files.remove($index); fileInput[0].value = "";
-
-                    Listener(
-                        "remove", $scope, Listener.KEYS.FilesChooser,
-                        { $index: $index, $file: file }
-                    );
+                    listener.launch("remove", { $index: $index, $file: file });
                 };
 
                 $scope.isImageFile = function (typeFile) {
@@ -4800,17 +4756,11 @@
                 };
 
                 $scope.fileHold = function (file, $event, $index) {
-                    Listener(
-                        "hold", $scope, Listener.KEYS.FilesChooser,
-                        { $index: $index, $file: file, $event: $event }
-                    );
+                    listener.launch("hold", { $index: $index, $file: file, $event: $event });
                 };
 
                 $scope.fileRight = function (file, $event, $index) {
-                    Listener(
-                        "clickRight", $scope, Listener.KEYS.FilesChooser,
-                        { $index: $index, $file: file, $event: $event }
-                    );
+                    listener.launch("clickRight", { $index: $index, $file: file, $event: $event });
                 };
             }
         };
@@ -4882,8 +4832,12 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var fileInput = $element.find("input[type=file]"),
                     icon = $element.children("i"); 
+                    
+                    // Atributos
+                var listener = new Listener($scope, Listener.FILECHOOSER);
 
                 $scope.file = undefined; // Archivos seleccionado
                 $scope.icon = $scope.icon || "person";
@@ -4905,7 +4859,7 @@
                             $scope.ngSrc = fileResult; // IMG
                             file["base64"] = fileResult; $scope.file = file;
 
-                            Listener("changed", $scope, Listener.KEYS.FileChooser);
+                            listener.launch("changed"); // Cambio
                         });
                     };
 
@@ -4924,11 +4878,8 @@
                 fileInput.change(() => {
                     var files = fileInput[0].files; // Archivos
 
-                    if (files.length) {
-                        if (imgTypes.hasItem(files[0].type)) {
-                            processFile(files[0]);
-                        } // El archivo es una imagen
-                    } // Se cambio ha seleccionado un archivo
+                    if (files.length && imgTypes.hasItem(files[0].type)) 
+                        processFile(files[0]);
                 });
 
                 $scope.isSelectFile = function () {
@@ -4943,15 +4894,11 @@
 
                 $scope.deleteFile = function () {
                     $scope.ngSrc = ""; $scope.file = undefined; 
-                    fileInput[0].value = ""; // Removiendo seleccion
-
-                    Listener("remove", $scope, Listener.KEYS.FileChooser);
+                    fileInput[0].value = ""; listener.launch("remove");
                 };
 
                 $scope.saveFile = function () {
-                    if (softtion.isDefined($scope.file)) {
-                        Listener("save", $scope, Listener.KEYS.FileChooser);
-                    } // Hay una imagen seleccionada
+                    if (softtion.isDefined($scope.file)) listener.launch("save");
                 };
             }
         };
@@ -5046,9 +4993,12 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var backdrop = $element.children(".backdrop"),
                     content = $element.children(".content"),
                     formNavigation = $formNavigation($element);
+            
+                var listener = new Listener($scope, []);
 
                 if (!backdrop.exists()) {
                     backdrop = softtion.htmlElement("div", "backdrop");
@@ -5078,7 +5028,9 @@
                             target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                            listener.launch(
+                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
+                            );
                     });
                 });
             }
@@ -5218,25 +5170,20 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, []);
+                
                 $scope.removeImage = function ($index) {
-                    var item = $scope.images[$index]; // Item eliminado
-
-                    $scope.images.remove($index); // Eliminando
-                    Listener("remove", $scope, [], { $item: item, $index: $index });
+                    $scope.images.remove($index); // Eliminando item de la lista
+                    listener.launch("remove", { $item: $scope.images[$index], $index: $index });
                 };
 
                 $scope.imageHold = function (item, $event, $index) {
-                    Listener(
-                        "hold", $scope, [], 
-                        { $item: item, $index: $index, $event: $event }
-                    );
+                    listener.launch("hold", { $item: item, $index: $index, $event: $event });
                 };
 
                 $scope.imageRight = function (item, $event, $index) {
-                    Listener(
-                        "clickRight", $scope, [], 
-                        { $item: item, $index: $index, $event: $event }
-                    );
+                    listener.launch("clickRight", { $item: item, $index: $index, $event: $event });
                 };
             }
         };
@@ -5315,7 +5262,9 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Atributos
                 var progressBar = $progressBar($element), // ProgressBar
+                    listener = new Listener($scope, []),
                     isBarInsert = false, isBufferInsert = false;
                 
                 $scope.$watch(() => { return $scope.ngVisible; },
@@ -5328,8 +5277,7 @@
                         if (!newValue) return; // Fin progreso
                         
                         progressBar.determinate($scope.duration, () => {
-                            $scope.determinate = false;
-                            Listener("determinate", $scope, []);
+                            $scope.determinate = false; listener.launch("determinate");
                         });
                     });
                 
@@ -5418,6 +5366,9 @@
                     // Componentes
                 var circular = $element.children(".progress-circular"),
                     progressFAB = $progressFAB($element);
+                    
+                    // Atributos
+                var listener = new Listener($scope, []);
                 
                 $scope.iconFinish = $scope.iconFinish || "done";
                 
@@ -5446,23 +5397,22 @@
                     });
                     
                 $scope.clickButton = function ($event) {
-                    Listener("action", $scope, [], { $event: $event });
+                    listener.launch("action", { $event: $event });
                 };
                     
                 $scope.clickSuccess = function ($event) {
                     if ($scope.ngDisabled) return; // Componente bloqueado
                     
-                    Listener(($scope.ngError) ? "error" : "success", $scope, [], { $event: $event });
+                    listener.launch(($scope.ngError) ? "error" : "success", { $event: $event });
                 };
                 
                 circular.animationend((event) => {
-                    progressFAB.finish(); // Finalizando componente
+                    progressFAB.finish(); // Finalizando animación en componente
                     
                     $scope.$apply(() => { 
                         var animate = event.originalEvent.animationName;
                     
-                        if (animate === "progressDeterminateDashFab") 
-                            Listener("determinate", $scope, []);
+                        if (animate === "progressDeterminateDashFab") listener.launch("determinate");
                     });
                 });
             }
@@ -5500,7 +5450,9 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var progress = $progressCircular($element); // ProgressCircular
+                    // Atributos
+                var progress = $progressCircular($element),
+                    listener = new Listener($scope, []);
                 
                 $scope.$watch(() => { return $scope.ngVisible; },
                     (newValue) => {
@@ -5513,8 +5465,7 @@
                         
                         progress.determinate($scope.duration, $scope.round,
                             () => {
-                                $scope.determinate = false;
-                                Listener("determinate", $scope, []);
+                                $scope.determinate = false; listener.launch("determinate");
                             });
                     });
                 
@@ -5570,24 +5521,23 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var input = $element.find("input[type='radio']");
+                    
+                    // Atributos
+                var listener = new Listener($scope, Listener.RADIOBUTTON);
 
                 $scope.clickRadioButton = function ($event) { 
-                    if (!$scope.ngDisabled) {
-                        Listener(
-                            "click", $scope, Listener.KEYS.RadioButton, { $event: $event }
-                        );
-                    } // No se permite el cambio de la Propiedad
+                    if (!$scope.ngDisabled) return; // Desactivado
+                    
+                    listener.launch("click", { $event: $event });
                 };
 
                 $scope.clickLabel = function ($event) { 
-                    if (!$scope.ngDisabled) {
-                        $scope.model = $scope.value; input.focus();
-
-                        Listener(
-                            "click", $scope, Listener.KEYS.RadioButton, { $event: $event }
-                        );
-                    } // No se permite el cambio de la Propiedad
+                    if (!$scope.ngDisabled) return; // Desactivado
+                    
+                    $scope.model = $scope.value; input.focus();
+                    listener.launch("click", { $event: $event });
                 };
             }
         };
@@ -5653,12 +5603,14 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, Listener.RATING);
+                
                 $scope.value = isNaN($scope.value) ? 0 : $scope.value;
 
                 $scope.setValue = function (value) {
                     $scope.value = ($scope.value === value) ? 0 : value;
-
-                    Listener("changed", $scope, [{ key: "model", value: "value" }]);
+                    listener.launch("changed"); // Cambiando valor
                 };
 
                 $scope.isActive = function (value) {
@@ -5804,7 +5756,8 @@
                     value = $element.find(".value");
                     
                     // Atributos
-                var eventID = "click.select-" + softtion.getGUID();
+                var listener = new Listener($scope, Listener.SELECT),
+                    eventID = "click.select-" + softtion.getGUID();
 
                 $scope.showList = false; $scope.selectStart = false;
                 $scope.old = undefined; // Seleccion anterior nula
@@ -5849,17 +5802,17 @@
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.Select, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.focusInput = function ($event) { 
-                    $element.addClass(Classes.ACTIVE); // Activando componente
-                    Listener("focus", $scope, Listener.KEYS.Select, { $event: $event });
+                    $element.addClass(Classes.ACTIVE); // Activando
+                    listener.launch("focus", { $event: $event });
                 };
 
                 $scope.blurInput = function ($event) {
-                    $element.removeClass(Classes.ACTIVE); // Desactivando componente
-                    Listener("blur", $scope, Listener.KEYS.Select, { $event: $event });
+                    $element.removeClass(Classes.ACTIVE); // Desactivando
+                    listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keyDownInput = function ($event) {
@@ -5879,13 +5832,11 @@
 
                     $scope.old = $scope.select; $scope.select = suggestion; 
 
-                    Listener("changed", $scope, Listener.KEYS.Select, { $event: $event });
-                    hideSuggestions(); // Ocultando Lista de opciones del Componente
+                    hideSuggestions(); listener.launch("changed", { $event: $event }); 
                 };
 
                 $scope.clearSelection = function () {
-                    $scope.select = undefined; hideSuggestions();
-                    Listener("clear", $scope, Listener.KEYS.Select);
+                    $scope.select = undefined; hideSuggestions(); listener.launch("clear");
                 };
 
                 $scope.getValueModel = function () {
@@ -5901,9 +5852,7 @@
                 }
 
                 function hideSuggestions() {
-                    if ($scope.showList) {
-                        Listener("hide", $scope, Listener.KEYS.Select);
-                    } // Se reportará escuchador de cierre
+                    if ($scope.showList) listener.launch("hide"); // Cierre
 
                     $scope.showList = false; $element.removeClass(Classes.ACTIVE); 
                 }
@@ -5913,9 +5862,7 @@
                         $document.on(eventID, closeSelect); // Cerrado automatico
 
                     $scope.selectStart = true; $scope.showList = true; 
-                    $element.addClass(Classes.ACTIVE); // Activando componente
-
-                    Listener("show", $scope, Listener.KEYS.Select, {});
+                    $element.addClass(Classes.ACTIVE); listener.launch("show");
                 }
 
                 function closeSelect ($event) {
@@ -6037,7 +5984,9 @@
                     value = $element.find(".value"), 
                     list = $element.find("ul");
 
-                var temp = [], // Lista temporal de selección
+                    // Atributos
+                var listener = new Listener($scope, Listener.SELECT_MULTIPLE),
+                    temp = [], // Lista temporal de selección
                     eventID = "click.select-multiple" + softtion.getGUID();
 
                 $scope.selects = $scope.selects || [];
@@ -6051,7 +6000,7 @@
                 $scope.selects = temp; // Estableciendo Lista real
 
                 $scope.describeSuggestion = function (suggestion) {
-                    var format = $scope.ngFormatDescription({$suggestion: suggestion});
+                    var format = $scope.ngFormatDescription({ $suggestion: suggestion });
 
                     return (softtion.isDefined(format)) ? format :
                         // Verificando si la opción es Cadena
@@ -6083,17 +6032,17 @@
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, Listener.KEYS.Selects, { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
 
                 $scope.focusInput = function ($event) { 
-                    $element.addClass("active"); // Activando componente
-                    Listener("focus", $scope, Listener.KEYS.Selects, { $event: $event });
+                    $element.addClass("active"); // Activando
+                    listener.launch("focus", { $event: $event });
                 };
 
                 $scope.blurInput = function ($event) {
-                    $element.removeClass("active"); // Desactivando  componente
-                    Listener("blur", $scope, Listener.KEYS.Selects, { $event: $event });
+                    $element.removeClass("active"); // Desactivando
+                    listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keyDownInput = function ($event) {
@@ -6111,16 +6060,10 @@
                 $scope.checkedSuggestion = function (suggestion, $event) {
                     if ($scope.isItemChecked(suggestion)) {
                         $scope.selects.removeObject(suggestion);
-                        Listener(
-                            "remove", $scope, Listener.KEYS.Selects, 
-                            { $event: $event, $item: suggestion }
-                        );
+                        listener.launch("remove", { $event: $event, $item: suggestion });
                     } else {
                         $scope.selects.push(suggestion);
-                        Listener(
-                            "add", $scope, Listener.KEYS.Selects, 
-                            { $event: $event, $item: suggestion }
-                        );
+                        listener.launch("add", { $event: $event, $item: suggestion });
                     } // Se debe agregar a la lista de Selecciones
 
                     $event.stopPropagation(); // Deteniendo propagación
@@ -6165,9 +6108,7 @@
                 }
 
                 function hideSuggestions() {
-                    if ($scope.showList) {
-                        Listener("hide", $scope, Listener.KEYS.Selects);
-                    } // Se reportará escuchador de cierre
+                    if ($scope.showList) listener.launch("hide"); // Cerrando
 
                     $scope.showList = false; $element.removeClass(Classes.ACTIVE); 
                 }
@@ -6179,9 +6120,7 @@
                         $document.on(eventID, closeSelect); // Cerrado automatico
 
                     $scope.selectStart = true; $scope.showList = true; 
-                    $element.addClass("active"); // Activando componente
-
-                    Listener("show", $scope, Listener.KEYS.Selects, {});
+                    $element.addClass("active"); listener.launch("show");
                 }
             }
         };
@@ -6217,10 +6156,14 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
                 var button = directive.BUTTON_CLOSE().tojQuery(),
                     sidenav = $sidenav($element),
                     content = $element.children(".content"),
                     backdrop = $element.children(".backdrop");
+                    
+                    // Atributos
+                var listener = new Listener($scope, []);
 
                 if (!backdrop.exists()) {
                     backdrop = softtion.htmlElement("div", "backdrop");
@@ -6253,7 +6196,9 @@
                             target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            Listener(($element.hasClass(Classes.SHOW)) ? "show" : "hide", $scope, []);
+                            listener.launch(
+                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
+                            );
                     });
                 });
             }
@@ -6376,10 +6321,11 @@
                 eventListener: "&"
             },
             link: function ($scope) { 
+                    // Atributos
+                var listener = new Listener($scope, Listener.CHECKBOX);
+                
                 $scope.clickLabel = function ($event) { 
-                    if (!$scope.ngDisabled) {
-                        Listener("click", $scope, Listener.KEYS.CheckBox, { $event: $event });
-                    } // No se permite el cambio de la Propiedad
+                    if (!$scope.ngDisabled) listener.launch("click", { $event: $event });
                 };
             }
         };
@@ -7174,6 +7120,9 @@
                 eventListener: "&"
             },
             link: function ($scope) {
+                    // Atributos
+                var listener = new Listener($scope, []);
+                
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);
                 };
@@ -7187,7 +7136,7 @@
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    Listener("icon", $scope, [], { $event: $event });
+                    listener.launch("icon", { $event: $event });
                 };
             }
         };
@@ -8300,11 +8249,7 @@
             action.addClass(Classes.HIDE); // Ocultando acción
 
             if (!snackbar.hasClass(Classes.SHOW)) {
-                var bottomNav = angular.element(".bottom-navigation"),
-                    width = "100%", right = "0px";
-                
-                if (bottomNav.exists() && !bottomNav.hasClass(Classes.HIDE))
-                    snackbar.addClass(Classes.SHOW_BOTTOM_NAV);
+                var width = "100%", right = "0px";
                 
                 body.html(text); snackbar.addClass(Classes.SHOW); 
                 displaceButtons(true, snackbar.innerHeight()); // Botones
@@ -8415,11 +8360,6 @@
             instanceToast(); // Verificando instancia de Toast
 
             if (!toast.hasClass(Classes.SHOW)) {
-                var bottomNav = angular.element(".bottom-navigation");
-                
-                if (bottomNav.exists() && !bottomNav.hasClass(Classes.HIDE))
-                    toast.addClass(Classes.SHOW_BOTTOM_NAV);
-
                 body.html(text); toast.addClass(Classes.SHOW); 
                 displaceButtons(true, toast.innerHeight()); // Botones
 
@@ -8947,8 +8887,10 @@
     }
     
     function defineInputComponent($scope, $element) {
-        // Componentes
-        var input = $element.find("input"),
+            // Componentes
+        var input = $element.find("input");
+        
+        var listener = new Listener($scope, Listener.INPUT),
             regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
         $scope.$watch(() => { return $scope.clearModel; }, 
@@ -9026,57 +8968,51 @@
                 $scope.typeInput = $scope.viewPassword ? "text" : "password";
                 $scope.iconAction = $scope.viewPassword ? "visibility_off" : "visibility";
             } else {
-                Listener("action", $scope, Listener.KEYS.Input, { $event: $event });
+                listener.launch("action", { $event: $event });
             } // Disparando evento de cualquier acción
         };
 
         $scope.clickIconDescription = function ($event) {
-            Listener("icon", $scope, Listener.KEYS.Input, { $event: $event });
+            listener.launch("icon", { $event: $event });
         };
         
         $scope.checkboxListener = function ($checked) {
             $scope.checkboxModel = $checked; // Estado del checkbox
-            
-            Listener("checkbox", $scope, Listener.KEYS.Input, { $checked: $checked });
+            listener.launch("checkbox", { $checked: $checked });
         };
 
         $scope.clickInput = function ($event) {
-            Listener("click", $scope, Listener.KEYS.Input, { $event: $event });
+            listener.launch("click", { $event: $event });
         };
 
         $scope.focusInput = function ($event) {
             if (softtion.isDefined($scope.value)) // Model => Input
                 $scope.input = $scope.value.toString();
-
-            $element.addClass("active"); $scope.inputActive = true; 
+            
             $scope.inputStart = true; // Iniciando componente
+            $element.addClass("active"); $scope.inputActive = true; 
 
-            Listener("focus", $scope, Listener.KEYS.Input, { $event: $event });
+            listener.launch("focus", { $event: $event });
         };
 
         $scope.blurInput = function ($event) {
             $scope.inputActive = false; $element.removeClass("active");
-            
-            verifyModelBlur(); // Verificando estado Modelo
-
-            Listener("blur", $scope, Listener.KEYS.Input, { $event: $event });
+            verifyModelBlur(); listener.launch("blur", { $event: $event });
         };
         
         $scope.keydownInput = function ($event) {
             if ($scope.keyDisabled || !validateKeydownInput($event)) 
                 $event.preventDefault(); // Cancelando evento
 
-            ($event.originalEvent.which !== KeysBoard.ENTER) ?
-                Listener("keyDown", $scope, Listener.KEYS.Input, { $event: $event }) :
-                Listener("enter", $scope, Listener.KEYS.Input, { $event: $event });
+            ($event.originalEvent.which === KeysBoard.ENTER) ?
+                listener.launch("enter", { $event: $event }) :
+                listener.launch("keyDown", { $event: $event });
         };
 
         $scope.keyupInput = function ($event) {
             if ($scope.keyDisabled) return; // Teclado inhabilitado
 
-            defineModelKeyupInput(); // Asignando valor al Model
-
-            Listener("keyUp", $scope, Listener.KEYS.Input, { $event: $event });
+            defineModelKeyupInput(); listener.launch("keyUp", { $event: $event });
         };
 
         $scope.getValueModel = function () {
@@ -9208,9 +9144,12 @@
     }
     
     function defineAreaComponent($scope, $element) {
-        // Componentes
+            // Componentes
         var hidden = $element.find(".textarea-hidden"),
             area = $element.find("textarea");
+    
+            // Atributos
+        var listener = new Listener($scope, Listener.TEXTAREA);
 
         hidden.resize(() => { area.css("height", hidden.height() + "px"); });
 
@@ -9292,13 +9231,13 @@
         };
 
         $scope.clickIconDescription = function ($event) {
-            Listener("icon", $scope, Listener.KEYS.TextArea, { $event: $event });
+            listener.launch("icon", { $event: $event });
         };
 
         $scope.clickArea = function ($event) {
             if (!$scope.ngReadonly) $event.preventDefault();
             
-            Listener("click", $scope, Listener.KEYS.TextArea, { $event: $event });
+            listener.launch("click", { $event: $event });
         };
 
         $scope.focusArea = function ($event) {            
@@ -9308,7 +9247,7 @@
             $scope.areaActive = true; $scope.real = true; 
             $element.addClass("active"); $scope.areaStart = true;
             
-            Listener("focus", $scope, Listener.KEYS.TextArea, { $event: $event });
+            listener.launch("focus", { $event: $event });
         };
 
         $scope.blurArea = function ($event) {
@@ -9317,9 +9256,7 @@
             $scope.real = false; $scope.areaActive = false; 
             $scope.pressEnter = false; $scope.countEnter = 0;
             
-            verifyModelBlur(); // Verificando estado Modelo
-            
-            Listener("blur", $scope, Listener.KEYS.TextArea, { $event: $event });
+            verifyModelBlur(); listener.launch("blur", { $event: $event });
         };
 
         $scope.keydownArea = function ($event) {
@@ -9337,19 +9274,17 @@
                     $scope.pressEnter = true; $scope.countEnter++;
                 } // No se encuentra al final de Elemento
             
-                Listener("enter", $scope, Listener.KEYS.TextArea, { $event: $event });
+                listener.launch("enter", { $event: $event });
             } else {
                 $scope.countEnter = 0; // Se reinicia el contador
-                Listener("keyDowm", $scope, Listener.KEYS.TextArea, { $event: $event });
+                listener.launch("keyDowm", { $event: $event });
             } // Se establece nuevo caracter para agregar en TextArea
         };
 
         $scope.keyupArea = function ($event) {
             if ($scope.keyDisabled) return; // Teclado inhabilitado
 
-            defineModelKeyupArea(); // Asignando valor al Model
-            
-            Listener("keyUp", $scope, Listener.KEYS.TextArea, { $event: $event });
+            defineModelKeyupArea(); listener.launch("keyUp", { $event: $event });
         };
 
         $scope.getValueModel = function () {
@@ -9451,60 +9386,62 @@
         };
     }
     
-    function Listener(listener, $scope, keysScope, datas) {
-        var $listener = { $listener: listener }; // Iniciando
-        
-        keysScope.forEach((item) => {
-            $listener[item.key] = $scope[item.value];
-        });
-            
-        $scope.eventListener(angular.extend($listener, datas));
+    function Listener($scope, keys) {
+        this.scope = $scope; this.keys = keys;
     }
     
-    Listener.KEYS = {
-        AutoComplete: [
-            { key: "$model", value:"select" },
-            { key: "$old", value:"old" },
-            { key: "$value", value:"input" }
-        ],
-        Input: [
-            { key: "$model", value: "value" },
-            { key: "$value", value: "input" }
-        ],
-        TextArea: [
-            { key: "$model", value: "value" },
-            { key: "$value", value: "area" }
-        ],
-        CheckBox: [
-            { key: "$model", value: "checked" }
-        ],
-        RadioButton: [
-            { key: "$model", value: "model" }
-        ],
-        Select: [
-            { key: "$model", value:"select" },
-            { key: "$old", value:"old" }
-        ],
-        Selects: [
-            { key: "$model", value:"selects" }
-        ],
-        ChipInput: [
-            { key: "$model", value: "values" },
-            { key: "$value", value: "input" }
-        ],
-        ClockPicker: [
-            { key: "$model", value: "time" }
-        ],
-        DatePicker: [
-            { key: "$model", value: "date" }
-        ],
-        FileChooser: [
-            { key: "$model", value: "file" }
-        ],
-        FilesChooser: [
-            { key: "$model", value: "files" }
-        ]
+    Listener.prototype.launch = function (name, datas) {
+        var self = this, result = { $listener: name }; // Iniciando
+        
+        if (softtion.isArray(self.keys)) 
+            self.keys.forEach((item) => {
+                result[item.key] = self.scope[item.value];
+            });
+            
+        self.scope.eventListener(angular.extend(result, datas));
     };
+    
+    Listener.AUTOCOMPLETE = [
+        { key: "$model", value:"select" },
+        { key: "$old", value:"old" },
+        { key: "$value", value:"input" }
+    ];
+        
+    Listener.CHECKBOX = [{ key: "$model", value: "checked" }];
+    
+    Listener.CHIP_INPUT = [
+        { key: "$model", value: "values" },
+        { key: "$value", value: "input" }
+    ];
+    
+    Listener.CLOCKPICKER = [{ key: "$model", value: "time" }];
+    
+    Listener.DATEPICKER = [{ key: "$model", value: "date" }];
+       
+    Listener.FILECHOOSER = [{ key: "$model", value: "file" }];
+    
+    Listener.FILECHOOSER_MULTIPLE = [{ key: "$model", value: "files" }];
+        
+    Listener.INPUT = [
+        { key: "$model", value: "value" },
+        { key: "$value", value: "input" }
+    ];
+    
+    Listener.RADIOBUTTON = [{ key: "$model", value: "model" }];
+    
+    Listener.RATING = [{ key: "model", value: "value" }];
+        
+    Listener.SELECT = [
+        { key: "$model", value:"select" },
+        { key: "$old", value:"old" }
+    ];
+        
+    Listener.SELECT_MULTIPLE = [{ key: "$model", value:"selects" }];
+        
+    Listener.TEXTAREA = [
+        { key: "$model", value: "value" },
+        { key: "$value", value: "area" }
+    ];
     
     ngMaterial.constant("$materialColor", {
         background: {
@@ -9656,8 +9593,8 @@
         VERSION: "2.0.0",
         
         SELECTORS: {
-            FAB: "button.floating:not(.static), .fab-speed-dial, .fab-menu > .box," 
-                    + " .fab-menu-rainbow, .progress-button-floating",
+            FAB: "button.floating:not(.static), .fab-speed-dial," 
+                + " .fab-menu, .progress-button-floating",
         
             BOTTOM_NAVIGATION: ".stepper-mobile, .footer-buttons"
         },
@@ -9756,7 +9693,7 @@
                     image.addClass("density-height") :
                     image.addClass("density-width");
 
-                image.addClass("active"); // Activando imagen
+                image.addClass(Classes.ACTIVE); // Activando imagen
             }
         };
     });

@@ -850,60 +850,6 @@
         -webkit-transform: rotate(0deg) scale(1); }
 }
 
-/** COLLAPSE FAB MENU */
-
-@keyframes collapseFabmenu {
-    0% {
-        box-shadow: none;
-        width: 640px;
-        height: 640px;
-        background-color: transparent; }
-    50% {
-        background-color: transparent;
-        box-shadow: none; }
-    100% {
-        width: 56px;
-        height: 56px;
-        background-color: var(--theme-background-accent);
-        box-shadow: var(--shadow-6); }
-}
-
-@-webkit-keyframes collapseFabmenu {
-    0% {
-        box-shadow: none;
-        width: 640px;
-        height: 640px;
-        background-color: transparent; }
-    50% {
-        background-color: transparent;
-        box-shadow: none; }
-    100% {
-        width: 56px;
-        height: 56px;
-        background-color: var(--theme-background-accent);
-        box-shadow: var(--shadow-6); }
-}
-
-/** EXPAND FAB MENU */
-
-@keyframes expandFabmenu {
-    0% {
-        width: 56px;
-        height: 56px; }
-    100% {
-        width: 640px;
-        height: 640px; }
-}
-
-@-webkit-keyframes expandFabmenu {
-    0% {
-        width: 56px;
-        height: 56px; }
-    100% {
-        width: 640px;
-        height: 640px; }
-}
-
 /** CHANGED CLOCK */
 
 @keyframes changedClock {
@@ -924,16 +870,16 @@
         opacity: 1; }
 }
 
-/** ORBIT */
+/** FAB ORBIT */
 
-@keyframes orbit { 
+@keyframes fabMenuOrbit { 
     from { 
         transform: rotate(0deg); } 
     to { 
         transform:rotate(90deg); } 
 }
 
-@-webkit-keyframes orbit { 
+@-webkit-keyframes fabMenuOrbit { 
     from { 
         -webkit-transform: rotate(0deg); } 
     to { 
@@ -942,7 +888,7 @@
 
 /** ORBIT RETURN */
 
-@keyframes orbitReturn { 
+@keyframes fabMenuOrbitReverse { 
     0% { 
         transform: rotate(75deg); } 
     50% { 
@@ -951,7 +897,7 @@
         transform:rotate(0deg); } 
 }
 
-@-webkit-keyframes orbitReturn { 
+@-webkit-keyframes fabMenuOrbitReverse { 
     0% { 
         -webkit-transform: rotate(75deg); } 
     50% { 
@@ -960,16 +906,14 @@
         -webkit-transform:rotate(0deg); } 
 }
 
-/** SHOW FAB ARC */
+/** FABMENU SHOW BUTTON */
 
-
-@keyframes showFabArc { 
+@keyframes fabMenuShowButton { 
     0% { 
         bottom: -28px;
         right: calc(50% - 28px);
         width: 56px;
         height: 56px;
-        background-color: var(--theme-secondary-background);
         -webkit-transform: rotate(0deg); } 
     25% {
         bottom: -56px;
@@ -986,13 +930,12 @@
         -webkit-transform: rotate(-90deg); } 
 }
 
-@-webkit-keyframes showFabArc { 
+@-webkit-keyframes fabMenuShowButton { 
     0% { 
         bottom: -28px;
         right: calc(50% - 28px);
         width: 56px;
         height: 56px;
-        background-color: var(--theme-secondary-background);
         -webkit-transform: rotate(0deg); } 
     25% {
         bottom: -56px;
@@ -1009,10 +952,10 @@
         -webkit-transform: rotate(-90deg); } 
 }
 
-/** HIDE FAB ARC */
+/** FABMENU HIDE BUTTON */
 
-@keyframes hideFabArc { 
-    0% { 
+@keyframes fabMenuHideButton { 
+    0% {
         background-color: transparent;
         box-shadow: none;
         width: 320px;
@@ -1023,7 +966,6 @@
     50% {
         box-shadow: var(--shadow-6);
         transform: rotate(-75deg);
-        background-color: var(--theme-secondary-background);
         opacity: 0.15; }
     100% { 
         opacity: 1;
@@ -1035,7 +977,7 @@
         transform: rotate(0deg); } 
 }
 
-@-webkit-keyframes hideFabArc { 
+@-webkit-keyframes fabMenuHideButton { 
     0% { 
         background-color: transparent;
         box-shadow: none;
@@ -1047,7 +989,6 @@
     50% {
         box-shadow: var(--shadow-6);
         -webkit-transform: rotate(-75deg);
-        background-color: var(--theme-secondary-background);
         opacity: 0.15; }
     100% { 
         opacity: 1;
@@ -1059,9 +1000,9 @@
         -webkit-transform: rotate(0deg); } 
 }
 
-/** SHOW MENU FAB ARC */
+/** FABMENU SHOW CONTENT */
 
-@keyframes showMenuFabArc { 
+@keyframes fabMenuShowContent { 
     0% { 
         opacity: 0; } 
     60% { 
@@ -1072,7 +1013,7 @@
         opacity: 1; } 
 }
 
-@-webkit-keyframes showMenuFabArc { 
+@-webkit-keyframes fabMenuShowContent { 
     0% { 
         opacity: 0; } 
     60% { 
@@ -1083,9 +1024,9 @@
         opacity: 1; } 
 }
 
-/** HIDE MENU FAB ARC */
+/** FABMENU HIDE CONTENT */
 
-@keyframes hideMenuFabArc { 
+@keyframes fabMenuHideContent { 
     0% { 
         opacity: 1;
         visibility: visible; } 
@@ -1098,7 +1039,7 @@
         visibility: hidden; } 
 }
 
-@-webkit-keyframes hideMenuFabArc { 
+@-webkit-keyframes fabMenuHideContent { 
     0% { 
         opacity: 1;
         visibility: visible; } 
