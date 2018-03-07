@@ -126,9 +126,9 @@
         -webkit-transform: scale(1); }
 }
 
-/** RIPPLE ALL */
+/** RIPPLE */
 
-@keyframes rippleAll {
+@keyframes ripple {
     0% {
         opacity: 0; }
     70% {
@@ -139,7 +139,7 @@
         width: 200%; }
 }
 
-@-webkit-keyframes rippleAll {
+@-webkit-keyframes ripple {
     0% {
         opacity: 0; }
     70% {
@@ -150,9 +150,9 @@
         width: 200%; }
 }
 
-/** RIPPLE 33 */
+/** RIPPLE BOTTOMNAV THREE */
 
-@keyframes ripple33 {
+@keyframes rippleBottomNavThree {
     0% {
         opacity: 0; }
     40% {
@@ -163,7 +163,7 @@
         width: 33%; }
 }
 
-@-webkit-keyframes ripple33 {
+@-webkit-keyframes rippleBottomNavThree {
     0% {
         opacity: 0; }
     40% {
@@ -174,9 +174,9 @@
         width: 33%; }
 }
 
-/** RIPPLE 25 */
+/** RIPPLE BOTTOMNAV FOUR */
 
-@keyframes ripple25 {
+@keyframes rippleBottomNavFour {
     0% {
         opacity: 0; }
     30% {
@@ -187,7 +187,7 @@
         width: 25%; }
 }
 
-@-webkit-keyframes ripple25 {
+@-webkit-keyframes rippleBottomNavFour {
     0% {
         opacity: 0; }
     30% {
@@ -198,9 +198,9 @@
         width: 25%; }
 }
 
-/** RIPPLE 20 */
+/** RIPPLE BOTTOMNAV FIVE */
 
-@keyframes ripple20 {
+@keyframes rippleBottomNavFive {
     0% {
         opacity: 0; }
     30% {
@@ -211,7 +211,7 @@
         width: 20%; }
 }
 
-@-webkit-keyframes ripple20 {
+@-webkit-keyframes rippleBottomNavFive {
     0% {
         opacity: 0; }
     30% {
@@ -245,23 +245,6 @@
         padding-bottom: 125%;
         width: 125%; }
 }
-
-.ripple-box.animated > .effect {
-    -moz-animation-duration: 0.325s;
-    -webkit-animation-duration: 0.325s;
-    -o-animation-duration: 0.325s;
-    animation-duration: 0.325s;
-    -ms-animation-duration: 0.325s;
-    -moz-animation-name: rippleAll;
-    -webkit-animation-name: rippleAll;
-    -o-animation-name: rippleAll;
-    animation-name: rippleAll;
-    -ms-animation-name: rippleAll;
-    -moz-animation-timing-function: var(--standard-curve);
-    -webkit-animation-timing-function: var(--standard-curve);
-    -o-animation-timing-function: var(--standard-curve);
-    animation-timing-function: var(--standard-curve);
-    -ms-animation-timing-function: var(--standard-curve); }
 
 /** BUTTON FOCUS */
 

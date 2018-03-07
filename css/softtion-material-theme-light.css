@@ -433,62 +433,84 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 .bottom-navigation {
     background-color: var(--background-appbar); }
 
-.bottom-navigation.theme-primary {
-    background-color: var(--theme-primary-background-dark); }
-
-.bottom-navigation.theme-secondary {
-    background-color: var(--theme-secondary-background-dark); }
-
 .bottom-navigation.default {
     background-color: var(--background-appbar) !important; }
+
+.bottom-navigation.theme-primary {
+    background-color: var(--theme-primary-background-dark); }
 
 .bottom-navigation.theme-primary.default {
     background-color: var(--theme-primary-background-dark) !important; }
 
+.bottom-navigation.theme-secondary {
+    background-color: var(--theme-secondary-background-dark); }
+
 .bottom-navigation.theme-secondary.default {
     background-color: var(--theme-secondary-background-dark) !important; }
 
-.bottom-navigation > .content > li > .content {
+.bottom-navigation > ul > li > .content {
     color: var(--secondary-font); }
 
-.bottom-navigation.theme-primary > .content > li > .content {
+.bottom-navigation > ul > li.active > .content {
+    color: var(--theme-primary-font); }
+
+.bottom-navigation > ul > li.disabled > .content {
+    color: var(--disabled-font); }
+
+.bottom-navigation.theme-primary > ul > li > .content {
     color: var(--theme-primary-font-inactive); }
 
-.bottom-navigation.theme-secondary > .content > li > .content {
+.bottom-navigation.theme-primary > ul > li.active > .content {
+    color: var(--theme-primary-font-active); }
+
+.bottom-navigation.theme-primary > ul > li.disabled > .content {
+    color: var(--theme-primary-font-disabled); }
+
+.bottom-navigation.theme-secondary > ul > li > .content {
     color: var(--theme-secondary-font-inactive); }
 
-.bottom-navigation > .content > li.active > .content {
-    color: var(--theme-primary-font); }
-
-.bottom-navigation.theme-primary > .content > li.active > .content {
-    color: var(--theme-primary-font-active); }
-
-.bottom-navigation.theme-secondary > .content > li.active > .content {
+.bottom-navigation.theme-secondary > ul > li.active > .content {
     color: var(--theme-secondary-font-active); }
 
-.bottom-navigation.shifting > .content > li > .content {
-    color: var(--secondary-font); }
+.bottom-navigation.theme-secondary > ul > li.disabled > .content {
+    color: var(--theme-secondary-font-disabled); }
 
-.bottom-navigation.shifting.default > .content > li > .content {
-    color: var(--secondary-font); }
 
-.bottom-navigation.shifting.theme-primary.default > .content > li > .content {
-    color: var(--theme-primary-font-inactive); }
+.bottom-navigation > ul.shifting > li > .content {
+    color: var(--alternative-secondary-font); }
 
-.bottom-navigation.shifting.theme-secondary.default > .content > li > .content {
-    color: var(--theme-primary-font-inactive); }
+.bottom-navigation > ul.shifting > li.active > .content {
+    color: var(--alternative-primary-font); }
 
-.bottom-navigation.shifting > .content > li.active > .content {
-    color: var(--primary-font); }
+.bottom-navigation > ul.shifting > li.disabled > .content {
+    color: var(--alternative-disabled-font); }
 
-.bottom-navigation.shifting.default > .content > li.active > .content {
+.bottom-navigation.default > ul.shifting > li.active > .content {
     color: var(--theme-primary-font); }
 
-.bottom-navigation.shifting.theme-primary.default > .content > li.active > .content {
+.bottom-navigation.default > ul.shifting > li > .content {
+    color: var(--secondary-font); }
+
+.bottom-navigation.default > ul.shifting > li.disabled > .content {
+    color: var(--disabled-font); }
+
+.bottom-navigation.theme-primary > ul.shifting > li > .content {
+    color: var(--theme-primary-font-inactive); }
+
+.bottom-navigation.theme-primary > ul.shifting > li.active > .content {
     color: var(--theme-primary-font-active); }
 
-.bottom-navigation.shifting.theme-secondary.default > .content > li.active > .content {
+.bottom-navigation.theme-primary > ul.shifting > li.disabled > .content {
+    color: var(--theme-primary-font-disabled); }
+
+.bottom-navigation.theme-secondary > ul.shifting > li > .content {
+    color: var(--theme-secondary-font-inactive); }
+
+.bottom-navigation.theme-secondary > ul.shifting > li.active > .content {
     color: var(--theme-secondary-font-active); }
+
+.bottom-navigation.theme-secondary > ul.shifting > li.disabled > .content {
+    color: var(--theme-secondary-font-disabled); }
 
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--ripple); }
@@ -497,18 +519,6 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     background-color: var(--theme-primary-ripple); }
 
 .bottom-navigation.theme-secondary > .ripple-box > .effect {
-    background-color: var(--theme-secondary-ripple); }
-
-.bottom-navigation.shifting > .ripple-box > .effect {
-    background-color: var(--ripple); }
-
-.bottom-navigation.shifting.default > .ripple-box > .effect {
-    background-color: var(--ripple); }
-
-.bottom-navigation.shifting.theme-primary.default > .ripple-box > .effect {
-    background-color: var(--theme-primary-ripple); }
-
-.bottom-navigation.shifting.theme-secondary.default > .ripple-box > .effect {
     background-color: var(--theme-secondary-ripple); }
 
 /** BUTTON */
@@ -1239,6 +1249,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .fab-menu.theme-secondary > .content > .menu > .option:hover > i {
     color: var(--theme-primary-font-active); }
+
+.fab-menu > .content > .menu > .option.disabled,
+.fab-menu > .content > .menu > .option.disabled:hover {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+.fab-menu > .content > .menu > .option.disabled > i,
+.fab-menu > .content > .menu > .option.disabled:hover > i {
+    color: var(--disabled-font); }
 
 /** FILECHOOSER */
 

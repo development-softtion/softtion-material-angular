@@ -981,6 +981,11 @@ input[type=number]::-webkit-outer-spin-button {
        -moz-transform: translate(-50%, -50%); 
             transform: translate(-50%, -50%); }
 
+.ripple-box.animated > .effect {
+    -webkit-animation: ripple 325ms var(--standard-curve);
+       -moz-animation: ripple 325ms var(--standard-curve);
+            animation: ripple 325ms var(--standard-curve); }
+
 /** COMPONENTS GLOBALS */
 
 .overflow-none {
@@ -1844,7 +1849,7 @@ body:not(.show-bottom-navigation) .bottom-navigation {
        -moz-transform: translateY(100%);
             transform: translateY(100%); }
 
-.bottom-navigation > .content {
+.bottom-navigation > ul {
     display: flex;
     position: absolute;
     left: 50%;
@@ -1855,19 +1860,19 @@ body:not(.show-bottom-navigation) .bottom-navigation {
        -moz-transform: translateX(-50%);
             transform: translateX(-50%); }
 
-.bottom-navigation.three-tabs > .content {
+.bottom-navigation > ul.three-options {
     min-width: 240px;
     max-width: 504px; }
 
-.bottom-navigation.four-tabs > .content {
+.bottom-navigation > ul.four-options {
     min-width: 264px;
     max-width: 456px; }
 
-.bottom-navigation.five-tabs > .content {
+.bottom-navigation > ul.five-options {
     min-width: 320px;
     max-width: 552px; }
 
-.bottom-navigation > .content > li {
+.bottom-navigation > ul > li {
     cursor: pointer;
     min-width: 80px;
     max-width: 168px;
@@ -1875,45 +1880,48 @@ body:not(.show-bottom-navigation) .bottom-navigation {
     box-sizing: border-box;
     text-transform: none; }
 
-.bottom-navigation > .content > li:nth-child(n + 6) {
+.bottom-navigation > ul > li.disabled { 
+    pointer-events: none; }
+
+.bottom-navigation > ul > li:nth-child(n + 6) {
     display: none; }
 
-.bottom-navigation.four-tabs > .content > li,
-.bottom-navigation.five-tabs > .content > li {
+.bottom-navigation > ul.four-options > li,
+.bottom-navigation > ul.five-options > li {
     padding: 0px;
     min-width: 56px;
     max-width: 96px; }
 
-.bottom-navigation.four-tabs > .content > li.active,
-.bottom-navigation.five-tabs > .content > li.active {
+.bottom-navigation > ul.four-options > li.active,
+.bottom-navigation > ul.five-options > li.active {
     min-width: 96px;
     max-width: 168px; }
 
-.bottom-navigation.three-tabs > .content > li {
+.bottom-navigation > ul.three-options > li {
     width: 33.33%; }
 
-.bottom-navigation.four-tabs > .content > li {
+.bottom-navigation > ul.four-options > li {
     width: 21%; }
 
-.bottom-navigation.four-tabs > .content > li.active {
+.bottom-navigation > ul.four-options > li.active {
     width: 37%; }
 
-.bottom-navigation.five-tabs > .content > li {
+.bottom-navigation > ul.five-options > li {
     width: 17.5%; }
 
-.bottom-navigation.five-tabs > .content > li.active {
+.bottom-navigation > ul.five-options > li.active {
     width: 30%; }
 
-.bottom-navigation > .content > li > .content {
+.bottom-navigation > ul > li > .content {
     position: relative;
     margin: 8px 0px;
     width: 100%;
     box-sizing: border-box; }
 
-.bottom-navigation > .content > li.active > .content {
+.bottom-navigation > ul > li.active > .content {
     margin: 6px 0px 10px 0px; }
 
-.bottom-navigation > .content > li > .content > .title {
+.bottom-navigation > ul > li > .content > p {
     padding-top: 28px;
     margin: 0;
     text-align: center;
@@ -1926,22 +1934,22 @@ body:not(.show-bottom-navigation) .bottom-navigation {
        -moz-transition: all 100ms 0ms var(--standard-curve);
             transition: all 100ms 0ms var(--standard-curve); }
 
-.bottom-navigation > .content > li.active > .content > .title {
+.bottom-navigation > ul > li.active > .content > p {
     padding-top: 26px;
     font-size: 14px;
     line-height: 14px; }
 
-.bottom-navigation.four-tabs > .content > li > .content > .title,
-.bottom-navigation.five-tabs > .content > li > .content > .title {
+.bottom-navigation > ul.four-options > li > .content > p,
+.bottom-navigation > ul.five-options > li > .content > p {
     opacity: 0;
     visibility: hidden; }
 
-.bottom-navigation.four-tabs > .content > li.active > .content > .title,
-.bottom-navigation.five-tabs > .content > li.active > .content > .title {
+.bottom-navigation > ul.four-options > li.active > .content > p,
+.bottom-navigation > ul.five-options > li.active > .content > p {
     opacity: 1;
     visibility: visible; }
 
-.bottom-navigation > .content > li > .content > i {
+.bottom-navigation > ul > li > .content > i {
     position: absolute;
     top: 0px;
     left: 50%;
@@ -1952,50 +1960,13 @@ body:not(.show-bottom-navigation) .bottom-navigation {
        -moz-transition: all 100ms 0ms var(--standard-curve);
             transition: all 100ms 0ms var(--standard-curve); }
 
-.bottom-navigation.four-tabs > .content > li > .content > i,
-.bottom-navigation.five-tabs > .content > li > .content > i {
+.bottom-navigation > ul.four-options > li > .content > i,
+.bottom-navigation > ul.five-options > li > .content > i {
     top: 8px; }
 
-.bottom-navigation.four-tabs > .content > li.active > .content > i,
-.bottom-navigation.five-tabs > .content > li.active > .content > i {
+.bottom-navigation > ul.four-options > li.active > .content > i,
+.bottom-navigation > ul.five-options > li.active > .content > i {
     top: 0px; }
-
-.bottom-navigation.three-tabs > .ripple-box.animated > .effect {
-    -webkit-animation-name: ripple33;
-       -moz-animation-name: ripple33;
-            animation-name: ripple33;
-    -webkit-animation-duration: 325ms;
-       -moz-animation-duration: 325ms;
-            animation-duration: 325ms; }
-
-.bottom-navigation.four-tabs > .ripple-box.animated > .effect {
-    -webkit-animation-name: ripple25;
-       -moz-animation-name: ripple25;
-            animation-name: ripple25;
-    -webkit-animation-duration: 325ms;
-       -moz-animation-duration: 325ms;
-            animation-duration: 325ms; }
-
-.bottom-navigation.five-tabs > .ripple-box.animated > .effect {
-    -webkit-animation-name: ripple20;
-       -moz-animation-name: ripple20;
-            animation-name: ripple20;
-    -webkit-animation-duration: 325ms;
-       -moz-animation-duration: 325ms;
-            animation-duration: 325ms; }
-
-.bottom-navigation.shifting > .ripple-box.animated > .effect {
-    -webkit-animation-name: rippleAll;
-       -moz-animation-name: rippleAll;
-            animation-name: rippleAll;
-    -webkit-animation-duration: 525ms;
-       -moz-animation-duration: 525ms;
-            animation-duration: 525ms; }
-
-.opacity-bottom {
-    -webkit-animation: fadeIn 325ms var(--deceleration-curve);
-       -moz-animation: fadeIn 325ms var(--deceleration-curve);
-            animation: fadeIn 325ms var(--deceleration-curve); }
 
 .bottom-navigation > .ripple-box {
     width: 0%; 
@@ -2004,30 +1975,50 @@ body:not(.show-bottom-navigation) .bottom-navigation {
 .bottom-navigation > .ripple-box.show {
     width: 100%; }
 
+.bottom-navigation > ul.three-options + .ripple-box.animated > .effect {
+    -webkit-animation: rippleBottomNavThree 325ms var(--standard-curve);
+       -moz-animation: rippleBottomNavThree 325ms var(--standard-curve);
+            animation: rippleBottomNavThree 325ms var(--standard-curve); }
+
+.bottom-navigation > ul.four-options + .ripple-box.animated > .effect {
+    -webkit-animation: rippleBottomNavFour 325ms var(--standard-curve);
+       -moz-animation: rippleBottomNavFour 325ms var(--standard-curve);
+            animation: rippleBottomNavFour 325ms var(--standard-curve); }
+
+.bottom-navigation > ul.five-options + .ripple-box.animated > .effect {
+    -webkit-animation: rippleBottomNavFive 325ms var(--standard-curve);
+       -moz-animation: rippleBottomNavFive 325ms var(--standard-curve);
+            animation: rippleBottomNavFive 325ms var(--standard-curve); }
+
+.bottom-navigation > ul.shifting + .ripple-box.animated > .effect {
+    -webkit-animation: ripple 525ms var(--standard-curve);
+       -moz-animation: ripple 525ms var(--standard-curve);
+            animation: ripple 525ms var(--standard-curve); }
+
 @media only screen and (min-width : 504px) {
     
-    .bottom-navigation.three-tabs > .content {
+    .bottom-navigation > ul.three-options {
         min-width: 504px; }
     
-    .flexible-content > .bottom-navigation.three-tabs > .content {
+    .flexible-content > .bottom-navigation > ul.three-options {
         min-width: 240px; }
 }
 
 @media only screen and (min-width : 456px) {
     
-    .bottom-navigation.four-tabs > .content {
+    .bottom-navigation > ul.four-options {
         min-width: 456px; }
     
-    .flexible-content > .bottom-navigation.four-tabs > .content {
+    .flexible-content > .bottom-navigation > ul.four-options {
         min-width: 264px; }
 }
 
 @media only screen and (min-width : 552px) {
     
-    .bottom-navigation.five-tabs > .content {
+    .bottom-navigation > ul.five-options {
         min-width: 552px; }
     
-    .flexible-content > .bottom-navigation.five-tabs > .content {
+    .flexible-content > .bottom-navigation > ul.five-options {
         min-width: 320px; }
 }
 
@@ -4578,7 +4569,7 @@ body.show-bottom-navigation .fab-menu {
     right: -56px;
     bottom: 44px;
     width: 200px;
-    height: 200px; }
+    height: 0px; }
 
 .fab-menu.start:not(.active) > .orbit-content {
     -webkit-animation: fabMenuOrbitReverse 225ms 0ms var(--deceleration-curve);
@@ -4617,6 +4608,7 @@ body.show-bottom-navigation .fab-menu {
             animation: fabMenuHideButton 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu.start.active > .orbit-content > .button {
+    display: none;
     width: 320px;
     height: 320px;
     bottom: -132px;
@@ -4663,6 +4655,9 @@ body.show-bottom-navigation .fab-menu {
     position: absolute;
     bottom: 0px;
     box-shadow: var(--shadow-2); }
+
+.fab-menu > .content > .menu > .option.disabled {
+    pointer-events: none; }
 
 /** FAB SPEED DIAL */
 
@@ -10795,11 +10790,11 @@ body.show-bottom-navigation .toast.show {
     position: relative;
     width: 100%; }
 
-.views > .content {
+.views > .view {
     display: none;
     width: 100%; } 
 
-.views > .content.active {
+.views > .view.active {
     display: block;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
@@ -10834,19 +10829,3 @@ body.show-bottom-navigation .toast.show {
 .views-content-tab > .views-tab > .view.active { 
     height: 100%; 
     visibility: visible; }
-
-/** VIEWS BOTTOM NAVIGATION */
-
-.views-bottom-navigation {
-    position: relative;
-    width: 100%; }
-
-.views-bottom-navigation > .content {
-    display: none;
-    width: 100%; }
-
-.views-bottom-navigation > .content.active {
-    display: block;
-    -webkit-animation: fadeIn 120ms var(--sharp-curve);
-       -moz-animation: fadeIn 120ms var(--sharp-curve);
-            animation: fadeIn 120ms var(--sharp-curve); }

@@ -613,6 +613,7 @@
             APPBAR_64: "pd-64",
     
             ACTIVE: "active",
+            DEFAULT: "default",
             SHOW: "show",
             HIDE: "hide",
             HIDDEN: "hidden",
@@ -1224,7 +1225,7 @@
 
                 $scope.keydownInput = function ($event) {
                     switch ($event.originalEvent.which) {
-                        case (KeysBoard.ESC): list.removeClass("active"); break;
+                        case (KeysBoard.ESC): list.removeClass(Classes.ACTIVE); break;
 
                         case (KeysBoard.ARROW_DOWN): 
                             var options = list.find('li'); // Opciones
@@ -1268,7 +1269,7 @@
 
                 $scope.selectSuggestion = function (suggestion) {
                     $scope.old = $scope.select; $scope.inputActive = false;
-                    list.removeClass("active"); 
+                    list.removeClass(Classes.ACTIVE); 
 
                     $scope.select = suggestion; // Estableciendo Selección
 
@@ -1316,7 +1317,7 @@
                 };
 
                 $scope.clearAutocomplet = function () {
-                    $element.removeClass("active"); 
+                    $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
 
                     if (!$scope.disabledFocusclear) input.focus(); 
@@ -1360,7 +1361,7 @@
                         }
                     });
 
-                    $scope.coincidences = coincidences; list.addClass("active");
+                    $scope.coincidences = coincidences; list.addClass(Classes.ACTIVE);
                 };
             }
         };
@@ -1579,7 +1580,7 @@
                         $scope.input = getValueSuggestion($scope.select);
                     } // Cambiando valor del texto en el Input
 
-                    $scope.inputActive = true; $element.addClass("active"); 
+                    $scope.inputActive = true; $element.addClass(Classes.ACTIVE); 
                     listener.launch("focus", { $event: $event });
 
                     searchSuggestions($scope.input); // Buscar sugerencias
@@ -1594,15 +1595,15 @@
                         $scope.select = undefined;
                     } // No hay opciones posibles para selección
 
-                    $element.removeClass("active"); $scope.input = "";
-                    $scope.inputActive = false; list.removeClass("active"); 
+                    $element.removeClass(Classes.ACTIVE); $scope.input = "";
+                    $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
 
                     listener.launch("blur", { $event: $event });
                 };
 
                 $scope.keydownInput = function ($event) {
                     switch ($event.originalEvent.which) {
-                        case (KeysBoard.ESC): list.removeClass("active"); break;
+                        case (KeysBoard.ESC): list.removeClass(Classes.ACTIVE); break;
 
                         case (KeysBoard.ARROW_DOWN):
                             var options = list.find("li"); // Opciones
@@ -1632,7 +1633,7 @@
                     switch ($event.originalEvent.which) {
                         case (KeysBoard.ENTER): $scope.selectSuggestion(suggestion); break;
 
-                        case (KeysBoard.ESC): list.removeClass("active"); break;
+                        case (KeysBoard.ESC): list.removeClass(Classes.ACTIVE); break;
 
                         case (KeysBoard.ARROW_UP): 
                             (option.prev().length) ? option.prev().focus() : input.focus();
@@ -1646,7 +1647,7 @@
 
                 $scope.selectSuggestion = function (suggestion) {
                     $scope.old = $scope.select; $scope.inputActive = false;
-                    list.removeClass("active");
+                    list.removeClass(Classes.ACTIVE);
 
                     $scope.select = suggestion; // Estableciendo Selección
 
@@ -1693,7 +1694,7 @@
                 };
 
                 $scope.clearAutocomplet = function () {
-                    $element.removeClass("active"); 
+                    $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
 
                     if (!$scope.disabledFocusclear) input.focus();
@@ -1724,132 +1725,188 @@
                         } // Se encontro coincidencia, se agregara opción
                     });
 
-                    $scope.coincidences = coincidences; list.addClass("active");
+                    $scope.coincidences = coincidences; list.addClass(Classes.ACTIVE);
                 };
             }
         };
     }
     
     // Directiva: BottomNavigation
-    // Version: 1.0.0
-    // Updated: 26/02/2018
+    // Version: 1.0.4
+    // Updated: 07/03/2018
     
     Directives.BottomNavigation = BottomNavigationDirective;
     
     Directives.BottomNavigation.NAME = "BottomNavigation";
-    Directives.BottomNavigation.VERSION = "1.0.0";
+    Directives.BottomNavigation.VERSION = "1.0.4";
     Directives.BottomNavigation.KEY = "bottomNavigation";
+    Directives.BottomNavigation.ROUTE = "softtion/template/bottom-navigation.html";
     
-    Directives.BottomNavigation.RIPPLE = function () {
-        return softtion.html("div").addClass("ripple-box").
+    Directives.BottomNavigation.HTML = function () {
+        var content = softtion.html("ul").addClass("{{classCount}}").
+            addAttribute("ng-class", "{shifting: shifting}").
             addChildren(
-                softtion.html("span").addClass("effect")
-            ).create(); // Instanciando efecto Ripple
+                softtion.html("li").
+                    addAttribute("ng-repeat", "option in options").
+                    addAttribute("ng-class", "{active: option.active, disabled: option.disabled}").
+                    addAttribute("ng-click", "clickOption(option, $index, $event)").
+                    addAttribute("tab-inex", "-1").
+                    addChildren(
+                        softtion.html("div").addClass("content").
+                            addChildren(
+                                softtion.html("i").setText("{{option.icon}}")
+                            ).addChildren(
+                                softtion.html("p").setText("{{option.label}}")
+                            )
+                    )
+            );
+    
+        var ripple = softtion.html("div").addClass("ripple-box").
+                addChildren(softtion.html("span").addClass("effect"));
+
+        return content + ripple; // Componente
     };
     
-    Directives.BottomNavigation.$inject = [ "$body", "$appContent" ];
+    Directives.BottomNavigation.$inject = [ "$body", "$appContent", "$materialTheme" ];
     
-    function BottomNavigationDirective($body, $appContent) {
-        var directive = Directives.BottomNavigation; // Directiva
-        
+    function BottomNavigationDirective($body, $appContent, $themes) {
         return {
             restrict: "C",
+            templateUrl: Directives.BottomNavigation.ROUTE,
             scope: {
+                options: "=?",
                 views: "@",
+                shifting: "=?",
                 eventListener: "&"
             },
-            link: function ($scope, $element) {
+            link: function ($scope, $element, $attrs) {
                     // Componentes
-                var rippleBox = angular.element(directive.RIPPLE()),
-                    items = $element.find(".content > li"),
-                    itemActive = $element.find(".content > li.active:first"), 
-                    views = angular.element($scope.views);
+                var ripple = $element.children(".ripple-box"),
+                    effect = ripple.children(".effect"), $views;
 
                     // Atributos
                 var listener = new Listener($scope, []), // Listener
-                    classColor = "default", position = 0,
+                    $index = -1, position = 0,
                     scrollEvent = "scroll.bottomnav-" + softtion.getGUID();
             
                 $body.addClass(Classes.SHOW_BOTTOM_NAV);
-                $element.append(rippleBox); // Agregando ripple
-
-                items.attr("tab-index", "-1"); items.removeClass("active"); 
-
-                if (!itemActive.exists()) {
-                    itemActive = angular.element(items[0]);
-                } // Se establece como activo primero de lista
-
-                itemActive.addClass("active");
-
-                var viewStart = views.find(itemActive.attr("view"));
-                viewStart.addClass("active"); // Activando vista
-
-                switch (items.length) {
-                    default: $element.addClass("five-tabs"); break; 
-                    case (3): $element.addClass("three-tabs"); break;
-                    case (4): $element.addClass("four-tabs"); break;
-                } // Estableciendo dimensión
-
-                if ($element.hasClass("shifting")) {
-                    var classColorOption = itemActive.attr("color");
-
-                    if (softtion.isString(classColorOption)) {
-                        classColor = classColorOption;
-                    } // La opción tiene un color establecido
-
-                    $element.addClass(classColor); // Color
-                } // Se debe establecer color base del componente
-
-                items.click(function ($event) {
-                    var item = angular.element(this); // Opción activada
-
-                    if (item.hasClass("active")) {
-                        return;
-                    } // La opción es la actualmente activa
-
-                    items.removeClass("active"); item.addClass("active");
-
-                    var view = views.find(item.attr("view"));
-
-                    if (view.exists() && !view.hasClass("active")) {
-                        $appContent.scrollTop(0); // Posición inicial
-                        var viewActive = views.find(".content.active");
-
-                        if (viewActive.exists()) {
-                            viewActive.removeClass("opacity").removeClass("active");
-                        } // Ocultando componente activo
-
-                        view.addClass("active");
-                    } // Componente exite y esta oculto
-
-                    var effect = rippleBox.find(".effect"); rippleBox.addClass("show"); 
-
-                    if (rippleBox.hasClass("animated")) {
-                        rippleBox.removeClass("animated");
-                    } // Removiendo animación ripple
-
-                    var top = (item.height() / 2), left = item.offset().left; 
-                        left += (item.outerWidth() / 2) - $element.offset().left;
-
-                    if ($element.hasClass("shifting")) {
-                        var classColorOption = item.attr("color");
-
-                        $element.removeClass(classColor);
-
-                        classColor = (softtion.isString(classColorOption)) ? 
-                                classColorOption : "default";
-
-                        $element.addClass(classColor); // Color
-
-                        effect.css({ top: top, left: left }); rippleBox.addClass("animated");
-                        setTimeout(function () { rippleBox.removeClass("animated").removeClass("show"); }, 525);
-                    } else {
-                        effect.css({ top: top, left: left }); rippleBox.addClass("animated");
-                        setTimeout(function () { rippleBox.removeClass("animated").removeClass("show"); }, 325);
-                    }// BottomNavigation permite cambio de Color
-
-                    listener.launch("view", { $event: $event });
+                
+                ripple.animationend(() => {
+                    ripple.removeClass(Classes.ANIMATED).removeClass(Classes.SHOW);
                 });
+                
+                $scope.$watch(() => { return $scope.options; },
+                    (newValue) => {
+                        if (!softtion.isArray(newValue)) {
+                            $scope.classCount = ""; return;
+                        } // Objeto opciones no es un array
+                        
+                        switch (newValue.length) {
+                            case (3): $scope.classCount = "three-options"; break;
+                            case (4): $scope.classCount = "four-options"; break;
+                            case (5): $scope.classCount = "five-options"; break;
+                            default: $scope.classCount = ""; break; // Ninguna 
+                        } 
+                        
+                        var notActive = true; $index = 0; // Verificar
+                        
+                        softtion.forEach(newValue, (option, index) => {
+                            if (option.active) {
+                                $index = index; notActive = false; return true;
+                            } // Ya existe una opción activa
+                        });
+                        
+                        if (notActive) newValue[$index].active = true;
+                        
+                        setBackgroundShifting(newValue[$index]); viewActiveOption(newValue[$index]);
+                    });
+                    
+                $attrs.$observe("views", () => {
+                    var views = angular.element($scope.views);  // Vistas
+                    $views = (views.exists()) ? views : undefined;
+                });
+                    
+                $scope.clickOption = function (option, $index, $event) {
+                    if (option.active) return; // Opción es la activa
+                    
+                    removeActiveOptions(); option.active = true;
+                    
+                    effect.css(getPositionRipple($event, $index)); 
+                    
+                    setBackgroundShifting(option); viewActiveOption(option);
+                    
+                    ripple.addClass(Classes.SHOW).addClass(Classes.ANIMATED);
+                    listener.launch("action", { $item: option, $index: $index }); 
+                };
+                
+                function removeActiveOptions() {
+                    $scope.options.forEach((option) => { option.active = false; });
+                }
+                
+                function getPositionRipple($event, index) {
+                        // Atributos del item
+                    var item = angular.element($event.currentTarget),
+                        offsetLeft = item.offset().left,
+                        width = item.outerWidth(), 
+                        
+                        // Atributos de posición
+                        left = getPositionLeftRipple(width, offsetLeft, index);
+                        
+                    $index = index; // Actualizando el seleccionado
+                
+                    return { top: item.height() / 2, left: left };
+                }
+                
+                function getPositionLeftRipple(width, offsetLeft, index) {
+                    var leftElement = $element.offset().left, widthReal;
+                    
+                    switch ($scope.options.length) {
+                        case (3): 
+                            return offsetLeft + (width / 2) - leftElement;
+                            
+                        case (4): widthReal = ((width * 37) / 21); break;
+                            
+                        case (5): widthReal = ((width * 30) / 17.5); break;
+                        
+                        default: 
+                            return offsetLeft + (width / 2) - leftElement;
+                    } 
+                                                        
+                    return (index > $index) ? 
+                        offsetLeft + ((widthReal - width) / 4) - leftElement :
+                        offsetLeft + (widthReal / 2) - leftElement;
+                }
+                
+                function setBackgroundShifting(option) {
+                    if (!$scope.shifting) return; // Color por defecto
+                    
+                    if (!softtion.isString(option.color)) {
+                        $element.addClass(Classes.DEFAULT); return;
+                    } // No se definio color en el elemento
+                    
+                    var color = $themes.get()[option.color][800];
+
+                    if (!softtion.isString(color)) {
+                        $element.addClass(Classes.DEFAULT);
+                    } else {
+                        $element.css("background-color", color);
+                        $element.removeClass(Classes.DEFAULT);
+                    } // Se encontró color establecido en el elemento
+                }
+                
+                function viewActiveOption(option) {
+                    if (!softtion.isString(option.view)) return;
+                    
+                    if (softtion.isUndefined($views)) return;
+                    
+                    var view = $views.children(option.view);
+                    
+                    if (!view.exists()) return; // La vista no existe
+                    
+                    $appContent.scrollTop(0); // Posición inicial scroll
+                    $views.children().removeClass(Classes.ACTIVE);
+                    view.addClass(Classes.ACTIVE); // Activando vista
+                }
 
                 $appContent.on(scrollEvent, scrollBottomEvent);
 
@@ -4155,12 +4212,12 @@
                     header.click(() => {
                         var elements = $element.siblings("li");
 
-                        elements.removeClass("active"); // Desactivando
+                        elements.removeClass(Classes.ACTIVE); // Desactivando
                         elements.children(".body").css("max-height", "0px");
 
-                        $element.toggleClass("active"); // Cambiando estado
+                        $element.toggleClass(Classes.ACTIVE); // Cambiando estado
 
-                        if ($element.hasClass("active")) {
+                        if ($element.hasClass(Classes.ACTIVE)) {
                             var heightActions = actions.innerHeight(),
                                 heightContent = content.innerHeight(),
 
@@ -4207,7 +4264,8 @@
                     addChildren(
                         softtion.html("li").addClass("option").
                             addAttribute("ng-repeat", "item in options").
-                            addAttribute("ng-click", "closeMenu(item)").
+                            addAttribute("ng-class", "{disabled: item.disabled}").
+                            addAttribute("ng-click", "closeMenu(item, $index)").
                             addChildren(
                                 softtion.html("i").setText("{{item.icon}}").
                                     addAttribute("ng-if", "isIconDefined(item.icon)")
@@ -4232,7 +4290,15 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
-                var listener = new Listener($scope, []); // Listener
+                    // Componentes
+                var orbit = $element.children(".orbit-content");
+                
+                    // Atributos
+                var listener = new Listener($scope, []);
+                
+                $element.animationstart(() => { orbit.css("height", "200px"); });
+                
+                $element.animationend(() => { orbit.css("height", "0px"); });
                 
                 $scope.$watch(() => { return $scope.options; },
                     (newValue) => {
@@ -4250,9 +4316,9 @@
                     listener.launch("show"); // Desplegando FabMenu
                 };
                     
-                $scope.closeMenu = function (item) {
-                    $element.removeClass(Classes.ACTIVE); // Ocultando
-                    listener.launch(item.action, { $item: item }); 
+                $scope.closeMenu = function (item, $index) {
+                    $element.removeClass(Classes.ACTIVE); // Ocultando FabMenu
+                    listener.launch("action", { $item: item, $index: $index }); 
                 };
             }
         };
@@ -4279,9 +4345,9 @@
                 $element.find("button.floating").addClass("static");
 
                 button.on("click.fab-speeddial", () => {
-                    button.addClass("active"); $element.toggleClass("active");
+                    button.addClass(Classes.ACTIVE); $element.toggleClass(Classes.ACTIVE);
 
-                    ($element.hasClass("active")) ?
+                    ($element.hasClass(Classes.ACTIVE)) ?
                         icon.text("close") : icon.text(nameIcon);
                 });
             }
@@ -5222,11 +5288,11 @@
                     density = "density-" + $scope.density;
 
                 if ($scope.disabledResponsive) {
-                    $element.addClass("active"); return;
+                    $element.addClass(Classes.ACTIVE); return;
                 } // No requiere calculo de densidad la Imagen
 
                 (densities.hasItem($scope.density)) ?
-                    $element.addClass(density).addClass("active") :
+                    $element.addClass(density).addClass(Classes.ACTIVE) :
                             
                     (!$element[0].complete) ?
                         $element.on("load", () => { 
@@ -6036,12 +6102,12 @@
                 };
 
                 $scope.focusInput = function ($event) { 
-                    $element.addClass("active"); // Activando
+                    $element.addClass(Classes.ACTIVE); // Activando
                     listener.launch("focus", { $event: $event });
                 };
 
                 $scope.blurInput = function ($event) {
-                    $element.removeClass("active"); // Desactivando
+                    $element.removeClass(Classes.ACTIVE); // Desactivando
                     listener.launch("blur", { $event: $event });
                 };
 
@@ -6114,13 +6180,13 @@
                 }
 
                 function showSuggestions() {
-                    if ($element.hasClass("active")) return; // Componente
+                    if ($element.hasClass(Classes.ACTIVE)) return; // Componente
 
                     if (!$scope.selectStart && !$scope.disabledAutoclose)
                         $document.on(eventID, closeSelect); // Cerrado automatico
 
                     $scope.selectStart = true; $scope.showList = true; 
-                    $element.addClass("active"); listener.launch("show");
+                    $element.addClass(Classes.ACTIVE); listener.launch("show");
                 }
             }
         };
@@ -6373,7 +6439,7 @@
 
                     if (viewContent.exists()) {
                         views = viewContent.children(".view"); 
-                        views.removeClass("active"); viewsCount = views.length;
+                        views.removeClass(Classes.ACTIVE); viewsCount = views.length;
                     } // Determinando capacida
 
                     angular.forEach(tabs, function (tab) { 
@@ -6390,7 +6456,7 @@
                         tabActive = angular.element(tabs[0]);
                     } // No se establecio pestaña activa inicialmente
 
-                    tabs.removeClass("active"); tabActive.addClass("active");
+                    tabs.removeClass(Classes.ACTIVE); tabActive.addClass(Classes.ACTIVE);
 
                     var widthBar = tabActive.outerWidth(),
                         leftBar = tabActive.position().left;
@@ -6401,7 +6467,7 @@
                     viewContent.css("left", (position * -100) + "%");
 
                     if (softtion.isDefined(views)) {
-                        angular.element(views[position]).addClass("active");
+                        angular.element(views[position]).addClass(Classes.ACTIVE);
                     } // Vista actualmente activa
 
                     $element.displaceLeft(function (name, event) {
@@ -6443,14 +6509,14 @@
                             widthTab = $element.width();
 
                         // Este componente está activo o no tiene vista
-                        if (itemTab.hasClass("active")) { return; }
+                        if (itemTab.hasClass(Classes.ACTIVE)) { return; }
 
                         stripe.css({ width: width, left: left });
-                        tabs.removeClass("active"); itemTab.addClass("active");
+                        tabs.removeClass(Classes.ACTIVE); itemTab.addClass(Classes.ACTIVE);
 
                         if (softtion.isDefined(views)) {
-                            views.removeClass("active"); 
-                            angular.element(views[position]).addClass("active");
+                            views.removeClass(Classes.ACTIVE); 
+                            angular.element(views[position]).addClass(Classes.ACTIVE);
                         } // Vista actualmente activa
 
                         if (!$scope.disabledPositionStart) {
@@ -8784,6 +8850,7 @@
                     var properties = background.split(":");
 
                     if (!properties.has(2)) return;
+                    
                     var color = $themes.get()[properties[0]][properties[1]];
 
                     if (softtion.isString(color)) // Color correcto
@@ -8817,6 +8884,7 @@
                     var properties = fontColor.split(":");
 
                     if (!properties.has(2)) return;
+                    
                     var color = $themes.get()[properties[0]][properties[1]];
 
                     if (softtion.isString(color)) // Color correcto
@@ -8922,7 +8990,7 @@
         
         $scope.inputStart = false; // Input no inicializado
 
-        if (softtion.isString($scope.value)) $element.addClass("active"); 
+        if (softtion.isString($scope.value)) $element.addClass(Classes.ACTIVE); 
 
         if ($scope.type === "password") {
             $scope.isIconAction = true;
@@ -8990,13 +9058,13 @@
                 $scope.input = $scope.value.toString();
             
             $scope.inputStart = true; // Iniciando componente
-            $element.addClass("active"); $scope.inputActive = true; 
+            $element.addClass(Classes.ACTIVE); $scope.inputActive = true; 
 
             listener.launch("focus", { $event: $event });
         };
 
         $scope.blurInput = function ($event) {
-            $scope.inputActive = false; $element.removeClass("active");
+            $scope.inputActive = false; $element.removeClass(Classes.ACTIVE);
             verifyModelBlur(); listener.launch("blur", { $event: $event });
         };
         
@@ -9162,7 +9230,7 @@
         
         $scope.pressEnter = false; $scope.countEnter = 0;
 
-        if (softtion.isString($scope.value)) $element.addClass("active"); 
+        if (softtion.isString($scope.value)) $element.addClass(Classes.ACTIVE); 
 
         $scope.$watch(() => { return $scope.clearModel; }, 
             (newValue) => {
@@ -9245,13 +9313,13 @@
                 $scope.area = $scope.value.toString();
 
             $scope.areaActive = true; $scope.real = true; 
-            $element.addClass("active"); $scope.areaStart = true;
+            $element.addClass(Classes.ACTIVE); $scope.areaStart = true;
             
             listener.launch("focus", { $event: $event });
         };
 
         $scope.blurArea = function ($event) {
-            $element.removeClass("active"); // Inactivando Componente
+            $element.removeClass(Classes.ACTIVE); // Inactivando Componente
 
             $scope.real = false; $scope.areaActive = false; 
             $scope.pressEnter = false; $scope.countEnter = 0;
