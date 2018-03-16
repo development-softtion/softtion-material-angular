@@ -2317,13 +2317,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** TABS */
 
-.app-bar > .tabs, .tabs {
+.tabs, .app-bar > .tabs, .app-bar > .toolbar > .tabs {
     background-color: var(--background-appbar); }
 
-.app-bar.theme-primary > .toolbar > .tabs, .tabs.theme-primary {
+.tabs.theme-primary, .app-bar.theme-primary > .tabs, 
+.app-bar.theme-primary > .toolbar > .tabs {
     background-color: var(--theme-primary-background-dark); }
 
-.app-bar.theme-secondary > .toolbar > .tabs, .tabs.theme-secondary {
+.tabs.theme-secondary, .app-bar.theme-secondary > .tabs,
+.app-bar.theme-secondary > .toolbar > .tabs {
     background-color: var(--theme-secondary-background-dark); }
 
 .app-bar.floating > .tabs {
@@ -2337,46 +2339,51 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .app-bar.floating > .breadcrumb + .tabs {
     border-top-color: transparent; }
 
-.app-bar > .toolbar > .tabs > .tab, .tabs > .tab {
+.tabs > .tab, .app-bar > .tabs > .tab, .app-bar > .toolbar > .tabs > .tab {
     color: var(--primary-font); }
 
-.app-bar > .toolbar > .tabs > .tab.disabled, .tabs > .tab.disabled {
+.tabs > .tab.disabled, .app-bar > .tabs > .tab.disabled, 
+.app-bar > .toolbar > .tabs > .tab.disabled {
     color: var(--disabled-font); }
 
-.app-bar.theme-primary > .toolbar > .tabs > .tab, 
-.tabs.theme-primary > .tab {
+.tabs.theme-primary > .tab, .app-bar.theme-primary > .tabs > .tab, 
+.app-bar.theme-primary > .toolbar > .tabs > .tab {
     color: var(--theme-primary-font-alternative); }
 
-.app-bar.theme-primary > .toolbar > .tabs > .tab.disabled,
-.tabs.theme-primary > .tab.disabled {
+.tabs.theme-primary > .tab.disabled, .app-bar.theme-primary > .tabs > .tab.disabled,
+.app-bar.theme-primary > .toolbar > .tabs > .tab.disabled {
     color: var(--theme-primary-font-disabled); }
 
-.app-bar.theme-secondary > .toolbar > .tabs > .tab, 
-.tabs.theme-secondary > .tab {
+.tabs.theme-secondary > .tab, .app-bar.theme-secondary > .tabs > .tab, 
+.app-bar.theme-secondary > .toolbar > .tabs > .tab {
     color: var(--theme-secondary-font-alternative); }
 
-.app-bar.theme-secondary > .toolbar > .tabs > .tab.disabled, 
-.tabs.theme-secondary > .tab.disabled {
+.tabs.theme-secondary > .tab.disabled, .app-bar.theme-secondary > .tabs > .tab.disabled, 
+.app-bar.theme-secondary > .toolbar > .tabs > .tab.disabled {
     color: var(--theme-secondary-font-disabled); }
 
-.app-bar > .tabs > .tab:before, .tabs > .tab:before {
+.tabs > .tab:before, .app-bar > .tabs > .tab:before,
+.app-bar > .toolbar > .tabs > .tab:before {
     background-color: var(--ripple); }
 
-.app-bar.theme-primary > .tabs > .tab:before, .tabs.theme-primary > .tab:before {
+.tabs.theme-primary > .tab:before, .app-bar.theme-primary > .tabs > .tab:before,
+.app-bar.theme-primary >.toolbar > .tabs > .tab:before {
     background-color: var(--theme-primary-ripple); }
 
-.app-bar.theme-secondary > .tabs > .tab:before, .tabs.theme-secondary > .tab:before {
+.tabs.theme-secondary > .tab:before, .app-bar.theme-secondary > .tabs > .tab:before
+.app-bar.theme-secondary > .toolbar > .tabs > .tab:before {
     background-color: var(--theme-secondary-ripple); }
 
-.app-bar > .tabs > .stripe, .tabs > .stripe {
+.tabs > .stripe, .app-bar > .tabs > .stripe, 
+.app-bar > .toolbar > .tabs > .stripe {
     background-color: var(--primary-font); }
 
-.app-bar.theme-primary > .toolbar > .tabs > .stripe, 
-.tabs.theme-primary > .stripe {
+.tabs.theme-primary > .stripe, .app-bar.theme-primary > .tabs > .stripe, 
+.app-bar.theme-primary > .toolbar > .tabs > .stripe {
     background-color: var(--theme-primary-font-alternative); }
 
-.app-bar.theme-secondary > .toolbar > .tabs > .stripe, 
-.tabs.theme-secondary > .stripe {
+.tabs.theme-secondary > .stripe, .app-bar.theme-secondary > .tabs > .stripe,
+.app-bar.theme-secondary > .toolbar > .tabs > .stripe {
     background-color: var(--theme-secondary-font-alternative); }
 
 /** TEXTAREA */

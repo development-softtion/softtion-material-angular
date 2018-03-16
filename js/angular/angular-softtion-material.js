@@ -157,28 +157,7 @@
 
                 Dialog: Properties.create(Properties.Dialog),
 
-                Dropdown: {
-                    name: "dropdown",
-                    directive: ["$dropdown", function ($dropdown) {
-                        return {
-                            restrict: "A",
-                            link: function ($scope, $element, $attrs) {
-                                var disabledAutoclose = $scope.$eval(
-                                        $attrs.disabledAutoclose
-                                    );
-
-                                $element.on("click", (event) => {
-                                    $dropdown.set($attrs.dropdown).
-                                        show($element, !disabledAutoclose);
-
-                                    if (!disabledAutoclose) { 
-                                        event.stopPropagation(); 
-                                    } // Desactivar Autocerrado
-                                });
-                            }
-                        };
-                    }]
-                },
+                Dropdown: Properties.create(Properties.Dropdown),
 
                 FocusedElement: Properties.create(Properties.FocusedElement),
 
@@ -204,324 +183,7 @@
 
                 Document: Providers.create(Providers.Document),
 
-                Dropdown: {
-                    name: "$dropdown",
-                    method: function () {
-                        var belowOrigin = true, 
-                            $body = undefined,
-                            $appBody = undefined,
-                            $appContent = undefined,
-                            dropdown = undefined, 
-                            origin = undefined;
-
-                        var Dropdown = function () { };
-
-                        Dropdown.prototype.set = function (dropdownElement) { 
-                            dropdown = instanceElement(dropdownElement, "dropdown"); 
-
-                            return this; // Retornando interfaz fluida
-                        };
-
-                        Dropdown.prototype.setBelowOrigin = function (belowDropdown) {
-                            belowOrigin = belowDropdown; return this;
-                        };
-
-                        Dropdown.prototype.isShow = function () {
-                            return (softtion.isDefined(dropdown)) ? 
-                                dropdown.hasClass("show") : false; 
-                        };
-
-                        Dropdown.prototype.show = function (originElement, autoclose) {
-                            var self = this, // Instancia del proveedor
-                                nameEvent = "click.hidedropdown-" + softtion.getGUID();
-
-                            executeIfExists(dropdown, function () {
-                                origin = originElement; show(); 
-
-                                if (autoclose) {
-                                    var dropdownNow = dropdown; // Actual a cerrar
-
-                                    $body.on(nameEvent, function ($event) {
-                                        $event.stopPropagation(); // Cancelando propagación
-
-                                        if (dropdown.find($event.target).length === 0) {
-                                            self.set(dropdownNow).hide(); $body.off(nameEvent);
-                                        } // Se cerrará dropdown de manera automatica
-                                    });
-                                }
-                            });
-                        };
-
-                        Dropdown.prototype.showEvent = function (event, autoclose) {
-                            var element = angular.element(event.currentTarget);
-
-                            this.show(element, autoclose); 
-
-                            if (autoclose) { event.stopPropagation(); }
-                        };
-
-                        Dropdown.prototype.showXY = function (left, top, autoclose) {
-                            var self = this, // Instancia del proveedor
-                                nameEvent = "click.hidedropdown-" + softtion.getGUID();
-
-                            executeIfExists(dropdown, function () {
-                                showXY(left, top); // Desplegando en la posición
-
-                                if (autoclose) {
-                                    var dropdownNow = dropdown; // Actual a cerrar
-
-                                    $body.on(nameEvent, function ($event) {
-                                        $event.stopPropagation(); // Cancelando propagación
-
-                                        if (dropdown.find($event.target).length === 0) {
-                                            self.set(dropdownNow).hide(); $body.off(nameEvent);
-                                        } // Se cerrará dropdown de manera automatica
-                                    });
-                                }
-                            });
-                        };
-
-                        Dropdown.prototype.hide = function () {
-                            if (this.isShow()) { 
-                                dropdown.removeClass("show");
-                            } // Esta abierto el dropdown
-                        };
-
-                        var dropdownProvider = new Dropdown();
-
-                        this.$get = ["$body", "$appBody", "$appContent", provider];
-
-                        function provider(body, appBody, appContent) { 
-                            $body = body;
-                            $appBody = appBody;
-                            $appContent = appContent;
-
-                            return dropdownProvider; // Proveedor
-                        }
-
-                        this.get = function () { return dropdownProvider; };
-
-                        function settingsElement(classElement) {
-                            var settings = {
-                                    top: 0, left: 0,
-                                    moveLeft: false,
-                                    moveContent: false,
-                                    innerWidth: window.innerWidth, 
-                                    innerHeight: window.innerHeight
-                                },  
-                                element = origin.parents(classElement),
-                                position = origin.positionParent(classElement + " > .content"),
-                                content = element.children(".content"), 
-                                flexibleBox = origin.parents(".flexible-box");
-
-                            if (flexibleBox.exists()) {
-                                if (origin.parents(".flexible-box > .banner").exists()) {
-                                    dropdown.appendTo(flexibleBox);
-
-                                    settings.innerWidth = content.width();
-                                    settings.innerHeight = content.height();
-                                } else {
-                                    var box = flexibleBox.children(".box"), 
-                                        contentFlexible = box.children(".content");
-
-                                    dropdown.appendTo(contentFlexible); 
-                                    position.top += box.scrollTop();
-
-                                    settings.innerWidth = contentFlexible.width();
-                                    settings.innerHeight = contentFlexible.height();
-                                }
-                            } else {
-                                dropdown.appendTo(content); 
-                                position.top += content.scrollTop();
-
-                                settings.innerWidth = content.width();
-                                settings.innerHeight = content.height();
-                            }
-
-                            return angular.extend(settings, position);
-                        }
-
-                        function settingsDropdown() {
-                            // Configuración estandar para posicionamiento
-                            var settings = {
-                                top: 0, left: 0, 
-                                moveLeft: true,
-                                moveScroll: true,
-                                moveContent: false,
-                                innerWidth: window.innerWidth, 
-                                innerHeight: window.innerHeight
-                            }; 
-
-                            if (softtion.isDefined(origin) && origin.exists()) {
-                                if (origin.parents(".form-navigation").exists()) {
-                                    return settingsElement(".form-navigation");
-                                } // Elemento está contenido en un FormNavigation
-
-                                if (origin.parents(".bottom-sheet").exists()) {
-                                    return settingsElement(".bottom-sheet");
-                                } // Elemento está contenido en un BottomSheet
-
-                                if (origin.parents(".app-bar").exists()) {
-                                    dropdown.appendTo(origin.parents(".app-bar"));
-                                    settings.moveScroll = false;
-                                } // Elemento está contenido en un AppBar
-
-                                if (origin.parents(".app-content").exists()) {
-                                    settings.moveContent = true;
-                                } // Elemento está contenido en un AppContent
-
-                                return angular.extend(settings, origin.offset()); 
-                            } // Se definío elemento que disparó despliegue del dropdown
-
-                            return settings; // Configuración por defecto
-                        }
-
-                        function show() {
-                            var settings = settingsDropdown(),
-                                leftBody = parseInt($appBody.css("left"));
-
-                            var heightDropdown = dropdown.innerHeight(),
-                                widthDropdown = dropdown.innerWidth(),
-
-                                heightOrigin = (origin) ? origin.innerHeight() : 0, 
-                                widthOrigin = (origin) ? origin.innerWidth() : 0,
-
-                                posOriginY = settings.top, posOriginX = settings.left,
-
-                                // Atributos finales del Dropdown
-                                left, top, originEffect, transformOrigin = 0; 
-
-                            dropdown.addClass("show"); // Activado dropdown
-
-                            // Definiendo posicion eje X
-                            if ((posOriginX + widthDropdown) <= (settings.innerWidth)) {
-                                left = posOriginX; 
-                                transformOrigin = transformOrigin + 1;
-                            } else if ((posOriginX + widthOrigin - widthDropdown) > 0) {
-                                transformOrigin = transformOrigin + 3;
-                                left = posOriginX + widthOrigin - widthDropdown - 10; 
-                            } else { 
-                                transformOrigin = transformOrigin + 1; 
-                                left = settings.innerWidth - widthDropdown - 10; 
-                            }
-
-                            // Definiendo posicion eje Y
-                            if (belowOrigin) { 
-                                if ((posOriginY + heightDropdown) <= (settings.innerHeight)) {
-                                    top = posOriginY;
-                                    transformOrigin = transformOrigin + 4;
-                                } else if ((posOriginY + heightOrigin - heightDropdown) > 0) {
-                                    transformOrigin = transformOrigin + 7;
-                                    top = posOriginY + heightOrigin - heightDropdown; 
-                                } else { 
-                                    transformOrigin = transformOrigin + 4;
-                                    top = settings.innerHeight - heightDropdown - 10;  
-                                }
-                            } else { 
-                                if ((posOriginY + heightOrigin + heightDropdown) <= settings.innerHeight) {
-                                    top = posOriginY + heightOrigin; 
-                                    transformOrigin = transformOrigin + 4;
-                                } else if ((posOriginY - heightDropdown) > 0) {
-                                    top = posOriginY - heightDropdown; 
-                                    transformOrigin = transformOrigin + 7;
-                                } else { 
-                                    transformOrigin = transformOrigin + 4; 
-                                    top = settings.innerHeight - heightDropdown - 10;
-                                }
-                            }
-
-                            switch (transformOrigin) {
-                                case (5): originEffect = "0 0"; break;
-                                case (7): originEffect = "100% 0"; break;
-                                case (8): originEffect = "0 100%"; break;
-                                case (10): originEffect = "100% 100%"; break;
-                                default: originEffect = "0 0"; break;
-                            } // Definiendo inicio del efecto
-
-                            if (settings.moveContent) {
-                                var leftContent = parseInt($appContent.css("left")),
-                                    topContent = parseInt($appContent.css("padding-top"));
-
-                                left = left - leftContent; //top = top - topContent; 
-                            } // Desplazando elemento en AppContent
-
-                            if (settings.moveLeft) {
-                                dropdown.removeClass("fixed"); 
-                                left = left - leftBody; 
-
-                                if (settings.moveScroll) {
-                                    top = top + $appContent.scrollTop(); 
-                                } // Desplazando con Scroll
-                            } else {
-                                dropdown.addClass("fixed");
-                            }// Componente debe moverse con scroll de AppContent
-
-                            dropdown.css({ 
-                                left: left, top: top,
-                                "-moz-transform-origin": originEffect,
-                                "-webkit-transform-origin": originEffect,
-                                "transform-origin": originEffect
-                             }); 
-                        }
-
-                        function showXY(left, top) {
-                            var heightDropdown = dropdown.innerHeight(),
-                                widthDropdown = dropdown.innerWidth(),
-                                transformOrigin = 0, originEffect;
-
-                            // Definiendo posicion del eje X
-                            if ((left + widthDropdown) <= (window.innerWidth)) {
-                                transformOrigin = transformOrigin + 1;
-                            } else if ((left - widthDropdown) > 0) {
-                                transformOrigin = transformOrigin + 3; 
-                                left = left - widthDropdown - 10; 
-                            } else { 
-                                transformOrigin = transformOrigin + 1; 
-                                left = window.innerWidth - widthDropdown - 10; 
-                            }
-
-                            // Definiendo posicion del eje Y
-                            if (belowOrigin) { 
-                                if ((top + heightDropdown) <= (window.innerHeight)) {
-                                    transformOrigin = transformOrigin + 4;
-                                } else if ((top - heightDropdown) > 0) {
-                                    transformOrigin = transformOrigin + 7;
-                                    top = top - heightDropdown; 
-                                } else { 
-                                    transformOrigin = transformOrigin + 4; 
-                                    top = window.innerHeight - heightDropdown - 10;  
-                                }
-                            } else { 
-                                if ((top + heightDropdown) <= window.innerHeight) {
-                                    transformOrigin = transformOrigin + 4;
-                                } else if ((top - heightDropdown) > 0) {
-                                    top = top - heightDropdown; 
-                                    transformOrigin = transformOrigin + 7;
-                                } else { 
-                                    transformOrigin = transformOrigin + 4; 
-                                    top = window.innerHeight - heightDropdown - 10;
-                                }
-                            }
-
-                            switch (transformOrigin) {
-                                case (5): originEffect = "0 0"; break;
-                                case (7): originEffect = "100% 0"; break;
-                                case (8): originEffect = "0 100%"; break;
-                                case (10): originEffect = "100% 100%"; break;
-                                default: originEffect = "0 0"; break;
-                            } // Definiendo inicio del efecto
-
-                            dropdown.css({ 
-                                left: left, top: top, 
-                                "-moz-transform-origin": originEffect,
-                                "-webkit-transform-origin": originEffect,
-                                "transform-origin": originEffect
-                             }); 
-
-                            dropdown.addClass("show"); // Activando dropdown
-                        }
-                    }
-                },
+                Dropdown: Providers.create(Providers.Dropdown),
 
                 FormNavigation: Providers.create(Providers.FormNavigation),
                 
@@ -618,6 +280,7 @@
             HIDE: "hide",
             HIDDEN: "hidden",
             START: "start",
+            FIXED: "fixed",
             FINISH: "finish",
             
             SHOW_BOTTOM_NAV: "show-bottom-navigation",
@@ -755,11 +418,8 @@
                 var appbarHeight = (!$element.hasClass("floating")) ?
                     $element.innerHeight() : $element.outerHeight(true);
 
-                sidenav.css("top", appbarHeight); 
-                $appContent.css("padding-top", appbarHeight);
-                
-                directive.setClassWidthElement($appContent, $window.innerWidth);
-                directive.setClassWidthElement(sidenav, $window.innerWidth);
+                setDisplaceElement(appbarHeight); 
+                directive.setClassWidthElement($element, $window.innerWidth);
 
                 $appContent.scroll(() => {
                     if ($scope.fixed) return; // No debe ocultarse
@@ -791,8 +451,7 @@
                     
                     setPositionWidth(window.width()); // Posición
                     
-                    directive.setClassWidthElement($appContent, window.width());
-                    directive.setClassWidthElement(sidenav, window.width());
+                    directive.setClassWidthElement($element, window.width());
                 });
                 
                 function toogleAppBar(isShow) {
@@ -809,13 +468,15 @@
                             (parseInt(topAppContent) + 8):
                             (parseInt(topAppContent) - 8);
                     
-                    if ((width > 960) && !$appContent.hasClass(Classes.APPBAR_64)) {
-                        sidenav.css("top", result); $appContent.css("padding-top", result);
-                    } // Aplicando aumento de posición en elementos
+                    if ((width > 960) && !$element.hasClass(Classes.APPBAR_64))
+                        setDisplaceElement(result); // Aplicando aumento de posición
                     
-                    if ((width <= 960) && !$appContent.hasClass(Classes.APPBAR_56)) {
-                        sidenav.css("top", result); $appContent.css("padding-top", result);
-                    } // Aplicando disminución de posición en elementos
+                    if ((width <= 960) && !$element.hasClass(Classes.APPBAR_56)) 
+                        setDisplaceElement(result); // Aplicando disminución de posición
+                }
+                
+                function setDisplaceElement(value) {
+                    sidenav.css("top", value); $appContent.css("padding-top", value);
                 }
             }
         };
@@ -3288,7 +2949,7 @@
                 };
 
                 $scope.showDialog = function ($event) {
-                    if (!$scope.ngDisabled) return; // Desactivado
+                    if ($scope.ngDisabled) return; // Desactivado
                     
                     $scope.show = true; listener.launch("show", { $event: $event });
                 };
@@ -4021,7 +3682,7 @@
                 };
 
                 $scope.showDialog = function ($event) {
-                    if (!$scope.ngDisabled) return; // Desactivado
+                    if ($scope.ngDisabled) return; // Desactivado
                         
                     $scope.show = true; listener.launch("show", { $event: $event });
                 };
@@ -6413,133 +6074,101 @@
         return {
             restrict: "C",
             scope: {
-                views: "@",
                 elementScroll: "@",
                 disabledPositionStart: "=?",
                 disabledOverflow: "=?",
-                positionScroll: "@",
-
-                // Eventos
-                viewEvent: "&"
+                positionScroll: "=?",
+                eventListener: "&"
             },
             link: function ($scope, $element) {
-                // Componentes
-                var viewContent = angular.element($scope.views), 
-                    views, tabs = $element.find(".tab"), 
-                    index = 0, clickActive = true, viewsCount = 0,
-                    positionStart, enabledClick,
-                    stripe = angular.element(
-                        softtion.html("div").addClass("stripe").create()
-                    );
+                    // Componentes
+                var tabs = $element.find(".tab"), elementScroll,
+                    stripe = softtion.htmlElement("div", "stripe");
+                    
+                    // Atributos
+                var clickActive = true, positionStart;
 
+                $element.append(stripe); // Agregando componente
+                
                 $scope.elementScroll = $scope.elementScroll || ".app-content";
+                elementScroll = angular.element($scope.elementScroll);
 
-                if (tabs.exists()) {
-                    tabs.attr("tabindex", "-1"); // Componentes enfocables
+                if (!tabs.exists()) return; // Elemento no contiene
+                
+                init(); // Iniciando componente
 
-                    if (viewContent.exists()) {
-                        views = viewContent.children(".view"); 
-                        views.removeClass(Classes.ACTIVE); viewsCount = views.length;
-                    } // Determinando capacida
+                $element.displaceLeft((name, event) => {
+                    switch (name) {
+                        case ("start"):
+                            positionStart = event.originalEvent.pageX;
+                        break;
 
-                    angular.forEach(tabs, function (tab) { 
-                        (viewsCount > index) ?
-                            angular.element(tab).data("position", index) :
-                            angular.element(tab).data("position", -1);
+                        case ("displace"): 
+                            var position = event.originalEvent.pageX - positionStart,
+                                disabledClick = !softtion.isBetween(position, -15, 15);
 
-                        index++; // Aumentando el contador de Vistas
+                            if (disabledClick) clickActive = false;
+                        break;
+
+                        case ("end"): 
+                            $timeout(() => { clickActive = true; }, 100);
+                        break;
+                    }
+                }); 
+
+                tabs.on("click.tabs", ($event) => {
+                    if (!clickActive) { clickActive = true; return; } // Arrastre
+
+                    var tab = angular.element($event.currentTarget);
+
+                    if (tab.hasClass(Classes.ACTIVE)) return; // Esta activo
+
+                    var attrs = getAttrsTab(tab);
+
+                    stripe.css({ width: attrs.width, left: attrs.left });
+                    tabs.removeClass(Classes.ACTIVE); tab.addClass(Classes.ACTIVE);
+
+                    if (!$scope.disabledPositionStart) {
+                        if (!isNaN($scope.positionScroll) && 
+                            ($scope.positionScroll < elementScroll.scrollTop())) {
+                            elementScroll.scrollTop($scope.positionScroll); 
+                        } // Reposicionando scroll
+                    } // No es necesario reposicionar scroll de elemento establecido
+
+                    if (attrs.left < $element.scrollLeft() || (attrs.width + attrs.left) > $element.width())
+                        $element.animate({ scrollLeft: attrs.left }, 175, "standardCurve"); // Reubicando
+                });
+                
+                function init() {
+                    var position = 0, tab; // Atributos de la directiva
+                    
+                    angular.forEach(tabs, (element) => {
+                        var tabElement = angular.element(element); // Elemento
+                        
+                        tabElement.data("position", position); position++;
+                        
+                        if (softtion.isUndefined(tab) && 
+                                tabElement.hasClass(Classes.ACTIVE)) 
+                            tab = tabElement; // Elemento activo
                     });
+                    
+                    tabs.removeClass(Classes.ACTIVE).attr("tabindex", "-1");
 
-                    var tabActive = $element.find(".tab.active:first");
+                    if (!tab.exists()) tab = angular.element(tabs[0]);
 
-                    if (!tabActive.exists()) {
-                        tabActive = angular.element(tabs[0]);
-                    } // No se establecio pestaña activa inicialmente
+                    tab.addClass(Classes.ACTIVE); position = tab.data("position");
 
-                    tabs.removeClass(Classes.ACTIVE); tabActive.addClass(Classes.ACTIVE);
-
-                    var widthBar = tabActive.outerWidth(),
-                        leftBar = tabActive.position().left;
-
-                    stripe.css({ width: widthBar, left: leftBar });
-
-                    var position = tabActive.data("position");
-                    viewContent.css("left", (position * -100) + "%");
-
-                    if (softtion.isDefined(views)) {
-                        angular.element(views[position]).addClass(Classes.ACTIVE);
-                    } // Vista actualmente activa
-
-                    $element.displaceLeft(function (name, event) {
-                        switch (name) {
-                            case ("start"):
-                                positionStart = event.originalEvent.pageX;
-                            break;
-
-                            case ("displace"): 
-                                var disabledClick = !softtion.isBetween(
-                                    (event.originalEvent.pageX - positionStart), -15, 15
-                                );
-
-                                if (disabledClick) { clickActive = false; }
-                            break;
-
-                            case ("end"): 
-                                enabledClick = $timeout(
-                                    function () { clickActive = true; }, 100
-                                );
-                            break;
-                        }
-                    }); // Evento arrastre en el componente
-
-                    tabs.on("click.tabs", function ($event) {
-                        if (!clickActive) {
-                            clickActive = true; return;
-                        } // Se realizo un arrastre
-
-                        if (!viewContent.hasClass("transition")) {
-                            viewContent.addClass("transition");
-                        } // Agregando transition al componente
-
-                        var itemTab = angular.element(this);
-
-                        var position = itemTab.data("position"),
-                            left = itemTab[0].offsetLeft,
-                            width = itemTab[0].clientWidth,
-                            widthTab = $element.width();
-
-                        // Este componente está activo o no tiene vista
-                        if (itemTab.hasClass(Classes.ACTIVE)) { return; }
-
-                        stripe.css({ width: width, left: left });
-                        tabs.removeClass(Classes.ACTIVE); itemTab.addClass(Classes.ACTIVE);
-
-                        if (softtion.isDefined(views)) {
-                            views.removeClass(Classes.ACTIVE); 
-                            angular.element(views[position]).addClass(Classes.ACTIVE);
-                        } // Vista actualmente activa
-
-                        if (!$scope.disabledPositionStart) {
-                            var elementScroll = angular.element($scope.elementScroll),
-                                positionScroll = parseInt($scope.positionScroll);
-
-                            if (!isNaN(positionScroll) && 
-                                (positionScroll < elementScroll.scrollTop())) {
-                                elementScroll.scrollTop(positionScroll); 
-                            } // Reposicionando scroll
-                        } // No es necesario reposicionar scroll de elemento establecido
-
-                        if (left < $element.scrollLeft() || (width + left) > widthTab) {
-                            $element.animate({ scrollLeft: left }, 175, "standardCurve");                                         
-                        } // Reubicando vista del contenedor en pestaña
-
-                        viewContent.css("left", (position * -100) + "%");
-
-                        $scope.viewEvent({$event: $event});
-                    });
-                } // Exiten pestañas en el componente
-
-                $element.append(stripe); // Agregando componente selector
+                    var attrs = getAttrsTab(tab), width = attrs.width - 3,
+                        left = attrs.left - (1 + position * 2);
+                
+                    stripe.css({ width: width, left: left }); // Stripe Inicio
+                }
+                
+                function getAttrsTab(tab) {
+                    return {
+                        left: tab[0].offsetLeft, width: tab[0].clientWidth
+                    };
+                }
             }
         };
     }
@@ -7249,7 +6878,7 @@
         } // Tooltip desborda ventana en la derecha
             
         // Tooltip desborda ventana en la iziquierda
-        if (left < params.margin) { left = params.margin; }
+        if (left < params.margin) left = params.margin;
         
         return left; // Retornando coordenada tooltip en X
     }
@@ -7403,6 +7032,7 @@
             case (Providers.Modal.NAME): return Providers.Modal;
             case (Providers.Dialog.NAME): return Providers.Dialog;
             case (Providers.Document.NAME): return Providers.Document;
+            case (Providers.Dropdown.NAME): return Providers.Dropdown;
             case (Providers.FormNavigation.NAME): return Providers.FormNavigation;
             case (Providers.Modal.NAME): return Providers.Modal;
             case (Providers.ProgressBar.NAME): return Providers.ProgressBar;
@@ -7615,6 +7245,286 @@
         };
     }
     
+    // Proveedor: Dropdown
+    // Version: 1.1.4
+    // Update: 09/03/2018
+    
+    Providers.Dropdown = DropdownProvider;
+    
+    Providers.Dropdown.NAME = "Dropdown";
+    Providers.Dropdown.VERSION = "1.1.4";
+    Providers.Dropdown.KEY = "$dropdown";
+    
+    function DropdownProvider() {
+        
+        var $body, $appBody, $appContent, // Proveedores
+            eventID = "click.dropdown-" + softtion.getGUID();
+
+        function Dropdown(element) { 
+            this.element = element; // Dropdown            
+            var self = this; // Instancia
+            
+            $body.on(eventID, ($event) => {
+                if (!self.autoclose) return; // Cerrado automatico
+                
+                $event.stopPropagation(); self.hide();
+            });
+        }
+
+        Dropdown.prototype.setBelowOrigin = function (below) {
+            this.belowOrigin = below; return this;
+        };
+
+        Dropdown.prototype.show = function (originElement, autoclose) {
+            var self = this; // Instancia del proveedor
+
+            executeIfExists(self.element, () => {
+                self.autoclose = autoclose; show(self, originElement);
+            });
+        };
+
+        Dropdown.prototype.showEvent = function (event, autoclose) {
+            this.show(angular.element(event.currentTarget), autoclose); 
+        };
+
+        Dropdown.prototype.showXY = function (left, top, autoclose) {
+            var self = this; // Instancia del proveedor
+
+            executeIfExists(self.element, () => {
+                self.autoclose = autoclose; showXY(self, left, top);
+            });
+        };
+
+        Dropdown.prototype.hide = function () {
+            this.element.removeClass(Classes.SHOW);
+        };
+        
+        function DropdownProvider(element) {
+            return new Dropdown(instanceElement(element, "dropdown"));
+        }
+        
+        function fnProvider(body, appBody, appContent) {
+            $body = body; $appBody = appBody; $appContent = appContent;
+            
+            return DropdownProvider; // Retornando proveedor
+        }
+
+        this.$get = ["$body", "$appBody", "$appContent", fnProvider]; // Proveedor
+
+        function show(provider, origin) {
+            var settings = getSettingsDropdown(provider, origin),
+                attrs = getAttributesDropdown(settings, provider, origin);
+
+            if (settings.moveContent) // Desplazando elemento
+                attrs.left -= parseInt($appContent.css("left"));
+
+            if (settings.moveLeft) {
+                attrs.left -= parseInt($appBody.css("left")); 
+                provider.element.removeClass(Classes.FIXED); 
+
+                if (settings.moveScroll) attrs.top += $appContent.scrollTop(); 
+            } else {
+                provider.element.addClass(Classes.FIXED);
+            } // Componente debe moverse con scroll de AppContent
+
+            provider.element.css({ 
+                top: attrs.top, left: attrs.left, 
+                MozTransformOrigin: attrs.effect,
+                transformOrigin: attrs.effect,
+                WebkitTransformOrigin: attrs.effect
+             }); 
+
+            provider.element.addClass(Classes.SHOW); // Activado dropdown
+        }
+
+        function showXY(provider, left, top) {
+            var attrs = getAttributesDropdownXY(left, top, provider);
+
+            provider.element.css({ 
+                left: attrs.left, top: attrs.top,
+                MozTransformOrigin: attrs.effect,
+                transformOrigin: attrs.effect,
+                WebkitTransformOrigin: attrs.effect
+             }); 
+
+            provider.element.addClass(Classes.SHOW); // Activando dropdown
+        }
+
+        function getSettingsDropdown(provider, origin) {
+            var settings = {
+                top: 0, left: 0, 
+                moveContent: false,
+                moveLeft: true,
+                moveScroll: true,
+                width: window.innerWidth, 
+                height: window.innerHeight
+            }; 
+
+            if (softtion.isDefined(origin) && origin.exists()) {
+                var formNavigation = origin.parents(".form-navigation");
+                
+                if (formNavigation.exists()) 
+                    return getSettingsElement(formNavigation, provider, origin);
+
+                var bottomSheet = origin.parents(".bottom-sheet");
+                
+                if (bottomSheet.exists()) 
+                    return getSettingsElement(bottomSheet, provider, origin);
+                
+                var appBar = origin.parents(".app-bar");
+                
+                if (appBar.exists()) {
+                    provider.element.appendTo(appBar); settings.moveScroll = false;
+                } // Elemento está contenido en un AppBar
+
+                if (origin.parents(".app-content").exists()) settings.moveContent = true;
+
+                return angular.extend(settings, origin.offset()); 
+            } // Se definío elemento que disparó despliegue del dropdown
+
+            return settings; // Configuración por defecto
+        }
+
+        function getSettingsElement(element, provider, origin) {
+            var settings = {
+                    top: 0, left: 0,
+                    moveContent: false,
+                    moveLeft: false,
+                    width: window.innerWidth, 
+                    height: window.innerHeight
+                },
+                        
+                flexibleBox = origin.parents(".flexible-box"),
+                content = element.children(".content"), 
+                position = origin.positionParent(content);
+
+            if (flexibleBox.exists()) {
+                if (origin.parents(".flexible-box > .banner").exists()) {
+                    provider.element.appendTo(flexibleBox);
+
+                    settings.width = content.width();
+                    settings.height = content.height();
+                } else {
+                    var box = flexibleBox.children(".box"), 
+                        contentFlexible = box.children(".content");
+
+                    provider.element.appendTo(contentFlexible); 
+                    position.top += box.scrollTop();
+
+                    settings.width = contentFlexible.width();
+                    settings.height = contentFlexible.height();
+                }
+            } else {
+                position.top += content.scrollTop();
+                provider.element.appendTo(content); 
+
+                settings.width = content.width();
+                settings.height = content.height();
+            }
+
+            return angular.extend(settings, position); // Configuración
+        }
+        
+        function getAttributesDropdown(settings, provider, origin) {
+            var dropdown = {
+                    h: provider.element.innerHeight(),
+                    w: provider.element.innerWidth()
+                },
+
+                element = {
+                    w: (origin) ? origin.innerWidth() : 0,
+                    h: (origin) ? origin.innerHeight() : 0, 
+                    y: settings.top, x: settings.left
+                },
+
+                // Atributos del Dropdown
+                left, top, effect, transform = 0; 
+
+            // Definiendo posicion de Dropdown en Eje X
+            if ((element.x + dropdown.w) <= (settings.width)) {
+                left = element.x; transform += 1;
+            } else if ((element.x + element.w - dropdown.w) > 0) {
+                left = element.x + element.w - dropdown.w - 10; transform += 3;
+            } else { 
+                left = settings.width - dropdown.w - 10; transform += 1; 
+            } 
+
+            // Definiendo posicion de Dropdown en Eje Y
+            if (provider.belowOrigin) { 
+                if ((element.y + dropdown.h) <= (settings.height)) {
+                    top = element.y; transform += 4;
+                } else if ((element.y + element.h - dropdown.h) > 0) {
+                    top = element.y + element.h - dropdown.h; transform += 7;
+                } else { 
+                    top = settings.height - dropdown.h - 10; transform += 4;
+                }
+            } else { 
+                if ((element.y + element.h + dropdown.h) <= settings.height) {
+                    top = element.y + element.h; transform += 4;
+                } else if ((element.y - dropdown.h) > 0) {
+                    top = element.y - dropdown.h; transform += 7;
+                } else { 
+                    top = settings.height - dropdown.h - 10; transform += 4; 
+                }
+            } 
+
+            switch (transform) {
+                case (7): effect = "100% 0"; break;
+                case (8): effect = "0 100%"; break;
+                case (10): effect = "100% 100%"; break;
+                default: effect = "0 0"; break;
+            } // Definiendo inicio de efecto del Dropdown
+            
+            return { top: top, left: left, effect: effect };
+        }
+        
+        function getAttributesDropdownXY(left, top, provider) {
+            var dropdown = {
+                    h: provider.element.innerHeight(),
+                    w: provider.element.innerWidth()
+                },
+                
+                transform = 0, effect; // Atributos del dropdown
+            
+            // Definiendo posicion de Dropdown en Eje X
+            if ((left + dropdown.w) <= (window.innerWidth)) {
+                transform += 1;
+            } else if ((left - dropdown.w) > 0) {
+                left = left - dropdown.w - 10; transform += 3; 
+            } else { 
+                left = window.innerWidth - dropdown.w - 10; transform += 1; 
+            }
+
+            // Definiendo posicion de Dropdown en Eje Y
+            if (provider.belowOrigin) { 
+                if ((top + dropdown.h) <= (window.innerHeight)) {
+                    transform += 4;
+                } else if ((top - dropdown.h) > 0) {
+                    top = top - dropdown.h; transform += 7;
+                } else { 
+                    top = window.innerHeight - dropdown.h - 10; transform += 4; 
+                }
+            } else { 
+                if ((top + dropdown.h) <= window.innerHeight) {
+                    transform += 4;
+                } else if ((top - dropdown.h) > 0) {
+                    top = top - dropdown.h; transform += 7;
+                } else { 
+                    top = window.innerHeight - dropdown.h - 10; transform += 4;
+                }
+            }
+
+            switch (transform) {
+                case (7): effect = "100% 0"; break;
+                case (8): effect = "0 100%"; break;
+                case (10): effect = "100% 100%"; break;
+                default: effect = "0 0"; break;
+            } // Definiendo inicio de efecto del Dropdown
+            
+            return { top: top, left: left, effect: effect };
+        }
+    }
+    
     // Proveedor: FormNavigation
     // Version: 1.0.1
     // Update: 27/02/2018
@@ -7784,24 +7694,18 @@
             box.append($title); box.append($content); box.append(actions);
             dialog.append(backdrop); dialog.append(box); $body.append(dialog);
             
-            backdrop.on("click", () => { 
-                if (persistent) provider.hide(); 
-            });
+            backdrop.on("click", () => { if (persistent) provider.hide(); });
 
             btnPositive.on("click", () => { 
                 if (softtion.isFunction(provider.fnPositive))
-                    $scope.$apply(() => {
-                        provider.fnPositive(); 
-                    });
+                    $scope.$apply(() => { provider.fnPositive(); });
                 
                 provider.hide(); // Ocultado Dialog del Modal
             });
 
             btnNegative.on("click", () => { 
                 if (softtion.isFunction(provider.fnNegative))
-                    $scope.$apply(() => {
-                        provider.fnNegative(); 
-                    });
+                    $scope.$apply(() => { provider.fnNegative();  });
                 
                 provider.hide(); // Ocultado Dialog del Modal
             });
@@ -7821,48 +7725,39 @@
         this.$get = [ "$rootScope", "$body", fnProvider ];
 
         this.setPersistent = function (enabled) {
-            provider = provider || new Modal(); 
-            return provider.setPersistent(enabled);
+            provider = provider || new Modal(); return provider.setPersistent(enabled);
         };
 
         this.setTitle = function (title) {
-            provider = provider || new Modal(); 
-            return provider.setTitle(title);
+            provider = provider || new Modal(); return provider.setTitle(title);
         };
 
         this.setContent = function (content) {
-            provider = provider || new Modal(); 
-            return provider.setContent(content);
+            provider = provider || new Modal(); return provider.setContent(content);
         };
 
         this.setPositiveLabel = function (label) {
-            provider = provider || new Modal(); 
-            return provider.setPositiveLabel(label);
+            provider = provider || new Modal(); return provider.setPositiveLabel(label);
         };
 
         this.setPositiveFunction = function (fnPositive) {
-            provider = provider || new Modal(); 
-            return provider.setPositiveFunction(fnPositive);
+            provider = provider || new Modal(); return provider.setPositiveFunction(fnPositive);
         };
 
         this.setNegativeLabel = function (label) {
-            provider = provider || new Modal(); 
-            return provider.setNegativeLabel(label);
+            provider = provider || new Modal(); return provider.setNegativeLabel(label);
         };
 
         this.setNegativeEnabled = function (enabled) {
-            provider = provider || new Modal(); 
-            return provider.setNegativeEnabled(enabled);
+            provider = provider || new Modal(); return provider.setNegativeEnabled(enabled);
         };
 
         this.setNegativeFunction = function (fnNegative) {
-            provider = provider || new Modal(); 
-            return provider.setNegativeFunction(fnNegative);
+            provider = provider || new Modal(); return provider.setNegativeFunction(fnNegative);
         };
 
         this.config = function (params) {
-            provider = provider || new Modal(); 
-            return provider.config(params);
+            provider = provider || new Modal(); return provider.config(params);
         };
 
         this.show = function () {
@@ -8713,6 +8608,7 @@
         switch (name) {
             case (Properties.BottomSheet.NAME): return Properties.BottomSheet;
             case (Properties.Dialog.NAME): return Properties.Dialog;
+            case (Properties.Dropdown.NAME): return Properties.Dropdown;
             case (Properties.FocusedElement.NAME): return Properties.FocusedElement;
             case (Properties.FormNavigation.NAME): return Properties.FormNavigation;
             case (Properties.MaterialBackground.NAME): return Properties.MaterialBackground;
@@ -8772,6 +8668,37 @@
                 var dialog = $dialog($attrs.dialog);
                 
                 $element.on("click", () => { dialog.show(); });
+            }
+        };
+    }
+    
+    // Propiedad: Dropdown
+    // Version: 1.0.0
+    // Update: 09/03/2018
+    
+    Properties.Dropdown = DropdownProperty;
+    
+    Properties.Dropdown.NAME = "Dropdown";
+    Properties.Dropdown.VERSION = "1.0.0";
+    Properties.Dropdown.KEY = "dropdown";
+    
+    Properties.Dropdown.$inject = [ "$dropdown" ];
+    
+    function DropdownProperty($dropdown) {
+        return {
+            restrict: "A",
+            link: function ($scope, $element, $attrs) {
+                var dropdown = $dropdown($attrs.dropdown),
+                    belowDropdown = $scope.$eval($attrs.belowDropdown),
+                    autoclose = $scope.$eval($attrs.autoclose);
+            
+                dropdown.setBelowOrigin(belowDropdown);
+
+                $element.on("click", (event) => {
+                    if (autoclose) event.stopPropagation(); 
+                    
+                    dropdown.show($element, autoclose);
+                });
             }
         };
     }
@@ -8924,21 +8851,20 @@
     };
     
     function instanceElement (object, hasClass) {
-        var element = undefined;
+        var element = undefined; // Iniciando elemento
         
-        if (softtion.isString(object)) {
-            element = angular.element(object);
-        } else if (softtion.isjQuery(object)) {
-            element = object;
-        } // Objeto es una instancia de jQuery
+        if (softtion.isString(object)) 
+            element = angular.element(object); // Selector de elemento
         
-        if (softtion.isDefined(element) && softtion.isString(hasClass)) {
-            if (!element.hasClass(hasClass)) {
-                element = undefined;
-            } // Objeto no contiene la clase establecida
-        }
+        else if (softtion.isjQuery(object)) 
+            element = object; // Instancia de elemento jquery
         
-        return element; // Retornando elemento creado
+        if (softtion.isUndefined(element)) return undefined;
+                
+        if (softtion.isString(hasClass) && !element.hasClass(hasClass))
+            element = undefined; // Elemento no contiene la clase establecida
+        
+        return element; // Retornando elemento generado
     }
     
     function executeIfExists (object, callback) {

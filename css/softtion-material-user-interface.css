@@ -9034,7 +9034,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     text-transform: uppercase;
     outline: none;
     font-weight: 500;
-    padding: 0px 12px;
     height: 56px;
     line-height: 56px; }
 
@@ -9078,11 +9077,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .tabs > .tab:focus:before {
     visibility: visible; }
 
-.tabs > .tab > a {
+.tabs > .tab > a, .tabs > .tab > span {
     display: block;
     height: inherit;
     line-height: inherit;
     color: inherit;
+    padding: 0px 12px;
     text-decoration: none;
     -webkit-user-drag: none;
        -moz-user-drag: none;
@@ -9098,7 +9098,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
        -moz-transition: left 160ms 0ms var(--standard-curve), 
                 width 160ms 0ms var(--standard-curve);
             transition: left 160ms 0ms var(--standard-curve), 
-                width 160ms 0ms var(--standard-curve);  }
+                width 160ms 0ms var(--standard-curve); }
 
 /** TEXTAREA */
 

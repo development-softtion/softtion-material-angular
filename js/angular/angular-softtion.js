@@ -130,7 +130,7 @@
         return self.$q((resolve, reject) => {
             var URL = self.getResourceRoute(ID);
             
-            self.$http.post(URL, data, self.config).
+            self.$http.put(URL, data, self.config).
                 then((response) => {
                     self.clean(); resolve(response);
                 }).catch((error) => {
@@ -147,7 +147,7 @@
         return self.$q((resolve, reject) => {
             var URL = self.getResourceRoute(ID);
             
-            self.$http.post(URL, self.config).
+            self.$http.delete(URL, self.config).
                 then((response) => {
                     self.clean(); resolve(response);
                 }).catch((error) => {

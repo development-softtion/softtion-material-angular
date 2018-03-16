@@ -35,19 +35,24 @@
             return { top: top, left: left };
         },
         
-        positionParent: function (parentSelector) {
+        positionParent: function (selector) {
             var element = jQuery(this), 
                 left = element.offset().left,
                 top = element.offset().top;
             
-            if (softtion.isString(parentSelector)) {
-                var parent = element.parents(parentSelector);
+            if (softtion.isString(selector)) {
+                var parent = element.parents(selector);
                 
                 if (parent.exists()) {
-                    top = top - parent.offset().top;
                     left = left - parent.offset().left;
+                    top = top - parent.offset().top;
                 }
-            } // Se ha definido selector para encontrar posición
+            } // Se ha definido selector del padre
+            
+            if (softtion.isjQuery(selector)) {
+                left = left - selector.offset().left;
+                top = top - selector.offset().top;
+            } // Se ha definido elemento padre del componente
             
             return { top: top, left: left }; // Posicion en contenido
         },
