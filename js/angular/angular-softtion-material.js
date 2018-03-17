@@ -864,6 +864,7 @@
 
                     // Atributos
                 var focusLi = false, searchStart = false,
+                    $orderBy = $filter("orderBy"),
                     listener = new Listener($scope, Listener.AUTOCOMPLETE);
 
                 $scope.coincidences = []; $scope.old = undefined; 
@@ -875,21 +876,15 @@
                             $scope.suggestions = []; return;
                         } // Los items de seleccion no es un Array
                         
-                        if (!$scope.instance && !$scope.disabledOrderby) {
-                            var $orderBy = $filter("orderBy"),
-                                orderKey = $scope.key || "";
-
-                            $scope.suggestions = $orderBy(newValue, orderKey);
-                        } // Aplicando ordenamiento de opciones
+                        if (!$scope.instance && !$scope.disabledOrderby) 
+                            $scope.suggestions = $orderBy(newValue, $scope.key || "");
                         
                         $scope.instance = !$scope.instance; // Intercalando
                     });
 
                 $scope.$watch(() => { return $scope.select; }, 
                     function (newValue) {
-                        if (softtion.isUndefined(newValue)) {
-                            $scope.input = ""; 
-                        } // Se limpio componente AutoComplete
+                        if (softtion.isUndefined(newValue)) $scope.input = ""; 
                     });
 
                 $scope.$watch(() => { return $scope.clearModel; }, 
@@ -928,9 +923,8 @@
                 };
 
                 $scope.focusInput = function ($event) {
-                    if (softtion.isDefined($scope.select)) {
+                    if (softtion.isDefined($scope.select)) 
                         $scope.input = describeSuggestion($scope.select);
-                    } // Cambiando valor del texto en el Input
 
                     $scope.inputActive = true; $element.addClass(Classes.ACTIVE); 
 
@@ -939,13 +933,10 @@
                 };
 
                 $scope.blurInput = function ($event) {
-                    if (focusLi) {
-                        focusLi = false; return;
-                    } // Se ha enfocado Lista 
+                    if (focusLi) { focusLi = false; return; } // Se ha enfocado Lista 
                     
-                    if ($scope.coincidences.length === 0) {
-                        $scope.select = undefined;
-                    } // No hay opciones posibles para selección
+                    if ($scope.coincidences.length === 0) 
+                        $scope.select = undefined; // No hay opciones 
                     
                     $scope.input = ""; $element.removeClass(Classes.ACTIVE);
                     $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
@@ -958,9 +949,9 @@
                         case (KeysBoard.ESC): list.removeClass(Classes.ACTIVE); break;
 
                         case (KeysBoard.ARROW_DOWN): 
-                            var options = list.find('li'); // Opciones
+                            var options = list.find("li"); // Opciones
 
-                            if (options.length) { 
+                            if (options.exists()) { 
                                 focusLi = true; options.first().focus(); 
                             } // Seleccionando primer elemento
                         break;
@@ -968,13 +959,9 @@
                 };
 
                 $scope.keyupInput = function ($event) {
-                    if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) { 
-                        return;
-                    } // Estos caracteres no mejoran el patrón de busqueda
+                    if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) return;
 
-                    if (!softtion.isString($scope.input)) {
-                        return;
-                    } // No hay nada digitado en el Componente de texto
+                    if (!softtion.isString($scope.input)) return;
 
                     searchSuggestions($scope.input); // Buscar sugerencias
                 };
@@ -1016,13 +1003,9 @@
 
                 $scope.renderSuggestion = function (suggestion) {
                     var value = $scope.ngFormatDescription({$suggestion: suggestion});
-
-                    if (softtion.isUndefined(value)) {
-                        value = softtion.isString(suggestion) ? suggestion :
-                            !(softtion.isString($scope.key)) ? 
-                                JSON.stringify(suggestion) :
-                                softtion.findKey(suggestion, $scope.key);
-                    } // Se ha definido función para describir contenido
+                    
+                    if (softtion.isUndefined(value)) // No se definió descripción
+                        value = describeSuggestion(suggestion);
 
                     // Valor digitado para filtrar
                     var filter = $scope.input.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -1065,7 +1048,7 @@
                 };
 
                 function describeSuggestion(suggestion) {
-                    return (typeof suggestion === "string") ?
+                    return softtion.isString(suggestion) ?
                         suggestion : getValueSuggestion(suggestion);
                 };
 
@@ -1073,21 +1056,14 @@
                     if (!softtion.isString(pattern)) return; // Sin filtro
 
                     var coincidences = []; searchStart = true;
-                    var patternLow = pattern.toLowerCase();
 
                     angular.forEach($scope.suggestions, (suggestion) => {
-                        if (typeof suggestion === "string") {
-                            var suggestionLow = suggestion.toLowerCase();
-
-                            if (~suggestionLow.indexOf(patternLow)) { 
-                                coincidences.push(suggestion); 
-                            } // Se encontro coincidencia, se agregara opción
+                        if (softtion.isString(suggestion)) {
+                            if (suggestion.pattern(pattern)) coincidences.push(suggestion); 
                         } else {
-                            var value = getValueSuggestion(suggestion).toLowerCase();
+                            var value = getValueSuggestion(suggestion);
 
-                            if (~value.indexOf(patternLow)) { 
-                                coincidences.push(suggestion); 
-                            } // Se encontro coincidencia, se agregara opción
+                            if (value.pattern(pattern)) coincidences.push(suggestion); 
                         }
                     });
 
@@ -1229,6 +1205,7 @@
 
                     // Atributos de control
                 var listener = new Listener($scope, Listener.AUTOCOMPLETE),
+                    $orderBy = $filter("orderBy"),
                     focusLi = false, searchStart = false;
 
                 $scope.coincidences = []; $scope.old = undefined; 
@@ -1240,21 +1217,15 @@
                             $scope.suggestions = []; return;
                         } // Los items de seleccion no es un Array
                         
-                        if (!$scope.instance && !$scope.disabledOrderby) {
-                            var $orderBy = $filter("orderBy"),
-                                orderKey = $scope.key || "";
-
-                            $scope.suggestions = $orderBy(newValue, orderKey);
-                        } // Aplicando ordenamiento de opciones
+                        if (!$scope.instance && !$scope.disabledOrderby) 
+                            $scope.suggestions = $orderBy(newValue, $scope.key || "");
                         
                         $scope.instance = !$scope.instance; // Intercalando
                     });
 
                 $scope.$watch(() => { return $scope.select; }, 
                     (newValue) => {
-                        if (softtion.isUndefined(newValue)) {
-                            $scope.input = ""; 
-                        } // Se limpio componente AutoComplete
+                        if (softtion.isUndefined(newValue)) $scope.input = ""; 
                     });
 
                 $scope.isSubtitle = function (suggestion) {
@@ -1306,9 +1277,8 @@
                 };
 
                 $scope.focusInput = function ($event) {
-                    if (softtion.isDefined($scope.select)) {
+                    if (softtion.isDefined($scope.select)) 
                         $scope.input = getValueSuggestion($scope.select);
-                    } // Cambiando valor del texto en el Input
 
                     $scope.inputActive = true; $element.addClass(Classes.ACTIVE); 
                     listener.launch("focus", { $event: $event });
@@ -1317,13 +1287,10 @@
                 };
 
                 $scope.blurInput = function ($event) {
-                    if (focusLi) {
-                        focusLi = false; return;
-                    } // Se ha enfocado Lista
+                    if (focusLi) { focusLi = false; return; } // Enfocado Lista
                     
-                    if (this.coincidences.length === 0) {
-                        $scope.select = undefined;
-                    } // No hay opciones posibles para selección
+                    if (this.coincidences.length === 0) 
+                        $scope.select = undefined; // No hay opciones 
 
                     $element.removeClass(Classes.ACTIVE); $scope.input = "";
                     $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
@@ -1338,7 +1305,7 @@
                         case (KeysBoard.ARROW_DOWN):
                             var options = list.find("li"); // Opciones
 
-                            if (options.length) { 
+                            if (options.exists()) { 
                                 focusLi = true; options.first().focus(); 
                             } // Seleccionando primer elemento
                         break;
@@ -1346,13 +1313,9 @@
                 };
 
                 $scope.keyupInput = function ($event) {
-                    if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) { 
-                        return;
-                    } // Estos caracteres no mejoran el patrón de busqueda
+                    if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) return;
 
-                    if (!softtion.isString($scope.input)) {
-                        return;
-                    } // No hay nada digitado en el Componente de texto
+                    if (!softtion.isString($scope.input)) return;
 
                     searchSuggestions($scope.input); // Buscar sugerencias
                 };
@@ -1395,11 +1358,8 @@
                 $scope.renderSuggestion = function (suggestion) {
                     var value = $scope.ngFormatDescription({$suggestion: suggestion});
 
-                    if (softtion.isUndefined(value)) {
-                        value = !(softtion.isString($scope.key)) ? 
-                            JSON.stringify(suggestion) :
-                            softtion.findKey(suggestion, $scope.key);
-                    } // Se ha definido función para describir contenido
+                    if (softtion.isUndefined(value)) // No se definió descripción
+                        value = getValueSuggestion(suggestion);
 
                     // Valor digitado para filtrar
                     var filter = $scope.input.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -1445,14 +1405,11 @@
                     if (!softtion.isString(pattern)) return; // Sin filtro
 
                     var coincidences = []; searchStart = true;
-                    var patternLow = pattern.toLowerCase();
 
                     angular.forEach($scope.suggestions, (suggestion) => {
-                        var value = getValueSuggestion(suggestion).toLowerCase();
+                        var value = getValueSuggestion(suggestion);
 
-                        if (~value.indexOf(patternLow)) { 
-                            coincidences.push(suggestion); 
-                        } // Se encontro coincidencia, se agregara opción
+                        if (value.pattern(pattern)) coincidences.push(suggestion); 
                     });
 
                     $scope.coincidences = coincidences; list.addClass(Classes.ACTIVE);

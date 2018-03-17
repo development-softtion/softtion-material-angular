@@ -15,8 +15,7 @@
     } // No se ha cargado jQuery
 })(function (window, jQuery) {
     
-    var Softtion = function () { },
-        softtion = new Softtion(); // Clase Softtion
+    var softtion = new Softtion(); // Clase Softtion
     
     window.softtion = softtion; // Agregando softtion como Global
     
@@ -42,6 +41,8 @@
             divisor: 12, comparator: 9999, key: "years",
             singular: "año", plural: "años" 
         }];
+    
+    function Softtion() { }
     
     Softtion.prototype.DAYS_OF_WEEK = "NAME_DAYS_OF_WEEK";
     Softtion.prototype.DAYS_OF_WEEK_MIN = "NAME_DAYS_OF_WEEK_MIN";
@@ -207,9 +208,7 @@
                 
                 var value = self.findKey(object, key);
                 
-                if (!self.isDefined(value)) {
-                    return true;
-                } // Existe una clave indefinida en el objeto
+                if (!self.isDefined(value)) return true;
             });
             
             return (result) ? { success: true } : // Sin problemas
@@ -228,9 +227,7 @@
     Softtion.prototype.forEach = function (array, fn) {
         var self = this; // Instancia de Softtion
         
-        if (!self.isArray(array)) { 
-            return; 
-        } // Objeto establecido no es array
+        if (!self.isArray(array)) return; 
         
         try {
             array.forEach((value, index) => {
@@ -721,8 +718,10 @@
     };
     
     // Extendiendo Objetos de JavaScript
+        
+    // Métodos de Softtion para los objetos 'Array'
     
-    (function (softtion) {
+    ((softtion) => {
         
         Array.prototype.isEmpty = function () { 
             return (this.length === 0); 
@@ -753,9 +752,7 @@
         };
 
         Array.prototype.remove = function (index) {
-            if (this.contains(index + 1)) { 
-                this.splice(index, 1); 
-            } // Contiene el index a remover
+            if (this.contains(index + 1)) this.splice(index, 1); 
 
             return this; // Retornando interfaz fluida
         };
@@ -788,7 +785,11 @@
             return array; // Retornando Array
         };
 
-        // Métodos de Softtion para los objetos 'Date'
+    })(window.softtion);
+
+    // Métodos de Softtion para los objetos 'Date'
+        
+    ((softtion) => {
 
         Date.prototype.toJSON = function (option) {
             switch (option) {
@@ -1009,8 +1010,34 @@
         String.prototype.isEmpty = function () { return (this.length === 0); };
 
     })(window.softtion);
+        
+    // Métodos de Softtion para los objetos 'String'
+    
+    ((softtion) => {
+        
+        String.prototype.pattern = function (value) { 
+            return (~this.toLowerCase().indexOf(value.toLowerCase()) !== 0); 
+        };
+        
+        String.prototype.like = function (type, value) { 
+            var pattern = undefined; // Expresión RegExp
+            
+            switch (type) {
+                case (-1):  // LIKE '%value'
+                    pattern = "^.*" + value.toLowerCase() + "$"; break;
+                case (0):   // LIKE '%value%'
+                    pattern = "^.*" + value.toLowerCase() + ".*$"; break;
+                case (1):   // LIKE 'value%'
+                    pattern = "^" + value.toLowerCase() + ".*$"; break;
+            } // Definiendo tipo de LIKE para aplicar
+            
+            return softtion.isUndefined(pattern) ? false :
+                softtion.isDefined(this.toLowerCase().match(pattern));
+        };
 
-    (function (softtion) {
+    })(window.softtion);
+
+    ((softtion) => {
 
         // Class HtmlAttribute
         var HtmlAttribute = function (name, value) {
