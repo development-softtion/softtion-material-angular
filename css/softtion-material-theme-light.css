@@ -1,10 +1,10 @@
 /*
  * Softtion Material Theme Light
- * v1.2.4.
+ * v1.8.9
  * @license MIT
  * Author: Softtion Developers
  * Created: 04/Oct/2017
- * Updated: 18/Dic/2017
+ * Updated: 16/Mar/2018
  */
 :root {
     
@@ -59,7 +59,7 @@
     --theme-primary-ripple: rgba(255, 255, 255, 0.5);
     
     --theme-primary-font: #9c27b0;
-    --theme-primary-font-disabledcolor: #e1bee7;
+    --theme-primary-font-basedisabled: #e1bee7;
     
     /** THEME SECONDARY */
     --theme-secondary-background-dark: #81c784;
@@ -80,7 +80,7 @@
     --theme-secondary-ripple: rgba(255, 255, 255, 0.5);
     
     --theme-secondary-font: #4caf50;
-    --theme-secondary-font-disabledcolor: #c8e6c9;
+    --theme-secondary-font-basedisabled: #c8e6c9;
     
     /** THEME ERROR */
     --theme-error-background: #f44336;
@@ -163,6 +163,35 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 
 .line-text > span {
     color: var(--theme-primary-font); }
+
+/** ALERT */
+
+.alert {
+    background-color: var(--background-appbar); }
+
+.alert.theme-primary {
+    background-color: var(--theme-primary-background-disabled); }
+
+.alert.theme-secondary {
+    background-color: var(--theme-secondary-background-disabled); }
+
+.alert.bordered {
+    border: 1px solid var(--background-border); }
+
+.alert.theme-primary.bordered {
+    border: 1px solid var(--theme-primary-background-border); }
+
+.alert.theme-secondary.bordered {
+    border: 1px solid var(--theme-secondary-background-border); }
+
+.alert > p, .alert > i {
+    color: var(--secondary-font); }
+
+.alert.theme-primary > p, .alert.theme-primary > i {
+    color: var(--theme-primary-background-dark); }
+
+.alert.theme-secondary > p, .alert.theme-secondary > i {
+    color: var(--theme-secondary-background-dark); }
 
 /** APP BAR */
 
@@ -534,13 +563,13 @@ button.action.theme-primary {
     color: var(--theme-secondary-font); }
 
 button.action.theme-primary:disabled {
-    color: var(--theme-secondary-font-disabledcolor); }
+    color: var(--theme-secondary-font-basedisabled); }
 
 button.action.theme-secondary {
     color: var(--theme-primary-font); }
 
 button.action.theme-secondary:disabled {
-    color: var(--theme-primary-font-disabledcolor); }
+    color: var(--theme-primary-font-basedisabled); }
 
 button.action:before {
     background-color: var(--ripple); }
@@ -1613,7 +1642,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-primary-font); }
 
 .link.disabled {
-    color: var(--theme-primary-font-disabledcolor); }
+    color: var(--theme-primary-font-basedisabled); }
 
 /** LIST */
 
@@ -1638,13 +1667,13 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-primary-font); }
 
 .list-paragraph > .subheader.theme-primary > button.action:disabled {
-    color: var(--theme-primary-font-disabledcolor); }
+    color: var(--theme-primary-font-basedisabled); }
 
 .list-paragraph > .subheader.theme-secondary > button.action {
     color: var(--theme-secondary-font); }
 
 .list-paragraph > .subheader.theme-secondary > button.action:disabled {
-    color: var(--theme-secondary-font-disabledcolor); }
+    color: var(--theme-secondary-font-basedisabled); }
 
 .list-paragraph > .subheader.theme-primary > button.action:before {
     background-color: var(--theme-primary-background); }
@@ -1818,7 +1847,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-primary-font); }
 
 .rating.theme-primary > button.action:disabled {
-    color: var(--theme-primary-font-disabledcolor); }
+    color: var(--theme-primary-font-basedisabled); }
 
 .rating.theme-secondary > button.action {
     color: var(--theme-secondary-font); }

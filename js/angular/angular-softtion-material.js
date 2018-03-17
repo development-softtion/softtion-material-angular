@@ -37,6 +37,8 @@
     function GET_INSTANCE_SOFTTION_MATERIAL() {
         return {
             components: {
+                Alert: Directives.create(Directives.Alert),
+                
                 AppBar: Directives.create(Directives.AppBar),
 
                 Audio: Directives.create(Directives.Audio),
@@ -299,6 +301,7 @@
     
     function Directives(name) { 
         switch (name) {
+            case (Directives.Alert.NAME): return Directives.Alert;
             case (Directives.AppBar.NAME): return Directives.AppBar;
             case (Directives.Audio.NAME): return Directives.Audio;
             case (Directives.AutoComplete.NAME): return Directives.AutoComplete;
@@ -369,6 +372,72 @@
             html: directive.HTML        // Html en caché
         };
     };
+    
+    // Directiva: Alert
+    // Version: 1.0.0
+    // Updated: 16/03/2018
+    
+    Directives.Alert = AlertDirective;
+    
+    Directives.Alert.NAME = "Alert";
+    Directives.Alert.VERSION = "1.0.0";
+    Directives.Alert.KEY = "alert";
+    
+    Directives.Alert.$inject = [ "$timeout" ];
+    
+    function AlertDirective($timeout) {
+        return {
+            restrict: "C",
+            scope: {
+                duration: "=?",
+                ngOpen: "=?",
+                ngClose: "=?"
+            },
+            link: function ($scope, $element) {
+                    // Atributos
+                var button = softtion.htmlElement("i");
+                
+                    // Atributos
+                var promise = undefined;
+                
+                $scope.$watch(() => { return $scope.duration; },
+                    (newValue) => {
+                        if (isNaN(newValue)) $scope.duration = 4000;
+                    });
+                
+                $scope.$watch(() => { return $scope.ngOpen; },
+                    (newValue) => { if (newValue) openAlert(); });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => { if (newValue) closeAlert(); });
+                    
+                button.html("close"); $element.append(button);
+                
+                button.click(() => {
+                    $scope.$apply(() => { closeAlert(); });
+                });
+                    
+                function openAlert() {
+                    $element.addClass(Classes.SHOW); // Desplegando
+                    $scope.ngOpen = false; cancelPromise();
+                    
+                    promise = $timeout(() => { hideAlert(); }, $scope.duration);
+                }
+                
+                function closeAlert() {
+                    $scope.ngClose = false; cancelPromise(); hideAlert();
+                }
+                    
+                function hideAlert() {
+                    $element.removeClass(Classes.SHOW); promise = undefined;
+                }
+                
+                function cancelPromise() {
+                    if (softtion.isDefined(promise)) $timeout.cancel(promise);
+                }
+            }
+        };
+    }
     
     // Directiva: AppBar
     // Version: 1.0.0
@@ -5899,6 +5968,7 @@
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
 
                 $element.children(".content").append(button);
+                $element.addClass(Classes.START);
 
                 button.click(() => { sidenav.hide(); });
                 backdrop.click(() => { sidenav.hide(); });
@@ -5923,9 +5993,7 @@
                             target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            listener.launch(
-                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
-                            );
+                            listener.launch(($element.hasClass(Classes.SHOW)) ? "show" : "hide");
                     });
                 });
             }
@@ -8165,6 +8233,9 @@
             var sidenav = this.element; // Sidenav
 
             executeIfExists(sidenav, () => {
+                if (sidenav.hasClass(Classes.START)) 
+                    sidenav.removeClass(Classes.START); // Iniciado
+                
                 if (!sidenav.hasClass(Classes.SHOW)) return;
 
                 $body.removeClass(Classes.BODY_OVERFLOW_NONE_NAV); 
