@@ -1761,10 +1761,10 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     font-size: 24px;
     user-select: none; }
 
-.avatar.action {
+.avatar.actionable {
     cursor: pointer; }
 
-.avatar.action:before {
+.avatar.actionable:before {
     content: "";
     position: absolute;
     top: -4px;
@@ -1781,11 +1781,14 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     height: inherit;
     line-height: inherit;
     text-align: center;
-    font-size: inherit;
     border-radius: 50%; }
 
 .avatar > span {
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    font-size: 24px; }
+
+.avatar > i {
+    font-size: 28px; }
 
 .avatar > img {
     border-radius: 50%; }
@@ -5509,7 +5512,7 @@ body.show-bottom-navigation .fab-speed-dial {
     z-index: 4;
     box-shadow: var(--shadow-2); }
 
-.form.flat {
+.form.flat, .form.bordered {
     border-radius: 0px;
     box-shadow: none;
     box-sizing: border-box; }
@@ -5517,8 +5520,6 @@ body.show-bottom-navigation .fab-speed-dial {
 .form > .header {
     position: relative;
     display: flex;
-    display: -webkit-box;
-    -webkit-box-align: center;
     float: left;
     width: 100%;
     height: auto;
@@ -5527,19 +5528,25 @@ body.show-bottom-navigation .fab-speed-dial {
     box-sizing: border-box; }
 
 .form > .header > .nav-icon {
-    float: left;
-    margin-right: 8px; }
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    -webkit-transform: translateY(calc(-50% + 4px));
+       -moz-transform: translateY(calc(-50% + 4px));
+            transform: translateY(calc(-50% + 4px)); }
 
-.form > .header > .nav-icon > button.action {
-    padding: 12px 16px 12px 0px;
-    box-sizing: content-box; }
-
-.form > .header > .nav-icon > button.action:before {
-    left: calc(50% - 8px); }
+.form > .header > .nav-icon > button {
+    padding: 6px;
+    height: 36px; }
 
 .form > .header > .detail {
-    float: initial;
+    float: left;
+    width: 100%;
     box-sizing: initial; }
+
+.form > .header > .nav-icon + .detail {
+    padding-left: 36px;
+    box-sizing: border-box; }
 
 .form > .header > .detail > .title, 
 .form > .header > .detail > .subtitle {
@@ -5556,10 +5563,7 @@ body.show-bottom-navigation .fab-speed-dial {
     height: 20px;
     line-height: 20px;
     font-weight: 500;
-    margin-bottom: 4px; }
-
-.form > .header > .nav-icon ~ .detail > .title {
-    margin-top: 4px; }
+    margin: 4px 0px; }
 
 .form > .header > .detail > .subtitle {
     margin: 3px 0px;
@@ -5599,6 +5603,9 @@ body.show-bottom-navigation .fab-speed-dial {
     width: 100%;
     box-sizing: border-box;
     padding: 4px 8px; }
+
+.form > .content + .actions {
+    padding-top: 0px; }
 
 .form > .actions > button.flat {
     float: left;

@@ -18,8 +18,10 @@
     var softtion = new Softtion(); // Clase Softtion
     
     window.softtion = softtion; // Agregando softtion como Global
-    
-    var timeElapsedAttrs = [{ 
+        
+        // Atributos
+    var regHexToRgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+        timeElapsedAttrs = [{ 
             divisor: 1000, comparator: 60, key: "seconds",
             singular: "segundo", plural: "segundos" 
         }, { 
@@ -195,6 +197,24 @@
         
             return (str).replace(regex, "$1" + breakTag + "$2");
         } // Hay un texto establecido para realizar el cambio de etiqueta
+    };
+    
+    Softtion.prototype.getHexToRgb = function (hexadecimal) {
+        var result = regHexToRgb.exec(hexadecimal);
+        
+        return !result ? null : {
+            r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16)
+        };
+    };
+    
+    function convertToHex(value) {
+        var hexadecimal = value.toString(16); // Convirtiendo valor
+        
+        return (hexadecimal.length === 1) ? "0" + hexadecimal : hexadecimal;
+    }
+
+    Softtion.prototype.getRgbToHex = function (r, g, b) {
+        return "#" + convertToHex(r) + convertToHex(g) + convertToHex(b);
     };
     
     Softtion.prototype.required = function (object, validationKeys) {

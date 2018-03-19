@@ -1,9 +1,9 @@
 /*
  Angular Softtion Material v2.0.0
- (c) 2016 - 2017 Softtion Developers
+ (c) 2016 - 2018 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 17/Feb/2018
+ Updated: 19/Mar/2018
 */
 
 ((factory) => {
@@ -14,11 +14,14 @@
     } // No se ha cargado Softtion y Angular
 })((softtion, angular) => {
     
-    var ngMaterial = angular.module(
-            "ngSofttionMaterial", [ "ngSanitize", "ngSofttionEvents" ]
-        ),
-        TextType = softtion.get(softtion.TEXTCONTROL);
+    var ngMaterial = angular.
+            module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]).
+            filter("filterDictionary", filterDictionary).
+            service("$fnMaterial", fnMaterialServive).
+            constant("$softtionMaterial", getSofttionMaterial()).
+            constant("$materialColor", getMaterialColors());
     
+        // Atributos del framework
     var MANAGER_DATETIME = {
         MONTHS: [
             { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
@@ -28,9 +31,10 @@
             { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
             { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
         ]
-    };
+    },
+        TextType = softtion.get(softtion.TEXTCONTROL),
     
-    var KeysBoard = getKeysBoard(), 
+        KeysBoard = getKeysBoard(), 
         KeysControl = getKeysControl(),
         Classes = getClasses();
     
@@ -1571,7 +1575,7 @@
                         $element.addClass(Classes.DEFAULT); return;
                     } // No se definio color en el elemento
                     
-                    var color = $themes.get()[option.color][800];
+                    var color = $themes.get()[option.color][600];
 
                     if (!softtion.isString(color)) {
                         $element.addClass(Classes.DEFAULT);
@@ -7345,7 +7349,7 @@
 
             if (settings.moveLeft) {
                 attrs.left -= parseInt($appBody.css("left")); 
-                provider.element.removeClass(Classes.FIXED); 
+                provider.element.removeClass(Classes.FIXED);
 
                 if (settings.moveScroll) attrs.top += $appContent.scrollTop(); 
             } else {
@@ -7380,7 +7384,7 @@
                 top: 0, left: 0, 
                 moveContent: false,
                 moveLeft: true,
-                moveScroll: true,
+                moveScroll: false,
                 width: window.innerWidth, 
                 height: window.innerHeight
             }; 
@@ -7403,6 +7407,8 @@
                 } // Elemento está contenido en un AppBar
 
                 if (origin.parents(".app-content").exists()) settings.moveContent = true;
+                
+                if (provider.element.parents(".app-content").exists()) settings.moveScroll = true;
 
                 return angular.extend(settings, origin.offset()); 
             } // Se definío elemento que disparó despliegue del dropdown
@@ -8472,120 +8478,124 @@
     
     Providers.MaterialTheme.$inject = [ "$materialColor" ];
     
-    function MaterialThemeProvider($color) {
-
-        var $themes = $color.background; // Colores de Temas
+    function MaterialThemeProvider($materialColor) {
+        
+            // Atributos del proveedor
+        var instance = null,
+            themes = $materialColor.THEMES, // Colores de Temas
+            keysColors = [ 
+                "50", "100", "200", "300", "400", 
+                "500", "600", "700", "800", "900" 
+            ];
 
         function MaterialTheme() { }
 
         MaterialTheme.prototype.setPrimary = function (theme) {
-            var $theme = $themes[theme], // Tema primario
-                border = $color.border, ripple = $color.ripple;
+            var $theme = themes[theme]; // Tema primario
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
-            
-            // Colores de fondo
-            setPropertyStyle("--theme-primary-background", $theme[500]);
-            setPropertyStyle("--theme-primary-background-light", $theme[300]);
-            setPropertyStyle("--theme-primary-background-dark", $theme[800]);
+           
+            var basecolor = $theme.BASECOLOR, // Color base
+                fonts = $materialColor.FONTS[basecolor], // Fuente
+                border = $materialColor.BORDERS, // Ripple
+                ripple = $materialColor.RIPPLES; // Ripple
+                
+            keysColors.forEach((key) => {
+                setPropertyStyle("--theme-primary-" + key, $theme[key]);
+            });
 
-            // Colores de estado
-            setPropertyStyle("--theme-primary-background-focus", $theme[700]);
-            setPropertyStyle("--theme-primary-background-hover", $theme[200]);
-            setPropertyStyle("--theme-primary-background-disabled", $theme[100]);
+            // Color de fuentes
+            setPropertyStyle("--theme-primary-active", fonts.PRIMARY);
+            setPropertyStyle("--theme-primary-alternative", fonts.ALTERNATIVE);
+            setPropertyStyle("--theme-primary-inactive", fonts.SECONDARY);
+            setPropertyStyle("--theme-primary-disabled", fonts.DISABLED);
 
             // Color de borde
-            setPropertyStyle("--theme-primary-background-border", border[$theme.baseColor]);
-
-            var font = $color.font[$theme.baseColor]; // Colores de fuente
-
-            setPropertyStyle("--theme-primary-font", $theme[500]);
-            setPropertyStyle("--theme-primary-font-disabledcolor", $theme[100]);
-
-            setPropertyStyle("--theme-primary-font-active", font.primary);
-            setPropertyStyle("--theme-primary-font-alternative", font.alternative);
-            setPropertyStyle("--theme-primary-font-inactive", font.secondary);
-            setPropertyStyle("--theme-primary-font-disabled", font.disabled);
-
-            setPropertyStyle("--theme-primary-ripple", ripple[$theme.baseColor]);
+            setPropertyStyle("--theme-primary-border", getHexToRgba($theme[500]));
+            setPropertyStyle("--theme-primary-border-alternative", border[basecolor]);
+            
+            // Color de ripple
+            setPropertyStyle("--theme-primary-ripple", getHexToRgba($theme[600]));
+            setPropertyStyle("--theme-primary-ripple-alternative", ripple[basecolor]);
         };
 
         MaterialTheme.prototype.setError = function (theme) {
-            var $theme = $themes[theme]; // Tema error
+            var $theme = themes[theme]; // Tema error
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
             
-            setPropertyStyle("--theme-error-font", $theme[500]);
-            setPropertyStyle("--theme-error-font-disabled", $theme[100]);
-            setPropertyStyle("--theme-error-background", $theme[500]);
-            setPropertyStyle("--theme-error-background-disabled", $theme[100]);
+            setPropertyStyle("--theme-error-500", $theme[500]);
+            setPropertyStyle("--theme-error-100", $theme[100]);
         };
 
         MaterialTheme.prototype.setSecondary = function (theme) {
-            var $theme = $themes[theme], // Tema secundario
-                border = $color.border, ripple = $color.ripple;
+            var $theme = themes[theme]; // Tema primario
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
-            
-            // Colores de fondo
-            setPropertyStyle("--theme-secondary-background", $theme[500]);
-            setPropertyStyle("--theme-secondary-background-light", $theme[300]);
-            setPropertyStyle("--theme-secondary-background-dark", $theme[800]);
+           
+            var basecolor = $theme.BASECOLOR, // Color base
+                fonts = $materialColor.FONTS[basecolor], // Fuente
+                border = $materialColor.BORDERS, // Ripple
+                ripple = $materialColor.RIPPLES; // Ripple
+                
+            keysColors.forEach((key) => {
+                setPropertyStyle("--theme-secondary-" + key, $theme[key]);
+            });
 
-            // Colores de estado
-            setPropertyStyle("--theme-secondary-background-focus", $theme[700]);
-            setPropertyStyle("--theme-secondary-background-hover", $theme[200]);
-            setPropertyStyle("--theme-secondary-background-disabled", $theme[100]);
+            // Color de fuentes
+            setPropertyStyle("--theme-secondary-active", fonts.PRIMARY);
+            setPropertyStyle("--theme-secondary-alternative", fonts.ALTERNATIVE);
+            setPropertyStyle("--theme-secondary-inactive", fonts.SECONDARY);
+            setPropertyStyle("--theme-secondary-disabled", fonts.DISABLED);
 
             // Color de borde
-            setPropertyStyle("--theme-secondary-background-border", border[$theme.baseColor]);
-
-            var font = $color.font[$theme.baseColor]; // Colores de fuente
-
-            setPropertyStyle("--theme-secondary-font", $theme[500]);
-            setPropertyStyle("--theme-secondary-font-disabledcolor", $theme[100]);
-
-            setPropertyStyle("--theme-secondary-font-active", font.primary);
-            setPropertyStyle("--theme-secondary-font-alternative", font.alternative);
-            setPropertyStyle("--theme-secondary-font-inactive", font.secondary);
-            setPropertyStyle("--theme-secondary-font-disabled", font.disabled);
-
-            setPropertyStyle("--theme-secondary-ripple", ripple[$theme.baseColor]);
+            setPropertyStyle("--theme-secondary-border", getHexToRgba($theme[500]));
+            setPropertyStyle("--theme-secondary-border-alternative", border[basecolor]);
+            
+            // Color de ripple
+            setPropertyStyle("--theme-secondary-ripple", getHexToRgba($theme[600]));
+            setPropertyStyle("--theme-secondary-ripple-alternative", ripple[basecolor]);
         };
 
-        MaterialTheme.prototype.get = function () { return $themes; };
-
         MaterialTheme.prototype.register = function (name, theme) {
-            var keys = [
-                    "50", "100", "200", "300", "400", "500", 
-                    "600", "700", "800", "900", "baseColor"
-                ],
-            
+            var keys = ["BASECOLOR"].concat(keysColors),
                 result = softtion.required(theme, keys);
 
-            if (result.success) $themes[name] = theme; // Tema correcto
+            if (result.success) themes[name] = theme; // Tema correcto
             
             return this; // Retornando interfaz fluida
         };
+        
+        function getHexToRgba(hex, opacity) {
+            opacity = opacity || "0.5"; // Opacidad del color
+            
+            var c = softtion.getHexToRgb(hex); // Rgb
+            
+            return "rgba("+c.r+", "+c.g+", "+c.b+", "+opacity+")" ;
+        }
 
-        var materialTheme = new MaterialTheme();
-
-        this.$get = function () { return materialTheme; };
+        this.$get = function () { 
+            return (instance = instance || new MaterialTheme());
+        };
 
         this.setPrimary = function (theme) {
-            materialTheme.setPrimary(theme); return this;
+            instance = instance || new MaterialTheme();
+            instance.setPrimary(theme); return this;
         };
 
         this.setError = function (theme) {
-            materialTheme.setError(theme); return this;
+            instance = instance || new MaterialTheme();
+            instance.setError(theme); return this;
         };
 
         this.setSecondary = function (theme) {
-            materialTheme.setSecondary(theme); return this;
+            instance = instance || new MaterialTheme();
+            instance.setSecondary(theme); return this;
         };
 
         this.register = function (name, theme) {
-            materialTheme.register(name, theme); return this;
+            instance = instance || new MaterialTheme();
+            instance.register(name, theme); return this;
         };
     }
     
@@ -8912,8 +8922,8 @@
             // Componentes
         var input = $element.find("input");
         
-        var listener = new Listener($scope, Listener.INPUT),
-            regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+        var regexEmail = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,8}$/,
+            listener = new Listener($scope, Listener.INPUT);
 
         $scope.$watch(() => { return $scope.clearModel; }, 
             (newValue) => {
@@ -8947,8 +8957,7 @@
         if (softtion.isString($scope.value)) $element.addClass(Classes.ACTIVE); 
 
         if ($scope.type === "password") {
-            $scope.isIconAction = true;
-            $scope.iconAction = "visibility";
+            $scope.isIconAction = true; $scope.iconAction = "visibility";
         } else {
             if (softtion.isString($scope.iconAction))
                 $scope.isIconAction = true; // Activando acción
@@ -9044,11 +9053,9 @@
             if (($scope.type === "password") && !$scope.viewPassword) {
                 value = convertToPassword(value.length);
             } else if (softtion.isDefined(value)) {
-                var valueFormat = $scope.ngFormatValue(
-                    { $model: value, $value: String(value) }
-                );
+                var format = $scope.ngFormatValue({$model: value, $value: String(value)});
                 
-                if (softtion.isDefined(valueFormat)) value = valueFormat;
+                if (softtion.isDefined(format)) value = format;
             } // Se establecio formato para el componente de texto
 
             return value; // Retornando el valor a mostrar
@@ -9097,11 +9104,9 @@
                 break;
 
                 case (TextType.EMAIL):
-                    if (regexEmail.test($scope.input)) {
-                        setValueModel($scope.input);
-                    } else {
-                        $scope.errorInput("Texto digitado no es email");
-                    } // Error en el correo
+                    (regexEmail.test($scope.input)) ? 
+                        setValueModel($scope.input):
+                        setInputError("Texto digitado no es email");
                 break;
 
                 default: setValueModel($scope.input); break;
@@ -9114,16 +9119,11 @@
 
         function verifyModelBlur() {
             if (!softtion.isString($scope.input)) {
-                if ($scope.required) {
-                    setInputError("Este campo es requerido"); 
-                } // Texto es requerido
-                
-                return;
+                if ($scope.required) setInputError("Este campo es requerido"); return;
             } // No ha digitado nada en el componente de Texto
             
             if ($scope.input.length < $scope.minLength) {
-                setInputError("Este campo requiere minimo " + $scope.minLength + " caracteres");
-                return;
+                setInputError("Este campo requiere minimo " + $scope.minLength + " caracteres"); return;
             } // No ha digitado caracteres mínimos requeridos
             
             removeInputError(); $scope.input = ""; // Todo correcto
@@ -9146,8 +9146,7 @@
             
             if (softtion.isDefined(newValue)) {
                 if (newValue.toString().length < $scope.minLength) {
-                    setInputError("Este campo requiere minimo " + $scope.minLength + " caracteres"); 
-                    return;
+                    setInputError("Este campo requiere minimo " + $scope.minLength + " caracteres"); return;
                 } // No ha establecido caracteres mínimos requeridos
             } 
             
@@ -9424,16 +9423,13 @@
     };
     
     Listener.AUTOCOMPLETE = [
-        { key: "$model", value:"select" },
-        { key: "$old", value:"old" },
-        { key: "$value", value:"input" }
+        { key: "$model", value:"select" }, { key: "$old", value:"old" }, { key: "$value", value:"input" }
     ];
         
     Listener.CHECKBOX = [{ key: "$model", value: "checked" }];
     
     Listener.CHIP_INPUT = [
-        { key: "$model", value: "values" },
-        { key: "$value", value: "input" }
+        { key: "$model", value: "values" }, { key: "$value", value: "input" }
     ];
     
     Listener.CLOCKPICKER = [{ key: "$model", value: "time" }];
@@ -9445,8 +9441,7 @@
     Listener.FILECHOOSER_MULTIPLE = [{ key: "$model", value: "files" }];
         
     Listener.INPUT = [
-        { key: "$model", value: "value" },
-        { key: "$value", value: "input" }
+        { key: "$model", value: "value" }, { key: "$value", value: "input" }
     ];
     
     Listener.RADIOBUTTON = [{ key: "$model", value: "model" }];
@@ -9454,259 +9449,16 @@
     Listener.RATING = [{ key: "model", value: "value" }];
         
     Listener.SELECT = [
-        { key: "$model", value:"select" },
-        { key: "$old", value:"old" }
+        { key: "$model", value:"select" }, { key: "$old", value:"old" }
     ];
         
     Listener.SELECT_MULTIPLE = [{ key: "$model", value:"selects" }];
         
     Listener.TEXTAREA = [
-        { key: "$model", value: "value" },
-        { key: "$value", value: "area" }
+        { key: "$model", value: "value" }, { key: "$value", value: "area" }
     ];
     
-    ngMaterial.constant("$materialColor", {
-        background: {
-            red: {
-                50:  "#ffebee", 100: "#ffcdd2", 200: "#ef9a9a", 300: "#e57373", 
-                400: "#ef5350", 500: "#f44336", 600: "#e53935", 700: "#d32f2f", 
-                800: "#c62828", 900: "#b71c1c", baseColor: "light", 
-                A100: "#ff8a80", A200: "#ff5252", A400: "#ff1744", A700: "#d50000"
-            },
-            pink: {
-                50:  "#fce4ec", 100: "#f8bbd0", 200: "#f48fb1", 300: "#f06292", 
-                400: "#ec407a", 500: "#e91e63", 600: "#d81b60", 700: "#c2185b", 
-                800: "#ad1457", 900: "#880e4f", baseColor: "light", 
-                A100: "#ff80ab", A200: "#ff4081", A400: "#f50057", A700: "#c51162"
-            },
-            purple: {
-                50:  "#f3e5f5", 100: "#e1bee7", 200: "#ce93d8", 300: "#ba68c8", 
-                400: "#ab47bc", 500: "#9c27b0", 600: "#8e24aa", 700: "#7b1fa2", 
-                800: "#6a1b9a", 900: "#4a148c", baseColor: "light", 
-                A100: "#ea80fc", A200: "#e040fb", A400: "#d500f9", A700: "#aa00ff"
-            },
-            deepPurple: {
-                50:  "#ede7f6", 100: "#d1c4e9", 200: "#b39ddb", 300: "#9575cd", 
-                400: "#7e57c2", 500: "#673ab7", 600: "#5e35b1", 700: "#512da8", 
-                800: "#4527a0", 900: "#311b92", baseColor: "light", 
-                A100: "#b388ff", A200: "#7c4dff", A400: "#651fff", A700: "#6200ae"
-            },
-            indigo: {
-                50:  "#e8eaf6", 100: "#c5cae9", 200: "#9fa8da", 300: "#7986cb", 
-                400: "#5c6bc0", 500: "#3f51b5", 600: "#3949ab", 700: "#303f9f", 
-                800: "#283593", 900: "#1a237e", baseColor: "light", 
-                A100: "#8c9eff", A200: "#536dfe", A400: "#3d5afe", A700: "#304ffe"
-            },
-            blue: {
-                50:  "#e3f2fd", 100: "#bbdefb", 200: "#90caf9", 300: "#64b5f6", 
-                400: "#42a5f5", 500: "#2196f3", 600: "#1e88e5", 700: "#1976d2", 
-                800: "#1565c0", 900: "#0d47a1", baseColor: "light", 
-                A100: "#82b1ff", A200: "#448aff", A400: "#2979ff", A700: "#2962ff"
-            },
-            lightBlue: {
-                50:  "#e1f5fe", 100: "#b3e5fc", 200: "#81d4fa", 300: "#4fc3f7", 
-                400: "#29b6f6", 500: "#03a9f4", 600: "#039be5", 700: "#0288d1", 
-                800: "#0277bd", 900: "#01579b", baseColor: "combined", 
-                A100: "#80d8ff", A200: "#40c4ff", A400: "#00b0ff", A700: "#0091ea"
-            },
-            cyan: {
-                50:  "#e0f7fa", 100: "#b2ebf2", 200: "#80deea", 300: "#4dd0e1", 
-                400: "#26c6da", 500: "#00bcd4", 600: "#00acc1", 700: "#0097a7", 
-                800: "#00838f", 900: "#006064", baseColor: "combined", 
-                A100: "#84ffff", A200: "#18ffff", A400: "#00e5ff", A700: "#00b8d4"
-            },
-            teal: {
-                50:  "#e0f2f1", 100: "#b2dfdb", 200: "#80cbc4", 300: "#4db6ac", 
-                400: "#26a69a", 500: "#009688", 600: "#00897b", 700: "#00796b", 
-                800: "#00695c", 900: "#004d40", baseColor: "light", 
-                A100: "#a7ffeb ", A200: "#64ffda", A400: "#1de9b6", A700: "#00bfa5"
-            },
-            green: {
-                50:  "#e8f5e9", 100: "#c8e6c9", 200: "#a5d6a7", 300: "#81c784", 
-                400: "#66bb6a", 500: "#4caf50", 600: "#43a047", 700: "#388e3c", 
-                800: "#2e7d32", 900: "#1b5e20", baseColor: "light", 
-                A100: "#b9f6ca", A200: "#69f0ae", A400: "#00e676", A700: "#00c853"
-            },
-            lightGreen: {
-                50:  "#f1f8e9", 100: "#dcedc8", 200: "#c5e1a5", 300: "#aed581", 
-                400: "#9ccc65", 500: "#8bc34a", 600: "#7cb342", 700: "#689f38", 
-                800: "#558b2f", 900: "#33691e", baseColor: "combined", 
-                A100: "#ccff90", A200: "#b2ff59", A400: "#76ff03", A700: "#64dd17"
-            },
-            lime: {
-                50:  "#f9fbe7", 100: "#f0f4c3", 200: "#e6ee9c", 300: "#dce775", 
-                400: "#d4e157", 500: "#cddc39", 600: "#c0ca33", 700: "#afb42b", 
-                800: "#9e9d24", 900: "#827717", baseColor: "combined", 
-                A100: "#f4ff81", A200: "#eeff41", A400: "#c6ff00", A700: "#aeea00"
-            },
-            yellow: {
-                50:  "#fffde7", 100: "#fff9c4", 200: "#fff59d", 300: "#fff176", 
-                400: "#ffee58", 500: "#ffeb3b", 600: "#fdd835", 700: "#fbc02d", 
-                800: "#f9a825", 900: "#f57f17", baseColor: "dark", 
-                A100: "#ffff8d", A200: "#ffff00", A400: "#ffea00", A700: "#ffd600"
-            },
-            amber: {
-                50:  "#fff8e1", 100: "#ffecb3", 200: "#ffe082", 300: "#ffd54f", 
-                400: "#ffca28", 500: "#ffc107", 600: "#ffb300", 700: "#ffa000", 
-                800: "#ff8f00", 900: "#ff6f00", baseColor: "dark", 
-                A100: "#ffe57f", A200: "#ffd740", A400: "#ffc400", A700: "#ffab00"
-            },
-            orange: {
-                50:  "#fff3e0", 100: "#ffe0b2", 200: "#ffcc80", 300: "#ffb74d", 
-                400: "#ffa726", 500: "#ff9800", 600: "#fb8c00", 700: "#f57c00", 
-                800: "#ef6c00", 900: "#e65100", baseColor: "combined", 
-                A100: "#ffd180", A200: "#ffab40", A400: "#ffab40", A700: "#ff6d00"
-            },
-            deepOrange: {
-                50:  "#fbe9e7", 100: "#ffccbc", 200: "#ffab91", 300: "#ff8a65", 
-                400: "#ff7043", 500: "#ff5722", 600: "#f4511e", 700: "#e64a19", 
-                800: "#d84315", 900: "#bf360c", baseColor: "light", 
-                A100: "#ff9e80", A200: "#ff6e40", A400: "#ff3d00", A700: "#dd2c00"
-            },
-            brown: {
-                50:  "#efebe9", 100: "#d7ccc8", 200: "#bcaaa4", 300: "#a1887f", 
-                400: "#8d6e63", 500: "#795548", 600: "#6d4c41", 700: "#5d4037", 
-                800: "#4e342e", 900: "#3e2723", baseColor: "light"
-            },
-            grey: {
-                50:  "#fafafa", 100: "#f5f5f5", 200: "#eeeeee", 300: "#e0e0e0", 
-                400: "#bdbdbd", 500: "#9e9e9e", 600: "#757575", 700: "#616161", 
-                800: "#424242", 900: "#212121", baseColor: "combined"
-            },
-            blueGrey: {
-                50:  "#eceff1", 100: "#cfd8dc", 200: "#b0bec5", 300: "#90a4ae", 
-                400: "#78909c", 500: "#607d8b", 600: "#546e7a", 700: "#455a64", 
-                800: "#37474f", 900: "#263238", baseColor: "light"
-            }
-        }, 
-        font: {
-            light: {
-                primary: "rgba(255, 255, 255, 1)",
-                alternative: "rgba(255, 255, 255, 1)",
-                secondary: "rgba(255, 255, 255, 0.7)",
-                disabled: "rgba(255, 255, 255, 0.5)"
-            },
-            dark: {
-                primary: "rgba(0, 0, 0, 0.87)",
-                alternative: "rgba(0, 0, 0, 0.87)",
-                secondary: "rgba(0, 0, 0, 0.54)",
-                disabled: "rgba(0, 0, 0, 0.38)"
-            },
-            combined: {
-                primary: "rgba(0, 0, 0, 0.87)",
-                alternative: "rgba(255, 255, 255, 1)",
-                secondary: "rgba(0, 0, 0, 0.54)",
-                disabled: "rgba(0, 0, 0, 0.38)"
-            }
-        },
-        border: {
-            dark: "rgba(0, 0, 0, 0.12)",
-            light: "rgba(255, 255, 255, 0.12)",
-            combined: "rgba(0, 0, 0, 0.12)"
-        },
-        ripple: {
-            dark: "rgba(0, 0, 0, 0.38)",
-            light: "rgba(255, 255, 255, 0.5)",
-            combined: "rgba(0, 0, 0, 0.38)"
-        }
-    });
-    
-    ngMaterial.constant("$softtionMaterial", {
-        VERSION: "2.0.0",
-        
-        SELECTORS: {
-            FAB: "button.floating:not(.static), .fab-speed-dial," 
-                + " .fab-menu, .progress-button-floating",
-        
-            BOTTOM_NAVIGATION: ".stepper-mobile, .footer-buttons"
-        },
-        
-        File: {
-            imagesFormat: [
-                "image/jpeg", "image/png", "image/jpg", "image/gif", "image/svg+xml"
-            ],
-            
-            getIconFile: function (typeFile) {
-                switch (typeFile) {
-                    case ("image/jpeg"): return "image";
-                    case ("image/jpg"): return "image";
-                    case ("image/png"): return "image";
-                    case ("image/gif"): return "gif";
-                    case ("image/svg+xml"): return "image";
-                    case ("application/x-zip-compressed"): return "archive";
-                    case ("text/plain"): return "format_align_center";
-                    default: return "insert_drive_file";
-                }
-            },
-                            
-            createIcon: function (typeFile) {
-                return softtion.html("i").setText(this.getIconFile(typeFile));
-            },
-
-            createImage: function (classImg) {
-                return softtion.html("div").addClass(["svg-icon", classImg, "cover"]);
-            },
-            
-            getIconComponent: function (typeFile) {
-                switch (typeFile) {
-                    case ("application/pdf"): return this.createImage("pdf"); 
-                    case ("application/x-zip-compressed"): return this.createImage("zip");
-                    default: return this.createIcon(typeFile);
-                }
-            }
-        },
-        
-        RIPPLE: {
-            ELEMENT: function () {
-                return softtion.htmlElement("div", "ripple");
-            },
-            BOX: function () {
-                return softtion.htmlElement("div", "ripple-box");
-            },
-            EFFECT: function () {
-                return softtion.htmlElement("span", "effect");
-            },
-            DEFINE_EVENT: function (box, effect) {
-                box.click(($event) => {
-                    if (box.parent().is(":disabled")) return;
-
-                    if (box.hasClass(Classes.ANIMATED))
-                        box.removeClass(Classes.ANIMATED);
-
-                    effect.css({ 
-                        top: $event.pageY - box.offset().top, 
-                        left: $event.pageX - box.offset().left 
-                    }); 
-                    
-                    box.addClass(Classes.ANIMATED); // Animando
-                });
-            }
-        },
-        
-        Theme: {
-            RED: "red",
-            PINK: "pink",
-            PURPLE: "purple",
-            DEEP_PURPLE: "deepPurple",
-            INDIGO: "indigo",
-            BLUE: "blue",
-            LIGHT_BLUE: "lightBlue",
-            CYAN: "cyan",
-            TEAL: "teal",
-            GREEN: "green",
-            LIGHT_GREEN: "lightGreen",
-            LIME: "lime",
-            YELLOW: "yellow",
-            AMBER: "amber",
-            ORANGE: "orange",
-            DEEP_ORANGE: "deepOrange",
-            BROWN: "brown",
-            GREY: "grey",
-            BLUE_GREY: "blueGrey"
-        }
-    });
-    
-    ngMaterial.service("$fnMaterial", function () {
+    function fnMaterialServive() {
         return {
             setDensity: function (image, width, height) {
                 var density = height / width; // Calculando
@@ -9718,9 +9470,297 @@
                 image.addClass(Classes.ACTIVE); // Activando imagen
             }
         };
-    });
+    }
     
-    ngMaterial.filter("filterDictionary", filterDictionary);
+    function getSofttionMaterial() {
+        return {
+            VERSION: "2.0.0",
+
+            SELECTORS: {
+                FAB: "button.floating:not(.static), .fab-speed-dial," 
+                    + " .fab-menu, .progress-button-floating",
+
+                BOTTOM_NAVIGATION: ".stepper-mobile, .footer-buttons"
+            },
+
+            File: {
+                imagesFormat: [
+                    "image/jpeg", "image/png", "image/jpg", "image/gif", "image/svg+xml"
+                ],
+
+                getIconFile: function (typeFile) {
+                    switch (typeFile) {
+                        case ("image/jpeg"): return "image";
+                        case ("image/jpg"): return "image";
+                        case ("image/png"): return "image";
+                        case ("image/gif"): return "gif";
+                        case ("image/svg+xml"): return "image";
+                        case ("application/x-zip-compressed"): return "archive";
+                        case ("text/plain"): return "format_align_center";
+                        default: return "insert_drive_file";
+                    }
+                },
+
+                createIcon: function (typeFile) {
+                    return softtion.html("i").setText(this.getIconFile(typeFile));
+                },
+
+                createImage: function (classImg) {
+                    return softtion.html("div").addClass(["svg-icon", classImg, "cover"]);
+                },
+
+                getIconComponent: function (typeFile) {
+                    switch (typeFile) {
+                        case ("application/pdf"): return this.createImage("pdf"); 
+                        case ("application/x-zip-compressed"): return this.createImage("zip");
+                        default: return this.createIcon(typeFile);
+                    }
+                }
+            },
+
+            RIPPLE: {
+                ELEMENT: function () {
+                    return softtion.htmlElement("div", "ripple");
+                },
+                
+                BOX: function () {
+                    return softtion.htmlElement("div", "ripple-box");
+                },
+                
+                EFFECT: function () {
+                    return softtion.htmlElement("span", "effect");
+                },
+                
+                DEFINE_EVENT: function (box, effect) {
+                    box.click(($event) => {
+                        if (box.parent().is(":disabled")) return;
+
+                        if (box.hasClass(Classes.ANIMATED))
+                            box.removeClass(Classes.ANIMATED);
+
+                        effect.css({ 
+                            top: $event.pageY - box.offset().top, 
+                            left: $event.pageX - box.offset().left 
+                        }); 
+
+                        box.addClass(Classes.ANIMATED); // Animando
+                    });
+                }
+            },
+
+            THEMES: {
+                RED: "RED",
+                PINK: "PINK",
+                PURPLE: "PURPLE",
+                DEEP_PURPLE: "DEEP_PURPLE",
+                INDIGO: "INDIGO",
+                BLUE: "BLUE",
+                LIGHT_BLUE: "LIGHT_BLUE",
+                CYAN: "CYAN",
+                TEAL: "TEAL",
+                GREEN: "GREEN",
+                LIGHT_GREEN: "LIGHT_GREEN",
+                LIME: "LIME",
+                YELLOW: "YELLOW",
+                AMBER: "AMBER",
+                ORANGE: "ORANGE",
+                DEEP_ORANGE: "DEEP_ORANGE",
+                BROWN: "BROWN",
+                GREY: "GREY",
+                BLUE_GREY: "BLUE_GREY"
+            }
+        };
+    }
+    
+    function getMaterialColors() {
+        return {
+            THEMES: {
+                RED: {
+                    "50" : "#ffebee", "100": "#ffcdd2", "200": "#ef9a9a", 
+                    "300": "#e57373", "400": "#ef5350", "500": "#f44336", 
+                    "600": "#e53935", "700": "#d32f2f", "800": "#c62828", 
+                    "900": "#b71c1c", BASECOLOR: "LIGHT", "A100": "#ff8a80", 
+                    "A200": "#ff5252", "A400": "#ff1744", "A700": "#d50000"
+                },
+
+                PINK: {
+                    "50" : "#fce4ec", "100": "#f8bbd0", "200": "#f48fb1", 
+                    "300": "#f06292", "400": "#ec407a", "500": "#e91e63", 
+                    "600": "#d81b60", "700": "#c2185b", "800": "#ad1457", 
+                    "900": "#880e4f", BASECOLOR: "LIGHT", "A100": "#ff80ab", 
+                    "A200": "#ff4081", "A400": "#f50057", "A700": "#c51162"
+                },
+
+                PURPLE: {
+                    "50" : "#f3e5f5", "100": "#e1bee7", "200": "#ce93d8", 
+                    "300": "#ba68c8", "400": "#ab47bc", "500": "#9c27b0", 
+                    "600": "#8e24aa", "700": "#7b1fa2", "800": "#6a1b9a", 
+                    "900": "#4a148c", BASECOLOR: "LIGHT", "A100": "#ea80fc", 
+                    "A200": "#e040fb", "A400": "#d500f9", "A700": "#aa00ff"
+                },
+
+                DEEP_PURPLE: {
+                    "50" : "#ede7f6", "100": "#d1c4e9", "200": "#b39ddb", 
+                    "300": "#9575cd", "400": "#7e57c2", "500": "#673ab7", 
+                    "600": "#5e35b1", "700": "#512da8", "800": "#4527a0", 
+                    "900": "#311b92", BASECOLOR: "LIGHT", "A100": "#b388ff", 
+                    "A200": "#7c4dff", "A400": "#651fff", "A700": "#6200ae"
+                },
+
+                INDIGO: {
+                    "50" : "#e8eaf6", "100": "#c5cae9", "200": "#9fa8da", 
+                    "300": "#7986cb", "400": "#5c6bc0", "500": "#3f51b5", 
+                    "600": "#3949ab", "700": "#303f9f", "800": "#283593", 
+                    "900": "#1a237e", BASECOLOR: "LIGHT", "A100": "#8c9eff", 
+                    "A200": "#536dfe", "A400": "#3d5afe", "A700": "#304ffe"
+                },
+
+                BLUE: {
+                    "50" : "#e3f2fd", "100": "#bbdefb", "200": "#90caf9", 
+                    "300": "#64b5f6", "400": "#42a5f5", "500": "#2196f3", 
+                    "600": "#1e88e5", "700": "#1976d2", "800": "#1565c0", 
+                    "900": "#0d47a1", BASECOLOR: "LIGHT", "A100": "#82b1ff", 
+                    "A200": "#448aff", "A400": "#2979ff", "A700": "#2962ff"
+                },
+
+                LIGHT_BLUE: {
+                    "50" : "#e1f5fe", "100": "#b3e5fc", "200": "#81d4fa", 
+                    "300": "#4fc3f7", "400": "#29b6f6", "500": "#03a9f4", 
+                    "600": "#039be5", "700": "#0288d1", "800": "#0277bd", 
+                    "900": "#01579b", BASECOLOR: "COMBINED", "A100": "#80d8ff", 
+                    "A200": "#40c4ff", "A400": "#00b0ff", "A700": "#0091ea"
+                },
+
+                CYAN: {
+                    "50" : "#e0f7fa", "100": "#b2ebf2", "200": "#80deea", 
+                    "300": "#4dd0e1", "400": "#26c6da", "500": "#00bcd4", 
+                    "600": "#00acc1", "700": "#0097a7", "800": "#00838f", 
+                    "900": "#006064", BASECOLOR: "COMBINED", "A100": "#84ffff", 
+                    "A200": "#18ffff", "A400": "#00e5ff", "A700": "#00b8d4"
+                },
+
+                TEAL: {
+                    "50" : "#e0f2f1", "100": "#b2dfdb", "200": "#80cbc4", 
+                    "300": "#4db6ac", "400": "#26a69a", "500": "#009688", 
+                    "600": "#00897b", "700": "#00796b", "800": "#00695c", 
+                    "900": "#004d40", BASECOLOR: "LIGHT", "A100": "#a7ffeb", 
+                    "A200": "#64ffda", "A400": "#1de9b6", "A700": "#00bfa5"
+                },
+
+                GREEN: {
+                    "50" : "#e8f5e9", "100": "#c8e6c9", "200": "#a5d6a7", 
+                    "300": "#81c784", "400": "#66bb6a", "500": "#4caf50", 
+                    "600": "#43a047", "700": "#388e3c", "800": "#2e7d32", 
+                    "900": "#1b5e20", BASECOLOR: "LIGHT", "A100": "#b9f6ca", 
+                    "A200": "#69f0ae", "A400": "#00e676", "A700": "#00c853"
+                },
+
+                LIGHT_GREEN: {
+                    "50" : "#f1f8e9", "100": "#dcedc8", "200": "#c5e1a5", 
+                    "300": "#aed581", "400": "#9ccc65", "500": "#8bc34a", 
+                    "600": "#7cb342", "700": "#689f38", "800": "#558b2f", 
+                    "900": "#33691e", BASECOLOR: "COMBINED", "A100": "#ccff90", 
+                    "A200": "#b2ff59", "A400": "#76ff03", "A700": "#64dd17"
+                },
+
+                LIME: {
+                    "50" : "#f9fbe7", "100": "#f0f4c3", "200": "#e6ee9c", 
+                    "300": "#dce775", "400": "#d4e157", "500": "#cddc39",
+                    "600": "#c0ca33", "700": "#afb42b", "800": "#9e9d24",
+                    "900": "#827717", BASECOLOR: "COMBINED", "A100": "#f4ff81", 
+                    "A200": "#eeff41", "A400": "#c6ff00", "A700": "#aeea00"
+                },
+
+                YELLOW: {
+                    "50" : "#fffde7", "100": "#fff9c4", "200": "#fff59d", 
+                    "300": "#fff176", "400": "#ffee58", "500": "#ffeb3b", 
+                    "600": "#fdd835", "700": "#fbc02d", "800": "#f9a825", 
+                    "900": "#f57f17", BASECOLOR: "DARK", "A100": "#ffff8d", 
+                    "A200": "#ffff00", "A400": "#ffea00", "A700": "#ffd600"
+                },
+
+                AMBER: {
+                    "50" : "#fff8e1", "100": "#ffecb3", "200": "#ffe082", 
+                    "300": "#ffd54f", "400": "#ffca28", "500": "#ffc107", 
+                    "600": "#ffb300", "700": "#ffa000", "800": "#ff8f00", 
+                    "900": "#ff6f00", BASECOLOR: "DARK", "A100": "#ffe57f", 
+                    "A200": "#ffd740", "A400": "#ffc400", "A700": "#ffab00"
+                },
+
+                ORANGE: {
+                    "50" : "#fff3e0", "100": "#ffe0b2", "200": "#ffcc80", 
+                    "300": "#ffb74d", "400": "#ffa726", "500": "#ff9800", 
+                    "600": "#fb8c00", "700": "#f57c00", "800": "#ef6c00", 
+                    "900": "#e65100", BASECOLOR: "COMBINED", "A100": "#ffd180", 
+                    "A200": "#ffab40", "A400": "#ffab40", "A700": "#ff6d00"
+                },
+
+                DEEP_ORANGE: {
+                    "50" : "#fbe9e7", "100": "#ffccbc", "200": "#ffab91", 
+                    "300": "#ff8a65", "400": "#ff7043", "500": "#ff5722", 
+                    "600": "#f4511e", "700": "#e64a19", "800": "#d84315", 
+                    "900": "#bf360c", BASECOLOR: "LIGHT", "A100": "#ff9e80", 
+                    "A200": "#ff6e40", "A400": "#ff3d00", "A700": "#dd2c00"
+                },
+
+                BROWN: {
+                    "50" : "#efebe9", "100": "#d7ccc8", "200": "#bcaaa4", 
+                    "300": "#a1887f", "400": "#8d6e63", "500": "#795548", 
+                    "600": "#6d4c41", "700": "#5d4037", "800": "#4e342e", 
+                    "900": "#3e2723", BASECOLOR: "LIGHT"
+                },
+
+                GREY: {
+                    "50" : "#fafafa", "100": "#f5f5f5", "200": "#eeeeee", 
+                    "300": "#e0e0e0", "400": "#bdbdbd", "500": "#9e9e9e", 
+                    "600": "#757575", "700": "#616161", "800": "#424242", 
+                    "900": "#212121", BASECOLOR: "COMBINED"
+                },
+
+                BLUE_GREY: {
+                    "50" : "#eceff1", "100": "#cfd8dc", "200": "#b0bec5", 
+                    "300": "#90a4ae", "400": "#78909c", "500": "#607d8b", 
+                    "600": "#546e7a", "700": "#455a64", "800": "#37474f", 
+                    "900": "#263238", BASECOLOR: "LIGHT"
+                }
+            }, 
+
+            FONTS: {
+                LIGHT: {
+                    PRIMARY: "rgba(255, 255, 255, 1)",
+                    SECONDARY: "rgba(255, 255, 255, 0.7)",
+                    DISABLED: "rgba(255, 255, 255, 0.5)",
+                    ALTERNATIVE: "rgba(255, 255, 255, 1)"
+                },
+
+                DARK: {
+                    PRIMARY: "rgba(0, 0, 0, 0.87)",
+                    SECONDARY: "rgba(0, 0, 0, 0.54)",
+                    DISABLED: "rgba(0, 0, 0, 0.38)",
+                    ALTERNATIVE: "rgba(0, 0, 0, 0.87)"
+                },
+
+                COMBINED: {
+                    PRIMARY: "rgba(0, 0, 0, 0.87)",
+                    SECONDARY: "rgba(0, 0, 0, 0.54)",
+                    DISABLED: "rgba(0, 0, 0, 0.38)",
+                    ALTERNATIVE: "rgba(255, 255, 255, 1)"
+                }
+            },
+
+            BORDERS: {
+                LIGHT: "rgba(255, 255, 255, 0.12)",
+                DARK: "rgba(0, 0, 0, 0.12)",
+                COMBINED: "rgba(0, 0, 0, 0.12)"
+            },
+
+            RIPPLES: {
+                LIGHT: "rgba(255, 255, 255, 0.5)",
+                DARK: "rgba(0, 0, 0, 0.38)",
+                COMBINED: "rgba(0, 0, 0, 0.38)"
+            }
+        };
+    }
     
     var Material = GET_INSTANCE_SOFTTION_MATERIAL();
     
