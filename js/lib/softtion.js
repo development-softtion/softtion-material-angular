@@ -1,7 +1,8 @@
 
-/* !
- Softtion v1.3.2
- (c) 2015-2018 Softtion Developers, http://www.softtion.com.co
+/*
+ Softtion v1.4.7
+ (c) 2015 - 2018 Softtion Developers
+ http://www.softtion.com.co
  License: MIT
  Create: 24/May/2015
  Update: 31/Ene/2018
@@ -20,7 +21,7 @@
     window.softtion = softtion; // Agregando softtion como Global
         
         // Atributos
-    var regHexToRgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+    var regHexToRgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i,
         timeElapsedAttrs = [{ 
             divisor: 1000, comparator: 60, key: "seconds",
             singular: "segundo", plural: "segundos" 

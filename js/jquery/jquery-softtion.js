@@ -1,9 +1,9 @@
 /*
- jQuery Softtion v1.5.1
- (c) 2016 - 2018 Softtion Developers, 
- http://jquery.softtion.com.co
+ jQuery Softtion v1.6.2
+ (c) 2016 - 2018 Softtion Developers 
+ http://jquery.softtion.com
  License: MIT
- Updated: 03/Mar/2018
+ Updated: 01/Abr/2018
  */
 
 ((factory) => {
@@ -19,15 +19,26 @@
         
         exists: function () { return jQuery(this).length > 0; },
         
+        scrollWidth: function () { return jQuery(this).prop("scrollWidth"); },
+        
         scrollHeight: function () { return jQuery(this).prop("scrollHeight"); },
         
-        isScrollEnd: function (discount) { 
+        isScrollXEnd: function (discount) { 
             discount = isNaN(discount) ? 0 : discount;
             
             var $element = jQuery(this), // Elemento
                 scroll = $element.height() + $element.scrollTop();
             
             return (scroll >= ($element.scrollHeight() - discount)); 
+        },
+        
+        isScrollYEnd: function (discount) { 
+            discount = isNaN(discount) ? 0 : discount;
+            
+            var $element = jQuery(this), // Elemento
+                scroll = $element.width() + $element.scrollLeft();
+            
+            return (scroll >= ($element.scrollWidth() - discount)); 
         },
         
         fixed: function () {

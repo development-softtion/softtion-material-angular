@@ -5289,13 +5289,13 @@
                 var listener = new Listener($scope, Listener.RADIOBUTTON);
 
                 $scope.clickRadioButton = function ($event) { 
-                    if (!$scope.ngDisabled) return; // Desactivado
+                    if ($scope.ngDisabled) return; // Desactivado
                     
                     listener.launch("click", { $event: $event });
                 };
 
                 $scope.clickLabel = function ($event) { 
-                    if (!$scope.ngDisabled) return; // Desactivado
+                    if ($scope.ngDisabled) return; // Desactivado
                     
                     $scope.model = $scope.value; input.focus();
                     listener.launch("click", { $event: $event });
@@ -6817,7 +6817,12 @@
         var input = softtion.html("input", false).
             addAttribute("type", "text").
             addAttribute("ng-readonly", "true").
-            addAttribute("ng-model", "value");
+            addAttribute("ng-model", "value").
+            addAttribute("ng-class", "{iconaction: isIconAction}");
+
+        var iconAction = softtion.html("i").addClass("action").
+            setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+            addAttribute("ng-click", "clickAction($event)");
 
         var lineShadow = softtion.html("div").addClass("line-shadow");
 
@@ -6828,8 +6833,8 @@
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
             setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
 
-        content.addChildren(iconDescription).
-            addChildren(input).addChildren(lineShadow).
+        content.addChildren(iconDescription).addChildren(input).
+            addChildren(iconAction).addChildren(lineShadow).
             addChildren(label).addChildren(spanHelper);
 
         return content.create(); // Componente
@@ -6843,6 +6848,7 @@
                 value: "=ngModel", 
                 label: "@",
                 iconDescription: "@",
+                iconAction: "@",
                 helperText: "@",
                 helperPermanent: "=?",
                 eventListener: "&"
@@ -6850,6 +6856,8 @@
             link: function ($scope) {
                     // Atributos
                 var listener = new Listener($scope, []);
+                
+                if (softtion.isString($scope.iconAction)) $scope.isIconAction = true;
                 
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);

@@ -25,25 +25,15 @@
             RELATIONS: "No se pudo cargar las relaciones de la consulta"
         },
                 
-        Relations = {
-            HAS_ONE: "HAS_ONE", HAS_MANY: "HAS_MANY"
-        },
+        Relations = { HAS_ONE: "HAS_ONE", HAS_MANY: "HAS_MANY" },
     
-        OperatorsLogic = { 
-            AND: "AND", OR: "OR" 
-        },
+        OperatorsLogic = { AND: "AND", OR: "OR" },
         
-        arrayOperatorsLogic = [
-            OperatorsLogic.AND, OperatorsLogic.OR
-        ], 
+        ArrayOperatorsLogic = [ OperatorsLogic.AND, OperatorsLogic.OR ], 
     
-        OperatorsOrder = { 
-            ASC: "ASC", DESC: "DESC" 
-        },
+        OperatorsOrder = { ASC: "ASC", DESC: "DESC" },
         
-        arrayOperatorsOrder = [ 
-            OperatorsOrder.ASC, OperatorsOrder.DESC
-        ],
+        ArrayOperatorsOrder = [ OperatorsOrder.ASC, OperatorsOrder.DESC ],
         
         FiltersName = {
             CONDITION: "CONDITION",
@@ -87,11 +77,11 @@
         };
     
     function defineOperatorLogic(operator) {
-        return arrayOperatorsLogic.hasItem(operator) ? operator : "AND";
+        return ArrayOperatorsLogic.hasItem(operator) ? operator : "AND";
     }
     
     function defineOperatorOrder(operator) {
-        return arrayOperatorsOrder.hasItem(operator) ? operator : "ASC";
+        return ArrayOperatorsOrder.hasItem(operator) ? operator : "ASC";
     }
     
     function getInstanceSQLite() {

@@ -1,9 +1,10 @@
 
 /*
- Angular Softtion v1.1.8
- (c) 2016-2018 Softtion Developers, http://angular.softtion.com.co
+ Angular Softtion v1.2.4
+ (c) 2016 - 2018 Softtion Developers
+ http://angular.softtion.com.co
  License: MIT
- Updated: 05/Ene/2016
+ Updated: 24/Ene/2018
 */
 
 ((factory) => {

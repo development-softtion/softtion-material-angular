@@ -3115,7 +3115,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-readonly > .content > i {
     color: var(--secondary-font); }
 
-.textfield-readonly > .content > input:focus ~ i {
+.textfield-readonly > .content > input:focus ~ i.description {
     color: var(--theme-primary-500); }
 
 .textfield-readonly > .content > input::selection {
@@ -3124,6 +3124,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .textfield-readonly > .content > .line-shadow {
     border-bottom: 1px solid var(--background-border); }
+
+.textfield-readonly:hover > .content > .line-shadow {
+    border-bottom: 2px solid var(--primary-font); }
 
 .textfield-readonly > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-500); }

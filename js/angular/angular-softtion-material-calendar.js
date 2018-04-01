@@ -3,7 +3,7 @@
  (c) 2017 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 4/Nov/2017
+ Updated: 04/Nov/2017
 */
 (function (factory) {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {

@@ -1,21 +1,22 @@
 /*
  Angular Softtion Middleware v1.0.0
- (c) 2016 Softtion Developers, http://angular.softtion.com.co
+ (c) 2016 - 2018 Softtion Developers
+ http://angular.softtion.com.co
+ https://github.com/oldtimeguitarguy/angular-middleware
  License: MIT
  Updated: 05/Ene/2016
 */
 
-(function (factory) {
+((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular, jQuery);
     } else {
         throw new Error("Softtion Angular requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
-})(function (softtion, angular, jQuery) {
+})((softtion, angular, jQuery) => {
     
     var ngSofttion = angular.module("ngSofttion");
     
-    //https://github.com/oldtimeguitarguy/angular-middleware
     var $mappings = {}, $bypassAll = false, $globalMiddleware = { middleware: [] }, globalAfter;
     
     var factory = function ($injector, $q) {
@@ -50,7 +51,7 @@
         function concatMiddlewareNames(routes) {
             var output = [];
 
-            // Concat each route's middleware names
+            // Concat each route"s middleware names
             for (var i = 0; i < routes.length; i++) {
                 output = output.concat(getMiddlewareNames(routes[i]));
             }
@@ -65,11 +66,11 @@
                 return middleware;
             }
 
-            if (typeof middleware === 'undefined') {
+            if (typeof middleware === "undefined") {
                 return [];
             }
 
-            return middleware.split('|');
+            return middleware.split("|");
         }
 
         function nextMiddleware() {
@@ -125,24 +126,24 @@
 
     var provider = function () {
         this.map = function (customMappings) {
-            if (typeof customMappings !== 'object') {
-                throw 'Your middleware map must be an object!';
+            if (typeof customMappings !== "object") {
+                throw "Your middleware map must be an object!";
             }
 
             $mappings = customMappings;
         };
         
         this.bypassAll = function (enableBypass) {
-            if (typeof enableBypass !== 'boolean') {
-                throw 'You must provide bypassAll with a boolean value!';
+            if (typeof enableBypass !== "boolean") {
+                throw "You must provide bypassAll with a boolean value!";
             }
 
             $bypassAll = enableBypass; // Set it!
         };
 
         this.global = function (customGlobalMiddleware) {
-            if (typeof customGlobalMiddleware !== 'string' && !angular.isArray(customGlobalMiddleware)) {
-                throw 'You must provide a string, a string separated by pipes, or an array of middleware names';
+            if (typeof customGlobalMiddleware !== "string" && !angular.isArray(customGlobalMiddleware)) {
+                throw "You must provide a string, a string separated by pipes, or an array of middleware names";
             }
 
             $globalMiddleware.middleware = customGlobalMiddleware;
@@ -167,15 +168,15 @@
         }]);
     }]);
 
-    ngSofttion.run(['$rootScope', '$route', '$location', '$middleware',
+    ngSofttion.run(["$rootScope", "$route", "$location", "$middleware",
         function ($rootScope, $route, $location, $middleware) {
-            $rootScope.$on('$routeChangeStart', function (angularEvent, next, current) {
+            $rootScope.$on("$routeChangeStart", function (angularEvent, next, current) {
                 next.resolve.middleware = function () {
                     return $middleware(next, next.params);
                 };
             });
             
-            $rootScope.$on('$routeChangeSuccess', function (angularEvent, current, previous) {
+            $rootScope.$on("$routeChangeSuccess", function (angularEvent, current, previous) {
                 if (angular.isFunction(globalAfter)) {
                     globalAfter();
                 } // Se definió una función global para el cargue
@@ -185,7 +186,7 @@
                 } // Se definió función para ejecutar despues del cargue
             });
             
-            $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+            $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
                 if (rejection.type === "redirectTo") {
                     // Prevent the route change from working normally
                     event.preventDefault();

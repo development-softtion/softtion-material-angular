@@ -1,10 +1,11 @@
 /*
  Angular Softtion Events v1.1.8
- (c) 2017 Softtion Developers, 
+ (c) 2017 - 2018 Softtion Developers
  http://angular.softtion.com.co
  License: MIT
  Updated: 31/Mar/2018
  */
+
 ((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular, jQuery);
@@ -13,169 +14,52 @@
     } // No se ha cargado Softtion y Angular
 })((softtion, angular, jQuery) => {
     
-    var ngSofttionEvents = angular.module("ngSofttionEvents", []).
+    var ngEvents = angular.module("ngSofttionEvents", []).
             directive("ngEnter", ngEnter).
             directive("ngClickright", ngClickRight).
             directive("ngScroll", ngScroll).
-            directive("ngMousehold", ngMouseHold);
+            directive("ngMousehold", ngMouseHold).
+            directive("ngTouchhold", ngTouchHold).
+            directive("ngPointerhold", ngPointerHold).
+            directive("ngTransitionstart", ngTransitionStart).
+            directive("ngTransitionend", ngTransitionEnd).
+            directive("ngAnimationstart", ngAnimationStart).
+            directive("ngAnimationend", ngAnimationEnd);
     
-    // Eventos touch en AngularJS
-    var directivesTouch = [
-        { event: "touchstart", name: "ngTouchstart" },
-        { event: "touchcancel", name: "ngTouchcancel" },
-        { event: "touchmove", name: "ngTouchmove" },
-        { event: "touchend", name: "ngTouchend" },
-        { event: "touchleave", name: "ngTouchleave" }
-    ];
+        // Eventos grupales en AngularJS
+    var touchDirectives = [
+            { event: "touchstart", name: "ngTouchstart" },
+            { event: "touchcancel", name: "ngTouchcancel" },
+            { event: "touchmove", name: "ngTouchmove" },
+            { event: "touchend", name: "ngTouchend" },
+            { event: "touchleave", name: "ngTouchleave" }
+        ],
+        
+        pointerDirectives = [
+            { eventTouch: "touchstart", eventMouse: "mousedown", name: "ngPointerdown" },
+            { eventTouch: "touchend", eventMouse: "mouseup", name: "ngPointerup" },
+            { eventTouch: "touchmove", eventMouse: "mousemove", name: "ngPointermove" }
+        ],
+        
+        dragAndDropDirectives = [
+            { event: "drop", name: "ngDrop" },
+            { event: "dragstart", name: "ngDragstart" },
+            { event: "dragenter", name: "ngDragEnter" },
+            { event: "dragover", name: "ngDragover" },
+            { event: "dragleave", name: "ngDragleave" },
+            { event: "dragend", name: "ngDragend" }
+        ];
     
-    directivesTouch.forEach(function (directive) {
-        ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
-            return {
-                restrict: "A",
-                compile: function ($element, $attrs) {
-                    var fn = $parse($attrs[directive.name]);
-
-                    return function ($scope, $element) {
-                        if ("ontouchstart" in window && softtion.isFunction(fn)) {
-                            $element.on(directive.event, function ($event) {
-                                var callback = function () {
-                                    fn($scope, { $event: $event });
-                                };
-
-                                $scope.$apply(callback); // Disparando evento
-                            }); // Dispositivo soporta TouchEvent
-                        }
-                    };
-                }
-            };
-        }]);
+    touchDirectives.forEach((directive) => {
+        ngEvents.directive(directive.name, touchDirective(directive));
     });
     
-    // Evento touch hold
-    ngSofttionEvents.directive("ngTouchhold", 
-        ["$parse", "$timeout", function ($parse, $timeout) {
-            return {
-                restrict: "A",
-                compile: function ($element, $attrs) {
-                    var fn = $parse($attrs["ngTouchhold"]), promise;
-                    
-                    return function ($scope, $element) {
-                        if ("ontouchstart" in window && softtion.isFunction(fn)) {
-                            $element.on("touchstart", function ($event) {
-                                var callback = function () {
-                                    fn($scope, { $event: $event });
-                                };
-                                
-                                promise = $timeout(callback, 1000);
-                            });
-                            
-                            $element.on("touchmove", function () { $timeout.cancel(promise); });
-                            
-                            $element.on("touchend", function () { $timeout.cancel(promise); });
-                        } // Dispositivo soporta TouchEvent
-                    };
-                }
-            };
-        }]
-    );
-    
-    // Eventos pointer en AngularJS
-    var directivesPointer = [
-        { eventTouch: "touchstart", eventMouse: "mousedown", name: "ngPointerdown" },
-        { eventTouch: "touchend", eventMouse: "mouseup", name: "ngPointerup" },
-        { eventTouch: "touchmove", eventMouse: "mousemove", name: "ngPointermove" }
-    ];
-    
-    directivesPointer.forEach(function (directive) {
-        ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
-            return {
-                restrict: "A",
-                compile: function ($element, $attrs) {
-                    var fn = $parse($attrs[directive.name]);
-
-                    return function ($scope, $element) {
-                        var fnEvent = function ($event) {
-                            var callback = function () {
-                                fn($scope, { $event: $event });
-                            };
-
-                            $scope.$apply(callback); // Disparando evento
-                        };
-                        
-                        $element.on(directive.eventTouch, fnEvent).
-                            on(directive.eventMouse, fnEvent);
-                    
-                        if (directive.name === "ngPointermove") {
-                            $element.on("mouseout", fnEvent);
-                            $element.on("mouseleave", fnEvent);
-                        }
-                    };
-                }
-            };
-        }]);
+    pointerDirectives.forEach((directive) => {
+        ngEvents.directive(directive.name, pointerDirective(directive));
     });
     
-    // Evento pointer hold
-    ngSofttionEvents.directive("ngPointerhold", 
-        ["$parse", "$timeout", function ($parse, $timeout) {
-            return {
-                restrict: "A",
-                compile: function ($element, $attrs) {
-                    var fn = $parse($attrs["ngPointerhold"]), promise;
-                    
-                    return function ($scope, $element) {
-                        var fnPromise = function ($event) {
-                                var callback = function () {
-                                    fn($scope, { $event: $event });
-                                };
-
-                                promise = $timeout(callback, 1000);
-                            },
-                            cancelPromise = function () { 
-                                $timeout.cancel(promise); 
-                            };
-                        
-                        $element.on("touchstart", fnPromise);
-                        $element.on("touchmove", cancelPromise);
-                        $element.on("touchend", cancelPromise);
-                        $element.on("mousedown", fnPromise);
-                        $element.on("mousemove", cancelPromise);
-                        $element.on("mouseup", cancelPromise);
-                    };
-                }
-            };
-        }]
-    );
-    
-    // Eventos Drag and Drop en AngularJS
-    var directivesDragAndDrop = [
-        { event: "drop", name: "ngDrop" },
-        { event: "dragstart", name: "ngDragstart" },
-        { event: "dragenter", name: "ngDragEnter" },
-        { event: "dragover", name: "ngDragover" },
-        { event: "dragleave", name: "ngDragleave" },
-        { event: "dragend", name: "ngDragend" }
-    ];
-    
-    directivesDragAndDrop.forEach(function (directive) {
-        ngSofttionEvents.directive(directive.name, ["$parse", function ($parse) {
-            return {
-                restrict: "A",
-                compile: function ($element, $attrs) {
-                    var fn = $parse($attrs[directive.name]);
-
-                    return function ($scope, $element) {
-                        $element.on(directive.event, function ($event) {
-                            var callback = function () {
-                                fn($scope, { $event: $event, $element: $element });
-                            };
-
-                            $scope.$apply(callback); // Disparando evento
-                        }); 
-                    };
-                }
-            };
-        }]);
+    dragAndDropDirectives.forEach((directive) => {
+        ngEvents.directive(directive.name, dragAndDropDirective(directive));
     });
     
     // Directiva: NgEnter
@@ -290,22 +174,265 @@
         };
     }
     
-    function ngTouch($parse) {
-        return {
-            restrict: "A",
-            compile: function ($element, $attrs) {
-                var fnTouch = $parse($attrs[directive.name]);
+    // Directiva: NgTouch
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    function touchDirective(directive) {
+        
+        ngTouch.$inject = [ "$parse" ];
+        
+        function ngTouch($parse) {
+            return {
+                restrict: "A",
+                compile: function ($element, $attrs) {
+                    var fnTouch = $parse($attrs[directive.name]); // Función Touch
 
-                return function ($scope, $element) {
-                    if ("ontouchstart" in window && softtion.isFunction(fnTouch)) {
-                        $element.on(directive.event, function ($event) {
+                    return function ($scope, $element) {
+                        if (!softtion.isTouchSupport()) return; // No soporta Touch
+                        
+                        $element.on(directive.event, ($event) => {
                             var callback = function () {
-                                fnTouch($scope, { $event: $event });
+                                fnTouch($scope, { $event: $event, $element: $element });
                             };
 
                             $scope.$apply(callback); // Disparando evento
-                        }); // Dispositivo soporta TouchEvent
-                    }
+                        }); 
+                    };
+                }
+            };
+        }
+        
+        return ngTouch; // Retornando eventos Touchs
+    }
+    
+    // Directiva: ngTouchHold
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngTouchHold.$inject = [ "$parse", "$timeout" ];
+    
+    function ngTouchHold($parse, $timeout) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTouchHold = $parse($attrs.ngTouchhold), promise;
+
+                return function ($scope, $element) {
+                    if (!softtion.isTouchSupport()) return; // No soporta Touch
+                    
+                    $element.on("touchstart", ($event) => {
+                        var callback = function () {
+                            fnTouchHold($scope, { $event: $event, $element: $element });
+                        };
+
+                        promise = $timeout(callback, 1000);
+                    });
+
+                    $element.on("touchmove", () => { $timeout.cancel(promise); });
+
+                    $element.on("touchend", () => { $timeout.cancel(promise); });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgPointer
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    function pointerDirective(directive) {
+        
+        ngPointer.$inject = [ "$parse" ];
+        
+        function ngPointer($parse) {
+            return {
+                restrict: "A",
+                compile: function ($element, $attrs) {
+                    var fnPointer = $parse($attrs[directive.name]); // Función pointer
+
+                    return function ($scope, $element) {
+                        var fnEvent = function ($event) {
+                            var callback = function () {
+                                fnPointer($scope, { $event: $event, $element: $element });
+                            };
+
+                            $scope.$apply(callback); // Disparando evento
+                        };
+                        
+                        $element.on(directive.eventTouch, fnEvent).
+                            on(directive.eventMouse, fnEvent);
+                    
+                        if (directive.name === "ngPointermove") {
+                            $element.on("mouseout", fnEvent);
+                            $element.on("mouseleave", fnEvent);
+                        }
+                    };
+                }
+            };
+        }
+        
+        return ngPointer; // Retornando eventos Pointers
+    }
+    
+    // Directiva: NgPointerHold
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngPointerHold.$inject = [ "$parse", "$timeout" ];
+    
+    function ngPointerHold($parse, $timeout) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnPointerHold = $parse($attrs.ngPointerhold), promise;
+
+                return function ($scope, $element) {
+                    var fnPromise = function ($event) {
+                            var callback = function () {
+                                fnPointerHold($scope, { $event: $event, $element: $element });
+                            };
+
+                            promise = $timeout(callback, 1000);
+                        },
+                        cancelPromise = function () { $timeout.cancel(promise); };
+
+                    $element.on("touchstart", fnPromise);
+                    $element.on("touchmove", cancelPromise);
+                    $element.on("touchend", cancelPromise);
+                    $element.on("mousedown", fnPromise);
+                    $element.on("mousemove", cancelPromise);
+                    $element.on("mouseup", cancelPromise);
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgDragAndDrop
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    function dragAndDropDirective(directive) {
+        
+        ngDragAndDrop.$inject = [ "$parse" ];
+    
+        function ngDragAndDrop($parse) {
+            return {
+                restrict: "A",
+                compile: function ($element, $attrs) {
+                    var fnDragAndDrop = $parse($attrs[directive.name]);
+
+                    return function ($scope, $element) {
+                        $element.on(directive.event, ($event) => {
+                            var callback = function () {
+                                fnDragAndDrop($scope, { $event: $event, $element: $element });
+                            };
+
+                            $scope.$apply(callback); // Disparando evento
+                        }); 
+                    };
+                }
+            };
+        }
+        
+        return ngDragAndDrop; // Retornando eventos DragAndDrop
+    }
+    
+    // Directiva: ngTransitionStart
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngTransitionStart.$inject = [ "$parse" ];
+    
+    function ngTransitionStart($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTransitionStart = $parse($attrs.ngTransitionStart); // Función TransitionStart
+
+                return function ($scope, $element) {
+                    $element.transitionstart(($event) => {
+                        var callback = function () {
+                            fnTransitionStart($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: ngTransitionEnd
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngTransitionEnd.$inject = [ "$parse" ];
+    
+    function ngTransitionEnd($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTransitionEnd = $parse($attrs.ngTransitionEnd); // Función TransitionEnd
+
+                return function ($scope, $element) {
+                    $element.transitionend(($event) => {
+                        var callback = function () {
+                            fnTransitionEnd($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: ngAnimationStart
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngAnimationStart.$inject = [ "$parse" ];
+    
+    function ngAnimationStart($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnAnimationStart = $parse($attrs.ngAnimationStart); // Función AnimationStart
+
+                return function ($scope, $element) {
+                    $element.animationstart(($event) => {
+                        var callback = function () {
+                            fnAnimationStart($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: ngAnimationEnd
+    // Version: 1.0.0
+    // Updated: 01/04/2018
+    
+    ngAnimationEnd.$inject = [ "$parse" ];
+    
+    function ngAnimationEnd($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnAnimationEnd = $parse($attrs.ngAnimationEnd); // Función AnimationEnd
+
+                return function ($scope, $element) {
+                    $element.animationend(($event) => {
+                        var callback = function () {
+                            fnAnimationEnd($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
                 };
             }
         };
