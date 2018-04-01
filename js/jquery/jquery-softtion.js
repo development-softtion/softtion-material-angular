@@ -19,6 +19,17 @@
         
         exists: function () { return jQuery(this).length > 0; },
         
+        scrollHeight: function () { return jQuery(this).prop("scrollHeight"); },
+        
+        isScrollEnd: function (discount) { 
+            discount = isNaN(discount) ? 0 : discount;
+            
+            var $element = jQuery(this), // Elemento
+                scroll = $element.height() + $element.scrollTop();
+            
+            return (scroll >= ($element.scrollHeight() - discount)); 
+        },
+        
         fixed: function () {
             var element = this[0], 
                 parent = element.offsetParent,

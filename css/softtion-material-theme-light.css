@@ -778,11 +778,17 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .card.theme-primary > .actions > button {
     color: var(--theme-primary-active); }
 
+.card.theme-primary > .actions > button:disabled {
+    color: var(--theme-primary-disabled); }
+
 .card.theme-primary > .actions > button:before {
     background-color: var(--theme-primary-ripple-alternative); }
 
 .card.theme-secondary > .actions > button {
     color: var(--theme-secondary-active); }
+
+.card.theme-secondary > .actions > button:disabled {
+    color: var(--theme-secondary-disabled); }
 
 .card.theme-secondary > .actions > button:before {
     background-color: var(--theme-secondary-ripple-alternative); }
@@ -1128,6 +1134,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     border: 2px solid var(--theme-secondary-active); 
     border-top: 2px solid transparent !important;
     border-left: 2px solid transparent !important; }
+
+.datatable > .content > table > tbody > tr > td > span.poster.theme-primary {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-alternative);
+}
 
 /** DATEPICKER */
 
@@ -1695,11 +1706,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--secondary-font);
     color: var(--alternative-primary-font); }
 
-.item-list > .content > .detail {
-    border-bottom-color: transparent; }
+.item-list {
+    border-bottom: 1px solid transparent; }
 
-.bordered > .item-list > .content > .detail {
-    border-bottom-color: var(--background-border); }
+.bordered > .item-list, .item-list.bordered  {
+    border-bottom: 1px solid var(--background-border); }
 
 .item-list > .content > .detail > .title { 
     color: var(--primary-font); }

@@ -1025,6 +1025,9 @@ input[type=number]::-webkit-outer-spin-button {
 .display-block {
     display: block !important; }
 
+.bold {
+    font-weight: 700 !important; }
+
 /** ALERT */
 
 .alert {
@@ -1788,7 +1791,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     font-size: 24px; }
 
 .avatar > i {
-    font-size: 28px; }
+    font-size: 24px; }
 
 .avatar > img {
     border-radius: 50%; }
@@ -2713,7 +2716,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card > .primary-title > .detail > .subtitle {
     height: 14px;
-    line-height: 12px;
+    line-height: 14px;
     font-size: 14px; }
 
 .card > .primary-title > .detail > .title + .subtitle {
@@ -2778,7 +2781,8 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     box-sizing: border-box; }
 
-.card > .optional-header > .avatar + .detail {
+.card > .optional-header > .avatar ~ .detail {
+    padding-left: 16px;
     width: calc(100% - 36px); }
 
 .card > .optional-header > button.action + .detail {
@@ -2796,18 +2800,15 @@ button.raised:focus:after, button.flat:focus:after {
     font-weight: 400; }
 
 .card > .optional-header > .detail > .title {
+    font-size: 16px;
     font-weight: 700; }
 
-.card > .optional-header > .avatar ~ .detail {
-    padding-left: 16px;
-    width: calc(100% - 36px); }
-
 .card > .support-content {
-    box-sizing: border-box;
+    display: table;
     width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 16px 16px 24px 16px; }
+    padding: 16px 16px 24px 16px;
+    box-sizing: border-box;
+    overflow-y: auto; }
 
 .card > .primary-title + .support-content,
 .card > .media-area + .support-content,
@@ -2825,6 +2826,16 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card > .area-action.left ~ .support-content {
     margin-left: 30%; }
+
+.card > .support-content .subheader {
+    position: relative;
+    float: left;
+    width: 100%; 
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 4px 0px; }
 
 .card > .media-area {
     width: 100%;
@@ -4008,6 +4019,12 @@ button.raised:focus:after, button.flat:focus:after {
     width: 56px; 
     padding: 0px; }
 
+.datatable > .content > table > thead > tr > th.icon-header,
+.datatable > .content > table > tbody > tr > td.icon {
+    width: 48px; 
+    text-align: center;
+    padding: 0px; }
+
 .datatable > .content > table tbody tr {
     -webkit-transition: background-color 160ms 0ms var(--sharp-curve);
        -moz-transition: background-color 160ms 0ms var(--sharp-curve);
@@ -4074,6 +4091,17 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td > .checkbox-select {
     padding: 0 6px;
     margin-top: 13px; }
+
+.datatable > .content > table > tbody > tr > td > span.poster {
+    display: block;
+    height: calc(100% - 16px);
+    margin: 8px 0px;
+    line-height: 31px;
+    border-radius: 2px; }
+
+.datatable > .content > table > tbody > tr > td.icon > i {
+    height: inherit;
+    line-height: inherit; }
 
 /** DATEPICKER */
 
@@ -6239,15 +6267,37 @@ img.center-content {
 .item-list.three-line > .content > .avatar > i {
     font-size: 24px; }
 
+.item-list > .content > .checkbox-control {
+    position: absolute; 
+    top: 12px;
+    left: 12px;
+    margin: 0px; }
+
+.two-line > .item-list > .content > .checkbox-control, 
+.item-list.two-line  > .content > .checkbox-control {
+    top: 24px; }
+
+.three-line > .item-list > .content > .checkbox-control, 
+.item-list.three-line  > .content > .checkbox-control {
+    top: 16px; }
+
 .item-list > .content > .detail {
-    border-bottom-width: 0px;
-    border-bottom-style: solid;
     padding: 16px;
     box-sizing: border-box; }
 
-.bordered > .item-list > .content > .detail,
-.item-list.bordered > .content > .detail {
-    border-bottom-width: 1px; }
+.item-list > .content > .avatar ~ .detail,
+.item-list > .content > .action ~ .detail {
+    padding-left: 72px; }
+
+.item-list > .content > .checkbox-control ~ .detail {
+    padding-left: 48px; }
+
+.two-line > .item-list > .content > .avatar ~ .detail,
+.item-list.two-line > .content > .avatar ~ .detail,
+.three-line > .item-list > .content > .avatar ~ .detail,
+.item-list.three-line > .content > .avatar ~ .detail {
+    padding-left: 0px;
+    margin-left: 72px; }
 
  .item-list > .content > .detail > .title {
     display: block;
@@ -6396,17 +6446,6 @@ img.center-content {
 .item-list > .content > .detail > .badge ~ .emphasis, 
 .item-list > .content > .detail > .switch ~ .emphasis {
     display: none !important; }
-
-.item-list > .content > .avatar ~ .detail,
-.item-list > .content > .action ~ .detail {
-    padding-left: 72px; }
-
-.two-line > .item-list > .content > .avatar ~ .detail,
-.item-list.two-line > .content > .avatar ~ .detail,
-.three-line > .item-list > .content > .avatar ~ .detail,
-.item-list.three-line > .content > .avatar ~ .detail {
-    padding-left: 0px;
-    margin-left: 72px; }
 
 .item-list > .content > .detail > .emphasis ~ .title {
     width: calc(100% - 40px); }
@@ -7404,11 +7443,11 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     box-sizing: border-box; }
 
 .datatable > .header > .search-box {
-    max-width: 50%;
     box-shadow: none;
     margin: 8px 0px; }
 
 .datatable > .header > .title ~ .search-box {
+    max-width: 50%;
     margin-left: 8px; }
 
 .datatable > .header > .search-box.right {
@@ -8219,7 +8258,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .sidenav > .content .sidenav-item > .detail > a > i {
     float: left;
-    padding-right: 32px;
+    padding-right: 16px;
     height: 48px;
     line-height: 48px; }
 
@@ -8237,17 +8276,18 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     width: calc(100% - 32px); }
 
 .sidenav > .content .sidenav-item > .detail > a > i + span {
-    width: calc(100% - 56px); }
+    width: calc(100% - 40px); }
 
 .sidenav .sidenav-item.optionable > .detail > a > i + span {
-    width: calc(100% - 84px); }
+    width: calc(100% - 68px); }
 
 .sidenav > .content .sidenav-item > .detail > a > span.badge {
     top: 12px;
     right: 18px;
     width: 24px;
     height: 24px;
-    line-height: 24px; }
+    line-height: 24px;
+    font-size: 14px; }
 
 .sidenav > .content .sidenav-item > .detail > a > button.action {
     position: absolute;

@@ -170,20 +170,16 @@
         this.preview = preview;
         
         function getDataFile(response, type) {
-            var blob = new Blob(
-                    [ response.data ], { type: type }
-                ),
-                
+            var blob = new Blob([response.data], { type: type }),
                 URL = $window.URL.createObjectURL(blob);
         
-            return { blob: blob, url: URL };
+            return { blob: blob, url: URL }; // Resultado de archivo
         }
         
         function download(attrs) {
             return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
-                    responseType: "arraybuffer", 
-                    params: attrs.params
+                    responseType: "arraybuffer", params: attrs.params
                 }).then((response) => {
                     // Generar datos para descargar
                     var file = getDataFile(response, attrs.type);
@@ -196,9 +192,7 @@
                     angular.element(element, properties).
                         appendTo("body")[0].click();
 
-                    $timeout(() => { 
-                        $window.URL.revokeObjectURL(file.url); 
-                    }, 10000); // Eliminando URL
+                    $timeout(() => { $window.URL.revokeObjectURL(file.url); }, 10000);
                     
                     resolve(file.blob); // Proceso correcto
                 }).catch((error) => { 
@@ -210,8 +204,7 @@
         function print(attrs) {
             return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
-                    responseType: "arraybuffer", 
-                    params: attrs.params
+                    responseType: "arraybuffer", params: attrs.params
                 }).then((response) => {
                     // Generar datos para imprimir
                     var file = getDataFile(response, attrs.type);
@@ -228,8 +221,7 @@
         function preview(attrs) {
             return $q((resolve, reject) => {
                 $http.get(attrs.url, { 
-                    responseType: "arraybuffer", 
-                    params: attrs.params
+                    responseType: "arraybuffer", params: attrs.params
                 }).then((response) => {
                     // Generar datos para visualizar
                     var file = getDataFile(response, attrs.type);
