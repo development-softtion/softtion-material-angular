@@ -23,20 +23,20 @@
     
         // Atributos del framework
     var MANAGER_DATETIME = {
-        MONTHS: [
-            { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
-            { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
-            { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
-            { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
-            { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
-            { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
-        ]
-    },
+            MONTHS: [
+                { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
+                { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
+                { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
+                { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
+                { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
+                { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
+            ]
+        },
+        
         TextType = softtion.get(softtion.TEXTCONTROL),
-    
+        Classes = getClasses(),
         KeysBoard = getKeysBoard(), 
-        KeysControl = getKeysControl(),
-        Classes = getClasses();
+        KeysControl = getKeysControl();
     
     function GET_INSTANCE_SOFTTION_MATERIAL() {
         return {
@@ -1575,7 +1575,7 @@
                         $element.addClass(Classes.DEFAULT); return;
                     } // No se definio color en el elemento
                     
-                    var color = $themes.get()[option.color][600];
+                    var color = $themes.getColor(option.color, 600);
 
                     if (!softtion.isString(color)) {
                         $element.addClass(Classes.DEFAULT);
@@ -4149,6 +4149,11 @@
                     "Seleccione archivos a procesar";
 
                 $scope.file = undefined; // Archivos seleccionado
+                
+                $scope.$watch(() => { return $scope.fileTypes; },
+                    (newValue) => {
+                        if (!softtion.isArray(newValue)) $scope.fileTypes = [];
+                    });
 
                 function processFile(file) {
                     var reader = new FileReader(); // Reader de file
@@ -4171,9 +4176,10 @@
                     var files = fileInput[0].files; // Archivos seleccionados
 
                     if (files.length) {
-                        if (softtion.isArrayNotEmpty($scope.fileTypes)) {
-                            if ($scope.fileTypes.hasItem(files[0].type)) processFile(files[0]);
-                        } else { processFile(files[0]); }
+                        if (!$scope.fileTypes.hasItem(files[0].type) &&
+                            !$scope.fileTypes.isEmpty()) return;
+                                    
+                        processFile(files[0]); // Se puede procesar seleccionado
                     } // Se cambio archivo al realizar seleccion
                 });
 
@@ -4459,8 +4465,6 @@
                 
                 $scope.$watch(() => { return $scope.fileTypes; },
                     (newValue) => {
-                        if (softtion.isUndefined(newValue)) return;
-                        
                         if (!softtion.isArray(newValue)) $scope.fileTypes = [];
                     });
 
@@ -4486,7 +4490,7 @@
 
                     if (files.length) // Se cambio archivo a seleccionar
                         angular.forEach(files, (file) => {
-                            if (!$scope.fileTypes.hasItem(files[0].type) &&
+                            if (!$scope.fileTypes.hasItem(file.type) &&
                                 !$scope.fileTypes.isEmpty()) return;
                                     
                             processFile(file); // Se puede procesar seleccionado
@@ -4712,18 +4716,18 @@
                     opacity = (bannerHeight === toolbarHeight) ? 
                         1 : (opacity > 1) ? 1 : opacity;
 
-                    var fontSizeTitle = 28 - (opacity * 8),
-                        fontSizeDetailSubTitle = 14 - (opacity * 2),
-                        fontSizeDetailTitle = 24 - (opacity * 6);
+                    var fontSize = 28 - (opacity * 8),
+                        fontSizeSubTitle = 14 - (opacity * 2),
+                        fontSizeTitle = 24 - (opacity * 6);
 
                     banner.css("height", bannerHeight); 
                     background.css("opacity", opacity);
 
-                    title.css({ marginTop: margin, fontSize: fontSizeTitle }); 
+                    title.css({ marginTop: margin, fontSize: fontSize }); 
 
                     detail.css({ marginTop: margin }); // Margin del detail
-                    detail.children(".subtitle").css("font-size", fontSizeDetailSubTitle);
-                    detail.children(".title").css("font-size", fontSizeDetailTitle);
+                    detail.children(".subtitle").css("font-size", fontSizeSubTitle);
+                    detail.children(".title").css("font-size", fontSizeTitle);
                 });
             }
         };
@@ -5600,6 +5604,8 @@
                     return (!softtion.isDefined($scope.select)) ? "" :
                         $scope.describeSuggestion($scope.select);
                 };
+                
+                $scope.hideSuggestions = function () { hideSuggestions(); };
 
                 function isBelongElement(target) {
                     return (label.is(target) || input.is(target) || 
@@ -5623,14 +5629,12 @@
                 }
 
                 function closeSelect ($event) {
-                    $scope.$apply(() => {
-                        if (!softtion.isInPage($element[0])) {
-                            $document.off(eventID); return;
-                        } // Componente ya fue removido del documento
-
-                        if (!isBelongElement($event.target))
-                            hideSuggestions(); // Se debe cerrar lista
-                    });
+                    if (!softtion.isInPage($element[0])) {
+                        $document.off(eventID); return;
+                    } // Componente ya fue removido del documento
+                    
+                    if (!isBelongElement($event.target))
+                        $scope.hideSuggestions(); // Se debe cerrar lista
                 }
             }
         };
@@ -5831,6 +5835,8 @@
                 };
 
                 $scope.getValueModel = function () { return describeValues(); };
+                
+                $scope.hideSuggestions = function () { hideSuggestions(); };
 
                 function describeValues() {
                     var value = ""; // Descripción de selección
@@ -5853,17 +5859,6 @@
                         $element.is(target);
                 }
 
-                function closeSelect ($event) {
-                    $scope.$apply(() => {
-                        if (!softtion.isInPage($element[0])) {
-                            $document.off(eventID); return;
-                        } // Componente ya fue removido del documento
-
-                        if (!isBelongElement($event.target))
-                            hideSuggestions(); // Se debe cerrar lista
-                    });
-                }
-
                 function hideSuggestions() {
                     if ($scope.showList) listener.launch("hide"); // Cerrando
 
@@ -5878,6 +5873,15 @@
 
                     $scope.selectStart = true; $scope.showList = true; 
                     $element.addClass(Classes.ACTIVE); listener.launch("show");
+                }
+
+                function closeSelect ($event) {
+                    if (!softtion.isInPage($element[0])) {
+                        $document.off(eventID); return;
+                    } // Componente ya fue removido del documento
+
+                    if (!isBelongElement($event.target))
+                        $scope.hideSuggestions(); // Se debe cerrar lista
                 }
             }
         };
@@ -6988,6 +6992,8 @@
                 $element.on("mouseout", () => { 
                     tooltip.removeClass(Classes.SHOW); // Ocultando
                 });
+            
+                $scope.$on("$destroy", () => { tooltip.remove(); }); 
             }
         };
     }
@@ -8566,6 +8572,12 @@
             return this; // Retornando interfaz fluida
         };
         
+        MaterialTheme.prototype.get = function () { return themes; };
+        
+        MaterialTheme.prototype.getColor = function (pallette, base) {
+            return this.get()[pallette.toUpperCase()][base];
+        };
+        
         function getHexToRgba(hex, opacity) {
             opacity = opacity || "0.5"; // Opacidad del color
             
@@ -8816,7 +8828,7 @@
 
                     if (!properties.has(2)) return;
                     
-                    var color = $themes.get()[properties[0]][properties[1]];
+                    var color = $themes.getColor(properties[0], properties[1]);
 
                     if (softtion.isString(color)) // Color correcto
                         $element.css("background-color", color);
@@ -8850,7 +8862,7 @@
 
                     if (!properties.has(2)) return;
                     
-                    var color = $themes.get()[properties[0]][properties[1]];
+                    var color = $themes.getColor(properties[0], properties[1]);
 
                     if (softtion.isString(color)) // Color correcto
                         $element.css("color", color);
