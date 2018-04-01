@@ -9902,17 +9902,17 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: relative;
     width: 100%;
     float: left;
-    overflow-y: hidden;
+    overflow: hidden;
     padding: 8px 0px 20px 0px; }
 
 .textfield-bordered > .content > .box {
     padding-bottom: 2px;
     border-radius: 4px; }
 
-.textfield-bordered:hover > .content > .box {
+.textfield-bordered:hover > .content:not(.disabled) > .box {
     padding-bottom: 0px; }
 
-.textfield-bordered:hover > .content.focused > .box,
+.textfield-bordered:hover > .content:not(.disabled).focused > .box,
 .textfield-bordered > .content.focused > .box {
     padding-bottom: 0px; }
 

@@ -2862,11 +2862,29 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-bordered > .content > .box {
     border: 1px solid var(--background-border); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content > .box {
+    border: 1px solid var(--theme-primary-border-alternative); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box {
+    border: 1px solid var(--theme-secondary-border-alternative); }
+
 .textfield-bordered:hover > .content > .box {
     border: 2px solid var(--primary-font); }
 
+.theme-primary .textfield-bordered.theme-contrast:hover > .content > .box {
+    border: 2px solid var(--theme-primary-inactive); }
+
+.theme-secondary .textfield-bordered.theme-contrast:hover > .content > .box {
+    border: 2px solid var(--theme-secondary-inactive); }
+
 .textfield-bordered > .content.focused > .box {
     border: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content.focused > .box {
+    border: 2px solid var(--theme-primary-active); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content.focused > .box {
+    border: 2px solid var(--theme-secondary-active); }
 
 .textfield-bordered.active.error > .content.focused > .box {
     border: 2px solid var(--theme-error-500); }
@@ -2876,14 +2894,42 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--background-statusbar);
     border: 1px solid var(--background-border); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content.disabled > .box,
+.theme-primary .textfield-bordered.theme-contrast:hover > .content.disabled > .box {
+    background-color: var(--theme-primary-300);
+    border: 1px solid var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content.disabled > .box,
+.theme-secondary .textfield-bordered.theme-contrast:hover > .content.disabled > .box {
+    background-color: var(--theme-secondary-300);
+    border: 1px solid var(--theme-secondary-disabled); }
+
 .textfield-bordered > .content > .box > label {
     color: var(--secondary-font); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > label {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > label {
+    color: var(--theme-secondary-inactive); }
 
 .textfield-bordered > .content.disabled > .box > label {
     color: var(--disabled-font); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
+    color: var(--theme-secondary-disabled); }
+
 .textfield-bordered.active > .content > .box > input:focus ~ label {
     color: var(--theme-secondary-500); }
+
+.theme-primary .textfield-bordered.theme-contrast.active > .content > .box > input:focus ~ label {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textfield-bordered.theme-contrast.active > .content > .box > input:focus ~ label {
+    color: var(--theme-secondary-active); }
 
 .textfield-bordered.active.error > .content > .box > input:focus ~ label, 
 .textfield-bordered.error > .content > .box > label,
@@ -2897,11 +2943,33 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-bordered.active > .content > .box > input:focus {
     color: var(--primary-font); }
 
+.theme-primary .textfield-bordered.theme-contrast.active > .content > .box > input:focus {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textfield-bordered.theme-contrast.active > .content > .box > input:focus {
+    color: var(--theme-secondary-active); }
+
 .textfield-bordered > .content > .box > input:disabled {
     color: var(--disabled-font); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > input:disabled {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > input:disabled {
+    color: var(--theme-secondary-disabled); }
+
 .textfield-bordered > .content > .box > input::selection {
-    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-active); 
+    background-color: var(--theme-secondary-500); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > input::selection {
+    color: var(--theme-primary-active); 
+    background-color: var(--theme-primary-500); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > .value {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > .value {
     color: var(--theme-secondary-active); }
 
 .textfield-bordered.active > .content > .box > input:focus ~ .value {
@@ -2910,14 +2978,38 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-bordered > .content > .box > input:disabled ~ .value {
     color: var(--disabled-font); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > input:disabled ~ .value {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > input:disabled ~ .value {
+    color: var(--theme-secondary-disabled); }
+
 .textfield-bordered > .content > .box > i {
     color: var(--secondary-font); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > i {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > .box > i {
+    color: var(--theme-secondary-inactive); }
 
 .textfield-bordered > .content > .box > input:disabled ~ i {
     color: var(--disabled-font); }
 
+.theme-primary .textfield-bordered.theme-contrast > .content > .box > input:disabled ~ i {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered > .content.theme-contrast > .box > input:disabled ~ i {
+    color: var(--theme-secondary-disabled); }
+
 .textfield-bordered > .content > span.help {
     color: var(--secondary-font); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content > span.help {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textfield-bordered > .content.theme-contrast > span.help {
+    color: var(--theme-secondary-inactive); }
 
 .textfield-bordered > .content > span.error {
     color: var(--theme-error-500); }
@@ -2925,6 +3017,14 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-bordered > .content > span.counter {
     color: var(--secondary-font);
     background-color: var(--background-core); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content > span.counter {
+    color: var(--theme-primary-inactive);
+    background-color: var(--theme-primary-500); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content > span.counter {
+    color: var(--theme-secondary-inactive);
+    background-color: var(--theme-secondary-500); }
 
 /** TEXTFIELD MULTILINE */
 
