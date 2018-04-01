@@ -27,18 +27,18 @@
             discount = isNaN(discount) ? 0 : discount;
             
             var $element = jQuery(this), // Elemento
-                scroll = $element.height() + $element.scrollTop();
+                scroll = $element.width() + $element.scrollLeft();
             
-            return (scroll >= ($element.scrollHeight() - discount)); 
+            return (scroll >= ($element.scrollWidth() - discount)); 
         },
         
         isScrollYEnd: function (discount) { 
             discount = isNaN(discount) ? 0 : discount;
             
             var $element = jQuery(this), // Elemento
-                scroll = $element.width() + $element.scrollLeft();
+                scroll = $element.height() + $element.scrollTop();
             
-            return (scroll >= ($element.scrollWidth() - discount)); 
+            return (scroll >= ($element.scrollHeight() - discount)); 
         },
         
         fixed: function () {
