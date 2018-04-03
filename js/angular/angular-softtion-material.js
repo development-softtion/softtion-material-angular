@@ -6243,6 +6243,9 @@
             addAttribute("ng-class", "{active: isActiveLabel()}").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value"]).
@@ -6279,6 +6282,7 @@
                 value: "=ngModel", 
                 label: "@", 
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 uppercase: "=?",
                 ngDisabled: "=?",
@@ -6345,6 +6349,9 @@
             addAttribute("ng-click", "clickLabel($event)").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var spanError = softtion.html("span").addClass(["error", "truncate"]).
@@ -6374,6 +6381,7 @@
                 label: "@", 
                 type: "@",
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 uppercase: "=?",
                 ngDisabled: "=?",
@@ -6389,8 +6397,8 @@
                 ngFormatValue: "&",
                 eventListener: "&"
             },
-            link: function ($scope, $element) {
-                defineInputComponent($scope, $element);
+            link: function ($scope, $element, $attrs) {
+                defineInputComponent($scope, $element, $attrs);
             }
         };
     }
@@ -6432,6 +6440,9 @@
             addAttribute("ng-class", "{active: isActiveLabel()}").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value"]).
@@ -6468,6 +6479,7 @@
                 value: "=ngModel", 
                 label: "@", 
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 uppercase: "=?",
                 ngDisabled: "=?",
@@ -6545,6 +6557,9 @@
             addAttribute("ng-click", "clickLabel($event)").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var spanError = softtion.html("span").addClass(["error", "truncate"]).
@@ -6575,6 +6590,7 @@
                 label: "@", 
                 type: "@",
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 ngUppercase: "=?",
                 ngDisabled: "=?",
@@ -6593,8 +6609,8 @@
                 checkboxActive: "=?",
                 eventListener: "&"
             },
-            link: function ($scope, $element) {
-                defineInputComponent($scope, $element);
+            link: function ($scope, $element, $attrs) {
+                defineInputComponent($scope, $element, $attrs);
             }
         };
     }
@@ -6646,6 +6662,9 @@
             addAttribute("ng-click", "clickLabel($event)").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var spanError = softtion.html("span").addClass(["error", "truncate"]).
@@ -6675,6 +6694,7 @@
                 label: "@", 
                 type: "@",
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 uppercase: "=?",
                 ngDisabled: "=?",
@@ -6691,8 +6711,8 @@
                 ngFormatValue: "&",
                 eventListener: "&"
             },
-            link: function ($scope, $element) {
-                defineInputComponent($scope, $element);
+            link: function ($scope, $element, $attrs) {
+                defineInputComponent($scope, $element, $attrs);
             }
         };
     }
@@ -6739,6 +6759,9 @@
             addAttribute("ng-class", "{active: isActiveLabel()}").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value"]).
@@ -6775,6 +6798,7 @@
                 value: "=ngModel", 
                 label: "@", 
                 required: "=?",
+                optional: "=?",
                 ngTrim: "=?",
                 uppercase: "=?",
                 ngDisabled: "=?",
@@ -8938,7 +8962,7 @@
         }
     }
     
-    function defineInputComponent($scope, $element) {
+    function defineInputComponent($scope, $element, $attrs) {
             // Componentes
         var input = $element.find("input");
         
@@ -8963,6 +8987,10 @@
                     if (softtion.isDefined(newValue)) $scope.input = newValue;
                 } // Componente de texto no esta enfocado
             });
+            
+        $attrs.$observe("iconAction", (value) => {
+            $scope.isIconAction = softtion.isString(value);
+        });
 
         // Atributos de control
         $scope.minLength = (isNaN($scope.minLength)) ? -1 : $scope.minLength;
@@ -8974,14 +9002,7 @@
         
         $scope.inputStart = false; // Input no inicializado
 
-        if (softtion.isString($scope.value)) $element.addClass(Classes.ACTIVE); 
-
-        if ($scope.type === "password") {
-            $scope.isIconAction = true; $scope.iconAction = "visibility";
-        } else {
-            if (softtion.isString($scope.iconAction))
-                $scope.isIconAction = true; // Activando acción
-        }
+        if ($scope.type === "password") $scope.iconAction = "visibility";
 
         $scope.isActiveLabel = function () {
             return ($scope.inputActive || softtion.isString($scope.input) || 

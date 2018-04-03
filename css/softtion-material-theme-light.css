@@ -2588,32 +2588,72 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: rgba(238, 238, 238, 1);
     border-bottom: 2px solid var(--background-border); }
 
+.theme-primary .textbox.theme-contrast > .content > .box {
+    background-color: var(--theme-primary-300);
+    border-bottom: 2px solid var(--theme-primary-border-alternative); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box {
+    background-color: var(--theme-secondary-300);
+    border-bottom: 2px solid var(--theme-secondary-border-alternative); }
+
 .textbox:hover > .content > .box {
-    background-color: rgba(231, 231, 231, 1);
     border-bottom: 2px solid var(--primary-font); }
+
+.theme-primary .textbox.theme-contrast:hover > .content > .box {
+    border-bottom: 2px solid var(--theme-primary-inactive); }
+
+.theme-secondary .textbox.theme-contrast:hover > .content > .box {
+    border-bottom: 2px solid var(--theme-secondary-inactive); }
 
 .textbox > .content.focused > .box {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
+.theme-primary .textbox.theme-contrast > .content.focused > .box {
+    border-bottom: 2px solid var(--theme-primary-active); }
+
+.theme-secondary .textbox.theme-contrast > .content.focused > .box {
+    border-bottom: 2px solid var(--theme-secondary-active); }
+
 .textbox.active.error > .content.focused > .box {
     border-bottom: 2px solid var(--theme-error-500); }
+
+.textbox > .content.disabled > .box,
+.textbox:hover > .content.disabled > .box {
+    background-color: rgba(231, 231, 231, 1);
+    border-bottom: 2px solid var(--disabled-font); }
+
+.theme-primary .textbox.theme-contrast > .content.disabled > .box,
+.theme-primary .textbox.theme-contrast:hover > .content.disabled > .box {
+    background-color: var(--theme-primary-200);
+    border-bottom: 2px solid var(--theme-primary-border-alternative); }
+
+.theme-secondary .textbox.theme-contrast > .content.disabled > .box,
+.theme-secondary .textbox.theme-contrast:hover > .content.disabled > .box {
+    background-color: var(--theme-secondary-200);
+    border-bottom: 2px solid var(--theme-secondary-border-alternative); }
 
 .textbox > .content > .box > label {
     color: var(--secondary-font); }
 
+.theme-primary .textbox.theme-contrast > .content > .box > label {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > label {
+    color: var(--theme-secondary-inactive); }
+
 .textbox > .content > .box > input:focus ~ label.active {
     color: var(--theme-secondary-500); }
+
+.theme-primary .textbox.theme-contrast > .content > .box > input:focus ~ label.active {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > input:focus ~ label.active {
+    color: var(--theme-secondary-active); }
 
 .textbox.error > .content > .box > input:focus ~ label.active, 
 .textbox.error > .content > .box > label,
 .textbox.active > .content > .box > input:focus ~ label > span {
     color: var(--theme-error-500); }
-
-.textbox > .content > .box > i {
-    color: var(--secondary-font); }
-
-.textbox > .content > .box > input:disabled ~ i {
-    color: var(--disabled-font); }
 
 .textbox > .content > .box > input {
     color: transparent; }
@@ -2621,11 +2661,33 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textbox.active > .content > .box > input:focus {
     color: var(--primary-font); }
 
+.theme-primary .textbox.theme-contrast.active > .content > .box > input:focus {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textbox.theme-contrast.active > .content > .box > input:focus {
+    color: var(--theme-secondary-active); }
+
 .textbox > .content > .box > input:disabled {
     color: var(--disabled-font); }
 
+.theme-primary .textbox.theme-contrast > .content > .box > input:disabled {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > input:disabled {
+    color: var(--theme-secondary-disabled); }
+
 .textbox > .content > .box > input::selection { 
-    background-color: var(--theme-secondary-500); 
+    color: var(--theme-secondary-active);
+    background-color: var(--theme-secondary-500); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > input::selection { 
+    color: var(--theme-primary-active);
+    background-color: var(--theme-primary-500); }
+
+.theme-primary .textbox.theme-contrast > .content > .box > .value {
+    color: var(--theme-primary-active); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > .value {
     color: var(--theme-secondary-active); }
 
 .textbox.active > .content > .box > input:focus ~ .value {
@@ -2634,8 +2696,38 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textbox > .content > .box > input:disabled ~ .value {
     color: var(--disabled-font); }
 
+.theme-primary .textbox.theme-contrast > .content > .box > input:disabled ~ .value {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > input:disabled ~ .value {
+    color: var(--theme-secondary-disabled); }
+
+.textbox > .content > .box > i {
+    color: var(--secondary-font); }
+
+.theme-primary .textbox.theme-contrast > .content > .box > i {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textbox.theme-contrast > .content > .box > i {
+    color: var(--theme-secondary-inactive); }
+
+.textbox > .content > .box > input:disabled ~ i {
+    color: var(--disabled-font); }
+
+.theme-primary .textbox.theme-contrast > .content > .box > input:disabled ~ i {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textbox > .content.theme-contrast > .box > input:disabled ~ i {
+    color: var(--theme-secondary-disabled); }
+
 .textbox > .content > span.help {
     color: var(--secondary-font); }
+
+.theme-primary .textbox.theme-contrast > .content > span.help {
+    color: var(--theme-primary-inactive); }
+
+.theme-secondary .textbox.theme-contrast > .content > span.help {
+    color: var(--theme-secondary-inactive); }
 
 .textbox > .content > span.error {
     color: var(--theme-error-500); }
@@ -2644,6 +2736,14 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--background-core);
     color: var(--secondary-font); }
 
+.theme-primary .textbox.theme-contrast > .content > span.counter {
+    color: var(--theme-primary-inactive);
+    background-color: var(--theme-primary-500); }
+
+.theme-secondary .textbox.theme-contrast > .content > span.counter {
+    color: var(--theme-secondary-inactive);
+    background-color: var(--theme-secondary-500); }
+
 /** TEXTBOX MULTILINE */
 
 .textbox-multiline > .content > .box {
@@ -2651,11 +2751,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     border-bottom: 2px solid var(--background-border); }
 
 .textbox-multiline:hover > .content > .box {
-    background-color: rgba(231, 231, 231, 1);
     border-bottom: 2px solid var(--primary-font); }
 
 .textbox-multiline > .content.focused > .box {
     border-bottom: 2px solid var(--theme-secondary-500); }
+
+.textbox-multiline > .content.disabled > .box,
+.textbox-multiline:hover > .content.disabled > .box {
+    background-color: rgba(231, 231, 231, 1);
+    border-bottom: 2px solid var(--disabled-font); }
 
 .textbox-multiline.active.error > .content.focused > .box {
     border-bottom: 2px solid var(--theme-error-500); }
@@ -2924,15 +3028,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .theme-secondary .textfield-bordered.theme-contrast > .content > .box > label {
     color: var(--theme-secondary-inactive); }
 
-.textfield-bordered > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-disabled); }
-
-.theme-secondary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-disabled); }
-
 .textfield-bordered.active > .content > .box > input:focus ~ label {
     color: var(--theme-secondary-500); }
 
@@ -2946,6 +3041,15 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .textfield-bordered.error > .content > .box > label,
 .textfield-bordered.active > .content > .box > input:focus ~ label > span {
     color: var(--theme-error-500); }
+
+.textfield-bordered > .content.disabled > .box > label {
+    color: var(--disabled-font); }
+
+.theme-primary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
+    color: var(--theme-primary-disabled); }
+
+.theme-secondary .textfield-bordered.theme-contrast > .content.disabled > .box > label {
+    color: var(--theme-secondary-disabled); }
 
 .textfield-bordered > .content > .box > input {
     color: transparent;
@@ -3019,7 +3123,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .theme-primary .textfield-bordered.theme-contrast > .content > span.help {
     color: var(--theme-primary-inactive); }
 
-.theme-secondary .textfield-bordered > .content.theme-contrast > span.help {
+.theme-secondary .textfield-bordered.theme-contrast > .content > span.help {
     color: var(--theme-secondary-inactive); }
 
 .textfield-bordered > .content > span.error {

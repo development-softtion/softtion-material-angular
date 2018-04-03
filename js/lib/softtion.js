@@ -1044,12 +1044,12 @@
             var pattern = undefined; // Expresión RegExp
             
             switch (type) {
-                case (-1):  // LIKE '%value'
-                    pattern = "^.*" + value.toLowerCase() + "$"; break;
-                case (0):   // LIKE '%value%'
-                    pattern = "^.*" + value.toLowerCase() + ".*$"; break;
-                case (1):   // LIKE 'value%'
+                case ("start"):   // LIKE 'value%'
                     pattern = "^" + value.toLowerCase() + ".*$"; break;
+                case ("center"):   // LIKE '%value%'
+                    pattern = "^.*" + value.toLowerCase() + ".*$"; break;
+                case ("end"):  // LIKE '%value'
+                    pattern = "^.*" + value.toLowerCase() + "$"; break;
             } // Definiendo tipo de LIKE para aplicar
             
             return softtion.isUndefined(pattern) ? false :
