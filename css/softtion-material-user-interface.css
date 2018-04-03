@@ -3846,6 +3846,9 @@ button.raised:focus:after, button.flat:focus:after {
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
+.clockpicker-input > .content > label > span {
+    margin-left: 2px; }
+
 .clockpicker-input > .content > label.active {
     cursor: none;
     top: 8px;
@@ -4278,6 +4281,9 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-transition: all 120ms 0ms var(--sharp-curve);
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
+
+.datepicker-input > .content > label > span {
+    margin-left: 2px; }
 
 .datepicker-input > .content > label.active {
     cursor: none;
@@ -8704,10 +8710,13 @@ body.show-bottom-navigation .snackbar.show {
     width: 100%;
     height: 72px;
     overflow: hidden; 
+    box-sizing: border-box;
     box-shadow: var(--shadow-2); 
     user-select: none; }
 
-.app-bar > .stepper-horizontal, .stepper-horizontal.flat {
+.app-bar > .stepper-horizontal, 
+.stepper-horizontal.flat,
+.stepper-horizontal.bordered {
     box-shadow: none; }
 
 .stepper-horizontal.alternative {

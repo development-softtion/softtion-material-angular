@@ -2902,7 +2902,13 @@
         var label = softtion.html("label").
             setText("{{label}}").addClass("truncate").
             addAttribute("ng-class", "{active: isActiveLabel()}").
-            addAttribute("ng-click", "showDialog($event)");
+            addAttribute("ng-click", "showDialog($event)").
+            addChildren(
+                softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
+            );
 
         var buttonClear = softtion.html("i").addClass(["action"]).
             setText("close").addAttribute("ng-hide", "isActiveClear()").
@@ -2931,6 +2937,8 @@
             scope: {
                 time: "=ngModel",
                 label: "@",
+                required: "=?",
+                optional: "=?",
                 format: "@",
                 autoStart: "=?",
                 ngDisabled: "=?",
@@ -3626,7 +3634,13 @@
         var label = softtion.html("label").
             setText("{{label}}").addClass("truncate").
             addAttribute("ng-class", "{active: isActiveLabel()}").
-            addAttribute("ng-click", "showDialog($event)");
+            addAttribute("ng-click", "showDialog($event)").
+            addChildren(
+                softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
+            );
 
         var buttonClear = softtion.html("i").addClass(["action"]).
             setText("close").addAttribute("ng-hide", "isActiveClear()").
@@ -3660,6 +3674,8 @@
                 date: "=ngModel",
                 format: "@",
                 label: "@",
+                required: "=?",
+                optional: "=?",
                 autoStart: "=?",
                 ngDisabled: "=?",
                 iconDescription: "@",
