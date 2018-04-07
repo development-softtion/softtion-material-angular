@@ -76,6 +76,8 @@
                 ClockpickerDialog: Directives.create(Directives.ClockPickerDialog),
 
                 ClockpickerInput: Directives.create(Directives.ClockPickerInput),
+                
+                DataTable: Directives.create(Directives.DataTable),
 
                 Datepicker: Directives.create(Directives.DatePicker),
 
@@ -323,6 +325,7 @@
             case (Directives.ClockPicker.NAME): return Directives.ClockPicker;
             case (Directives.ClockPickerDialog.NAME): return Directives.ClockPickerDialog;
             case (Directives.ClockPickerInput.NAME): return Directives.ClockPickerInput;
+            case (Directives.DataTable.NAME): return Directives.DataTable;
             case (Directives.DatePicker.NAME): return Directives.DatePicker;
             case (Directives.DatePickerDialog.NAME): return Directives.DatePickerDialog;
             case (Directives.DatePickerInput.NAME): return Directives.DatePickerInput;
@@ -3003,6 +3006,33 @@
                 $scope.clearTime = function () {
                     $scope.time = undefined; listener.launch("clear");
                 };
+            }
+        };
+    }
+    
+    // Directiva: DataTable
+    // Version: 1.0.0
+    // Update: 05/04/2018
+    
+    Directives.DataTable = DataTableDirective;
+    
+    Directives.DataTable.NAME = "DataTable";
+    Directives.DataTable.VERSION = "1.0.0";
+    Directives.DataTable.KEY = "datatable";
+                    
+    function DataTableDirective() {
+        return {
+            restrict: "C",
+            link: function ($scope, $element) {
+                    // Elementos
+                var thead = $element.find("thead"),
+                    tbody = $element.find("tbody");
+            
+                tbody.resize(() => {
+                    (tbody.scrollHeight() > tbody.height()) ?
+                        thead.addClass("scrolling") : 
+                        thead.removeClass("scrolling");
+                });
             }
         };
     }
@@ -8997,7 +9027,7 @@
             (newValue) => { 
                 if (!$scope.inputStart) return; // Componente iniciado
                 
-                if (!$scope.inputActive) { 
+                if (!$scope.inputActive && softtion.isDefined(newValue)) { 
                     validateValue(newValue); // Validando model
                 } else {
                     if (softtion.isDefined(newValue)) $scope.input = newValue;

@@ -373,6 +373,27 @@
         }
     };
     
+    Softtion.prototype.print = function (attrs) {
+        var defaults = {
+            title: "SofttionPrint", width: 600, height: 400
+        };
+        
+        attrs = jQuery.extend({}, defaults, attrs);
+        
+        var title = "<html><head><title>" + attrs.title + "</title>",
+            dimensions = "width=" + attrs.width + ",height=" + attrs.height,
+
+        file = window.open("", "PRINT", dimensions);
+
+        file.document.write(title);
+        file.document.write("</head><body>");
+        file.document.write(attrs.html);
+        file.document.write("</body></html>");
+        file.document.close();
+
+        file.focus(); file.print(); file.close();
+    };
+    
     Softtion.prototype.newTabPage = function (url) {
         var a = document.createElement("a");
         a.target = "_blank"; a.href = url; a.click(); 
@@ -1024,17 +1045,15 @@
             return softtion.getTimeFormatElapsed(difference);
         };
 
-        // Métodos de Softtion para los objetos 'String'
-
-        String.prototype.isFull = function () { return (this.length > 0); };
-
-        String.prototype.isEmpty = function () { return (this.length === 0); };
-
     })(window.softtion);
         
     // Métodos de Softtion para los objetos 'String'
     
     ((softtion) => {
+
+        String.prototype.isFull = function () { return (this.length > 0); };
+
+        String.prototype.isEmpty = function () { return (this.length === 0); };
         
         String.prototype.pattern = function (value) { 
             return (~this.toLowerCase().indexOf(value.toLowerCase()) !== 0); 

@@ -3274,16 +3274,19 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     border: 1px solid var(--background-border); }
 
 .toolbar > .title, .app-bar > .toolbar > .title,
+.toolbar > .title > a, .app-bar > .toolbar > .title > a,
 .toolbar > .detail, .app-bar > .toolbar > .detail {
     color: var(--primary-font); }
 
 .app-bar.theme-primary > .toolbar > .title,
+.app-bar.theme-primary > .toolbar > .title > a,
 .app-bar.theme-primary > .toolbar > .detail > .title,
 .app-bar.theme-primary > .toolbar > .detail > .subtitle,
 .app-bar.theme-primary > .toolbar > .nav-icon > button.action,
 .app-bar.theme-primary > .toolbar > .menu-icon,
 .app-bar.theme-primary > .toolbar > .actions > button,
 .toolbar.theme-primary > .title,
+.toolbar.theme-primary > .title > a,
 .toolbar.theme-primary > .detail > .title,
 .toolbar.theme-primary > .detail > .subtitle,
 .toolbar.theme-primary > .nav-icon > button.action,
@@ -3292,12 +3295,14 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--theme-primary-alternative); }
 
 .app-bar.theme-secondary > .toolbar > .title,
+.app-bar.theme-secondary > .toolbar > .title > a,
 .app-bar.theme-secondary > .toolbar > .detail > .title,
 .app-bar.theme-secondary > .toolbar > .detail > .subtitle,
 .app-bar.theme-secondary > .toolbar > .nav-icon > button.action,
 .app-bar.theme-secondary > .toolbar > .menu-icon,
 .app-bar.theme-secondary > .toolbar > .actions > button,
 .toolbar.theme-secondary > .title, 
+.toolbar.theme-secondary > .title > a, 
 .toolbar.theme-secondary > .nav-icon > button.action,
 .toolbar.theme-secondary > .menu-icon, 
 .toolbar.theme-secondary > .actions > button {
