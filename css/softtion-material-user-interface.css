@@ -2447,6 +2447,23 @@ button.action:before {
        -moz-transform: scale(0);
             transform: scale(0); }
 
+button.action.download > i {
+    display: none; }
+
+button.action > .progress-circular {
+    padding: 0px;
+    width: 0px;
+    height: 0px; }
+
+button.action > .progress-circular > svg {
+    width: 0px;
+    height: 0px; }
+
+button.action.download > .progress-circular,
+button.action.download > .progress-circular > svg {
+    width: 24px;
+    height: 24px; }
+
 button.raised:not(:active):before, button.flat:not(:active):before,
 button.floating:not(:active):before, button.action:not(:active):before {
     -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);

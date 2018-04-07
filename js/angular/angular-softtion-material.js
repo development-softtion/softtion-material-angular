@@ -92,6 +92,8 @@
                 ExpansionPanel: Directives.create(Directives.ExpansionPanel),
 
                 FabMenu: Directives.create(Directives.FabMenu),
+                
+                FabProgress: Directives.create(Directives.ButtonProgress),
 
                 FabSpeedDial: Directives.create(Directives.FabSpeedDial),
 
@@ -316,6 +318,7 @@
             case (Directives.BottomSheet.NAME): return Directives.BottomSheet;
             case (Directives.Breadcrumb.NAME): return Directives.Breadcrumb;
             case (Directives.Button.NAME): return Directives.Button;
+            case (Directives.ButtonProgress.NAME): return Directives.ButtonProgress;
             case (Directives.Carousel.NAME): return Directives.Carousel;
             case (Directives.Catalog.NAME): return Directives.Catalog;
             case (Directives.Checkbox.NAME): return Directives.Checkbox;
@@ -1740,6 +1743,52 @@
                         (newValue) ? $element.addClass("disabled-ripple") :
                             $element.removeClass("disabled-ripple");
                     });
+            }
+        };
+    }
+    
+    // Directiva: ButtonProgress
+    // Version: 1.0.0
+    // Update: 07/04/2018
+    
+    Directives.ButtonProgress = ButtonProgressDirective;
+    
+    Directives.ButtonProgress.NAME = "FabProgress";
+    Directives.ButtonProgress.VERSION = "1.0.0";
+    Directives.ButtonProgress.KEY = "buttonprogress";
+    
+    Directives.ButtonProgress.$inject = [ "$compile" ];
+    
+    function ButtonProgressDirective($compile) {
+        return {
+            restrict: "E",
+            scope: {
+                ngProgress: "=?",
+                icon: "@",
+                eventListener: "&"
+            },
+            link: function ($scope, $element) {
+                    // Componentes
+                var button = softtion.html("button").addClass("action").
+                    addAttribute("ng-class", "{download: ngProgress}").
+                    addAttribute("ng-disabled", "ngProgress").
+                    addAttribute("ng-click", "buttonClick($event)").
+                    addChildren(
+                        softtion.html("i").setText("{{icon}}")
+                    ).addChildren(
+                        softtion.html("div").addClass("progress-circular").
+                            addAttribute("indeterminate", "true").
+                            addAttribute("ng-visible", "ngProgress")
+                    );
+            
+                    // Atributos
+                var listener = new Listener($scope, []);
+            
+                $element.replaceWith($compile(button.create())($scope));
+                
+                $scope.buttonClick = function ($event) {
+                    listener.launch("click", {$event: $event});
+                };
             }
         };
     }
