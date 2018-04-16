@@ -2447,7 +2447,7 @@ button.action:before {
        -moz-transform: scale(0);
             transform: scale(0); }
 
-button.action.download > i {
+button.action.progress > i {
     display: none; }
 
 button.action > .progress-circular {
@@ -2459,8 +2459,8 @@ button.action > .progress-circular > svg {
     width: 0px;
     height: 0px; }
 
-button.action.download > .progress-circular,
-button.action.download > .progress-circular > svg {
+button.action.progress > .progress-circular,
+button.action.progress > .progress-circular > svg {
     width: 24px;
     height: 24px; }
 
@@ -3960,19 +3960,26 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden; }
 
 .datatable > .header > .title {
+    display: block;
+    width: 100%;
     font-size: 16px;
     font-weight: 500;
     height: inherit;
     line-height: 64px;
     float: left;
-    margin-right: 8px; }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
 
 .datatable > .header > .actions {
-    position: absolute;
-    right: 12px;
     display: flex;
+    width: auto;
     margin: 0px;
     padding: 0px; }
+
+.datatable > .header > .title + .actions {
+    padding-left: 8px;
+    box-sizing: border-box; }
 
 .datatable > .header > .actions > button.action {
     padding: 20px 12px;
@@ -6216,6 +6223,9 @@ img {
 img.active {
     display: block; }
 
+.gm-style img, .google-maps img {
+    display: block !important; }
+
 img.center {
     position: absolute; }
 
@@ -7486,7 +7496,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .datatable > .header > .title ~ .search-box {
     max-width: 50%;
-    margin-left: 8px; }
+    padding-left: 8px;
+    box-sizing: border-box; }
 
 .datatable > .header > .search-box.right {
     position: absolute;
@@ -7557,7 +7568,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     outline: none;
     box-sizing: border-box; }
 
-.app-bar.floating > .search-box > input {
+.app-bar.floating > .search-box > input,
+.datatable > .header > .search-box > input {
     margin: 6px 8px; }
 
 .search-box > .actions {
@@ -9751,6 +9763,17 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.textfield > .content > i.description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px;
+    z-index: 2;
+    cursor: pointer; }
+
+.textfield.inline > .content > i.description {
+    display: none; }
+
 .textfield > .content > label {
     position: absolute;
     top: 28px;
@@ -9763,6 +9786,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     -webkit-transition: all 120ms 0ms var(--sharp-curve);
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
+
+.textfield:not(.inline) > .content > i.description ~ label {
+    left: 40px;
+    width: calc(100% - 40px); }
 
 .textfield.inline > .content > label {
     top: 16px;
@@ -9814,6 +9841,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     outline: none; 
     background-color: transparent; }
 
+.textfield:not(.inline) > .content > i.description ~ input { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
 .textfield.align-right > .content > input { 
     text-align: right; }
 
@@ -9848,6 +9879,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 
 .textfield > .content > input.iconaction {
     width: calc(100% - 28px); }
+
+.textfield:not(.inline) > .content > i.description ~ input.iconaction {
+    width: calc(100% - 68px); }
 
 .textfield.inline > .content > input.iconaction {
     width: calc(50% - 28px); }
@@ -9891,6 +9925,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     overflow: hidden; 
     white-space: nowrap; }
 
+.textfield:not(.inline) > .content > i.description ~ .value { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
 .textfield.align-right > .content > .value { 
     text-align: right; }
 
@@ -9903,12 +9941,40 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield > .content > input.iconaction ~ .value {
     width: calc(100% - 28px); }
 
+.textfield:not(.inline) > .content > i.description ~ input.iconaction ~ .value {
+    width: calc(100% - 68px); }
+
+.textfield.inline > .content > input.iconaction ~ .value {
+    width: calc(50% - 28px); }
+
+.textfield.inline.l20 > .content > input.iconaction ~ .value {
+    width: calc(80% - 28px); }
+
+.textfield.inline.l30 > .content > input.iconaction ~ .value {
+    width: calc(70% - 28px); }
+
+.textfield.inline.l40 > .content > input.iconaction ~ .value {
+    width: calc(60% - 28px); }
+
+.textfield.inline.l60 > .content > input.iconaction ~ .value {
+    width: calc(40% - 28px); }
+
+.textfield.inline.l70 > .content > input.iconaction ~ .value {
+    width: calc(30% - 28px); }
+
+.textfield.inline.l80 > .content > input.iconaction ~ .value {
+    width: calc(20% - 28px); }
+
 .textfield > .content > .line-shadow {
     position: absolute;
     left: 0; 
     bottom: 18px; 
     width: 100%;
     z-index: 1; }
+
+.textfield:not(.inline) > .content > i.description ~ .line-shadow {
+    left: 40px;
+    width: calc(100% - 40px); }
 
 .textfield.inline > .content > .value,
 .textfield.inline > .content > .line-shadow {
@@ -9945,27 +10011,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 80%; 
     width: 20%; }
 
-.textfield.inline > .content > input.iconaction ~ .value {
-    width: calc(50% - 28px); }
-
-.textfield.inline.l20 > .content > input.iconaction ~ .value {
-    width: calc(80% - 28px); }
-
-.textfield.inline.l30 > .content > input.iconaction ~ .value {
-    width: calc(70% - 28px); }
-
-.textfield.inline.l40 > .content > input.iconaction ~ .value {
-    width: calc(60% - 28px); }
-
-.textfield.inline.l60 > .content > input.iconaction ~ .value {
-    width: calc(40% - 28px); }
-
-.textfield.inline.l70 > .content > input.iconaction ~ .value {
-    width: calc(30% - 28px); }
-
-.textfield.inline.l80 > .content > input.iconaction ~ .value {
-    width: calc(20% - 28px); }
-
 .textfield > .content > .line-shadow-active {
     position: absolute;
     left: 50%;
@@ -9975,6 +10020,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
             transform: translateX(-50%); }
+
+.textfield:not(.inline) > .content > i.description ~ .line-shadow-active {
+    left: calc(50% + 20px); }
 
 .textfield.inline > .content > .line-shadow-active {
     left: 75%; }
@@ -10002,6 +10050,12 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     -webkit-animation: borderTextfield 200ms var(--sharp-curve);
        -moz-animation: borderTextfield 200ms var(--sharp-curve);
             animation: borderTextfield 200ms var(--sharp-curve); }
+
+.textfield.active:not(.inline) > .content > i.description ~ input:focus ~ .line-shadow-active {
+    width: calc(100% - 40px); 
+    -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+            animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
 .textfield.inline.active > .content > input:focus ~ .line-shadow-active {
     width: 50%; 
@@ -10072,6 +10126,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 100%;
     font-size: 12px; }
 
+.textfield:not(.inline) > .content > i.description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
 .textfield.inline > .content > span {
     left: 50%;
     width: 50%; }
@@ -10106,44 +10164,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: auto;
     padding-left: 2px; }
 
-.textfield > .content > i.description {
-    position: absolute;
-    top: 24px;
-    left: 0px; 
-    padding: 0px;
-    z-index: 2;
-    cursor: pointer; }
-
-.textfield > .content > i.description ~ .value,
-.textfield > .content > i.description ~ input { 
-    padding-left: 40px;
-    width: calc(100% - 40px); }
-
-.textfield > .content > i.description ~ input.iconaction,
-.textfield > .content > i.description ~ input.iconaction ~ .value {
-    width: calc(100% - 68px); }
-
-.textfield > .content > i.description ~ label,
-.textfield > .content > i.description ~ span {
-    left: 40px;
-    width: calc(100% - 40px); }
-
-.textfield > .content > i.description ~ span.counter {
+.textfield:not(.inline) > .content > i.description ~ span.counter {
     left: initial;
     width: auto; }
-
-.textfield > .content > i.description ~ .line-shadow {
-    left: 40px;
-    width: calc(100% - 40px); }
-
-.textfield > .content > i.description ~ .line-shadow-active {
-    left: calc(50% + 20px); }
-
-.textfield.active > .content > i.description ~ input:focus ~ .line-shadow-active {
-    width: calc(100% - 40px); 
-    -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
-       -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
-            animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
 /** TEXTFIELD BORDERED */
 

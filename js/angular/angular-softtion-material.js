@@ -58,6 +58,8 @@
                 Breadcrumb: Directives.create(Directives.Breadcrumb),
 
                 Button: Directives.create(Directives.Button),
+                
+                ButtonProgress: Directives.create(Directives.ButtonProgress),
 
                 Carousel: Directives.create(Directives.Carousel),
 
@@ -92,8 +94,6 @@
                 ExpansionPanel: Directives.create(Directives.ExpansionPanel),
 
                 FabMenu: Directives.create(Directives.FabMenu),
-                
-                FabProgress: Directives.create(Directives.ButtonProgress),
 
                 FabSpeedDial: Directives.create(Directives.FabSpeedDial),
 
@@ -879,16 +879,22 @@
 
                 $scope.coincidences = []; $scope.old = undefined; 
                 $scope.inputActive = false; $scope.instance = false;
+                
+                $scope.temporal = rebootSuggestions();
 
                 $scope.$watch(() => { return $scope.suggestions; }, 
                     (newValue) => {
                         if (!softtion.isArray(newValue)) {
+                            $scope.temporal.suggestions.old = [];
+                            $scope.temporal.suggestions.now = [];
                             $scope.suggestions = []; return;
                         } // Los items de seleccion no es un Array
                         
                         if (!$scope.instance && !$scope.disabledOrderby) 
                             $scope.suggestions = $orderBy(newValue, $scope.key || "");
                         
+                        $scope.temporal.suggestions.old = [];
+                        $scope.temporal.suggestions.now = [];
                         $scope.instance = !$scope.instance; // Intercalando
                     });
 
@@ -971,9 +977,7 @@
                 $scope.keyupInput = function ($event) {
                     if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) return;
 
-                    if (!softtion.isString($scope.input)) return;
-
-                    searchSuggestions($scope.input); // Buscar sugerencias
+                    searchSuggestions($scope.input); // Buscando sugerencias
                 };
 
                 $scope.keydownSuggestion = function ($event, suggestion) {
@@ -1040,6 +1044,7 @@
                 };
 
                 $scope.clearAutocomplet = function () {
+                    $scope.temporal = rebootSuggestions();
                     $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
 
@@ -1055,30 +1060,92 @@
                     return !(softtion.isString($scope.key)) ? 
                         JSON.stringify(suggestion) : 
                         softtion.findKey(suggestion, $scope.key);
-                };
+                }
 
                 function describeSuggestion(suggestion) {
                     return softtion.isString(suggestion) ?
                         suggestion : getValueSuggestion(suggestion);
-                };
+                }
 
                 function searchSuggestions(pattern) {
-                    if (!softtion.isString(pattern)) return; // Sin filtro
+                    if (!softtion.isString(pattern)) {
+                        $scope.temporal = rebootSuggestions(); return;
+                    } // No se debe aplicar proceso de filtro
 
-                    var coincidences = []; searchStart = true;
+                    var coincidences = [], suggestions = [], 
+                        result = getSuggestions(pattern);
+                    
+                    if (result.success) {
+                        suggestions = result.suggestions; searchStart = true; 
+                        
+                        angular.forEach(suggestions, (suggestion) => {
+                            if (softtion.isString(suggestion)) {
+                                if (suggestion.pattern(pattern)) coincidences.push(suggestion); 
+                            } else {
+                                var value = getValueSuggestion(suggestion);
 
-                    angular.forEach($scope.suggestions, (suggestion) => {
-                        if (softtion.isString(suggestion)) {
-                            if (suggestion.pattern(pattern)) coincidences.push(suggestion); 
-                        } else {
-                            var value = getValueSuggestion(suggestion);
+                                if (value.pattern(pattern)) coincidences.push(suggestion); 
+                            }
+                        });
+                    } else { coincidences = result.suggestions; }
 
-                            if (value.pattern(pattern)) coincidences.push(suggestion); 
-                        }
-                    });
-
+                    setSuggestions(pattern, coincidences); // Asignando temporales
                     $scope.coincidences = coincidences; list.addClass(Classes.ACTIVE);
-                };
+                }
+                
+                function rebootSuggestions() {
+                    return { 
+                        pattern: undefined, suggestions: { now: [], old: undefined }
+                    };
+                }
+                
+                function getSuggestions(pattern) {
+                    var $pattern = $scope.temporal.pattern;
+                    
+                    if (!softtion.isString($pattern)) // Lista predeterminada
+                        return { success: true, suggestions: $scope.suggestions }; 
+                    
+                    if (!softtion.isString(pattern)) // Lista predeterminada
+                        return { success: true, suggestions: $scope.suggestions }; 
+                    
+                    var $suggestions = $scope.temporal.suggestions;
+                    
+                    if (pattern.pattern($pattern)) // Lista actual
+                        return { success: true, suggestions: $suggestions.now }; 
+                    
+                    if ($pattern.like("start", pattern) && // Lista anterior
+                            softtion.isDefined($suggestions.old)) 
+                        return { success: false, suggestions: $suggestions.old.value }; 
+                    
+                    return { success: true, suggestions: $scope.suggestions };
+                }
+                
+                function setSuggestions(pattern, suggestions) {
+                    var $pattern = $scope.temporal.pattern,
+                        $suggestions = $scope.temporal.suggestions;
+                    
+                    if (!softtion.isString($pattern)) {
+                        $scope.temporal.pattern = pattern;
+                        $suggestions.now = suggestions; return;
+                    } // Inicio del proceso de busqueda en el componente
+                    
+                    if (!softtion.isString(pattern)) {
+                        $scope.temporal.pattern = undefined;
+                        $scope.temporal = rebootSuggestions(); return;
+                    } // Inicio del proceso de busqueda en el componente
+                    
+                    if (pattern.pattern($pattern)) {
+                        $suggestions.old = {
+                            value: $suggestions.now, before: $suggestions.old
+                        };
+                    } else if ($pattern.pattern(pattern)) {
+                        if (softtion.isDefined($suggestions.old)) // Anterior
+                            $suggestions.old = $suggestions.old.before;
+                    } 
+                    
+                    $suggestions.now = suggestions; // Nuevas opciones
+                    $scope.temporal.pattern = pattern; // Nuevo patrón
+                }
             }
         };
     }
@@ -1220,6 +1287,8 @@
 
                 $scope.coincidences = []; $scope.old = undefined; 
                 $scope.instance = false; $scope.inputActive = false;
+                
+                $scope.temporal = rebootSuggestions();
 
                 $scope.$watch(() => { return $scope.suggestions; },
                     (newValue) => {
@@ -1325,8 +1394,6 @@
                 $scope.keyupInput = function ($event) {
                     if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) return;
 
-                    if (!softtion.isString($scope.input)) return;
-
                     searchSuggestions($scope.input); // Buscar sugerencias
                 };
 
@@ -1394,6 +1461,7 @@
                 };
 
                 $scope.clearAutocomplet = function () {
+                    $scope.temporal = rebootSuggestions();
                     $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
 
@@ -1409,21 +1477,83 @@
                     return !(softtion.isString($scope.key)) ? 
                         JSON.stringify(suggestion) : 
                         softtion.findKey(suggestion, $scope.key);
-                };
-
+                }
+                
                 function searchSuggestions(pattern) {
-                    if (!softtion.isString(pattern)) return; // Sin filtro
+                    if (!softtion.isString(pattern)) {
+                        $scope.temporal = rebootSuggestions(); return;
+                    } // No se debe aplicar proceso de filtro
 
-                    var coincidences = []; searchStart = true;
+                    var coincidences = [], suggestions = [], 
+                        result = getSuggestions(pattern);
+                    
+                    if (result.success) {
+                        suggestions = result.suggestions; searchStart = true; 
+                        
+                        angular.forEach(suggestions, (suggestion) => {
+                            var value = getValueSuggestion(suggestion);
 
-                    angular.forEach($scope.suggestions, (suggestion) => {
-                        var value = getValueSuggestion(suggestion);
+                            if (value.pattern(pattern)) coincidences.push(suggestion); 
+                        });
+                    } else { coincidences = result.suggestions; }
 
-                        if (value.pattern(pattern)) coincidences.push(suggestion); 
-                    });
-
+                    setSuggestions(pattern, coincidences); // Asignando temporales
                     $scope.coincidences = coincidences; list.addClass(Classes.ACTIVE);
-                };
+                }
+                
+                function rebootSuggestions() {
+                    return { 
+                        pattern: undefined, suggestions: { now: [], old: undefined }
+                    };
+                }
+                
+                function getSuggestions(pattern) {
+                    var $pattern = $scope.temporal.pattern;
+                    
+                    if (!softtion.isString($pattern)) // Lista predeterminada
+                        return { success: true, suggestions: $scope.suggestions }; 
+                    
+                    if (!softtion.isString(pattern)) // Lista predeterminada
+                        return { success: true, suggestions: $scope.suggestions }; 
+                    
+                    var $suggestions = $scope.temporal.suggestions;
+                    
+                    if (pattern.pattern($pattern)) // Lista actual
+                        return { success: true, suggestions: $suggestions.now }; 
+                    
+                    if ($pattern.like("start", pattern) && // Lista anterior
+                            softtion.isDefined($suggestions.old)) 
+                        return { success: false, suggestions: $suggestions.old.value }; 
+                    
+                    return { success: true, suggestions: $scope.suggestions };
+                }
+                
+                function setSuggestions(pattern, suggestions) {
+                    var $pattern = $scope.temporal.pattern,
+                        $suggestions = $scope.temporal.suggestions;
+                    
+                    if (!softtion.isString($pattern)) {
+                        $scope.temporal.pattern = pattern;
+                        $suggestions.now = suggestions; return;
+                    } // Inicio del proceso de busqueda en el componente
+                    
+                    if (!softtion.isString(pattern)) {
+                        $scope.temporal.pattern = undefined;
+                        $scope.temporal = rebootSuggestions(); return;
+                    } // Inicio del proceso de busqueda en el componente
+                    
+                    if (pattern.pattern($pattern)) {
+                        $suggestions.old = {
+                            value: $suggestions.now, before: $suggestions.old
+                        };
+                    } else if ($pattern.pattern(pattern)) {
+                        if (softtion.isDefined($suggestions.old)) // Anterior
+                            $suggestions.old = $suggestions.old.before;
+                    } 
+                    
+                    $suggestions.now = suggestions; // Nuevas opciones
+                    $scope.temporal.pattern = pattern; // Nuevo patrón
+                }
             }
         };
     }
@@ -1499,10 +1629,14 @@
                         } // Objeto opciones no es un array
                         
                         switch (newValue.length) {
-                            case (3): $scope.classCount = "three-options"; break;
-                            case (4): $scope.classCount = "four-options"; break;
-                            case (5): $scope.classCount = "five-options"; break;
-                            default: $scope.classCount = ""; break; // Ninguna 
+                            case (3):   
+                                $scope.classCount = "three-options"; break;
+                            case (4): 
+                                $scope.classCount = "four-options"; break;
+                            case (5): 
+                                $scope.classCount = "five-options"; break;
+                            default: 
+                                $scope.classCount = ""; break; // Ninguna Clase
                         } 
                         
                         var notActive = true; $index = 0; // Verificar
@@ -1770,7 +1904,7 @@
             link: function ($scope, $element) {
                     // Componentes
                 var button = softtion.html("button").addClass("action").
-                    addAttribute("ng-class", "{download: ngProgress}").
+                    addAttribute("ng-class", "{progress: ngProgress}").
                     addAttribute("ng-disabled", "ngProgress").
                     addAttribute("ng-click", "buttonClick($event)").
                     addChildren(
@@ -9671,8 +9805,7 @@
                     box.click(($event) => {
                         if (box.parent().is(":disabled")) return;
 
-                        if (box.hasClass(Classes.ANIMATED))
-                            box.removeClass(Classes.ANIMATED);
+                        if (box.hasClass(Classes.ANIMATED)) box.removeClass(Classes.ANIMATED);
 
                         effect.css({ 
                             top: $event.pageY - box.offset().top, 
