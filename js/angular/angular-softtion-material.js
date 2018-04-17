@@ -113,6 +113,10 @@
 
                 Gallery: Directives.create(Directives.Gallery),
 
+                Grid: Directives.create(Directives.Grid),
+
+                GridSheet: Directives.create(Directives.GridSheet),
+
                 Img: Directives.create(Directives.Img),
 
                 ProgressBar: Directives.create(Directives.ProgressBar),
@@ -134,6 +138,8 @@
                 Sidenav: Directives.create(Directives.Sidenav),
 
                 SidenavItem: Directives.create(Directives.SidenavItem),
+                
+                Slider: Directives.create(Directives.Slider),
 
                 StepperHorizontal: Directives.create(Directives.StepperHorizontal),
 
@@ -345,6 +351,8 @@
             case (Directives.FormNavigation.NAME): return Directives.FormNavigation;
             case (Directives.FullwidthField.NAME): return Directives.FullwidthField;
             case (Directives.Gallery.NAME): return Directives.Gallery;
+            case (Directives.Grid.NAME): return Directives.Grid;
+            case (Directives.GridSheet.NAME): return Directives.GridSheet;
             case (Directives.Img.NAME): return Directives.Img;
             case (Directives.ProgressBar.NAME): return Directives.ProgressBar;
             case (Directives.ProgressButtonFloating.NAME): return Directives.ProgressButtonFloating;
@@ -356,6 +364,7 @@
             case (Directives.SelectMultiple.NAME): return Directives.SelectMultiple;
             case (Directives.Sidenav.NAME): return Directives.Sidenav;
             case (Directives.SidenavItem.NAME): return Directives.SidenavItem;
+            case (Directives.Slider.NAME): return Directives.Slider;
             case (Directives.StepperHorizontal.NAME): return Directives.StepperHorizontal;
             case (Directives.Switch.NAME): return Directives.Switch;
             case (Directives.Tabs.NAME): return Directives.Tabs;
@@ -404,7 +413,7 @@
                 ngClose: "=?"
             },
             link: function ($scope, $element) {
-                    // Atributos
+                    // Componentes
                 var button = softtion.htmlElement("i");
                 
                     // Atributos
@@ -805,6 +814,9 @@
             addClass("truncate").addAttribute("ng-click", "clickLabel()").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value"]).
@@ -824,8 +836,8 @@
                 softtion.html("li").addClass(["truncate"]).
                     addAttribute("tabindex", "-1").
                     addAttribute("ng-repeat", "suggestion in coincidences track by $index").
-                    addAttribute("ng-mousedown", "selectSuggestion(suggestion)").
                     addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
+                    addAttribute("ng-mousedown", "mousedownSuggestion($event, suggestion)").
                     addAttribute("ng-bind-html", "renderSuggestion(suggestion)")
             ).addChildren(
                 softtion.html("li").addClass(["truncate", "not-found"]).
@@ -852,6 +864,7 @@
                 select: "=ngModel",
                 ngDisabled: "=?",
                 required: "=?",
+                optional: "=?",
                 key: "@keyDescription",
                 label: "@",
                 suggestions: "=",
@@ -993,9 +1006,15 @@
                         break;
 
                         case (KeysBoard.ARROW_DOWN):
-                            if (option.next().length) { option.next().focus(); }
+                            if (option.next().length) option.next().focus();
                         break;
                     }
+                };
+                
+                $scope.mousedownSuggestion = function ($event, suggestion) {
+                    if ($event.originalEvent.which !== 1) return;
+                    
+                    $scope.selectSuggestion(suggestion); // Seleccionando
                 };
 
                 $scope.selectSuggestion = function (suggestion) {
@@ -1189,6 +1208,9 @@
             addClass("truncate").addAttribute("ng-click", "clickLabel()").
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value"]).
@@ -1219,7 +1241,7 @@
                 softtion.html("li").
                     addAttribute("tabindex", "-1").
                     addAttribute("ng-repeat", "suggestion in coincidences track by $index").
-                    addAttribute("ng-mousedown", "selectSuggestion(suggestion)").
+                    addAttribute("ng-mousedown", "mousedownSuggestion($event, suggestion)").
                     addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
                     addChildren(
                         softtion.html("div").addClass("avatar").
@@ -1259,6 +1281,7 @@
                 select: "=ngModel",
                 ngDisabled: "=?",
                 required: "=?",
+                optional: "=?",
                 label: "@",
                 suggestions: "=",
                 key: "@keyTitle",
@@ -1413,6 +1436,12 @@
                             if (option.next().length) { option.next().focus(); }
                         break;
                     }
+                };
+                
+                $scope.mousedownSuggestion = function ($event, suggestion) {
+                    if ($event.originalEvent.which !== 1) return;
+                    
+                    $scope.selectSuggestion(suggestion); // Seleccionando
                 };
 
                 $scope.selectSuggestion = function (suggestion) {
@@ -5179,6 +5208,72 @@
         };
     }
     
+    // Directiva: Grid
+    // Version: 1.0.0
+    // Update: 17/04/2018
+    
+    Directives.Grid = GridDirective;
+    
+    Directives.Grid.NAME = "Grid";
+    Directives.Grid.VERSION = "1.0.0";
+    Directives.Grid.KEY = "grid";
+    
+    function GridDirective() {
+        return {
+            restrict: "C",
+            scope: {
+                columns: "=?"
+            },
+            link: function ($scope, $element) {
+                $scope.$watch(() => { return $scope.columns; },
+                    (newValue) => {
+                        if (isNaN(newValue)) return; // No es un número
+                        
+                        var columns = (100 / $scope.columns), css = "";
+                        
+                        for (var i = 0; i < $scope.columns; i++) {
+                            css += columns.toString().substr(0, 6) + "% ";
+                        } // Definiendo porcentaje de las columnas
+                        
+                        $element.css({ gridTemplateColumns: css.trim() });
+                    });
+            }
+        };
+    }
+    
+    // Directiva: GridSheet
+    // Version: 1.0.0
+    // Update: 17/04/2018
+    
+    Directives.GridSheet = GridSheetDirective;
+    
+    Directives.GridSheet.NAME = "GridSheet";
+    Directives.GridSheet.VERSION = "1.0.0";
+    Directives.GridSheet.KEY = "gridSheet";
+    
+    function GridSheetDirective() {
+        return {
+            restrict: "C",
+            scope: {
+                columns: "=?"
+            },
+            link: function ($scope, $element) {
+                $scope.$watch(() => { return $scope.columns; },
+                    (newValue) => {
+                        if (isNaN(newValue)) return; // No es un número
+                        
+                        var columns = (100 / $scope.columns), css = "";
+                        
+                        for (var i = 0; i < $scope.columns; i++) {
+                            css += columns.toString().substr(0, 6) + "% ";
+                        } // Definiendo porcentaje de las columnas
+                        
+                        $element.css({ gridTemplateColumns: css.trim() });
+                    });
+            }
+        };
+    }
+    
     // Directiva: Img
     // Version: 1.0.0
     // Update: 26/02/2018
@@ -5672,6 +5767,9 @@
             addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]).
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value", "truncate"]).
@@ -5726,6 +5824,7 @@
                 select: "=ngModel", 
                 label: "@",
                 required: "=?",
+                optional: "=?",
                 key: "@keyDescription",
                 suggestions: "=",
                 ngDisabled: "=?",
@@ -5905,6 +6004,9 @@
             addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]).
             addChildren(
                 softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            ).addChildren(
+                softtion.html("span").addClass("optional").
+                    setText("(opcional)").addAttribute("ng-if", "optional")
             );
 
         var value = softtion.html("p").addClass(["value", "truncate"]).
@@ -5930,11 +6032,13 @@
                     addAttribute("tabindex", "-1").
                     addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
                     addAttribute("ng-click", "checkedSuggestion(suggestion, $event)").
-                    setText("{{describeSuggestion(suggestion)}}").
                     addChildren(
                         softtion.html("div").addClass("checkbox-select").
                             addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
                             addAttribute("prevent-default", "true")
+                    ).
+                    addChildren(
+                        softtion.html("span").setText("{{describeSuggestion(suggestion)}}")
                     )
             );
 
@@ -5956,6 +6060,7 @@
                 selects: "=ngModel", 
                 label: "@",
                 required: "=?",
+                optional: "=?",
                 ngDisabled: "=?",
                 key: "@keyDescription",
                 suggestions: "=",
@@ -6240,6 +6345,255 @@
         };
     }
     
+    // Directiva: Switch
+    // Version: 1.0.1
+    // Update: 27/02/2018
+    
+    Directives.Slider = SliderDirective;
+    
+    Directives.Slider.NAME = "Slider";
+    Directives.Slider.VERSION = "1.0.1";
+    Directives.Slider.KEY = "slider";
+    Directives.Slider.ROUTE = "softtion/template/slider.html";
+    
+    Directives.Slider.HTML = function () {
+        var content = softtion.html("div").addClass("content").
+                addAttribute("ng-class", "{iconactive: iconActive(),"
+                    + " deslice: desliceActive, disabled: ngDisabled,"
+                    + " full: isValueFull(), showcase: showcase}").
+                addAttribute("ng-mouseout", "outContent()").
+                addAttribute("ng-mouseleave", "outContent()").
+                addChildren(
+                    softtion.html("i").setText("{{getIconValue()}}").
+                        addAttribute("ng-click", "clickIcon()")
+                ).addChildren(
+                    softtion.html("div").addClass("track").
+                        addAttribute("ng-pointerdown", "trackPointerDown($event)").
+                        addAttribute("ng-pointerup", "trackPointerUp($event)").
+                        addAttribute("ng-pointermove", "trackPointerMove($event)").
+                        addChildren(
+                            softtion.html("div").addClass("track-off")
+                        ).addChildren(
+                            softtion.html("div").addClass("track-on").
+                                addAttribute("ng-style", "getPercentajeValue()")
+                        ).addChildren(
+                            softtion.html("div").addClass("thumb").
+                                addAttribute("ng-class", "{off: isValueOff(), active: slideActive}").
+                                addAttribute("ng-style", "getPositionThumb()").
+                                addChildren(
+                                    softtion.html("span").setText("{{value|number:0}}")
+                                )
+                        )
+                ).addChildren(
+                    softtion.html("div").addClass("showcase-input").
+                        addAttribute("ng-if", "showcase").
+                        addChildren(
+                            softtion.html("input").addAttribute("type", "number").
+                                addAttribute("ng-model", "valueInput").
+                                addAttribute("ng-disabled", "ngDisabled").
+                                addAttribute("ng-keyup", "keyUpInput()")
+                        ).addChildren(
+                            softtion.html("div").addClass("line-shadow")
+                        )
+                );
+
+        var label = softtion.html("label").setText("{{label}}").
+            addAttribute("ng-class", "{active: isLabelActive()}");
+
+        return label + content; // Componente 
+    };
+    
+    SliderDirective.$inject = [ "$timeout" ];
+    
+    function SliderDirective($timeout) {
+        return {
+            restrict: "C",
+            templateUrl: Directives.Slider.ROUTE,
+            scope: {
+                value: "=ngModel",
+                ngDisabled: "=?",
+                label: "@",
+                icon: "@",
+                emptyIcon: "@",
+                fullIcon: "@",
+                minValue: "=?",
+                maxValue: "=?",
+                showcase: "=?"
+            },
+            link: function ($scope, $element) { 
+                    // Componentes
+                var $content = $element.find(".content"),
+                    $trackOff = $content.find(".track"),
+                    $thumb = $content.find(".thumb"),
+                    $trackOn = $content.find(".track-on");
+
+                    // Atributos
+                var initialPosition, initialX, finalX, range, time;
+
+                $scope.desliceActive = false;
+                $scope.slideActive = false; 
+                $scope.maxValue = $scope.maxValue || 100;
+                $scope.minValue = $scope.minValue || 0;
+                range = $scope.maxValue - $scope.minValue;
+
+                $scope.value = isNaN($scope.value) ? 
+                    $scope.minValue : $scope.value;
+
+                $scope.valueInput = parseInt($scope.value);
+
+                $scope.fullIcon = $scope.fullIcon || $scope.icon;
+                $scope.emptyIcon = $scope.emptyIcon || $scope.icon;
+
+                $scope.$watch(() => { return $scope.value; }, 
+                    (newValue) => {
+                        var between = softtion.isBetween(
+                            newValue, $scope.minValue, $scope.maxValue
+                        );
+
+                        if (!between) {
+                            // Valor es menor que el rango
+                            if (newValue < $scope.minValue) $scope.value = $scope.minValue;
+                            
+                            // Valor es mayor que el rango
+                            if (newValue > $scope.maxValue) $scope.value = $scope.maxValue;
+                        }
+
+                        $scope.valueInput = Math.round($scope.value);
+                    });
+
+                $scope.iconActive = function () {
+                    return softtion.isString($scope.icon);
+                };
+
+                $scope.isLabelActive = function () {
+                    return softtion.isString($scope.label); 
+                };
+
+                $scope.getIconValue = function () {
+                    return ($scope.value <= $scope.minValue) ?
+                        $scope.emptyIcon : ($scope.value >= $scope.maxValue) ?
+                            $scope.fullIcon : $scope.icon;
+                };
+
+                $scope.isValueOff = function () {
+                    return ($scope.value <= $scope.minValue);
+                };
+
+                $scope.isValueFull = function () {
+                    return ($scope.value >= $scope.maxValue);
+                };
+
+                $scope.clickIcon = function () {
+                    if ($scope.ngDisabled) { return; } // Inactivo
+
+                    $scope.value = $scope.minValue; // Mínimo valor
+                };
+
+                $scope.trackPointerDown = function ($event) {
+                    if ($scope.ngDisabled) return; // Componente inactivo
+
+                    var offsetX = startSlide($event),
+                        $target = angular.element($event.target);
+
+                    initialPosition = ($target.is($thumb)) ? 
+                        $trackOn.width() : offsetX;
+
+                    setValueSlide(initialPosition / $trackOff.width());
+
+                    $scope.slideActive = true; // Inicio de arrastre
+                };
+
+                $scope.trackPointerMove = function ($event) {
+                    if (!$scope.slideActive) return; // No ha iniciado Slide
+
+                    var typeEvent = $event.type || $event.originalEvent.type;
+
+                    if (typeEvent === "mouseout" || typeEvent === "mouseleave") {
+                        $event.stopPropagation();
+                    } // Se ha salido del componente Slide en arrastre
+
+                    finalX = (typeEvent === "touchmove") ? 
+                        $event.changedTouches[0].clientX : $event.clientX;
+
+                    $scope.desliceActive = true; // Se activo el arrastre
+                    var finalPosition = initialPosition + (finalX - initialX);
+
+                    if ((finalPosition > 0) && (finalPosition < $trackOff.width())) {
+                        setValueSlide(finalPosition / $trackOff.width());
+                    } else if (finalPosition < 0) {
+                        setValueSlide(0);
+                    } else if (finalPosition >= $trackOff.width()) {
+                        (!$element.hasClass("discret")) ?
+                            setValueSlide(1) :
+                            setValueSlide(finalPosition / $trackOff.width());
+                    }
+                };
+
+                $scope.trackPointerUp = function () {
+                    $scope.slideActive = false; $scope.desliceActive = false; 
+                };
+
+                $scope.outContent = function () { 
+                    $scope.slideActive = false; $scope.desliceActive = false; 
+                };
+
+                $scope.getPercentajeValue = function () {
+                    $scope.percentage = ($scope.value - $scope.minValue) / range * 100;
+
+                    ($scope.value >= $scope.maxValue) ?
+                        $element.addClass("full") : $element.removeClass("full");
+
+                    return { width: $scope.percentage + "%" }; // Porcentaje del Valor
+                };
+
+                $scope.getPositionThumb = function () {
+                    var percentage = ($element.hasClass("discrete")) ?
+                            $scope.percentage + "%" : 
+                            "calc(" + $scope.percentage + "% - 8px)";
+
+                    return { left: percentage }; // Posicion del Thumb
+                };
+
+                $scope.keyUpInput = function () {
+                    if (softtion.isDefined(time)) 
+                        $timeout.cancel(time); // Cancelando función actual
+
+                    time = $timeout(setValueInput, 500);
+                };
+
+                function startSlide($event) {
+                    var offsetX, typeEvent = $event.type || $event.originalEvent.type;
+
+                    if (typeEvent === "touchstart") {
+                        var position = $event.changedTouches[0];
+
+                        initialX = position.clientX;
+                        offsetX = position.clientX - $trackOff.offset().left; 
+                    } else {
+                        offsetX = $event.offsetX; initialX = $event.clientX;
+                    } // No es un evento Touch
+
+                    offsetX = ($element.hasClass("discrete")) ? offsetX + 4 : offsetX;
+
+                    return offsetX; // Posición inicial para arrastre
+                }
+
+                function setValueSlide(position) {
+                    if (position >= 0 && position <= 1) // Definiendo valor por Posición
+                        $scope.value = Math.round(position * range + $scope.minValue);
+                }
+
+                function setValueInput() {
+                    if (softtion.isUndefined($scope.valueInput)) {
+                        $scope.valueInput = $scope.value;
+                    } else {
+                        $scope.value = $scope.valueInput;
+                    } // Se ha definido correctamente valor en Input
+                }
+            }
+        };
+    }
+    
     // Directiva: StepperHorizontal
     // Version: 1.0.0
     // Update: 27/02/2018
@@ -6340,6 +6694,7 @@
                 disabledPositionStart: "=?",
                 disabledOverflow: "=?",
                 positionScroll: "=?",
+                
                 eventListener: "&"
             },
             link: function ($scope, $element) {
@@ -6385,7 +6740,7 @@
 
                     if (tab.hasClass(Classes.ACTIVE)) return; // Esta activo
 
-                    var attrs = getAttrsTab(tab);
+                    var attrs = getAttrsTab(tab); $element.addClass(Classes.ACTIVE);
 
                     stripe.css({ width: attrs.width, left: attrs.left });
                     tabs.removeClass(Classes.ACTIVE); tab.addClass(Classes.ACTIVE);

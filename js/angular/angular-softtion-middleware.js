@@ -1,206 +1,203 @@
 /*
- Angular Softtion Middleware v1.0.0
+ Angular Softtion Middleware v1.0.4
  (c) 2016 - 2018 Softtion Developers
  http://angular.softtion.com.co
  https://github.com/oldtimeguitarguy/angular-middleware
  License: MIT
- Updated: 05/Ene/2016
+ Updated: 16/Abr/2018
 */
 
 ((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
-        factory(window.softtion, window.angular, jQuery);
+        factory(window.softtion, window.angular);
     } else {
         throw new Error("Softtion Angular requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
-})((softtion, angular, jQuery) => {
+})((softtion, angular) => {
     
-    var ngSofttion = angular.module("ngSofttion");
-    
-    var $mappings = {}, $bypassAll = false, $globalMiddleware = { middleware: [] }, globalAfter;
-    
-    var factory = function ($injector, $q) {
-        var middleware = {
-                next: nextMiddleware
-            },
-            request = {
-                next: nextRequest, redirectTo: redirectTo
-            };
+    angular.module("ngSofttion").
+        provider("$middleware", middlewareProvider).
+        config(config).run(run);
+
+        // Atributos
+    var $bypassAll = false, 
+        $mappings = {}, 
+        $global = { middleware: [], resolve: [] };
+
+    function middlewareProvider() {
         
-        function shouldBypass(route) {
-            if ($bypassAll) { 
-                return true;
-            }
-            return !middlewareExists(route);
-        }
+        this.map = function (mappings) {
+            if (typeof mappings !== "object") 
+                throw "¡Tu mapa de middlewares debe ser un objeto!";
 
-        function middlewareExists(route) {
-            return hasMiddleware($globalMiddleware) || hasMiddleware(route);
-        }
+            $mappings = mappings; // Asignando middlewares
+        };
+        
+        this.bypassAll = function (enabledBypass) {
+            if (typeof enabledBypass !== "boolean") 
+                throw "Debe proporcionar paramétro como un valor booleano";
 
-        function hasMiddleware(route) {
-            var middleware = getRouteMiddleware(route);
+            $bypassAll = enabledBypass; // Estado de byPass
+        };
+
+        this.setGlobalMiddlewares = function (middlewares) {
+            if (typeof middlewares !== "string" && !angular.isArray(middlewares)) 
+                throw "Debe proporcionar una cadena, una cadena separada | o un array de nombres de middleware";
+
+            $global.middleware = middlewares; // Middlewares globales
+        };
+        
+        this.setGlobalResolves = function (resolves) {
+            if (!angular.isArray(resolves)) 
+                throw "Debe proporcionar una matriz de funciones resolves";
+
+            $global.resolve = resolves; // Resolves globales
+        };
+
+        this.$get = factoryProvider;
+        
+        factoryProvider.$inject = [ "$injector", "$q" ];
+        
+        function factoryProvider($injector, $q) {
             
-            return !!middleware && !!middleware.length;
-        }
-
-        function getRouteMiddleware(route) {
-            return route.middleware || ((route.data || {}).vars || {}).middleware;
-        }
-
-        function concatMiddlewareNames(routes) {
-            var output = [];
-
-            // Concat each route"s middleware names
-            for (var i = 0; i < routes.length; i++) {
-                output = output.concat(getMiddlewareNames(routes[i]));
-            }
-
-            return output;
-        }
-
-        function getMiddlewareNames(route) {
-            var middleware = getRouteMiddleware(route);
-
-            if (middleware instanceof Array) {
-                return middleware;
-            }
-
-            if (typeof middleware === "undefined") {
-                return [];
-            }
-
-            return middleware.split("|");
-        }
-
-        function nextMiddleware() {
-            var next = $mappings[middleware.names[middleware.index++]];
-
-            if (next) {
-                $injector.invoke(next, request); }
-        }
-
-        function nextRequest() {
-            if (middleware.index === middleware.names.length) {
-                middleware.resolution.resolve();
-            }
-
-            middleware.next();
-        }
-
-        function redirectTo(route, params, options) {
-            middleware.resolution.reject({
-                type: "redirectTo", route: route, params: params, options: options
-            });
-        }
-        
-        return function (toRoute, toParams) {
-            // Return if we should bypass
-            if (shouldBypass(toRoute)) {
-                return $q.resolve();
-            }
-
-            // Store a copy of the route parameters in the request
-            request.params = angular.copy(toParams);
-
-            // Store route name in the request
-            request.route = toRoute.name;
-
-            // Set the middleware index to 0
-            middleware.index = 0;
-
-            // Set the middleware names.
-            // Make sure the globals are first, then concat toRoute
-            middleware.names = concatMiddlewareNames([$globalMiddleware, toRoute]);
-
-            // Create a deferred promise
-            middleware.resolution = $q.defer();
-
-            // Process that first middleware!
-            middleware.next();
-
-            // Return the promise
-            return middleware.resolution.promise;
-        };
-    };
-
-    var provider = function () {
-        this.map = function (customMappings) {
-            if (typeof customMappings !== "object") {
-                throw "Your middleware map must be an object!";
-            }
-
-            $mappings = customMappings;
-        };
-        
-        this.bypassAll = function (enableBypass) {
-            if (typeof enableBypass !== "boolean") {
-                throw "You must provide bypassAll with a boolean value!";
-            }
-
-            $bypassAll = enableBypass; // Set it!
-        };
-
-        this.global = function (customGlobalMiddleware) {
-            if (typeof customGlobalMiddleware !== "string" && !angular.isArray(customGlobalMiddleware)) {
-                throw "You must provide a string, a string separated by pipes, or an array of middleware names";
-            }
-
-            $globalMiddleware.middleware = customGlobalMiddleware;
-        };
-        
-        this.globalAfter = function (customGlobalAfter) {
-            globalAfter = customGlobalAfter;
-        };
-
-        this.$get = ["$injector", "$q", factory];
-    };
-
-    ngSofttion.provider("$middleware", provider);
-
-    ngSofttion.config(["$provide", function ($provide) {
-        $provide.decorator("$route", ["$delegate", function ($delegate) {
-            angular.forEach($delegate.routes, function (route) {
-                route.resolve = route.resolve || {};
-            });
-            
-            return $delegate;
-        }]);
-    }]);
-
-    ngSofttion.run(["$rootScope", "$route", "$location", "$middleware",
-        function ($rootScope, $route, $location, $middleware) {
-            $rootScope.$on("$routeChangeStart", function (angularEvent, next, current) {
-                next.resolve.middleware = function () {
-                    return $middleware(next, next.params);
+            var middleware = { 
+                    next: nextMiddleware
+                },
+                request = {
+                    next: nextRequest, redirectTo: redirectTo
                 };
-            });
-            
-            $rootScope.$on("$routeChangeSuccess", function (angularEvent, current, previous) {
-                if (angular.isFunction(globalAfter)) {
-                    globalAfter();
-                } // Se definió una función global para el cargue
-                
-                if (angular.isFunction(current.after)) {
-                    current.after(); return;
-                } // Se definió función para ejecutar despues del cargue
-            });
-            
-            $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
-                if (rejection.type === "redirectTo") {
-                    // Prevent the route change from working normally
-                    event.preventDefault();
 
-                    // If the redirect route is the same, then just reload
-                    if (current.regexp.test(rejection.route)) {
-                        return $route.reload();
-                    }
+            function shouldBypass(route) {
+                return ($bypassAll) ? true : !middlewareExists(route);
+            }
 
-                    // The path is new, so go there!
-                    $location.path(rejection.route);
-                    if (rejection.params)
-                        $location.search(rejection.params);
-                }
+            function middlewareExists(route) {
+                return hasMiddleware($global) || hasMiddleware(route);
+            }
+
+            function hasMiddleware(route) {
+                var middleware = getRouteMiddleware(route);
+
+                return !!middleware && !!middleware.length;
+            }
+
+            function getRouteMiddleware(route) {
+                return route.middleware || ((route.data || {}).vars || {}).middleware;
+            }
+
+            function concatMiddlewareNames(routes) {
+                var middlewares = []; // Listado de middlewares
+
+                for (var i = 0; i < routes.length; i++) {
+                    middlewares = middlewares.concat(getMiddlewareNames(routes[i]));
+                } // Concat each route"s middleware names
+
+                return middlewares; // Retornando middlewares
+            }
+
+            function getMiddlewareNames(route) {
+                var middleware = getRouteMiddleware(route);
+
+                if (typeof middleware === "undefined") return [];
+
+                if (middleware instanceof Array) return middleware;
+
+                return middleware.split("|"); // Middlewares
+            }
+
+            function nextMiddleware() {
+                var next = $mappings[middleware.names[middleware.index++]];
+
+                if (next) $injector.invoke(next, request); 
+            }
+
+            function nextRequest() {
+                if (middleware.index === middleware.names.length)
+                    middleware.resolution.resolve();
+
+                middleware.next(); // Verificando siguiente middleware
+            }
+
+            function redirectTo(route, params, options) {
+                middleware.resolution.reject({
+                    type: "redirectTo", route: route, params: params, options: options
+                });
+            }
+
+            return function (toRoute, toParams) {
+                // Return if we should bypass
+                if (shouldBypass(toRoute)) return $q.resolve();
+
+                // Store a copy of the route parameters in the request
+                request.params = angular.copy(toParams);
+
+                // Store route name in the request
+                request.route = toRoute.name;
+
+                // Set the middleware index to 0
+                middleware.index = 0;
+
+                // Set the middleware names.
+                // Make sure the globals are first, then concat toRoute
+                middleware.names = concatMiddlewareNames([$global, toRoute]);
+
+                // Create a deferred promise
+                middleware.resolution = $q.defer();
+
+                // Process that first middleware!
+                middleware.next();
+
+                // Return the promise
+                return middleware.resolution.promise;
+            };
+        }
+    }
+    
+    config.$inject = [ "$provide" ];
+    
+    function config($provide) {
+        $provide.decorator("$route", decoratorProvider);
+    
+        decoratorProvider.$inject = [ "$delegate" ];
+    
+        function decoratorProvider($delegate) {
+            angular.forEach($delegate.routes, 
+                (route) => { route.resolve = route.resolve || {}; }
+            );
+            
+            return $delegate; // Retornando delegación
+        }
+    }
+    
+    run.$inject = [ "$rootScope", "$route", "$location", "$middleware" ];
+    
+    function run($rootScope, $route, $location, $middleware) {
+        $rootScope.$on("$routeChangeStart", (angularEvent, next, current) => {
+            next.resolve.middleware = function () {
+                return $middleware(next, next.params);
+            };
+        });
+
+        $rootScope.$on("$routeChangeSuccess", (angularEvent, current, previous) => {
+            $global.resolve.forEach((resolve) => {
+                if (softtion.isFunction(resolve)) resolve();
             });
-    }]);
+
+            if (angular.isFunction(current.resolve)) current.resolve(); 
+        });
+
+        $rootScope.$on("$routeChangeError", (event, current, previous, rejection) => {
+            if (rejection.type !== "redirectTo") return;
+            
+            event.preventDefault(); // Prevent the route change from working normally
+
+            // If the redirect route is the same, then just reload
+            if (current.regexp.test(rejection.route)) return $route.reload();
+            
+            $location.path(rejection.route); // The path is new, so go there!
+            
+            if (rejection.params) $location.search(rejection.params);
+
+        });
+    }
 });

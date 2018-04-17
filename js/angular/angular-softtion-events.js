@@ -16,6 +16,7 @@
     
     var ngEvents = angular.module("ngSofttionEvents", []).
             directive("ngEnter", ngEnter).
+            directive("ngLoad", ngLoad).
             directive("ngClickright", ngClickRight).
             directive("ngScroll", ngScroll).
             directive("ngMousehold", ngMouseHold).
@@ -82,6 +83,56 @@
                         
                         var callback = function () {
                             fnEnter($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgLoad
+    // Version: 1.0.0
+    // Updated: 16/04/2018
+    
+    ngLoad.$inject = [ "$parse" ];
+    
+    function ngLoad($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnLoad = $parse($attrs.ngLoad); // Función Load
+
+                return function ($scope, $element) {
+                    $element.on("load", ($event) => {
+                        var callback = function () {
+                            fnLoad($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgError
+    // Version: 1.0.0
+    // Updated: 16/04/2018
+    
+    ngError.$inject = [ "$parse" ];
+    
+    function ngError($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnError = $parse($attrs.ngLoad); // Función Error
+
+                return function ($scope, $element) {
+                    $element.on("error", ($event) => {
+                        var callback = function () {
+                            fnError($scope, { $event: $event, $element: $element });
                         };
 
                         $scope.$apply(callback); // Disparando evento

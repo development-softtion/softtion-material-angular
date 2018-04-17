@@ -180,35 +180,6 @@
     </div>
 </div>
 
-<!-- FAB MENU RAINBOW -->
-<div class="fab-menu-rainbow">
-    <div class="box">
-        <div class="content">
-            <div class="button-floating"><i>add</i></div>
-
-            <div class="menu-content">
-                <ul class="menu">
-                    <li class="option" ng-click="removeFiles($event)">
-                        <i>delete</i><span>Move to trash</span>
-                    </li>
-                    <li class="option" ng-click="showFiles()">
-                        <i>undo</i><span>Undo</span>
-                    </li>
-                    <li class="option">
-                        <span>Zoom</span>
-                    </li>
-                    <li class="option">
-                        <i>close</i><span>Close all</span>
-                    </li>
-                    <li class="option">
-                        <i>close</i><span>Close all</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- PROGRESS BUTTON FLOATING -->
 <div class="progress-button-floating" ng-disabled="false" icon-button="cloud_down"></div>
 
@@ -241,18 +212,59 @@
      ng-model="events" 
      disabled-move="false"></div>
 
-<!-- CELL GRID LIST -->
-<div class="cell small-50">
-    <div class="background">
-        <img src="Sasuke_Uchiha.png" alt=""/>
+<!-- GRID LIST -->
+<div class="grid-list">
+    <div class="subheader">
+        <span>Subheader de prueba</span>
+        <div class="switch" ng-model="switch"></div> 
     </div>
-    <div class="content">
-        <button class="action"><i>send</i></button>
-        <div class="detail">
-            <label class="title">Crush crush crush</label>
-            <label class="subtitle">
-                <i>delete</i>2000
-            </label>
+    <div class="grid" columns="3">
+        <div class="cell actionable">
+            <div class="background">
+                <img src="4.png" alt=""/>
+            </div>
+            <div class="content">
+                <span class="right">100</span>
+                <div class="detail">
+                    <div class="title">Alistar</div>
+                    <div class="subtitle">El minotauro</div>
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="background">
+                <img src="26.png" alt=""/>
+            </div>
+            <div class="content two-line">
+                <button class="action"><i>star</i></button>
+                <div class="detail">
+                    <div class="title">Evelynn</div>
+                    <div class="subtitle">El abrazo agónico</div>
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="background">
+                <img src="5.png" alt=""/>
+            </div>
+            <div class="content two-line">
+                <button class="action right"><i>star_border</i></button>
+                <div class="detail">
+                    <div class="title">Amumu</div>
+                    <div class="subtitle"><i>mail</i>La momia triste</div>
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="background">
+                <img src="Vi.png" alt=""/>
+            </div>
+            <div class="content">
+                <button class="action right"><i>star</i></button>
+                <div class="detail">
+                    <div class="title">Vi</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -349,101 +361,54 @@
     </div>
 </div>
 
-<!-- LIST PARAGRAPH -->
-<ul class="list-paragraph">
-    <li class="subheader theme-primary">
-        Hechos
-        <button class="action"><i>add</i></button>
-    </li>
-    <li>
-        <p class="align-justify">
-            En esta demostración podemos apreciar los diferentes modelos visuales
-            que tienen las listas multiple-line. Basicámente, la diferencia entre 
-            estos se evidencia notoriamente en la ubicación de los bloques dentro
-            del item de la lista, y a nivel estructural esta radica en la implementación
-            de un bloque adicional.
-        </p>
-        <div class="actions">
-            <button class="action"><i>edit</i></button>
-            <button class="action"><i>delete</i></button>
-        </div>
-    </li>
-    <li>
-        <p class="align-justify">
-            En esta demostración podemos apreciar los diferentes modelos visuales
-            que tienen las listas multiple-line. Basicámente, la diferencia entre 
-            estos se evidencia notoriamente en la ubicación de los bloques dentro
-            del item de la lista, y a nivel estructural esta radica en la implementación
-            de un bloque adicional.
-        </p>
-    </li>
-</ul>
+<!-- GRID SHEET -->
+<div class="grid-sheet" columns="5">
+    <div class="item">
+        <img class="icon" src="Vi.png" alt=""/>
+        <div class="detail">Vi</div>
+    </div>
+    <div class="item disabled">
+        <img class="icon" src="5.png" alt=""/>
+        <div class="detail">Amumu</div>
+    </div>
+    <div class="item">
+        <img class="icon" src="4.png" alt=""/>
+        <div class="detail">Alistar</div>
+    </div>
+    <div class="item">
+        <img class="icon" src="26.png" alt=""/>
+        <div class="detail">Evelynn</div>
+    </div>
+    <div class="item disabled">
+        <i class="icon">person_add</i>
+        <div class="detail">Nuevo champs</div>
+    </div>
+</div>
 
-<!-- LIST SIMPLE -->
-<ul class="list-simple bordered">
-    <li>
-        <p>
-            The numbers in the table specify the first browser version that fully supports the property.
-        </p>
-        <div class="actions opacity">
-            <button class="action right"><i>delete</i></button>
-            <button class="action right"><i>add</i></button>
-        </div>
-        <div class="label text-only condense">
-            <div class="description">
-                <b>Fecha de realización:</b> 15 de junio del 2017
-            </div>
-        </div>
-        <div class="label text-only condense">
-            <div class="description">
-                <b>Fecha de finalización:</b> 25 de junio del 2017
-            </div>
-        </div>
-        <div class="label condense">
-            <div class="description theme-secondary-font">
-                <b>PROPUESTA DE ABOGADOS 2017.docx</b>
-            </div>
-            <div class="actions">
-                <button class="action"><i>file_download</i></button>
-                <button class="action"><i>more</i></button>
-            </div>
-        </div>
-    </li>
-
-    <li>
-        <p>
-            The numbers in the table specify the first browser version that fully supports the property. The caption-side property specifies the placement of a table caption.
-        </p>
-        <div class="label text-only condense">
-            <div class="description">
-                <b>Fecha de realización:</b> 28 de junio del 2017
-            </div>
-        </div>
-        <div class="label text-only condense">
-            <div class="description">
-                <b>Fecha de finalización:</b> No aplica
-            </div>
-        </div>
-        <div class="label condense">
-            <div class="description theme-secondary-font">
-                <b>CRONOGRAMA.docx</b>
-            </div>
-            <div class="actions">
-                <button class="action"><i>file_download</i></button>
-                <button class="action"><i>more</i></button>
-            </div>
-        </div>
-        <div class="label condense">
-            <div class="description theme-secondary-font">
-                <b>PROPUESTA DE ABOGADOS 2017.docx</b>
-            </div>
-            <div class="actions">
-                <button class="action"><i>file_download</i></button>
-                <button class="action"><i>more</i></button>
-            </div>
-        </div>
-    </li>
-</ul>
+<!-- LIST SHEET -->
+<div class="list-sheet" columns="3">
+    <div class="item">
+        <img class="icon" src="Vi.png" alt=""/>
+        <div class="detail">Vi</div>
+    </div>
+    <div class="item">
+        <img class="icon" src="5.png" alt=""/>
+        <div class="detail">Amumu</div>
+    </div>
+    <div class="divider"></div>
+    <div class="item">
+        <img class="icon" src="4.png" alt=""/>
+        <div class="detail">Alistar</div>
+    </div>
+    <div class="item">
+        <img class="icon" src="26.png" alt=""/>
+        <div class="detail">Evelynn</div>
+    </div>
+    <div class="item disabled">
+        <i class="icon">person_add</i>
+        <div class="detail">Nuevo</div>
+    </div>
+</div>
     
 <!-- AUTOCOMPLETE RECORD -->
 <div class="autocomplete-record small" label="Autocomplete test" changed-event="xd($selected)"

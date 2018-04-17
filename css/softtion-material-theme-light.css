@@ -404,25 +404,8 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 
 /** BOTTOM SHEET */
 
-.bottom-sheet > .content, .bottom-sheet > .content > .list-style-sheet, 
-.bottom-sheet > .content > .grid-style-sheet {
+.bottom-sheet > .content {
     background-color: var(--background-component); }
-
-.bottom-sheet > .content > .list-style-sheet > .subheader {
-    color: var(--secondary-font); }
-
-.bottom-sheet > .content > .list-style-sheet > .item:hover {
-    background-color: var(--dark-background-hover); }
-
-.bottom-sheet > .content > .grid-style-sheet > .item > i:hover + label,
-.bottom-sheet > .content > .grid-style-sheet > .item > label:hover,
-.bottom-sheet > .content > .grid-style-sheet > .item > img:hover + label {
-    background-color: var(--dark-background-hover); }
-
-.bottom-sheet > .content > .grid-style-sheet > .item > i.icon,
-.bottom-sheet > .content > .list-style-sheet > .item > i,
-.bottom-sheet > .content > .grid-style-sheet > .item > .detail {
-    color: var(--secondary-font); }
 
 /** BREADCRUMB */
 
@@ -1671,19 +1654,41 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** GRIDLIST */
 
-.grid-list > .subheader {
-    color: var(--secondary-font); }
+.grid-list > .grid > .cell:before {
+    background: #000000; }
 
-.grid-list > .cell > .content {
+.grid-list > .grid > .cell > .content {
     background-color: rgba(0, 0, 0, 0.54); }
 
-.grid-list > .cell > .content > .detail > .title,
-.grid-list > .cell > .content > button.action > i,
-.grid-list > .cell > .content > .detail > .subtitle {
+.grid-list > .grid > .cell > .content > span,
+.grid-list > .grid > .cell > .content > .detail {
     color: var(--alternative-primary-font); }
 
-.grid-list > .cell > .content > button.action:before {
+.grid-list > .grid > .cell > .content > button.action {
+    color: var(--alternative-primary-font); }
+
+.grid-list > .grid > .cell > .content > button.action:disabled {
+    color: var(--alternative-disabled-font); }
+
+.grid-list > .grid > .cell > .content > button.action:before {
     background-color: var(--alternative-ripple); }
+
+/** GRID SHEET */
+
+.bottom-sheet > .content > .grid-sheet {
+    background-color: var(--background-component); }
+
+.grid-sheet > .item > i.icon, .grid-sheet > .item > .detail {
+    color: var(--secondary-font); }
+
+.grid-sheet > .item.disabled > i.icon, 
+.grid-sheet > .item.disabled > .detail {
+    color: var(--disabled-font); }
+
+.grid-sheet > .item > i:hover + .detail,
+.grid-sheet > .item > .detail:hover,
+.grid-sheet > .item > img:hover + .detail {
+    color: var(--primary-font); }
 
 /** HEADER */
 
@@ -1706,10 +1711,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     background-color: var(--secondary-font);
     color: var(--alternative-primary-font); }
 
-.item-list {
+.item-list > .content > .detail {
     border-bottom: 1px solid transparent; }
 
-.bordered > .item-list, .item-list.bordered  {
+.bordered > .item-list > .content > .detail, 
+.item-list.bordered > .content > .detail {
     border-bottom: 1px solid var(--background-border); }
 
 .item-list > .content > .detail > .title { 
@@ -1753,74 +1759,22 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .list {
     background-color: var(--background-core); }
 
-.list > .subheader {
+/** LIST SHEET */
+
+.bottom-sheet > .content > .list-sheet {
+    background-color: var(--background-component); }
+
+.list-sheet > .item:hover {
+    background-color: var(--background-hover); }
+
+.list-sheet > .item > i {
     color: var(--secondary-font); }
 
-/** LIST PARAGRAPH */
+.list-sheet > .item.disabled > i {
+    color: var(--disabled-font); }
 
-.list-paragraph > .subheader {
-    color: var(--secondary-font); }
-
-.list-paragraph > .subheader.theme-primary {
-    color: var(--theme-primary-500); }
-
-.list-paragraph > .subheader.theme-secondary {
-    color: var(--theme-secondary-500); }
-
-.list-paragraph > .subheader.theme-primary > button.action {
-    color: var(--theme-primary-500); }
-
-.list-paragraph > .subheader.theme-primary > button.action:disabled {
-    color: var(--theme-primary-100); }
-
-.list-paragraph > .subheader.theme-secondary > button.action {
-    color: var(--theme-secondary-500); }
-
-.list-paragraph > .subheader.theme-secondary > button.action:disabled {
-    color: var(--theme-secondary-100); }
-
-.list-paragraph > .subheader.theme-primary > button.action:before {
-    background-color: var(--theme-primary-500); }
-
-.list-paragraph > .subheader.theme-secondary > button.action:before {
-    background-color: var(--theme-secondary-500); }
-
-.list-paragraph > .subheader.theme-secondary > .checkbox-control > label:before {
-    background-color: var(--theme-secondary-500); }
-
-.list-paragraph > .subheader.theme-primary > .radiobutton > label:before {
-    background-color: var(--theme-primary-500); }
-
-.list-paragraph > .subheader.theme-primary > .radiobutton > input[type="radio"]:checked + label:after {
-    border: 2px solid var(--theme-primary-500); }
-
-.list-paragraph > li {
-    border-bottom: 1px solid var(--background-border); }
-
-.list-paragraph.floating-actions > li > .actions {
-    background: var(--background-component);
-    border-top: 1px solid var(--background-border); }
-
-.list-paragraph.floating-actions > li > .actions.opacity {
-    border-top: none;
-    background: rgba(0, 0, 0, 0.16); }
-
-.list-paragraph.floating-actions > li > .actions.opacity > button {
-    background: var(--background-core); }
-
-/** LIST SIMPLE */
-
-.list-simple.bordered > li {
-    border-bottom: 1px solid var(--background-border); }
-
-.list-simple > li > .actions {
-    background-color: var(--background-core); }
-
-.list-simple > li > .actions.opacity {
-    background-color: rgba(0, 0, 0, 0.16); }
-
-.list-simple > li > .actions.opacity > button {
-    background: var(--background-core); }
+.list-sheet > .item.disabled > .detail {
+    color: var(--disabled-font); }
 
 /** MENU */
 
@@ -1995,7 +1949,7 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .select.active > .content > label.active {
     color: var(--theme-secondary-500); }
 
-.select.active > .content > label > span {
+.select.active > .content > label.active > span {
     color: var(--theme-error-500); }
 
 .select > .content > i {
@@ -2045,9 +1999,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
     color: var(--secondary-font); }
 
 .select-multiple.active > .content > label.active {
-    color: var(--theme-primary-500); }
+    color: var(--theme-secondary-500); }
 
-.select-multiple.active > .content > label > span {
+.select-multiple.active > .content > label.active > span {
     color: var(--theme-error-500); }
 
 .select-multiple > .content > i {
@@ -2085,6 +2039,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .select-multiple > .content > ul > li > .checkbox-select > label:before {
     background-color: var(--theme-primary-500); }
+
+.select-multiple > .content > ul > li > .checkbox-select > label:after {
+    border: 2px solid var(--theme-primary-alternative); }
 
 /** SIDENAV */
 
@@ -2215,9 +2172,16 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .slider.discrete > .content > .track > .thumb.off {
     border: none;
-    background-color: var(--dark-background); }
+    background-color: var(--primary-font); }
+
+.slider.discrete > .content > .track > .thumb.off.active {
+    border: none;
+    background-color: #e0e0e0; }
 
 .slider > .content > .track > .thumb > span {
+    color: var(--theme-primary-alternative); }
+
+.slider.discrete > .content > .track > .thumb.off.active > span {
     color: var(--primary-font); }
 
 .slider > .content > .showcase-input > input {
@@ -2428,6 +2392,11 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .stepper-mobile > .content > .progress-bar-stepper > .bar:after {
     background-color: var(--theme-secondary-500); }
 
+/** SUBHEADER */
+
+.subheader > span {
+    color: var(--secondary-font); }
+
 /** SWITCH */
 
 .switch > label > .track:before {
@@ -2509,6 +2478,18 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .tabs.theme-secondary > .tab:before, .app-bar.theme-secondary > .tabs > .tab:before
 .app-bar.theme-secondary > .toolbar > .tabs > .tab:before {
     background-color: var(--theme-secondary-ripple-alternative); }
+
+.tabs > .tab:after, .app-bar > .tabs > .tab:after, 
+.app-bar > .toolbar > .tabs > .tab:after {
+    background-color: var(--primary-font); }
+
+.tabs.theme-primary > .tab:after, .app-bar.theme-primary > .tabs > .tab:after, 
+.app-bar.theme-primary > .toolbar > .tabs > .tab:after {
+    background-color: var(--theme-primary-alternative); }
+
+.tabs.theme-secondary > .tab:after, .app-bar.theme-secondary > .tabs > .tab:after,
+.app-bar.theme-secondary > .toolbar > .tabs > .tab:after {
+    background-color: var(--theme-secondary-alternative); }
 
 .tabs > .stripe, .app-bar > .tabs > .stripe, 
 .app-bar > .toolbar > .tabs > .stripe {

@@ -1,10 +1,10 @@
 
 /*
- Angular Softtion v1.2.4
+ Angular Softtion v1.2.8
  (c) 2016 - 2018 Softtion Developers
  http://angular.softtion.com.co
  License: MIT
- Updated: 24/Ene/2018
+ Updated: 16/Abr/2018
 */
 
 ((factory) => {
@@ -19,13 +19,15 @@
     
     var ngSofttion = angular.module("ngSofttion", []);
 
+    ngSofttion.service("$restful", $restfulService).
+        service("$fileHttp", $fileHttpService).
+        service("$webService", $webServiceService);
+    
     // SERVICIO: $restful
-
-    ngSofttion.service("$restful", $restful);
     
-    $restful.$inject = [ "$q", "$http" ];
+    $restfulService.$inject = [ "$q", "$http" ];
     
-    function $restful($q, $http) {
+    function $restfulService($q, $http) {
         
         // Métodos del servicio 
         this.create = create;
@@ -35,7 +37,7 @@
         };
     }
         
-    var HttpRestful = function (baseURL, q, http) {
+    function HttpRestful(baseURL, q, http) {
         this.baseURL = baseURL;     // URL del recurso
         this.$q = q;                // Servicio Promesa
         this.$http = http;          // Servicio HTTP
@@ -74,8 +76,6 @@
         return new HttpRestful(baseURL, $q, $http); // Recurso
     };
 
-    // HTTP GET
-
     HttpRestful.prototype.catalog = function () {
         var self = this; // Instancia del objeto
 
@@ -106,8 +106,6 @@
         });
     };
 
-    // HTTP POST
-
     HttpRestful.prototype.store = function (data) {
         var self = this; // Instancia del objeto
 
@@ -122,8 +120,6 @@
                 });
         });
     };
-
-    // HTTP PUT
 
     HttpRestful.prototype.modify = function (ID, data) {
         var self = this; // Instancia del objeto
@@ -140,8 +136,6 @@
         });
     };
 
-    // HTTP DELETE
-
     HttpRestful.prototype.remove = function (ID) {
         var self = this; // Instancia del objeto
 
@@ -157,9 +151,89 @@
         });
     };
     
-    // SERVICIO: $fileHttp
+    // SERVICE: $API
     
-    ngSofttion.service("$fileHttp", $fileHttpService);
+    $webServiceService.$inject = [ "$restful" ];
+    
+    function $webServiceService($restful) {
+        
+            // Atributos
+        var packages = {}; // Contenedor de paquetes
+        
+            // Función del servicio
+        var service = function (package) { 
+            return softtion.isDefined(packages[package]) ?
+                packages[package].getResources() : undefined; 
+        };
+        
+        service.addPackage = function (name, restore) {
+            packages[name] = (restore) ? // Restaurar
+                new Package() : packages[name] || new Package(); 
+            
+            return this; // Retornando interfaz fluida
+        };
+        
+        service.addResource = function (package, name, baseURL) {
+            if (softtion.isDefined(packages[package]))
+                packages[package].addResource(name, baseURL); 
+            
+            return this; // Retornando interfaz fluida
+        };
+        
+        function Package() { this.resources = {}; }
+        
+        Package.prototype.addResource = function (name, baseURL) {
+            this.resources[name] = new HttpRequest($restful.create(baseURL)); 
+            
+            return this; // Retornando interfaz fluida
+        };
+        
+        Package.prototype.getResources = function () {
+            return this.resources; // Retornando recursos definidos
+        };
+        
+        function HttpRequest(restful) { 
+            this.restful = restful; // Objeto HttpRestful
+        }
+    
+        HttpRequest.prototype.setConfig = function (config) {
+            this.restful.setConfig(config); return this;
+        };
+
+        HttpRequest.prototype.resource = function (ID, name) {
+            return new HttpRequest(this.restful.resource(ID, name));
+        };
+
+        HttpRequest.prototype.catalog = function (params) {
+            resolvePromise(this.restful.catalog(), params);
+        };
+
+        HttpRequest.prototype.record = function (ID, params) {
+            resolvePromise(this.restful.record(ID), params);
+        };
+
+        HttpRequest.prototype.store = function (params) {
+            resolvePromise(this.restful.store(params.data), params);
+        };
+
+        HttpRequest.prototype.modify = function (ID, params) {
+            resolvePromise(this.restful.modify(ID, params.data), params);
+        };
+
+        HttpRequest.prototype.remove = function (ID, params) {
+            resolvePromise(this.restful.remove(ID), params);
+        };
+        
+        function resolvePromise(promise, params) {
+            promise.
+                then((response) => { params.success(response); }).
+                catch((error) => { params.error(error); });
+        }
+        
+        return service; // Retornando servicio $request
+    }
+    
+    // SERVICIO: $fileHttp
     
     $fileHttpService.$inject = [ "$q", "$http", "$timeout", "$window" ];
     
