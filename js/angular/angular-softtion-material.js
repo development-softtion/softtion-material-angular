@@ -93,6 +93,8 @@
 
                 ExpansionPanel: Directives.create(Directives.ExpansionPanel),
 
+                FabDialog: Directives.create(Directives.FabDialog),
+
                 FabMenu: Directives.create(Directives.FabMenu),
 
                 FabSpeedDial: Directives.create(Directives.FabSpeedDial),
@@ -298,6 +300,7 @@
             START: "start",
             FIXED: "fixed",
             FINISH: "finish",
+            DISABLED: "disabled",
             
             SHOW_BOTTOM_NAV: "show-bottom-navigation",
             
@@ -341,6 +344,7 @@
             case (Directives.Dialog.NAME): return Directives.Dialog;
             case (Directives.Dictionary.NAME): return Directives.Dictionary;
             case (Directives.ExpansionPanel.NAME): return Directives.ExpansionPanel;
+            case (Directives.FabDialog.NAME): return Directives.FabDialog;
             case (Directives.FabMenu.NAME): return Directives.FabMenu;
             case (Directives.FabSpeedDial.NAME): return Directives.FabSpeedDial;
             case (Directives.Filechooser.NAME): return Directives.Filechooser;
@@ -4180,6 +4184,91 @@
                         } // Se debe recoger el contenido del elemento
                     });
                 } // El componente no tiene contenedor
+            }
+        };
+    }
+    
+    // Directiva: FabDialog
+    // Version: 1.0.0
+    // Update: 17/04/2018
+    
+    Directives.FabDialog = FabDialogDirective;
+    
+    Directives.FabDialog.NAME = "FabDialog";
+    Directives.FabDialog.VERSION = "1.0.0";
+    Directives.FabDialog.KEY = "fabDialog";
+    
+    Directives.FabDialog.$inject = [ "$compile" ];
+    
+    function FabDialogDirective($compile) {
+        return {
+            restrict: "C",
+            scope: {
+                ngOpen: "=?",
+                ngClose: "=?",
+                icon: "@",
+                ngDisabled: "=?"
+            },
+            link: function ($scope, $element) {
+                    // Componentes
+                var backdrop = $element.children(".backdrop"),
+                    box = $element.children(".box");
+                    
+                    // Atributos
+                var button = softtion.html("div").addClass("button").
+                        addChildren(softtion.html("i").setText("{{icon}}"));
+                
+                $scope.$watch(() => { return $scope.ngOpen; },
+                    (newValue) => {
+                        if (!newValue) return;  // No se debe hacer nada
+                        
+                        if (!$scope.ngDisabled) $element.addClass(Classes.ACTIVE);
+                        
+                        $scope.ngOpen = false; // Desactivando variable
+                    });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (!newValue) return; // No se debe hacer nada
+                        
+                        $element.removeClass(Classes.ACTIVE);
+                        $scope.ngClose = false; // Desactivando variable
+                    });
+                
+                $scope.$watch(() => { return $scope.ngDisabled; },
+                    (newValue) => {
+                        if (newValue) {
+                            $element.addClass(Classes.DISABLED);
+                            $scope.ngClose = true; // Cerrando componente
+                        } else {
+                            $element.removeClass(Classes.DISABLED);
+                        } // Reactivando componente
+                    });
+
+                if (!backdrop.exists()) {
+                    backdrop = softtion.htmlElement("div", "backdrop");
+                    
+                    $element.append(backdrop); // Agregando Backdrop
+                }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
+                
+                box.append($compile(button.create())($scope));
+                
+                box.on("click", ($event) => {
+                    if ($element.hasClass(Classes.ACTIVE)) {
+                        if (box.is($event.target))
+                            $scope.$apply(() => { $scope.ngClose = true; });
+                        
+                        return; // Componente se encuentra abierto
+                    }
+                    
+                    $scope.$apply(() => { $scope.ngOpen = true; });
+                });
+                
+                backdrop.on("click", () => {
+                    if (!$element.hasClass(Classes.ACTIVE)) return;
+                    
+                    $scope.$apply(() => { $scope.ngClose = true; });
+                });
             }
         };
     }
@@ -10103,9 +10192,7 @@
 
             SELECTORS: {
                 FAB: "button.floating:not(.static), .fab-speed-dial," 
-                    + " .fab-menu, .progress-button-floating",
-
-                BOTTOM_NAVIGATION: ".stepper-mobile, .footer-buttons"
+                    + " .fab-menu, .progress-button-floating, .fab-dialog"
             },
 
             File: {
