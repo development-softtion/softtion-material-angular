@@ -1789,6 +1789,10 @@
 
                     position = positionNew; // Posición nueva del scroll
                 }
+                
+                $scope.$on("$destroy", () => {
+                    $body.removeClass(Classes.SHOW_BOTTOM_NAV);
+                });
             }
         };
     }
@@ -6752,12 +6756,18 @@
                 ngDisabled: "=?",
                 eventListener: "&"
             },
-            link: function ($scope) { 
+            link: function ($scope, $element) { 
+                    // Componentes
+                var checkbox = $element.find("input[type='checkbox']");
+                
                     // Atributos
                 var listener = new Listener($scope, Listener.CHECKBOX);
                 
                 $scope.clickLabel = function ($event) { 
-                    if (!$scope.ngDisabled) listener.launch("click", { $event: $event });
+                    if (!checkbox.is($event.target)) return;
+                    
+                    if (!$scope.ngDisabled) 
+                        listener.launch("click", { $event: $event });
                 };
             }
         };
@@ -6930,7 +6940,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -7031,7 +7041,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -7127,7 +7137,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -7239,7 +7249,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -7344,7 +7354,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -7446,7 +7456,7 @@
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "errorActive");
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
 
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
             setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
@@ -9670,12 +9680,12 @@
 
         $scope.typeInput = getTypeInput($scope.type || "text");
         $scope.input = ""; $scope.isIconAction = false;
-        $scope.errorActive = false; $scope.isErrorActive = false; 
-        $scope.inputActive = false; $scope.viewPassword = false; 
-        
-        $scope.inputStart = false; // Input no inicializado
+        $scope.errorActive = false; $scope.inputActive = false; 
+        $scope.viewPassword = false; $scope.inputStart = false;
 
-        if ($scope.type === "password") $scope.iconAction = "visibility";
+        if ($scope.type === "password") {
+            $scope.iconAction = "visibility"; $scope.isIconAction = true;
+        } // Se ha definido una acción a realizar
 
         $scope.isActiveLabel = function () {
             return ($scope.inputActive || softtion.isString($scope.input) || 
@@ -9700,6 +9710,10 @@
 
         $scope.isHaveText = function () {
             return softtion.isString($scope.input) || softtion.isDefined($scope.value);
+        };
+        
+        $scope.hideHelperText = function () {
+            return $scope.errorActive || (softtion.isDefined($scope.value) && !$scope.inputActive);
         };
 
         $scope.clickLabel = function () { input.focus(); };
@@ -9761,8 +9775,7 @@
         };
 
         $scope.getValueModel = function () {
-            var value = (softtion.isDefined($scope.value)) ? 
-                $scope.value : $scope.input;
+            var value = (softtion.isDefined($scope.value)) ? $scope.value : $scope.input;
                 
             if (($scope.type === "password") && !$scope.viewPassword) {
                 value = convertToPassword(value.length);
@@ -9844,13 +9857,12 @@
         }
 
         function setInputError(message) {
-            $scope.errorActive = true; $element.addClass("error"); 
-            $scope.errorText = message; $scope.isErrorActive = true;
+            $scope.errorActive = true; $scope.errorText = message; 
+            $element.addClass("error"); // Agregando error en componente
         }
         
         function removeInputError() {
-            $scope.isErrorActive = false; $scope.errorActive = false; 
-            $element.removeClass("error"); // Quitanto error en componente
+            $scope.errorActive = false; $element.removeClass("error"); 
         }
         
         function validateValue(newValue) {
@@ -9959,6 +9971,10 @@
 
         $scope.isHaveText = function () {
             return softtion.isString($scope.area) || softtion.isDefined($scope.value);
+        };
+        
+        $scope.hideHelperText = function () {
+            return $scope.errorActive || (softtion.isDefined($scope.value) && !$scope.areaActive);
         };
 
         $scope.clickLabel = function () {
@@ -10082,12 +10098,11 @@
 
         function setAreaError(message) {
             $scope.errorActive = true; $element.addClass("error"); 
-            $scope.errorText = message; $scope.isErrorActive = true;
+            $scope.errorText = message; // Agregando error en componente
         }
         
         function removeAreaError() {
-            $scope.isErrorActive = false; $scope.errorActive = false; 
-            $element.removeClass("error"); // Quitanto error en componente
+            $scope.errorActive = false; $element.removeClass("error"); 
         }
         
         function validateValue(newValue) {

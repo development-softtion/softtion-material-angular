@@ -135,6 +135,10 @@
         return ((this.isDefined(object)) && (object instanceof jQuery));
     };
     
+    Softtion.prototype.isJson = function (object) {
+        return ((this.isDefined(object)) && (Object.keys(object) > 0));
+    };
+    
     Softtion.prototype.isJsonEmpty = function (object) {
         return ((this.isUndefined(object)) || (Object.keys(object) === 0));
     };
@@ -397,6 +401,22 @@
     Softtion.prototype.newTabPage = function (url) {
         var a = document.createElement("a");
         a.target = "_blank"; a.href = url; a.click(); 
+    };
+    
+    Softtion.prototype.isSupportedStorage = function () {
+        return this.isDefined(window.localStorage);
+    };
+    
+    Softtion.prototype.addStorage = function (key, value) {
+        if (!this.isSupportedStorage()) {
+            return false;
+        } else {
+            window.localStorage[key] = value; return true;
+        } // Datos almacenados correctamente
+    };
+    
+    Softtion.prototype.getStorage = function (key) {
+        return (!this.isSupportedStorage()) ? undefined : window.localStorage[key];
     };
     
     var TypeCharacter = {

@@ -9278,18 +9278,16 @@ body.show-bottom-navigation .stepper-mobile {
     overflow: hidden; }
 
 .stepper-mobile > .back {
-    float: left;
+    float: left; }
+
+.stepper-mobile.start > .back {
     padding-left: 8px; }
 
-.stepper-mobile > .back.start {
-    padding-left: 16px; }
-
 .stepper-mobile > .next {
-    float: right; 
-    padding-right: 8px; }
+    float: right; }
 
-.stepper-mobile > .next.finish {
-    padding-right: 16px; }
+.stepper-mobile.finish > .next {
+    padding-right: 8px; }
 
 .stepper-mobile > .back > button,
 .stepper-mobile > .next > button {
@@ -9301,13 +9299,20 @@ body.show-bottom-navigation .stepper-mobile {
     outline: none;
     padding: 0px 8px; }
 
-.stepper-mobile > .back > button {
-    padding-left: 0px; }
+.stepper-mobile > .back > button > span,
+.stepper-mobile > .next > button > span {
+    display: block;
+    height: 48px;
+    line-height: 48px;
+    padding: 0px 4px; }
 
-.stepper-mobile > .next > button {
-    padding-right: 0px; }
+.stepper-mobile > .back > button > span {
+    float: right; }
 
-.stepper-mobile > .back > button:before,
+.stepper-mobile > .next > button > span {
+    float: left; }
+
+.stepper-mobile > .back > button:after,
 .stepper-mobile > .next > button:before {
     content: "";
     display: block;
@@ -9325,43 +9330,43 @@ body.show-bottom-navigation .stepper-mobile {
        -moz-transform: scale(0);
             transform: scale(0); }
 
-.stepper-mobile > .back > button:not(:active):before,
+.stepper-mobile > .back > button:focus:after, 
+.stepper-mobile > .next > button:focus:before {
+    visibility: visible; }
+
+.stepper-mobile > .back > button:not(:active):after,
 .stepper-mobile > .next > button:not(:active):before {
     -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
             animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
-.stepper-mobile > .back > button:focus:before, 
-.stepper-mobile > .next > button:focus:before {
-    visibility: visible; }
-
-.stepper-mobile > .back:before {
+.stepper-mobile > .back > button:before {
     content: "chevron_left"; }
 
-.stepper-mobile > .next:after {
+.stepper-mobile > .next > button:after {
     content: "chevron_right"; }
 
-.stepper-mobile > .back:before,
-.stepper-mobile > .next:after {
+.stepper-mobile > .back > button:before,
+.stepper-mobile > .next > button:after {
     display: block;
-    width: 24px;
-    height: 24px;
     font-family: "Material Icons";
+    width: 24px;
+    height: 48px;
+    line-height: 48px;
     font-size: 24px;
     text-align: center;
-    line-height: 48px;
-    border-radius: 50%; }
+    text-transform: lowercase; }
 
-.stepper-mobile > .back:before {
+.stepper-mobile > .back > button:before {
     float: left; }
 
-.stepper-mobile > .back.start:before {
+.stepper-mobile.start > .back > button:before {
     display: none; }
 
-.stepper-mobile > .next:after {
+.stepper-mobile > .next > button:after {
     float: right; }
 
-.stepper-mobile > .next.finish:after {
+.stepper-mobile.finish > .next > button:after {
     display: none; }
 
 .stepper-mobile > .content > .dots,
@@ -9430,9 +9435,12 @@ body.show-bottom-navigation .stepper-mobile {
     font-weight: 600; }
 
 .subheader > button.action {
-    width: 48px;
+    width: 36px;
     height: 48px;
-    padding: 12px; }
+    padding: 12px 0px 12px 12px; }
+
+.subheader > button.action:before {
+    left: calc(50% + 6px); }
 
 .subheader > .checkbox-control {
     margin: 0px;
@@ -10224,7 +10232,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     cursor: text;
     height: 32px;
     padding: 12px 0px 8px 0px;
-    line-height: 32px;
     font-size: 16px;
     line-height: 24px;
     border: none;
@@ -11383,7 +11390,7 @@ body.show-bottom-navigation .toast.show {
     max-height: inherit; 
     cursor: pointer;
     line-height: inherit;
-    margin: 0px 16px 0px 4px; }
+    margin-right: 4px; }
 
 .toolbar > .nav-icon > button.action {
     padding: 16px 12px;
@@ -11418,7 +11425,7 @@ body.show-bottom-navigation .toast.show {
     line-height: inherit; }
 
 .toolbar > .nav-icon + .title {
-    margin-left: 8px; }
+    margin-left: 16px; }
 
 .sidenav.persistent.show ~ .app-body > .app-bar > .toolbar > .nav-icon + .title, 
 .sidenav.persistent.start ~ .app-body > .app-bar > .toolbar > .nav-icon + .title, 
@@ -11454,12 +11461,6 @@ body.show-bottom-navigation .toast.show {
 
 .toolbar > .title > a {
     text-decoration: none; }
-
-@media only screen and (max-width : 360px) {
-    
-    .toolbar > .nav-icon + .title {
-        margin-left: 8px; }
-}
 
 .toolbar > .detail {
     width: 100%;
@@ -11532,12 +11533,6 @@ body.show-bottom-navigation .toast.show {
 
 .toolbar > .detail.hide-subtitle > .subtitle {
     display: none; }
-
-@media only screen and (max-width : 360px) {
-    
-    .toolbar > .nav-icon + .detail {
-        margin-left: 8px; }
-}
 
 @media only screen and (min-width : 961px) {
 

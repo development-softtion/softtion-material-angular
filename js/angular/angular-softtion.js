@@ -226,8 +226,14 @@
         
         function resolvePromise(promise, params) {
             promise.
-                then((response) => { params.success(response); }).
-                catch((error) => { params.error(error); });
+                then((response) => { 
+                    if (softtion.isFunction(params.success))
+                        params.success(response); 
+                }).
+                catch((error) => { 
+                    if (softtion.isFunction(params.error))
+                        params.error(error); 
+                });
         }
         
         return service; // Retornando servicio $request

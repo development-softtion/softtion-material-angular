@@ -607,10 +607,10 @@ button.raised.theme-primary:hover {
 button.raised.theme-secondary:hover {
     background-color: var(--theme-primary-200); }
 
-button.raised.theme-primary:focus  {
+button.raised.theme-primary:focus {
     background-color: var(--theme-secondary-700); }
 
-button.raised.theme-secondary:focus  {
+button.raised.theme-secondary:focus {
     background-color: var(--theme-primary-700); }
 
 button.raised:disabled, button.raised:hover:disabled {
@@ -624,6 +624,38 @@ button.raised.theme-primary:disabled, button.raised.theme-primary:disabled:hover
 button.raised.theme-secondary:disabled, button.raised.theme-secondary:disabled:hover {
     color: var(--theme-primary-disabled);
     background-color: var(--theme-primary-100); }
+
+.theme-primary button.raised.theme-contrast { 
+    color: var(--theme-primary-500);
+    background-color: var(--theme-primary-active); }
+
+.theme-primary button.raised.theme-contrast:hover {
+    background-color: var(--theme-primary-inactive); }
+
+.theme-primary button.raised.theme-contrast:focus {
+    color: var(--theme-primary-300);
+    background-color: var(--theme-primary-inactive); }
+
+.theme-primary button.raised.theme-contrast:disabled, 
+.theme-primary button.raised.theme-contrast:hover:disabled {
+    color: var(--theme-primary-300);
+    background-color: var(--theme-primary-disabled); }
+
+.theme-secondary button.raised.theme-contrast { 
+    color: var(--theme-secondary-500);
+    background-color: var(--theme-secondary-active); }
+
+.theme-secondary button.raised.theme-contrast:hover {
+    background-color: var(--theme-secondary-inactive); }
+
+.theme-secondary button.raised.theme-contrast:focus {
+    color: var(--theme-secondary-300);
+    background-color: var(--theme-secondary-inactive); }
+
+.theme-secondary button.raised.theme-contrast:disabled, 
+.theme-secondary button.raised.theme-contrast:hover:disabled {
+    color: var(--theme-secondary-300);
+    background-color: var(--theme-secondary-disabled); }
 
 button.floating { 
     background-color: var(--background-component);
@@ -1765,9 +1797,6 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .item-list:hover {
     background-color: var(--background-active); }
 
-.item-list + .subheader {
-    border-top: 1px solid var(--background-border); }
-
 .item-list > .content > .avatar > span,
 .item-list > .content > .avatar > i {
     background-color: var(--secondary-font);
@@ -2434,6 +2463,10 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .stepper-mobile > .back > button, .stepper-mobile > .next > button {
     color: var(--secondary-font); }
 
+.stepper-mobile > .back > button:after,
+.stepper-mobile > .next > button:before {
+    background-color: var(--ripple); }
+
 .stepper-mobile > .back > button:disabled,
 .stepper-mobile > .next > button:disabled {
     color: var(--disabled-font); }
@@ -2443,6 +2476,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .stepper-mobile > .content > .dots > .dot.active:before {
     background-color: var(--theme-secondary-500); }
+
+.stepper-mobile > .content > .dots > .dot.success:before {
+    background-color: var(--theme-primary-500); }
 
 .stepper-mobile > .content > .dots > .dot.error:before {
     background-color: var(--theme-error-500); }
