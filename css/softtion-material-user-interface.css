@@ -5756,7 +5756,7 @@ body.show-bottom-navigation .fab-speed-dial {
     top: 0;
     right: 0;
     width: 100%;
-    max-width: 320px;
+    max-width: 360px;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -6354,6 +6354,10 @@ img.center-content {
     height: 48px;
     line-height: 48px;
     font-size: 28px; }
+
+.three-line > .item-list > .content > .avatar,
+.item-list.three-line > .content > .avatar {
+    top: 16px; }
 
 .two-line > .item-list > .content > .avatar > i,
 .item-list.two-line > .content > .avatar > i,

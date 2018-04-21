@@ -8967,12 +8967,13 @@
             if (!snackbar.hasClass(Classes.SHOW)) {
                 var width = "100%", right = "0px";
                 
-                body.html(text); snackbar.addClass(Classes.SHOW); 
-                displaceButtons(true, snackbar.innerHeight()); // Botones
+                body.html(text); snackbar.addClass(Classes.SHOW);
                 
                 (parseInt(body.height()) <= 20) ?  
                     body.removeClass(Classes.TWO_LINE) :
-                    body.addClass(Classes.TWO_LINE);
+                    body.addClass(Classes.TWO_LINE); 
+            
+                displaceButtons(true, snackbar.innerHeight()); // Botones
 
                 if (softtion.isDefined(options)) {
                     action.removeClass(Classes.HIDE);
