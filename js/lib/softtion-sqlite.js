@@ -285,7 +285,7 @@
         var values = []; // Valores
 
         this.filters.forEach((item) => {
-            values = values.concat(item.filter.getValues());
+            values = values.together(item.filter.getValues());
         });
         
         return values; // Retornando lista de Valores
@@ -352,7 +352,7 @@
         var values = []; // Valores
 
         this.filters.forEach((item) => {
-            values = values.concat(item.filter.getValues());
+            values = values.together(item.filter.getValues());
         });
 
         return values; // Retornando valores de la claúsula
@@ -471,7 +471,7 @@
         var values = []; // Valores
 
         this.filters.forEach((item) => {
-            values = values.concat(item.filter.getValues());
+            values = values.together(item.filter.getValues());
         });
 
         return values; // Retornando valores de la claúsula
@@ -1604,7 +1604,7 @@
                 var values = self.values, where = self.whereClause;
 
                 if (softtion.isDefined(where)) {
-                    values = values.concat(where.getValues());
+                    values = values.together(where.getValues());
                 } // Agrengado valores de Clausula WHERE
 
                 connection.transaction((sqlTransaction) => {

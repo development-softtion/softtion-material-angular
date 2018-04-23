@@ -691,12 +691,6 @@
         margin-left: 95% !important; }
 }
 
-.truncate {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
-
 .hidden {
     display: none !important; }
 
@@ -739,6 +733,12 @@
     .view-large, .view-extralarge {
         display: block !important; }
 }
+
+.truncate {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
 
 .actionable {
     cursor: pointer; }

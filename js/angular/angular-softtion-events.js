@@ -18,6 +18,9 @@
             directive("ngEnter", ngEnter).
             directive("ngLoad", ngLoad).
             directive("ngClickright", ngClickRight).
+            directive("ngTextcopy", ngTextCopy).
+            directive("ngTextcut", ngTextCut).
+            directive("ngTextpaste", ngTextPaste).
             directive("ngScroll", ngScroll).
             directive("ngMousehold", ngMouseHold).
             directive("ngTouchhold", ngTouchHold).
@@ -162,6 +165,87 @@
                         
                         var callback = function () {
                             fnClickright($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgTextCopy
+    // Version: 1.0.0
+    // Updated: 23/04/2018
+    
+    ngTextCopy.$inject = [ "$parse" ];
+    
+    function ngTextCopy($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTextCopy = $parse($attrs.ngTextcopy); // Función Copiar
+
+                return function ($scope, $element) {
+                    if (($element.tagName() !== "INPUT") && $element.tagName() !== "TEXTAREA") return;
+                    
+                    $element.on("copy", ($event) => {
+                        var callback = function () {
+                            fnTextCopy($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgTextCut
+    // Version: 1.0.0
+    // Updated: 23/04/2018
+    
+    ngTextCut.$inject = [ "$parse" ];
+    
+    function ngTextCut($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTextCut = $parse($attrs.ngTextcut); // Función Cortar
+
+                return function ($scope, $element) {
+                    if (($element.tagName() !== "INPUT") && $element.tagName() !== "TEXTAREA") return;
+                    
+                    $element.on("cut", ($event) => {
+                        var callback = function () {
+                            fnTextCut($scope, { $event: $event, $element: $element });
+                        };
+
+                        $scope.$apply(callback); // Disparando evento
+                    });
+                };
+            }
+        };
+    }
+    
+    // Directiva: NgTextPaste
+    // Version: 1.0.0
+    // Updated: 23/04/2018
+    
+    ngTextPaste.$inject = [ "$parse" ];
+    
+    function ngTextPaste($parse) {
+        return {
+            restrict: "A",
+            compile: function ($element, $attrs) {
+                var fnTextPaste = $parse($attrs.ngTextpaste); // Función Pegar
+                
+                return function ($scope, $element) {
+                    if (($element.tagName() !== "INPUT") && $element.tagName() !== "TEXTAREA") return;
+                    
+                    $element.on("paste", ($event) => {
+                        var callback = function () {
+                            fnTextPaste($scope, { $event: $event, $element: $element });
                         };
 
                         $scope.$apply(callback); // Disparando evento

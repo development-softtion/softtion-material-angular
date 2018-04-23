@@ -89,7 +89,7 @@
                 var middlewares = []; // Listado de middlewares
 
                 for (var i = 0; i < routes.length; i++) {
-                    middlewares = middlewares.concat(getMiddlewareNames(routes[i]));
+                    middlewares = middlewares.together(getMiddlewareNames(routes[i]));
                 } // Concat each route"s middleware names
 
                 return middlewares; // Retornando middlewares

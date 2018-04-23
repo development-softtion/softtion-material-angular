@@ -61,7 +61,7 @@
     -khtml-user-drag: element;
     -webkit-user-drag: element; }
 
-html, body ,input, textarea {
+html, body ,input, textarea, pre {
     font-family: softtion-material; 
     font-size: 14px;
     -webkit-tap-highlight-color: transparent; }
@@ -706,8 +706,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     line-height: 32px;
     font-size: 16px;
     cursor: text;
-    overflow: hidden;
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .autocomplete:not(.inline) > .content > i.description ~ .value { 
     padding-left: 40px;
@@ -1152,8 +1151,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     line-height: 32px;
     font-size: 16px;
     cursor: text;
-    overflow: hidden;
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .autocomplete-record:not(.inline) > .content > i.description ~ .value { 
     padding-left: 40px;
@@ -3579,8 +3577,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     width: calc(100% - 24px);
     cursor: pointer;
-    overflow: hidden; 
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .clockpicker-input:not(.inline) > .content > i.description ~ .value { 
     padding-left: 40px;
@@ -4148,8 +4145,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 16px;
     width: calc(100% - 24px);
     cursor: pointer;
-    overflow: hidden; 
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .datepicker-input:not(.inline) > .content > i.description ~ .value { 
     padding-left: 40px;
@@ -9941,8 +9937,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin: 0px;
     font-size: 16px;
     cursor: text;
-    overflow: hidden; 
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .textbox.align-right > .content > .box > .value {
     text-align: right !important; }
@@ -10323,8 +10318,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: 16px;
     width: 100%;
     cursor: text;
-    overflow: hidden; 
-    white-space: nowrap; }
+    overflow: hidden; }
 
 .textfield.align-right > .content > .value { 
     text-align: right; }
@@ -10764,8 +10758,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin: 0px;
     font-size: 16px;
     overflow: hidden; 
-    cursor: text;
-    white-space: nowrap; }
+    cursor: text; }
 
 .textfield-bordered.align-right > .content > .box > .value { 
     text-align: right !important; }
