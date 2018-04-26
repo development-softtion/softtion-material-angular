@@ -127,35 +127,40 @@ class Softtion {
     }
     
     static get TIME_ELAPSED_CONFIG() {
-        return [{ 
-            divisor: 1000, comparator: 60, key: "seconds",
-            singular: "segundo", plural: "segundos" 
-        }, { 
-            divisor: 60, comparator: 60, key: "minutes",
-            singular: "minuto", plural: "minutos" 
-        }, { 
-            divisor: 60, comparator: 24, key: "hours",
-            singular: "hora", plural: "horas" 
-        }, { 
-            divisor: 24, comparator: 7, key: "days",
-            singular: "día", plural: "días" 
-        }, { 
-            divisor: 7, comparator: 4, key: "weeks",
-            singular: "semana", plural: "semanas" 
-        }, { 
-            divisor: 30, comparator: 12, key: "months",
-            singular: "mes", plural: "meses" 
-        }, { 
-            divisor: 12, comparator: 9999, key: "years",
-            singular: "año", plural: "años" 
-        }];
+        return [
+            { 
+                divisor: 1000, comparator: 60, key: "seconds",
+                normal: { singular: "segundo", plural: "segundos" },
+                min: { singular: "seg", plural: "segs" }
+            }, { 
+                divisor: 60, comparator: 60, key: "minutes",
+                normal: { singular: "minuto", plural: "minutos" },
+                min: { singular: "min", plural: "mins" }
+            }, { 
+                divisor: 60, comparator: 24, key: "hours",
+                normal: { singular: "hora", plural: "horas" },
+                min: { singular: "hora", plural: "horas" }
+            }, { 
+                divisor: 24, comparator: 30, key: "days",
+                normal: { singular: "día", plural: "días" },
+                min: { singular: "día", plural: "dias" }
+            }, { 
+                divisor: 30, comparator: 12, key: "months",
+                normal: { singular: "mes", plural: "meses" },
+                min: { singular: "mes", plural: "meses" }
+            }, { 
+                divisor: 12, comparator: 9999, key: "years",
+                normal: { singular: "año", plural: "años" },
+                min: { singular: "año", plural: "años" }
+            }
+        ];
     }
     
     static get REG_CHARACTERS() {
         return {
             ALPHABETIC: /[^a-z|A-Z|ñ|Ñ|á|Á|é|É|í|Í|ó|Ó|ú|Ú|ü|Ü]/g,
             ALPHASPACE: /[^a-z|A-Z| |ñ|Ñ|á|Á|é|É|í|Í|ó|Ó|ú|Ú|ü|Ü]/g,
-            NUMBER: /[^0-9]/g,
+            NUMBER: /[^0-9]*$/g,
             ALPHANUMBER: /[^0-9|a-z|A-Z|ñ|Ñ|á|Á|é|É|í|Í|ó|Ó|ú|Ú|ü|Ü]/g,
             ALPHANUMBERSPACE: /[^0-9|^a-z|A-Z| |ñ|Ñ|á|Á|é|É|í|Í|ó|Ó|ú|Ú|ü|Ü]/g,
             EMAIL: /[^a-z|A-Z|0-9|.|@|_|-]/g,
@@ -299,13 +304,10 @@ class Softtion {
         if (!this.isArray(array)) return false; // No es array
         
         try {
-            var self = this; // Instancia de Softtion
-            
             array.forEach((value, index) => {
                 var stop = fn(value, index); // Verificando
 
-                if (stop === true) 
-                    throw Softtion.BreakException;
+                if (stop === true) throw Softtion.BreakException;
             });
             
             return true; // Array recorrido correctamente
@@ -378,15 +380,11 @@ class Softtion {
     }
     
     getGUID() {
-        return function () {
-            function s4() {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            };
-
-            return function () {
-                return s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4();
-            };
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
         };
+
+        return s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4();
     }
     
     generateUrl(baseURL, suffixes) {
@@ -627,8 +625,9 @@ class Softtion {
         };
     }
     
-    getTimeFormatElapsed(milliseconds) {
-        var label, prefix = (milliseconds > 0) ? 
+    getTimeFormatElapsed(milliseconds, min, prefixIgnore) {
+        var label, // Etiqueta del texto de tiempo
+            prefix = (milliseconds > 0) ? 
                 { singular: "Falta", plural: "Faltan" } : 
                 { singular: "Hace", plural: "Hace" };
         
@@ -638,14 +637,30 @@ class Softtion {
         this.forEach(Softtion.TIME_ELAPSED_CONFIG, (item) => {
             var value = Math.roundDecimal(result / item.divisor);
             
-            if (value < item.comparator) {
-                var keyItem = (value === 1) ? item.singular : item.plural,
-                    $prefix = (value === 1) ? prefix.singular : prefix.plural;
-                    
-                label = $prefix + " " + value + " " + keyItem; 
+            if (value >= item.comparator) { result = value; return false; }
                 
-                return true; // Finalizando recorrido
-            } else if (item.key !== "weeks") { result = value; } 
+            var suffix, isWeek = (value % 7 === 0);
+                
+            if (item.key === "days" && isWeek) {
+                value = value / 7; // Sacando la semana transcurrida
+                
+                suffix = (min) ? // Sufijo
+                    { singular: "sem", plural: "sems" } : 
+                    { singular: "semana", plural: "semanas" }; 
+            } else {
+                suffix = (min) ? item.min : item.normal; // Sufijo
+            } // El tiempo no se ha definido en dias
+            
+            var keyItem = 
+                    (value === 1) ? suffix.singular : suffix.plural,
+                $prefix = 
+                    (value === 1) ? prefix.singular : prefix.plural;
+
+            label = value + " " + keyItem; // Iniciando etiqueta
+            
+            if (!prefixIgnore) label = $prefix + " " +  label;
+                
+            return true; // Finalizando calculo de tiempo transcurrido
         });
         
         return label; // Retornando tiempo transcurrido en el formato
@@ -861,11 +876,11 @@ class Softtion {
             ); // Número del año de la fecha
 
             formato = formato.replace(
-                "mn", softtion.get(softtion.MONTHS_OF_YEAR)[this.getMonth()]
+                "mn", Softtion.MONTHS_OF_YEAR[this.getMonth()]
             ); // Nombre del mes de la fecha
     
             formato = formato.replace(
-                "ww", softtion.get(softtion.DAYS_OF_WEEK)[this.getDay()]
+                "ww", Softtion.DAYS_OF_WEEK[this.getDay()]
             ); // Nombre de la semana de la fecha
 
             formato = formato.replace(
@@ -1003,11 +1018,11 @@ class Softtion {
             }
         };
         
-        Date.prototype.getDifferenceFormat = function (date) {
+        Date.prototype.getDifferenceFormat = function (date, min, prefixIgnore) {
             date = date || new Date(); // Redifiniendo date
             var difference = this.getTime() - date.getTime();
             
-            return softtion.getTimeFormatElapsed(difference);
+            return softtion.getTimeFormatElapsed(difference, min, prefixIgnore);
         };
 
     })(window.softtion);

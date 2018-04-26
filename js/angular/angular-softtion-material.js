@@ -780,8 +780,8 @@
     }
     
     // Directiva: AutoComplete
-    // Version: 1.2.4
-    // Updated: 24/02/2018
+    // Version: 1.2.6
+    // Updated: 25/04/2018
     
     Directives.AutoComplete = AutoCompleteDirective;
     
@@ -806,8 +806,9 @@
             addAttribute("ng-keyup", "keyupInput($event)").
             addAttribute("ng-blur", "blurInput($event)").
             addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{hide: !hideValue, holderhide: isHaveSelection()}").
-            addAttribute("focused-element", "focusedInput").
+            addAttribute("ng-class",
+                "{hide: !hideValue, holderhide: isHaveSelection(), iconaction: isIconAction()}"
+            ).addAttribute("focused-element", "focusedInput").
             addAttribute("placeholder", "{{placeholder}}");
 
         var lineShadow = softtion.html("div").addClass("line-shadow");
@@ -824,9 +825,13 @@
             );
 
         var value = softtion.html("pre").addClass(["value"]).
-            setText("{{getValueModel()}}").
-            addAttribute("ng-hide", "hideValue").
+            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
+            addAttribute("ng-class", "{iconaction: isIconAction()}").
             addAttribute("ng-click", "clickLabel()");
+
+        var buttonAction = softtion.html("i").addClass(["action"]).
+            setText("{{iconAction}}").addAttribute("ng-if", "isIconAction()").
+            addAttribute("ng-click", "clickAction($event)");
 
         var buttonClear = softtion.html("i").addClass(["action"]).
             setText("close").addAttribute("ng-hide", "isActiveClear()").
@@ -849,10 +854,10 @@
                     setText("{{descriptionNotFoundResult()}}")
             );
 
-        content.addChildren(iconDescription).
-            addChildren(input).addChildren(lineShadow).
-            addChildren(lineActive).addChildren(label).
-            addChildren(value).addChildren(buttonClear).
+        content.addChildren(iconDescription).addChildren(input).
+            addChildren(lineShadow).addChildren(lineActive).
+            addChildren(label).addChildren(value).
+            addChildren(buttonAction).addChildren(buttonClear).
             addChildren(spanHelper).addChildren(listAutocomplete);
 
         return content.create(); // Componente
@@ -873,6 +878,7 @@
                 label: "@",
                 suggestions: "=",
                 iconDescription: "@",
+                iconAction: "@",
                 placeholder: "@",
                 disabledFocusclear: "=?",
                 helperText: "@",
@@ -921,6 +927,12 @@
                         if (softtion.isUndefined(newValue)) $scope.input = ""; 
                     });
 
+                $scope.$watch(() => { return $scope.input; }, 
+                    function (newValue, oldValue) {
+                        if (newValue !== oldValue && $scope.inputActive)
+                            listener.launch("changedText");
+                    });
+
                 $scope.$watch(() => { return $scope.clearModel; }, 
                     function (newValue) {
                         if (newValue === true) {
@@ -938,6 +950,10 @@
                 $scope.isIconDescription = function () {
                     return softtion.isString($scope.iconDescription);
                 };
+                
+                $scope.isIconAction = function () {
+                    return softtion.isString($scope.iconAction);
+                };
 
                 $scope.helperActive = function () {
                     return softtion.isUndefined($scope.select) || $scope.helperPermanent;
@@ -951,6 +967,10 @@
 
                 $scope.clickIconDescription = function ($event) {
                     listener.launch("icon", { $event: $event });
+                };
+                
+                $scope.clickAction  = function ($event) {
+                    listener.launch("action", { $event: $event });
                 };
 
                 $scope.focusInput = function ($event) {
@@ -1003,6 +1023,8 @@
 
                 $scope.keyupInput = function ($event) {
                     if (KeysControl.AUTOCOMPLETE.hasItem($event.charCode)) return;
+
+                    listener.launch("keyUp", { $event: $event });
 
                     searchSuggestions($scope.input); // Buscando sugerencias
                 };
@@ -5730,8 +5752,8 @@
     }
     
     // Directiva: Rating
-    // Version: 1.0.1
-    // Update: 27/02/2018
+    // Version: 1.0.2
+    // Update: 25/04/2018
     
     Directives.Rating = RatingDirective;
     
@@ -5744,36 +5766,41 @@
         var button1 = softtion.html("button").
             addAttribute("ng-disabled", "ngDisabled").
             addAttribute("ng-click", "setValue(1)").
+            addAttribute("material-font", "{{starColor}}").
             addClass("action").addChildren(
-                softtion.html("i").setText("{{isActive(1)}}")
+                softtion.html("i").setText("{{getStarValue(1)}}")
             );
 
         var button2 = softtion.html("button").
             addAttribute("ng-disabled", "ngDisabled").
             addAttribute("ng-click", "setValue(2)").
+            addAttribute("material-font", "{{starColor}}").
             addClass("action").addChildren(
-                softtion.html("i").setText("{{isActive(2)}}")
+                softtion.html("i").setText("{{getStarValue(2)}}")
             );
 
         var button3 = softtion.html("button").
             addAttribute("ng-disabled", "ngDisabled").
             addAttribute("ng-click", "setValue(3)").
+            addAttribute("material-font", "{{starColor}}").
             addClass("action").addChildren(
-                softtion.html("i").setText("{{isActive(3)}}")
+                softtion.html("i").setText("{{getStarValue(3)}}")
             );
 
         var button4 = softtion.html("button").
             addAttribute("ng-disabled", "ngDisabled").
             addAttribute("ng-click", "setValue(4)").
+            addAttribute("material-font", "{{starColor}}").
             addClass("action").addChildren(
-                softtion.html("i").setText("{{isActive(4)}}")
+                softtion.html("i").setText("{{getStarValue(4)}}")
             );
 
         var button5 = softtion.html("button").
             addAttribute("ng-disabled", "ngDisabled").
             addAttribute("ng-click", "setValue(5)").
+            addAttribute("material-font", "{{starColor}}").
             addClass("action").addChildren(
-                softtion.html("i").setText("{{isActive(5)}}")
+                softtion.html("i").setText("{{getStarValue(5)}}")
             );
 
         return button1 + button2 + button3 + button4 + button5;
@@ -5786,6 +5813,7 @@
             scope: {
                 value: "=ngModel",
                 ngDisabled: "=?",
+                starColor: "@",
                 eventListener: "&"
             },
             link: function ($scope) {
@@ -5799,8 +5827,9 @@
                     listener.launch("changed"); // Cambiando valor
                 };
 
-                $scope.isActive = function (value) {
-                    return ($scope.value >= value) ? "star" : "star_border";
+                $scope.getStarValue = function (value) {
+                    return ($scope.value >= value) ? "star" : // Completo
+                       ($scope.value >= (value - 0.5)) ? "star_half" : "star_border";
                 };
             }
         };
@@ -6052,6 +6081,10 @@
                 function showSuggestions() {
                     if (!$scope.selectStart && !$scope.disabledAutoclose)
                         $document.on(eventID, ($event) => {
+                            if (!softtion.isInPage($element[0])) {
+                                $document.off(eventID); return;
+                            } // Removiendo evento de cerrado automático
+                            
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
 
@@ -6063,8 +6096,6 @@
                     if (!isBelongElement($event.target))
                         hideSuggestions(); // Se debe cerrar lista
                 }
-                
-                $scope.$on("$destroy", () => { $document.off(eventID); });
             }
         };
     }
@@ -6183,7 +6214,7 @@
                     // Atributos
                 var listener = new Listener($scope, Listener.SELECT_MULTIPLE),
                     temp = [], // Lista temporal de selección
-                    eventID = "click.select-multiple" + softtion.getGUID();
+                    eventID = "click.select-multiple-" + softtion.getGUID();
 
                 $scope.selects = $scope.selects || [];
 
@@ -6305,6 +6336,10 @@
                     
                     if (!$scope.selectStart && !$scope.disabledAutoclose)
                         $document.on(eventID, ($event) => {
+                            if (!softtion.isInPage($element[0])) {
+                                $document.off(eventID); return;
+                            } // Removiendo evento de cerrado automático
+                            
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
 
@@ -6316,8 +6351,6 @@
                     if (!isBelongElement($event.target))
                         hideSuggestions(); // Se debe cerrar lista
                 }
-                
-                $scope.$on("$destroy", () => { $document.off(eventID); });
             }
         };
     }
@@ -9657,6 +9690,7 @@
             // Componentes
         var input = $element.find("input");
         
+            // Atributos
         var listener = new Listener($scope, Listener.INPUT);
 
         $scope.$watch(() => { return $scope.clearModel; }, 
@@ -9668,8 +9702,10 @@
             });
         
         $scope.$watch(() => { return $scope.value; }, 
-            (newValue) => { 
+            (newValue, oldValue) => { 
                 if (!$scope.inputStart) return; // Componente iniciado
+                
+                if (newValue !== oldValue) listener.launch("changed");
                 
                 if ($scope.errorActive) validateValue(newValue);
                 
@@ -9695,8 +9731,8 @@
         } // Se ha definido una acción a realizar
 
         $scope.isActiveLabel = function () {
-            return ($scope.inputActive || softtion.isString($scope.input) || 
-                softtion.isDefined($scope.value));
+            return ($scope.inputActive || softtion.isString($scope.input)) || 
+                (softtion.isDefined($scope.value) && softtion.isString($scope.value));
         };
 
         $scope.isIconDescription = function () {
@@ -9843,24 +9879,27 @@
         }
         
         function validateValue(value, disabledError) {
-            if (softtion.isUndefined(value) && $scope.required) {
-                setInputError("Este campo es requerido", disabledError); return false;
-            }  // El valor establecido es indefinido
+            if (softtion.isUndefined(value))
+                if ($scope.required) {
+                    setInputError("Este campo es requerido", disabledError); return false;
+                } // El valor establecido es indefinido
             
-            if (!softtion.isString(value.toString()) && $scope.required) {
-                setInputError("Este campo es requerido", disabledError); return false;
-            }// No ha establecido caracteres en el componente de Texto
-            
-            if (value.toString().length < $scope.minLength) {
-                var message = "Este campo requiere minimo " + $scope.minLength + " caracteres";
-                setInputError(message, disabledError); return false;
-            } // No ha establecido caracteres mínimos requeridos
-            
-            var result = validateTypeText(value); // Validando tipo de texto
-            
-            if (!result.success) {
-                setInputError(result.message, disabledError); return false; 
-            } // El texto establecido no pasa validación de tipo de texto
+            if (softtion.isDefined(value)) {
+                if (!softtion.isString(value.toString()) && $scope.required) {
+                    setInputError("Este campo es requerido", disabledError); return false;
+                }// No ha establecido caracteres en el componente de Texto
+
+                if (value.toString().length < $scope.minLength) {
+                    var message = "Este campo requiere minimo " + $scope.minLength + " caracteres";
+                    setInputError(message, disabledError); return false;
+                } // No ha establecido caracteres mínimos requeridos
+
+                var result = validateTypeText(value.toString()); // Validando texto
+
+                if (!result.success) {
+                    setInputError(result.message, disabledError); return false; 
+                } // El texto no pasa verificación de tipo de texto
+            } // El valor establecido es definido
             
             removeInputError(); return true;  // Valor cumple con los requisitos
         }
@@ -9923,8 +9962,10 @@
             });
         
         $scope.$watch(() => { return $scope.value; }, 
-            (newValue) => { 
+            (newValue, oldValue) => { 
                 if (!$scope.areaStart) return; // Componente iniciado
+                
+                if (newValue !== oldValue) listener.launch("changed");
                 
                 if ($scope.errorActive) validateValue(newValue);
                 
@@ -9940,11 +9981,8 @@
                 heightArea = 0; // Alto del area
             
             if (hidden.height() > 0) {
-                $scope.heightEnd = hidden.height();
-                heightArea = hidden.height();
-            } else {
-                heightArea = $scope.heightEnd;
-            }
+                $scope.heightEnd = hidden.height(); heightArea = hidden.height();
+            } else { heightArea = $scope.heightEnd; }
                 
             return ($scope.pressEnter) ?
                 "height: " + (heightArea + heightEnter) + "px;" :
@@ -9952,8 +9990,8 @@
         };
 
         $scope.isActiveLabel = function () {
-            return ($scope.areaActive  || softtion.isDefined($scope.value)) || 
-                    softtion.isString($scope.area);
+            return ($scope.areaActive  || softtion.isString($scope.area)) || 
+                (softtion.isDefined($scope.value) && softtion.isString($scope.value));
         };
 
         $scope.isIconDescription = function () {
@@ -10014,9 +10052,6 @@
         };
 
         $scope.keydownArea = function ($event) {
-            if ($scope.keyDisabled || !validateKeydownArea($event)) 
-                $event.preventDefault(); // Cancelando evento
-            
             $scope.pressEnter = false; // Inactivando tecla Enter
 
             if ($event.originalEvent.which === KeysBoard.ENTER) {
@@ -10036,8 +10071,6 @@
         };
 
         $scope.keyupArea = function ($event) {
-            if ($scope.keyDisabled) return; // Teclado inhabilitado
-
             defineModelKeyupArea(); listener.launch("keyUp", { $event: $event });
         };
 
@@ -10045,22 +10078,8 @@
             return (softtion.isDefined($scope.value)) ? $scope.value : $scope.area;
         };
         
-        function validateKeydownArea($event) {
-            var charCode = $event.originalEvent.which,
-                keysControl = [ KeysBoard.BACKSPACE, KeysBoard.DELETE ];
-            
-            if (keysControl.hasItem(charCode)) return true;
-            
-            var validate = softtion.validateCharacter({
-                charCode: charCode, type: $scope.type, value: $scope.area
-            });
-            
-            return (!validate) ? false : (isNaN($scope.maxLength)) ? 
-                true : !($scope.area.length >= $scope.maxLength);
-        }
-        
         function defineModelKeyupArea() {
-            (validateValue($scope.input, !$scope.errorActive)) ?
+            (validateValue($scope.area, !$scope.errorActive)) ?
                 defineModel() : setValueModel(undefined);
         }
 
@@ -10089,18 +10108,21 @@
         }
         
         function validateValue(value, disabledError) {
-            if (softtion.isUndefined(value) && $scope.required) {
-                setAreaError("Este campo es requerido", disabledError); return false;
-            }  // El valor establecido es indefinido
+            if (softtion.isUndefined(value))
+                if ($scope.required) {
+                    setAreaError("Este campo es requerido", disabledError); return false;
+                } // El valor establecido es indefinido
             
-            if (!softtion.isString(value.toString()) && $scope.required) {
-                setAreaError("Este campo es requerido", disabledError); return false;
-            }// No ha establecido caracteres en el componente de Texto
+            if (softtion.isDefined(value)) {
+                if (!softtion.isString(value.toString()) && $scope.required) {
+                    setAreaError("Este campo es requerido", disabledError); return false;
+                }// No ha establecido caracteres en el componente de Texto
             
-            if (value.toString().length < $scope.minLength) {
-                var message = "Este campo requiere minimo " + $scope.minLength + " caracteres";
-                setAreaError(message, disabledError); return false;
-            } // No ha establecido caracteres mínimos requeridos
+                if (value.toString().length < $scope.minLength) {
+                    var message = "Este campo requiere minimo " + $scope.minLength + " caracteres";
+                    setAreaError(message, disabledError); return false;
+                } // No ha establecido caracteres mínimos requeridos
+            } // El valor establecido es definido
             
             removeAreaError(); return true;  // Valor cumple con los requisitos
         }

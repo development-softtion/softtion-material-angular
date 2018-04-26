@@ -2495,6 +2495,9 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .subheader > span {
     color: var(--secondary-font); }
 
+.subheader > .detail > .title, .subheader > .detail > .subtitle {
+    color: var(--secondary-font); }
+
 /** SWITCH */
 
 .switch > label > .track:before {
@@ -3382,6 +3385,8 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 .app-bar.theme-secondary > .toolbar > .actions > button,
 .toolbar.theme-secondary > .title, 
 .toolbar.theme-secondary > .title > a, 
+.toolbar.theme-secondary > .detail > .title,
+.toolbar.theme-secondary > .detail > .subtitle,
 .toolbar.theme-secondary > .nav-icon > button.action,
 .toolbar.theme-secondary > .menu-icon, 
 .toolbar.theme-secondary > .actions > button {
