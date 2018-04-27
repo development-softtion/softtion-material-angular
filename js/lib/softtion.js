@@ -177,52 +177,54 @@ class Softtion {
         };
     }
     
-    isDefined(object) {
-        return ((typeof object !== "undefined") && (object !== null));
+    isDefined(object, force) {
+        return (!force) ?
+            ((typeof object !== "undefined") && (object !== null)) :
+            (this.isDefined(object) && object !== "undefined");
     }
     
-    isUndefined(object) {
-        return !this.isDefined(object);
+    isUndefined(object, force) {
+        return !this.isDefined(object, force);
     }
     
-    isArray(array) {
-        return ((this.isDefined(array)) && (array instanceof Array));
+    isArray(array, force) {
+        return ((this.isDefined(array, force)) && (array instanceof Array));
     }
     
-    isArrayEmpty(array) {
-        return ((this.isArray(array)) && (array.isEmpty()));
+    isArrayEmpty(array, force) {
+        return ((this.isArray(array, force)) && (array.isEmpty()));
     }
     
-    isArrayNotEmpty(array) {
-        return ((this.isArray(array)) && (!array.isEmpty()));
+    isArrayNotEmpty(array, force) {
+        return ((this.isArray(array, force)) && (!array.isEmpty()));
     }
     
-    isFunction(func) {
-        return ((this.isDefined(func)) && (typeof func === "function"));
+    isFunction(func, force) {
+        return ((this.isDefined(func, force)) && (typeof func === "function"));
     }
     
-    isDate(date) {
-        return ((this.isDefined(date)) && (date instanceof Date));
+    isDate(date, force) {
+        return ((this.isDefined(date, force)) && (date instanceof Date));
     }
     
-    isString(string) {
-        return ((this.isDefined(string)) && (typeof string === "string") && (string !== ""));
+    isString(string, force) {
+        return ((this.isDefined(string, force)) && (typeof string === "string") && (string !== ""));
     }
     
-    isNumber(number) {
-        return ((this.isDefined(number)) && (!isNaN(number)));
+    isNumber(number, force) {
+        return ((this.isDefined(number, force)) && (!isNaN(number)));
     }
     
-    isjQuery(object) {
-        return ((this.isDefined(object)) && (object instanceof jQuery));
+    isjQuery(object, force) {
+        return ((this.isDefined(object, force)) && (object instanceof jQuery));
     }
     
-    isJson(object) {
-        return ((this.isDefined(object)) && (Object.keys(object) > 0));
+    isJson(object, force) {
+        return ((this.isDefined(object, force)) && (Object.keys(object) > 0));
     }
     
-    isJsonEmpty(object) {
-        return ((this.isUndefined(object)) || (Object.keys(object) === 0));
+    isJsonEmpty(object, force) {
+        return ((this.isUndefined(object, force)) || (Object.keys(object) === 0));
     }
     
     parseBoolean(value) {

@@ -5347,7 +5347,8 @@ body.show-bottom-navigation .fab-speed-dial {
 
 .filechooser-perfil {
     position: relative;
-    width: 100%; }
+    width: 100%;
+    overflow: hidden; }
 
 .filechooser-perfil:before {
     display: block;
@@ -11902,7 +11903,9 @@ body.show-bottom-navigation .toast.show {
 
 .views {
     position: relative;
-    width: 100%; }
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto; }
 
 .views > .view {
     display: none;

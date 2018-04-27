@@ -80,14 +80,11 @@
         var self = this; // Instancia del objeto
 
         return self.$q((resolve, reject) => {
-            var URL = self.getResourceRoute();
-            
-            self.$http.get(URL, self.config).
-                then((response) => {
-                    self.clean(); resolve(response);
-                }).catch((error) => {
-                    self.clean(); reject(error);
-                });
+            var URL = self.getResourceRoute(),
+                httpGet = self.$http.get,
+                promise = httpGet(URL, self.config);
+                
+            resolvePromiseRestful(self, promise, resolve, reject);
         });
     };
 
@@ -95,14 +92,11 @@
         var self = this; // Instancia del objeto
 
         return self.$q((resolve, reject) => {
-            var URL = self.getResourceRoute(ID);
-            
-            self.$http.get(URL, self.config).
-                then((response) => {
-                    self.clean(); resolve(response);
-                }).catch((error) => {
-                    self.clean(); reject(error);
-                });
+            var URL = self.getResourceRoute(ID),
+                httpGet = self.$http.get,
+                promise = httpGet(URL, self.config);
+                
+            resolvePromiseRestful(self, promise, resolve, reject);
         });
     };
 
@@ -110,14 +104,11 @@
         var self = this; // Instancia del objeto
 
         return self.$q((resolve, reject) => {
-            var URL = self.getResourceRoute();
-            
-            self.$http.post(URL, data, self.config).
-                then((response) => {
-                    self.clean(); resolve(response);
-                }).catch((error) => {
-                    self.clean(); reject(error);
-                });
+            var URL = self.getResourceRoute(),
+                httpPost = self.$http.post,
+                promise = httpPost(URL, data, self.config);
+                
+            resolvePromiseRestful(self, promise, resolve, reject);
         });
     };
 
@@ -125,14 +116,11 @@
         var self = this; // Instancia del objeto
 
         return self.$q((resolve, reject) => {
-            var URL = self.getResourceRoute(ID);
-            
-            self.$http.put(URL, data, self.config).
-                then((response) => {
-                    self.clean(); resolve(response);
-                }).catch((error) => {
-                    self.clean(); reject(error);
-                });
+            var URL = self.getResourceRoute(ID),
+                httpPut = self.$http.put,
+                promise = httpPut(URL, data, self.config);
+                
+            resolvePromiseRestful(self, promise, resolve, reject);
         });
     };
 
@@ -140,16 +128,19 @@
         var self = this; // Instancia del objeto
 
         return self.$q((resolve, reject) => {
-            var URL = self.getResourceRoute(ID);
-            
-            self.$http.delete(URL, self.config).
-                then((response) => {
-                    self.clean(); resolve(response);
-                }).catch((error) => {
-                    self.clean(); reject(error);
-                });
+            var URL = self.getResourceRoute(ID),
+                httpDelete = self.$http.delete,
+                promise = httpDelete(URL, self.config);
+                
+            resolvePromiseRestful(self, promise, resolve, reject);
         });
     };
+        
+    function resolvePromiseRestful(instance, promise, resolve, reject) {
+        promise.
+            then((response) => { instance.clean(); resolve(response); }).
+            catch((error) => { instance.clean(); reject(error);});
+    }
     
     // SERVICE: $API
     
@@ -227,12 +218,10 @@
         function resolvePromise(promise, params) {
             promise.
                 then((response) => { 
-                    if (softtion.isFunction(params.success))
-                        params.success(response); 
+                    if (softtion.isFunction(params.success)) params.success(response); 
                 }).
                 catch((error) => { 
-                    if (softtion.isFunction(params.error))
-                        params.error(error); 
+                    if (softtion.isFunction(params.error)) params.error(error); 
                 });
         }
         
