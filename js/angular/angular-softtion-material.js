@@ -3,7 +3,7 @@
  (c) 2016 - 2018 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 19/Mar/2018
+ Updated: 05/May/2018
 */
 
 ((factory) => {
@@ -398,7 +398,7 @@
     
     // Directiva: Alert
     // Version: 1.0.0
-    // Updated: 16/03/2018
+    // Updated: 16/Mar/2018
     
     Directives.Alert = AlertDirective;
     
@@ -464,7 +464,7 @@
     
     // Directiva: AppBar
     // Version: 1.0.0
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.AppBar = AppBarDirective;
     
@@ -576,7 +576,7 @@
     
     // Directiva: Audio
     // Version: 1.0.0
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.Audio = AudioDirective;
     
@@ -781,7 +781,7 @@
     
     // Directiva: AutoComplete
     // Version: 1.2.6
-    // Updated: 25/04/2018
+    // Updated: 25/Abr/2018
     
     Directives.AutoComplete = AutoCompleteDirective;
     
@@ -1212,7 +1212,7 @@
     
     // Directiva: AutoComplete Record
     // Version: 1.0.5
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.AutoCompleteRecord = AutoCompleteRecordDirective;
     
@@ -1633,7 +1633,7 @@
     
     // Directiva: BottomNavigation
     // Version: 1.0.4
-    // Updated: 07/03/2018
+    // Updated: 07/Mar/2018
     
     Directives.BottomNavigation = BottomNavigationDirective;
     
@@ -1839,7 +1839,7 @@
     
     // Directiva: BottomSheet
     // Version: 1.0.0
-    // Update: 24/02/2018
+    // Update: 24/Feb/2018
     
     Directives.BottomSheet = BottomSheetDirective;
     
@@ -1915,7 +1915,7 @@
     
     // Directiva: Breadcrumb
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Breadcrumb = BreadcrumbDirective;
     
@@ -1934,7 +1934,7 @@
     
     // Directiva: Button
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Button = ButtonDirective;
     
@@ -1960,7 +1960,7 @@
     
     // Directiva: ButtonProgress
     // Version: 1.0.0
-    // Update: 07/04/2018
+    // Update: 07/Abr/2018
     
     Directives.ButtonProgress = ButtonProgressDirective;
     
@@ -2006,7 +2006,7 @@
     
     // Directiva: Carousel
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Carousel = CarouselDirective;
     
@@ -2201,7 +2201,7 @@
     
     // Directiva: Catalog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Catalog = CatalogDirective;
     
@@ -2403,7 +2403,7 @@
     
     // Directiva: Checkbox
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Checkbox = CheckboxDirective;
     
@@ -2461,7 +2461,7 @@
     
     // Directiva: CheckboxControl
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.CheckboxControl = CheckboxControlDirective;
     
@@ -2520,7 +2520,7 @@
     
     // Directiva: CheckboxSelect
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.CheckboxSelect = CheckboxSelectDirective;
     
@@ -2562,7 +2562,7 @@
     
     // Directiva: ChipInput
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ChipInput = ChipInputDirective;
     
@@ -2750,7 +2750,7 @@
     
     // Directiva: ClockPicker
     // Version: 1.1.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPicker = ClockPickerDirective;
     
@@ -3075,7 +3075,7 @@
     
     // Directiva: ClockPickerDialog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPickerDialog = ClockPickerDialogDirective;
     
@@ -3136,7 +3136,7 @@
     
     // Directiva: ClockPickerInput
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPickerInput = ClockPickerInputDirective;
     
@@ -3272,7 +3272,7 @@
     
     // Directiva: DataTable
     // Version: 1.0.0
-    // Update: 05/04/2018
+    // Update: 05/Abr/2018
     
     Directives.DataTable = DataTableDirective;
     
@@ -3299,7 +3299,7 @@
     
     // Directiva: DatePicker
     // Version: 1.1.6
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePicker = DatePickerDirective;
     
@@ -3824,7 +3824,7 @@
     
     // Directiva: DatePickerDialog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePickerDialog = DatePickerDialogDirective;
     
@@ -3895,7 +3895,7 @@
     
     // Directiva: DatePickerInput
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePickerInput = DatePickerInputDirective;
     
@@ -4044,7 +4044,7 @@
     
     // Directiva: Dialog
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Directives.Dialog = DialogDirective;
     
@@ -4113,7 +4113,7 @@
     
     // Directiva: Dictionary
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Dictionary = DictionaryDirective;
     
@@ -4177,7 +4177,7 @@
     
     // Directiva: Expansion Panel
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ExpansionPanel = ExpansionPanelDirective;
     
@@ -4234,7 +4234,7 @@
     
     // Directiva: FabDialog
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.FabDialog = FabDialogDirective;
     
@@ -4319,7 +4319,7 @@
     
     // Directiva: FabMenu
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FabMenu = FabMenuDirective;
     
@@ -4408,7 +4408,7 @@
     
     // Directiva: FabSpeedDial
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FabSpeedDial = FabSpeedDialDirective;
     
@@ -4438,7 +4438,7 @@
     
     // Directiva: Filechooser
     // Version: 1.0.4
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Filechooser = FileChooserDirective;
     
@@ -4627,7 +4627,7 @@
     
     // Directiva: FilechooserAudio
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserAudio = FilechooserAudioDirective;
     
@@ -4757,7 +4757,7 @@
     
     // Directiva: FilechooserMultiple
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserMultiple = FilechooserMultipleDirective;
     
@@ -4926,7 +4926,7 @@
     
     // Directiva: FilechooserPerfil
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserPerfil = FilechooserPerfilDirective;
     
@@ -5066,7 +5066,7 @@
     
     // Directiva: FlexibleBox
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FlexibleBox = FlexibleBoxDirective;
     
@@ -5134,7 +5134,7 @@
     
     // Directiva: FormNavigation
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Directives.FormNavigation = FormNavigationDirective;
     
@@ -5199,7 +5199,7 @@
     
     // Directiva: FullwidthField
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FullwidthField = FullwidthFieldDirective;
     
@@ -5269,7 +5269,7 @@
     
     // Directiva: Gallery
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Gallery = GalleryDirective;
     
@@ -5351,7 +5351,7 @@
     
     // Directiva: Grid
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.Grid = GridDirective;
     
@@ -5384,7 +5384,7 @@
     
     // Directiva: GridSheet
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.GridSheet = GridSheetDirective;
     
@@ -5417,7 +5417,7 @@
     
     // Directiva: Img
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Img = ImgDirective;
     
@@ -5465,7 +5465,7 @@
     
     // Directiva: ProgressBar
     // Version: 1.0.4
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressBar = ProgressBarDirective;
     
@@ -5543,7 +5543,7 @@
     
     // Directiva: ProgressButtonFloating
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressButtonFloating = ProgressButtonFloatingDirective;
     
@@ -5647,7 +5647,7 @@
     
     // Directiva: ProgressCircular
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressCircular = ProgressCircularDirective;
     
@@ -5707,7 +5707,7 @@
     
     // Directiva: RadioButton
     // Version: 1.0.2
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.RadioButton = RadioButtonDirective;
     
@@ -5771,7 +5771,7 @@
     
     // Directiva: Rating
     // Version: 1.0.2
-    // Update: 25/04/2018
+    // Update: 25/Abr/2018
     
     Directives.Rating = RatingDirective;
     
@@ -5855,7 +5855,7 @@
     
     // Directiva: Ripple
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Ripple = RippleDirective;
     
@@ -5881,7 +5881,7 @@
     
     // Directiva: Select
     // Version: 1.2.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Select = SelectDirective;
     
@@ -6122,7 +6122,7 @@
     
     // Directiva: SelectMultiple
     // Version: 1.2.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.SelectMultiple = SelectMultipleDirective;
     
@@ -6377,7 +6377,7 @@
     
     // Directiva: Sidenav
     // Version: 1.0.3
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Sidenav = SidenavDirective;
     
@@ -6455,7 +6455,7 @@
     
     // Directiva: SidenavItem
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.SidenavItem = SidenavItemDirective;
     
@@ -6511,7 +6511,7 @@
     
     // Directiva: Switch
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Slider = SliderDirective;
     
@@ -6760,7 +6760,7 @@
     
     // Directiva: StepperHorizontal
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.StepperHorizontal = StepperHorizontalDirective;
     
@@ -6796,7 +6796,7 @@
     
     // Directiva: Switch
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Switch = SwitchDirective;
     
@@ -6846,7 +6846,7 @@
     
     // Directiva: Tabs
     // Version: 1.0.5
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Tabs = TabsDirective;
     
@@ -6962,7 +6962,7 @@
     
     // Directiva: TextArea
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextArea = TextAreaDirective;
     
@@ -7058,7 +7058,7 @@
     
     // Directiva: TextBox
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextBox = TextBoxDirective;
     
@@ -7159,7 +7159,7 @@
     
     // Directiva: TextBoxMultiline
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextBoxMultiline = TextBoxMultilineDirective;
     
@@ -7255,7 +7255,7 @@
     
     // Directiva: TextField
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextField = TextFieldDirective;
     
@@ -7371,7 +7371,7 @@
     
     // Directiva: TextFieldBordered
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldBordered = TextFieldBorderedDirective;
     
@@ -7473,7 +7473,7 @@
     
     // Directiva: TextFieldMultiline
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldMultiline = TextFieldMultilineDirective;
     
@@ -7575,7 +7575,7 @@
     
     // Directiva: TextFieldReadonly
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldReadonly = TextFieldReadonlyDirective;
     
@@ -7666,7 +7666,7 @@
     
     // Directiva: Tooltip
     // Version: 1.0.4
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Tooltip = TooltipDirective;
     
@@ -7794,7 +7794,7 @@
     
     // Directiva: VideoYouTube
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.VideoYouTube = VideoYouTubeDirective;
     
@@ -7832,7 +7832,7 @@
     
     // Directiva: ViewsTabs
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.ViewsTabs = ViewsTabsDirective;
     
@@ -7888,7 +7888,7 @@
     
     // Proveedor: AppBody
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.AppBody = AppBodyProvider;
     
@@ -7907,7 +7907,7 @@
     
     // Proveedor: AppContent
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.AppContent = AppContentProvider;
     
@@ -7926,7 +7926,7 @@
     
     // Proveedor: Body
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Body = BodyProvider;
     
@@ -7945,7 +7945,7 @@
     
     // Proveedor: BottomSheet
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.BottomSheet = BottomSheetProvider;
     
@@ -8006,7 +8006,7 @@
     
     // Proveedor: Dialog
     // Version: 1.0.4
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Dialog = DialogProvider;
     
@@ -8057,7 +8057,7 @@
     
     // Proveedor: Document
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Document = DocumentProvider;
     
@@ -8076,7 +8076,7 @@
     
     // Proveedor: Dropdown
     // Version: 1.1.4
-    // Update: 09/03/2018
+    // Update: 09/Mar/2018
     
     Providers.Dropdown = DropdownProvider;
     
@@ -8356,7 +8356,7 @@
     
     // Proveedor: FormNavigation
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.FormNavigation = FormNavigationProvider;
     
@@ -8407,7 +8407,7 @@
     
     // Proveedor: Modal
     // Version: 1.0.4
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Modal = ModalProvider;
     
@@ -8600,7 +8600,7 @@
     
     // Proveedor: ProgressBar
     // Version: 1.1.4
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.ProgressBar = ProgressBarProvider;
     
@@ -8725,7 +8725,7 @@
     
     // Proveedor: ProgressCircular
     // Version: 1.0.8
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.ProgressCircular = ProgressCircularProvider;
     
@@ -8835,7 +8835,7 @@
     
     // Proveedor: ProgressFAB
     // Version: 1.0.2
-    // Update: 05/03/2018
+    // Update: 05/Mar/2018
     
     Providers.ProgressFAB = ProgressFABProvider;
     
@@ -8911,7 +8911,7 @@
     
     // Proveedor: ProgressPane
     // Version: 1.0.1
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.ProgressPane = ProgressPaneProvider;
     
@@ -8964,7 +8964,7 @@
     
     // Proveedor: Sidenav
     // Version: 1.0.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Sidenav = SidenavProvider;
     
@@ -9017,7 +9017,7 @@
     
     // Proveedor: Snackbar
     // Version: 1.1.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Snackbar = SnackbarProvider;
     
@@ -9131,7 +9131,7 @@
     
     // Proveedor: Toast
     // Version: 1.0.6
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Toast = ToastProvider;
     
@@ -9209,7 +9209,7 @@
     
     // Proveedor: TooltipContainer
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.TooltipContainer = TooltipContainerProvider;
     
@@ -9267,7 +9267,7 @@
     
     // Proveedor: MaterialTheme
     // Version: 1.0.1
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.MaterialTheme = MaterialThemeProvider;
     
@@ -9406,7 +9406,7 @@
     
     // Proveedor: WindowResize
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.WindowResize = WindowResizeProvider;
     
@@ -9471,7 +9471,7 @@
     
     // Propiedad: BottomSheet
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.BottomSheet = BottomSheetProperty;
     
@@ -9494,7 +9494,7 @@
     
     // Propiedad: Dialog
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.Dialog = DialogProperty;
     
@@ -9517,7 +9517,7 @@
     
     // Propiedad: Dropdown
     // Version: 1.0.0
-    // Update: 09/03/2018
+    // Update: 09/Mar/2018
     
     Properties.Dropdown = DropdownProperty;
     
@@ -9548,7 +9548,7 @@
     
     // Propiedad: FocusedElement
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.FocusedElement = FocusedElementProperty;
     
@@ -9575,7 +9575,7 @@
     
     // Propiedad: FormNavigation
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.FormNavigation = FormNavigationProperty;
     
@@ -9598,7 +9598,7 @@
     
     // Propiedad: MaterialBackground
     // Version: 1.0.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.MaterialBackground = MaterialBackgroundProperty;
     
@@ -9632,7 +9632,7 @@
     
     // Propiedad: MaterialFont
     // Version: 1.0.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.MaterialFont = MaterialFontProperty;
     
@@ -9666,7 +9666,7 @@
     
     // Propiedad: Sidenav
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.Sidenav = SidenavProperty;
     
