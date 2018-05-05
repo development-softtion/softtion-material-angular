@@ -68,7 +68,7 @@
     
     // Directiva: NgEnter
     // Version: 1.0.0
-    // Updated: 31/03/2018
+    // Updated: 31/Mar/2018
     
     ngEnter.$inject = [ "$parse" ];
     
@@ -97,7 +97,7 @@
     
     // Directiva: NgLoad
     // Version: 1.0.0
-    // Updated: 16/04/2018
+    // Updated: 16/Abr/2018
     
     ngLoad.$inject = [ "$parse" ];
     
@@ -122,7 +122,7 @@
     
     // Directiva: NgError
     // Version: 1.0.0
-    // Updated: 16/04/2018
+    // Updated: 16/Abr/2018
     
     ngError.$inject = [ "$parse" ];
     
@@ -147,7 +147,7 @@
     
     // Directiva: NgClickRight
     // Version: 1.0.0
-    // Updated: 31/03/2018
+    // Updated: 31/Mar/2018
     
     ngClickRight.$inject = [ "$parse" ];
     
@@ -176,7 +176,7 @@
     
     // Directiva: NgTextCopy
     // Version: 1.0.0
-    // Updated: 23/04/2018
+    // Updated: 23/Abr/2018
     
     ngTextCopy.$inject = [ "$parse" ];
     
@@ -203,7 +203,7 @@
     
     // Directiva: NgTextCut
     // Version: 1.0.0
-    // Updated: 23/04/2018
+    // Updated: 23/Abr/2018
     
     ngTextCut.$inject = [ "$parse" ];
     
@@ -230,7 +230,7 @@
     
     // Directiva: NgTextPaste
     // Version: 1.0.0
-    // Updated: 23/04/2018
+    // Updated: 23/Abr/2018
     
     ngTextPaste.$inject = [ "$parse" ];
     
@@ -257,7 +257,7 @@
     
     // Directiva: NgScroll
     // Version: 1.0.0
-    // Updated: 31/03/2018
+    // Updated: 31/Mar/2018
     
     ngScroll.$inject = [ "$parse" ];
     
@@ -282,7 +282,7 @@
     
     // Directiva: NgMouseHold
     // Version: 1.0.0
-    // Updated: 31/03/2018
+    // Updated: 31/Mar/2018
     
     ngMouseHold.$inject = [ "$parse", "$timeout" ];
     
@@ -311,7 +311,7 @@
     
     // Directiva: NgTouch
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     function touchDirective(directive) {
         
@@ -343,7 +343,7 @@
     
     // Directiva: ngTouchHold
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngTouchHold.$inject = [ "$parse", "$timeout" ];
     
@@ -374,7 +374,7 @@
     
     // Directiva: NgPointer
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     function pointerDirective(directive) {
         
@@ -412,7 +412,7 @@
     
     // Directiva: NgPointerHold
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngPointerHold.$inject = [ "$parse", "$timeout" ];
     
@@ -445,7 +445,7 @@
     
     // Directiva: NgDragAndDrop
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     function dragAndDropDirective(directive) {
         
@@ -475,7 +475,7 @@
     
     // Directiva: ngTransitionStart
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngTransitionStart.$inject = [ "$parse" ];
     
@@ -500,7 +500,7 @@
     
     // Directiva: ngTransitionEnd
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngTransitionEnd.$inject = [ "$parse" ];
     
@@ -525,7 +525,7 @@
     
     // Directiva: ngAnimationStart
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngAnimationStart.$inject = [ "$parse" ];
     
@@ -550,7 +550,7 @@
     
     // Directiva: ngAnimationEnd
     // Version: 1.0.0
-    // Updated: 01/04/2018
+    // Updated: 01/Abr/2018
     
     ngAnimationEnd.$inject = [ "$parse" ];
     
