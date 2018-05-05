@@ -796,6 +796,18 @@ class Softtion {
 
             return self; // Retornando interfaz fluida
         };
+        
+        Array.prototype.extract = function (start, end) {
+            if (end > this.length) end = this.length;
+            
+            var result = []; // Array resultante
+            
+            for (var index = start; index < end; index++) {
+                result.push(this[index]);
+            } // Recorriendo array entre las posiciónes dadas
+            
+            return result; // Retornando Array de extracción
+        };
 
         Array.prototype.filtrate = function (fn) {
             var array = []; // Array filtrado

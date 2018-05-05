@@ -170,24 +170,6 @@
                 ViewsTabs: Directives.create(Directives.ViewsTabs)
             },
 
-            properties: {
-                BottomSheet: Properties.create(Properties.BottomSheet),
-
-                Dialog: Properties.create(Properties.Dialog),
-
-                Dropdown: Properties.create(Properties.Dropdown),
-
-                FocusedElement: Properties.create(Properties.FocusedElement),
-
-                FormNavigation: Properties.create(Properties.FormNavigation),
-
-                MaterialBackground: Properties.create(Properties.MaterialBackground),
-
-                MaterialFont: Properties.create(Properties.MaterialFont),
-
-                Sidenav: Properties.create(Properties.Sidenav)
-            },
-
             providers: {
                 AppBody: Providers.create(Providers.AppBody),
 
@@ -226,6 +208,24 @@
                 MaterialTheme: Providers.create(Providers.MaterialTheme),
 
                 WindowResize: Providers.create(Providers.WindowResize)
+            },
+
+            properties: {
+                BottomSheet: Properties.create(Properties.BottomSheet),
+
+                Dialog: Properties.create(Properties.Dialog),
+
+                Dropdown: Properties.create(Properties.Dropdown),
+
+                FocusedElement: Properties.create(Properties.FocusedElement),
+
+                FormNavigation: Properties.create(Properties.FormNavigation),
+
+                MaterialBackground: Properties.create(Properties.MaterialBackground),
+
+                MaterialFont: Properties.create(Properties.MaterialFont),
+
+                Sidenav: Properties.create(Properties.Sidenav)
             }
         };
     }
@@ -831,11 +831,13 @@
 
         var buttonAction = softtion.html("i").addClass(["action"]).
             setText("{{iconAction}}").addAttribute("ng-if", "isIconAction()").
-            addAttribute("ng-click", "clickAction($event)");
+            addAttribute("ng-click", "clickAction($event)").
+            addAttribute("ng-class", "{disabled: ngDisabled}");
 
         var buttonClear = softtion.html("i").addClass(["action"]).
             setText("close").addAttribute("ng-hide", "isActiveClear()").
-            addAttribute("ng-click", "clearAutocomplet()");
+            addAttribute("ng-click", "clearAutocomplet()").
+            addAttribute("ng-class", "{disabled: ngDisabled}");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
             setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
@@ -966,10 +968,14 @@
                 $scope.clickLabel = function () { input.focus(); };
 
                 $scope.clickIconDescription = function ($event) {
+                    if ($scope.ngDisabled) return; // Componente inactivo
+                    
                     listener.launch("icon", { $event: $event });
                 };
                 
                 $scope.clickAction  = function ($event) {
+                    if ($scope.ngDisabled) return; // Componente inactivo
+                    
                     listener.launch("action", { $event: $event });
                 };
 
@@ -999,10 +1005,9 @@
                     } else if ($scope.coincidences.isEmpty())
                         $scope.select = undefined; // No hay opciones
                     
-                    $scope.input = ""; selection = false;
+                    $scope.input = ""; selection = false; 
                     $element.removeClass(Classes.ACTIVE);
-                    $scope.inputActive = false; 
-                    list.removeClass(Classes.ACTIVE); 
+                    $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
 
                     listener.launch("blur", { $event: $event });
                 };
@@ -1099,7 +1104,9 @@
                 };
 
                 $scope.clearAutocomplet = function () {
-                    $scope.temporal = rebootSuggestions();
+                    if ($scope.ngDisabled) return; // Componente inactivo
+                    
+                    $scope.temporal = rebootSuggestions(); selection = false;
                     $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
 
@@ -1254,7 +1261,8 @@
 
         var buttonClear = softtion.html("i").addClass(["action"]).
             setText("close").addAttribute("ng-hide", "isActiveClear()").
-            addAttribute("ng-click", "clearAutocomplet()");
+            addAttribute("ng-click", "clearAutocomplet()").
+            addAttribute("ng-class", "{disabled: ngDisabled}");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
             setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
@@ -1524,6 +1532,8 @@
                 };
 
                 $scope.clearAutocomplet = function () {
+                    if ($scope.ngDisabled) return; // Componente Inactivo
+                    
                     $scope.temporal = rebootSuggestions();
                     $element.removeClass(Classes.ACTIVE); 
                     $scope.select = undefined; listener.launch("clear");
@@ -4445,7 +4455,7 @@
             addChildren(
                 softtion.html("div").addClass("select-file").
                     addAttribute("ng-hide", "isSelectedFile()").
-                    addAttribute("ng-click", "selectFile()"). 
+                    addAttribute("ng-click", "selectFile($event)"). 
                     addChildren(
                         softtion.html("i").setText("file_upload").
                             addAttribute("ng-class", "{disabled: ngDisabled}")
@@ -4568,7 +4578,9 @@
                     return softtion.isDefined($scope.file);
                 };
 
-                $scope.selectFile = function () { fileInput.click(); };
+                $scope.selectFile = function ($event) { 
+                    setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
+                };
 
                 $scope.removeFile = function () {
                     $scope.file = undefined; fileInput[0].value = "";
@@ -4658,7 +4670,7 @@
                     addAttribute("ng-disabled", "ngDisabled").
                     addChildren(
                         softtion.html("i").setText("file_upload").
-                            addAttribute("ng-click", "selectFile()")
+                            addAttribute("ng-click", "selectFile($event)")
                     )
             );
 
@@ -4725,7 +4737,9 @@
                     return softtion.isDefined($scope.file);
                 };
 
-                $scope.selectFile = function () { fileInput.click(); };
+                $scope.selectFile = function ($event) { 
+                    setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
+                };
 
                 $scope.deleteFile = function () {
                     fileInput[0].value = ""; $scope.ngSrc = ""; 
@@ -4757,7 +4771,7 @@
             addAttribute("type", "file");
 
         var actionAdd = softtion.html("div").addClass(["action-add"]).
-            addAttribute("ng-click", "selectFile()").
+            addAttribute("ng-click", "selectFile($event)").
             addAttribute("ng-class", "{disabled: ngDisabled}").
             addChildren(softtion.html("i").setText("{{iconButton}}"));
 
@@ -4878,7 +4892,9 @@
                         });
                 });
 
-                $scope.selectFile = function () { fileInput.click(); };
+                $scope.selectFile = function ($event) { 
+                    setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
+                };
 
                 $scope.removeFile = function (file, $index) {
                     $scope.files.remove($index); fileInput[0].value = "";
@@ -4936,7 +4952,7 @@
                     addAttribute("ng-disabled", "ngDisabled").
                     addChildren(
                         softtion.html("i").setText("file_upload").
-                            addAttribute("ng-click", "selectFile()")
+                            addAttribute("ng-click", "selectFile($event)")
                     )
             ).addChildren(
                 softtion.html("button").addClass("action").
@@ -4984,7 +5000,7 @@
                 $scope.file = undefined; // Archivos seleccionado
                 $scope.icon = $scope.icon || "person";
 
-                var imgTypes = [
+                var imagesTypes = [
                     "image/jpeg", 
                     "image/jpg", 
                     "image/png", 
@@ -5020,7 +5036,7 @@
                 fileInput.change(() => {
                     var files = fileInput[0].files; // Archivos
 
-                    if (files.length && imgTypes.hasItem(files[0].type)) 
+                    if (files.length && imagesTypes.hasItem(files[0].type)) 
                         processFile(files[0]);
                 });
 
@@ -5028,7 +5044,9 @@
                     return softtion.isDefined($scope.file);
                 };
 
-                $scope.selectFile = function () { fileInput.click(); };
+                $scope.selectFile = function ($event) { 
+                    setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
+                };
 
                 $scope.isImgDefine = function () {
                     return softtion.isString($scope.ngSrc);
@@ -6085,6 +6103,8 @@
                                 $document.off(eventID); return;
                             } // Removiendo evento de cerrado automático
                             
+                            if (!$scope.showList) return; 
+                            
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
 
@@ -6455,9 +6475,19 @@
         
         return {
             restrict: "C",
+            scope: {
+                ngDisabled: "=?" 
+            },
             link: function ($scope, $element) {
                 var options = $element.children(".options");
-
+                
+                $scope.$watch(() => { return $scope.ngDisabled; },
+                    (newValue) => {
+                        (!newValue) ?
+                            $element.removeClass(Classes.DISABLED) :
+                            $element.addClass(Classes.DISABLED);
+                    });
+                
                 if (!options.exists()) return; // No tiene opciones
                 
                 $element.addClass(Classes.OPTIONABLE);
@@ -7576,7 +7606,10 @@
 
         var label = softtion.html("label").
             addAttribute("ng-class", "{active: isActiveLabel()}").
-            setText("{{label}}").addClass("truncate");
+            setText("{{label}}").addClass("truncate").
+            addChildren(
+                softtion.html("span").setText("*").addAttribute("ng-if", "required")
+            );
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
             setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
@@ -7595,6 +7628,7 @@
             scope: {
                 value: "=ngModel", 
                 label: "@",
+                required: "=?",
                 iconDescription: "@",
                 iconAction: "@",
                 helperText: "@",
@@ -7621,6 +7655,10 @@
 
                 $scope.clickIconDescription = function ($event) {
                     listener.launch("icon", { $event: $event });
+                };
+                
+                $scope.clickAction = function ($event) {
+                    listener.launch("action", { $event: $event });
                 };
             }
         };

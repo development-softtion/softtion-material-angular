@@ -937,6 +937,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     font-weight: 900;
     text-align: center; }
 
+.autocomplete > .content > i.action.disabled {
+    pointer-events: none; }
+
 .autocomplete > .content > i.action + i.action {
     right: 24px; }
 
@@ -1611,6 +1614,14 @@ button.action > .badge {
     font-size: 10px;
     font-weight: 400; }
 
+.badge-text {
+    box-sizing: border-box;
+    height: 14px;
+    line-height: 12px;
+    padding: 1px 4px;
+    font-size: 10px;
+    border-radius: 2px; }
+
 /** BLOCK SCROLLER */
 
 .block-scroller {
@@ -2210,12 +2221,15 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     width: 100%;
     float: left;
-    padding: 8px;
+    padding: 8px 0px;
     overflow-y: auto;
     box-sizing: border-box; }
 
 .button-group > button + button {
     margin-left: 4px; }
+
+.button-group > button.raised + button {
+    margin-left: 8px; }
 
 .button-group > button.right {
     float: right; }
@@ -2223,6 +2237,10 @@ button.raised:focus:after, button.flat:focus:after {
 .button-group > button.right + button {
     margin-left: 0px;
     margin-right: 4px; }
+
+.button-group > button.raised.right + button {
+    margin-left: 0px;
+    margin-right: 8px; }
 
 .button-group > button.action {
     padding: 6px;
@@ -8697,6 +8715,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .sidenav > .content .sidenav-item > .detail {
     position: relative; }
 
+.sidenav > .content .sidenav-item.disabled > .detail {
+    pointer-events: none; }
+
 .sidenav > .content .sidenav-item > .detail > a {
     display: block;
     cursor: pointer;
@@ -9489,6 +9510,24 @@ body.show-bottom-navigation .stepper-mobile {
     height: 36px;
     line-height: 36px; }
 
+.subheader > .avatar {
+    width: 40px; }
+
+.subheader.condense > .avatar {
+    width: 36px;
+    height: 36px;
+    line-height: 36px; }
+
+.subheader > .avatar > img {
+    width: 40px;
+    height: 40px;
+    margin-top: 4px; }
+
+.subheader.condense > .avatar > img {
+    width: 32px;
+    height: 32px;
+    margin-top: 2px; }
+
 .subheader > span {
     display: block;
     width: 100%; 
@@ -9498,10 +9537,16 @@ body.show-bottom-navigation .stepper-mobile {
     font-size: 15px;
     font-weight: 600; }
 
+.subheader > .avatar + span {
+    padding-left: 8px; }
+
 .subheader > .detail {
     display: block;
     width: 100%;
     height: 48px; }
+
+.subheader > .avatar + .detail {
+    padding-left: 8px; }
 
 .subheader.condense > .detail {
     display: none; }
@@ -11581,6 +11626,8 @@ body.show-bottom-navigation .toast.show {
     height: 20px;
     font-weight: 500;
     line-height: 20px;
+    white-space: normal;
+    overflow: hidden;
     -webkit-transition: margin 250ms 0ms var(--deceleration-curve);
        -moz-transition: margin 250ms 0ms var(--deceleration-curve);
             transition: margin 250ms 0ms var(--deceleration-curve); }
@@ -11625,6 +11672,8 @@ body.show-bottom-navigation .toast.show {
     display: block;
     font-size: 12px;
     height: 18px;
+    white-space: normal;
+    overflow: hidden;
     line-height: 22px; }
 
 .app-bar.floating > .toolbar > .detail > .subtitle {
@@ -11746,6 +11795,7 @@ body.show-bottom-navigation .toast.show {
     max-height: inherit;
     line-height: inherit; }
 
+.toolbar > .detail + .actions,
 .toolbar > .tabs + .actions {
     margin-left: 8px; }
 
@@ -11903,6 +11953,7 @@ body.show-bottom-navigation .toast.show {
 
 .views {
     position: relative;
+    display: table;
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto; }
@@ -11912,7 +11963,7 @@ body.show-bottom-navigation .toast.show {
     width: 100%; } 
 
 .views > .view.active {
-    display: block;
+    display: table;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
             animation: fadeIn 120ms var(--sharp-curve); }

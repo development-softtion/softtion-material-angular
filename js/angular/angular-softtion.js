@@ -190,33 +190,41 @@
         HttpRequest.prototype.setConfig = function (config) {
             this.restful.setConfig(config); return this;
         };
+    
+        HttpRequest.prototype.requiredPromise = function (requiredPromise) {
+            this.isRequiredPromise = requiredPromise; return this;
+        };
 
         HttpRequest.prototype.resource = function (ID, name) {
             return new HttpRequest(this.restful.resource(ID, name));
         };
 
         HttpRequest.prototype.catalog = function (params) {
-            resolvePromise(this.restful.catalog(), params);
+            return resolvePromise(this, this.restful.catalog(), params);
         };
 
         HttpRequest.prototype.record = function (ID, params) {
-            resolvePromise(this.restful.record(ID), params);
+            return resolvePromise(this, this.restful.record(ID), params);
         };
 
         HttpRequest.prototype.store = function (params) {
-            resolvePromise(this.restful.store(params.data), params);
+            return resolvePromise(this, this.restful.store(params.data), params);
         };
 
         HttpRequest.prototype.modify = function (ID, params) {
-            resolvePromise(this.restful.modify(ID, params.data), params);
+            return resolvePromise(this, this.restful.modify(ID, params.data), params);
         };
 
         HttpRequest.prototype.remove = function (ID, params) {
-            resolvePromise(this.restful.remove(ID), params);
+            return resolvePromise(this, this.restful.remove(ID), params);
         };
         
-        function resolvePromise(promise, params) {
-            promise.
+        function resolvePromise(instance, promise, params) {
+            if (instance.isRequiredPromise) {
+                instance.isRequiredPromise = false; return promise;
+            } // Se necesita la promesa para el proceso
+            
+            return promise.
                 then((response) => { 
                     if (softtion.isFunction(params.success)) params.success(response); 
                 }).
