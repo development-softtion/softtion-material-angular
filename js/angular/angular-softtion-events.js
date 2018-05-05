@@ -97,7 +97,7 @@
     
     // Directiva: NgLoad
     // Version: 1.0.0
-    // Updated: 16/04/2018
+    // Updated: 16/Abr/2018
     
     ngLoad.$inject = [ "$parse" ];
     

@@ -1044,17 +1044,41 @@ class Softtion {
     // Métodos de Softtion para los objetos 'String'
     
     ((softtion) => {
+        
+        function forceString(value) {
+            var result = value; // Salvando valor anterior
+            
+            result = result.replace("á", "a"); 
+            result = result.replace("Á", "A");
+            result = result.replace("é", "e"); 
+            result = result.replace("É", "E");
+            result = result.replace("í", "i"); 
+            result = result.replace("Í", "I");
+            result = result.replace("ó", "o"); 
+            result = result.replace("Ó", "O");
+            result = result.replace("ú", "u"); 
+            result = result.replace("Ú", "U");
+            
+            return result; // Retornando resultado del proceso
+        }
 
         String.prototype.isFull = function () { return (this.length > 0); };
 
         String.prototype.isEmpty = function () { return (this.length === 0); };
         
-        String.prototype.pattern = function (value) { 
-            return (~this.toLowerCase().indexOf(value.toLowerCase()) !== 0); 
+        String.prototype.pattern = function (value, force) { 
+            if (!softtion.isString(value)) return true; // Sin filtro
+            
+            var test = (!force) ? this.toLowerCase() : forceString(this.toLowerCase());
+            
+            return (~test.indexOf(value.toLowerCase()) !== 0); 
         };
         
-        String.prototype.like = function (type, value) { 
-            var pattern = undefined; // Expresión RegExp
+        String.prototype.like = function (type, value, force) { 
+            if (!softtion.isString(value)) return true; // Sin filtro
+            
+            var pattern = undefined, // Expresión RegExp
+                test = (!force) ? this.toLowerCase() : forceString(this.toLowerCase());
             
             switch (type) {
                 case ("start"):   // LIKE 'value%'
@@ -1065,8 +1089,8 @@ class Softtion {
                     pattern = "^.*" + value.toLowerCase() + "$"; break;
             } // Definiendo tipo de LIKE para aplicar
             
-            return softtion.isUndefined(pattern) ? false :
-                softtion.isDefined(this.toLowerCase().match(pattern));
+            return softtion.isUndefined(pattern) ? 
+                false : softtion.isDefined(test.match(pattern));
         };
 
     })(window.softtion);
