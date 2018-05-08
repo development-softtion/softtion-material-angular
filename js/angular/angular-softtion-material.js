@@ -3,7 +3,7 @@
  (c) 2016 - 2018 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 19/Mar/2018
+ Updated: 05/May/2018
 */
 
 ((factory) => {
@@ -401,7 +401,7 @@
     
     // Directiva: Alert
     // Version: 1.0.0
-    // Updated: 16/03/2018
+    // Updated: 16/Mar/2018
     
     Directives.Alert = AlertDirective;
     
@@ -784,7 +784,7 @@
     
     // Directiva: AutoComplete
     // Version: 1.2.6
-    // Updated: 25/04/2018
+    // Updated: 25/Abr/2018
     
     Directives.AutoComplete = AutoCompleteDirective;
     
@@ -1636,7 +1636,7 @@
     
     // Directiva: BottomNavigation
     // Version: 1.0.4
-    // Updated: 07/03/2018
+    // Updated: 07/Mar/2018
     
     Directives.BottomNavigation = BottomNavigationDirective;
     
@@ -1962,7 +1962,7 @@
     
     // Directiva: ButtonProgress
     // Version: 1.0.0
-    // Update: 07/04/2018
+    // Update: 07/Abr/2018
     
     Directives.ButtonProgress = ButtonProgressDirective;
     
@@ -3274,7 +3274,7 @@
     
     // Directiva: DataTable
     // Version: 1.0.0
-    // Update: 05/04/2018
+    // Update: 05/Abr/2018
     
     Directives.DataTable = DataTableDirective;
     
@@ -4236,7 +4236,7 @@
     
     // Directiva: FabDialog
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.FabDialog = FabDialogDirective;
     
@@ -5357,7 +5357,7 @@
     
     // Directiva: Grid
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.Grid = GridDirective;
     
@@ -5390,7 +5390,7 @@
     
     // Directiva: GridSheet
     // Version: 1.0.0
-    // Update: 17/04/2018
+    // Update: 17/Abr/2018
     
     Directives.GridSheet = GridSheetDirective;
     
@@ -5777,7 +5777,7 @@
     
     // Directiva: Rating
     // Version: 1.0.2
-    // Update: 25/04/2018
+    // Update: 25/Abr/2018
     
     Directives.Rating = RatingDirective;
     
@@ -8120,7 +8120,7 @@
     
     // Proveedor: Dropdown
     // Version: 1.1.4
-    // Update: 09/03/2018
+    // Update: 09/Mar/2018
     
     Providers.Dropdown = DropdownProvider;
     
@@ -8879,7 +8879,7 @@
     
     // Proveedor: ProgressFAB
     // Version: 1.0.2
-    // Update: 05/03/2018
+    // Update: 05/Mar/2018
     
     Providers.ProgressFAB = ProgressFABProvider;
     
@@ -9561,7 +9561,7 @@
     
     // Propiedad: Dropdown
     // Version: 1.0.0
-    // Update: 09/03/2018
+    // Update: 09/Mar/2018
     
     Properties.Dropdown = DropdownProperty;
     

@@ -5,7 +5,7 @@
  http://www.softtion.com.co
  License: MIT
  Create: 24/May/2015
- Update: 31/Ene/2018
+ Update: 05/May/2018
  */
 
 class Softtion {
