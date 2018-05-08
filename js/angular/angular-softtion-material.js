@@ -132,6 +132,8 @@
                 Rating: Directives.create(Directives.Rating),
 
                 Ripple: Directives.create(Directives.Ripple),
+                
+                Score: Directives.create(Directives.Score),
 
                 Select: Directives.create(Directives.Select),
 
@@ -364,6 +366,7 @@
             case (Directives.RadioButton.NAME): return Directives.RadioButton;
             case (Directives.Rating.NAME): return Directives.Rating;
             case (Directives.Ripple.NAME): return Directives.Ripple;
+            case (Directives.Score.NAME): return Directives.Score;
             case (Directives.Select.NAME): return Directives.Select;
             case (Directives.SelectMultiple.NAME): return Directives.SelectMultiple;
             case (Directives.Sidenav.NAME): return Directives.Sidenav;
@@ -464,7 +467,7 @@
     
     // Directiva: AppBar
     // Version: 1.0.0
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.AppBar = AppBarDirective;
     
@@ -576,7 +579,7 @@
     
     // Directiva: Audio
     // Version: 1.0.0
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.Audio = AudioDirective;
     
@@ -1212,7 +1215,7 @@
     
     // Directiva: AutoComplete Record
     // Version: 1.0.5
-    // Updated: 24/02/2018
+    // Updated: 24/Feb/2018
     
     Directives.AutoCompleteRecord = AutoCompleteRecordDirective;
     
@@ -1839,7 +1842,7 @@
     
     // Directiva: BottomSheet
     // Version: 1.0.0
-    // Update: 24/02/2018
+    // Update: 24/Feb/2018
     
     Directives.BottomSheet = BottomSheetDirective;
     
@@ -1857,6 +1860,7 @@
                 maxWidth: "@",
                 ngOpen: "=?",
                 ngClose: "=?",
+                ngVisible: "=?",
                 eventListener: "&"
             },
             link: function ($scope, $element, $attrs) {
@@ -1867,6 +1871,20 @@
                     
                     // Atributos
                 var listener = new Listener($scope, []);
+                
+                $scope.$watch(() => { return $scope.ngOpen; },
+                    (newValue) => {
+                        if (newValue) {
+                            bottomSheet.show(); $scope.ngVisible = true; $scope.ngOpen = false;
+                        } // Desplegando BottomSheet
+                    });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            bottomSheet.hide(); $scope.ngVisible = false; $scope.ngClose = false;
+                        } // Ocultando BottomSheet
+                    });
             
                 $attrs.$observe("marginTop", () => {
                     content.css("max-height", "calc(100% - " + $scope.marginTop + ")");
@@ -1883,20 +1901,6 @@
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
 
                 backdrop.click(() => { bottomSheet.hide(); });
-                
-                $scope.$watch(() => { return $scope.ngOpen; },
-                    (newValue) => {
-                        if (newValue) {
-                            bottomSheet.show(); $scope.ngOpen = false;
-                        } // Desplegando BottomSheet
-                    });
-                
-                $scope.$watch(() => { return $scope.ngClose; },
-                    (newValue) => {
-                        if (newValue) {
-                            bottomSheet.hide(); $scope.ngClose = false;
-                        } // Ocultando BottomSheet
-                    });
                     
                 $element.transitionend((event) => {
                     $scope.$apply(() => {
@@ -1904,9 +1908,7 @@
                             target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            listener.launch(
-                                ($element.hasClass(Classes.SHOW)) ? "show" : "hide"
-                            );
+                            listener.launch(($element.hasClass(Classes.SHOW)) ? "show" : "hide");
                     });
                 });
             }
@@ -1915,7 +1917,7 @@
     
     // Directiva: Breadcrumb
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Breadcrumb = BreadcrumbDirective;
     
@@ -1934,7 +1936,7 @@
     
     // Directiva: Button
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Button = ButtonDirective;
     
@@ -2006,7 +2008,7 @@
     
     // Directiva: Carousel
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Carousel = CarouselDirective;
     
@@ -2201,7 +2203,7 @@
     
     // Directiva: Catalog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Catalog = CatalogDirective;
     
@@ -2403,7 +2405,7 @@
     
     // Directiva: Checkbox
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Checkbox = CheckboxDirective;
     
@@ -2461,7 +2463,7 @@
     
     // Directiva: CheckboxControl
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.CheckboxControl = CheckboxControlDirective;
     
@@ -2520,7 +2522,7 @@
     
     // Directiva: CheckboxSelect
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.CheckboxSelect = CheckboxSelectDirective;
     
@@ -2562,7 +2564,7 @@
     
     // Directiva: ChipInput
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ChipInput = ChipInputDirective;
     
@@ -2750,7 +2752,7 @@
     
     // Directiva: ClockPicker
     // Version: 1.1.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPicker = ClockPickerDirective;
     
@@ -3075,7 +3077,7 @@
     
     // Directiva: ClockPickerDialog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPickerDialog = ClockPickerDialogDirective;
     
@@ -3136,7 +3138,7 @@
     
     // Directiva: ClockPickerInput
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ClockPickerInput = ClockPickerInputDirective;
     
@@ -3299,7 +3301,7 @@
     
     // Directiva: DatePicker
     // Version: 1.1.6
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePicker = DatePickerDirective;
     
@@ -3824,7 +3826,7 @@
     
     // Directiva: DatePickerDialog
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePickerDialog = DatePickerDialogDirective;
     
@@ -3895,7 +3897,7 @@
     
     // Directiva: DatePickerInput
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.DatePickerInput = DatePickerInputDirective;
     
@@ -4044,7 +4046,7 @@
     
     // Directiva: Dialog
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Directives.Dialog = DialogDirective;
     
@@ -4113,7 +4115,7 @@
     
     // Directiva: Dictionary
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Dictionary = DictionaryDirective;
     
@@ -4177,7 +4179,7 @@
     
     // Directiva: Expansion Panel
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ExpansionPanel = ExpansionPanelDirective;
     
@@ -4204,7 +4206,7 @@
                         actions = body.children(".actions"),
                         button = angular.element(directive.BUTTON_ACTION().create());
 
-                    button.insertAfter(header.children(".title")); // Icono
+                    header.append(button); // Botón de expansión
 
                     header.click(() => {
                         var elements = $element.siblings("li");
@@ -4250,6 +4252,7 @@
             scope: {
                 ngOpen: "=?",
                 ngClose: "=?",
+                ngVisible: "=?",
                 icon: "@",
                 ngDisabled: "=?"
             },
@@ -4268,7 +4271,7 @@
                         
                         if (!$scope.ngDisabled) $element.addClass(Classes.ACTIVE);
                         
-                        $scope.ngOpen = false; // Desactivando variable
+                        $scope.ngOpen = false; $scope.ngVisible = true;
                     });
                 
                 $scope.$watch(() => { return $scope.ngClose; },
@@ -4276,7 +4279,8 @@
                         if (!newValue) return; // No se debe hacer nada
                         
                         $element.removeClass(Classes.ACTIVE);
-                        $scope.ngClose = false; // Desactivando variable
+                        
+                        $scope.ngClose = false; $scope.ngVisible = false;
                     });
                 
                 $scope.$watch(() => { return $scope.ngDisabled; },
@@ -4319,7 +4323,7 @@
     
     // Directiva: FabMenu
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FabMenu = FabMenuDirective;
     
@@ -4408,7 +4412,7 @@
     
     // Directiva: FabSpeedDial
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FabSpeedDial = FabSpeedDialDirective;
     
@@ -4438,7 +4442,7 @@
     
     // Directiva: Filechooser
     // Version: 1.0.4
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Filechooser = FileChooserDirective;
     
@@ -4627,7 +4631,7 @@
     
     // Directiva: FilechooserAudio
     // Version: 1.0.2
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserAudio = FilechooserAudioDirective;
     
@@ -4757,7 +4761,7 @@
     
     // Directiva: FilechooserMultiple
     // Version: 1.0.1
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserMultiple = FilechooserMultipleDirective;
     
@@ -4926,7 +4930,7 @@
     
     // Directiva: FilechooserPerfil
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FilechooserPerfil = FilechooserPerfilDirective;
     
@@ -5066,7 +5070,7 @@
     
     // Directiva: FlexibleBox
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FlexibleBox = FlexibleBoxDirective;
     
@@ -5134,7 +5138,7 @@
     
     // Directiva: FormNavigation
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Directives.FormNavigation = FormNavigationDirective;
     
@@ -5150,6 +5154,7 @@
             scope: {
                 ngOpen: "=?",
                 ngClose: "=?",
+                ngVisible: "=?",
                 eventListener: "&"
             },
             link: function ($scope, $element) {
@@ -5158,7 +5163,22 @@
                     content = $element.children(".content"),
                     formNavigation = $formNavigation($element);
             
+                    // Atributos
                 var listener = new Listener($scope, []);
+                
+                $scope.$watch(() => { return $scope.ngOpen; },
+                    (newValue) => {
+                        if (newValue) {
+                            formNavigation.show(); $scope.ngVisible = true; $scope.ngOpen = false;
+                        } // Desplegando FormNavigation
+                    });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            formNavigation.hide(); $scope.ngVisible = false; $scope.ngClose = false;
+                        } // Ocultando FormNavigation
+                    });
 
                 if (!backdrop.exists()) {
                     backdrop = softtion.htmlElement("div", "backdrop");
@@ -5167,20 +5187,6 @@
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
 
                 backdrop.click(() => { formNavigation.hide(); });
-                
-                $scope.$watch(() => { return $scope.ngOpen; },
-                    (newValue) => {
-                        if (newValue) {
-                            formNavigation.show(); $scope.ngOpen = false;
-                        } // Desplegando FormNavigation
-                    });
-                
-                $scope.$watch(() => { return $scope.ngClose; },
-                    (newValue) => {
-                        if (newValue) {
-                            formNavigation.hide(); $scope.ngClose = false;
-                        } // Ocultando FormNavigation
-                    });
                     
                 $element.transitionend((event) => {
                     $scope.$apply(() => {
@@ -5199,7 +5205,7 @@
     
     // Directiva: FullwidthField
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.FullwidthField = FullwidthFieldDirective;
     
@@ -5269,7 +5275,7 @@
     
     // Directiva: Gallery
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Gallery = GalleryDirective;
     
@@ -5417,7 +5423,7 @@
     
     // Directiva: Img
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.Img = ImgDirective;
     
@@ -5465,7 +5471,7 @@
     
     // Directiva: ProgressBar
     // Version: 1.0.4
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressBar = ProgressBarDirective;
     
@@ -5543,7 +5549,7 @@
     
     // Directiva: ProgressButtonFloating
     // Version: 1.0.0
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressButtonFloating = ProgressButtonFloatingDirective;
     
@@ -5647,7 +5653,7 @@
     
     // Directiva: ProgressCircular
     // Version: 1.0.3
-    // Update: 26/02/2018
+    // Update: 26/Feb/2018
     
     Directives.ProgressCircular = ProgressCircularDirective;
     
@@ -5707,7 +5713,7 @@
     
     // Directiva: RadioButton
     // Version: 1.0.2
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.RadioButton = RadioButtonDirective;
     
@@ -5855,7 +5861,7 @@
     
     // Directiva: Ripple
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Ripple = RippleDirective;
     
@@ -5879,9 +5885,42 @@
         };
     }
     
+    // Directiva: Score
+    // Version: 1.0.0
+    // Update: 07/May/2018
+    
+    Directives.Score = ScoreDirective;
+    
+    Directives.Score.NAME = "Score";
+    Directives.Score.VERSION = "1.0.0";
+    Directives.Score.KEY = "score";
+    Directives.Score.ROUTE = "softtion/template/score.html";
+    
+    Directives.Score.HTML = function () {
+        var content = softtion.html("div").addClass("content");
+
+        var icon = softtion.html("i").setText("star");
+
+        var span = softtion.html("span").setText("{{label}}");
+
+        return content.addChildren(icon).
+                addChildren(span).create(); // Componente
+    };
+    
+    function ScoreDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.Score.ROUTE,
+            scope: {
+                label: "@"
+            },
+            link: function ($scope, $element) { }
+        };
+    }
+    
     // Directiva: Select
     // Version: 1.2.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Select = SelectDirective;
     
@@ -6122,7 +6161,7 @@
     
     // Directiva: SelectMultiple
     // Version: 1.2.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.SelectMultiple = SelectMultipleDirective;
     
@@ -6377,7 +6416,7 @@
     
     // Directiva: Sidenav
     // Version: 1.0.3
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Sidenav = SidenavDirective;
     
@@ -6402,6 +6441,7 @@
             scope: {
                 ngOpen: "=?",
                 ngClose: "=?",
+                ngVisible: "=?",
                 eventListener: "&"
             },
             link: function ($scope, $element) {
@@ -6413,6 +6453,20 @@
                     
                     // Atributos
                 var listener = new Listener($scope, []);
+                
+                $scope.$watch(() => { return $scope.ngOpen; },
+                    (newValue) => {
+                        if (newValue) {
+                            sidenav.show(); $scope.ngVisible = true; $scope.ngOpen = false;
+                        } // Desplegando Sidenav
+                    });
+                
+                $scope.$watch(() => { return $scope.ngClose; },
+                    (newValue) => {
+                        if (newValue) {
+                            sidenav.hide(); $scope.ngVisible = false; $scope.ngClose = false;
+                        } // Ocultando Sidenav
+                    });
 
                 if (!backdrop.exists()) {
                     backdrop = softtion.htmlElement("div", "backdrop");
@@ -6425,20 +6479,6 @@
 
                 button.click(() => { sidenav.hide(); });
                 backdrop.click(() => { sidenav.hide(); });
-                
-                $scope.$watch(() => { return $scope.ngOpen; },
-                    (newValue) => {
-                        if (newValue) {
-                            sidenav.show(); $scope.ngOpen = false;
-                        } // Desplegando Sidenav
-                    });
-                
-                $scope.$watch(() => { return $scope.ngClose; },
-                    (newValue) => {
-                        if (newValue) {
-                            sidenav.hide(); $scope.ngClose = false;
-                        } // Ocultando Sidenav
-                    });
                     
                 $element.transitionend((event) => {
                     $scope.$apply(() => {
@@ -6455,7 +6495,7 @@
     
     // Directiva: SidenavItem
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.SidenavItem = SidenavItemDirective;
     
@@ -6511,7 +6551,7 @@
     
     // Directiva: Switch
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Slider = SliderDirective;
     
@@ -6760,7 +6800,7 @@
     
     // Directiva: StepperHorizontal
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.StepperHorizontal = StepperHorizontalDirective;
     
@@ -6796,7 +6836,7 @@
     
     // Directiva: Switch
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Switch = SwitchDirective;
     
@@ -6846,7 +6886,7 @@
     
     // Directiva: Tabs
     // Version: 1.0.5
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Tabs = TabsDirective;
     
@@ -6962,7 +7002,7 @@
     
     // Directiva: TextArea
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextArea = TextAreaDirective;
     
@@ -7058,7 +7098,7 @@
     
     // Directiva: TextBox
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextBox = TextBoxDirective;
     
@@ -7159,7 +7199,7 @@
     
     // Directiva: TextBoxMultiline
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextBoxMultiline = TextBoxMultilineDirective;
     
@@ -7255,7 +7295,7 @@
     
     // Directiva: TextField
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextField = TextFieldDirective;
     
@@ -7371,7 +7411,7 @@
     
     // Directiva: TextFieldBordered
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldBordered = TextFieldBorderedDirective;
     
@@ -7473,7 +7513,7 @@
     
     // Directiva: TextFieldMultiline
     // Version: 1.1.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldMultiline = TextFieldMultilineDirective;
     
@@ -7575,7 +7615,7 @@
     
     // Directiva: TextFieldReadonly
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.TextFieldReadonly = TextFieldReadonlyDirective;
     
@@ -7635,11 +7675,15 @@
                 helperPermanent: "=?",
                 eventListener: "&"
             },
-            link: function ($scope) {
+            link: function ($scope, $element) {
                     // Atributos
                 var listener = new Listener($scope, []);
                 
                 if (softtion.isString($scope.iconAction)) $scope.isIconAction = true;
+                
+                $element.on("click", ($event) => {
+                    $scope.$apply(() => { listener.launch("click", { $event: $event }); });
+                });
                 
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);
@@ -7654,11 +7698,11 @@
                 };
 
                 $scope.clickIconDescription = function ($event) {
-                    listener.launch("icon", { $event: $event });
+                    listener.launch("icon", { $event: $event }); $event.stopPropagation();
                 };
                 
                 $scope.clickAction = function ($event) {
-                    listener.launch("action", { $event: $event });
+                    listener.launch("action", { $event: $event }); $event.stopPropagation();
                 };
             }
         };
@@ -7666,7 +7710,7 @@
     
     // Directiva: Tooltip
     // Version: 1.0.4
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.Tooltip = TooltipDirective;
     
@@ -7794,7 +7838,7 @@
     
     // Directiva: VideoYouTube
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.VideoYouTube = VideoYouTubeDirective;
     
@@ -7832,7 +7876,7 @@
     
     // Directiva: ViewsTabs
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Directives.ViewsTabs = ViewsTabsDirective;
     
@@ -7888,7 +7932,7 @@
     
     // Proveedor: AppBody
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.AppBody = AppBodyProvider;
     
@@ -7907,7 +7951,7 @@
     
     // Proveedor: AppContent
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.AppContent = AppContentProvider;
     
@@ -7926,7 +7970,7 @@
     
     // Proveedor: Body
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Body = BodyProvider;
     
@@ -7945,7 +7989,7 @@
     
     // Proveedor: BottomSheet
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.BottomSheet = BottomSheetProvider;
     
@@ -8006,7 +8050,7 @@
     
     // Proveedor: Dialog
     // Version: 1.0.4
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Dialog = DialogProvider;
     
@@ -8057,7 +8101,7 @@
     
     // Proveedor: Document
     // Version: 1.0.0
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Document = DocumentProvider;
     
@@ -8356,7 +8400,7 @@
     
     // Proveedor: FormNavigation
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.FormNavigation = FormNavigationProvider;
     
@@ -8407,7 +8451,7 @@
     
     // Proveedor: Modal
     // Version: 1.0.4
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Modal = ModalProvider;
     
@@ -8600,7 +8644,7 @@
     
     // Proveedor: ProgressBar
     // Version: 1.1.4
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.ProgressBar = ProgressBarProvider;
     
@@ -8725,7 +8769,7 @@
     
     // Proveedor: ProgressCircular
     // Version: 1.0.8
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.ProgressCircular = ProgressCircularProvider;
     
@@ -8911,7 +8955,7 @@
     
     // Proveedor: ProgressPane
     // Version: 1.0.1
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.ProgressPane = ProgressPaneProvider;
     
@@ -8964,7 +9008,7 @@
     
     // Proveedor: Sidenav
     // Version: 1.0.6
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.Sidenav = SidenavProvider;
     
@@ -9017,7 +9061,7 @@
     
     // Proveedor: Snackbar
     // Version: 1.1.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Snackbar = SnackbarProvider;
     
@@ -9131,7 +9175,7 @@
     
     // Proveedor: Toast
     // Version: 1.0.6
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.Toast = ToastProvider;
     
@@ -9209,7 +9253,7 @@
     
     // Proveedor: TooltipContainer
     // Version: 1.0.1
-    // Update: 27/02/2018
+    // Update: 27/Feb/2018
     
     Providers.TooltipContainer = TooltipContainerProvider;
     
@@ -9267,7 +9311,7 @@
     
     // Proveedor: MaterialTheme
     // Version: 1.0.1
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.MaterialTheme = MaterialThemeProvider;
     
@@ -9406,7 +9450,7 @@
     
     // Proveedor: WindowResize
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Providers.WindowResize = WindowResizeProvider;
     
@@ -9471,7 +9515,7 @@
     
     // Propiedad: BottomSheet
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.BottomSheet = BottomSheetProperty;
     
@@ -9494,7 +9538,7 @@
     
     // Propiedad: Dialog
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.Dialog = DialogProperty;
     
@@ -9548,7 +9592,7 @@
     
     // Propiedad: FocusedElement
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.FocusedElement = FocusedElementProperty;
     
@@ -9575,7 +9619,7 @@
     
     // Propiedad: FormNavigation
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.FormNavigation = FormNavigationProperty;
     
@@ -9598,7 +9642,7 @@
     
     // Propiedad: MaterialBackground
     // Version: 1.0.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.MaterialBackground = MaterialBackgroundProperty;
     
@@ -9632,7 +9676,7 @@
     
     // Propiedad: MaterialFont
     // Version: 1.0.2
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.MaterialFont = MaterialFontProperty;
     
@@ -9666,7 +9710,7 @@
     
     // Propiedad: Sidenav
     // Version: 1.0.0
-    // Update: 28/02/2018
+    // Update: 28/Feb/2018
     
     Properties.Sidenav = SidenavProperty;
     

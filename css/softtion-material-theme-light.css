@@ -1302,36 +1302,35 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 /** EXPANSION PANEL */
 
-.list-expansion-panel.flat > .expansion-panel {
-    border: 1px solid var(--background-border);
-    border-bottom: none; }
-
-.list-expansion-panel.flat > .expansion-panel:last-child {
+.expansion-panel.active {
     border-bottom: 1px solid var(--background-border); }
 
+.card .expansion-panel.active {
+    border-bottom: none; }
+
+/*.list-expansion-panel.flat > .expansion-panel:last-child {
+    border-bottom: 1px solid var(--background-border); }*/
+
 .expansion-panel > .header {
+    border-bottom: 1px solid var(--background-border);
     background-color: var(--background-component); }
 
-.expansion-panel > .header {
-    border-bottom: 1px solid var(--background-border); }
+.expansion-panel.active > .header {
+    background-color: var(--background-appbar); }
 
-.list-expansion-panel.flat > .expansion-panel > .header {
-    border-bottom: none; }
+.expansion-panel.active > .header,
+.card .expansion-panel > .header {
+    border-bottom: none !important; }
 
 .expansion-panel > .header:hover {
-    background-color: #eeeeee; /** grey-200 */ }
+    background-color: #eeeeee; }
 
-.expansion-panel > .header > .detail {
+.expansion-panel > .header > .subtitle,
+.expansion-panel > .header > .detail > .content > .subtitle {
     color: var(--secondary-font); }
 
 .expansion-panel > .body {
     background-color: var(--background-component); }
-
-.expansion-panel > .body > .actions {
-    border-top: 1px solid var(--background-border); }
-
-.list-expansion-panel.flat > .expansion-panel > .body > .actions {
-    background: var(--background-appbar); }
 
 /** FAB DIALOG */
 
@@ -2036,6 +2035,26 @@ button.raised.theme-secondary:before, button.floating.theme-secondary:before {
 
 .rating.theme-secondary > button.action {
     color: var(--theme-secondary-500); }
+
+/** SCORE */
+
+.score > .content > i {
+    color: var(--primary-font); }
+
+.score.theme-primary > .content > i {
+    color: var(--theme-primary-600); }
+
+.score.theme-secondary > .content > i {
+    color: var(--theme-secondary-600); }
+
+.score > .content > span {
+    color: var(--alternative-primary-font); }
+
+.score.theme-primary > .content > span {
+    color: var(--theme-primary-alternative); }
+
+.score.theme-secondary > .content > span {
+    color: var(--theme-secondary-alternative); }
 
 /** SEARCH BOX */
 

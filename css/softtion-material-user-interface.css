@@ -2420,11 +2420,8 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .primary-title {
     overflow-y: auto;
     width: 100%;
-    padding: 16px 16px 24px 16px; 
+    padding: 16px; 
     box-sizing: border-box; }
-
-.card > .rich-media + .primary-title {
-    padding-bottom: 16px; }
 
 .card > .area-action ~ .primary-title {
     width: 70%; }
@@ -2435,7 +2432,6 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .primary-title > .detail {
     float: left;
     width: 100%;
-    padding-top: 8px;
     box-sizing: border-box; }
 
 .card > .primary-title > .detail > .title,
@@ -2453,7 +2449,7 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 20px; }
 
 .card > .primary-title > .detail > .subtitle + .title {
-    padding-top: 12px; }
+    padding-top: 8px; }
 
 .card > .primary-title > .detail > .subtitle {
     height: 14px;
@@ -2461,7 +2457,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-size: 14px; }
 
 .card > .primary-title > .detail > .title + .subtitle {
-    margin-top: 12px; }
+    margin-top: 4px; }
 
 .card > .primary-title > .media-area {
     position: relative;
@@ -4524,18 +4520,18 @@ button.raised:focus:after, button.flat:focus:after {
     margin: 0px; 
     padding: 0px; }
 
-.expansion-panel {
+.list-expansion-panel > .expansion-panel {
     box-shadow: var(--shadow-2);
     -webkit-transition: margin 160ms 0ms var(--deceleration-curve);
        -moz-transition: margin 160ms 0ms var(--deceleration-curve);
             transition: margin 160ms 0ms var(--deceleration-curve); }
 
-.list-expansion-panel.flat > .expansion-panel {
-    box-shadow: none; }
-
-.expansion-panel.active {
+.list-expansion-panel > .expansion-panel.active {
     margin: 16px 0;
-    box-shadow: var(--shadow-4); }
+    box-shadow: var(--shadow-3); }
+
+.list-expansion-panel.flat > .expansion-panel {
+    box-shadow: none !important; }
 
 .list-expansion-panel.flat > .expansion-panel.active {
     margin: 0px; }
@@ -4546,38 +4542,68 @@ button.raised:focus:after, button.flat:focus:after {
     cursor: pointer;
     height: 48px;
     line-height: 48px;
-    padding: 0 24px;
+    padding: 0 16px;
+    overflow-y: hidden;
     box-sizing: border-box; }
 
-.expansion-panel.active > .header, .expansion-panel:last-child > .header {
-    border-bottom: none !important; }
-
 .expansion-panel > .header > .title, 
-.expansion-panel > .header > .detail {
+.expansion-panel > .header > .subtitle {
     display: block;
     float: left;
+    width: 100%;
     box-sizing: border-box;
     font-size: 15px;
-    white-space: nowrap;
     line-height: 48px;
-    font-weight: 500; }
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
 
-.expansion-panel > .header > .detail.fixed {
-    position: absolute;
-    right: 24px; }
+.expansion-panel > .header > .detail {
+    display: flex;
+    float: left;
+    width: 100%; }
 
-.expansion-panel > .header > button.action ~ .detail.fixed {
-    right: 68px; }
+.expansion-panel > .header > .detail > .content {
+    float: left;
+    width: 100%;
+    margin: auto; }
 
-.expansion-panel > .header > .title ~ .detail {
+.expansion-panel > .header > .detail > .content > .title {
+    width: 100%;
+    margin-bottom: 2px;
+    height: 16px;
+    line-height: 16px; 
+    overflow: hidden;
+    white-space: nowrap; }
+
+.expansion-panel > .header > .detail > .content > .subtitle {
+    width: 100%;
+    margin: 2px 0px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap; }
+
+.expansion-panel > .header > .title + .subtitle,
+.expansion-panel > .header > .title + .detail,
+.expansion-panel > .header > .title + .title,
+.expansion-panel > .header > .subtitle + .title,
+.expansion-panel > .header > .subtitle + .detail,
+.expansion-panel > .header > .subtitle + .subtitle,
+.expansion-panel > .header > .detail + .title,
+.expansion-panel > .header > .detail + .subtitle,
+.expansion-panel > .header > .detail + .detail {
     padding-left: 16px; }
 
 .expansion-panel > .header > button.action {
-    position: absolute;
-    right: 12px;
-    height: 24px;
     box-sizing: content-box;
-    padding: 12px; }
+    height: 24px;
+    padding: 12px 0px 12px 16px; }
+
+.expansion-panel > .header > button.action:before {
+    left: calc(50% + 8px); }
 
 .expansion-panel > .header > button.action > i {
     -webkit-transform: rotate(0deg);
@@ -4601,14 +4627,14 @@ button.raised:focus:after, button.flat:focus:after {
             transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
-    padding: 16px 24px; }
+    padding: 16px; }
 
 .expansion-panel > .body > .actions {
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
     height: 48px;
-    padding: 0px 8px 0px 24px;
+    padding: 0px 16px;
     box-sizing: border-box; }
 
 .expansion-panel > .body > .actions > button { 
@@ -7485,6 +7511,39 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
+
+/** SCORE */
+
+.score {
+    position: relative;
+    float: left;
+    width: 36px;
+    height: 36px; }
+
+.score > .content {
+    position: relative;
+    float: left;
+    width: inherit;
+    height: inherit; }
+
+.score > .content > i {
+    font-size: 36px;
+    width: inherit;
+    height: inherit; }
+
+.score > .content > span {
+    position: absolute;
+    display: block;
+    top: 0px;
+    left: 11px;
+    width: 14px;
+    height: inherit;
+    line-height: 38px;
+    text-align: center;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
 
 /** SEARCH BOX */
 
