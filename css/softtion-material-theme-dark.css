@@ -1,0 +1,1172 @@
+/*
+ * Softtion Material Theme Dark
+ * v1.8.9
+ * @license MIT
+ * Author: Softtion Developers
+ * Created: 15/May/2018
+ * Updated: 15/May/2018
+ */
+:root {
+    
+    /* #000000: black */
+    --background-statusbar: rgba(0, 0, 0, 1);
+    /* #f5f5f5: 100 grey */
+    --background-appbar: rgba(33, 33, 33, 1);
+    /* #fafafa: 50 grey */
+    --background-core: rgba(48, 48, 48, 1);
+    /* #ffffff: white */
+    --background-component: rgba(66, 66, 66, 1);
+    /* #ebebeb: manual */
+    --background-component-disabled: rgba(40, 40, 40, 1);
+    
+    --background-disabled: rgba(255, 255, 255, 0.24);
+    --background-border: rgba(255, 255, 255, 0.18);
+    --background-border-active: rgba(255, 255, 255, 0.38);
+    
+    --background-border-alternative: rgba(0, 0, 0, 0.12);
+    
+    /** #e0e0e0: 300 grey */
+    --background-active: rgba(224, 224, 224, 0.12);
+    --background-focus: rgba(224, 224, 224, 0.2);
+    --background-hover: rgba(224, 224, 224, 0.28);
+    
+    /** #ffffff: white */
+    --ripple: rgba(255, 255, 255, 0.5);
+    
+    --primary-font: rgba(255, 255, 255, 1);
+    --secondary-font: rgba(255, 255, 255, 0.7);
+    --disabled-font: rgba(255, 255, 255, 0.5);
+    
+    /** #ffffff: white */
+    --alternative-ripple: rgba(0, 0, 0, 0.38);
+    
+    --alternative-primary-font: rgba(0, 0, 0, 0.87);
+    --alternative-secondary-font: rgba(0, 0, 0, 0.54);
+    --alternative-disabled-font: rgba(0, 0, 0, 0.38);
+}
+
+/** WHITE AND BLACK */
+
+.black {
+    background-color: #000000 !important; }
+
+.black-font {
+    color: #000000 !important; }
+
+.white {
+    background-color: #ffffff !important; }
+
+.white-font {
+    color: #ffffff !important; }
+
+/** COLOR FONT DEAFULT */
+
+html, body ,input, textarea {
+    color: var(--primary-font); }
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    color: var(--primary-font) !important;
+    background-color: transparent !important; }
+
+body {
+    background-color: var(--background-core); }
+
+.theme-primary-background {
+    background-color: var(--theme-primary-500) !important; }
+
+.theme-secondary-background {
+    background-color: var(--theme-secondary-500) !important; }
+
+.theme-error-background {
+    background-color: var(--theme-error-500) !important; }
+
+.primary-font {
+    color: var(--primary-font) !important; }
+
+.secondary-font {
+    color: var(--secondary-font) !important; }
+
+.disabled-font {
+    color: var(--disabled-font) !important; }
+
+.alternative-primary-font {
+    color: var(--alternative-primary-font) !important; }
+
+.alternative-secondary-font {
+    color: var(--alternative-secondary-font) !important; }
+
+.alternative-disabled-font {
+    color: var(--alternative-disabled-font) !important; }
+
+.theme-primary-font {
+    color: var(--theme-primary-500) !important; }
+
+.theme-secondary-font {
+    color: var(--theme-secondary-500) !important; }
+
+.theme-error-font {
+    color: var(--theme-error-500) !important; }
+
+/** SCROLLBAR */
+
+body.not-touch *::-webkit-scrollbar-track {
+    background-color: transparent; }
+
+body.not-touch *:hover::-webkit-scrollbar-track {
+    background-color: rgba(245, 245, 245, 1); }
+
+body.not-touch *:hover::-webkit-scrollbar-track:vertical {
+    border-left: 1px solid rgba(0, 0, 0, 0.12); }
+
+body.not-touch *:hover::-webkit-scrollbar-track:horizontal {
+    border-top: 1px solid rgba(0, 0, 0, 0.12); }
+
+body.not-touch *::-webkit-scrollbar-thumb {
+    background-color: rgba(66, 66, 66, 0.25); }
+
+body.not-touch *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(66, 66, 66, 0.32); }
+
+/** COMPONENTS GLOBALS */
+
+.backdrop {
+    background-color: rgba(255, 255, 255, 0.54); }
+
+.divider {
+    background-color: var(--background-border); }
+
+.line-text.subtitle {
+    color: var(--secondary-font); }
+
+.line-text > span {
+    color: var(--theme-primary-500); }
+
+/** ALERT */
+
+.alert {
+    background-color: var(--background-appbar); }
+
+.alert.theme-primary {
+    background-color: var(--theme-primary-700); }
+
+.alert.theme-secondary {
+    background-color: var(--theme-secondary-700); }
+
+.alert.bordered {
+    border: 1px solid var(--background-border); }
+
+.alert.theme-primary.bordered {
+    border: 1px solid var(--theme-primary-border); }
+
+.alert.theme-secondary.bordered {
+    border: 1px solid var(--theme-secondary-border); }
+
+.alert > p, .alert > i {
+    color: var(--secondary-font); }
+
+.alert.theme-primary > p, .alert.theme-primary > i {
+    color: var(--theme-primary-font-secondary-700); }
+
+.alert.theme-secondary > p, .alert.theme-secondary > i {
+    color: var(--theme-secondary-font-secondary-700); }
+
+/** AUDIO */
+
+.audio > .content > .box > .name {
+    color: var(--primary-font); }
+
+.audio > .content > .box > .progress-audio {
+    background-color: var(--theme-secondary-100); }
+
+.audio > .content > .box > .progress-audio > .bar {
+    background-color: var(--theme-secondary-500); }
+
+/** AVATAR */
+
+.avatar.actionable:hover:before {
+    background-color: rgba(189, 189, 189, 0.54); }
+
+.avatar.theme-primary.actionable:hover:before {
+    opacity: 0.78; 
+    background-color: var(--theme-secondary-400); }
+
+.avatar.theme-secondary.actionable:hover:before {
+    opacity: 0.78;
+    background-color: var(--theme-primary-400); }
+
+.avatar > span:not(.badge), .avatar > i {
+    background-color: var(--background-statusbar);
+    color: var(--primary-font); }
+
+.avatar.actionable:hover > span:not(.badge), .avatar.actionable:hover > i {
+    background-color: var(--background-appbar); }
+
+.avatar.theme-primary > span:not(.badge), .avatar.theme-primary > i {
+    background-color: var(--theme-secondary-600);
+    color: var(--theme-secondary-font-primary-600); }
+
+.avatar.theme-primary.actionable:hover > span:not(.badge), 
+.avatar.theme-primary.actionable:hover > i {
+    color: var(--theme-secondary-font-primary-800);
+    background-color: var(--theme-secondary-800); }
+
+.avatar.theme-secondary > span:not(.badge), .avatar.theme-secondary > i {
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
+
+.avatar.theme-secondary.actionable:hover > span:not(.badge), 
+.avatar.theme-secondary.actionable:hover > i {
+    color: var(--theme-primary-font-primary-800);
+    background-color: var(--theme-primary-800); }
+
+.avatar.theme-primary > .badge {
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+/** BADGE */
+
+.badge {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.badge-text {
+    background-color: var(--background-statusbar);
+    color: var(--primary-font); }
+
+.badge-text.theme-primary {
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+.badge-text.theme-secondary {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.badge-text.contrast {
+    color: var(--alternative-primary-font); }
+
+/** BUTTON ACTION */
+
+button.action {
+    color: var(--primary-font);
+    background-color: transparent; }
+
+button.action:disabled {
+    color: var(--disabled-font); }
+
+button.action.theme-primary {
+    color: var(--theme-secondary-500); }
+
+button.action.theme-primary:disabled {
+    color: var(--theme-secondary-100); }
+
+button.action.theme-secondary {
+    color: var(--theme-primary-500); }
+
+button.action.theme-secondary:disabled {
+    color: var(--theme-primary-100); }
+
+button.action:before {
+    background-color: var(--ripple); }
+
+button.action.theme-primary:before {
+    background-color: var(--theme-secondary-500); }
+ 
+button.action.theme-secondary:before {
+    background-color: var(--theme-primary-500); }
+
+/** BUTTON FLAT */
+
+button.flat {
+    color: var(--primary-font);
+    background-color: transparent; }
+
+button.theme-primary.flat {
+    color: var(--theme-secondary-500); }
+
+button.theme-secondary.flat {
+    color: var(--theme-primary-500); }
+
+button.flat:hover {
+    background-color: var(--background-hover); } 
+
+button.flat:focus {
+    background-color: var(--background-focus); }
+
+button.flat:disabled, button.flat:hover:disabled {
+    color: var(--disabled-font);
+    background-color: transparent; }
+
+button.theme-primary.flat:disabled {
+    color: var(--theme-secondary-200); }
+
+button.theme-secondary.flat:disabled {
+    color: var(--theme-primary-200); }
+
+button.flat:before {
+    background-color: var(--ripple); }
+
+/** BUTTON RAISED */
+
+button.raised { 
+    background-color: var(--background-component);
+    color: var(--primary-font); }
+
+button.raised.bordered { 
+    border: 1px solid var(--background-border); }
+
+button.raised.theme-primary { 
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+button.raised.theme-secondary { 
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+button.raised:hover {
+    background-color: #8f8f8f; }
+
+button.raised.theme-primary:hover {
+    color: var(--theme-secondary-font-secondary-200);
+    background-color: var(--theme-secondary-200); }
+
+button.raised.theme-secondary:hover {
+    color: var(--theme-primary-font-secondary-200);
+    background-color: var(--theme-primary-200); }
+
+button.raised:focus  {
+    background-color: #737373; }
+
+button.raised.theme-primary:focus {
+    color: var(--theme-secondary-font-primary-700);
+    background-color: var(--theme-secondary-700); }
+
+button.raised.theme-secondary:focus {
+    color: var(--theme-primary-font-primary-700);
+    background-color: var(--theme-primary-700); }
+
+button.raised:disabled, button.raised:hover:disabled {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+button.raised.theme-primary:disabled, button.raised.theme-primary:disabled:hover {
+    background-color: var(--theme-secondary-100);
+    color: var(--theme-secondary-font-disabled-100); }
+
+button.raised.theme-secondary:disabled, button.raised.theme-secondary:disabled:hover {
+    background-color: var(--theme-primary-100);
+    color: var(--theme-primary-font-disabled-100); }
+
+.theme-primary button.raised.theme-contrast { 
+    color: var(--theme-primary-500);
+    background-color: var(--theme-primary-active); }
+
+.theme-primary button.raised.theme-contrast:hover {
+    background-color: var(--theme-primary-inactive); }
+
+.theme-primary button.raised.theme-contrast:focus {
+    color: var(--theme-primary-300);
+    background-color: var(--theme-primary-inactive); }
+
+.theme-primary button.raised.theme-contrast:disabled, 
+.theme-primary button.raised.theme-contrast:hover:disabled {
+    color: var(--theme-primary-300);
+    background-color: var(--theme-primary-disabled); }
+
+.theme-secondary button.raised.theme-contrast { 
+    color: var(--theme-secondary-500);
+    background-color: var(--theme-secondary-active); }
+
+.theme-secondary button.raised.theme-contrast:hover {
+    background-color: var(--theme-secondary-inactive); }
+
+.theme-secondary button.raised.theme-contrast:focus {
+    color: var(--theme-secondary-300);
+    background-color: var(--theme-secondary-inactive); }
+
+.theme-secondary button.raised.theme-contrast:disabled, 
+.theme-secondary button.raised.theme-contrast:hover:disabled {
+    color: var(--theme-secondary-300);
+    background-color: var(--theme-secondary-disabled); }
+
+button.raised:before {
+    background-color: var(--ripple); }
+
+button.raised.theme-primary:before {
+    background-color: var(--theme-secondary-ripple-alternative); }
+
+button.raised.theme-secondary:before {
+    background-color: var(--theme-primary-ripple-alternative); }
+
+/** BUTTON FLOATING */
+
+button.floating { 
+    background-color: var(--background-component);
+    color: var(--secondary-font); }
+
+button.floating.theme-primary {
+    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-font-primary-500); }
+
+button.floating.theme-secondary {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-200); }
+
+button.floating:hover {
+    background-color: #8f8f8f; }
+
+button.floating.theme-primary:hover {
+    color: var(--theme-secondary-font-secondary-200);
+    background-color: var(--theme-secondary-200); }
+
+button.floating.theme-secondary:hover {
+    color: var(--theme-primary-font-secondary-700);
+    background-color: var(--theme-primary-200); }
+
+button.floating:focus {
+    background-color: #737373; }
+
+button.floating.theme-primary:focus {
+    color: var(--theme-secondary-font-primary-700);
+    background-color: var(--theme-secondary-700); }
+
+button.floating.theme-secondary:focus {
+    color: var(--theme-primary-font-primary-700);
+    background-color: var(--theme-primary-700); }
+
+button.floating:disabled, button.floating:hover:disabled {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+button.floating.theme-primary:disabled, button.floating.theme-primary:disabled:hover {
+    background-color: var(--theme-secondary-100);
+    color: var(--theme-secondary-font-disabled-100); }
+
+button.floating.theme-secondary:disabled, button.floating.theme-secondary:disabled:hover {
+    background-color: var(--theme-primary-100);
+    color: var(--theme-primary-font-disabled-100); }
+
+button.floating:before {
+    background-color: var(--ripple); }
+
+button.floating.theme-primary:before {
+    background-color: var(--theme-secondary-ripple-alternative); }
+
+button.floating.theme-secondary:before {
+    background-color: var(--theme-primary-ripple-alternative); }
+
+/** CHECKBOX */
+
+.checkbox > label {
+    color: var(--primary-font); }
+
+.checkbox > input[type="checkbox"]:disabled + label {
+    color: var(--disabled-font); }
+
+.checkbox > label:before {
+    background-color: var(--theme-secondary-500); }
+
+.checkbox > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--background-disabled); }
+
+.checkbox > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.54); }
+
+.checkbox > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-secondary-font-primary-500); }
+
+.checkbox > input[type="checkbox"]:checked + label:after,
+.checkbox > input[type="checkbox"]:disabled:checked + label:after {
+    border-top: 2px solid transparent !important;
+    border-left: 2px solid transparent !important; }
+
+.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+.checkbox > input[type="checkbox"]:checked:disabled + label:after {
+    border: 2px solid var(--background-core); }
+
+.checkbox > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.checkbox > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--ripple); }
+
+/** CHECKBOX CONTROL */
+
+.checkbox-control > label {
+    color: var(--secondary-font); }
+
+.checkbox-control > input[type="checkbox"]:disabled + label {
+    color: var(--disabled-font); }
+
+.checkbox-control > label:before {
+    background-color: var(--theme-primary-500); }
+
+.checkbox-control > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--background-disabled); }
+
+.checkbox-control > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.54); }
+
+.checkbox-control > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+.checkbox-control > input[type="checkbox"]:checked + label:after,
+.checkbox-control > input[type="checkbox"]:disabled:checked + label:after {
+    border-top: 2px solid transparent !important;
+    border-left: 2px solid transparent !important; }
+
+.checkbox-control > input[type="checkbox"]:disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+.checkbox-control > input[type="checkbox"]:checked:disabled + label:after {
+    border: 2px solid var(--background-core); }
+
+/** CHECKBOX SELECT */
+
+.checkbox-select > label:before {
+    background-color: var(--theme-primary-500); }
+
+.checkbox-select.disabled > label:before {
+    background-color: var(--background-disabled); }
+
+.checkbox-select > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.54); }
+
+.checkbox-select.active > label:after, 
+.checkbox-select.active.disabled > label:after {
+    border-left: 2px solid transparent !important;
+    border-top: 2px solid transparent !important; }
+
+.checkbox-select.active > label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+.checkbox-select.disabled > label:after {
+    border: 2px solid var(--background-disabled); }
+
+.checkbox-select.disabled.active > label:after {
+    border: 2px solid var(--background-core); }
+
+/** CHIP */
+
+.chip {
+    background-color: var(--background-statusbar); }
+
+.chip.theme-primary {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.chip.theme-secondary {
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+.chip.bordered {
+    background-color: var(--background-component);
+    border: 1px solid var(--background-border); }
+
+.chip.theme-primary.bordered {
+    color: var(--theme-secondary-font-primary-200);
+    background-color: var(--theme-secondary-200); }
+
+.chip.theme-secondary.bordered {
+    color: var(--theme-primary-font-primary-200);
+    background-color: var(--theme-primary-200); }
+
+.chip:hover {
+    background-color: rgba(255, 255, 255, 0.54);
+    color: var(--alternative-primary-font); }
+
+.chip.theme-primary:hover {
+    color: var(--theme-secondary-font-secondary-200);
+    background-color: var(--theme-secondary-200); }
+
+.chip.theme-secondary:hover {
+    color: var(--theme-primary-font-secondary-200);
+    background-color: var(--theme-primary-200); }
+
+.chip.bordered:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: var(--primary-font); }
+
+.chip.theme-primary.bordered:hover {
+    color: var(--theme-secondary-font-secondary-100);
+    background-color: var(--theme-secondary-100); }
+
+.chip.theme-secondary.bordered:hover {
+    color: var(--theme-primary-font-secondary-100);
+    background-color: var(--theme-primary-100); }
+
+.chip.disabled {
+    background-color: var(--background-component-disabled);
+    color: var(--disabled-font); }
+
+.chip.theme-primary.disabled {
+    color: var(--theme-secondary-font-disabled-100);
+    background-color: var(--theme-secondary-100); }
+
+.chip.theme-secondary.disabled {
+    color: var(--theme-primary-font-disabled-100);
+    background-color: var(--theme-primary-100); }
+
+.chip > .avatar > span, .chip > .avatar > i {
+    background-color: rgba(255, 255, 255, 0.54);
+    color: var(--alternative-primary-font); }
+
+.chip.theme-primary > .avatar > span, .chip.theme-primary > .avatar > i {
+    background-color: var(--theme-secondary-800);
+    color: var(--theme-secondary-font-primary-800); }
+
+.chip.theme-secondary > .avatar > span, .chip.theme-secondary > .avatar > i {
+    background-color: var(--theme-primary-800);
+    color: var(--theme-primary-font-primary-800); }
+
+.chip.bordered > .avatar > span, .chip.bordered > .avatar > i {
+    background-color: rgba(255, 255, 255, 0.38); }
+
+.chip.theme-primary.bordered > .avatar > span, 
+.chip.theme-primary.bordered > .avatar > i {
+    background-color: var(--theme-secondary-600);
+    color: var(--theme-secondary-font-primary-600); }
+
+.chip.theme-secondary.bordered > .avatar > span, 
+.chip.theme-secondary.bordered > .avatar > i {
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
+
+.chip.disabled > .avatar > span, .chip.disabled > .avatar > i {
+    background-color: rgba(255, 255, 255, 0.24);
+    color: var(--alternative-disabled-font); }
+
+.chip.theme-primary.disabled > .avatar > span, 
+.chip.theme-primary.disabled > .avatar > i {
+    color: var(--theme-secondary-font-disabled-300);
+    background-color: var(--theme-secondary-300); }
+
+.chip.theme-secondary.disabled > .avatar > span, 
+.chip.theme-secondary.disabled > .avatar > i {
+    color: var(--theme-primary-font-disabled-300);
+    background-color: var(--theme-primary-300); }
+
+.chip > .action > i {
+    background-color: rgba(255, 255, 255, 0.54);
+    color: var(--alternative-primary-font); }
+
+.chip.theme-primary > .action > i {
+    background-color: var(--theme-secondary-800);
+    color: var(--theme-secondary-font-primary-800); }
+
+.chip.theme-secondary > .action > i {
+    background-color: var(--theme-primary-800);
+    color: var(--theme-primary-font-primary-800); }
+
+.chip.bordered > .action > i {
+    background-color: rgba(255, 255, 255, 0.38); }
+
+.chip.theme-primary.bordered > .action > i {
+    color: var(--theme-secondary-font-primary-600);
+    background-color: var(--theme-secondary-600); }
+
+.chip.theme-secondary.bordered > .action > i {
+    color: var(--theme-primary-font-primary-600);
+    background-color: var(--theme-primary-600); }
+
+.chip:not(.bordered):hover > .action > i {
+    background-color: var(--background-core);
+    color: var(--secondary-font); }
+
+.chip.theme-primary:not(.bordered):hover > .action > i {
+    color: var(--theme-secondary-100);
+    background-color: var(--theme-secondary-900); }
+
+.chip.theme-secondary:not(.bordered):hover > .action > i {
+    color: var(--theme-primary-100);
+    background-color: var(--theme-primary-900); }
+
+.chip.disabled > .action > i {
+    background-color: rgba(255, 255, 255, 0.24);
+    color: var(--alternative-disabled-font); }
+
+.chip.theme-primary.disabled > .action > i {
+    color: var(--theme-secondary-font-disabled-300);
+    background-color: var(--theme-secondary-300); }
+
+.chip.theme-secondary.disabled > .action > i {
+    color: var(--theme-primary-font-disabled-300);
+    background-color: var(--theme-primary-300); }
+
+/** DETAIL */
+
+.detail > .content > .subtitle {
+    color: var(--secondary-font); }
+
+.detail > .content > .description > label {
+    color: var(--secondary-font); }
+
+/** FAB DIALOG */
+
+.fab-dialog:not(.active) > .box {
+    background-color: var(--background-component); }
+
+.fab-dialog.theme-primary:not(.active) > .box {
+    background-color: var(--theme-secondary-500); }
+
+.fab-dialog.theme-secondary:not(.active) > .box {
+    background-color: var(--theme-primary-500); }
+
+.fab-dialog:not(.active) > .box:hover {
+    background-color: #8f8f8f; }
+
+.fab-dialog.theme-primary:not(.active) > .box:hover {
+    background-color: var(--theme-secondary-200); }
+
+.fab-dialog.theme-secondary:not(.active) > .box:hover {
+    background-color: var(--theme-primary-200); }
+
+.fab-dialog:not(.active) > .box:focus {
+    background-color: #737373; }
+
+.fab-dialog.theme-primary:not(.active) > .box:focus {
+    background-color: var(--theme-secondary-700); }
+
+.fab-dialog.theme-secondary:not(.active) > .box:focus {
+    background-color: var(--theme-primary-700); }
+
+.fab-dialog.disabled > .box {
+    background-color: var(--background-disabled); }
+
+.fab-dialog.theme-primary.disabled > .box {
+    background-color: var(--theme-secondary-100); }
+
+.fab-dialog.theme-secondary.disabled > .box {
+    background-color: var(--theme-primary-100); }
+
+.fab-dialog.active > .box {
+    background-color: transparent; }
+
+.fab-dialog > .box > .button > i {
+    color: var(--secondary-font); }
+
+.fab-dialog.theme-primary > .box > .button > i {
+    color: var(--theme-secondary-font-primary-500); }
+
+.fab-dialog.theme-secondary > .box > .button > i {
+    color: var(--theme-primary-font-primary-500); }
+
+.fab-dialog.theme-primary:hover > .box > .button > i {
+    color: var(--theme-secondary-font-secondary-200); }
+
+.fab-dialog.theme-secondary:hover > .box > .button > i {
+    color: var(--theme-primary-font-secondary-200); }
+
+.fab-dialog.disabled > .box > .button > i {
+    color: var(--disabled-font); }
+
+.fab-dialog.theme-primary.disabled > .box > .button > i {
+    color: var(--theme-secondary-font-disabled-200); }
+
+.fab-dialog.theme-secondary.disabled > .box > .button > i {
+    color: var(--theme-primary-font-disabled-200); }
+
+.fab-dialog > .box > .content {
+    background-color: var(--background-component); }
+
+/** FAB MENU */
+
+.fab-menu:not(.active) > .orbit-content > .button { 
+    color: var(--secondary-font);
+    background-color: var(--background-component); }
+
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button {
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+.fab-menu:not(.active) > .orbit-content > .button:hover {
+    background-color: #8f8f8f; }
+
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button:hover {
+    background-color: var(--theme-secondary-200);
+    color: var(--theme-secondary-font-disabled-200); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button:hover {
+    background-color: var(--theme-primary-200);
+    color: var(--theme-primary-font-disabled-200); }
+
+.fab-menu:not(.active) > .orbit-content > .button:focus  {
+    background-color: #737373; }
+
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button:focus  {
+    background-color: var(--theme-secondary-700); 
+    color: var(--theme-secondary-font-primary-700); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button:focus  {
+    background-color: var(--theme-primary-700);
+    color: var(--theme-primary-font-primary-700); }
+
+.fab-menu:not(.active) > .orbit-content > .button.disabled {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+.fab-menu.theme-primary:not(.active) > .orbit-content > .button.disabled {
+    background-color: var(--theme-secondary-100);
+    color: var(--theme-secondary-font-disabled-100); }
+
+.fab-menu.theme-secondary:not(.active) > .orbit-content > .button.disabled {
+    background-color: var(--theme-primary-100);
+    color: var(--theme-primary-font-disabled-100); }
+
+.fab-menu.active > .orbit-content > .button {
+    background-color: transparent; }
+
+.fab-menu > .content > .menu {
+    background-color: var(--background-component); }
+
+.fab-menu.theme-primary > .content > .menu > .option:hover {
+    background-color: var(--theme-secondary-300);
+    color: var(--theme-secondary-font-secondary-300); }
+
+.fab-menu.theme-secondary > .content > .menu > .option:hover {
+    background-color: var(--theme-primary-300);
+    color: var(--theme-primary-font-secondary-300); }
+
+.fab-menu.theme-primary > .content > .menu > .option:hover > i {
+    color: var(--theme-secondary-font-secondary-300); }
+
+.fab-menu.theme-secondary > .content > .menu > .option:hover > i {
+    color: var(--theme-primary-font-secondary-300); }
+
+.fab-menu > .content > .menu > .option.disabled {
+    color: var(--disabled-font);
+    background-color: var(--background-disabled); }
+
+.fab-menu > .content > .menu > .option.disabled > i {
+    color: var(--disabled-font); }
+
+/** MENU */
+
+.menu > li.subheader {
+    color: var(--secondary-font); }
+
+.menu > li.option {
+    color: var(--primary-font); }
+
+.menu > li.option > i {
+    color: var(--secondary-font); }
+
+.menu > li.option.disabled, .menu > li.option.disabled > i {
+    color: var(--disabled-font); }
+
+.menu > li.option:hover {
+    background-color: var(--background-hover); }
+
+.menu > li.option.active, .menu > li.option.active > i {
+    color: var(--theme-primary-500); }
+
+/** MESSAGE */
+
+.message > i, .message > p {
+    color: var(--secondary-font); }
+
+/** PROGRESS BAR */
+
+.progress-bar {
+    background-color: var(--theme-secondary-100); }
+
+.progress-bar.indeterminate:after, .progress-bar > .bar,
+.progress-bar.indeterminate:before {
+    background-color: var(--theme-secondary-500); }
+
+.app-bar.theme-primary > .progress-bar.indeterminate:after,
+.app-bar.theme-primary > .progress-bar.indeterminate:before {
+    background-color: var(--theme-secondary-500); }
+
+.app-bar.theme-secondary > .progress-bar.indeterminate:after,
+.app-bar.theme-secondary > .progress-bar.indeterminate:before {
+    background-color: var(--theme-primary-500); }
+
+.progress-bar.buffering > .buffer {
+    background-color: var(--theme-secondary-100); }
+
+/** PROGRESS BUTTON FLOATING */
+
+.progress-button-floating > .progress-circular {
+    background-color: transparent; }
+
+.progress-button-floating > .progress-circular > svg > circle {
+    stroke: var(--theme-primary-500); }
+
+.progress-button-floating.finish > .button-result {
+    background-color: var(--theme-primary-500); }
+
+.progress-button-floating.finish > .button-result.error {
+    background-color: var(--theme-error-500); }
+
+.progress-button-floating.finish > .button-result.disabled {
+    background-color: var(--theme-primary-100); }
+
+.progress-button-floating.finish > .button-result.disabled.error {
+    background-color: var(--theme-error-100); }
+
+.progress-button-floating > .button-result > i {
+    color: var(--theme-primary-font-primary-500); }
+
+.progress-button-floating > .button-result.error > i {
+    color: var(--theme-error-font-primary-500); }
+
+.progress-button-floating > .button-result.disabled > i {
+    color: var(--theme-primary-font-disabled-100); }
+
+.progress-button-floating > .button-result.error.disabled > i {
+    color: var(--theme-error-font-disabled-100); }
+
+.progress-button-floating > button {
+    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-font-primary-500); }
+
+.progress-button-floating > button:disabled,
+.progress-button-floating > button:disabled:hover {
+    background-color: var(--theme-secondary-100);
+    color: var(--theme-secondary-font-disabled-100); }
+
+.progress-button-floating > button:before {
+    background-color: var(--theme-secondary-ripple-alternative); }
+
+/** PROGRESS CIRCULAR */
+
+.refresh-progress-circular {
+    background-color: var(--background-appbar); }
+
+.progress-circular > svg > circle {
+    stroke: var(--theme-secondary-500); }
+
+/** PROGRESS PANE */
+
+.progress-pane {
+    background-color: rgba(255, 255, 255, 0.64); }
+
+.progress-pane > .content > label {
+    color: var(--alternative-primary-font); }
+
+/** RADIOBUTTON */
+
+.radiobutton > label {
+    color: var(--primary-font); }
+
+.radiobutton > input[type="radio"]:disabled + label {
+    color: var(--disabled-font); }
+
+.radiobutton > label:before {
+    background-color: var(--theme-secondary-500); }
+
+.radiobutton > input[type="radio"]:disabled + label:before {
+    background-color: var(--background-disabled); }
+
+.radiobutton > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.54); }
+
+.radiobutton > input[type="radio"]:checked + label:after {
+    border: 2px solid var(--theme-secondary-500); }
+
+.radiobutton > input[type="radio"]:checked ~ .ripple-content > .box,
+.radiobutton > input[type="radio"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--ripple); }
+
+.radiobutton > input[type="radio"]:disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+/** RATING */
+
+.rating.theme-primary > button.action {
+    color: var(--theme-primary-500); }
+ 
+.rating.theme-primary > button.action:before {
+    background-color: var(--theme-primary-500); }
+
+.rating.theme-primary > button.action:disabled {
+    color: var(--theme-primary-100); }
+
+.rating.theme-secondary > button.action {
+    color: var(--theme-secondary-500); }
+ 
+.rating.theme-secondary > button.action:before {
+    background-color: var(--theme-secondary-500); }
+
+.rating.theme-secondary > button.action:disabled {
+    color: var(--theme-secondary-100); }
+
+/** SCORE */
+
+.score > .content > i {
+    color: var(--primary-font); }
+
+.score.theme-primary > .content > i {
+    color: var(--theme-primary-600); }
+
+.score.theme-secondary > .content > i {
+    color: var(--theme-secondary-600); }
+
+.score > .content > span {
+    color: var(--alternative-secondary-font); }
+
+.score.theme-primary > .content > span {
+    color: var(--theme-primary-font-primary-600); }
+
+.score.theme-secondary > .content > span {
+    color: var(--theme-secondary-font-primary-600); }
+
+/** SEARCH BOX */
+
+.search-box {
+    background-color: var(--background-component); }
+
+.datatable > .header > .search-box {
+    border: 1px solid var(--background-border); }
+
+.app-bar.floating > .search-box {
+    border: 1px solid var(--background-border); }
+
+.app-bar.floating > .search-box:last-child {
+    border-bottom: none; }
+
+.app-bar.floating > .tabs + .search-box,
+.app-bar.floating > .breadcrumb + .search-box {
+    border-top-color: transparent; }
+
+.search-box > input {
+    background-color: transparent; }
+
+.search-box > input::-webkit-input-placeholder {
+    color: var(--secondary-font); }
+
+.search-box > input::selection {
+    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-font-primary500); }
+
+.search-box > .actions {
+    background-color: transparent; }
+
+/** SLIDER */
+
+.slider > label {
+    color: var(--secondary-font); }
+
+.slider > .content > i {
+    color: var(--secondary-font); }
+
+.slider > .content.disabled > i {
+    color: var(--disabled-font); }
+
+.slider > .content > .track {
+    background-color: transparent; }
+
+.slider > .content > .track > .track-off {
+    background-color: var(--background-border); }
+
+.slider:hover > .content > .track > .track-off {
+    background-color: var(--background-border-active); }
+
+.slider:hover > .content.disabled > .track > .track-off {
+    background-color: var(--background-border); }
+
+.slider > .content > .track > .track-on {
+    background-color: var(--theme-primary-500); }
+
+.slider > .content.disabled > .track > .track-on {
+    background-color: transparent; }
+
+.slider > .content > .track > .thumb {
+    background-color: var(--theme-primary-500); }
+
+.slider > .content.disabled > .track > .thumb {
+    background-color: var(--background-core); }
+
+.slider > .content > .track > .thumb:before {
+    background-color: var(--background-border); }
+
+.slider > .content > .track > .thumb.off:before {
+    background-color: var(--background-component);
+    border: 2px solid var(--background-border); }
+
+.slider > .content > .track > .thumb.off {
+    background-color: var(--background-component);
+    border: 2px solid var(--background-border); }
+
+.slider > .content.disabled > .track > .thumb.off {
+    border: none;
+    background-color: var(--background-core); }
+
+.slider.discrete > .content > .track > .thumb.off {
+    border: none;
+    background-color: var(--primary-font); }
+
+.slider.discrete > .content > .track > .thumb.off.active {
+    border: none;
+    background-color: #737373; }
+
+.slider > .content > .track > .thumb > span {
+    color: var(--theme-primary-font-primary-500); }
+
+.slider.discrete > .content > .track > .thumb.off.active > span {
+    color: var(--primary-font); }
+
+.slider > .content > .showcase-input > input {
+    background-color: var(--background-core); }
+
+.slider > .content > .showcase-input > input:disabled {
+    color: var(--disabled-font); }
+
+.slider > .content > .showcase-input > .line-shadow {
+    border-bottom: 1px solid var(--background-border); }
+
+.slider > .content > .showcase-input > input:focus + .line-shadow {
+    border-bottom: 2px solid var(--theme-primary-500); }
+
+.slider > .content.disabled > .showcase-input > .line-shadow {
+    border-bottom: 1px dashed var(--background-border); }
+
+/** SNACKBAR */
+
+.snackbar {
+    background: #181818; }
+
+.snackbar > .body { 
+    color: var(--primary-font); }
+
+.snackbar > .action > span {
+    color: var(--theme-primary-500); }
+
+/** SUBHEADER */
+
+.subheader > span {
+    color: var(--secondary-font); }
+
+.subheader > .detail > .content > .title, 
+.subheader > .detail > .content > .subtitle {
+    color: var(--secondary-font); }
+
+/** SWITCH */
+
+.switch > label > .track:before {
+    opacity: 0.38;
+    background-color: #ffffff; }
+
+.switch > label > input[type=checkbox]:checked + .track:before {
+    opacity: 0.5;
+    background-color: var(--theme-secondary-400); }
+
+.switch > label > input[type=checkbox]:disabled + .track:before {
+    opacity: 0.12;
+    background-color: #ffffff; }
+
+.switch > label > .track:after { 
+    background-color: #fafafa; }
+
+.switch > label > input[type=checkbox]:checked + .track:after {
+    background-color: var(--theme-secondary-400); }
+
+.switch > label > input[type=checkbox]:disabled + .track:after {
+    background-color: #bdbdbd; }
+
+.switch > label > input[type=checkbox]:disabled:checked + .track:after {
+    background-color: var(--theme-secondary-200); }

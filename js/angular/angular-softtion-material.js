@@ -606,7 +606,7 @@
                     softtion.html("i").setText("stop")
                 )
         ).addChildren(
-            softtion.html("div").addClass("detail").
+            softtion.html("div").addClass("box").
                 addChildren(
                     softtion.html("div").addClass("progress-audio").
                         addChildren(
@@ -671,10 +671,9 @@
 
                         if ($scope.playAutomatic) {
                             $scope.audio.src = $scope.ngSrc;
-
-                            if (!softtion.deviceIs.pc()) {
-                                $scope.audio.play();
-                            } // Dispositivo no es un PC
+                            
+                            if (!softtion.deviceIs().pc())
+                                $scope.audio.play(); // Dispositivo no es un PC
                         } // Reproducción automatica
                     } else {
                         $scope.audio.src = ""; restorePlay(); $scope.duration = 0;
@@ -706,7 +705,7 @@
                     audio.ontimeupdate = function () {
                         $scope.$apply(() => {
                             $scope.currentTime = audio.currentTime;
-
+                            
                             if ($scope.currentTime > 0) {
                                 var percentage = $scope.currentTime * 100;
                                 percentage = parseInt(percentage / $scope.duration);
@@ -729,8 +728,8 @@
                     var minutes = parseInt(secondsAudio / 60),
                         seconds = parseInt(secondsAudio - (minutes * 60));
 
-                    return softtion.leadingChar(minutes, "0", 2) + 
-                        ":" + softtion.leadingChar(seconds, "0", 2);
+                    return softtion.leadingCharBefore(minutes, "0", 2) + 
+                        ":" + softtion.leadingCharBefore(seconds, "0", 2);
                 }
 
                 function restorePlay(paused) {
@@ -746,9 +745,8 @@
                     if (!$scope.isLoadAudio) {
                         $scope.audio.src = $scope.ngSrc; $scope.isLoading = true;
 
-                        if (!softtion.deviceIs.pc()) {
-                            $scope.audio.play();
-                        } // Dispositivo no es un PC
+                        if (!softtion.deviceIs().pc()) 
+                            $scope.audio.play(); // Dispositivo no es un PC
                     } else {
                         $scope.isPlay = !$scope.isPlay; // Cambiando estado
                         ($scope.isPlay) ? $scope.audio.play() : $scope.audio.pause();
@@ -2509,7 +2507,7 @@
                 };
 
                 $scope.clickLabel = function ($event) { 
-                    if ($scope.preventDefault) return; // Evento cancelado
+                    if ($scope.ngDisabled || $scope.preventDefault) return;
 
                     $scope.checked = !$scope.checked; input.focus();
                     listener.launch("click", { $event: $event });
@@ -5562,7 +5560,7 @@
         var circular = softtion.html("div").addClass("progress-circular").
                 addAttribute("ng-class", "{indeterminate: indeterminate}");
 
-        var success = softtion.html("div").addClass("button-success").
+        var success = softtion.html("div").addClass("button-result").
                 addAttribute("ng-click", "clickSuccess($event)").
                 addAttribute("ng-class", "{disabled: ngDisabled, error: ngError}").
                 addChildren(softtion.html("i").setText("{{iconFinish}}"));
@@ -6590,7 +6588,7 @@
                         )
                 ).addChildren(
                     softtion.html("div").addClass("showcase-input").
-                        addAttribute("ng-if", "showcase").
+                        addAttribute("ng-hide", "!showcase").
                         addChildren(
                             softtion.html("input").addAttribute("type", "number").
                                 addAttribute("ng-model", "valueInput").
@@ -6632,7 +6630,7 @@
                     $trackOn = $content.find(".track-on");
 
                     // Atributos
-                var initialPosition, initialX, finalX, range, time;
+                var initialPosition, initialX, finalX, range, promise;
 
                 $scope.desliceActive = false;
                 $scope.slideActive = false; 
@@ -6640,8 +6638,7 @@
                 $scope.minValue = $scope.minValue || 0;
                 range = $scope.maxValue - $scope.minValue;
 
-                $scope.value = isNaN($scope.value) ? 
-                    $scope.minValue : $scope.value;
+                $scope.value = isNaN($scope.value) ? $scope.minValue : $scope.value;
 
                 $scope.valueInput = parseInt($scope.value);
 
@@ -6759,10 +6756,10 @@
                 };
 
                 $scope.keyUpInput = function () {
-                    if (softtion.isDefined(time)) 
-                        $timeout.cancel(time); // Cancelando función actual
+                    if (softtion.isDefined(promise)) 
+                        $timeout.cancel(promise); // Cancelando función actual
 
-                    time = $timeout(setValueInput, 500);
+                    promise = $timeout(setValueInput, 500);
                 };
 
                 function startSlide($event) {
@@ -9328,7 +9325,11 @@
             themes = $materialColor.THEMES, // Colores de Temas
             keysColors = [ 
                 "50", "100", "200", "300", "400", 
-                "500", "600", "700", "800", "900" 
+                "500", "600", "700", "800", "900"
+            ],
+            keysFonts = [
+                "font50", "font100", "font200", "font300", "font400", 
+                "font500", "font600", "font700", "font800", "font900"
             ];
 
         function MaterialTheme() { }
@@ -9338,70 +9339,79 @@
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
            
-            var basecolor = $theme.BASECOLOR, // Color base
-                fonts = $materialColor.FONTS[basecolor], // Fuente
-                border = $materialColor.BORDERS, // Ripple
+            var fonts = $materialColor.FONTS, // Fuente
+                border = $materialColor.BORDERS, // Borders
                 ripple = $materialColor.RIPPLES; // Ripple
                 
             keysColors.forEach((key) => {
                 setPropertyStyle("--theme-primary-" + key, $theme[key]);
             });
-
-            // Color de fuentes
-            setPropertyStyle("--theme-primary-active", fonts.PRIMARY);
-            setPropertyStyle("--theme-primary-alternative", fonts.ALTERNATIVE);
-            setPropertyStyle("--theme-primary-inactive", fonts.SECONDARY);
-            setPropertyStyle("--theme-primary-disabled", fonts.DISABLED);
+            
+            keysFonts.forEach((key) => {
+                var font = fonts[$theme[key]], $key = key.split("font")[1]; // Configuración
+                
+                setPropertyStyle("--theme-primary-font-primary-" + $key, font.PRIMARY);
+                setPropertyStyle("--theme-primary-font-secondary-" + $key, font.SECONDARY);
+                setPropertyStyle("--theme-primary-font-disabled-" + $key, font.DISABLED);
+            });
 
             // Color de borde
             setPropertyStyle("--theme-primary-border", getHexToRgba($theme[500]));
-            setPropertyStyle("--theme-primary-border-alternative", border[basecolor]);
+            setPropertyStyle("--theme-primary-border-alternative", border[$theme.CONTRAST]);
             
             // Color de ripple
             setPropertyStyle("--theme-primary-ripple", getHexToRgba($theme[600]));
-            setPropertyStyle("--theme-primary-ripple-alternative", ripple[basecolor]);
+            setPropertyStyle("--theme-primary-ripple-alternative", ripple[$theme.CONTRAST]);
         };
 
         MaterialTheme.prototype.setError = function (theme) {
-            var $theme = themes[theme]; // Tema error
+            var $theme = themes[theme], fonts = $materialColor.FONTS;
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
             
             setPropertyStyle("--theme-error-500", $theme[500]);
+            setPropertyStyle("--theme-error-font-primary-500", fonts[$theme["font500"]].PRIMARY);
+            setPropertyStyle("--theme-error-font-secondary-500", fonts[$theme["font500"]].SECONDARY);
+            setPropertyStyle("--theme-error-font-disabled-500", fonts[$theme["font500"]].DISABLED);
+            
             setPropertyStyle("--theme-error-100", $theme[100]);
+            setPropertyStyle("--theme-error-font-primary-100", fonts[$theme["font100"]].PRIMARY);
+            setPropertyStyle("--theme-error-font-secondary-100", fonts[$theme["font100"]].SECONDARY);
+            setPropertyStyle("--theme-error-font-disabled-100", fonts[$theme["font100"]].DISABLED);
         };
 
         MaterialTheme.prototype.setSecondary = function (theme) {
             var $theme = themes[theme]; // Tema primario
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
-           
-            var basecolor = $theme.BASECOLOR, // Color base
-                fonts = $materialColor.FONTS[basecolor], // Fuente
+            
+            var fonts = $materialColor.FONTS, // Fuente
                 border = $materialColor.BORDERS, // Ripple
                 ripple = $materialColor.RIPPLES; // Ripple
                 
             keysColors.forEach((key) => {
                 setPropertyStyle("--theme-secondary-" + key, $theme[key]);
             });
-
-            // Color de fuentes
-            setPropertyStyle("--theme-secondary-active", fonts.PRIMARY);
-            setPropertyStyle("--theme-secondary-alternative", fonts.ALTERNATIVE);
-            setPropertyStyle("--theme-secondary-inactive", fonts.SECONDARY);
-            setPropertyStyle("--theme-secondary-disabled", fonts.DISABLED);
+            
+            keysFonts.forEach((key) => {
+                var font = fonts[$theme[key]], $key = key.split("font")[1]; // Configuración
+                
+                setPropertyStyle("--theme-secondary-font-primary-" + $key, font.PRIMARY);
+                setPropertyStyle("--theme-secondary-font-secondary-" + $key, font.SECONDARY);
+                setPropertyStyle("--theme-secondary-font-disabled-" + $key, font.DISABLED);
+            });
 
             // Color de borde
             setPropertyStyle("--theme-secondary-border", getHexToRgba($theme[500]));
-            setPropertyStyle("--theme-secondary-border-alternative", border[basecolor]);
+            setPropertyStyle("--theme-secondary-border-alternative", border[$theme.CONTRAST]);
             
             // Color de ripple
             setPropertyStyle("--theme-secondary-ripple", getHexToRgba($theme[600]));
-            setPropertyStyle("--theme-secondary-ripple-alternative", ripple[basecolor]);
+            setPropertyStyle("--theme-secondary-ripple-alternative", ripple[$theme.CONTRAST]);
         };
 
         MaterialTheme.prototype.register = function (name, theme) {
-            var keys = ["BASECOLOR"].together(keysColors),
+            var keys = keysColors.together(keysFonts), // Claves
                 result = softtion.required(theme, keys);
 
             if (result.success) themes[name] = theme; // Tema correcto
@@ -9810,7 +9820,7 @@
 
         if ($scope.type === "password") {
             $scope.iconAction = "visibility"; $scope.isIconAction = true;
-        } // Se ha definido una acción a realizar
+        } // Se debe activar el icono de acción para password
 
         $scope.isActiveLabel = function () {
             return ($scope.inputActive || softtion.isString($scope.input)) || 
@@ -10391,152 +10401,301 @@
         return {
             THEMES: {
                 RED: {
-                    "50" : "#ffebee", "100": "#ffcdd2", "200": "#ef9a9a", 
-                    "300": "#e57373", "400": "#ef5350", "500": "#f44336", 
-                    "600": "#e53935", "700": "#d32f2f", "800": "#c62828", 
-                    "900": "#b71c1c", BASECOLOR: "LIGHT", "A100": "#ff8a80", 
-                    "A200": "#ff5252", "A400": "#ff1744", "A700": "#d50000"
+                    "50" : "#ffebee", "font50" : "DARK",
+                    "100": "#ffcdd2", "font100": "DARK",
+                    "200": "#ef9a9a", "font200": "DARK",
+                    "300": "#e57373", "font300": "DARK",
+                    "400": "#ef5350", "font400": "LIGHT",
+                    "500": "#f44336", "font500": "LIGHT",
+                    "600": "#e53935", "font600": "LIGHT",
+                    "700": "#d32f2f", "font700": "LIGHT",
+                    "800": "#c62828", "font800": "LIGHT",
+                    "900": "#b71c1c", "font900": "LIGHT",
+                    "A100": "#ff8a80", "A200": "#ff5252", 
+                    "A400": "#ff1744", "A700": "#d50000",
+                    "CONTRAST": "LIGHT"
                 },
 
                 PINK: {
-                    "50" : "#fce4ec", "100": "#f8bbd0", "200": "#f48fb1", 
-                    "300": "#f06292", "400": "#ec407a", "500": "#e91e63", 
-                    "600": "#d81b60", "700": "#c2185b", "800": "#ad1457", 
-                    "900": "#880e4f", BASECOLOR: "LIGHT", "A100": "#ff80ab", 
-                    "A200": "#ff4081", "A400": "#f50057", "A700": "#c51162"
+                    "50" : "#fce4ec", "font50" : "DARK",
+                    "100": "#f8bbd0", "font100": "DARK",
+                    "200": "#f48fb1", "font200": "DARK",
+                    "300": "#f06292", "font300": "DARK",
+                    "400": "#ec407a", "font400": "LIGHT",
+                    "500": "#e91e63", "font500": "LIGHT",
+                    "600": "#d81b60", "font600": "LIGHT",
+                    "700": "#c2185b", "font700": "LIGHT",
+                    "800": "#ad1457", "font800": "LIGHT",
+                    "900": "#880e4f", "font900": "LIGHT",
+                    "A100": "#ff80ab", "A200": "#ff4081", 
+                    "A400": "#f50057", "A700": "#c51162",
+                    "CONTRAST": "LIGHT"
                 },
 
                 PURPLE: {
-                    "50" : "#f3e5f5", "100": "#e1bee7", "200": "#ce93d8", 
-                    "300": "#ba68c8", "400": "#ab47bc", "500": "#9c27b0", 
-                    "600": "#8e24aa", "700": "#7b1fa2", "800": "#6a1b9a", 
-                    "900": "#4a148c", BASECOLOR: "LIGHT", "A100": "#ea80fc", 
-                    "A200": "#e040fb", "A400": "#d500f9", "A700": "#aa00ff"
+                    "50" : "#f3e5f5", "font50" : "DARK",
+                    "100": "#e1bee7", "font100": "DARK",
+                    "200": "#ce93d8", "font200": "DARK",
+                    "300": "#ba68c8", "font300": "LIGHT",
+                    "400": "#ab47bc", "font400": "LIGHT",
+                    "500": "#9c27b0", "font500": "LIGHT",
+                    "600": "#8e24aa", "font600": "LIGHT",
+                    "700": "#7b1fa2", "font700": "LIGHT",
+                    "800": "#6a1b9a", "font800": "LIGHT",
+                    "900": "#4a148c", "font900": "LIGHT",
+                    "A100": "#ea80fc", "A200": "#e040fb", 
+                    "A400": "#d500f9", "A700": "#aa00ff",
+                    "CONTRAST": "LIGHT"
                 },
 
                 DEEP_PURPLE: {
-                    "50" : "#ede7f6", "100": "#d1c4e9", "200": "#b39ddb", 
-                    "300": "#9575cd", "400": "#7e57c2", "500": "#673ab7", 
-                    "600": "#5e35b1", "700": "#512da8", "800": "#4527a0", 
-                    "900": "#311b92", BASECOLOR: "LIGHT", "A100": "#b388ff", 
-                    "A200": "#7c4dff", "A400": "#651fff", "A700": "#6200ae"
+                    "50" : "#ede7f6", "font50" : "DARK",
+                    "100": "#d1c4e9", "font100": "DARK",
+                    "200": "#b39ddb", "font200": "DARK",
+                    "300": "#9575cd", "font300": "LIGHT",
+                    "400": "#7e57c2", "font400": "LIGHT",
+                    "500": "#673ab7", "font500": "LIGHT",
+                    "600": "#5e35b1", "font600": "LIGHT",
+                    "700": "#512da8", "font700": "LIGHT",
+                    "800": "#4527a0", "font800": "LIGHT",
+                    "900": "#311b92", "font900": "LIGHT",
+                    "A100": "#b388ff", "A200": "#7c4dff", 
+                    "A400": "#651fff", "A700": "#6200ae",
+                    "CONTRAST": "LIGHT"
                 },
 
                 INDIGO: {
-                    "50" : "#e8eaf6", "100": "#c5cae9", "200": "#9fa8da", 
-                    "300": "#7986cb", "400": "#5c6bc0", "500": "#3f51b5", 
-                    "600": "#3949ab", "700": "#303f9f", "800": "#283593", 
-                    "900": "#1a237e", BASECOLOR: "LIGHT", "A100": "#8c9eff", 
-                    "A200": "#536dfe", "A400": "#3d5afe", "A700": "#304ffe"
+                    "50" : "#e8eaf6", "font50" : "DARK",
+                    "100": "#c5cae9", "font100": "DARK",
+                    "200": "#9fa8da", "font200": "DARK",
+                    "300": "#7986cb", "font300": "LIGHT",
+                    "400": "#5c6bc0", "font400": "LIGHT",
+                    "500": "#3f51b5", "font500": "LIGHT",
+                    "600": "#3949ab", "font600": "LIGHT",
+                    "700": "#303f9f", "font700": "LIGHT",
+                    "800": "#283593", "font800": "LIGHT",
+                    "900": "#1a237e", "font900": "LIGHT",
+                    "A100": "#8c9eff", "A200": "#536dfe", 
+                    "A400": "#3d5afe", "A700": "#304ffe",
+                    "CONTRAST": "LIGHT"
                 },
 
                 BLUE: {
-                    "50" : "#e3f2fd", "100": "#bbdefb", "200": "#90caf9", 
-                    "300": "#64b5f6", "400": "#42a5f5", "500": "#2196f3", 
-                    "600": "#1e88e5", "700": "#1976d2", "800": "#1565c0", 
-                    "900": "#0d47a1", BASECOLOR: "LIGHT", "A100": "#82b1ff", 
-                    "A200": "#448aff", "A400": "#2979ff", "A700": "#2962ff"
+                    "50" : "#e3f2fd", "font50" : "DARK",
+                    "100": "#bbdefb", "font100": "DARK",
+                    "200": "#90caf9", "font200": "DARK",
+                    "300": "#64b5f6", "font300": "DARK",
+                    "400": "#42a5f5", "font400": "DARK",
+                    "500": "#2196f3", "font500": "DARK",
+                    "600": "#1e88e5", "font600": "LIGHT",
+                    "700": "#1976d2", "font700": "LIGHT",
+                    "800": "#1565c0", "font800": "LIGHT",
+                    "900": "#0d47a1", "font900": "LIGHT",
+                    "A100": "#82b1ff", "A200": "#448aff", 
+                    "A400": "#2979ff", "A700": "#2962ff",
+                    "CONTRAST": "LIGHT"
                 },
 
                 LIGHT_BLUE: {
-                    "50" : "#e1f5fe", "100": "#b3e5fc", "200": "#81d4fa", 
-                    "300": "#4fc3f7", "400": "#29b6f6", "500": "#03a9f4", 
-                    "600": "#039be5", "700": "#0288d1", "800": "#0277bd", 
-                    "900": "#01579b", BASECOLOR: "COMBINED", "A100": "#80d8ff", 
-                    "A200": "#40c4ff", "A400": "#00b0ff", "A700": "#0091ea"
+                    "50" : "#e1f5fe", "font50" : "DARK",
+                    "100": "#b3e5fc", "font100": "DARK",
+                    "200": "#81d4fa", "font200": "DARK",
+                    "300": "#4fc3f7", "font300": "DARK",
+                    "400": "#29b6f6", "font400": "DARK",
+                    "500": "#03a9f4", "font500": "DARK",
+                    "600": "#039be5", "font600": "DARK",
+                    "700": "#0288d1", "font700": "LIGHT",
+                    "800": "#0277bd", "font800": "LIGHT",
+                    "900": "#01579b", "font900": "LIGHT",
+                    "A100": "#80d8ff", "A200": "#40c4ff", 
+                    "A400": "#00b0ff", "A700": "#0091ea",
+                    "CONTRAST": "DARK"
                 },
 
                 CYAN: {
-                    "50" : "#e0f7fa", "100": "#b2ebf2", "200": "#80deea", 
-                    "300": "#4dd0e1", "400": "#26c6da", "500": "#00bcd4", 
-                    "600": "#00acc1", "700": "#0097a7", "800": "#00838f", 
-                    "900": "#006064", BASECOLOR: "COMBINED", "A100": "#84ffff", 
-                    "A200": "#18ffff", "A400": "#00e5ff", "A700": "#00b8d4"
+                    "50" : "#e0f7fa", "font50" : "DARK",
+                    "100": "#b2ebf2", "font100": "DARK",
+                    "200": "#80deea", "font200": "DARK",
+                    "300": "#4dd0e1", "font300": "DARK",
+                    "400": "#26c6da", "font400": "DARK",
+                    "500": "#00bcd4", "font500": "DARK",
+                    "600": "#00acc1", "font600": "DARK",
+                    "700": "#0097a7", "font700": "LIGHT",
+                    "800": "#00838f", "font800": "LIGHT",
+                    "900": "#006064", "font900": "LIGHT",
+                    "A100": "#84ffff", "A200": "#18ffff", 
+                    "A400": "#00e5ff", "A700": "#00b8d4",
+                    "CONTRAST": "LIGHT"
                 },
 
                 TEAL: {
-                    "50" : "#e0f2f1", "100": "#b2dfdb", "200": "#80cbc4", 
-                    "300": "#4db6ac", "400": "#26a69a", "500": "#009688", 
-                    "600": "#00897b", "700": "#00796b", "800": "#00695c", 
-                    "900": "#004d40", BASECOLOR: "LIGHT", "A100": "#a7ffeb", 
-                    "A200": "#64ffda", "A400": "#1de9b6", "A700": "#00bfa5"
+                    "50" : "#e0f2f1", "font50" : "DARK",
+                    "100": "#b2dfdb", "font100": "DARK",
+                    "200": "#80cbc4", "font200": "DARK",
+                    "300": "#4db6ac", "font300": "DARK",
+                    "400": "#26a69a", "font400": "DARK",
+                    "500": "#009688", "font500": "LIGHT",
+                    "600": "#00897b", "font600": "LIGHT",
+                    "700": "#00796b", "font700": "LIGHT",
+                    "800": "#00695c", "font800": "LIGHT",
+                    "900": "#004d40", "font900": "LIGHT",
+                    "A100": "#a7ffeb", "A200": "#64ffda", 
+                    "A400": "#1de9b6", "A700": "#00bfa5",
+                    "CONTRAST": "LIGHT"
                 },
 
                 GREEN: {
-                    "50" : "#e8f5e9", "100": "#c8e6c9", "200": "#a5d6a7", 
-                    "300": "#81c784", "400": "#66bb6a", "500": "#4caf50", 
-                    "600": "#43a047", "700": "#388e3c", "800": "#2e7d32", 
-                    "900": "#1b5e20", BASECOLOR: "LIGHT", "A100": "#b9f6ca", 
-                    "A200": "#69f0ae", "A400": "#00e676", "A700": "#00c853"
+                    "50" : "#e8f5e9", "font50" : "DARK",
+                    "100": "#c8e6c9", "font100": "DARK",
+                    "200": "#a5d6a7", "font200": "DARK",
+                    "300": "#81c784", "font300": "DARK",
+                    "400": "#66bb6a", "font400": "DARK",
+                    "500": "#4caf50", "font500": "LIGHT",
+                    "600": "#43a047", "font600": "LIGHT",
+                    "700": "#388e3c", "font700": "LIGHT",
+                    "800": "#2e7d32", "font800": "LIGHT",
+                    "900": "#1b5e20", "font900": "LIGHT",
+                    "A100": "#b9f6ca", "A200": "#69f0ae", 
+                    "A400": "#00e676", "A700": "#00c853",
+                    "CONTRAST": "LIGHT"
                 },
 
                 LIGHT_GREEN: {
-                    "50" : "#f1f8e9", "100": "#dcedc8", "200": "#c5e1a5", 
-                    "300": "#aed581", "400": "#9ccc65", "500": "#8bc34a", 
-                    "600": "#7cb342", "700": "#689f38", "800": "#558b2f", 
-                    "900": "#33691e", BASECOLOR: "COMBINED", "A100": "#ccff90", 
-                    "A200": "#b2ff59", "A400": "#76ff03", "A700": "#64dd17"
+                    "50" : "#f1f8e9", "font50" : "DARK",
+                    "100": "#dcedc8", "font100": "DARK",
+                    "200": "#c5e1a5", "font200": "DARK",
+                    "300": "#aed581", "font300": "DARK",
+                    "400": "#9ccc65", "font400": "DARK",
+                    "500": "#8bc34a", "font500": "DARK",
+                    "600": "#7cb342", "font600": "DARK",
+                    "700": "#689f38", "font700": "DARK",
+                    "800": "#558b2f", "font800": "LIGHT",
+                    "900": "#33691e", "font900": "LIGHT",
+                    "A100": "#ccff90", "A200": "#b2ff59", 
+                    "A400": "#76ff03", "A700": "#64dd17",
+                    "CONTRAST": "DARK"
                 },
 
                 LIME: {
-                    "50" : "#f9fbe7", "100": "#f0f4c3", "200": "#e6ee9c", 
-                    "300": "#dce775", "400": "#d4e157", "500": "#cddc39",
-                    "600": "#c0ca33", "700": "#afb42b", "800": "#9e9d24",
-                    "900": "#827717", BASECOLOR: "COMBINED", "A100": "#f4ff81", 
-                    "A200": "#eeff41", "A400": "#c6ff00", "A700": "#aeea00"
+                    "50" : "#f9fbe7", "font50" : "DARK",
+                    "100": "#f0f4c3", "font100": "DARK",
+                    "200": "#e6ee9c", "font200": "DARK",
+                    "300": "#dce775", "font300": "DARK",
+                    "400": "#d4e157", "font400": "DARK",
+                    "500": "#cddc39", "font500": "DARK",
+                    "600": "#c0ca33", "font600": "DARK",
+                    "700": "#afb42b", "font700": "DARK",
+                    "800": "#9e9d24", "font800": "DARK",
+                    "900": "#827717", "font900": "LIGHT",
+                    "A100": "#f4ff81", "A200": "#eeff41", 
+                    "A400": "#c6ff00", "A700": "#aeea00",
+                    "CONTRAST": "DARK"
                 },
 
                 YELLOW: {
-                    "50" : "#fffde7", "100": "#fff9c4", "200": "#fff59d", 
-                    "300": "#fff176", "400": "#ffee58", "500": "#ffeb3b", 
-                    "600": "#fdd835", "700": "#fbc02d", "800": "#f9a825", 
-                    "900": "#f57f17", BASECOLOR: "DARK", "A100": "#ffff8d", 
-                    "A200": "#ffff00", "A400": "#ffea00", "A700": "#ffd600"
+                    "50" : "#fffde7", "font50" : "DARK",
+                    "100": "#fff9c4", "font100": "DARK",
+                    "200": "#fff59d", "font200": "DARK",
+                    "300": "#fff176", "font300": "DARK",
+                    "400": "#ffee58", "font400": "DARK",
+                    "500": "#ffeb3b", "font500": "DARK",
+                    "600": "#fdd835", "font600": "DARK",
+                    "700": "#fbc02d", "font700": "DARK",
+                    "800": "#f9a825", "font800": "DARK",
+                    "900": "#f57f17", "font900": "DARK",
+                    "A100": "#ffff8d", "A200": "#ffff00", 
+                    "A400": "#ffea00", "A700": "#ffd600",
+                    "CONTRAST": "DARK"
                 },
 
                 AMBER: {
-                    "50" : "#fff8e1", "100": "#ffecb3", "200": "#ffe082", 
-                    "300": "#ffd54f", "400": "#ffca28", "500": "#ffc107", 
-                    "600": "#ffb300", "700": "#ffa000", "800": "#ff8f00", 
-                    "900": "#ff6f00", BASECOLOR: "DARK", "A100": "#ffe57f", 
-                    "A200": "#ffd740", "A400": "#ffc400", "A700": "#ffab00"
+                    "50" : "#fff8e1", "font50" : "DARK",
+                    "100": "#ffecb3", "font100": "DARK",
+                    "200": "#ffe082", "font200": "DARK",
+                    "300": "#ffd54f", "font300": "DARK",
+                    "400": "#ffca28", "font400": "DARK",
+                    "500": "#ffc107", "font500": "DARK",
+                    "600": "#ffb300", "font600": "DARK",
+                    "700": "#ffa000", "font700": "DARK",
+                    "800": "#ff8f00", "font800": "DARK",
+                    "900": "#ff6f00", "font900": "DARK",
+                    "A100": "#ffe57f", "A200": "#ffd740",
+                    "A400": "#ffc400", "A700": "#ffab00",
+                    "CONTRAST": "DARK"
                 },
 
                 ORANGE: {
-                    "50" : "#fff3e0", "100": "#ffe0b2", "200": "#ffcc80", 
-                    "300": "#ffb74d", "400": "#ffa726", "500": "#ff9800", 
-                    "600": "#fb8c00", "700": "#f57c00", "800": "#ef6c00", 
-                    "900": "#e65100", BASECOLOR: "COMBINED", "A100": "#ffd180", 
-                    "A200": "#ffab40", "A400": "#ffab40", "A700": "#ff6d00"
+                    "50" : "#fff3e0", "font50" : "DARK",
+                    "100": "#ffe0b2", "font100": "DARK",
+                    "200": "#ffcc80", "font200": "DARK",
+                    "300": "#ffb74d", "font300": "DARK",
+                    "400": "#ffa726", "font400": "DARK",
+                    "500": "#ff9800", "font500": "DARK",
+                    "600": "#fb8c00", "font600": "DARK",
+                    "700": "#f57c00", "font700": "DARK",
+                    "800": "#ef6c00", "font800": "DARK",
+                    "900": "#e65100", "font900": "LIGHT",
+                    "A100": "#ffd180", "A200": "#ffab40",
+                    "A400": "#ffab40", "A700": "#ff6d00",
+                    "CONTRAST": "LIGHT"
                 },
 
                 DEEP_ORANGE: {
-                    "50" : "#fbe9e7", "100": "#ffccbc", "200": "#ffab91", 
-                    "300": "#ff8a65", "400": "#ff7043", "500": "#ff5722", 
-                    "600": "#f4511e", "700": "#e64a19", "800": "#d84315", 
-                    "900": "#bf360c", BASECOLOR: "LIGHT", "A100": "#ff9e80", 
-                    "A200": "#ff6e40", "A400": "#ff3d00", "A700": "#dd2c00"
+                    "50" : "#fbe9e7", "font50" : "DARK",
+                    "100": "#ffccbc", "font100": "DARK",
+                    "200": "#ffab91", "font200": "DARK",
+                    "300": "#ff8a65", "font300": "DARK",
+                    "400": "#ff7043", "font400": "DARK",
+                    "500": "#ff5722", "font500": "DARK",
+                    "600": "#f4511e", "font600": "LIGHT",
+                    "700": "#e64a19", "font700": "LIGHT",
+                    "800": "#d84315", "font800": "LIGHT",
+                    "900": "#bf360c", "font900": "LIGHT",
+                    "A100": "#ff9e80", "A200": "#ff6e40", 
+                    "A400": "#ff3d00", "A700": "#dd2c00",
+                    "CONTRAST": "LIGHT"
                 },
 
                 BROWN: {
-                    "50" : "#efebe9", "100": "#d7ccc8", "200": "#bcaaa4", 
-                    "300": "#a1887f", "400": "#8d6e63", "500": "#795548", 
-                    "600": "#6d4c41", "700": "#5d4037", "800": "#4e342e", 
-                    "900": "#3e2723", BASECOLOR: "LIGHT"
+                    "50" : "#efebe9", "font50" : "DARK",
+                    "100": "#d7ccc8", "font100": "DARK",
+                    "200": "#bcaaa4", "font200": "DARK",
+                    "300": "#a1887f", "font300": "LIGHT",
+                    "400": "#8d6e63", "font400": "LIGHT",
+                    "500": "#795548", "font500": "LIGHT",
+                    "600": "#6d4c41", "font600": "LIGHT",
+                    "700": "#5d4037", "font700": "LIGHT",
+                    "800": "#4e342e", "font800": "LIGHT",
+                    "900": "#3e2723", "font900": "LIGHT",
+                    "CONTRAST": "LIGHT"
                 },
 
                 GREY: {
-                    "50" : "#fafafa", "100": "#f5f5f5", "200": "#eeeeee", 
-                    "300": "#e0e0e0", "400": "#bdbdbd", "500": "#9e9e9e", 
-                    "600": "#757575", "700": "#616161", "800": "#424242", 
-                    "900": "#212121", BASECOLOR: "COMBINED"
+                    "50" : "#fafafa", "font50" : "DARK",
+                    "100": "#f5f5f5", "font100": "DARK",
+                    "200": "#eeeeee", "font200": "DARK",
+                    "300": "#e0e0e0", "font300": "DARK",
+                    "400": "#bdbdbd", "font400": "DARK",
+                    "500": "#9e9e9e", "font500": "DARK",
+                    "600": "#757575", "font600": "LIGHT",
+                    "700": "#616161", "font700": "LIGHT",
+                    "800": "#424242", "font800": "LIGHT",
+                    "900": "#212121", "font900": "LIGHT",
+                    "CONTRAST": "DARK"
                 },
 
                 BLUE_GREY: {
-                    "50" : "#eceff1", "100": "#cfd8dc", "200": "#b0bec5", 
-                    "300": "#90a4ae", "400": "#78909c", "500": "#607d8b", 
-                    "600": "#546e7a", "700": "#455a64", "800": "#37474f", 
-                    "900": "#263238", BASECOLOR: "LIGHT"
+                    "50" : "#eceff1", "font50" : "DARK",
+                    "100": "#cfd8dc", "font100": "DARK",
+                    "200": "#b0bec5", "font200": "DARK",
+                    "300": "#90a4ae", "font300": "DARK",
+                    "400": "#78909c", "font400": "LIGHT",
+                    "500": "#607d8b", "font500": "LIGHT",
+                    "600": "#546e7a", "font600": "LIGHT",
+                    "700": "#455a64", "font700": "LIGHT",
+                    "800": "#37474f", "font800": "LIGHT",
+                    "900": "#263238", "font900": "LIGHT",
+                    "CONTRAST": "LIGHT"
                 }
             }, 
 
@@ -10544,35 +10703,24 @@
                 LIGHT: {
                     PRIMARY: "rgba(255, 255, 255, 1)",
                     SECONDARY: "rgba(255, 255, 255, 0.7)",
-                    DISABLED: "rgba(255, 255, 255, 0.5)",
-                    ALTERNATIVE: "rgba(255, 255, 255, 1)"
+                    DISABLED: "rgba(255, 255, 255, 0.5)"
                 },
 
                 DARK: {
                     PRIMARY: "rgba(0, 0, 0, 0.87)",
                     SECONDARY: "rgba(0, 0, 0, 0.54)",
-                    DISABLED: "rgba(0, 0, 0, 0.38)",
-                    ALTERNATIVE: "rgba(0, 0, 0, 0.87)"
-                },
-
-                COMBINED: {
-                    PRIMARY: "rgba(0, 0, 0, 0.87)",
-                    SECONDARY: "rgba(0, 0, 0, 0.54)",
-                    DISABLED: "rgba(0, 0, 0, 0.38)",
-                    ALTERNATIVE: "rgba(255, 255, 255, 1)"
+                    DISABLED: "rgba(0, 0, 0, 0.38)"
                 }
             },
 
             BORDERS: {
                 LIGHT: "rgba(255, 255, 255, 0.12)",
-                DARK: "rgba(0, 0, 0, 0.12)",
-                COMBINED: "rgba(0, 0, 0, 0.12)"
+                DARK: "rgba(0, 0, 0, 0.12)"
             },
 
             RIPPLES: {
                 LIGHT: "rgba(255, 255, 255, 0.5)",
-                DARK: "rgba(0, 0, 0, 0.38)",
-                COMBINED: "rgba(0, 0, 0, 0.38)"
+                DARK: "rgba(0, 0, 0, 0.38)"
             }
         };
     }

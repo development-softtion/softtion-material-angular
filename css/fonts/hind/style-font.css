@@ -1,0 +1,31 @@
+/*!
+ * StyleFont Hind
+ * https://fonts.google.com/?selection.family=Hind
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Hind-Light.ttf") format("truetype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Hind-Regular.ttf") format("truetype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Hind-Medium.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Hind-Semibold.ttf") format("truetype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Hind-Bold.ttf") format("truetype");
+    font-weight: 700; }
