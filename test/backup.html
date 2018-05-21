@@ -2,12 +2,12 @@
 <!-- STEPPER HORIZONTAL -->
 <div class="stepper-horizontal alternative">
     <ul>
-        <li class="active" ng-click="openSnackbar()">
+        <li class="success" ng-click="openSnackbar()">
             <div class="content">
                 <div class="indicator">
                     <span>1</span>
                 </div>
-                <div class="detail">
+                <div class="description">
                     <p class="title">Select campaign</p>
                     <p class="optional">Text optional</p>
                 </div>
@@ -18,28 +18,28 @@
                 <div class="indicator">
                     <span>2</span>
                 </div>
-                <div class="detail">
+                <div class="description">
                     <p class="title">Create an ad group</p>
                     <p class="optional">Text optional</p>
                 </div>
             </div>
         </li>
-        <li class="">
+        <li class="active">
             <div class="content">
                 <div class="indicator">
                     <span>3</span>
                 </div>
-                <div class="detail">
+                <div class="description">
                     <p class="title">Select an app</p>
                 </div>
             </div>
         </li>
-        <li class="active error">
+        <li class="error">
             <div class="content">
                 <div class="indicator">
                     <span>4</span>
                 </div>
-                <div class="detail">
+                <div class="description">
                     <p class="title">Create an ad</p>
                     <p class="optional">Text optional</p>
                 </div>
@@ -84,41 +84,6 @@
         </div>
     </li>
 </ul>
-                    
-<!-- CARD: MEDIA AREA -->
-<div class="card flat" style="margin-top: 8px;">
-    <div class="optional-header">
-        <img class="avatar" src="Vi.png" alt=""/>
-        <div class="detail">
-            <p class="title">Softtion Material</p>
-            <p class="subtitle">Framework Material Design</p>
-        </div>
-    </div>
-    <div class="media-area">
-        <div class="image">
-            <div class="background">
-                <img src="imgs/media-area.jpg" alt=""/>
-            </div>
-        </div>
-
-        <div class="actions">
-            <button class="action">
-                <span class="badge">1</span>
-                <i>favorite</i>
-            </button>
-            <button class="action"><i>bookmark</i></button>
-            <button class="action"><span class="badge">1</span><i>reply</i></button>
-        </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="support-content">
-        Daniel Andres Castillo Pedroza<br>
-        Ingeniero de Sistemas<br>
-        CIO de Softtion Developers
-    </div>
-</div>
                     
 <!-- FOOTER BUTTONS -->
 <div class="footer-buttons">
@@ -345,23 +310,23 @@
 <div class="grid-sheet" columns="5">
     <div class="item">
         <img class="icon" src="Vi.png" alt=""/>
-        <div class="detail">Vi</div>
+        <div class="description">Vi</div>
     </div>
     <div class="item disabled">
         <img class="icon" src="5.png" alt=""/>
-        <div class="detail">Amumu</div>
+        <div class="description">Amumu</div>
     </div>
     <div class="item">
         <img class="icon" src="4.png" alt=""/>
-        <div class="detail">Alistar</div>
+        <div class="description">Alistar</div>
     </div>
     <div class="item">
         <img class="icon" src="26.png" alt=""/>
-        <div class="detail">Evelynn</div>
+        <div class="description">Evelynn</div>
     </div>
     <div class="item disabled">
         <i class="icon">person_add</i>
-        <div class="detail">Nuevo champs</div>
+        <div class="description">Nuevo champs</div>
     </div>
 </div>
 
@@ -402,8 +367,7 @@
 <!-- click-efect: boolean, valor predefinido true -->
 <!-- click-efect: determina si se realiza el efecto slide cuando se selecciona imagen con click -->
  <div class="catalog" views="5" gallery="catalogGallery" 
-    title-action="Ver todas" click-action="showAll"
-    click-efect="false">
+    title-action="Ver todas" click-action="showAll" click-efect="false">
 </div>
 
 
@@ -452,3 +416,487 @@
 </div>
 
 <div class="video-youtube" ng-src="https://www.youtube.com/embed/GxCsbh-dd-0"></div>
+
+<!-- SIDENAV -->
+<nav id="sidenav-main" class="sidenav"
+     ng-open="visible">
+    <div class="content">
+        <div class="banner">
+            <img class="background" src="elise.jpg" alt=""/>
+
+            <div class="description">
+                <label class="title">Expocanciones Internacional Group</label>
+                <label class="subtitle">expocanciones@gmail.com</label>
+            </div>
+        </div>
+
+        <main class="sidenav-menu">
+            <div class="subheader">
+                <span>Menú de opciones</span>
+            </div>
+
+            <div class="sidenav-item">
+                <div class="description">
+                    <a><span>SidenavItem1</span></a>
+                </div>
+
+                <div class="options">
+                    <ul>
+                        <li>
+                            <a>Option1</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sidenav-item">
+                <div class="description">
+                    <a>
+                        <i>person</i>
+                        <span>SidenavItem2</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidenav-item active" ng-disabled="false">
+                <div class="description">
+                    <a>
+                        <i>book</i>
+                        <span>SidenavItem3</span>
+                        <span class="badge">2</span>
+                    </a>
+                </div>
+
+                <div class="options">
+                    <ul>
+                        <li class="disabled">
+                            <a>Option1</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="sidenav-item" ng-disabled="true">
+                <div class="description">
+                    <a>
+                        <i>book</i>
+                        <span>SidenavItem4</span>
+                        <span class="badge">8</span>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+</nav>
+
+<!-- CARD -->
+
+<div class="card">
+    <div class="primary-title">
+        <div class="media-area">
+            <img src="Vi.png" alt=""/>
+        </div>
+        <div class="detail">
+            <div class="avatars">
+                <div class="avatar">
+                    <img src="RumbleSquare.png" alt=""/>
+                </div>
+            </div>
+            <div class="content">
+                <div class="title">Rumble</div>
+                <div class="subtitle">Skin: Super galáctico</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rich-media auto">
+        <div class="background">
+            <img src="rumble.jpg">
+        </div>
+
+        <div class="content">
+            <div class="primary-title">
+                <div class="detail">
+                    <div class="avatars">
+                        <div class="avatar">
+                            <img src="RumbleSquare.png" alt=""/>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Rumble</div>
+                        <div class="subtitle">Skin: Super galáctico</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description">
+                Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos. En vez de eso, él usa Calor como su recurso secundario. Rumble empieza con 0 de Calor y llega a un máximo de 100.
+            </div>
+            <div class="actions">
+                <button class="flat right">Descargar</button>
+                <button class="action"><i>share</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="optional-header">
+        <div class="detail">
+            <div class="avatars">
+                <div class="avatar">
+                    <img src="RumbleSquare.png" alt=""/>
+                </div>
+            </div>
+            <div class="content">
+                <div class="title">Rumble</div>
+                <div class="subtitle">Skin: Super galáctico</div>
+            </div>
+        </div>
+        <button class="action">
+            <i>person</i>
+        </button>
+    </div>
+
+    <div class="support-content">
+        Incluso entre los yordles, Rumble era el más pequeño de todos. Como tal,
+        siempre sufría el acoso de los demás. Para sobrevivir, tenía que ser más
+        ingenioso y astuto que el resto. Desarrolló muy mal temperamento y se ganó
+        la reputación de estar siempre buscando camorra. Esto lo convirtió en un 
+        solitario, pero le daba igual. Le gustaba retocar objetos, prefería la compañía
+        de los artefactos y era habitual encontrárselo hurgando en el desagüe. Demostró
+        tener gran potencial como mecánico. Sus profesores le recomendaron que se apuntase
+        en la Academia Yordle de Ciencia y Progreso de Piltóver, donde podría haber llegado
+        a ser uno de los mejores estudiantes de Heimerdinger, pero Rumble rechazó la oferta.
+        Creía que Heimerdinger y sus socios eran unos vendidos, que comerciaban con los 
+        humanos para venderles tecnología superior yordle a cambio de palmaditas en la cabeza,
+        pero sin dejar de ser el objetivo de sus chistes.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="media-area">
+        <div class="image">
+            <div class="background">
+                <img src="5.png" alt=""/>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="action">
+                <i>share</i>
+            </button>
+            <button class="action">
+                <i>send</i>
+            </button>
+        </div>
+    </div>
+
+    <div class="actions">
+        <div class="label">Puntaje:</div>
+        <button class="flat right">
+            Share
+        </button>
+        <button class="flat right">
+            Send
+        </button>
+
+        <button class="action">
+            <i>add_shopping_cart</i>
+        </button>
+    </div>
+
+    <div class="actions">
+        <button class="action"><i>person</i></button>
+        <div class="label right">:Puntaje</div>
+        <div class="rating right" ng-model="tix"></div>
+    </div>
+</div> 
+
+<!-- CAROUSEL & CATALOG -->
+<!-- 
+    $scope.gallery = [
+        {
+            src: "rumble.jpg",
+            title: "Rumble",
+            subtitle: "Skin: supergaláctico"
+        },
+        {
+            src: "rumble-jungle.jpg",
+            title: "Rumble",
+            subtitle: "Skin: jungla china"
+        }
+    ];
+    
+    $scope.actions = [
+        { name: "show", label: "Ver más" }
+    ];
+-->
+
+<div class="carousel contrast" gallery="gallery" actions="actions"></div>
+<div class="catalog contrast" gallery="gallery" actions="actions"></div>
+
+<!-- GALLERY -->
+<!-- 
+    $scope.gallery = [
+        {
+            src: "26.png",
+            icon: "image",
+            name: "Skin: supergaláctico"
+        },
+        {
+            src: "5.png",
+            icon: "image",
+            name: "Skin: jungla china"
+        }
+    ];
+-->
+<div class="gallery" images="gallery"></div>
+
+<!-- ITEM LIST -->
+<div class="flex small margin-bottom-16 bordered">
+    <div class="item-list">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <div class="radiobutton" value="y" name="D" ng-model="r"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="flat theme-primary">Flat</button>
+            <button class="raised right theme-primary">Raised</button>
+            <button class="action"><i>person</i></button>
+        </div>
+    </div>
+    <div class="item-list">
+        <div class="box">                            
+            <div class="radiobutton" value="X" name="D" ng-model="r"></div>
+            <div class="controls">
+                <span class="badge">3</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+            </div>
+        </div>
+    </div>
+    <div class="item-list">
+        <div class="box">                            
+            <div class="checkbox-control" ng-model="ju"></div>
+            <div class="controls">
+                <div class="switch" ng-model="ju"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+            </div>
+        </div>
+    </div>
+    <div class="item-list">
+        <div class="box">                            
+            <div class="switch" ng-model="ju"></div>
+            <div class="controls">
+                <button class="action"><i>person</i></button>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+            </div>
+        </div>
+    </div>
+    <div class="item-list">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <span class="emphasis">5 mins.</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item-list two-line">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <div class="radiobutton" value="a" name="D" ng-model="r"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+    <div class="item-list two-line">
+        <div class="box">
+            <div class="radiobutton" value="ty" name="D" ng-model="r"></div>
+
+            <div class="controls">
+                <div class="checkbox-control" ng-model="yui"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+    <div class="item-list two-line">
+        <div class="box">
+            <div class="switch" ng-model="yui"></div>
+
+            <div class="controls">
+                <button class="action"><i>done</i></button>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+    <div class="item-list two-line">
+        <div class="box">
+            <div class="checkbox-control" ng-model="ryui"></div>
+
+            <div class="controls">
+                <span class="emphasis">6 horas</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+        <div class="actions floating">
+            <button class="flat theme-primary">Flat</button>
+            <button class="raised right theme-primary">Raised</button>
+            <button class="action"><i>person</i></button>
+        </div>
+    </div>
+    <div class="item-list two-line">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <span class="badge">6</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+
+    <div class="item-list three-line">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <div class="switch" ng-model="sr"></div>
+                <span class="emphasis">6 horas</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+        <div class="actions">
+            <button class="flat theme-primary">Flat</button>
+            <button class="raised right theme-primary">Raised</button>
+            <button class="action"><i>person</i></button>
+        </div>
+    </div>
+    <div class="item-list three-line">
+        <div class="box">
+            <div class="radiobutton" value="ty" name="D" ng-model="r"></div>
+
+            <div class="controls">
+                <div class="checkbox-control" ng-model="yui"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+    <div class="item-list three-line">
+        <div class="box">
+            <div class="switch" ng-model="yui"></div>
+
+            <div class="controls">
+                <button class="action"><i>done</i></button>
+                <span class="emphasis">7 horas</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+    <div class="item-list three-line">
+        <div class="box">
+            <div class="checkbox-control" ng-model="ryui"></div>
+
+            <div class="controls">
+                <span class="emphasis">6 horas</span>
+                <div class="checkbox-control" ng-model="dr"></div>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+        <div class="actions floating contrast">
+            <button class="flat theme-primary">Flat</button>
+            <button class="raised right theme-primary">Raised</button>
+            <button class="action"><i>person</i></button>
+        </div>
+    </div>
+    <div class="item-list three-line">
+        <div class="box">
+            <div class="avatar">
+                <img src="RumbleSquare.png" alt=""/>
+            </div>
+
+            <div class="controls">
+                <div class="badge">6</div>
+                <span class="emphasis">6 horas</span>
+            </div> 
+            <div class="content">
+                <div class="title">Rumble supergaláctico</div>
+                <p class="description">
+                    Las habilidades de Rumble no tienen ningún costo relacionado a ellas y sus habilidades son únicamente limitadas por enfriamientos.
+                </p> 
+            </div>
+        </div>
+    </div>
+</div>

@@ -295,6 +295,7 @@
             APPBAR_64: "pd-64",
     
             ACTIVE: "active",
+            DISPLAYED: "displayed",
             DEFAULT: "default",
             SHOW: "show",
             HIDE: "hide",
@@ -528,8 +529,7 @@
 
                     if ((positionNew > minHeight)) {
                         if (position >= positionNew) {
-                            toogleAppBar(true); 
-                            return;
+                            position = positionNew; toogleAppBar(true); return;
                         } // Se debe desplegar AppBar
                         
                         $element.children(".dropdown").removeClass("show");
@@ -2024,7 +2024,7 @@
             ).
             addChildren(
                 softtion.html("img", false).addClass("center").
-                    addAttribute("ng-src", "{{slide.img}}")
+                    addAttribute("ng-src", "{{slide.src}}")
             );
 
         var actions = softtion.html("button").addClass("flat").
@@ -2034,14 +2034,14 @@
             ).setText("{{action.label}}");
 
         content.addChildren(
-            softtion.html("div").addClass(["detail", "{{position}}"]).
+            softtion.html("div").addClass(["description", "{{position}}"]).
                 addChildren(
                     softtion.html("label").addClass("title").
                         setText("{{slide.title}}")
                 ).
                 addChildren(
                     softtion.html("label").addClass("subtitle").
-                        setText("{{slide.subTitle}}")
+                        setText("{{slide.subtitle}}")
                 ).
                 addChildren(
                     softtion.html("div").addClass("actions").addChildren(actions)
@@ -2221,7 +2221,7 @@
                 addAttribute("ng-class", "{hidden : !isActiveNext()}").
                 addAttribute("ng-click", "next()"),
 
-            detail = softtion.html("div").addClass("detail").
+            detail = softtion.html("div").addClass("description").
                 addChildren(
                     softtion.html("div").addClass("content").
                         addChildren(
@@ -2235,8 +2235,7 @@
                                         addAttribute("disable-responsive", "true").
                                         addAttribute("ng-src", "{{photo.icon}}")
                                 ).addChildren(
-                                    softtion.html("span").
-                                        setText("{{photo.subtitle}}")
+                                    softtion.html("span").setText("{{photo.subtitle}}")
                                 )
                         )
                 ).addChildren(
@@ -4456,14 +4455,22 @@
         var content = softtion.html("div").addClass("content").
             addChildren(
                 softtion.html("div").addClass("select-file").
+                    addAttribute("ng-class", "{error: isError}").
                     addAttribute("ng-hide", "isSelectedFile()").
                     addAttribute("ng-click", "selectFile($event)"). 
                     addChildren(
-                        softtion.html("i").setText("file_upload").
+                        softtion.html("i").setText("{{getIconDescription()}}").
                             addAttribute("ng-class", "{disabled: ngDisabled}")
                     ).addChildren(
-                        softtion.html("p").setText("{{textDescription}}").
+                        softtion.html("p").setText("{{getTextDescription()}}").
                             addAttribute("ng-class", "{disabled: ngDisabled}")
+                    ).addChildren(
+                        softtion.html("div").addClass("bar").
+                            addAttribute("ng-hide", "!isLoading").
+                            addChildren(
+                                softtion.html("div").addClass("progress").
+                                    addAttribute("ng-style", "{width: progress}")
+                            )
                     )
             ).addChildren(
                 softtion.html("div").addClass("files").
@@ -4491,10 +4498,8 @@
                                                     addAttribute("ng-src", "{{file.base64}}").
                                                     addAttribute("ng-if", "isImageFile(file.type)")
                                             )
-                                    ).
-
-                                    addChildren(
-                                        softtion.html("div").addClass("detail").
+                                    ).addChildren(
+                                        softtion.html("div").addClass("description").
                                             addAttribute("ng-class", "{actionable: isIconAction()}").
                                             addChildren(
                                                 softtion.html("div").addClass("avatar").
@@ -4528,6 +4533,7 @@
                 textDescription: "@",
                 iconAction: "@",
                 fileTypes: "=?",
+                maxSize: "=?",
                 eventListener: "&"
             },
             link: function ($scope, $element) {
@@ -4536,12 +4542,10 @@
                     fileInput = $element.find("input[type=file]"),
                     imagesFormat = $material.File.imagesFormat,
                     viewPreview = $element.find(".view-preview"),
-                    heightStart = (viewPreview.height() - 16);                                
+                    heightStart = (viewPreview.height() - 16);
 
-                $scope.textDescription = $scope.textDescription || 
-                    "Seleccione archivos a procesar";
-
-                $scope.file = undefined; // Archivos seleccionado
+                $scope.file = undefined; // Archivo seleccionado
+                $scope.progress = "0%"; // Progreso de carga
                 
                 $scope.$watch(() => { return $scope.fileTypes; },
                     (newValue) => {
@@ -4551,19 +4555,44 @@
                 function processFile(file) {
                     var reader = new FileReader(); // Reader de file
 
+                    reader.onloadstart = function () {
+                        $scope.$apply(() => {
+                            $scope.isLoading = true; $scope.progress = "0%";
+                        });
+                    };
+
+                    reader.onprogress = function ($event) {
+                        $scope.$apply(() => {
+                            $scope.progress = (($event.loaded / $event.total) * 100) + "%";
+                        });
+                    };
+
+                    reader.onloadend = function () {
+                        $scope.$apply(() => {
+                            $scope.isLoading = false; $scope.progress = "100%";
+                        });
+                    };
+                    
                     reader.onload = function ($event) {
                         $scope.$apply(() => {
                             var fileResult = $event.target.result; 
                             file["base64"] = fileResult; 
+                            $scope.isError = false; $scope.isLoading = false;
 
                             $scope.file = file; listener.launch("changed");
+                        });
+                    };
+                    
+                    reader.onerror = function () {
+                        $scope.$apply(() => {
+                            $scope.isError = true; $scope.isLoading = false;
                         });
                     };
 
                     $timeout(() => { reader.readAsDataURL(file); }, 250);
 
                     return reader; // Retornando procesador de Archivo
-                };
+                }
 
                 fileInput.change(() => {
                     var files = fileInput[0].files; // Archivos seleccionados
@@ -4571,16 +4600,40 @@
                     if (files.length) {
                         if (!$scope.fileTypes.hasItem(files[0].type) &&
                             !$scope.fileTypes.isEmpty()) return;
+                    
+                        if ($scope.isInvalidSize(files[0].size)) return;
                                     
                         processFile(files[0]); // Se puede procesar seleccionado
                     } // Se cambio archivo al realizar seleccion
                 });
+                
+                $scope.getTextDescription = function () {
+                    return ($scope.isError) ?
+                        "Ocurrio un error al cargar archivo" : 
+                        ($scope.isLoading) ?
+                            "Procesando archivo seleccionado" : 
+                            softtion.isString($scope.textDescription) ?
+                                $scope.textDescription : 
+                                "Seleccione archivo a procesar";
+                                
+                };
+                
+                $scope.getIconDescription = function () {
+                    return $scope.isError ? "error" : "file_upload";
+                };
+                
+                $scope.isInvalidSize = function (size) {
+                    return (softtion.isUndefined($scope.maxSize)) ? 
+                        false :(isNaN($scope.maxSize)) ? false : (size > $scope.maxSize);
+                };
 
                 $scope.isSelectedFile = function () { 
                     return softtion.isDefined($scope.file);
                 };
 
                 $scope.selectFile = function ($event) { 
+                    if ($scope.isLoading) return; // Ya se esta cargando un archivo
+                    
                     setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
                 };
 
@@ -4650,7 +4703,7 @@
 
         var actions = softtion.html("div").addClass("actions").
             addChildren(
-                softtion.html("label").addClass("truncate").setText("{{label}}")
+                softtion.html("label").addClass("truncate").setText("{{getTextLabel()}}")
             ).addChildren(
                 softtion.html("button").addClass("action").
                     addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
@@ -4734,6 +4787,11 @@
                         } // El archivo es una mp3
                     } // Se cambio ha seleccionado un archivo
                 });
+                
+                $scope.getTextLabel = function () {
+                    return (softtion.isUndefined($scope.file)) ? "" : 
+                        (softtion.isString($scope.label)) ? $scope.label : $scope.name;
+                };
 
                 $scope.isSelectFile = function () {
                     return softtion.isDefined($scope.file);
@@ -4815,7 +4873,7 @@
                                                 addAttribute("ng-if", "isImageFile(file.type)")
                                             )
                                     ).addChildren(
-                                        softtion.html("div").addClass("detail").
+                                        softtion.html("div").addClass("description").
                                             addChildren(
                                                 softtion.html("div").addClass("avatar").
                                                 addChildren(
@@ -4848,6 +4906,10 @@
                 eventListener: "&"
             },
             link: function ($scope, $element) {
+                    // Componentes
+                var content = $element.children(".content");
+                
+                    // Atributos
                 var listener = new Listener($scope, Listener.FILECHOOSER_MULTIPLE),
                     fileInput = $element.find("input[type=file]"),
                     imagesFormat = $material.File.imagesFormat;
@@ -4893,6 +4955,8 @@
                             processFile(file); // Se puede procesar seleccionado
                         });
                 });
+                
+                content.displaceLeft(); // Haciendo componente scrolleable
 
                 $scope.selectFile = function ($event) { 
                     setTimeout(() => { fileInput.click(); }, 125); $event.stopPropagation();
@@ -4950,12 +5014,7 @@
 
         var actions = softtion.html("div").addClass("actions").
             addChildren(
-                softtion.html("button").addClass("action").
-                    addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("file_upload").
-                            addAttribute("ng-click", "selectFile($event)")
-                    )
+                softtion.html("label").addClass("truncate").setText("{{getTextLabel()}}")
             ).addChildren(
                 softtion.html("button").addClass("action").
                     addAttribute("ng-disabled", "ngDisabled").
@@ -4963,6 +5022,14 @@
                     addChildren(
                         softtion.html("i").setText("delete").
                             addAttribute("ng-click", "deleteFile()")
+                    )
+            ).
+            addChildren(
+                softtion.html("button").addClass("action").
+                    addAttribute("ng-disabled", "ngDisabled").
+                    addChildren(
+                        softtion.html("i").setText("file_upload").
+                            addAttribute("ng-click", "selectFile($event)")
                     )
             ).addChildren(
                 softtion.html("button").addClass("action").
@@ -4986,6 +5053,7 @@
             scope: {
                 file: "=ngModel",
                 icon: "@",
+                label: "@",
                 ngDisabled: "=?",
                 ngSrc: "=?",
                 saveEnabled: "=?",
@@ -5017,7 +5085,8 @@
                         $scope.$apply(() => {
                             var fileResult = $event.target.result; 
                             $scope.ngSrc = fileResult; // IMG
-                            file["base64"] = fileResult; $scope.file = file;
+                            file["base64"] = fileResult; 
+                            $scope.file = file; $scope.name = file.name;
 
                             listener.launch("changed"); // Cambio
                         });
@@ -5041,6 +5110,11 @@
                     if (files.length && imagesTypes.hasItem(files[0].type)) 
                         processFile(files[0]);
                 });
+                
+                $scope.getTextLabel = function () {
+                    return (softtion.isUndefined($scope.file)) ? "" : 
+                        (softtion.isString($scope.label)) ? $scope.label : $scope.name;
+                };
 
                 $scope.isSelectFile = function () {
                     return softtion.isDefined($scope.file);
@@ -5304,7 +5378,7 @@
                                 addAttribute("ng-src", "{{image.src}}")
                             )
                     ).addChildren(
-                        softtion.html("div").addClass("detail").
+                        softtion.html("div").addClass("description").
                             addChildren(
                                 softtion.html("div").addClass("avatar").
                                 addChildren(
@@ -5329,13 +5403,18 @@
             restrict: "C",
             templateUrl: Directives.Gallery.ROUTE,
             scope: {
-                images: "=ngModel",
+                images: "=",
                 disabledRemove: "=?",
                 eventListener: "&"
             },
-            link: function ($scope) {
+            link: function ($scope, $element) {
+                    // Componentes
+                var content = $element.children(".content");
+                        
                     // Atributos
                 var listener = new Listener($scope, []);
+                
+                content.displaceLeft(); // Haciendo componente scrolleable
                 
                 $scope.removeImage = function ($index) {
                     $scope.images.remove($index); // Eliminando item de la lista
@@ -6530,16 +6609,16 @@
                 
                 $element.addClass(Classes.OPTIONABLE);
                 
-                var detail = $element.children(".detail"),
+                var description = $element.children(".description"),
                     list = options.children("ul");
 
-                detail.children("a"). // Agregando BUTTON ACTION
+                description.children("a"). // Agregando BUTTON ACTION
                     append(directive.BUTTON_ACTION().tojQuery()); 
 
-                detail.click(() => {
-                    $element.toggleClass(Classes.ACTIVE); // Estado
+                description.click(() => {
+                    $element.toggleClass(Classes.DISPLAYED); // Estado
 
-                    ($element.hasClass(Classes.ACTIVE)) ?
+                    ($element.hasClass(Classes.DISPLAYED)) ?
                         options.css("max-height", list.height() + "px") :
                         options.css("max-height", "0px");
                 });
@@ -6917,8 +6996,6 @@
                 $scope.elementScroll = $scope.elementScroll || ".app-content";
                 elementScroll = angular.element($scope.elementScroll);
 
-                if (!tabs.exists()) return; // Elemento no contiene
-                
                 init(); // Iniciando componente
 
                 $element.displaceLeft((name, event) => {
@@ -6971,14 +7048,13 @@
                         
                         tabElement.data("position", position); position++;
                         
-                        if (softtion.isUndefined(tab) && 
-                                tabElement.hasClass(Classes.ACTIVE)) 
+                        if (softtion.isUndefined(tab) && tabElement.hasClass(Classes.ACTIVE)) 
                             tab = tabElement; // Elemento activo
                     });
                     
                     tabs.removeClass(Classes.ACTIVE).attr("tabindex", "-1");
 
-                    if (!tab.exists()) tab = angular.element(tabs[0]);
+                    if (softtion.isUndefined(tab)) tab = angular.element(tabs[0]);
 
                     tab.addClass(Classes.ACTIVE); position = tab.data("position");
 
@@ -9321,16 +9397,39 @@
     function MaterialThemeProvider($materialColor) {
         
             // Atributos del proveedor
-        var instance = null,
-            themes = $materialColor.THEMES, // Colores de Temas
-            keysColors = [ 
-                "50", "100", "200", "300", "400", 
-                "500", "600", "700", "800", "900"
-            ],
-            keysFonts = [
-                "font50", "font100", "font200", "font300", "font400", 
-                "font500", "font600", "font700", "font800", "font900"
-            ];
+        var instance = null, themes = $materialColor.THEMES, // Colores de Temas
+            KEYS = {
+                THEMES: {
+                    PRIMARY: {
+                        BASE: "--theme-primary-",
+                        FONT: {
+                            PRIMARY: "--theme-primary-font-primary-",
+                            SECONDARY: "--theme-primary-font-secondary-",
+                            DISABLED: "--theme-primary-font-disabled-"
+                        },
+                        BORDER: "--theme-primary-border-",
+                        BORDER_BASE: "--theme-primary-border",
+                        RIPPLE: "--theme-primary-ripple-",
+                        RIPPLE_BASE: "--theme-primary-ripple"
+                    },
+                    SECONDARY: {
+                        BASE: "--theme-secondary-",
+                        FONT: {
+                            PRIMARY: "--theme-secondary-font-primary-",
+                            SECONDARY: "--theme-secondary-font-secondary-",
+                            DISABLED: "--theme-secondary-font-disabled-"
+                        },
+                        BORDER: "--theme-secondary-border-",
+                        BORDER_BASE: "--theme-secondary-border",
+                        RIPPLE: "--theme-secondary-ripple-",
+                        RIPPLE_BASE: "--theme-secondary-ripple"
+                    }
+                },
+                
+                INDEXS: [ 
+                    "50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
+                ]
+            };
 
         function MaterialTheme() { }
 
@@ -9339,29 +9438,39 @@
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
            
-            var fonts = $materialColor.FONTS, // Fuente
-                border = $materialColor.BORDERS, // Borders
-                ripple = $materialColor.RIPPLES; // Ripple
+            var borders = $materialColor.BORDERS, // Borders
+                fonts = $materialColor.FONTS, // Fuente
+                ripples = $materialColor.RIPPLES; // Ripples
                 
-            keysColors.forEach((key) => {
-                setPropertyStyle("--theme-primary-" + key, $theme[key]);
-            });
-            
-            keysFonts.forEach((key) => {
-                var font = fonts[$theme[key]], $key = key.split("font")[1]; // Configuración
+            KEYS.INDEXS.forEach((key) => {
+                setPropertyStyle(KEYS.THEMES.PRIMARY.BASE + key, $theme[key]); // Paleta
                 
-                setPropertyStyle("--theme-primary-font-primary-" + $key, font.PRIMARY);
-                setPropertyStyle("--theme-primary-font-secondary-" + $key, font.SECONDARY);
-                setPropertyStyle("--theme-primary-font-disabled-" + $key, font.DISABLED);
+                setPropertyStyle( // Color de fuente Primario
+                    KEYS.THEMES.PRIMARY.FONT.PRIMARY + key, fonts[$theme.FONTS[key]].PRIMARY
+                );
+                
+                setPropertyStyle( // Color de fuente Secundario
+                    KEYS.THEMES.PRIMARY.FONT.SECONDARY + key, fonts[$theme.FONTS[key]].SECONDARY
+                );
+                
+                setPropertyStyle( // Color de fuente Inactivo
+                    KEYS.THEMES.PRIMARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
+                );
+                
+                setPropertyStyle( // Border
+                    KEYS.THEMES.PRIMARY.BORDER + key, borders[$theme.FONTS[key]]
+                );
+                
+                setPropertyStyle( // Ripple
+                    KEYS.THEMES.PRIMARY.RIPPLE + key, ripples[$theme.FONTS[key]]
+                );
             });
 
             // Color de borde
-            setPropertyStyle("--theme-primary-border", getHexToRgba($theme[500]));
-            setPropertyStyle("--theme-primary-border-alternative", border[$theme.CONTRAST]);
-            
+            setPropertyStyle(KEYS.THEMES.PRIMARY.BORDER_BASE, getHexToRgba($theme[500]));
+                        
             // Color de ripple
-            setPropertyStyle("--theme-primary-ripple", getHexToRgba($theme[600]));
-            setPropertyStyle("--theme-primary-ripple-alternative", ripple[$theme.CONTRAST]);
+            setPropertyStyle(KEYS.THEMES.PRIMARY.RIPPLE_BASE, getHexToRgba($theme[600]));
         };
 
         MaterialTheme.prototype.setError = function (theme) {
@@ -9370,14 +9479,14 @@
             if (softtion.isUndefined($theme)) return; // No existe Tema
             
             setPropertyStyle("--theme-error-500", $theme[500]);
-            setPropertyStyle("--theme-error-font-primary-500", fonts[$theme["font500"]].PRIMARY);
-            setPropertyStyle("--theme-error-font-secondary-500", fonts[$theme["font500"]].SECONDARY);
-            setPropertyStyle("--theme-error-font-disabled-500", fonts[$theme["font500"]].DISABLED);
+            setPropertyStyle("--theme-error-font-primary-500", fonts[$theme.fonts[500]].PRIMARY);
+            setPropertyStyle("--theme-error-font-secondary-500", fonts[$theme.fonts[500]].SECONDARY);
+            setPropertyStyle("--theme-error-font-disabled-500", fonts[$theme.fonts[500]].DISABLED);
             
             setPropertyStyle("--theme-error-100", $theme[100]);
-            setPropertyStyle("--theme-error-font-primary-100", fonts[$theme["font100"]].PRIMARY);
-            setPropertyStyle("--theme-error-font-secondary-100", fonts[$theme["font100"]].SECONDARY);
-            setPropertyStyle("--theme-error-font-disabled-100", fonts[$theme["font100"]].DISABLED);
+            setPropertyStyle("--theme-error-font-primary-100", fonts[$theme.fonts[100]].PRIMARY);
+            setPropertyStyle("--theme-error-font-secondary-100", fonts[$theme.fonts[100]].SECONDARY);
+            setPropertyStyle("--theme-error-font-disabled-100", fonts[$theme.fonts[100]].DISABLED);
         };
 
         MaterialTheme.prototype.setSecondary = function (theme) {
@@ -9385,34 +9494,47 @@
 
             if (softtion.isUndefined($theme)) return; // No existe Tema
             
-            var fonts = $materialColor.FONTS, // Fuente
-                border = $materialColor.BORDERS, // Ripple
-                ripple = $materialColor.RIPPLES; // Ripple
+            var borders = $materialColor.BORDERS, // Borders
+                fonts = $materialColor.FONTS, // Fuente
+                ripples = $materialColor.RIPPLES; // Ripples
                 
-            keysColors.forEach((key) => {
-                setPropertyStyle("--theme-secondary-" + key, $theme[key]);
-            });
-            
-            keysFonts.forEach((key) => {
-                var font = fonts[$theme[key]], $key = key.split("font")[1]; // Configuración
+            KEYS.INDEXS.forEach((key) => {
+                setPropertyStyle(KEYS.THEMES.SECONDARY.BASE + key, $theme[key]);
                 
-                setPropertyStyle("--theme-secondary-font-primary-" + $key, font.PRIMARY);
-                setPropertyStyle("--theme-secondary-font-secondary-" + $key, font.SECONDARY);
-                setPropertyStyle("--theme-secondary-font-disabled-" + $key, font.DISABLED);
+                setPropertyStyle( // Color de fuente Primario
+                    KEYS.THEMES.SECONDARY.FONT.PRIMARY + key, fonts[$theme.FONTS[key]].PRIMARY
+                );
+                
+                setPropertyStyle( // Color de fuente Secundario
+                    KEYS.THEMES.SECONDARY.FONT.SECONDARY + key, fonts[$theme.FONTS[key]].SECONDARY
+                );
+                
+                setPropertyStyle( // Color de fuente Inactivo
+                    KEYS.THEMES.SECONDARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
+                );
+                
+                setPropertyStyle( // Color de fuente Inactivo
+                    KEYS.THEMES.SECONDARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
+                );
+                
+                setPropertyStyle( // Border
+                    KEYS.THEMES.SECONDARY.BORDER + key, borders[$theme.FONTS[key]]
+                );
+                
+                setPropertyStyle( // Ripple
+                    KEYS.THEMES.SECONDARY.RIPPLE + key, ripples[$theme.FONTS[key]]
+                );
             });
 
             // Color de borde
-            setPropertyStyle("--theme-secondary-border", getHexToRgba($theme[500]));
-            setPropertyStyle("--theme-secondary-border-alternative", border[$theme.CONTRAST]);
-            
+            setPropertyStyle(KEYS.THEMES.SECONDARY.BORDER_BASE, getHexToRgba($theme[500]));
+                        
             // Color de ripple
-            setPropertyStyle("--theme-secondary-ripple", getHexToRgba($theme[600]));
-            setPropertyStyle("--theme-secondary-ripple-alternative", ripple[$theme.CONTRAST]);
+            setPropertyStyle(KEYS.THEMES.SECONDARY.RIPPLE_BASE, getHexToRgba($theme[600]));
         };
 
         MaterialTheme.prototype.register = function (name, theme) {
-            var keys = keysColors.together(keysFonts), // Claves
-                result = softtion.required(theme, keys);
+            var result = softtion.required(theme, KEYS.INDEXS);
 
             if (result.success) themes[name] = theme; // Tema correcto
             
@@ -10401,35 +10523,41 @@
         return {
             THEMES: {
                 RED: {
-                    "50" : "#ffebee", "font50" : "DARK",
-                    "100": "#ffcdd2", "font100": "DARK",
-                    "200": "#ef9a9a", "font200": "DARK",
-                    "300": "#e57373", "font300": "DARK",
-                    "400": "#ef5350", "font400": "LIGHT",
-                    "500": "#f44336", "font500": "LIGHT",
-                    "600": "#e53935", "font600": "LIGHT",
-                    "700": "#d32f2f", "font700": "LIGHT",
-                    "800": "#c62828", "font800": "LIGHT",
-                    "900": "#b71c1c", "font900": "LIGHT",
+                    "50" : "#ffebee", "100": "#ffcdd2", 
+                    "200": "#ef9a9a", "300": "#e57373", 
+                    "400": "#ef5350", "500": "#f44336", 
+                    "600": "#e53935", "700": "#d32f2f",
+                    "800": "#c62828", "900": "#b71c1c",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ff8a80", "A200": "#ff5252", 
-                    "A400": "#ff1744", "A700": "#d50000",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#ff1744", "A700": "#d50000"
                 },
 
                 PINK: {
-                    "50" : "#fce4ec", "font50" : "DARK",
-                    "100": "#f8bbd0", "font100": "DARK",
-                    "200": "#f48fb1", "font200": "DARK",
-                    "300": "#f06292", "font300": "DARK",
-                    "400": "#ec407a", "font400": "LIGHT",
-                    "500": "#e91e63", "font500": "LIGHT",
-                    "600": "#d81b60", "font600": "LIGHT",
-                    "700": "#c2185b", "font700": "LIGHT",
-                    "800": "#ad1457", "font800": "LIGHT",
-                    "900": "#880e4f", "font900": "LIGHT",
+                    "50" : "#fce4ec", "100": "#f8bbd0",
+                    "200": "#f48fb1", "300": "#f06292",
+                    "400": "#ec407a", "500": "#e91e63",
+                    "600": "#d81b60", "700": "#c2185b", 
+                    "800": "#ad1457", "900": "#880e4f",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ff80ab", "A200": "#ff4081", 
-                    "A400": "#f50057", "A700": "#c51162",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#f50057", "A700": "#c51162"
                 },
 
                 PURPLE: {
@@ -10443,9 +10571,17 @@
                     "700": "#7b1fa2", "font700": "LIGHT",
                     "800": "#6a1b9a", "font800": "LIGHT",
                     "900": "#4a148c", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "LIGHT",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ea80fc", "A200": "#e040fb", 
-                    "A400": "#d500f9", "A700": "#aa00ff",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#d500f9", "A700": "#aa00ff"
                 },
 
                 DEEP_PURPLE: {
@@ -10459,9 +10595,17 @@
                     "700": "#512da8", "font700": "LIGHT",
                     "800": "#4527a0", "font800": "LIGHT",
                     "900": "#311b92", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "LIGHT",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#b388ff", "A200": "#7c4dff", 
-                    "A400": "#651fff", "A700": "#6200ae",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#651fff", "A700": "#6200ae"
                 },
 
                 INDIGO: {
@@ -10475,9 +10619,17 @@
                     "700": "#303f9f", "font700": "LIGHT",
                     "800": "#283593", "font800": "LIGHT",
                     "900": "#1a237e", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "LIGHT",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#8c9eff", "A200": "#536dfe", 
-                    "A400": "#3d5afe", "A700": "#304ffe",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#3d5afe", "A700": "#304ffe"
                 },
 
                 BLUE: {
@@ -10491,9 +10643,17 @@
                     "700": "#1976d2", "font700": "LIGHT",
                     "800": "#1565c0", "font800": "LIGHT",
                     "900": "#0d47a1", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#82b1ff", "A200": "#448aff", 
-                    "A400": "#2979ff", "A700": "#2962ff",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#2979ff", "A700": "#2962ff"
                 },
 
                 LIGHT_BLUE: {
@@ -10507,9 +10667,17 @@
                     "700": "#0288d1", "font700": "LIGHT",
                     "800": "#0277bd", "font800": "LIGHT",
                     "900": "#01579b", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "DARK",  "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#80d8ff", "A200": "#40c4ff", 
-                    "A400": "#00b0ff", "A700": "#0091ea",
-                    "CONTRAST": "DARK"
+                    "A400": "#00b0ff", "A700": "#0091ea"
                 },
 
                 CYAN: {
@@ -10523,9 +10691,17 @@
                     "700": "#0097a7", "font700": "LIGHT",
                     "800": "#00838f", "font800": "LIGHT",
                     "900": "#006064", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "DARK",  "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#84ffff", "A200": "#18ffff", 
-                    "A400": "#00e5ff", "A700": "#00b8d4",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#00e5ff", "A700": "#00b8d4"
                 },
 
                 TEAL: {
@@ -10539,9 +10715,17 @@
                     "700": "#00796b", "font700": "LIGHT",
                     "800": "#00695c", "font800": "LIGHT",
                     "900": "#004d40", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#a7ffeb", "A200": "#64ffda", 
-                    "A400": "#1de9b6", "A700": "#00bfa5",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#1de9b6", "A700": "#00bfa5"
                 },
 
                 GREEN: {
@@ -10550,14 +10734,22 @@
                     "200": "#a5d6a7", "font200": "DARK",
                     "300": "#81c784", "font300": "DARK",
                     "400": "#66bb6a", "font400": "DARK",
-                    "500": "#4caf50", "font500": "LIGHT",
+                    "500": "#4caf50", "font500": "DARK",
                     "600": "#43a047", "font600": "LIGHT",
                     "700": "#388e3c", "font700": "LIGHT",
                     "800": "#2e7d32", "font800": "LIGHT",
                     "900": "#1b5e20", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#b9f6ca", "A200": "#69f0ae", 
-                    "A400": "#00e676", "A700": "#00c853",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#00e676", "A700": "#00c853"
                 },
 
                 LIGHT_GREEN: {
@@ -10571,9 +10763,17 @@
                     "700": "#689f38", "font700": "DARK",
                     "800": "#558b2f", "font800": "LIGHT",
                     "900": "#33691e", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "DARK",  "700": "DARK",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ccff90", "A200": "#b2ff59", 
-                    "A400": "#76ff03", "A700": "#64dd17",
-                    "CONTRAST": "DARK"
+                    "A400": "#76ff03", "A700": "#64dd17"
                 },
 
                 LIME: {
@@ -10587,9 +10787,17 @@
                     "700": "#afb42b", "font700": "DARK",
                     "800": "#9e9d24", "font800": "DARK",
                     "900": "#827717", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK", "100": "DARK",
+                        "200": "DARK", "300": "DARK",
+                        "400": "DARK", "500": "DARK",
+                        "600": "DARK", "700": "DARK",
+                        "800": "DARK", "900": "LIGHT"
+                    },
+                    
                     "A100": "#f4ff81", "A200": "#eeff41", 
-                    "A400": "#c6ff00", "A700": "#aeea00",
-                    "CONTRAST": "DARK"
+                    "A400": "#c6ff00", "A700": "#aeea00"
                 },
 
                 YELLOW: {
@@ -10603,9 +10811,17 @@
                     "700": "#fbc02d", "font700": "DARK",
                     "800": "#f9a825", "font800": "DARK",
                     "900": "#f57f17", "font900": "DARK",
+                    
+                    FONTS: {
+                        "50" : "DARK", "100": "DARK",
+                        "200": "DARK", "300": "DARK",
+                        "400": "DARK", "500": "DARK",
+                        "600": "DARK", "700": "DARK",
+                        "800": "DARK", "900": "DARK"
+                    },
+                    
                     "A100": "#ffff8d", "A200": "#ffff00", 
-                    "A400": "#ffea00", "A700": "#ffd600",
-                    "CONTRAST": "DARK"
+                    "A400": "#ffea00", "A700": "#ffd600"
                 },
 
                 AMBER: {
@@ -10619,9 +10835,17 @@
                     "700": "#ffa000", "font700": "DARK",
                     "800": "#ff8f00", "font800": "DARK",
                     "900": "#ff6f00", "font900": "DARK",
+                    
+                    FONTS: {
+                        "50" : "DARK", "100": "DARK",
+                        "200": "DARK", "300": "DARK",
+                        "400": "DARK", "500": "DARK",
+                        "600": "DARK", "700": "DARK",
+                        "800": "DARK", "900": "DARK"
+                    },
+                    
                     "A100": "#ffe57f", "A200": "#ffd740",
-                    "A400": "#ffc400", "A700": "#ffab00",
-                    "CONTRAST": "DARK"
+                    "A400": "#ffc400", "A700": "#ffab00"
                 },
 
                 ORANGE: {
@@ -10635,9 +10859,17 @@
                     "700": "#f57c00", "font700": "DARK",
                     "800": "#ef6c00", "font800": "DARK",
                     "900": "#e65100", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK", "100": "DARK",
+                        "200": "DARK", "300": "DARK",
+                        "400": "DARK", "500": "DARK",
+                        "600": "DARK", "700": "DARK",
+                        "800": "DARK", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ffd180", "A200": "#ffab40",
-                    "A400": "#ffab40", "A700": "#ff6d00",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#ffab40", "A700": "#ff6d00"
                 },
 
                 DEEP_ORANGE: {
@@ -10651,9 +10883,17 @@
                     "700": "#e64a19", "font700": "LIGHT",
                     "800": "#d84315", "font800": "LIGHT",
                     "900": "#bf360c", "font900": "LIGHT",
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
                     "A100": "#ff9e80", "A200": "#ff6e40", 
-                    "A400": "#ff3d00", "A700": "#dd2c00",
-                    "CONTRAST": "LIGHT"
+                    "A400": "#ff3d00", "A700": "#dd2c00"
                 },
 
                 BROWN: {
@@ -10667,7 +10907,14 @@
                     "700": "#5d4037", "font700": "LIGHT",
                     "800": "#4e342e", "font800": "LIGHT",
                     "900": "#3e2723", "font900": "LIGHT",
-                    "CONTRAST": "LIGHT"
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "LIGHT",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
                 },
 
                 GREY: {
@@ -10681,7 +10928,14 @@
                     "700": "#616161", "font700": "LIGHT",
                     "800": "#424242", "font800": "LIGHT",
                     "900": "#212121", "font900": "LIGHT",
-                    "CONTRAST": "DARK"
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
                 },
 
                 BLUE_GREY: {
@@ -10695,7 +10949,14 @@
                     "700": "#455a64", "font700": "LIGHT",
                     "800": "#37474f", "font800": "LIGHT",
                     "900": "#263238", "font900": "LIGHT",
-                    "CONTRAST": "LIGHT"
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
                 }
             }, 
 
