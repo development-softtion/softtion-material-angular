@@ -1243,6 +1243,11 @@ body:not(.show-bottom-navigation) .bottom-navigation {
        -moz-transform: translateY(100%);
             transform: translateY(100%); }
 
+body.show-keyboard .bottom-navigation {
+    -webkit-transform: translateY(100%) !important;
+       -moz-transform: translateY(100%) !important;
+            transform: translateY(100%) !important; }
+
 .bottom-navigation > ul {
     display: flex;
     position: absolute;
@@ -1657,7 +1662,11 @@ button.floating.center {
 body.show-bottom-navigation button.floating {
     bottom: 72px; }
 
-body.show-bottom-navigation .fab-speed-dial button.floating {
+body.show-keyboard button.floating {
+    bottom: 16px; }
+
+body.show-bottom-navigation .fab-speed-dial button.floating,
+body.show-keyboard .fab-speed-dial button.floating {
     bottom: 0px !important; }
 
 button.floating.mini {
@@ -3538,15 +3547,15 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 46px; }
 
 .datatable > .content > table > tbody > tr > td {
-    line-height: 47px;
-    height: 47px; 
+    line-height: 48px;
+    height: 48px; 
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
 .datatable.condense > .content > table > tbody > tr > td {
-    height: 39px;
-    line-height: 39px; }
+    height: 40px;
+    line-height: 40px; }
 
 .datatable > .content > table > thead > tr > th.control-cell,
 .datatable > .content > table > tbody > tr > td.control-cell {
@@ -3557,15 +3566,15 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td > i {
     position: absolute;
     line-height: 24px;
-    left: calc(50% - 12px);
-    top: calc(50% - 11.5px);  }
+    top: calc(50% - 12px);
+    left: calc(50% - 12px);  }
 
 .datatable > .content > table > thead > tr > th > button.action,
 .datatable > .content > table > tbody > tr > td > button.action {
     position: absolute;
     padding: 6px;
+    top: calc(50% - 18px);
     left: calc(50% - 18px);
-    top: calc(50% - 17.5px);
     box-sizing: content-box; }
 
 .datatable > .content > table > thead > tr > th > .checkbox-control,
@@ -3586,22 +3595,22 @@ button.raised:focus:after, button.flat:focus:after {
     display: none !important; }
 
 .datatable > .content tbody .textfield > .content > input {
-    padding: 7.5px 0px;
+    padding: 8px 0px 8px 0px;
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
 .datatable.condense > .content tbody .textfield > .content > input {
-    padding: 3.5px 0px; }
+    padding: 4px 0px 4px 0px; }
 
 .datatable > .content tbody .textfield > .content > .value {
-    top: 7.5px;
+    top: 8px;
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
 .datatable.condense > .content tbody .textfield > .content > .value {
-    top: 3.5px; }
+    top: 4px; }
 
 .datatable > .content tbody .textfield > .content > .line-shadow-active {
     bottom: 8px; }
@@ -3612,16 +3621,16 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td > span.poster {
     display: block;
     width: 100%;
-    height: calc(100% - 16px);
-    margin: 8.5px 0px;
-    line-height: 31px;
-    border-radius: 2px; }
+    margin: 8px 0px;
+    border-radius: 2px;
+    line-height: 32px;
+    height: calc(100% - 16px); }
 
 .datatable.condense > .content > table > tbody > tr > td > span.poster { 
     width: calc(100% - 8px);
-    margin: 5.5px 4px;
-    height: calc(100% - 12px);
-    line-height: 27px; }
+    margin: 6px 4px;
+    line-height: 28px;
+    height: calc(100% - 12px); }
 
 /** DATEPICKER */
 
@@ -4425,6 +4434,9 @@ button.raised:focus:after, button.flat:focus:after {
 body.show-bottom-navigation .fab-dialog {
     bottom: 56px; }
 
+body.show-keyboard .fab-dialog {
+    bottom: 0px; }
+
 .fab-dialog > .backdrop {
     display: block;
     z-index: 1;
@@ -4529,6 +4541,9 @@ body.show-bottom-navigation .fab-dialog {
             transition: all 160ms 0ms var(--standard-curve); }
 
 body.show-bottom-navigation .fab-menu {
+    bottom: 56px; }
+
+body.show-keyboard .fab-menu {
     bottom: 56px; }
 
 .fab-menu > .orbit-content {
@@ -4655,6 +4670,9 @@ body.show-bottom-navigation .fab-menu {
             transform: translateX(-50%); }
 
 body.show-bottom-navigation .fab-speed-dial {
+    bottom: 72px; }
+
+body.show-keyboard .fab-speed-dial {
     bottom: 72px; }
 
 .fab-speed-dial button.floating {
@@ -5710,6 +5728,11 @@ body.show-bottom-navigation .footer-buttons {
        -moz-transform: translateY(-56px);
             transform: translateY(-56px); }
 
+body.show-keyboard .footer-buttons {
+    -webkit-transform: translateY(0px);
+       -moz-transform: translateY(0px);
+            transform: translateY(0px); }
+
 .footer-buttons > button {
     float: right; 
     margin: 6px 4px; }
@@ -6718,6 +6741,105 @@ p.link > a {
 .message > img + p {
     margin-top: 12px; }
 
+/** NOTIFICATION */
+
+.notification {
+    position: relative;
+    float: left;
+    width: 100%;
+    height: 0px;
+    padding: 0px;
+    overflow: hidden; }
+
+.notification.show {
+    height: auto; }
+
+.notification > .content {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 0px 16px;
+    box-sizing: border-box; }
+
+.notification > .content:first-child {
+    padding-top: 8px; }
+
+.notification > .content:last-child {
+    padding-bottom: 8px; }
+
+.notification > .actions + .content {
+    margin-top: 12px; }
+
+.notification > .content > .avatar {
+    float: left;
+    width: 40px;
+    height: 40px;
+    line-height: 40px; }
+
+.notification > .content > .description {
+    width: 100%;
+    float: left;
+    line-height: 16px;
+    margin-top: 4px;
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
+
+.notification > .content > .avatar + .description {
+    margin-left: 12px;
+    width: calc(100% - 52px); }
+
+.notification > .actions {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 0px 16px 8px 16px;
+    box-sizing: border-box; }
+
+.notification > .actions:first-child {
+    padding-top: 8px;
+    padding-bottom: 0px; }
+
+.notification > .content + .actions {
+    margin-top: 12px; }
+
+.notification > .actions > button {
+    float: left;
+    margin-right: 6px; }
+
+.notification > .actions > button.right {
+    float: right;
+    margin-right: 0px;
+    margin-left: 6px; }
+
+.notification > .actions > button.raised {
+    box-shadow: none !important; }
+
+.notification > .actions > button.action {
+    height: 36px;
+    width: 40px;
+    padding: 6px 8px; }
+
+@media only screen and (min-width : 481px) {
+    
+    .app-bar .notification {
+        display: flex; }
+    
+    .app-bar .notification > .content {
+        width: 60%;
+        padding: 8px 8px 8px 16px !important; }
+    
+    .app-bar .notification > .actions {
+        width: 40%;
+        padding: 8px 8px 8px 16px !important;
+        margin-top: auto !important; }
+    
+    .app-bar .notification > .actions > button {
+        float: right !important;
+        margin-right: 0px !important;
+        margin-left: 6px !important; }
+}
+
 /** PROGRESS BAR */
 
 .progress-bar {
@@ -6850,6 +6972,9 @@ p.link > a {
 
 body.show-bottom-navigation .progress-button-floating {
     bottom: 72px; }
+
+body.show-keyboard .progress-button-floating {
+    bottom: 16px; }
 
 .progress-button-floating > .progress-circular {
     position: absolute;
@@ -8982,6 +9107,11 @@ body.show-bottom-navigation .snackbar.show {
        -moz-transform: translateY(-56px);
             transform: translateY(-56px); } 
 
+body.show-keyboard .snackbar.show {
+    -webkit-transform: translateY(0px);
+       -moz-transform: translateY(0px);
+            transform: translateY(0px); } 
+
 @media only screen and (min-width : 641px) and (max-width: 720px) {
     
     .snackbar {
@@ -9253,6 +9383,11 @@ body.show-bottom-navigation .stepper-mobile {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
             transform: translateY(-56px); }
+
+body.show-keyboard .stepper-mobile {
+    -webkit-transform: translateY(0px);
+       -moz-transform: translateY(0px);
+            transform: translateY(0px); }
 
 .stepper-mobile > .back, .stepper-mobile > .next {
     height: 48px;
@@ -11439,6 +11574,11 @@ body.show-bottom-navigation .toast.show {
        -moz-transform: translateY(-56px);
             transform: translateY(-56px); } 
 
+body.show-keyboard .toast.show {
+    -webkit-transform: translateY(0%);
+       -moz-transform: translateY(0%);
+            transform: translateY(0%); } 
+
 @media only screen and (min-width : 641px) and (max-width: 720px) {
     
     .toast {
@@ -11462,10 +11602,12 @@ body.show-bottom-navigation .toast.show {
 
 .toast > .body {
     display: block;
-    font-size: 14px;
     margin: 0px;
     padding: 16px;
-    line-height: 16px; }
+    line-height: 16px;
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
 
 /** TOOLBAR */
 

@@ -119,6 +119,8 @@
                 GridSheet: Directives.create(Directives.GridSheet),
 
                 Img: Directives.create(Directives.Img),
+                
+                Notification: Directives.create(Directives.Notification),
 
                 ProgressBar: Directives.create(Directives.ProgressBar),
 
@@ -289,6 +291,8 @@
             BODY_OVERFLOW_NONE: "body-overflow-none",
             OVERFLOW_NONE: "overflow-none",
             BODY_OVERFLOW_NONE_NAV: "body-overflow-none-sidenav",
+            SHOW_KEYBOARD: "show-keyboard",
+            SHOW_BOTTOM_NAV: "show-bottom-navigation",
             
             APPBAR_56: "pd-56",
             APPBAR_64: "pd-64",
@@ -303,8 +307,6 @@
             FIXED: "fixed",
             FINISH: "finish",
             DISABLED: "disabled",
-            
-            SHOW_BOTTOM_NAV: "show-bottom-navigation",
             
             INDETERMINATE: "indeterminate",
             BUFFERING: "buffering",
@@ -359,6 +361,7 @@
             case (Directives.Grid.NAME): return Directives.Grid;
             case (Directives.GridSheet.NAME): return Directives.GridSheet;
             case (Directives.Img.NAME): return Directives.Img;
+            case (Directives.Notification.NAME): return Directives.Notification;
             case (Directives.ProgressBar.NAME): return Directives.ProgressBar;
             case (Directives.ProgressButtonFloating.NAME): return Directives.ProgressButtonFloating;
             case (Directives.ProgressCircular.NAME): return Directives.ProgressCircular;
@@ -5184,6 +5187,79 @@
         };
     }
     
+    // Directiva: Notification
+    // Version: 1.0.0
+    // Update: 25/May/2018
+    
+    Directives.Notification = NotificationDirective;
+    
+    Directives.Notification.NAME = "Notification";
+    Directives.Notification.VERSION = "1.0.0";
+    Directives.Notification.KEY = "notification";
+    
+    Directives.Notification.$inject = [ "$appContent" ];
+    
+    function NotificationDirective($appContent) {
+        return {
+            restrict: "C",
+            scope: {
+                ngVisible: "=?"
+            },
+            link: function ($scope, $element) {
+                    
+                var height = 0, // Ancho del elemento
+                    isAppbarPatent = $element.parent(".app-bar").exists();
+                
+                $scope.$watch(() => { return $scope.ngVisible; },
+                    (newValue) => {
+                        if (newValue) {
+                            if (!isAppbarPatent) {
+                                $element.addClass(Classes.SHOW);
+                            } else {
+                                addPaddingContent(); // Aumentar AppContent
+                            }  // Verificar despligue en Appbar
+                        } else {
+                            if (isAppbarPatent) // Disminuir AppContent
+                                removePaddingContent(); 
+                            
+                            $element.removeClass(Classes.SHOW); // Ocultando
+                        }
+                    });
+                
+                if (isAppbarPatent) // Esta incluido en un Appbar
+                    $element.resize(() => {
+                        if (!$element.hasClass(Classes.SHOW)) return;
+
+                        if (height !== $element.height()) {
+                            resizeAppContent($element.height() - height);
+                        } // Ocurrio un cambio en el tamaño del elemento
+                        
+                        height = $element.height();
+                    });
+                    
+                function addPaddingContent() {
+                    if ($element.hasClass(Classes.SHOW)) {
+                        return;
+                    } else {
+                        $element.addClass(Classes.SHOW);
+                    } // Desplegando componente notificación
+                    
+                    height = $element.height(); resizeAppContent(height);
+                }
+                    
+                function removePaddingContent() {
+                    resizeAppContent(($element.height() * -1));
+                }
+                
+                function resizeAppContent(value) {
+                    var padding = parseInt($appContent.css("padding-top"));
+                    
+                    $appContent.css("padding-top", padding + value);
+                }
+            }
+        };
+    }
+    
     // Directiva: ProgressBar
     // Version: 1.0.4
     // Update: 26/Feb/2018
@@ -9603,8 +9679,7 @@
         } // Se debe activar el icono de acción para password
 
         $scope.isActiveLabel = function () {
-            return ($scope.inputActive || softtion.isString($scope.input)) || 
-                (softtion.isDefined($scope.value) && softtion.isString($scope.value));
+            return ($scope.inputActive || softtion.isString($scope.input)) || (softtion.isDefined($scope.value));
         };
 
         $scope.isIconDescription = function () {
@@ -10105,11 +10180,12 @@
     
     // Servicio: softtionMaterial
     
-    softtionMaterialService.$inject = [ "$window", "$timeout", "$appContent" ];
+    softtionMaterialService.$inject = [ "$window", "$timeout", "$body", "$appContent" ];
     
-    function softtionMaterialService($window, $timeout, $appContent) {
+    function softtionMaterialService($window, $timeout, $body, $appContent) {
         
         var service = this, // Objeto del servicio
+            oldHeight = 0,
             enabledKeyBoard = false;
         
         service.enabledKeyboardMobileScroll = enabledKeyboardMobileScroll;
@@ -10117,26 +10193,34 @@
         function enabledKeyboardMobileScroll() {
             if (enabledKeyBoard) return; // Ya se activo el evento
             
+            oldHeight = $window.innerHeight;
+            
             $window.addEventListener("resize", () => {
+                var newHeight = $window.innerHeight;
+                    
+                if (oldHeight < newHeight) {
+                    $body.removeClass(Classes.SHOW_KEYBOARD);
+                    oldHeight = newHeight; return;
+                } // No debe realizar cálculo de posición
+                
+                oldHeight = newHeight; // Nueva dimensión
+                
                 var element = jQuery(document.activeElement);
-                console.log(element.tagName());
-                 
                  
                 if (element.tagIs("INPUT") || element.tagIs("TEXTAREA")) {
                     $timeout(() => {
-                        var positionY = element.offset().top;
-                        console.log(positionY);
-
-                        $appContent.scrollTop(positionY - 16);
-                    }, 250);
-                    
-                }
-                    
+                        $body.addClass(Classes.SHOW_KEYBOARD); // Desplegando teclado
+                        
+                        var screen = $appContent.scrollTop() + newHeight,
+                            positionY = element.offset().top,
+                            positionElement = positionY + element.height() + 64;
+                            
+                        if (positionElement < screen) return; // No debe moverse
+                        
+                        $appContent.scrollTop(positionY + element.height() + 16);
+                    }, 25);
+                } // Se debe realizar calculo de posición, teclado emerge
             });
-        }
-        
-        function elementIs(element, tag) {
-            return (element.tagName() === tag);
         }
     }
     
@@ -10232,7 +10316,11 @@
                 DEEP_ORANGE: "DEEP_ORANGE",
                 BROWN: "BROWN",
                 GREY: "GREY",
-                BLUE_GREY: "BLUE_GREY"
+                BLUE_GREY: "BLUE_GREY",
+                CRANE_PURPLE: "CRANE_PURPLE",
+                CRANE_RED: "CRANE_RED",
+                SHRINE_PINK: "SHRINE_PINK",
+                RALLY_GREEN: "RALLY_GREEN"
             }
         };
     }
@@ -10279,16 +10367,11 @@
                 },
 
                 PURPLE: {
-                    "50" : "#f3e5f5", "font50" : "DARK",
-                    "100": "#e1bee7", "font100": "DARK",
-                    "200": "#ce93d8", "font200": "DARK",
-                    "300": "#ba68c8", "font300": "LIGHT",
-                    "400": "#ab47bc", "font400": "LIGHT",
-                    "500": "#9c27b0", "font500": "LIGHT",
-                    "600": "#8e24aa", "font600": "LIGHT",
-                    "700": "#7b1fa2", "font700": "LIGHT",
-                    "800": "#6a1b9a", "font800": "LIGHT",
-                    "900": "#4a148c", "font900": "LIGHT",
+                    "50" : "#f3e5f5", "100": "#e1bee7",
+                    "200": "#ce93d8", "300": "#ba68c8",
+                    "400": "#ab47bc", "500": "#9c27b0", 
+                    "600": "#8e24aa", "700": "#7b1fa2",
+                    "800": "#6a1b9a", "900": "#4a148c",
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10303,16 +10386,11 @@
                 },
 
                 DEEP_PURPLE: {
-                    "50" : "#ede7f6", "font50" : "DARK",
-                    "100": "#d1c4e9", "font100": "DARK",
-                    "200": "#b39ddb", "font200": "DARK",
-                    "300": "#9575cd", "font300": "LIGHT",
-                    "400": "#7e57c2", "font400": "LIGHT",
-                    "500": "#673ab7", "font500": "LIGHT",
-                    "600": "#5e35b1", "font600": "LIGHT",
-                    "700": "#512da8", "font700": "LIGHT",
-                    "800": "#4527a0", "font800": "LIGHT",
-                    "900": "#311b92", "font900": "LIGHT",
+                    "50" : "#ede7f6", "100": "#d1c4e9", 
+                    "200": "#b39ddb", "300": "#9575cd", 
+                    "400": "#7e57c2", "500": "#673ab7", 
+                    "600": "#5e35b1", "700": "#512da8", 
+                    "800": "#4527a0", "900": "#311b92", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10327,16 +10405,11 @@
                 },
 
                 INDIGO: {
-                    "50" : "#e8eaf6", "font50" : "DARK",
-                    "100": "#c5cae9", "font100": "DARK",
-                    "200": "#9fa8da", "font200": "DARK",
-                    "300": "#7986cb", "font300": "LIGHT",
-                    "400": "#5c6bc0", "font400": "LIGHT",
-                    "500": "#3f51b5", "font500": "LIGHT",
-                    "600": "#3949ab", "font600": "LIGHT",
-                    "700": "#303f9f", "font700": "LIGHT",
-                    "800": "#283593", "font800": "LIGHT",
-                    "900": "#1a237e", "font900": "LIGHT",
+                    "50" : "#e8eaf6", "100": "#c5cae9", 
+                    "200": "#9fa8da", "300": "#7986cb", 
+                    "400": "#5c6bc0", "500": "#3f51b5", 
+                    "600": "#3949ab", "700": "#303f9f", 
+                    "800": "#283593", "900": "#1a237e", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10351,16 +10424,11 @@
                 },
 
                 BLUE: {
-                    "50" : "#e3f2fd", "font50" : "DARK",
-                    "100": "#bbdefb", "font100": "DARK",
-                    "200": "#90caf9", "font200": "DARK",
-                    "300": "#64b5f6", "font300": "DARK",
-                    "400": "#42a5f5", "font400": "DARK",
-                    "500": "#2196f3", "font500": "DARK",
-                    "600": "#1e88e5", "font600": "LIGHT",
-                    "700": "#1976d2", "font700": "LIGHT",
-                    "800": "#1565c0", "font800": "LIGHT",
-                    "900": "#0d47a1", "font900": "LIGHT",
+                    "50" : "#e3f2fd", "100": "#bbdefb", 
+                    "200": "#90caf9", "300": "#64b5f6", 
+                    "400": "#42a5f5", "500": "#2196f3", 
+                    "600": "#1e88e5", "700": "#1976d2", 
+                    "800": "#1565c0", "900": "#0d47a1", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10375,16 +10443,11 @@
                 },
 
                 LIGHT_BLUE: {
-                    "50" : "#e1f5fe", "font50" : "DARK",
-                    "100": "#b3e5fc", "font100": "DARK",
-                    "200": "#81d4fa", "font200": "DARK",
-                    "300": "#4fc3f7", "font300": "DARK",
-                    "400": "#29b6f6", "font400": "DARK",
-                    "500": "#03a9f4", "font500": "DARK",
-                    "600": "#039be5", "font600": "DARK",
-                    "700": "#0288d1", "font700": "LIGHT",
-                    "800": "#0277bd", "font800": "LIGHT",
-                    "900": "#01579b", "font900": "LIGHT",
+                    "50" : "#e1f5fe", "100": "#b3e5fc", 
+                    "200": "#81d4fa", "300": "#4fc3f7", 
+                    "400": "#29b6f6", "500": "#03a9f4", 
+                    "600": "#039be5", "700": "#0288d1", 
+                    "800": "#0277bd", "900": "#01579b", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10399,16 +10462,11 @@
                 },
 
                 CYAN: {
-                    "50" : "#e0f7fa", "font50" : "DARK",
-                    "100": "#b2ebf2", "font100": "DARK",
-                    "200": "#80deea", "font200": "DARK",
-                    "300": "#4dd0e1", "font300": "DARK",
-                    "400": "#26c6da", "font400": "DARK",
-                    "500": "#00bcd4", "font500": "DARK",
-                    "600": "#00acc1", "font600": "DARK",
-                    "700": "#0097a7", "font700": "LIGHT",
-                    "800": "#00838f", "font800": "LIGHT",
-                    "900": "#006064", "font900": "LIGHT",
+                    "50" : "#e0f7fa", "100": "#b2ebf2", 
+                    "200": "#80deea", "300": "#4dd0e1", 
+                    "400": "#26c6da", "500": "#00bcd4", 
+                    "600": "#00acc1", "700": "#0097a7", 
+                    "800": "#00838f", "900": "#006064", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10423,16 +10481,11 @@
                 },
 
                 TEAL: {
-                    "50" : "#e0f2f1", "font50" : "DARK",
-                    "100": "#b2dfdb", "font100": "DARK",
-                    "200": "#80cbc4", "font200": "DARK",
-                    "300": "#4db6ac", "font300": "DARK",
-                    "400": "#26a69a", "font400": "DARK",
-                    "500": "#009688", "font500": "LIGHT",
-                    "600": "#00897b", "font600": "LIGHT",
-                    "700": "#00796b", "font700": "LIGHT",
-                    "800": "#00695c", "font800": "LIGHT",
-                    "900": "#004d40", "font900": "LIGHT",
+                    "50" : "#e0f2f1", "100": "#b2dfdb", 
+                    "200": "#80cbc4", "300": "#4db6ac", 
+                    "400": "#26a69a", "500": "#009688", 
+                    "600": "#00897b", "700": "#00796b", 
+                    "800": "#00695c", "900": "#004d40", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10447,16 +10500,11 @@
                 },
 
                 GREEN: {
-                    "50" : "#e8f5e9", "font50" : "DARK",
-                    "100": "#c8e6c9", "font100": "DARK",
-                    "200": "#a5d6a7", "font200": "DARK",
-                    "300": "#81c784", "font300": "DARK",
-                    "400": "#66bb6a", "font400": "DARK",
-                    "500": "#4caf50", "font500": "DARK",
-                    "600": "#43a047", "font600": "LIGHT",
-                    "700": "#388e3c", "font700": "LIGHT",
-                    "800": "#2e7d32", "font800": "LIGHT",
-                    "900": "#1b5e20", "font900": "LIGHT",
+                    "50" : "#e8f5e9", "100": "#c8e6c9", 
+                    "200": "#a5d6a7", "300": "#81c784", 
+                    "400": "#66bb6a", "500": "#4caf50", 
+                    "600": "#43a047", "700": "#388e3c", 
+                    "800": "#2e7d32", "900": "#1b5e20", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10471,16 +10519,11 @@
                 },
 
                 LIGHT_GREEN: {
-                    "50" : "#f1f8e9", "font50" : "DARK",
-                    "100": "#dcedc8", "font100": "DARK",
-                    "200": "#c5e1a5", "font200": "DARK",
-                    "300": "#aed581", "font300": "DARK",
-                    "400": "#9ccc65", "font400": "DARK",
-                    "500": "#8bc34a", "font500": "DARK",
-                    "600": "#7cb342", "font600": "DARK",
-                    "700": "#689f38", "font700": "DARK",
-                    "800": "#558b2f", "font800": "LIGHT",
-                    "900": "#33691e", "font900": "LIGHT",
+                    "50" : "#f1f8e9", "100": "#dcedc8", 
+                    "200": "#c5e1a5", "300": "#aed581", 
+                    "400": "#9ccc65", "500": "#8bc34a", 
+                    "600": "#7cb342", "700": "#689f38", 
+                    "800": "#558b2f", "900": "#33691e", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10495,16 +10538,11 @@
                 },
 
                 LIME: {
-                    "50" : "#f9fbe7", "font50" : "DARK",
-                    "100": "#f0f4c3", "font100": "DARK",
-                    "200": "#e6ee9c", "font200": "DARK",
-                    "300": "#dce775", "font300": "DARK",
-                    "400": "#d4e157", "font400": "DARK",
-                    "500": "#cddc39", "font500": "DARK",
-                    "600": "#c0ca33", "font600": "DARK",
-                    "700": "#afb42b", "font700": "DARK",
-                    "800": "#9e9d24", "font800": "DARK",
-                    "900": "#827717", "font900": "LIGHT",
+                    "50" : "#f9fbe7", "100": "#f0f4c3", 
+                    "200": "#e6ee9c", "300": "#dce775", 
+                    "400": "#d4e157", "500": "#cddc39", 
+                    "600": "#c0ca33", "700": "#afb42b", 
+                    "800": "#9e9d24", "900": "#827717", 
                     
                     FONTS: {
                         "50" : "DARK", "100": "DARK",
@@ -10519,16 +10557,11 @@
                 },
 
                 YELLOW: {
-                    "50" : "#fffde7", "font50" : "DARK",
-                    "100": "#fff9c4", "font100": "DARK",
-                    "200": "#fff59d", "font200": "DARK",
-                    "300": "#fff176", "font300": "DARK",
-                    "400": "#ffee58", "font400": "DARK",
-                    "500": "#ffeb3b", "font500": "DARK",
-                    "600": "#fdd835", "font600": "DARK",
-                    "700": "#fbc02d", "font700": "DARK",
-                    "800": "#f9a825", "font800": "DARK",
-                    "900": "#f57f17", "font900": "DARK",
+                    "50" : "#fffde7", "100": "#fff9c4", 
+                    "200": "#fff59d", "300": "#fff176", 
+                    "400": "#ffee58", "500": "#ffeb3b", 
+                    "600": "#fdd835", "700": "#fbc02d", 
+                    "800": "#f9a825", "900": "#f57f17", 
                     
                     FONTS: {
                         "50" : "DARK", "100": "DARK",
@@ -10543,16 +10576,11 @@
                 },
 
                 AMBER: {
-                    "50" : "#fff8e1", "font50" : "DARK",
-                    "100": "#ffecb3", "font100": "DARK",
-                    "200": "#ffe082", "font200": "DARK",
-                    "300": "#ffd54f", "font300": "DARK",
-                    "400": "#ffca28", "font400": "DARK",
-                    "500": "#ffc107", "font500": "DARK",
-                    "600": "#ffb300", "font600": "DARK",
-                    "700": "#ffa000", "font700": "DARK",
-                    "800": "#ff8f00", "font800": "DARK",
-                    "900": "#ff6f00", "font900": "DARK",
+                    "50" : "#fff8e1", "100": "#ffecb3", 
+                    "200": "#ffe082", "300": "#ffd54f", 
+                    "400": "#ffca28", "500": "#ffc107", 
+                    "600": "#ffb300", "700": "#ffa000", 
+                    "800": "#ff8f00", "900": "#ff6f00", 
                     
                     FONTS: {
                         "50" : "DARK", "100": "DARK",
@@ -10567,16 +10595,11 @@
                 },
 
                 ORANGE: {
-                    "50" : "#fff3e0", "font50" : "DARK",
-                    "100": "#ffe0b2", "font100": "DARK",
-                    "200": "#ffcc80", "font200": "DARK",
-                    "300": "#ffb74d", "font300": "DARK",
-                    "400": "#ffa726", "font400": "DARK",
-                    "500": "#ff9800", "font500": "DARK",
-                    "600": "#fb8c00", "font600": "DARK",
-                    "700": "#f57c00", "font700": "DARK",
-                    "800": "#ef6c00", "font800": "DARK",
-                    "900": "#e65100", "font900": "LIGHT",
+                    "50" : "#fff3e0", "100": "#ffe0b2", 
+                    "200": "#ffcc80", "300": "#ffb74d", 
+                    "400": "#ffa726", "500": "#ff9800", 
+                    "600": "#fb8c00", "700": "#f57c00", 
+                    "800": "#ef6c00", "900": "#e65100", 
                     
                     FONTS: {
                         "50" : "DARK", "100": "DARK",
@@ -10591,16 +10614,11 @@
                 },
 
                 DEEP_ORANGE: {
-                    "50" : "#fbe9e7", "font50" : "DARK",
-                    "100": "#ffccbc", "font100": "DARK",
-                    "200": "#ffab91", "font200": "DARK",
-                    "300": "#ff8a65", "font300": "DARK",
-                    "400": "#ff7043", "font400": "DARK",
-                    "500": "#ff5722", "font500": "DARK",
-                    "600": "#f4511e", "font600": "LIGHT",
-                    "700": "#e64a19", "font700": "LIGHT",
-                    "800": "#d84315", "font800": "LIGHT",
-                    "900": "#bf360c", "font900": "LIGHT",
+                    "50" : "#fbe9e7", "100": "#ffccbc", 
+                    "200": "#ffab91", "300": "#ff8a65", 
+                    "400": "#ff7043", "500": "#ff5722", 
+                    "600": "#f4511e", "700": "#e64a19", 
+                    "800": "#d84315", "900": "#bf360c", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10615,16 +10633,11 @@
                 },
 
                 BROWN: {
-                    "50" : "#efebe9", "font50" : "DARK",
-                    "100": "#d7ccc8", "font100": "DARK",
-                    "200": "#bcaaa4", "font200": "DARK",
-                    "300": "#a1887f", "font300": "LIGHT",
-                    "400": "#8d6e63", "font400": "LIGHT",
-                    "500": "#795548", "font500": "LIGHT",
-                    "600": "#6d4c41", "font600": "LIGHT",
-                    "700": "#5d4037", "font700": "LIGHT",
-                    "800": "#4e342e", "font800": "LIGHT",
-                    "900": "#3e2723", "font900": "LIGHT",
+                    "50" : "#efebe9", "100": "#d7ccc8", 
+                    "200": "#bcaaa4", "300": "#a1887f", 
+                    "400": "#8d6e63", "500": "#795548", 
+                    "600": "#6d4c41", "700": "#5d4037", 
+                    "800": "#4e342e", "900": "#3e2723", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10636,16 +10649,11 @@
                 },
 
                 GREY: {
-                    "50" : "#fafafa", "font50" : "DARK",
-                    "100": "#f5f5f5", "font100": "DARK",
-                    "200": "#eeeeee", "font200": "DARK",
-                    "300": "#e0e0e0", "font300": "DARK",
-                    "400": "#bdbdbd", "font400": "DARK",
-                    "500": "#9e9e9e", "font500": "DARK",
-                    "600": "#757575", "font600": "LIGHT",
-                    "700": "#616161", "font700": "LIGHT",
-                    "800": "#424242", "font800": "LIGHT",
-                    "900": "#212121", "font900": "LIGHT",
+                    "50" : "#fafafa", "100": "#f5f5f5", 
+                    "200": "#eeeeee", "300": "#e0e0e0", 
+                    "400": "#bdbdbd", "500": "#9e9e9e", 
+                    "600": "#757575", "700": "#616161", 
+                    "800": "#424242", "900": "#212121", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
@@ -10657,21 +10665,80 @@
                 },
 
                 BLUE_GREY: {
-                    "50" : "#eceff1", "font50" : "DARK",
-                    "100": "#cfd8dc", "font100": "DARK",
-                    "200": "#b0bec5", "font200": "DARK",
-                    "300": "#90a4ae", "font300": "DARK",
-                    "400": "#78909c", "font400": "LIGHT",
-                    "500": "#607d8b", "font500": "LIGHT",
-                    "600": "#546e7a", "font600": "LIGHT",
-                    "700": "#455a64", "font700": "LIGHT",
-                    "800": "#37474f", "font800": "LIGHT",
-                    "900": "#263238", "font900": "LIGHT",
+                    "50" : "#eceff1", "100": "#cfd8dc", 
+                    "200": "#b0bec5", "300": "#90a4ae", 
+                    "400": "#78909c", "500": "#607d8b", 
+                    "600": "#546e7a", "700": "#455a64", 
+                    "800": "#37474f", "900": "#263238", 
                     
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
                         "200": "DARK",  "300": "DARK",
                         "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
+                },
+
+                CRANE_PURPLE: {
+                    "50" : "#f2e0ea", "100": "#e0b2cc", 
+                    "200": "#ce82ab", "300": "#be538b", 
+                    "400": "#b33174", "500": "#ab035d", 
+                    "600": "#9c0858", "700": "#870b51", 
+                    "800": "#720c49", "900": "#4e0d3a", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
+                },
+
+                CRANE_RED: {
+                    "50" : "#ffeaee", "100": "#ffcbd1", 
+                    "200": "#f99697", "300": "#f36b6f", 
+                    "400": "#fe4449", "500": "#ff2a2a", 
+                    "600": "#f51b2b", "700": "#e30425", 
+                    "800": "#d6001e", "900": "#c8000e", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
+                },
+
+                SHRINE_PINK: {
+                    "50" : "#f9efee", "100": "#fedbd0", 
+                    "200": "#ffc2ae", "300": "#ffa988", 
+                    "400": "#ff9369", "500": "#ff814f", 
+                    "600": "#ff7a4a", "700": "#ff7244", 
+                    "800": "#f46b40", "900": "#db5e37", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "DARK",
+                        "600": "DARK",  "700": "DARK",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
+                },
+
+                RALLY_GREEN: {
+                    "50" : "#e3f5ec", "100": "#bae6d1", 
+                    "200": "#8dd5b3", "300": "#58c596", 
+                    "400": "#1eb980", "500": "#00ac6a", 
+                    "600": "#009d5f", "700": "#008b52", 
+                    "800": "#007a46", "900": "#005b30", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "DARK",
+                        "400": "DARK",  "500": "LIGHT",
                         "600": "LIGHT", "700": "LIGHT",
                         "800": "LIGHT", "900": "LIGHT"
                     }

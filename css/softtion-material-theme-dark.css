@@ -2131,6 +2131,105 @@ button.floating.theme-secondary:before {
 .message > i, .message > p {
     color: var(--secondary-font); }
 
+/** NOTIFICATION */
+
+.notification {
+    border-bottom: 1px solid var(--background-border);
+    background: transparent; }
+
+.app-bar .notification, .notification.unbordered {
+    border-bottom: none !important; }
+
+.app-bar.theme-primary .notification {
+    background-color: var(--theme-primary-700); }
+
+.app-bar.theme-secondary .notification {
+    background-color: var(--theme-secondary-700); }
+
+.notification > .content > .avatar > span:not(.badge),
+.notification > .content > .avatar > i {
+    background-color: var(--theme-primary-400);
+    color: var(--theme-primary-font-primary-400); }
+
+.app-bar.theme-primary .notification .avatar > span:not(.badge),
+.app-bar.theme-primary .notification .avatar > i {
+    color: var(--theme-primary-700);
+    background-color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification .avatar > span:not(.badge),
+.app-bar.theme-secondary .notification .avatar > i {
+    color: var(--theme-secondary-700);
+    background-color: var(--theme-secondary-font-primary-700); }
+
+.notification > .content > .description {
+    color: var(--secondary-font); }
+
+.app-bar.theme-primary .notification > .content > .description {
+    color: var(--theme-primary-font-secondary-700); }
+
+.app-bar.theme-secondary .notification > .content > .description {
+    color: var(--theme-secondary-font-secondary-700); }
+
+.notification > .actions > button.flat,
+.notification > .actions > button.action {
+    color: var(--theme-primary-400); }
+
+.app-bar.theme-primary .notification > .actions > button.flat,
+.app-bar.theme-primary .notification > .actions > button.action {
+    color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.flat,
+.app-bar.theme-secondary .notification > .actions > button.action {
+    color: var(--theme-secondary-font-primary-700); }
+
+.notification > .actions > button.flat:disabled,
+.notification > .actions > button.action:disabled {
+    color: var(--theme-primary-200); }
+
+.app-bar.theme-primary .notification > .actions > button.flat:disabled,
+.app-bar.theme-primary .notification > .actions > button.action:disabled {
+    color: var(--theme-primary-font-disabled-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.flat:disabled,
+.app-bar.theme-secondary .notification > .actions > button.action:disabled {
+    color: var(--theme-secondary-font-disabled-700); }
+
+.notification > .actions > button.raised {
+    color: var(--theme-primary-font-primary-400);
+    background-color: var(--theme-primary-400); }
+
+.app-bar.theme-primary .notification > .actions > button.raised {
+    color: var(--theme-primary-700);
+    background-color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.raised {
+    color: var(--theme-secondary-700);
+    background-color: var(--theme-secondary-font-primary-700); }
+
+.notification > .actions > button.raised:disabled {
+    background-color: var(--theme-primary-200);
+    color: var(--theme-primary-font-disabled-200); }
+
+.app-bar.theme-primary .notification > .actions > button.raised:disabled {
+    color: var(--theme-primary-400);
+    background-color: var(--theme-primary-font-disabled-400); }
+
+.app-bar.theme-secondary .notification > .actions > button.raised:disabled {
+    color: var(--theme-secondary-400);
+    background-color: var(--theme-secondary-font-disabled-400); }
+
+.app-bar.theme-primary .notification > .actions > .action:before {
+    background-color: var(--theme-primary-ripple-700); }
+
+.app-bar.theme-secondary .notification > .actions > .action:before {
+    background-color: var(--theme-secondary-ripple-700); }
+
+.app-bar.theme-primary .notification > .actions > .raised:before {
+    background-color: var(--theme-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > .raised:before {
+    background-color: var(--theme-secondary-700); }
+
 /** PROGRESS BAR */
 
 .progress-bar {

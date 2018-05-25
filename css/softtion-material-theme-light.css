@@ -363,16 +363,16 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     background-color: var(--background-appbar) !important; }
 
 .bottom-navigation.theme-primary {
-    background-color: var(--theme-primary-600); }
+    background-color: var(--theme-primary-700); }
 
 .bottom-navigation.theme-primary.default {
-    background-color: var(--theme-primary-600) !important; }
+    background-color: var(--theme-primary-700) !important; }
 
 .bottom-navigation.theme-secondary {
-    background-color: var(--theme-secondary-600); }
+    background-color: var(--theme-secondary-700); }
 
 .bottom-navigation.theme-secondary.default {
-    background-color: var(--theme-secondary-600) !important; }
+    background-color: var(--theme-secondary-700) !important; }
 
 .bottom-navigation > ul > li > .content {
     color: var(--secondary-font); }
@@ -384,22 +384,22 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     color: var(--disabled-font); }
 
 .bottom-navigation.theme-primary > ul > li > .content {
-    color: var(--theme-primary-font-secondary-600); }
+    color: var(--theme-primary-font-secondary-700); }
 
 .bottom-navigation.theme-primary > ul > li.active > .content {
-    color: var(--theme-primary-font-primary-600); }
+    color: var(--theme-primary-font-primary-700); }
 
 .bottom-navigation.theme-primary > ul > li.disabled > .content {
-    color: var(--theme-primary-font-disabled-600); }
+    color: var(--theme-primary-font-disabled-700); }
 
 .bottom-navigation.theme-secondary > ul > li > .content {
-    color: var(--theme-secondary-font-secondary-600); }
+    color: var(--theme-secondary-font-secondary-700); }
 
 .bottom-navigation.theme-secondary > ul > li.active > .content {
-    color: var(--theme-secondary-font-primary-600); }
+    color: var(--theme-secondary-font-primary-700); }
 
 .bottom-navigation.theme-secondary > ul > li.disabled > .content {
-    color: var(--theme-secondary-font-disabled-600); }
+    color: var(--theme-secondary-font-disabled-700); }
 
 .bottom-navigation > ul.shifting > li > .content {
     color: var(--alternative-secondary-font); }
@@ -429,31 +429,31 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     color: var(--disabled-font); }
 
 .bottom-navigation.theme-primary > ul.shifting > li > .content {
-    color: var(--theme-primary-font-secondary-600); }
+    color: var(--theme-primary-font-secondary-700); }
 
 .bottom-navigation.theme-primary > ul.shifting > li.active > .content {
-    color: var(--theme-primary-font-primary-600); }
+    color: var(--theme-primary-font-primary-700); }
 
 .bottom-navigation.theme-primary > ul.shifting > li.disabled > .content {
-    color: var(--theme-primary-font-disabled-600); }
+    color: var(--theme-primary-font-disabled-700); }
 
 .bottom-navigation.theme-secondary > ul.shifting > li > .content {
-    color: var(--theme-secondary-font-secondary-600); }
+    color: var(--theme-secondary-font-secondary-700); }
 
 .bottom-navigation.theme-secondary > ul.shifting > li.active > .content {
-    color: var(--theme-secondary-font-primary-600); }
+    color: var(--theme-secondary-font-primary-700); }
 
 .bottom-navigation.theme-secondary > ul.shifting > li.disabled > .content {
-    color: var(--theme-secondary-font-disabled-600); }
+    color: var(--theme-secondary-font-disabled-700); }
 
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--ripple); }
 
 .bottom-navigation.theme-primary > .ripple-box > .effect {
-    background-color: var(--theme-primary-ripple-600); }
+    background-color: var(--theme-primary-ripple-700); }
 
 .bottom-navigation.theme-secondary > .ripple-box > .effect {
-    background-color: var(--theme-secondary-ripple-600); }
+    background-color: var(--theme-secondary-ripple-700); }
 
 /** BREADCRUMB */
 
@@ -461,10 +461,10 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     background-color: var(--background-appbar); }
 
 .app-bar.theme-primary > .breadcrumb, .breadcrumb.theme-primary {
-    background-color: var(--theme-primary-600); }
+    background-color: var(--theme-primary-700); }
 
 .app-bar.theme-secondary > .breadcrumb, .breadcrumb.theme-secondary {
-    background-color: var(--theme-secondary-600); }
+    background-color: var(--theme-secondary-700); }
 
 .app-bar.floating > .breadcrumb {
     background-color: var(--background-core);
@@ -481,10 +481,10 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
     color: var(--theme-primary-700); }
 
 .app-bar.theme-primary > .breadcrumb > label {
-    color: var(--theme-primary-font-primary-600); }
+    color: var(--theme-primary-font-primary-700); }
 
 .app-bar.theme-secondary > .breadcrumb > label {
-    color: var(--theme-secondary-font-primary-600); }
+    color: var(--theme-secondary-font-primary-700); }
 
 .app-bar.floating > .breadcrumb > label {
     color: var(--primary-font); }
@@ -2126,6 +2126,105 @@ button.floating.theme-secondary:before {
 
 .message > i, .message > p {
     color: var(--secondary-font); }
+
+/** NOTIFICATION */
+
+.notification {
+    border-bottom: 1px solid var(--background-border);
+    background: transparent; }
+
+.app-bar .notification, .notification.unbordered {
+    border-bottom: none !important; }
+
+.app-bar.theme-primary .notification {
+    background-color: var(--theme-primary-700); }
+
+.app-bar.theme-secondary .notification {
+    background-color: var(--theme-secondary-700); }
+
+.notification > .content > .avatar > span:not(.badge),
+.notification > .content > .avatar > i {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-500); }
+
+.app-bar.theme-primary .notification .avatar > span:not(.badge),
+.app-bar.theme-primary .notification .avatar > i {
+    color: var(--theme-primary-700);
+    background-color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification .avatar > span:not(.badge),
+.app-bar.theme-secondary .notification .avatar > i {
+    color: var(--theme-secondary-700);
+    background-color: var(--theme-secondary-font-primary-700); }
+
+.notification > .content > .description {
+    color: var(--secondary-font); }
+
+.app-bar.theme-primary .notification > .content > .description {
+    color: var(--theme-primary-font-secondary-700); }
+
+.app-bar.theme-secondary .notification > .content > .description {
+    color: var(--theme-secondary-font-secondary-700); }
+
+.notification > .actions > button.flat,
+.notification > .actions > button.action {
+    color: var(--theme-primary-800); }
+
+.app-bar.theme-primary .notification > .actions > button.flat,
+.app-bar.theme-primary .notification > .actions > button.action {
+    color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.flat,
+.app-bar.theme-secondary .notification > .actions > button.action {
+    color: var(--theme-secondary-font-primary-700); }
+
+.notification > .actions > button.flat:disabled,
+.notification > .actions > button.action:disabled {
+    color: var(--theme-primary-400); }
+
+.app-bar.theme-primary .notification > .actions > button.flat:disabled,
+.app-bar.theme-primary .notification > .actions > button.action:disabled {
+    color: var(--theme-primary-font-disabled-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.flat:disabled,
+.app-bar.theme-secondary .notification > .actions > button.action:disabled {
+    color: var(--theme-secondary-font-disabled-700); }
+
+.notification > .actions > button.raised {
+    color: var(--theme-primary-font-primary-500);
+    background-color: var(--theme-primary-500); }
+
+.app-bar.theme-primary .notification > .actions > button.raised {
+    color: var(--theme-primary-700);
+    background-color: var(--theme-primary-font-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > button.raised {
+    color: var(--theme-secondary-700);
+    background-color: var(--theme-secondary-font-primary-700); }
+
+.notification > .actions > button.raised:disabled {
+    background-color: var(--theme-primary-300);
+    color: var(--theme-primary-font-disabled-300); }
+
+.app-bar.theme-primary .notification > .actions > button.raised:disabled {
+    color: var(--theme-primary-400);
+    background-color: var(--theme-primary-font-disabled-400); }
+
+.app-bar.theme-secondary .notification > .actions > button.raised:disabled {
+    color: var(--theme-secondary-400);
+    background-color: var(--theme-secondary-font-disabled-400); }
+
+.app-bar.theme-primary .notification > .actions > .action:before {
+    background-color: var(--theme-primary-ripple-700); }
+
+.app-bar.theme-secondary .notification > .actions > .action:before {
+    background-color: var(--theme-secondary-ripple-700); }
+
+.app-bar.theme-primary .notification > .actions > .raised:before {
+    background-color: var(--theme-primary-700); }
+
+.app-bar.theme-secondary .notification > .actions > .raised:before {
+    background-color: var(--theme-secondary-700); }
 
 /** PROGRESS BAR */
 
