@@ -703,6 +703,7 @@
     display: none; }
 
 @media only screen and (max-width : 360px) {
+    
     .hidden-small {
         display: none !important; }
     
@@ -711,6 +712,7 @@
 }
 
 @media only screen and (max-width : 640px) {
+    
     .hidden-medium {
         display: none !important; }
     
@@ -719,6 +721,7 @@
 }
 
 @media only screen and (max-width : 720px) {
+    
     .hidden-extramedium {
         display: none !important; }
     
@@ -727,6 +730,7 @@
 }
 
 @media only screen and (max-width : 960px) {
+    
     .hidden-large, .hidden-extralarge {
         display: none !important; }
     

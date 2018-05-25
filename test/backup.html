@@ -49,38 +49,51 @@
 </div>
             
 <!-- EXPANSION PANELS -->
-<ul class="list-expansion-panel">
+<ul class="list flat">
     <li class="expansion-panel">
         <div class="header">
-            <span class="title small-60">AngularJS</span>
-            <span class="detail">v1.6.4</span>
-        </div>
-        <div class="body">
-            <div class="content">
-                <!-- Contenido del componente -->
+            <div class="subtitle">
+                League of legends
+            </div>
+            <div class="detail">
+                <div class="content">
+                    <div class="title">Rumble</div>
+                    <div class="subtitle">Skin: super galáctico</div>
+                </div>
             </div>
         </div>
-    </li>
-
-    <li class="expansion-panel">
-        <div class="header">
-            <span class="title small-60">Material Design</span>
-        </div>
         <div class="body">
             <div class="content">
-                Hola Pajuate
+                Incluso entre los yordles, Rumble era el más pequeño de todos. Como tal, siempre sufría el acoso de los demás. Para sobrevivir, tenía que ser más ingenioso y astuto que el resto. Desarrolló muy mal temperamento y se ganó la reputación de estar siempre buscando camorra. Esto lo convirtió en un solitario, pero le daba igual. 
             </div>
             <div class="actions">
-                <button class="flat theme-primary">Save</button>
-                <button class="flat">Cancel</button>
+                <button class="flat theme-primary">Flat</button>
+                <button class="raised right theme-primary" tooltip="Sasuke Uchiha">Raised</button>
+                <button class="action"><i>person</i></button>
             </div>
         </div>
     </li>
-
     <li class="expansion-panel">
         <div class="header">
-            <span class="title small-60">HTML</span>
-            <span class="detail">v5.0.0</span>
+            <div class="subtitle">
+                League of legends
+            </div>
+            <div class="detail">
+                <div class="content">
+                    <div class="title">Rumble</div>
+                    <div class="subtitle">Skin: super galáctico</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="content">
+                Incluso entre los yordles, Rumble era el más pequeño de todos. Como tal, siempre sufría el acoso de los demás. Para sobrevivir, tenía que ser más ingenioso y astuto que el resto. Desarrolló muy mal temperamento y se ganó la reputación de estar siempre buscando camorra. Esto lo convirtió en un solitario, pero le daba igual. 
+            </div>
+            <div class="actions">
+                <button class="flat theme-primary">Flat</button>
+                <button class="raised right theme-primary" tooltip="Sasuke Uchiha">Raised</button>
+                <button class="action"><i>person</i></button>
+            </div>
         </div>
     </li>
 </ul>
@@ -158,10 +171,12 @@
                 <img src="4.png" alt=""/>
             </div>
             <div class="content">
-                <span class="right">100</span>
+                <span>100</span>
                 <div class="detail">
-                    <div class="title">Alistar</div>
-                    <div class="subtitle">El minotauro</div>
+                    <div class="content">
+                        <div class="title">Alistar</div>
+                        <div class="subtitle">El minotauro</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,23 +184,27 @@
             <div class="background">
                 <img src="26.png" alt=""/>
             </div>
-            <div class="content two-line">
-                <button class="action"><i>star</i></button>
+            <div class="content">
                 <div class="detail">
-                    <div class="title">Evelynn</div>
-                    <div class="subtitle">El abrazo agónico</div>
+                    <div class="content">
+                        <div class="title">Alistar</div>
+                        <div class="subtitle">El minotauro</div>
+                    </div>
                 </div>
+                <span class="align-right">100</span>
             </div>
         </div>
         <div class="cell">
             <div class="background">
                 <img src="5.png" alt=""/>
             </div>
-            <div class="content two-line">
-                <button class="action right"><i>star_border</i></button>
+            <div class="content">
+                <button class="action"><i>star_border</i></button>
                 <div class="detail">
-                    <div class="title">Amumu</div>
-                    <div class="subtitle"><i>mail</i>La momia triste</div>
+                    <div class="content">
+                        <div class="title">Amumu</div>
+                        <div class="subtitle"><i>mail</i>La momia triste</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,14 +213,16 @@
                 <img src="Vi.png" alt=""/>
             </div>
             <div class="content">
-                <button class="action right"><i>star</i></button>
                 <div class="detail">
-                    <div class="title">Vi</div>
+                    <div class="content">
+                        <div class="title">Vi</div>
+                    </div>
                 </div>
+                <button class="action"><i>star</i></button>
             </div>
         </div>
     </div>
-</div>
+</div> 
 
 <!-- FAB SPEEDIAL -->
 <div class="fab-speed-dial">
@@ -386,34 +407,15 @@
     </div>
 </div>
 
-<div class="bottom-navigation" views="#views">
-    <ul class="content">
-        <li view="#descripcion">
-            <div class="content">
-                <i>home</i>
-                <p class="title">Descripción</p>
-            </div>
-        </li>
-        <li view="#construccion">
-            <div class="content">
-                <i>build</i>
-                <p class="title">Construcción</p>
-            </div>
-        </li>
-        <li view="#runas">
-            <div class="content">
-                <i>device_hub</i>
-                <p class="title">Runas</p>
-            </div>
-        </li>
-        <li view="#estadisticas">
-            <div class="content">
-                <i>equalizer</i>
-                <p class="title">Estadísticas</p>
-            </div>
-        </li>
-    </ul>
-</div>
+<!-- $scope.optionsBottomNav = [
+        { icon: "home", label: "Descripción", color: "red" },
+        { icon: "device_hub", label: "Runas", disabled: false },
+        { icon: "equalizer", label: "Estadísticas", color: "lime" },
+        { icon: "build", label: "Construcción", color: "yellow", active: true },
+        { icon: "person", label: "Usuarios", color: "blue" }
+    ];-->
+
+<div class="bottom-navigation" options="optionsBottomNav"></div>
 
 <div class="video-youtube" ng-src="https://www.youtube.com/embed/GxCsbh-dd-0"></div>
 
@@ -898,5 +900,112 @@
                 </p> 
             </div>
         </div>
+    </div>
+</div>
+
+<!-- DATATABLE -->
+<div class="datatable"
+     ng-class="{'condense': disabled, 'theme-primary': primary, 'theme-secondary': secondary, 'raised': raised}">
+    <div class="header">
+        <div class="title">Datatable</div>
+
+        <div class="search-box contrast">
+            <div class="nav-icon">
+                <button class="action">
+                    <i>book</i>
+                </button>
+            </div> 
+            <input ng-model="lo">
+        </div>
+
+        <div class="actions">
+            <button class="action">
+                <i>reply</i>
+            </button>
+            <button class="action" ng-disabled="true">
+                <i>person</i>
+            </button>
+        </div>
+    </div>
+
+    <div class="content">
+        <table>
+            <thead>
+                <tr>
+                    <th class="small-25 align-center">Codigo</th>
+                    <th class="small-25">Nombre</th>
+                    <th class="small-25">Precio</th>
+                    <th class="small-25 align-right">Ingresado</th>
+                    <th class="control-cell"><i>place</i></th>
+                    <th class="control-cell"><i>done</i></th>
+                    <th class="control-cell"><i>star</i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="small-25 align-center">
+                        <span class="poster theme-secondary">1065642202</span>
+                    </td>
+                    <td class="small-25">Daniel Andres Castillo</td>
+                    <td class="small-25">$ 40.000</td>
+                    <td class="small-25">
+                        <div class="textfield align-right" ng-model="x"></div>
+                    </td>
+                    <td class="control-cell">
+                        <button class="action">
+                            <i>person</i>
+                        </button>
+                    </td>
+                    <td class="control-cell">
+                        <div class="checkbox-control" ng-model="si"></div>
+                    </td>
+                    <td class="control-cell">
+                        <i>mail</i>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="small-25 align-center">
+                        <span class="poster theme-primary">1065642202</span>
+                    </td>
+                    <td class="small-25">Daniel Andres Castillo</td>
+                    <td class="small-25">$ 40.000</td>
+                    <td class="small-25">
+                        <div class="textfield align-right" ng-model="x"></div>
+                    </td>
+                    <td class="control-cell">
+                        <button class="action">
+                            <i>person</i>
+                        </button>
+                    </td>
+                    <td class="control-cell">
+                        <div class="checkbox-control" ng-model="si"></div>
+                    </td>
+                    <td class="control-cell">
+                        <i>mail</i>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="small-25 align-center">
+                        <span class="poster">1065642202</span>
+                    </td>
+                    <td class="small-25">Daniel Andres Castillo</td>
+                    <td class="small-25">$ 40.000</td>
+                    <td class="small-25">
+                        <div class="textfield align-right" ng-model="x"></div>
+                    </td>
+                    <td class="control-cell">
+                        <button class="action">
+                            <i>person</i>
+                        </button>
+                    </td>
+                    <td class="control-cell">
+                        <div class="checkbox-control" ng-model="si"></div>
+                    </td>
+                    <td class="control-cell">
+                        <i>mail</i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

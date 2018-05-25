@@ -15,13 +15,25 @@
 })((jQuery, softtion) => {
     
     jQuery.fn.extend({
-        tagName: function () { return jQuery(this).prop("tagName"); },
+        tagName: function () { 
+            return jQuery(this).prop("tagName"); 
+        },
         
-        exists: function () { return jQuery(this).length > 0; },
+        tagIs: function (tagName) {
+            return (jQuery(this).tagName() === tagName);
+        },
         
-        scrollWidth: function () { return jQuery(this).prop("scrollWidth"); },
+        exists: function () { 
+            return jQuery(this).length > 0; 
+        },
         
-        scrollHeight: function () { return jQuery(this).prop("scrollHeight"); },
+        scrollWidth: function () { 
+            return jQuery(this).prop("scrollWidth"); 
+        },
+        
+        scrollHeight: function () { 
+            return jQuery(this).prop("scrollHeight"); 
+        },
         
         isScrollXEnd: function (discount) { 
             discount = isNaN(discount) ? 0 : discount;
@@ -296,6 +308,15 @@
                 draggActive = true; positionX = event.originalEvent.x;
                 triggerCallback("start", event); // Inicio 
             });
+            
+            component.on("touchstart", (event) => {
+                var touches = event.originalEvent.targetTouches;
+                
+                if (!touches) return; // No hay resultados
+                
+                draggActive = true; positionX = touches[0].clientX;
+                triggerCallback("start", event); // Inicio 
+            });
 
             component.on("mousemove", (event) => {
                 if (!draggActive) return; // Arrastre no esta activado
@@ -313,8 +334,35 @@
 
                 positionX = positionNew; triggerCallback("displace", event);
             });
+            
+            component.on("touchmove", (event) => {
+                if (!draggActive) return; // Arrastre no esta activado
+                
+                var touches = event.originalEvent.targetTouches;
+                
+                if (!touches) return; // No hay resultados
+                
+                var positionNew = touches[0].clientX,
+                    scrollLeft = component.scrollLeft();
+
+                if (positionX > positionNew) {
+                    scrollLeft = scrollLeft + (positionX - positionNew);
+                    component.scrollLeft(scrollLeft);
+                } else {
+                    scrollLeft = scrollLeft - (positionNew - positionX);
+                    component.scrollLeft(scrollLeft);
+                } // Moviendo scroll
+
+                positionX = positionNew; triggerCallback("displace", event);
+            });
 
             component.on("mouseup", (event) => {
+                if (draggActive) triggerCallback("end", event); 
+                
+                draggActive = false; // Finalización de arrastre
+            });
+
+            component.on("touchend", (event) => {
                 if (draggActive) triggerCallback("end", event); 
                 
                 draggActive = false; // Finalización de arrastre
