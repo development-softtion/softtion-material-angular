@@ -121,6 +121,8 @@
                 Img: Directives.create(Directives.Img),
                 
                 Notification: Directives.create(Directives.Notification),
+                
+                NotificationFloating: Directives.create(Directives.NotificationFloating),
 
                 ProgressBar: Directives.create(Directives.ProgressBar),
 
@@ -362,6 +364,7 @@
             case (Directives.GridSheet.NAME): return Directives.GridSheet;
             case (Directives.Img.NAME): return Directives.Img;
             case (Directives.Notification.NAME): return Directives.Notification;
+            case (Directives.NotificationFloating.NAME): return Directives.NotificationFloating;
             case (Directives.ProgressBar.NAME): return Directives.ProgressBar;
             case (Directives.ProgressButtonFloating.NAME): return Directives.ProgressButtonFloating;
             case (Directives.ProgressCircular.NAME): return Directives.ProgressCircular;
@@ -5256,6 +5259,34 @@
                     
                     $appContent.css("padding-top", padding + value);
                 }
+            }
+        };
+    }
+    
+    // Directiva: NotificationFloating
+    // Version: 1.0.0
+    // Update: 25/May/2018
+    
+    Directives.NotificationFloating = NotificationFloatingDirective;
+    
+    Directives.NotificationFloating.NAME = "NotificationFloating";
+    Directives.NotificationFloating.VERSION = "1.0.0";
+    Directives.NotificationFloating.KEY = "notificationFloating";
+    
+    function NotificationFloatingDirective() {
+        return {
+            restrict: "C",
+            scope: {
+                ngVisible: "=?"
+            },
+            link: function ($scope, $element) {
+                
+                $scope.$watch(() => { return $scope.ngVisible; },
+                    (newValue) => {
+                        (!newValue) ?
+                            $element.removeClass(Classes.SHOW):
+                            $element.addClass(Classes.SHOW);
+                    });
             }
         };
     }

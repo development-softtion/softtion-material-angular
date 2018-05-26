@@ -6822,23 +6822,139 @@ p.link > a {
 
 @media only screen and (min-width : 481px) {
     
-    .app-bar .notification {
+    .app-bar > .notification {
         display: flex; }
     
-    .app-bar .notification > .content {
+    .app-bar > .notification > .content {
         width: 60%;
         padding: 8px 8px 8px 16px !important; }
     
-    .app-bar .notification > .actions {
+    .app-bar > .notification > .actions {
         width: 40%;
         padding: 8px 8px 8px 16px !important;
         margin-top: auto !important; }
     
-    .app-bar .notification > .actions > button {
+    .app-bar > .notification > .actions > button {
         float: right !important;
         margin-right: 0px !important;
         margin-left: 6px !important; }
 }
+
+/** NOTIFICATION FLOATING */
+
+.notification-floating {
+    position: fixed;
+    top: 0px;
+    right: 16px;
+    z-index: 6;
+    width: 100%;
+    max-width: 288px;
+    box-shadow: var(--shadow-2);
+    will-change: transform, -webkit-transform, -moz-transform;
+    -webkit-transform: translateY(calc(-100% - 8px));
+       -moz-transform: translateY(calc(-100% - 8px));
+            transform: translateY(calc(-100% - 8px));
+    -webkit-transition: transform 160ms 0ms var(--standard-curve), 
+                        top 160ms 0ms var(--standard-curve);
+       -moz-transition: transform 160ms 0ms var(--standard-curve), 
+                        top 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve), 
+                        top 160ms 0ms var(--standard-curve); }
+
+.notification-floating.show {
+    top: 8px;
+    -webkit-transform: translateY(0%);
+       -moz-transform: translateY(0%);
+            transform: translateY(0%); }
+
+.app-bar > .notification-floating {
+    position: absolute;
+    top: initial;
+    bottom: calc(100% + 8px);
+    right: 16px;
+    z-index: 6; 
+    width: 100%;
+    max-width: 288px;
+    box-shadow: var(--shadow-2);
+    will-change: transform, -webkit-transform, -moz-transform;
+    -webkit-transition: transform 160ms 0ms var(--standard-curve), 
+                        bottom 160ms 0ms var(--standard-curve);
+       -moz-transition: transform 160ms 0ms var(--standard-curve), 
+                        bottom 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve), 
+                        bottom 160ms 0ms var(--standard-curve); }
+
+.app-bar > .notification-floating.show {
+    bottom: 0px;
+    -webkit-transform: translateY(calc(100% + 12px));
+       -moz-transform: translateY(calc(100% + 12px));
+            transform: translateY(calc(100% + 12px)); }
+
+.notification-floating > .content {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 0px 16px;
+    box-sizing: border-box; }
+
+.notification-floating > .content:first-child {
+    padding-top: 8px; }
+
+.notification-floating > .content:last-child {
+    padding-bottom: 8px; }
+
+.notification-floating > .actions + .content {
+    margin-top: 12px; }
+
+.notification-floating > .content > .avatar {
+    float: left;
+    width: 40px;
+    height: 40px;
+    line-height: 40px; }
+
+.notification-floating > .content > .description {
+    width: 100%;
+    float: left;
+    line-height: 16px;
+    margin-top: 4px;
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
+
+.notification-floating > .content > .avatar + .description {
+    margin-left: 12px;
+    width: calc(100% - 52px); }
+
+.notification-floating > .actions {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 0px 16px 8px 16px;
+    box-sizing: border-box; }
+
+.notification-floating > .actions:first-child {
+    padding-top: 8px;
+    padding-bottom: 0px; }
+
+.notification-floating > .content + .actions {
+    margin-top: 12px; }
+
+.notification-floating > .actions > button {
+    float: left;
+    margin-right: 6px; }
+
+.notification-floating > .actions > button.right {
+    float: right;
+    margin-right: 0px;
+    margin-left: 6px; }
+
+.notification-floating > .actions > button.raised {
+    box-shadow: none !important; }
+
+.notification-floating > .actions > button.action {
+    height: 36px;
+    width: 40px;
+    padding: 6px 8px; }
 
 /** PROGRESS BAR */
 
