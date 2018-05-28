@@ -1605,7 +1605,7 @@
             scope: {
                 ngProgress: "=?",
                 icon: "@",
-                eventListener: "&"
+                ngClick: "&"
             },
             link: function ($scope, $element) {
                     // Componentes
@@ -1621,13 +1621,10 @@
                             addAttribute("ng-visible", "ngProgress")
                     );
             
-                    // Atributos
-                var listener = new Listener($scope, []);
-            
                 $element.replaceWith($compile(button.create())($scope));
                 
                 $scope.buttonClick = function ($event) {
-                    listener.launch("click", {$event: $event});
+                    $scope.ngClick({ $event: $event, $element: $element });
                 };
             }
         };
@@ -9689,8 +9686,8 @@
                 if ($scope.errorActive) validateValue(newValue);
                 
                 if (!$scope.inputActive) {
-                    if (softtion.isDefined(newValue)) $scope.input = newValue;
-                } // Componente esta desenfocado
+                    $scope.input = (softtion.isUndefined(newValue)) ? "" : newValue;
+                } // Componente de entrada esta desenfocado
             });
             
         $attrs.$observe("iconAction", (value) => {
@@ -9960,8 +9957,8 @@
                 if ($scope.errorActive) validateValue(newValue);
                 
                 if (!$scope.areaActive) {
-                    if (softtion.isDefined(newValue)) $scope.area = newValue;
-                } // Componente esta desenfocado
+                    $scope.area = (softtion.isUndefined(newValue)) ? "" : newValue;
+                } // Componente de entrada esta desenfocado
             });
 
         $scope.heightStyle = function () {
