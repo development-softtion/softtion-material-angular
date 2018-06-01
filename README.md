@@ -29,4 +29,4 @@ Lea la [página de introducción](http://material.softtion.com.co/documentation/
 - Clonar el repositorio: `git clone https://github.com/softtion-development/softtion-material-angular.git`
 
 ## Material Design Icons
-[Ultima actualización: 07 de junio del 2017](https://fonts.googleapis.com/icon?family=Material+Icons)
+[Ultima actualización: 01 de junio del 2018](https://fonts.googleapis.com/icon?family=Material+Icons)

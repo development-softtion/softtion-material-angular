@@ -1206,11 +1206,13 @@ button.floating.theme-secondary:before {
 .datatable.theme-secondary > .header {
     background-color: var(--theme-secondary-500); }
 
+.datatable.theme-primary > .header > .nav-icon > button.action,
 .datatable.theme-primary > .header > .title,
 .datatable.theme-primary > .header > .actions > button,
 .datatable.theme-primary > .header > .detail .title {
     color: var(--theme-primary-font-primary-500); }
 
+.datatable.theme-secondary > .header > .nav-icon > button.action,
 .datatable.theme-secondary > .header > .title,
 .datatable.theme-secondary > .header > .actions > button,
 .datatable.theme-secondary > .header > .detail .title {
@@ -1222,15 +1224,19 @@ button.floating.theme-secondary:before {
 .datatable.theme-secondary > .header > .detail .subtitle {
     color: var(--theme-secondary-font-secondary-500); }
 
+.datatable.theme-primary > .header > .nav-icon > button::before,
 .datatable.theme-primary > .header > .actions > button::before {
     background-color: var(--theme-primary-ripple-500); }
 
+.datatable.theme-secondary > .header > .nav-icon > button::before,
 .datatable.theme-secondary > .header > .actions > button::before {
     background-color: var(--theme-secondary-ripple-500); }
 
+.datatable.theme-primary > .header > .nav-icon > button:disabled,
 .datatable.theme-primary > .header > .actions > button:disabled {
     color: var(--theme-primary-font-disabled-500); }
 
+.datatable.theme-secondary > .header > .nav-icon > button:disabled,
 .datatable.theme-secondary > .header > .actions > button:disabled {
     color: var(--theme-secondary-font-disabled-500); }
 
@@ -1250,11 +1256,16 @@ button.floating.theme-secondary:before {
 .datatable.raised > .content > table > tbody > tr:nth-last-of-type(1) {
     border-bottom: none; }
 
-.datatable > .content > table > tbody > tr.active {
-    background-color: var(--background-active); }
-
 .datatable > .content > table > tbody > tr:hover {
     background-color: var(--background-hover); }
+
+.datatable > .content > table > tbody > tr.active {
+    background-color: var(--theme-secondary-100);
+    color: var(--theme-secondary-font-secondary-100); }
+
+.datatable > .content > table > tbody > tr.active:hover {
+    background-color: var(--theme-secondary-50);
+    color: var(--theme-secondary-font-primary-50); }
 
 .datatable > .content > table > thead > tr > th > i {
     color: var(--disabled-font); }
@@ -1268,6 +1279,10 @@ button.floating.theme-secondary:before {
 .datatable table > tbody td > span.poster {
     color: var(--primary-font);
     background-color: var(--background-statusbar); }
+
+.datatable table > tbody tr.active td > span.poster {
+    background-color: var(--theme-secondary-600);
+    color: var(--theme-secondary-font-primary-600); }
 
 .datatable table > tbody td > span.poster.contrast {
     color: var(--alternative-primary-font); }

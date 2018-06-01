@@ -2114,8 +2114,6 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%; 
     height: 24px;
     line-height: 24px;
-    font-size: 16px;
-    font-weight: 500;
     margin: 4px 0px; }
 
 .card > .media-area {
@@ -3425,6 +3423,21 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: 56px;
     padding: 0px 8px 0px 16px; }
 
+.datatable > .header > .nav-icon {
+    display: none;
+    margin-right: 8px;
+    padding: 16px 0px; }
+
+.datatable > .header > .nav-icon:first-child {
+    display: block; }
+
+.datatable > .header > .nav-icon > button.action {
+    height: 32px;
+    padding: 4px 8px 4px 0px; }
+
+.datatable > .header > .nav-icon > button.action:before {
+    left: calc(50% - 4px); }
+
 .datatable > .header > .title {
     display: block;
     width: 100%;
@@ -3444,6 +3457,12 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .header > .detail {
     height: 64px; }
+
+.datatable:not(.condense) > .header > .detail > .content > .title {
+    line-height: 20px;
+    font-size: var(--headline-6-size);
+    letter-spacing: var(--headline-6-letterspacing);
+    font-weight: var(--headline-6-weight); }
 
 .datatable.condense > .header > .detail {
     height: 56px; }
@@ -4136,8 +4155,8 @@ button.raised:focus:after, button.flat:focus:after {
     display: -ms-flexbox;
     display: flex;
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
     z-index: 24;
@@ -4155,9 +4174,9 @@ button.raised:focus:after, button.flat:focus:after {
 .dialog > .backdrop {
     position: absolute;
     display: block;
-    z-index: 1;
     bottom: initial;
     opacity: 0;
+    z-index: 1;
     -webkit-transition: opacity 120ms 0ms var(--deceleration-curve),
                 bottom 120ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 120ms 0ms var(--deceleration-curve),
@@ -4196,18 +4215,19 @@ button.raised:focus:after, button.flat:focus:after {
     height: auto; }
 
 .dialog.modal > .box {
+    max-width: 480px;
     padding-top: 0px; }
 
 .dialog.modal.show > .box {
     padding-top: 24px; }
 
 .dialog.picker-date > .box {
-    max-width: 300px !important;
-    width: 300px !important; }
+    width: 300px !important;
+    max-width: 300px !important; }
 
 .dialog.picker-clock > .box {
-    max-width: 280px !important;
-    width: 280px !important; }
+    width: 280px !important;
+    max-width: 280px !important; }
 
 .dialog.show > .box {
     border-radius: 2px;
@@ -4218,17 +4238,20 @@ button.raised:focus:after, button.flat:focus:after {
             transform: translateY(0) scale(1); }
 
 .dialog > .box > .title {
-    padding: 24px 24px 20px 24px;
-    font-size: 20px;
-    font-weight: 500; }
+    padding: 24px 24px 16px 24px;
+    font-size: var(--headline-5-size);
+    letter-spacing: var(--headline-5-letterspacing);
+    font-weight: var(--headline-5-weight); }
 
 .dialog.modal > .box > .title {
     padding-top: 0px; }
 
 .dialog > .box > .content {
-    font-size: 15px;
+    padding: 0px 24px 24px 24px;
     overflow: auto;
-    padding: 0px 24px 24px 24px; }
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
 
 .dialog > .box > .actions {
     height: 36px;
@@ -5712,6 +5735,9 @@ body.show-keyboard .fab-speed-dial {
 .form-navigation.x3 > .content {
     max-width: 480px; }
 
+.form-navigation.x4 > .content {
+    max-width: 560px; }
+
 .form-navigation.show > .content {
     -webkit-transform: translateX(0%);
        -moz-transform: translateX(0%);
@@ -6750,6 +6776,10 @@ p.link > a {
 
 .message > img + p {
     margin-top: 12px; }
+
+.message > .progress-bar {
+    width: 40%;
+    margin: 16px 30% 8px 30%; }
 
 /** NOTIFICATION */
 
@@ -7802,8 +7832,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 20px;
     width: calc(100% - 36px);
     height: 32px;
-    cursor: pointer;
     line-height: 32px;
+    cursor: pointer;
     margin: 0px;
     overflow: hidden;
     font-size: var(--body-1-size);
@@ -7816,7 +7846,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .select.inline > .content > .value { 
     width: calc(50% - 36px);
-    top: 9px; 
+    top: 8px; 
     left: 50%; }
 
 .select.inline.l20 > .content > .value {
@@ -9700,7 +9730,7 @@ body.show-keyboard .stepper-mobile {
     text-overflow: ellipsis;
     font-size: var(--subtitle-1-size);
     letter-spacing: var(--subtitle-1-letterspacing);
-    font-weight: var(--subtitle-1-weight); }
+    font-weight: 500; }
 
 .subheader > .avatar + span {
     padding-left: 8px; }
@@ -10621,6 +10651,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight);
     background-color: transparent; }
 
+.textfield.align-center > .content > input { 
+    text-align: center; }
+
 .textfield.align-right > .content > input { 
     text-align: right; }
 
@@ -10709,6 +10742,9 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight); }
 
+.textfield.align-center > .content > .value { 
+    text-align: center; }
+
 .textfield.align-right > .content > .value { 
     text-align: right; }
 
@@ -10723,7 +10759,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: calc(100% - 68px); }
 
 .textfield.inline > .content > .value {
-    top: 9px; }
+    top: 8px; }
 
 .textfield.inline > .content > .value {
     left: 50%; 

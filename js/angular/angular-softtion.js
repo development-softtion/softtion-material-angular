@@ -729,14 +729,14 @@
         }
 
         function isArrayLike(obj) {
-            if (obj === null || isWindow(obj)) return false;
+            if (softtion.isUndefined(obj) || isWindow(obj)) return false;
             
-            if (isArray(obj) || isString(obj) || (jqLite && obj instanceof jqLite))
+            if (isArray(obj) || isString(obj))
                 return true;
 
             var length = "length" in Object(obj) && obj.length;
 
-            return isNumber(length) &&
+            return !isNaN(length) &&
                     (length >= 0 && ((length - 1) in obj ||
                     obj instanceof Array) || 
                     typeof obj.item === "function");

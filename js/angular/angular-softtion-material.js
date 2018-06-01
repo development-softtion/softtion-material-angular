@@ -230,6 +230,8 @@
 
                 MaterialFont: Properties.create(Properties.MaterialFont),
 
+                MaterialTheme: Properties.create(Properties.MaterialTheme),
+
                 Sidenav: Properties.create(Properties.Sidenav)
             }
         };
@@ -7635,6 +7637,8 @@
                 var tooltip = $container.add($attrs.tooltip); 
 
                 $element.on("mouseenter", () => {
+                    if (!softtion.isString($attrs.tooltip)) return;
+                    
                     tooltip.addClass(Classes.SHOW); // Desplegando
                     
                     var widthWindow = $container.getWidthWindow(),
@@ -9300,8 +9304,12 @@
         
         MaterialTheme.prototype.get = function () { return themes; };
         
+        MaterialTheme.prototype.getPallete = function (pallette) {
+            return themes[pallette.toUpperCase()];
+        };
+        
         MaterialTheme.prototype.getColor = function (pallette, base) {
-            return this.get()[pallette.toUpperCase()][base];
+            return themes[pallette.toUpperCase()][base];
         };
         
         function getHexToRgba(hex, opacity) {
@@ -9389,6 +9397,7 @@
             case (Properties.FormNavigation.NAME): return Properties.FormNavigation;
             case (Properties.MaterialBackground.NAME): return Properties.MaterialBackground;
             case (Properties.MaterialFont.NAME): return Properties.MaterialFont;
+            case (Properties.MaterialTheme.NAME): return Properties.MaterialTheme;
             case (Properties.Sidenav.NAME): return Properties.Sidenav;
         }
     }
@@ -9592,6 +9601,44 @@
 
                     if (softtion.isString(color)) // Color correcto
                         $element.css("color", color);
+                });
+            }
+        };
+    }
+    
+    // Propiedad: MaterialTheme
+    // Version: 1.0.0
+    // Update: 02/Jun/2018
+    
+    Properties.MaterialTheme = MaterialThemeProperty;
+    
+    Properties.MaterialTheme.NAME = "MaterialTheme";
+    Properties.MaterialTheme.VERSION = "1.0.0";
+    Properties.MaterialTheme.KEY = "materialTheme";
+    
+    Properties.MaterialTheme.$inject = [ "$materialTheme", "$materialColor" ];
+    
+    function MaterialThemeProperty($themes, $colors) {
+        return {
+            restrict: "A",
+            link: function ($scope, $element, $attrs) {
+                $attrs.$observe("materialTheme", () => {
+                    var themeColor = $attrs.materialTheme;
+                    
+                    if (!softtion.isString(themeColor)) return;
+                    
+                    var properties = themeColor.split(":");
+
+                    if (!properties.has(2)) return;
+                    
+                    var pallete = $themes.getPallete(properties[0]);
+                    
+                    if (softtion.isDefined(pallete)) {
+                        $element.css("background-color", pallete[properties[1]]);
+                        
+                        var font = pallete.FONTS[properties[1]];
+                        $element.css("color", $colors.FONTS[font].PRIMARY);
+                    } // Se encontro la paleta de colores, cargando configuración
                 });
             }
         };
@@ -9830,12 +9877,16 @@
                 $scope.input.toLowerCase() : $scope.input;
 
             switch ($scope.type) {
-                case (TextType.MONEY):
+                case (TextType.INTEGER):
                     setValueModel(parseInt($scope.input));
                 break;
                 
+                case (TextType.MONEY):
+                    setValueModel(parseFloat($scope.input));
+                break;
+                
                 case (TextType.MATH):
-                    setValueModel(parseInt($scope.input));
+                    setValueModel(parseFloat($scope.input));
                 break;
 
                 case (TextType.DECIMAL): 
@@ -9898,6 +9949,12 @@
                 switch ($scope.type) {
                     case (TextType.EMAIL):
                         result.message = "Texto digitado no es un email";
+                    break;
+                    case (TextType.MONEY):
+                        result.message = "Texto digitado no es un dato monetario";
+                    break;
+                    case (TextType.MATH):
+                        result.message = "Texto digitado no es un dato matemático";
                     break;
                     case (TextType.DECIMAL):
                         result.message = "Texto digitado no es un número decimal";

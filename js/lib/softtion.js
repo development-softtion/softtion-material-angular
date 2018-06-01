@@ -37,6 +37,7 @@ class Softtion {
             TEXT: "text",
             ALPHABETIC: "alphabetic",
             NUMBER: "number",
+            INTEGER: "integer",
             MONEY: "money",
             MATH: "math",
             ALPHANUMBER: "alphanumber",
@@ -436,6 +437,9 @@ class Softtion {
             case (Softtion.TEXTCONTROL.NUMBER):  
                 return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
                 
+            case (Softtion.TEXTCONTROL.INTEGER):  
+                return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
+                
             case (Softtion.TEXTCONTROL.ALPHANUMBER): 
                 return value.replace(Softtion.REG_CHARACTERS.ALPHANUMBER, "");
                 
@@ -455,10 +459,10 @@ class Softtion {
                 return value.replace(Softtion.REG_CHARACTERS.PASSWORD, "");
                 
             case (Softtion.TEXTCONTROL.MONEY):  
-                return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
+                return value.replace(Softtion.REG_CHARACTERS.DECIMAL, "");
                 
             case (Softtion.TEXTCONTROL.MATH):  
-                return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
+                return value.replace(Softtion.REG_CHARACTERS.DECIMAL, "");
                 
             default: return value; // No se aplica control de carácteres
         }
@@ -476,23 +480,28 @@ class Softtion {
         }
     }
         
-    getMonetaryExpression(number) {
+    getMonetaryExpression(number, decimalsCount) {
         if (this.isUndefined(number)) return ""; // Indefinido
         
-        var expression = "", contador = 0, 
-            $number = number.toString(), length = $number.length;
-            
+        var result = "", contador = 0, 
+            fraction = number.toString().split("."),
+            $number = fraction[0],
+            length = $number.length, decimals;
+    
+        if (fraction.has(2)) decimals = fraction[1];
+        
         for (var index = 1; index <= length; index++) {
             if (contador === 3) { 
-                expression = "." + expression; contador = 0;
+                result = "." + result; contador = 0;
             } // Agregando punto en la cifra
 
-            expression = $number.charAt(length - index) + expression; 
+            result = $number.charAt(length - index) + result; 
             
             contador++; // Aumentando
         } // Recorriendo el número expresarlo monetariamente
 
-        return expression; // Retornando expresado monetariamente
+        return (this.isUndefined(decimals)) ? // Retornando expresión
+            result : result + "," + decimals.substring(0, decimalsCount); 
     }
     
     getThreeDigits(number) {
