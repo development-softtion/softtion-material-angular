@@ -1914,15 +1914,6 @@ button.floating.theme-secondary:before {
 .theme-secondary .fullwidth-field.contrast > .content > textarea:focus {
     color: var(--theme-secondary-font-primary-500); }
 
-.fullwidth-field > .content > textarea:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .fullwidth-field.contrast > .content > textarea:disabled {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .fullwidth-field.contrast > .content > textarea:disabled {
-    color: var(--theme-secondary-font-disabled-500); }
-
 .fullwidth-field > .content > textarea::selection {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-primary-500); }
@@ -3178,12 +3169,6 @@ button.floating.theme-secondary:before {
 .theme-secondary .textarea.contrast > .content > .box > textarea:focus {
     color: var(--theme-secondary-font-primary-500); }
 
-.textarea > .content > .box > textarea:focus {
-    color: var(--primary-font); }
-
-.textarea > .content > .box > textarea:disabled {
-    color: var(--disabled-font); }
-
 .textarea > .content > .box > textarea::selection {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-primary-500); }
@@ -3332,15 +3317,6 @@ button.floating.theme-secondary:before {
 
 .theme-secondary .textbox.contrast.active > .content > .box > input:focus {
     color: var(--theme-secondary-font-primary-300); }
-
-.textbox > .content > .box > input:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox.contrast > .content > .box > input:disabled {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox.contrast > .content > .box > input:disabled {
-    color: var(--theme-secondary-font-disabled-200); }
 
 .textbox > .content > .box > input::selection { 
     color: var(--theme-secondary-font-primary-500);
@@ -3517,15 +3493,6 @@ button.floating.theme-secondary:before {
 .theme-secondary .textbox-multiline.contrast .box > textarea:focus {
     color: var(--theme-secondary-font-primary-300); }
 
-.textbox-multiline > .content > .box > textarea:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox-multiline.contrast .box > textarea:disabled {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea:disabled {
-    color: var(--theme-secondary-font-disabled-200); }
-
 .textbox-multiline > .content > .box > textarea::selection {
     color: var(--theme-secondary-active);
     background-color: var(--theme-secondary-500); }
@@ -3660,15 +3627,6 @@ button.floating.theme-secondary:before {
 
 .theme-secondary .textfield.contrast.active > .content > input:focus {
     color: var(--theme-secondary-font-primary-500); }
-
-.textfield > .content > input:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield.contrast > .content > input:disabled {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > input:disabled {
-    color: var(--theme-secondary-font-disabled-500); }
 
 .textfield > .content > input::selection { 
     color: var(--theme-secondary-font-primary-500);
@@ -3875,15 +3833,6 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield-bordered.contrast.active > .content > .box > input:focus {
     color: var(--theme-secondary-font-primary-500); }
 
-.textfield-bordered > .content > .box > input:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input:disabled {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input:disabled {
-    color: var(--theme-secondary-font-disabled-200); }
-
 .textfield-bordered > .content > .box > input::selection { 
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-primary-500); }
@@ -4022,15 +3971,6 @@ button.floating.theme-secondary:before {
 
 .theme-secondary .textfield-multiline.contrast > .content > textarea:focus {
     color: var(--theme-secondary-font-primary-500); }
-
-.textfield-multiline > .content > textarea:disabled {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > textarea:disabled {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > textarea:disabled {
-    color: var(--theme-secondary-font-disabled-500); }
 
 .textfield-multiline > .content > textarea::selection {
     background-color: var(--theme-secondary-500);
