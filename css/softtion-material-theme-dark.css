@@ -2045,7 +2045,7 @@ button.floating.theme-secondary:before {
 .grid-sheet > .item > img:hover + .description {
     color: var(--primary-font); }
 
-/** ITEM-LIST */
+/** ITEM LIST */
 
 .item-list {
     border-bottom: 1px solid transparent; }
@@ -2053,7 +2053,7 @@ button.floating.theme-secondary:before {
 .bordered > .item-list, .item-list.bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.item-list:hover {
+.item-list.actionable:hover {
     background-color: var(--background-active); }
 
 .item-list > .box > .avatar > span,

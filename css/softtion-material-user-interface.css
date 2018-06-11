@@ -572,6 +572,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.autocomplete > .content.disabled {
+    pointer-events: none; }
+
 .autocomplete > .content > i.description {
     position: absolute;
     top: 24px;
@@ -3182,6 +3185,9 @@ button.raised:focus:after, button.flat:focus:after {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.clockpicker-input > .content.disabled {
+    pointer-events: none; }
+
 .clockpicker-input > .content > i.description {
     position: absolute;
     top: 24px;
@@ -3824,6 +3830,9 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     float: left;
     padding: 8px 0px 12px 0px; }
+
+.datepicker-input > .content.disabled {
+    pointer-events: none; }
 
 .datepicker-input > .content > i.description {
     position: absolute;
@@ -7706,6 +7715,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.select > .content.disabled {
+    pointer-events: none; }
+
 .select > .content > i.description {
     position: absolute;
     top: 24px;
@@ -7999,6 +8011,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
             transition: max-height 200ms 0ms var(--deceleration-curve), 
                 max-width 200ms 0ms var(--deceleration-curve); }
 
+.select > .content > ul.orientation {
+    top: initial;
+    bottom: 18px; }
+
 .select:not(.inline) > .content > i.description ~ ul {
     left: 40px;
     width: calc(100% - 40px); }
@@ -8089,6 +8105,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     width: 100%;
     float: left;
     padding: 8px 0px 12px 0px; }
+
+.select-multiple > .content.disabled {
+    pointer-events: none; }
 
 .select-multiple > .content > i.description {
     position: absolute;
@@ -8405,6 +8424,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
                 max-width 200ms 0ms var(--deceleration-curve);
             transition: max-height 200ms 0ms var(--deceleration-curve), 
                 max-width 200ms 0ms var(--deceleration-curve); }
+
+.select-multiple > .content > ul.orientation {
+    top: initial;
+    bottom: 18px; }
 
 .select-multiple:not(.inline) > .content > i.description ~ ul {
     left: 40px;
@@ -8972,13 +8995,20 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     white-space: nowrap;
     width: 100%;
     box-sizing: border-box;
-    padding: 0px 16px 0px 32px;
+    padding: 0px 16px 0px 24px;
     height: 48px;
     line-height: 48px;
     text-decoration: none;
     font-size: var(--subtitle-2-size);
     letter-spacing: var(--subtitle-2-letterspacing);
     font-weight: var(--subtitle-2-weight); }
+
+.sidenav > .content .sidenav-item > .options > ul > li > a > i {
+    color: inherit;
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin-right: 12px; }
 
 .sidenav > .content .divider {
     margin: 8px 0px; }
@@ -9703,6 +9733,9 @@ body.show-keyboard .stepper-mobile {
 .subheader.condense {
     height: 36px;
     line-height: 36px; }
+
+.subheader.off-spacing {
+    padding: 0px; }
 
 .subheader > .avatar {
     width: 40px; }

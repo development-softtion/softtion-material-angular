@@ -1978,7 +1978,7 @@
     Table.prototype.addColumn = function (attrs) {
         var name = attrs.name, type = attrs.type;
         
-        if (softtion.isString(name) && softtion.isString(type)) {
+        if (softtion.isText(name) && softtion.isText(type)) {
             if (!this.columnsName.hasItem(name)) {
                 // Agregando columna de tabla
                 this.columns.push(
@@ -2015,7 +2015,7 @@
     Table.prototype.getSentence = function () {
         var columns = this.columns; // Columnas
         
-        if (!softtion.isString(this.name) && columns.isEmpty()) {
+        if (!softtion.isText(this.name) && columns.isEmpty()) {
             return null;
         } // No ha definido parametros correctamente
         

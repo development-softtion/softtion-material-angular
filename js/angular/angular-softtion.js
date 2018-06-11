@@ -725,7 +725,7 @@
         }
 
         function isString(value) {
-            return typeof value === 'string';
+            return typeof value === "string";
         }
 
         function isArrayLike(obj) {

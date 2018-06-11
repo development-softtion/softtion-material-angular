@@ -209,7 +209,11 @@ class Softtion {
     }
     
     isString(string, force) {
-        return ((this.isDefined(string, force)) && (typeof string === "string") && (string !== ""));
+        return ((this.isDefined(string, force)) && (typeof string === "string"));
+    }
+    
+    isText(string, force) {
+        return ((this.isString(string, force)) && (string !== ""));
     }
     
     isNumber(number, force) {
@@ -248,7 +252,7 @@ class Softtion {
     findKey(object, pattern) {
         var self = this; // Instancia de Softtion
         
-        if (self.isUndefined(object) || !self.isString(pattern))
+        if (self.isUndefined(object) || !self.isText(pattern))
             return undefined; // Atributos indefindos para busqueda
 
         var keys = pattern.split("."); // Lista de claves
@@ -395,7 +399,7 @@ class Softtion {
         
         if (this.isArrayNotEmpty(suffixes)) {
             suffixes.forEach((suffix) => { URL += "/" + suffix; });
-        } else if (this.isString(suffixes)) {
+        } else if (this.isText(suffixes)) {
             URL += "/" + suffixes;
         } // Se establecio un solo prefijo para URL
         
@@ -556,7 +560,7 @@ class Softtion {
             var digits = $number.substring(startPosicion, endPosition),
                 description = this.getThreeDigits(digits);
 
-            if (this.isString(description)) {
+            if (this.isText(description)) {
                 if (index > 0) {
                     if (parseInt(digits) > 1) {
                         description += " " + Softtion.QUANTITIES[index * 10];
@@ -717,7 +721,7 @@ class Softtion {
     }
     
     nl2br(str, is_xhtml) {
-        if (this.isString(str)) {
+        if (this.isText(str)) {
             var breakTag = (this.parseBoolean(is_xhtml)) ? "<br />" : "<br>",
                 regex = /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g;
         
@@ -1076,7 +1080,7 @@ class Softtion {
         String.prototype.isEmpty = function () { return (this.length === 0); };
         
         String.prototype.pattern = function (value, force) { 
-            if (!softtion.isString(value)) return true; // Sin filtro
+            if (!softtion.isText(value)) return true; // Sin filtro
             
             var test = (!force) ? this.toLowerCase() : forceString(this.toLowerCase());
             
@@ -1084,7 +1088,7 @@ class Softtion {
         };
         
         String.prototype.like = function (type, value, force) { 
-            if (!softtion.isString(value)) return true; // Sin filtro
+            if (!softtion.isText(value)) return true; // Sin filtro
             
             var pattern = undefined, // Expresión RegExp
                 test = (!force) ? this.toLowerCase() : forceString(this.toLowerCase());

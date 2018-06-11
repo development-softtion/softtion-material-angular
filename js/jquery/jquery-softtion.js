@@ -74,7 +74,7 @@
                 left = element.offset().left,
                 top = element.offset().top;
             
-            if (softtion.isString(selector)) {
+            if (softtion.isText(selector)) {
                 var parent = element.parents(selector);
                 
                 if (parent.exists()) {

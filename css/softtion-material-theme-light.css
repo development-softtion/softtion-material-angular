@@ -212,6 +212,9 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 .autocomplete.active > .content > input:focus ~ label > span {
     color: var(--theme-error-500); }
 
+.autocomplete > .content.disabled > label {
+    color: var(--disabled-font); }
+
 .autocomplete > .content > i {
     color: var(--secondary-font); }
 
@@ -1171,13 +1174,13 @@ button.floating.theme-secondary:before {
 .clockpicker-input > .content > label {
     color: var(--secondary-font); }
 
-.clockpicker-input > .content > i {
-    color: var(--secondary-font); }
+.clockpicker-input > .content.disabled > label {
+    color: var(--disabled-font); }
 
 .clockpicker-input > .content > i {
     color: var(--secondary-font); }
 
-.clockpicker-input > .content > .value.disabled {
+.clockpicker-input > .content.disabled > .value {
     color: var(--disabled-font); }
 
 .clockpicker-input > .content > .line-shadow {
@@ -1343,10 +1346,13 @@ button.floating.theme-secondary:before {
 .datepicker-input > .content > label {
     color: var(--secondary-font); }
 
+.datepicker-input > .content.disabled > label {
+    color: var(--disabled-font); }
+
 .datepicker-input > .content > i {
     color: var(--secondary-font); }
 
-.datepicker-input > .content > .value.disabled {
+.datepicker-input > .content.disabled > .value {
     color: var(--disabled-font); }
 
 .datepicker-input > .content > .line-shadow {
@@ -2036,7 +2042,7 @@ button.floating.theme-secondary:before {
 .grid-sheet > .item > img:hover + .description {
     color: var(--primary-font); }
 
-/** ITEM-LIST */
+/** ITEM LIST */
 
 .item-list {
     border-bottom: 1px solid transparent; }
@@ -2044,7 +2050,7 @@ button.floating.theme-secondary:before {
 .bordered > .item-list, .item-list.bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.item-list:hover {
+.item-list.actionable:hover {
     background-color: var(--background-active); }
 
 .item-list > .box > .avatar > span,
@@ -2487,6 +2493,9 @@ button.floating.theme-secondary:before {
 .select.active > .content > label.active {
     color: var(--theme-secondary-500); }
 
+.select > .content.disabled > label {
+    color: var(--disabled-font); }
+
 .select.active > .content > label.active > span {
     color: var(--theme-error-500); }
 
@@ -2538,6 +2547,9 @@ button.floating.theme-secondary:before {
 
 .select-multiple.active > .content > label.active {
     color: var(--theme-secondary-500); }
+
+.select-multiple > .content.disabled > label {
+    color: var(--disabled-font); }
 
 .select-multiple.active > .content > label.active > span {
     color: var(--theme-error-500); }
