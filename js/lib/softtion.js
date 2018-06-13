@@ -31,6 +31,26 @@ class Softtion {
     static get DAYS_OF_MONTHS() {
         return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     }
+    
+    static get CODES_KEYBOARD() {
+        return {
+            BACKSPACE: 8,       // TECLA BORRAR CARACTER
+            TAB: 9,             // TECLA TABULACIÓN
+            ENTER: 13,          // TECLA ENTER
+            SHIFT: 16,          // TECLA SHIFT
+            CTRL: 17,           // TECLA CONTROL
+            ALT: 18,            // TECLA ALT
+            ESC: 27,            // TECLA ESC
+            SPACE: 32,          // TECLA ESPACIO
+            END: 36,            // TECLA FIN
+            HOME: 36,           // TECLA INICIO
+            ARROW_UP: 38,       // TECLA FLECHA ARRIBA
+            ARROW_RIGHT: 39,    // TECLA FLECHA DERECHA
+            ARROW_DOWN: 40,     // TECLA FLECHA ABAJO
+            ARROW_LEFT: 37,     // TECLA FLECHA IZQUIERDA
+            DELETE: 46          // TECLA SUPRIMIR
+        };
+    }
                 
     static get TEXTCONTROL() {
         return {
@@ -1003,46 +1023,72 @@ class Softtion {
             return softtion.isLeapYear(this.getFullYear());
         };
 
-        Date.prototype.increase = function (type, valueIncrease) {
-            var valueDate; // Tipo de dato a incrementar
-
-            switch (type) {
-                case ("hour") :
-                    valueDate = this.getHours() + valueIncrease;
-                    this.setHours((valueDate > 23) ? 0 : valueDate);
-                break;
-
-                case ("minute") :
-                    valueDate = this.getMinutes() + valueIncrease;
-                    this.setMinutes((valueDate > 59) ? 0 : valueDate);
-                break;
-
-                case ("second") :
-                    valueDate = this.getSeconds() + valueIncrease;
-                    this.setSeconds((valueDate > 59) ? 0 : valueDate);
-                break;
-            }
+        Date.prototype.increaseTime = function (milliseconds) {
+            this.setTime(this.getTime() + milliseconds); return this;
         };
 
-        Date.prototype.decrease = function (type, valueIncrease) {
-            var valueDate; // Tipo de dato a incrementar
+        Date.prototype.increaseSeconds = function (seconds) {
+            return this.increaseTime(seconds * 1000);
+        };
 
-            switch (type) {
-                case ("hour") :
-                    valueDate = this.getHours() - valueIncrease;
-                    this.setHours((valueDate < 0) ? 23 : valueDate);
-                break;
+        Date.prototype.increaseMinutes = function (minutes) {
+            return this.increaseSeconds(minutes * 60);
+        };
 
-                case ("minute") :
-                    valueDate = this.getMinutes() - valueIncrease;
-                    this.setMinutes((valueDate < 0) ? 59 : valueDate);
-                break;
+        Date.prototype.increaseHours = function (hours) {
+            return this.increaseMinutes(hours * 60);
+        };
 
-                case ("second") :
-                    valueDate = this.getSeconds() - valueIncrease;
-                    this.setSeconds((valueDate < 0) ? 59 : valueDate);
-                break;
-            }
+        Date.prototype.increaseDays = function (days) {
+            return this.increaseHours(days * 24);
+        };
+
+        Date.prototype.increaseWeeks = function (weeks) {
+            return this.increaseDays(weeks * 7);
+        };
+
+        Date.prototype.increaseYears = function (years) {
+            return this.increaseDays(years * 365);
+        };
+
+        Date.prototype.decreaseTime = function (milliseconds) {
+            this.setTime(this.getTime() - milliseconds); return this;
+        };
+
+        Date.prototype.decreaseSeconds = function (seconds) {
+            return this.decreaseTime(seconds * 1000);
+        };
+
+        Date.prototype.decreaseMinutes = function (minutes) {
+            return this.decreaseSeconds(minutes * 60);
+        };
+
+        Date.prototype.decreaseHours = function (hours) {
+            return this.decreaseMinutes(hours * 60);
+        };
+
+        Date.prototype.decreaseDays = function (days) {
+            return this.decreaseHours(days * 24);
+        };
+
+        Date.prototype.decreaseWeeks = function (weeks) {
+            return this.decreaseDays(weeks * 7);
+        };
+
+        Date.prototype.decreaseYears = function (years) {
+            return this.decreaseDays(years * 365);
+        };
+        
+        Date.prototype.isAfter = function (date) {
+            if (softtion.isDate(date)) return false;
+            
+            return this.getTime() < date.getTime();
+        };
+        
+        Date.prototype.isBefore = function (date) {
+            if (softtion.isDate(date)) return false;
+            
+            return this.getTime() > date.getTime();
         };
         
         Date.prototype.getDifferenceFormat = function (date, min, prefixIgnore) {

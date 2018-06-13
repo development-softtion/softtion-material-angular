@@ -1173,8 +1173,11 @@ button.floating.theme-secondary:before {
 .clockpicker-input > .content > label {
     color: var(--secondary-font); }
 
-.clockpicker-input > .content > i {
-    color: var(--secondary-font); }
+.clockpicker-input > .content.active > label.active {
+    color: var(--theme-secondary-500); }
+
+.clockpicker-input > .content.disabled > label {
+    color: var(--disabled-font); }
 
 .clockpicker-input > .content > i {
     color: var(--secondary-font); }
@@ -1184,6 +1187,9 @@ button.floating.theme-secondary:before {
 
 .clockpicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--background-border); }
+
+.clockpicker-input > .content.active > .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-500); }
 
 .clockpicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--background-border); }
@@ -1348,6 +1354,12 @@ button.floating.theme-secondary:before {
 .datepicker-input > .content > label {
     color: var(--secondary-font); }
 
+.datepicker-input > .content.active > label.active {
+    color: var(--theme-secondary-500); }
+
+.datepicker-input > .content.disabled > label {
+    color: var(--disabled-font); }
+
 .datepicker-input > .content > i {
     color: var(--secondary-font); }
 
@@ -1356,6 +1368,9 @@ button.floating.theme-secondary:before {
 
 .datepicker-input > .content > .line-shadow {
     border-bottom: 1px solid var(--background-border); }
+
+.datepicker-input > .content.active > .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-500); }
 
 .datepicker-input > .content > .line-shadow.disabled {
     border-bottom: 1px dashed var(--background-border); }
@@ -2982,24 +2997,24 @@ button.floating.theme-secondary:before {
     opacity: 0.38;
     background-color: #ffffff; }
 
-.switch > label > input[type=checkbox]:checked + .track:before {
+.switch > input[type=checkbox]:checked + label > .track:before {
     opacity: 0.5;
     background-color: var(--theme-secondary-400); }
 
-.switch > label > input[type=checkbox]:disabled + .track:before {
+.switch > input[type=checkbox]:disabled + label > .track:before {
     opacity: 0.12;
     background-color: #ffffff; }
 
 .switch > label > .track:after { 
     background-color: #fafafa; }
 
-.switch > label > input[type=checkbox]:checked + .track:after {
+.switch > input[type=checkbox]:checked + label > .track:after {
     background-color: var(--theme-secondary-400); }
 
-.switch > label > input[type=checkbox]:disabled + .track:after {
+.switch > input[type=checkbox]:disabled + label > .track:after {
     background-color: #bdbdbd; }
 
-.switch > label > input[type=checkbox]:disabled:checked + .track:after {
+.switch > input[type=checkbox]:disabled:checked + label > .track:after {
     background-color: var(--theme-secondary-200); }
 
 /** TABS */

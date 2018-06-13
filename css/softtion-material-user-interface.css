@@ -3574,9 +3574,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 40px; }
 
 .datatable > .content > table > thead > tr > th.control-cell,
-.datatable > .content > table > tbody > tr > td.control-cell {
-    width: 48px; 
-    padding: 0px; }
+.datatable > .content > table > tbody > tr > td.control-cell { 
+    padding: 0px;
+    width: 48px;
+    overflow: initial; }
 
 .datatable > .content > table > thead > tr > th > i,
 .datatable > .content > table > tbody > tr > td > i {
@@ -3618,6 +3619,12 @@ button.raised:focus:after, button.flat:focus:after {
     width: 20px;
     top: 2px;
     height: 20px; }
+
+.datatable .switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 3px var(--theme-secondary-ripple); }
+
+.datatable .switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(0, 0, 0, 0.3); }
 
 .datatable > .content tbody .textfield {
     width: 100%;
@@ -3830,6 +3837,9 @@ button.raised:focus:after, button.flat:focus:after {
     width: 100%;
     float: left;
     padding: 8px 0px 12px 0px; }
+
+.datepicker-input > .content:focus {
+    outline: none; }
 
 .datepicker-input > .content.disabled {
     pointer-events: none; }
@@ -9837,17 +9847,18 @@ body.show-keyboard .stepper-mobile {
     width: 40px;
     user-select: none; }
 
+.switch > input[type=checkbox] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0; }
+
 .switch > label {
     position: relative;
     display: block;
     width: 100%;
     height: 24px;
     cursor: pointer; }
-
-.switch > label > input[type=checkbox] {
-    opacity: 0;
-    width: 0;
-    height: 0; }
 
 .switch > label > .track:before {
     content: "";
@@ -9884,14 +9895,14 @@ body.show-keyboard .stepper-mobile {
                 box-shadow 100ms 0ms var(--standard-curve), 
                 background 200ms 0ms var(--standard-curve); }
 
-.switch > label > input[type=checkbox]:checked + .track:after {
+.switch > input[type=checkbox]:checked + label > .track:after {
     left: 16px; }
 
-.switch > label > input[type=checkbox]:checked:not(:disabled) ~ .track:active:after {
-    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(38, 166, 154, 0.1); }
+.switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px var(--theme-secondary-ripple); }
 
-.switch > label > input[type=checkbox]:not(:disabled) ~ .track:active:after {
-    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(0, 0, 0, 0.08); }
+.switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(0, 0, 0, 0.3); }
 
 /** TABS */
 
