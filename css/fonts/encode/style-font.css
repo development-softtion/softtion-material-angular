@@ -1,0 +1,50 @@
+/*!
+ * StyleFont EncodeSans
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Thin.ttf") format("truetype");
+    font-weight: 100; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-ExtraLight.ttf") format("truetype");
+    font-weight: 200; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Light.ttf") format("truetype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Regular.ttf") format("truetype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Medium.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-SemiBold.ttf") format("truetype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Bold.ttf") format("truetype");
+    font-weight: 700; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-ExtraBold.ttf") format("truetype");
+    font-weight: 800; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("EncodeSans-Black.ttf") format("truetype");
+    font-weight: 800; }

@@ -68,6 +68,68 @@ class Softtion {
             PASSWORD: "password"
         };
     }
+        
+    static get CLASSES() {
+        return {
+            BODY_OVERFLOW_NONE: "body-overflow-none",
+            OVERFLOW_NONE: "overflow-none",
+            BODY_OVERFLOW_NONE_NAV: "body-overflow-none-sidenav",
+            SHOW_KEYBOARD: "show-keyboard",
+            SHOW_BOTTOM_NAV: "show-bottom-navigation",
+            
+            APPBAR_56: "pd-56",
+            APPBAR_64: "pd-64",
+    
+            ACTIVE: "active",
+            DISPLAYED: "displayed",
+            DEFAULT: "default",
+            SHOW: "show",
+            HIDE: "hide",
+            HIDDEN: "hidden",
+            START: "start",
+            FIXED: "fixed",
+            FINISH: "finish",
+            DISABLED: "disabled",
+            
+            INDETERMINATE: "indeterminate",
+            BUFFERING: "buffering",
+            
+            ANIMATED: "animated",
+            OPTIONABLE: "optionable",
+            ACTION: "action",
+            
+            TWO_LINE: "two-line"
+        };
+    }
+    
+    static get LISTENERS() {
+        return {
+            CLICK: "click",
+            FOCUS: "focus",
+            BLUR: "blur",
+            ENTER: "enter",
+            KEY_UP: "keyUp",
+            KEY_DOWN: "keyDown",
+            HOLD: "hold",
+            CLICK_RIGHT: "clickRight",
+            SHOW: "show",
+            HIDE: "hide",
+            CHANGED_TEXT: "changedText",
+            ICON: "icon",
+            ACTION: "action",
+            CHANGED: "changed",
+            SELECTED: "selected",
+            CLEAR: "clear",
+            ADD: "add",
+            REMOVE: "remove",
+            CANCEL: "cancel",
+            SAVE: "save",
+            DETERMINATE: "determinate",
+            SUCCESS: "success",
+            ERROR: "error",
+            CHECKBOX: "checkbox"
+        };
+    }
     
     static get BreakException() {
         return {}; // Excepción generada
@@ -233,7 +295,7 @@ class Softtion {
     }
     
     isText(string, force) {
-        return ((this.isString(string, force)) && (string !== ""));
+        return ((this.isString(string, force)) && (string.length > 0));
     }
     
     isNumber(number, force) {

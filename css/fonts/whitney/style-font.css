@@ -1,0 +1,30 @@
+/*!
+ * StyleFont Whitney Display
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Whitney-Light.otf") format("opentype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Whitney-Regular.otf") format("opentype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Whitney-Medium.otf") format("opentype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Whitney-Semibold.otf") format("opentype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: softtion-material;
+    src: url("Whitney-Bold.otf") format("opentype");
+    font-weight: 700; }

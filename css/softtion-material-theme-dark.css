@@ -2132,20 +2132,20 @@ button.floating.theme-secondary:before {
 .menu > li.subheader {
     color: var(--secondary-font); }
 
-.menu > li.option {
+.menu > li {
     color: var(--primary-font); }
 
-.menu > li.option > i {
+.menu > li > i {
     color: var(--secondary-font); }
 
-.menu > li.option.disabled, .menu > li.option.disabled > i {
-    color: var(--disabled-font); }
-
-.menu > li.option:hover {
+.menu > .option:hover {
     background-color: var(--background-hover); }
 
-.menu > li.option.active, .menu > li.option.active > i {
+.menu > li.active, .menu > li.active > i {
     color: var(--theme-primary-500); }
+
+.menu > .option.disabled, .menu > .option.disabled > i {
+    color: var(--disabled-font); }
 
 /** MESSAGE */
 

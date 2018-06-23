@@ -57,6 +57,8 @@
     
     /** STYLE FONTS */
     
+    --font-size-base: 16px;
+    
     --headline-1-size: 6rem;
     --headline-1-letterspacing: -1.5px;
     --headline-1-weight: 300;

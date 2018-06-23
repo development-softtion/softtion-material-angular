@@ -2131,16 +2131,16 @@ button.floating.theme-secondary:before {
 .menu > .subheader {
     color: var(--secondary-font); }
 
-.menu > .option {
+.menu > li {
     color: var(--primary-font); }
 
 .menu > .option:hover {
     background-color: var(--background-hover); }
 
-.menu > .option > i {
+.menu > li > i {
     color: var(--secondary-font); }
 
-.menu > .option.active, .menu > .option.active > i {
+.menu > li.active, .menu > li.active > i {
     color: var(--theme-primary-900); }
 
 .menu > .option.disabled, .menu > .option.disabled > i {
