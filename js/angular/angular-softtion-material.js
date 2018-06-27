@@ -4,14 +4,15 @@
  (c) 2016 - 2018 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 20/Jun/2018
+ Created: 19/Nov/2016
+ Updated: 26/Jun/2018
 */
 
 ((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular);
     } else {
-        throw new Error("AngularSofttion requiere Softtion y Angular cargado en la Aplicación");
+        throw new Error("Softtion Material requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
 })((softtion, angular) => {
     
@@ -20,26 +21,15 @@
             filter("filterDictionary", filterDictionary).
             service("$materialFunction", softtionMaterialFunction).
             service("$materialService", softtionMaterialService).
-            provider("$materialFont", softtionMaterialFont).
             constant("$materialConstant", softtionMaterialConstant()).
             constant("$materialColor", getMaterialColors());
     
         // Atributos del framework
-    var MANAGER_DATETIME = {
-            MONTHS: [
-                { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
-                { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
-                { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
-                { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
-                { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
-                { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
-            ]
-        },
-        
+    var MANAGER_DATETIME = Softtion.MANAGER_DATETIME,
         TextType = Softtion.TEXTCONTROL,
         Classes = Softtion.CLASSES,
         Listeners = Softtion.LISTENERS,
-        KeysBoard = getKeysBoard(), 
+        KeysBoard = Softtion.CODES_KEYBOARD, 
         KeysControl = getKeysControl();
     
     function GET_INSTANCE_SOFTTION_MATERIAL() {
@@ -195,6 +185,8 @@
 
                 FormNavigation: Providers.create(Providers.FormNavigation),
                 
+                MaterialFont: Providers.create(Providers.MaterialFont),
+                
                 Modal: Providers.create(Providers.Modal),
 
                 ProgressBar: Providers.create(Providers.ProgressBar),
@@ -238,10 +230,6 @@
                 Sidenav: Properties.create(Properties.Sidenav)
             }
         };
-    }
-    
-    function getKeysBoard() {
-        return Softtion.CODES_KEYBOARD;
     }
             
     function getKeysControl() {
@@ -742,13 +730,13 @@
     }
     
     // Directiva: AutoComplete
-    // Version: 1.2.9
-    // Updated: 23/May/2018
+    // Version: 1.3.4
+    // Updated: 26/Jun/2018
     
     Directives.AutoComplete = AutoCompleteDirective;
     
     Directives.AutoComplete.NAME = "AutoComplete";
-    Directives.AutoComplete.VERSION = "1.2.4";
+    Directives.AutoComplete.VERSION = "1.3.4";
     Directives.AutoComplete.KEY = "autocomplete";
     Directives.AutoComplete.ROUTE = "softtion/template/autocomplete.html";
     
@@ -887,6 +875,8 @@
                 searchMode: "=?",
                 inputMode: "=?",
                 focusedInput: "=?",
+                patternMethod: "@",
+                patternForce: "=?",
                 ngDefineCoincidences: "&",
                 ngFormatDescription: "&",
                 ngListener: "&"
@@ -904,22 +894,22 @@
                 $scope.coincidences = []; $scope.old = undefined; 
                 $scope.inputActive = false; $scope.instance = false;
                 
+                $scope.patternMethod = $scope.patternMethod || "start";
+                $scope.patternForce = $scope.patternForce || true;
+                
                 $scope.countVisible = $scope.countVisible || 6;
-                $scope.temporal = rebootSuggestions();
-
+                
                 $scope.$watch(() => { return $scope.suggestions; }, 
                     (newValue) => {
+                        $scope.temporal = rebootSuggestions();
+                        
                         if (!softtion.isArray(newValue)) {
-                            $scope.temporal.suggestions.old = [];
-                            $scope.temporal.suggestions.now = [];
                             $scope.suggestions = []; return;
                         } // Los items de seleccion no es un Array
                         
                         if (!$scope.instance && !$scope.disabledOrderby) 
                             $scope.suggestions = $orderBy(newValue, $scope.key || "");
                         
-                        $scope.temporal.suggestions.old = [];
-                        $scope.temporal.suggestions.now = [];
                         $scope.instance = !$scope.instance; // Intercalando
                     });
 
@@ -998,7 +988,7 @@
                     $scope.inputActive = true; $element.addClass(Classes.ACTIVE); 
 
                     listener.launch(Listeners.FOCUS, { $event: $event });
-                    searchSuggestions($scope.input); // Buscar sugerencias
+                    openListSuggestions($scope.input); // Buscar sugerencias
                 };
 
                 $scope.blurInput = function ($event) { 
@@ -1017,10 +1007,8 @@
                     } else if ($scope.coincidences.isEmpty())
                         $scope.select = undefined; // No hay opciones
                     
-                    $scope.input = ""; selection = false; 
-                    $element.removeClass(Classes.ACTIVE);
-                    $scope.inputActive = false; 
-                    list.removeClass(Classes.ACTIVE); 
+                    $scope.input = ""; selection = false; $element.removeClass(Classes.ACTIVE);
+                    $scope.inputActive = false; list.removeClass(Classes.ACTIVE); 
 
                     listener.launch(Listeners.BLUR, { $event: $event });
                 };
@@ -1048,7 +1036,7 @@
 
                     listener.launch(Listeners.KEY_UP, { $event: $event });
 
-                    searchSuggestions($scope.input); // Buscando sugerencias
+                    openListSuggestions($scope.input); // Buscando sugerencias
                 };
 
                 $scope.keydownSuggestion = function ($event, suggestion) {
@@ -1146,7 +1134,7 @@
                     var value = $scope.ngFormatDescription({ $suggestion: suggestion });
                     
                     return (softtion.isDefined(value)) ? 
-                        value : getValueSuggestion(suggestion);
+                        value : describeSuggestion(suggestion);
                 }
 
                 function describeSuggestion(suggestion) {
@@ -1154,41 +1142,101 @@
                         suggestion : getValueSuggestion(suggestion);
                 }
 
-                function searchSuggestions(pattern) {
+                function openListSuggestions(pattern) {
                     if (!softtion.isText(pattern)) {
                         $scope.temporal = rebootSuggestions(); return;
                     } // No se debe aplicar proceso de filtro
 
-                    var coincidences, suggestions, result = getSuggestions(pattern);
-                    
-                    if (result.success) {
-                        suggestions = result.suggestions; searchStart = true; 
+                    var result = getSuggestions(pattern), // Sugerencias
                         
+                        suggestions = (result.success) ?
+                            result.temporal.suggestions : $scope.suggestions,
+                                    
                         coincidences = $scope.ngDefineCoincidences({
                             $suggestions: suggestions, $pattern: pattern
                         });
-                        
-                        if (softtion.isUndefined(coincidences))
-                            coincidences = defineCoincidences(suggestions, pattern);
-                    } else { coincidences = result.suggestions; }
                     
-                    $scope.coincidences = softtion.isUndefined(coincidences) ?
-                        $scope.coincidences : coincidences.extract(0, $scope.countVisible); 
+                    searchStart = true; // Iniciando busqueda
+
+                    if (softtion.isUndefined(coincidences))
+                        coincidences = getCoincidences(suggestions, pattern);
+                    
+                    $scope.coincidences = // Lista de coincidencias
+                        softtion.isUndefined(coincidences) ? $scope.coincidences : 
+                        coincidences.extract(0, $scope.countVisible); 
                         
-                    setSuggestions(pattern, coincidences); list.addClass(Classes.ACTIVE);
+                    setSuggestions(pattern, coincidences, result);
+                    list.addClass(Classes.ACTIVE); // Desplegando sugerencias
                 }
                 
-                function defineCoincidences(suggestions, pattern) {
-                    var coincidences = []; // Listado de coincidencias
+                function rebootSuggestions() {
+                    return { 
+                        pattern: undefined, suggestions: [], before: undefined
+                    };
+                }
+                
+                function getSuggestions(pattern) {
+                    if (!softtion.isText($scope.temporal.pattern)) 
+                        return { success: false }; 
+                    
+                    return getSuggestionsByMethod(pattern); // Sugerencias
+                }
+                
+                function getSuggestionsByMethod($pattern) {
+                    switch ($scope.patternMethod) {
+                        case ("start"):
+                            return getSuggestionsByStart($pattern);
+                        case ("between"):
+                            return getSuggestionsByStart($pattern);
+                        default:
+                            return getSuggestionsByStart($pattern);
+                    }
+                }
+                
+                function getSuggestionsByStart(pattern) {
+                    var temporal = $scope.temporal, 
+                        stop = softtion.isUndefined(temporal);
                         
+                    while (!stop) {
+                        var $pattern = temporal.pattern; // Patrón anterior
+                        
+                        if (pattern.like("start", $pattern, $scope.patternForce)) {
+                            stop = true;
+                        } else {
+                            temporal = temporal.before;
+                            stop = softtion.isUndefined(temporal);
+                        } // Verificando si existe una lista anterior
+                    }
+                    
+                    if (softtion.isDefined(temporal)) {
+                        return { success: true, temporal: temporal };
+                    } else {
+                        $scope.temporal = rebootSuggestions(); return { success: false };
+                    } // Se debe reiniciar datos temporales
+                }
+                
+                function getCoincidences(suggestions, pattern) {
+                    switch ($scope.patternMethod) {
+                        case ("start"):
+                            return getCoincidencesByStart(suggestions, pattern);
+                        case ("between"):
+                            return getCoincidencesByStart(suggestions, pattern);
+                        default:
+                            return getCoincidencesByStart(suggestions, pattern);
+                    }
+                }
+                
+                function getCoincidencesByStart(suggestions, pattern) {
+                    var coincidences = []; // Listado de coincidencias
+                    
                     angular.forEach(suggestions, (suggestion) => {
                         if (softtion.isText(suggestion)) {
-                            if (suggestion.like("start", pattern, true)) 
+                            if (suggestion.like("start", pattern, $scope.patternForce)) 
                                 coincidences.push(suggestion); 
                         } else {
                             var value = getValueSuggestion(suggestion);
-
-                            if (value.like("start", pattern, true)) 
+                            
+                            if (value.like("start", pattern, $scope.patternForce)) 
                                 coincidences.push(suggestion); 
                         } // El item es un objeto de tipo JSON, verificando
                     });
@@ -1196,55 +1244,27 @@
                     return coincidences; // Coincidencias encontradas
                 }
                 
-                function rebootSuggestions() {
-                    return { 
-                        pattern: undefined, suggestions: { now: [], old: undefined }
+                function setSuggestions($pattern, suggestions, result) {
+                    switch ($scope.patternMethod) {
+                        case ("start"):
+                            setSuggestionsByStart($pattern, suggestions, result);
+                        break;
+                        case ("between"):
+                            setSuggestionsByStart($pattern, suggestions, result);
+                        break;
+                        default:
+                            setSuggestionsByStart($pattern, suggestions, result);
+                        break;
+                    }
+                }
+                
+                function setSuggestionsByStart(pattern, suggestions, result) {
+                    $scope.temporal = {
+                        suggestions: suggestions,
+                        pattern: pattern,
+                        before: softtion.isDefined(result) ?
+                            result.temporal : undefined
                     };
-                }
-                
-                function getSuggestions(pattern) {
-                    var $pattern = $scope.temporal.pattern; // Patrón anterior 
-                    
-                    if (!softtion.isText($pattern)) // Lista predeterminada
-                        return { success: true, suggestions: $scope.suggestions }; 
-                    
-                    var $suggestions = $scope.temporal.suggestions;
-                    
-                    if (pattern.pattern($pattern)) // Lista actual
-                        return { success: true, suggestions: $suggestions.now }; 
-                    
-                    if ($pattern.like("start", pattern) && // Lista anterior
-                            softtion.isDefined($suggestions.old)) 
-                        return { success: false, suggestions: $suggestions.old.value };
-                    
-                    return { success: true, suggestions: $scope.suggestions };
-                }
-                
-                function setSuggestions(pattern, suggestions) {
-                    var $pattern = $scope.temporal.pattern,
-                        $suggestions = $scope.temporal.suggestions;
-                    
-                    if (!softtion.isText($pattern)) {
-                        $scope.temporal.pattern = pattern;
-                        $suggestions.now = suggestions; return;
-                    } // Inicio del proceso de busqueda en el componente
-                    
-                    if (!softtion.isText(pattern)) {
-                        $scope.temporal.pattern = undefined;
-                        $scope.temporal = rebootSuggestions(); return;
-                    } // Inicio del proceso de busqueda en el componente
-                    
-                    if (pattern.pattern($pattern)) {
-                        $suggestions.old = {
-                            value: $suggestions.now, before: $suggestions.old
-                        };
-                    } else if ($pattern.pattern(pattern)) {
-                        if (softtion.isDefined($suggestions.old)) // Anterior
-                            $suggestions.old = $suggestions.old.before;
-                    } 
-                    
-                    $suggestions.now = suggestions; // Nuevas opciones
-                    $scope.temporal.pattern = pattern; // Nuevo patrón
                 }
             }
         };
@@ -3178,10 +3198,10 @@
                     yearRange = !isNaN($scope.yearRange) ?
                         parseInt($scope.yearRange) : 10,
                     
-                    DAYS_MONTHS = Softtion.DAYS_OF_MONTHS,
-                    DAYS_WEEK = Softtion.DAYS_OF_WEEK,
-                    NAME_MONTHS_MIN = Softtion.MONTHS_OF_YEAR_MIN,
-                    NAME_MONTHS = Softtion.MONTHS_OF_YEAR,
+                    DAYS_OF_MONTHS = MANAGER_DATETIME.DAYS_OF_MONTHS,
+                    DAYS_OF_WEEK = MANAGER_DATETIME.DAYS_OF_WEEK,
+                    MONTHS_OF_YEAR_MIN = MANAGER_DATETIME.MONTHS_OF_YEAR_MIN,
+                    MONTHS_OF_YEAR = MANAGER_DATETIME.MONTHS_OF_YEAR,
                     
                     fontSize = parseInt($body.css("font-size"));
 
@@ -3279,7 +3299,7 @@
                 $scope.selectYear = function (year) {
                     if ($scope.year !== year) {
                         $scope.year = year; dateStart.setYear($scope.year);
-                        var countDaysMonth = DAYS_MONTHS[$scope.month];
+                        var countDaysMonth = DAYS_OF_MONTHS[$scope.month];
 
                         $scope.daysMonth = directive.createCalendar(
                             $scope.year, $scope.month, dateStart.getDay(), countDaysMonth
@@ -3393,18 +3413,18 @@
                     setTimeout(() => { table.removeClass(classTransition); }, 300);
 
                     dateStart.setMonth($scope.month); // Mes seleccionado
-                    $scope.monthText = NAME_MONTHS[$scope.month];
+                    $scope.monthText = MONTHS_OF_YEAR[$scope.month];
 
                     $scope.daysMonth = directive.createCalendar(
-                        $scope.year, $scope.month, dateStart.getDay(), DAYS_MONTHS[$scope.month]
+                        $scope.year, $scope.month, dateStart.getDay(), DAYS_OF_MONTHS[$scope.month]
                     );
                 };
 
                 $scope.selectMonth = function (month) {
                     if ($scope.month !== month) {
                         $scope.month = month; dateStart.setMonth($scope.month);
-                        $scope.monthText = NAME_MONTHS[$scope.month];
-                        var countDaysMonth = DAYS_MONTHS[$scope.month];
+                        $scope.monthText = MONTHS_OF_YEAR[$scope.month];
+                        var countDaysMonth = DAYS_OF_MONTHS[$scope.month];
 
                         $scope.daysMonth = directive.createCalendar(
                             $scope.year, $scope.month, dateStart.getDay(), countDaysMonth
@@ -3420,8 +3440,8 @@
                     var dateDescribe = (softtion.isDate($scope.date)) ?
                         $scope.date : new Date().normalize("date");
 
-                    var describe = DAYS_WEEK[dateDescribe.getDay()];
-                    describe += ", " + NAME_MONTHS_MIN[dateDescribe.getMonth()];
+                    var describe = DAYS_OF_WEEK[dateDescribe.getDay()];
+                    describe += ", " + MONTHS_OF_YEAR_MIN[dateDescribe.getMonth()];
                     describe += " " + dateDescribe.getDate();
                     describe += " del " + dateDescribe.getFullYear();
 
@@ -3483,10 +3503,10 @@
                     $scope.day = date.getDate();
                     $scope.month = date.getMonth();
 
-                    $scope.monthText = NAME_MONTHS[$scope.month];
+                    $scope.monthText = MONTHS_OF_YEAR[$scope.month];
 
                     $scope.daysMonth = directive.createCalendar(
-                        $scope.year, $scope.month, dateStart.getDay(), DAYS_MONTHS[$scope.month]
+                        $scope.year, $scope.month, dateStart.getDay(), DAYS_OF_MONTHS[$scope.month]
                     );
                 }
                 
@@ -4250,7 +4270,7 @@
             scope: {
                 file: "=ngModel",
                 ngDisabled: "=?",
-                textDescription: "@",
+                textDescription: "@label",
                 iconAction: "@",
                 fileTypes: "=?",
                 maxSize: "=?",
@@ -4621,7 +4641,7 @@
                 iconButton: "@",
                 multiple: "=?",
                 ngDisabled: "=?",
-                textDescription: "@",
+                textDescription: "@label",
                 fileTypes: "=?",
                 ngListener: "&"
             },
@@ -5048,7 +5068,8 @@
                 value: "=ngModel", 
                 required: "=?",
                 ngTrim: "=?",
-                uppercase: "=?",
+                ngUppercase: "=?",
+                ngLowercase: "=?",
                 ngDisabled: "=?",
                 ngReadonly: "=?",
                 minLength: "=?",
@@ -7008,7 +7029,8 @@
                 required: "=?",
                 optional: "=?",
                 ngTrim: "=?",
-                uppercase: "=?",
+                ngUppercase: "=?",
+                ngLowercase: "=?",
                 ngDisabled: "=?",
                 ngReadonly: "=?",
                 minLength: "=?",
@@ -7209,7 +7231,8 @@
                 required: "=?",
                 optional: "=?",
                 ngTrim: "=?",
-                uppercase: "=?",
+                ngUppercase: "=?",
+                ngLowercase: "=?",
                 ngDisabled: "=?",
                 ngReadonly: "=?",
                 minLength: "=?",
@@ -7537,7 +7560,8 @@
                 required: "=?",
                 optional: "=?",
                 ngTrim: "=?",
-                uppercase: "=?",
+                ngUppercase: "=?",
+                ngLowercase: "=?",
                 ngDisabled: "=?",
                 ngReadonly: "=?",
                 minLength: "=?",
@@ -7854,6 +7878,8 @@
             case (Providers.Document.NAME): return Providers.Document;
             case (Providers.Dropdown.NAME): return Providers.Dropdown;
             case (Providers.FormNavigation.NAME): return Providers.FormNavigation;
+            case (Providers.MaterialFont.NAME): return Providers.MaterialFont;
+            case (Providers.MaterialTheme.NAME): return Providers.MaterialTheme;
             case (Providers.Modal.NAME): return Providers.Modal;
             case (Providers.ProgressBar.NAME): return Providers.ProgressBar;
             case (Providers.ProgressCircular.NAME): return Providers.ProgressCircular;
@@ -7863,7 +7889,6 @@
             case (Providers.Snackbar.NAME): return Providers.Snackbar;
             case (Providers.Toast.NAME): return Providers.Toast;
             case (Providers.TooltipContainer.NAME): return Providers.TooltipContainer;
-            case (Providers.MaterialTheme.NAME): return Providers.MaterialTheme;
             case (Providers.WindowResize.NAME): return Providers.WindowResize;
         }
     }
@@ -8352,7 +8377,7 @@
     Providers.FormNavigation = FormNavigationProvider;
     
     Providers.FormNavigation.NAME = "FormNavigation";
-    Providers.FormNavigation.VERSION = "1.0.0";
+    Providers.FormNavigation.VERSION = "1.0.1";
     Providers.FormNavigation.KEY = "$formNavigation";
 
     function FormNavigationProvider() {
@@ -8394,6 +8419,27 @@
         }
 
         this.$get = ["$body", fnProvider]; // Proveedor
+    }
+    
+    // Proveedor: MaterialFont
+    // Version: 1.0.0
+    // Update: 26/Jun/2018
+    
+    Providers.MaterialFont = MaterialFontProvider;
+    
+    Providers.MaterialFont.NAME = "MaterialFont";
+    Providers.MaterialFont.VERSION = "1.0.0";
+    Providers.MaterialFont.KEY = "$materialFont";
+
+    function MaterialFontProvider() {
+        
+        this.$get = function () { 
+            return {};
+        };
+        
+        this.setFontSize = function (size) {
+            setPropertyStyle("--font-size-base", size); // Fuente
+        };
     }
     
     // Proveedor: Modal
@@ -9846,6 +9892,12 @@
                 if ($scope.errorActive) validateValue(newValue);
                 
                 if (!$scope.inputActive) {
+                    if (softtion.isText(newValue)) {
+                        $scope.value = ($scope.ngUppercase) ?
+                            newValue.toUpperCase() : ($scope.ngLowercase) ?
+                            newValue.toLowerCase() : newValue;   
+                    } // Se verifica si debe ser UpperCase o LowerCase
+                    
                     $scope.input = (softtion.isUndefined(newValue)) ? "" : newValue;
                 } else {
                     if (!(newValue === $scope.input)) $scope.input = newValue;
@@ -10007,10 +10059,6 @@
         }
 
         function defineModel() {
-            $scope.input = ($scope.ngUppercase) ?
-                $scope.input.toUpperCase() : ($scope.ngLowercase) ?
-                $scope.input.toLowerCase() : $scope.input;
-
             switch ($scope.type) {
                 case (TextType.INTEGER):
                     setValueModel(parseInt($scope.input));
@@ -10038,6 +10086,12 @@
 
         function verifyModelBlur() {
             if (validateValue($scope.input)) $scope.input = ""; // Todo correcto
+            
+            if (softtion.isText($scope.value)) {
+                $scope.value = ($scope.ngUppercase) ?
+                    $scope.value.toUpperCase() : ($scope.ngLowercase) ?
+                    $scope.value.toLowerCase() : $scope.value;   
+            } // Se verifica si debe ser UpperCase o LowerCase
         }
 
         function setInputError(message, disabledError) {
@@ -10151,6 +10205,12 @@
                 if ($scope.errorActive) validateValue(newValue);
                 
                 if (!$scope.areaActive) {
+                    if (softtion.isText(newValue)) {
+                        $scope.value = ($scope.ngUppercase) ?
+                            newValue.toUpperCase() : ($scope.ngLowercase) ?
+                            newValue.toLowerCase() : newValue;   
+                    } // Se verifica si debe ser UpperCase o LowerCase
+                    
                     if (softtion.isUndefined(newValue)) {
                         $scope.countEnter = 0; $scope.area = "";
                     } else {
@@ -10284,9 +10344,6 @@
         }
 
         function defineModel() {
-            if ($scope.ngUppercase) // Texto en MAYÚSCULAS
-                $scope.area = $scope.area.toUpperCase();
-            
             setValueModel($scope.area); // Asignando valor
         }
 
@@ -10296,6 +10353,12 @@
 
         function verifyModelBlur() {
             if (validateValue($scope.area)) $scope.area = ""; // Todo correcto
+            
+            if (softtion.isText($scope.value)) {
+                $scope.value = ($scope.ngUppercase) ?
+                    $scope.value.toUpperCase() : ($scope.ngLowercase) ?
+                    $scope.value.toLowerCase() : $scope.value;   
+            } // Se verifica si debe ser UpperCase o LowerCase
         }
         
         function removeAreaError() {
@@ -10479,19 +10542,6 @@
             });
         }
 }
-    
-    // Proveedor: $materialFont
-    
-    function softtionMaterialFont() {
-        
-        this.$get = function () { 
-            return {};
-        };
-        
-        this.setFontSize = function (size) {
-            setPropertyStyle("--font-size-base", size); // Tamaño
-        };
-    }
     
     // Constante: $materialConstant
     

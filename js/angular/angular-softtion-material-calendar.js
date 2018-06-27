@@ -3,15 +3,16 @@
  (c) 2017 Softtion Developers
  http://material.softtion.com
  License: MIT
- Updated: 04/Nov/2017
+ Created: 04/Nov/2017
+ Updated: 26/Jun/2018
 */
-(function (factory) {
+((factory) => {
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular);
     } else {
-        throw new Error("AngularSofttion requiere Softtion y Angular cargado en la Aplicación");
+        throw new Error("Softtion Material requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
-})(function (softtion, angular) {
+})((softtion, angular) => {
     
     var ngMaterial = angular.module("ngSofttionMaterial");
     

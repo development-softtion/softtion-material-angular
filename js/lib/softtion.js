@@ -12,25 +12,36 @@ class Softtion {
     
     constructor() { }
     
-    static get DAYS_OF_WEEK() {
-        return ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-    }
-                
-    static get DAYS_OF_WEEK_MIN() {
-        return ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-    }
-                
-    static get MONTHS_OF_YEAR() {
-        return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    }
-                
-    static get MONTHS_OF_YEAR_MIN() {
-        return ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-    }
-    
-    static get DAYS_OF_MONTHS() {
-        return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    }
+    static get MANAGER_DATETIME() {
+        return {
+            MONTHS: [
+                { name: "Enero", value: 0 }, { name: "Febrero", value: 1 },
+                { name: "Marzo", value: 2 }, { name: "Abril", value: 3 },
+                { name: "Mayo", value: 4 }, { name: "Junio", value: 5 },
+                { name: "Julio", value: 6 }, { name: "Agosto", value: 7 },
+                { name: "Septiembre", value: 8 }, { name: "Octubre", value: 9 },
+                { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
+            ],
+            
+            DAYS_OF_WEEK: [
+                "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" 
+            ],
+            
+            DAYS_OF_WEEK_MIN: [
+                "Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb" 
+            ],
+            
+            MONTHS_OF_YEAR: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" 
+            ],
+            
+            MONTHS_OF_YEAR_MIN: [ 
+                "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" 
+            ],
+            
+            DAYS_OF_MONTHS: [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
+        };
+    };
     
     static get CODES_KEYBOARD() {
         return {
@@ -985,11 +996,11 @@ class Softtion {
             ); // Número del año de la fecha
 
             formato = formato.replace(
-                "mn", Softtion.MONTHS_OF_YEAR[this.getMonth()]
+                "mn", Softtion.MANAGER_DATETIME.MONTHS_OF_YEAR[this.getMonth()]
             ); // Nombre del mes de la fecha
     
             formato = formato.replace(
-                "ww", Softtion.DAYS_OF_WEEK[this.getDay()]
+                "ww", Softtion.MANAGER_DATETIME.DAYS_OF_WEEK[this.getDay()]
             ); // Nombre de la semana de la fecha
 
             formato = formato.replace(
@@ -1191,6 +1202,7 @@ class Softtion {
             if (!softtion.isText(value)) return true; // Sin filtro
             
             var test = (!force) ? this.toLowerCase() : forceString(this.toLowerCase());
+            if (force) value = forceString(value); // Se debe forzar el patrón
             
             return (~test.indexOf(value.toLowerCase()) !== 0); 
         };
@@ -1204,11 +1216,13 @@ class Softtion {
             switch (type) {
                 case ("start"):   // LIKE 'value%'
                     pattern = "^" + value.toLowerCase() + ".*$"; break;
-                case ("center"):   // LIKE '%value%'
+                case ("between"):   // LIKE '%value%'
                     pattern = "^.*" + value.toLowerCase() + ".*$"; break;
                 case ("end"):  // LIKE '%value'
                     pattern = "^.*" + value.toLowerCase() + "$"; break;
             } // Definiendo tipo de LIKE para aplicar
+            
+            if (force) pattern = forceString(pattern); // Se debe forzar el patrón
             
             return softtion.isUndefined(pattern) ? 
                 false : softtion.isDefined(test.match(pattern));

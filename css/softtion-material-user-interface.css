@@ -6442,6 +6442,7 @@ img.center-content {
 
 .item-list > .box > .content {
     position: relative;
+    width: 100%;
     float: left;
     overflow: hidden;
     height: 32px;
