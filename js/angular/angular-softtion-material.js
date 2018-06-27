@@ -2743,7 +2743,7 @@
                     
     Directives.ClockPickerDialog.HTML = function () {
         var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
-            addAttribute("ng-class", "{show: showActive}").
+            addAttribute("ng-class", "{show: ngOpen}").
             addAttribute("persistent", "true").
             addChildren(
                 softtion.html("div").addClass("box").addChildren(
@@ -2764,7 +2764,7 @@
             templateUrl: Directives.ClockPickerDialog.ROUTE,
             scope: {
                 time: "=ngModel",
-                showActive: "=",
+                ngOpen: "=",
                 parent: "@",
                 ngListener: "&"
             },
@@ -2777,7 +2777,7 @@
                 
                 if (parent.exists()) $element.appendTo(parent); 
 
-                $scope.$watch(() => { return $scope.showActive; }, 
+                $scope.$watch(() => { return $scope.ngOpen; }, 
                     (newValue) => {
                         (!newValue) ? 
                             $body.removeClass(Classes.BODY_OVERFLOW_NONE) :
@@ -2785,7 +2785,7 @@
                     });
 
                 $scope.clockListener = function ($model, $listener) {
-                    $scope.showActive = false; $scope.time = $model; listener.launch($listener);
+                    $scope.ngOpen = false; $scope.time = $model; listener.launch($listener);
                 };
             }
         };
@@ -2847,7 +2847,7 @@
 
         var dialog = softtion.html("div").addClass("clockpicker-dialog").
                 addAttribute("ng-model", "timePicker").
-                addAttribute("show-active", "showActive").
+                addAttribute("ng-open", "ngOpen").
                 addAttribute("ng-listener", "clockDialogListener($model, $listener)").
                 addAttribute("parent", "{{parent}}");
 
@@ -2884,7 +2884,7 @@
                 var listener = new Listener($scope, Listener.KEYS.CLOCKPICKER);
                 
                 $scope.format = $scope.format || "hz:ii zz";
-                $scope.showActive = false; // Dialog inicia oculto
+                $scope.ngOpen = false; // Dialog inicia oculto
 
                 if (softtion.isUndefined($scope.time) && $scope.autoStart) 
                     $scope.time = new Date();  // Tiempo del dispositivo
@@ -2951,7 +2951,7 @@
                 function showDialog($event) {
                     if ($scope.ngDisabled) return; // Desactivado
                         
-                    $scope.showActive = true; // Desplegando dialog
+                    $scope.ngOpen = true; // Desplegando dialog
                     listener.launch(Listeners.SHOW, { $event: $event });
                 }
             }
@@ -3449,18 +3449,14 @@
                 };
 
                 $scope.isToday = function (day) {
-                    if (softtion.isDefined(day)) {
-                        return today.equalsDate($scope.year, $scope.month, day);
-                    } // Se ha definido el dia a comparar
-
-                    return false; // No es el dia de Hoy
+                    return (softtion.isUndefined(day)) ? false :
+                        today.equalsDate($scope.year, $scope.month, day); 
                 };
 
                 $scope.isDisabledDay = function (day) {
                     if (softtion.isUndefined(day)) return true; // Día desconocido
 
-                    var date = new Date($scope.year, $scope.month, day);
-                    return validateDateEnabled(date, $scope); // Validación
+                    return validateDateEnabled(new Date($scope.year, $scope.month, day));
                 };
 
                 $scope.isActiveDay = function (day) {
@@ -3542,7 +3538,7 @@
                     
     Directives.DatePickerDialog.HTML = function () {
         var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
-            addAttribute("ng-class", "{show: showActive}").
+            addAttribute("ng-class", "{show: ngOpen}").
             addAttribute("persistent", "true").
             addChildren(
                 softtion.html("div").addClass("box").
@@ -3571,7 +3567,7 @@
                 minDate: "=?",
                 maxDate: "=?",
                 yearRange: "=?",
-                showActive: "=",
+                ngOpen: "=",
                 parent: "@",
                 ngDisabledDate: "&",
                 ngListener: "&"
@@ -3585,14 +3581,14 @@
                 
                 if (parent.exists()) $element.appendTo(parent); 
 
-                $scope.$watch(() => { return $scope.showActive; }, 
+                $scope.$watch(() => { return $scope.ngOpen; }, 
                     (newValue) => {
                         (!newValue) ? $body.removeClass(Classes.BODY_OVERFLOW_NONE) :
                             $body.addClass(Classes.BODY_OVERFLOW_NONE);
                     });
 
                 $scope.dateListener = function ($model, $listener) {
-                    $scope.showActive = false; $scope.date = $model; listener.launch($listener);
+                    $scope.ngOpen = false; $scope.date = $model; listener.launch($listener);
                 };
 
                 $scope.ngDisabledDatePicker = function ($date) {
@@ -3659,7 +3655,7 @@
         var dialog = softtion.html("div").addClass("datepicker-dialog").
                 addAttribute("ng-model", "date").
                 addAttribute("autostart", "autostart").
-                addAttribute("show-active", "showActive").
+                addAttribute("ng-open", "ngOpen").
                 addAttribute("ng-listener", "dateDialogListener($model, $listener)").
                 addAttribute("parent", "{{parent}}").
                 addAttribute("min-date", "minDate").
@@ -3705,7 +3701,7 @@
                 var listener = new Listener($scope, Listener.KEYS.DATEPICKER);
                 
                 $scope.format = $scope.format || "ww, dd de mn del aa";
-                $scope.showActive = false; // Dialog inicia oculto
+                $scope.ngOpen = false; // Dialog inicia oculto
 
                 $scope.$watch(() => { return $scope.time; }, 
                     (newValue, oldValue) => {
@@ -3773,7 +3769,7 @@
                 function showDialog($event) {
                     if ($scope.ngDisabled) return; // Desactivado
                         
-                    $scope.showActive = true; // Desplegando dialog
+                    $scope.ngOpen = true; // Desplegando dialog
                     listener.launch(Listeners.SHOW, { $event: $event });
                 }
             }
