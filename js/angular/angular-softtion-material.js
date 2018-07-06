@@ -3007,7 +3007,7 @@
             ).
             addChildren(
                 softtion.html("div").addClass("day").
-                    setText("{{describeDaySelect()}}").
+                    setText("{{getDescriptionDaySelect()}}").
                     addAttribute("ng-class", "{active : !selectYearEnabled}").
                     addAttribute("ng-click", "activeDay()")
             );
@@ -3192,15 +3192,13 @@
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.DATEPICKER),
                     
-                    today = new Date(), dateStart = new Date(),
-                    dateCalendar = new Date(),
+                    today = new Date().normalize("date"), 
+                    dateStart = new Date(), dateCalendar = new Date(),
                     
                     yearRange = !isNaN($scope.yearRange) ?
                         parseInt($scope.yearRange) : 10,
                     
                     DAYS_OF_MONTHS = MANAGER_DATETIME.DAYS_OF_MONTHS,
-                    DAYS_OF_WEEK = MANAGER_DATETIME.DAYS_OF_WEEK,
-                    MONTHS_OF_YEAR_MIN = MANAGER_DATETIME.MONTHS_OF_YEAR_MIN,
                     MONTHS_OF_YEAR = MANAGER_DATETIME.MONTHS_OF_YEAR,
                     
                     fontSize = parseInt($body.css("font-size"));
@@ -3436,16 +3434,10 @@
 
                 // FUNCIONES PARA CONTROL DE DÍAS
 
-                $scope.describeDaySelect = function () {
-                    var dateDescribe = (softtion.isDate($scope.date)) ?
-                        $scope.date : new Date().normalize("date");
+                $scope.getDescriptionDaySelect = function () {
+                    var date = (softtion.isDate($scope.date)) ? $scope.date : today;
 
-                    var describe = DAYS_OF_WEEK[dateDescribe.getDay()];
-                    describe += ", " + MONTHS_OF_YEAR_MIN[dateDescribe.getMonth()];
-                    describe += " " + dateDescribe.getDate();
-                    describe += " del " + dateDescribe.getFullYear();
-
-                    return describe; // Retorna descripción de Fecha
+                    return date.getFormat("dw, mx dd del aa"); // Descripción
                 };
 
                 $scope.isToday = function (day) {
@@ -3921,8 +3913,11 @@
     Directives.ExpansionPanel.KEY = "expansionPanel";
     
     Directives.ExpansionPanel.BUTTON_ACTION = function () {
-        return softtion.html("button").addClass(Classes.ACTION).
-            addChildren(softtion.html("i").setText("expand_more"));
+        return softtion.html("button").
+            addClass([ Classes.ACTION, "action-expansion" ]).
+            addChildren(
+                softtion.html("i").setText("expand_more")
+            );
     };
                     
     function ExpansionPanelDirective() {
@@ -3942,10 +3937,10 @@
                     header.append(button); // Botón de expansión
 
                     header.click(() => {
-                        var elements = $element.siblings("li");
+                        var collapsibles = $element.siblings(".collapsible");
 
-                        elements.removeClass(Classes.ACTIVE); // Desactivando
-                        elements.children(".body").css("max-height", "0px");
+                        collapsibles.removeClass(Classes.ACTIVE); // Desactivando
+                        collapsibles.children(".body").css("max-height", "0px");
 
                         $element.toggleClass(Classes.ACTIVE); // Cambiando estado
 
@@ -3961,6 +3956,19 @@
                         } else {
                             body.css("max-height", "0px");
                         } // Se debe recoger el contenido del elemento
+                    });
+                    
+                    content.resize(() => {
+                        if ($element.hasClass(Classes.ACTIVE)) {
+                            var heightActions = actions.innerHeight(),
+                                heightContent = content.innerHeight(),
+
+                                heightBody = // Calculando alto del Body
+                                    ((isNaN(heightContent)) ? 0 : heightContent) + 
+                                    ((isNaN(heightActions)) ? 0 : heightActions);
+
+                            body.css("max-height", heightBody + "px");
+                        } // Elemento activado y cambio de tamaño
                     });
                 } // El componente no tiene contenedor
             }
@@ -5919,9 +5927,9 @@
         return content.create(); // Componente
     };  
     
-    Directives.Select.$inject = [ "$window", "$document" ];
+    Directives.Select.$inject = [ "$window", "$body" ];
     
-    function SelectDirective($window, $document) {
+    function SelectDirective($window, $body) {
         return {
             restrict: "C",
             templateUrl: Directives.Select.ROUTE,
@@ -6056,12 +6064,8 @@
 
                 function showSuggestions() {
                     if (!$scope.selectStart && !$scope.disabledAutoclose)
-                        $document.on(eventID, ($event) => {
-                            if (!softtion.isInPage($element[0])) {
-                                $document.off(eventID); return;
-                            } // Removiendo evento de cerrado automático
-                            
-                            if (!$scope.showList) return; 
+                        $body.on(eventID, ($event) => {
+                            if (!$scope.showList) return; // Lista cerrada
                             
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
@@ -6082,6 +6086,8 @@
                     if (!isBelongElement($event.target))
                         hideSuggestions(); // Se debe cerrar lista
                 }
+                
+                $scope.$on("$destroy", () => { $body.off(eventID); });
             }
         };
     }
@@ -6183,9 +6189,9 @@
         return content.create(); // Componente
     };
     
-    Directives.SelectMultiple.$inject = [ "$window", "$document" ];
+    Directives.SelectMultiple.$inject = [ "$window", "$body" ];
     
-    function SelectMultipleDirective($window, $document) {
+    function SelectMultipleDirective($window, $body) {
         return {
             restrict: "C",
             templateUrl: Directives.SelectMultiple.ROUTE,
@@ -6331,10 +6337,8 @@
                     if ($element.hasClass(Classes.ACTIVE)) return; // Componente
                     
                     if (!$scope.selectStart && !$scope.disabledAutoclose)
-                        $document.on(eventID, ($event) => {
-                            if (!softtion.isInPage($element[0])) {
-                                $document.off(eventID); return;
-                            } // Removiendo evento de cerrado automático
+                        $body.on(eventID, ($event) => {
+                            if (!$scope.showList) return; // Lista cerrada
                             
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
@@ -6351,6 +6355,8 @@
                     if (!isBelongElement($event.target))
                         hideSuggestions(); // Se debe cerrar lista
                 }
+                
+                $scope.$on("$destroy", () => { $body.off(eventID); });
             }
         };
     }

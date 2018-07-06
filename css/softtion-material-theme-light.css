@@ -1463,12 +1463,17 @@ button.floating.theme-secondary:before {
     border-bottom: 1px solid var(--background-border); }
 
 .card .expansion-panel.active, 
+.form .expansion-panel.active, 
 .item-list .expansion-panel.active {
     border-bottom: none; }
 
 .expansion-panel > .header {
     border-bottom: 1px solid var(--background-border);
     background-color: var(--background-component); }
+
+.card > .expansion-panel:last-child > .header,
+.form > .expansion-panel:last-child > .header {
+    border-bottom: none; }
 
 .item-list .expansion-panel > .header {
     background: transparent; }
@@ -2108,6 +2113,9 @@ button.floating.theme-secondary:before {
 
 .list {
     background-color: var(--background-core); }
+
+.form .list, .card .list {
+    background-color: transparent; }
 
 /** LIST SHEET */
 

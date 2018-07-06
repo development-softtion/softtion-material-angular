@@ -988,6 +988,10 @@ class Softtion {
             formato = formato.replace(
                 "dd", softtion.leadingCharBefore(this.getDate(), "0", 2)
             ); // Número del día de la fecha
+
+            formato = formato.replace(
+                "dw", Softtion.MANAGER_DATETIME.DAYS_OF_WEEK[this.getDay()]
+            ); // Número del día de la fecha
         
             formato = formato.replace(
                 "mm", softtion.leadingCharBefore((this.getMonth() + 1), "0", 2)
@@ -1000,6 +1004,10 @@ class Softtion {
             formato = formato.replace(
                 "mn", Softtion.MANAGER_DATETIME.MONTHS_OF_YEAR[this.getMonth()]
             ); // Nombre del mes de la fecha
+
+            formato = formato.replace(
+                "mx", Softtion.MANAGER_DATETIME.MONTHS_OF_YEAR_MIN[this.getMonth()]
+            ); // Nombre del mes reducido de la fecha
     
             formato = formato.replace(
                 "ww", Softtion.MANAGER_DATETIME.DAYS_OF_WEEK[this.getDay()]
