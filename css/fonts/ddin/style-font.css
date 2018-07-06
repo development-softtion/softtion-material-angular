@@ -1,0 +1,15 @@
+/*!
+ * StyleFont D-DIN
+ * author: Softtion Developers
+ * development: Daniel Andres Castillo Pedroza
+ */
+
+@font-face {
+    font-family: "ddin";
+    src: url("D-DIN-Regular.otf") format("opentype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: "ddin";
+    src: url("D-DIN-Bold.otf") format("opentype");
+    font-weight: 700; }

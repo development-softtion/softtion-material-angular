@@ -186,6 +186,8 @@
                 FormNavigation: Providers.create(Providers.FormNavigation),
                 
                 MaterialFont: Providers.create(Providers.MaterialFont),
+
+                MaterialTheme: Providers.create(Providers.MaterialTheme),
                 
                 Modal: Providers.create(Providers.Modal),
 
@@ -204,8 +206,6 @@
                 Toast: Providers.create(Providers.Toast),
                 
                 TooltipContainer: Providers.create(Providers.TooltipContainer),
-
-                MaterialTheme: Providers.create(Providers.MaterialTheme),
 
                 WindowResize: Providers.create(Providers.WindowResize)
             },
@@ -762,8 +762,8 @@
                 ).addAttribute("focused-element", "focusedInput").
                 addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
-        var lineActive = softtion.html("div").addClass("line-shadow-active");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineActive = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -2254,8 +2254,8 @@
             addAttribute("placeholder", "{{placeholder}}").
             addAttribute("ng-style", "{width: resizeWidthInput()}");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
-        var lineActive = softtion.html("div").addClass("line-shadow-active");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineActive = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").
             addAttribute("ng-click", "clickLabel($event)").
@@ -2813,7 +2813,7 @@
                 );
 
         var lineShadow = softtion.html("div").
-                addClass("line-shadow").
+                addClass("line-bordered").
                 addAttribute("ng-class", "{disabled: ngDisabled}");
 
         var iconDescription = softtion.html("i").
@@ -3612,7 +3612,7 @@
                 );
 
         var lineShadow = softtion.html("div").
-                addClass("line-shadow").
+                addClass("line-bordered").
                 addAttribute("ng-class", "{disabled: ngDisabled}");
 
         var iconDescription = softtion.html("i").
@@ -5873,7 +5873,7 @@
                 addAttribute("ng-disabled", "ngDisabled").
                 addAttribute("focused-element", "focusedInput");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -6072,7 +6072,7 @@
                     
                     var sizeSuggestions = $scope.suggestions.length; 
                     
-                    if (sizeSuggestions) sizeSuggestions = 6; // Max. visibles
+                    if (sizeSuggestions > 6) sizeSuggestions = 6; // Max. visibles
                     
                     var position = input.offset().top; // Posición en Window
                         position += (sizeSuggestions * 48) + 24;
@@ -6123,7 +6123,7 @@
                 addAttribute("ng-disabled", "ngDisabled").
                 addAttribute("focused-element", "focusedInput");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -6343,8 +6343,12 @@
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
                     
+                    var sizeSuggestions = $scope.suggestions.length; 
+                    
+                    if (sizeSuggestions > 6) sizeSuggestions = 6; // Max. visibles
+                    
                     var position = input.offset().top; // Posición en Window
-                        position += ($scope.suggestions.length * 48) + 24;
+                        position += (sizeSuggestions * 48) + 24;
                         
                     $scope.orientation = (position > $window.innerHeight); 
                     $scope.selectStart = true; $scope.showList = true; 
@@ -6547,7 +6551,7 @@
                                 addAttribute("ng-disabled", "ngDisabled").
                                 addAttribute("ng-keyup", "keyUpInput()")
                         ).addChildren(
-                            softtion.html("div").addClass("line-shadow")
+                            softtion.html("div").addClass("line-bordered")
                         )
                 );
 
@@ -7290,8 +7294,8 @@
             addAttribute("focused-element", "focusedInput").
             addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
-        var lineActive = softtion.html("div").addClass("line-shadow-active");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineActive = softtion.html("div").addClass("line-shadow");
 
         var value = softtion.html("pre").addClass(["value"]).
             setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
@@ -7513,8 +7517,8 @@
             addAttribute("style", "{{heightStyle()}}").
             addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
-        var lineActive = softtion.html("div").addClass("line-shadow-active");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineActive = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
             addAttribute("ng-click", "clickLabel($event)").
@@ -7613,7 +7617,7 @@
             setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
             addAttribute("ng-click", "clickAction($event)");
 
-        var lineShadow = softtion.html("div").addClass("line-shadow");
+        var lineShadow = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").
             addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -8439,8 +8443,76 @@
             return {};
         };
         
-        this.setFontSize = function (size) {
-            setPropertyStyle("--font-size-base", size); // Fuente
+        this.setFontSize = function (fontSize) {
+            setPropertyStyle("--font-size-base", fontSize); return this;
+        };
+        
+        this.setFontFamily = function (fontFamily) {
+            setPropertyStyle("--font-family-base", fontFamily); return this;
+        };
+        
+        this.setFontHeadline1 = function (fontFamily) {
+            setPropertyStyle("--headline-1-font", fontFamily); return this;
+        };
+        
+        this.setFontHeadline2 = function (fontFamily) {
+            setPropertyStyle("--headline-2-font", fontFamily); return this;
+        };
+        
+        this.setFontHeadline3 = function (fontFamily) {
+            setPropertyStyle("--headline-3-font", fontFamily); return this;
+        };
+        
+        this.setFontHeadline4 = function (fontFamily) {
+            setPropertyStyle("--headline-4-font", fontFamily); return this;
+        };
+        
+        this.setFontHeadline5 = function (fontFamily) {
+            setPropertyStyle("--headline-5-font", fontFamily); return this;
+        };
+        
+        this.setFontHeadline6 = function (fontFamily) {
+            setPropertyStyle("--headline-6-font", fontFamily); return this;
+        };
+        
+        this.setFontSubtitle1 = function (fontFamily) {
+            setPropertyStyle("--subtitle-1-font", fontFamily); return this;
+        };
+        
+        this.setFontSubtitle2 = function (fontFamily) {
+            setPropertyStyle("--subtitle-2-font", fontFamily); return this;
+        };
+        
+        this.setFontBody1 = function (fontFamily) {
+            setPropertyStyle("--body-1-font", fontFamily); return this;
+        };
+        
+        this.setFontBody2 = function (fontFamily) {
+            setPropertyStyle("--body-2-font", fontFamily); return this;
+        };
+        
+        this.setFontButton = function (fontFamily) {
+            setPropertyStyle("--button-font", fontFamily); return this;
+        };
+        
+        this.setFontCaption = function (fontFamily) {
+            setPropertyStyle("--caption-font", fontFamily); return this;
+        };
+        
+        this.setFontOverline = function (fontFamily) {
+            setPropertyStyle("--overline-font", fontFamily); return this;
+        };
+        
+        this.setFontComponents = function (fontFamily) {
+            this.setFontHeadline1(fontFamily).setFontHeadline2(fontFamily).
+                setFontHeadline3(fontFamily).setFontHeadline4(fontFamily).
+                setFontHeadline5(fontFamily).setFontHeadline6(fontFamily).
+                setFontSubtitle1(fontFamily).setFontSubtitle2(fontFamily).
+                setFontBody1(fontFamily).setFontBody2(fontFamily).
+                setFontButton(fontFamily).setFontCaption(fontFamily).
+                setFontOverline(fontFamily);
+            
+            return this; // Retornando interfaz fluida, Servicio Font
         };
     }
     

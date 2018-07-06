@@ -5,31 +5,31 @@
  */
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Thin.otf") format("opentype");
     font-weight: 100; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Light.otf") format("opentype");
     font-weight: 300; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Regular.otf") format("opentype");
     font-weight: 400; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Medium.otf") format("opentype");
     font-weight: 500; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Bold.otf") format("opentype");
     font-weight: 700; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Black.otf") format("opentype");
     font-weight: 900; }

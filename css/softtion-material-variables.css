@@ -57,56 +57,70 @@
     
     /** STYLE FONTS */
     
+    --font-family-base: "roboto";
     --font-size-base: 16px;
     
+    --headline-1-font: "roboto";
     --headline-1-size: 6rem;
     --headline-1-letterspacing: -1.5px;
     --headline-1-weight: 300;
     
+    --headline-2-font: "roboto";
     --headline-2-size: 3.75rem;
     --headline-2-letterspacing: -0.5px;
     --headline-2-weight: 300;
     
+    --headline-3-font: "roboto";
     --headline-3-size: 3rem;
     --headline-3-letterspacing: 0px;
     --headline-3-weight: 400;
     
+    --headline-4-font: "roboto";
     --headline-4-size: 2.125rem;
     --headline-4-letterspacing: 0.25px;
     --headline-4-weight: 400;
     
+    --headline-5-font: "roboto";
     --headline-5-size: 1.5rem;
     --headline-5-letterspacing: 0.25px;
     --headline-5-weight: 400;
     
+    --headline-6-font: "roboto";
     --headline-6-size: 1.25rem;
     --headline-6-letterspacing: 0px;
     --headline-6-weight: 500;
     
+    --subtitle-1-font: "roboto";
     --subtitle-1-size: 1rem;
     --subtitle-1-letterspacing: 0.15px;
     --subtitle-1-weight: 400;
     
+    --subtitle-2-font: "roboto";
     --subtitle-2-size: 0.875rem;
     --subtitle-2-letterspacing: 0.1px;
     --subtitle-2-weight: 500;
     
+    --body-1-font: "roboto";
     --body-1-size: 1rem;
     --body-1-letterspacing: 0.5px;
     --body-1-weight: 400;
     
+    --body-2-font: "roboto";
     --body-2-size: 0.875rem;
     --body-2-letterspacing: 0.25px;
     --body-2-weight: 400;
     
+    --button-font: "roboto";
     --button-size: 0.875rem;
     --button-letterspacing: 0.75px;
     --button-weight: 600;
     
+    --caption-font: "roboto";
     --caption-size: 0.75rem;
     --caption-letterspacing: 0.4px;
     --caption-weight: 400;
     
+    --overline-font: "roboto";
     --overline-size: 0.625rem;
     --overline-letterspacing: 0.15px;
     --overline-weight: 400;

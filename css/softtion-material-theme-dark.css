@@ -234,25 +234,25 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 .autocomplete > .content > input:disabled ~ .value {
     color: var(--disabled-font); }
 
-.autocomplete > .content > .line-shadow {
+.autocomplete > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.autocomplete:hover > .content > .line-shadow {
+.autocomplete:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.autocomplete > .content > input:disabled ~ .line-shadow {
+.autocomplete > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
-.autocomplete > .content > .line-shadow-active {
+.autocomplete > .content > .line-shadow {
     border-bottom: 2px solid transparent; }
 
-.autocomplete.active > .content > input:focus ~ .line-shadow-active {
+.autocomplete.active > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.autocomplete.active.error > .content > input:focus ~ .line-shadow-active {
+.autocomplete.active.error > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-error-500); }
 
-.autocomplete > .content > input:disabled ~ .line-shadow-active {
+.autocomplete > .content > input:disabled ~ .line-shadow {
     border-bottom: 2px solid transparent; }
 
 .autocomplete > .content > i.action {
@@ -1108,22 +1108,22 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-active); }
 
-.chip-input > .content > .line-shadow {
+.chip-input > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.chip-input:hover > .content > .line-shadow {
+.chip-input:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.chip-input > .content > .box.disabled ~ .line-shadow {
+.chip-input > .content > .box.disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
-.chip-input > .content > .line-shadow-active {
+.chip-input > .content > .line-shadow {
     border-bottom: 2px solid transparent; }
 
-.chip-input > .content.active > .box.focused ~ .line-shadow-active {
+.chip-input > .content.active > .box.focused ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.chip-input > .content > .box.disabled ~ .line-shadow-active {
+.chip-input > .content > .box.disabled ~ .line-shadow {
     border-bottom: 2px solid transparent; }
 
 .chip-input > .content > span.help {
@@ -1185,13 +1185,13 @@ button.floating.theme-secondary:before {
 .clockpicker-input > .content > .value.disabled {
     color: var(--disabled-font); }
 
-.clockpicker-input > .content > .line-shadow {
+.clockpicker-input > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.clockpicker-input > .content.active > .line-shadow {
+.clockpicker-input > .content.active > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.clockpicker-input > .content > .line-shadow.disabled {
+.clockpicker-input > .content > .line-bordered.disabled {
     border-bottom: 1px dashed var(--background-border); }
 
 .clockpicker-input > .content > i.action {
@@ -1284,7 +1284,7 @@ button.floating.theme-secondary:before {
 .datatable > .content > table > tbody > tr > td > i {
     color: var(--secondary-font); }
 
-.datatable > .content tbody .textfield > .content > .line-shadow {
+.datatable > .content tbody .textfield > .content > .line-bordered {
     border-bottom: none !important; }
 
 .datatable table > tbody td > span.poster {
@@ -1366,13 +1366,13 @@ button.floating.theme-secondary:before {
 .datepicker-input > .content > .value.disabled {
     color: var(--disabled-font); }
 
-.datepicker-input > .content > .line-shadow {
+.datepicker-input > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.datepicker-input > .content.active > .line-shadow {
+.datepicker-input > .content.active > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.datepicker-input > .content > .line-shadow.disabled {
+.datepicker-input > .content > .line-bordered.disabled {
     border-bottom: 1px dashed var(--background-border); }
 
 .datepicker-input > .content > i.action {
@@ -2532,13 +2532,13 @@ button.floating.theme-secondary:before {
 .select > .content > input:disabled ~ .value {
     color: var(--disabled-font); }
 
-.select > .content > .line-shadow {
+.select > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.select.active > .content > .line-shadow {
+.select.active > .content > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.select > .content > input:disabled ~ .line-shadow {
+.select > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
 .select > .content > span.help {
@@ -2580,13 +2580,13 @@ button.floating.theme-secondary:before {
 .select-multiple > .content > input:disabled ~ .value {
     color: var(--disabled-font); }
 
-.select-multiple > .content > .line-shadow {
+.select-multiple > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.select-multiple.active > .content > .line-shadow {
+.select-multiple.active > .content > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.select-multiple > .content > input:disabled ~ .line-shadow {
+.select-multiple > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
 .select-multiple > .content > span.help {
@@ -2606,6 +2606,9 @@ button.floating.theme-secondary:before {
 
 .select-multiple > .content > ul > li > .checkbox-select > label:before {
     background-color: var(--theme-primary-500); }
+
+.select-multiple > .content > ul > li > .checkbox-select:not(.active) > label:after {
+    border: 2px solid var(--secondary-font); }
 
 .select-multiple > .content > ul > li > .checkbox-select > label:after {
     border: 2px solid var(--theme-primary-font-secondary-500); }
@@ -2772,13 +2775,13 @@ button.floating.theme-secondary:before {
 .slider > .content > .showcase-input > input:disabled {
     color: var(--disabled-font); }
 
-.slider > .content > .showcase-input > .line-shadow {
+.slider > .content > .showcase-input > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.slider > .content > .showcase-input > input:focus + .line-shadow {
+.slider > .content > .showcase-input > input:focus + .line-bordered {
     border-bottom: 2px solid var(--theme-primary-500); }
 
-.slider > .content.disabled > .showcase-input > .line-shadow {
+.slider > .content.disabled > .showcase-input > .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
 /** SNACKBAR */
@@ -3707,49 +3710,49 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield.contrast > .content > input:disabled ~ .value {
     color: var(--theme-secondary-font-disabled-500); }
 
-.textfield > .content > .line-shadow {
+.textfield > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.theme-primary .textfield.contrast > .content > .line-shadow {
+.theme-primary .textfield.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-primary-font-disabled-500); }
 
-.theme-secondary .textfield.contrast > .content > .line-shadow {
+.theme-secondary .textfield.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-secondary-font-disabled-500); }
 
-.textfield:hover > .content > .line-shadow {
+.textfield:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.theme-primary .textfield.contrast:hover > .content > .line-shadow {
+.theme-primary .textfield.contrast:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .textfield.contrast:hover > .content > .line-shadow {
+.theme-secondary .textfield.contrast:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
 
-.textfield > .content > input:disabled ~ .line-shadow {
+.textfield > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
-.theme-primary .textfield.contrast > .content > input:disabled ~ .line-shadow {
+.theme-primary .textfield.contrast > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
 
-.theme-secondary .textfield.contrast > .content > input:disabled ~ .line-shadow {
+.theme-secondary .textfield.contrast > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
 
-.textfield > .content > .line-shadow-active {
+.textfield > .content > .line-shadow {
     border-bottom: 2px solid transparent; }
 
-.textfield.active > .content > input:focus ~ .line-shadow-active {
+.textfield.active > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.theme-primary .textfield.contrast.active > .content > input:focus ~ .line-shadow-active {
+.theme-primary .textfield.contrast.active > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-primary-font-primary-500); }
 
-.theme-secondary .textfield.contrast.active > .content > input:focus ~ .line-shadow-active {
+.theme-secondary .textfield.contrast.active > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
 
-.textfield.active.error > .content > input:focus ~ .line-shadow-active {
+.textfield.active.error > .content > input:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-error-500); }
 
-.textfield > .content > input:disabled ~ .line-shadow-active {
+.textfield > .content > input:disabled ~ .line-shadow {
     border-bottom: 2px solid transparent; }
 
 .textfield > .content > span.help {
@@ -4051,49 +4054,49 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield-multiline.contrast textarea:disabled ~ .value {
     color: var(--theme-secondary-font-disabled-500); }
 
-.textfield-multiline > .content > .line-shadow {
+.textfield-multiline > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.theme-primary .textfield-multiline.contrast > .content > .line-shadow {
+.theme-primary .textfield-multiline.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .textfield-multiline.contrast > .content > .line-shadow {
+.theme-secondary .textfield-multiline.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
 
-.textfield-multiline:hover > .content > .line-shadow {
+.textfield-multiline:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.theme-primary .textfield-multiline.contrast:hover .line-shadow {
+.theme-primary .textfield-multiline.contrast:hover .line-bordered {
     border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .textfield-multiline.contrast:hover .line-shadow {
+.theme-secondary .textfield-multiline.contrast:hover .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
 
-.textfield-multiline > .content > textarea:disabled ~ .line-shadow {
+.textfield-multiline > .content > textarea:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
-.theme-primary .textfield-multiline.contrast textarea:disabled ~ .line-shadow {
+.theme-primary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
 
-.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .line-shadow {
+.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
 
-.textfield-multiline > .content > .line-shadow-active {
+.textfield-multiline > .content > .line-shadow {
     border-bottom: 2px solid transparent; }
 
-.textfield-multiline > .content > textarea:focus ~ .line-shadow-active {
+.textfield-multiline > .content > textarea:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.theme-primary .textfield-multiline.contrast textarea:focus ~ .line-shadow-active {
+.theme-primary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-primary-font-primary-500); }
 
-.theme-secondary .textfield-multiline.contrast textarea:focus ~ .line-shadow-active {
+.theme-secondary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
 
-.textfield-multiline.active.error > .content > textarea:focus ~ .line-shadow-active {
+.textfield-multiline.active.error > .content > textarea:focus ~ .line-shadow {
     border-bottom: 2px solid var(--theme-error-500); }
 
-.textfield-multiline > .content > textarea:disabled ~ .line-shadow-active {
+.textfield-multiline > .content > textarea:disabled ~ .line-shadow {
     border-bottom: 2px solid transparent; }
 
 .textfield-multiline > .content > span.help {
@@ -4157,40 +4160,40 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-primary-500);
     color: var(--theme-primary-font-primary-500); }
 
-.textfield-readonly > .content > .line-shadow {
+.textfield-readonly > .content > .line-bordered {
     border-bottom: 1px solid var(--background-border); }
 
-.theme-primary .textfield-readonly.contrast > .content > .line-shadow {
+.theme-primary .textfield-readonly.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .textfield-readonly.contrast > .content > .line-shadow {
+.theme-secondary .textfield-readonly.contrast > .content > .line-bordered {
     border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
 
-.textfield-readonly:hover > .content > .line-shadow {
+.textfield-readonly:hover > .content > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.theme-primary .textfield-readonly.contrast:hover .line-shadow {
+.theme-primary .textfield-readonly.contrast:hover .line-bordered {
     border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .textfield-readonly.contrast:hover .line-shadow {
+.theme-secondary .textfield-readonly.contrast:hover .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
 
-.textfield-readonly > .content > input:focus ~ .line-shadow {
+.textfield-readonly > .content > input:focus ~ .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-500); }
 
-.theme-primary .textfield-readonly.contrast input:focus ~ .line-shadow {
+.theme-primary .textfield-readonly.contrast input:focus ~ .line-bordered {
     border-bottom: 2px solid var(--theme-primary-font-primary-500); }
 
-.theme-secondary .textfield-readonly.contrast input:focus ~ .line-shadow {
+.theme-secondary .textfield-readonly.contrast input:focus ~ .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
 
-.textfield-readonly > .content > input:disabled ~ .line-shadow {
+.textfield-readonly > .content > input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
-.theme-primary .textfield-readonly.contrast input:disabled ~ .line-shadow {
+.theme-primary .textfield-readonly.contrast input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
 
-.theme-secondary .textfield-readonly.contrast input:disabled ~ .line-shadow {
+.theme-secondary .textfield-readonly.contrast input:disabled ~ .line-bordered {
     border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
 
 .textfield-readonly > .content > span.help {

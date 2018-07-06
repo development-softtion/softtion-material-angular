@@ -5,16 +5,16 @@
  */
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "roboto_condensed";
     src: url("RobotoCondensed-Light.ttf") format("truetype");
     font-weight: 300; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "roboto_condensed";
     src: url("RobotoCondensed-Regular.ttf") format("truetype");
     font-weight: 400; }
 
 @font-face {
-    font-family: softtion-material;
+    font-family: "roboto_condensed";
     src: url("RobotoCondensed-Bold.ttf") format("truetype");
     font-weight: 700; }
