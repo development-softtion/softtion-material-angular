@@ -581,6 +581,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.autocomplete.form-mode > .content {
+    padding: 8px 0px 16px 0px; }
+
 .autocomplete > .content.disabled {
     pointer-events: none; }
 
@@ -591,6 +594,16 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     padding: 0px;
     z-index: 2;
     cursor: pointer; }
+
+.autocomplete.form-mode > .content > i.description {
+    width: 35px;
+    left: 1px;
+    top: 9px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0px;
+    text-align: center;
+    border-radius: 4px 0px 0px 4px; }
 
 .autocomplete.inline > .content > i.description {
     display: none; }
@@ -611,6 +624,9 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
+.autocomplete.form-mode > .content > label {
+    display: none !important; }
+
 .autocomplete:not(.inline) > .content > i.description ~ label {
     left: 40px;
     width: calc(100% - 40px); }
@@ -619,22 +635,22 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     top: 12px;
     width: calc(50% - 4px); }
 
-.autocomplete.inline.l20 > .content > label {
+.autocomplete.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.autocomplete.inline.l30 > .content > label {
+.autocomplete.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.autocomplete.inline.l40 > .content > label {
+.autocomplete.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.autocomplete.inline.l60 > .content > label {
+.autocomplete.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.autocomplete.inline.l70 > .content > label {
+.autocomplete.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.autocomplete.inline.l80 > .content > label {
+.autocomplete.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .autocomplete > .content > label.active {
@@ -691,47 +707,57 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete.inline > .content > input.iconaction {
     width: calc(50% - 48px); }
 
-.autocomplete.inline.l20 > .content > input {
+.autocomplete.inline.label-20 > .content > input {
     margin-left: 20%;
     width: calc(80% - 24px); }
 
-.autocomplete.inline.l20 > .content > input.iconaction {
+.autocomplete.inline.label-20 > .content > input.iconaction {
     width: calc(80% - 48px); }
 
-.autocomplete.inline.l30 > .content > input {
+.autocomplete.inline.label-30 > .content > input {
     margin-left: 30%;
     width: calc(70% - 24px); }
 
-.autocomplete.inline.l30 > .content > input.iconaction {
+.autocomplete.inline.label-30 > .content > input.iconaction {
     width: calc(70% - 48px); }
 
-.autocomplete.inline.l40 > .content > input {
+.autocomplete.inline.label-40 > .content > input {
     margin-left: 40%;
     width: calc(60% - 24px); }
 
-.autocomplete.inline.l40 > .content > input.iconaction {
+.autocomplete.inline.label-40 > .content > input.iconaction {
     width: calc(60% - 48px); }
 
-.autocomplete.inline.l60 > .content > input {
+.autocomplete.inline.label-60 > .content > input {
     margin-left: 60%;
     width: calc(40% - 24px); }
 
-.autocomplete.inline.l60 > .content > input.iconaction {
+.autocomplete.inline.label-60 > .content > input.iconaction {
     width: calc(40% - 48px); }
 
-.autocomplete.inline.l70 > .content > input {
+.autocomplete.inline.label-70 > .content > input {
     margin-left: 70%;
     width: calc(30% - 24px); }
 
-.autocomplete.inline.l70 > .content > input.iconaction {
+.autocomplete.inline.label-70 > .content > input.iconaction {
     width: calc(30% - 48px); }
 
-.autocomplete.inline.l80 > .content > input {
+.autocomplete.inline.label-80 > .content > input {
     margin-left: 80%;
     width: calc(20% - 24px); }
 
-.autocomplete.inline.l80 > .content > input.iconaction {
+.autocomplete.inline.label-80 > .content > input.iconaction {
     width: calc(20% - 48px); }
+
+.autocomplete.form-mode > .content > input {
+    height: 36px;
+    line-height: 36px;
+    padding: 0px 8px;
+    box-sizing: border-box !important; }
+
+.autocomplete.form-mode > .content > i.description ~ input {
+    padding-left: 48px;
+    width: calc(100% - 24px); }
 
 .autocomplete > .content > input::-webkit-input-placeholder {
     visibility: hidden;
@@ -778,50 +804,60 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete.inline > .content > .value.iconaction {
     width: calc(50% - 48px); }
 
-.autocomplete.inline.l20 > .content > .value {
+.autocomplete.inline.label-20 > .content > .value {
     left: 20%; 
     width: calc(80% - 24px); }
 
-.autocomplete.inline.l20 > .content > .value.iconaction {
+.autocomplete.inline.label-20 > .content > .value.iconaction {
     width: calc(80% - 48px); }
 
-.autocomplete.inline.l30 > .content > .value {
+.autocomplete.inline.label-30 > .content > .value {
     left: 30%; 
     width: calc(70% - 24px); }
 
-.autocomplete.inline.l30 > .content > .value.iconaction {
+.autocomplete.inline.label-30 > .content > .value.iconaction {
     width: calc(70% - 48px); }
 
-.autocomplete.inline.l40 > .content > .value {
+.autocomplete.inline.label-40 > .content > .value {
     left: 40%; 
     width: calc(60% - 24px); }
 
-.autocomplete.inline.l40 > .content > .value.iconaction {
+.autocomplete.inline.label-40 > .content > .value.iconaction {
     width: calc(60% - 48px); }
 
-.autocomplete.inline.l60 > .content > .value {
+.autocomplete.inline.label-60 > .content > .value {
     left: 60%; 
     width: calc(40% - 24px); }
 
-.autocomplete.inline.l60 > .content > .value.iconaction {
+.autocomplete.inline.label-60 > .content > .value.iconaction {
     width: calc(40% - 48px); }
 
-.autocomplete.inline.l70 > .content > .value {
+.autocomplete.inline.label-70 > .content > .value {
     left: 70%; 
     width: calc(30% - 24px); }
 
-.autocomplete.inline.l70 > .content > .value.iconaction {
+.autocomplete.inline.label-70 > .content > .value.iconaction {
     width: calc(30% - 48px); }
 
-.autocomplete.inline.l80 > .content > .value {
+.autocomplete.inline.label-80 > .content > .value {
     left: 80%; 
     width: calc(20% - 24px); }
 
-.autocomplete.inline.l80 > .content > .value.iconaction {
+.autocomplete.inline.label-80 > .content > .value.iconaction {
     width: calc(20% - 48px); }
 
 .autocomplete.active > .content > input:focus ~ .value {
     display: none; }
+
+.autocomplete.form-mode > .content > .value {
+    width: calc(100% - 40px);
+    top: 8px;
+    margin: 0px 8px;
+    height: 36px;
+    line-height: 36px; }
+
+.autocomplete.form-mode > .content > i.description ~ .value {
+    width: calc(100% - 80px); }
 
 .autocomplete > .content > .line-bordered {
     position: absolute;
@@ -838,29 +874,42 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     left: 50%; 
     width: 50%; }
 
-.autocomplete.inline.l20 > .content > .line-bordered {
+.autocomplete.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.autocomplete.inline.l30 > .content > .line-bordered {
+.autocomplete.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.autocomplete.inline.l40 > .content > .line-bordered {
+.autocomplete.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.autocomplete.inline.l60 > .content > .line-bordered {
+.autocomplete.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.autocomplete.inline.l70 > .content > .line-bordered {
+.autocomplete.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.autocomplete.inline.l80 > .content > .line-bordered {
+.autocomplete.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
+
+.autocomplete.form-mode > .content > .line-bordered {
+    width: 100%;
+    top: 8px;
+    left: 0;
+    height: 36px;
+    z-index: -1;
+    border-radius: 4px;
+    box-sizing: border-box; }
+
+.autocomplete.form-mode > .content > i.description ~ .line-bordered {
+    left: 0px;
+    width: 100%; }
 
 .autocomplete > .content > .line-shadow {
     position: absolute;
@@ -878,22 +927,22 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete.inline > .content > .line-shadow {
     left: 75%; }
 
-.autocomplete.inline.l20 > .content > .line-shadow {
+.autocomplete.inline.label-20 > .content > .line-shadow {
     left: 60%; }
 
-.autocomplete.inline.l30 > .content > .line-shadow {
+.autocomplete.inline.label-30 > .content > .line-shadow {
     left: 65%; }
 
-.autocomplete.inline.l40 > .content > .line-shadow {
+.autocomplete.inline.label-40 > .content > .line-shadow {
     left: 70%; }
 
-.autocomplete.inline.l60 > .content > .line-shadow {
+.autocomplete.inline.label-60 > .content > .line-shadow {
     left: 80%; }
 
-.autocomplete.inline.l70 > .content > .line-shadow {
+.autocomplete.inline.label-70 > .content > .line-shadow {
     left: 85%; }
 
-.autocomplete.inline.l80 > .content > .line-shadow {
+.autocomplete.inline.label-80 > .content > .line-shadow {
     left: 90%; }
 
 .autocomplete.active > .content > input:focus ~ .line-shadow {
@@ -914,41 +963,44 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
        -moz-animation: borderTextfieldInline 200ms var(--sharp-curve);
             animation: borderTextfieldInline 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l20.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-20.active > .content > input:focus ~ .line-shadow {
     width: 80%; 
     -webkit-animation: borderTextfieldInline20 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline20 200ms var(--sharp-curve);
             animation: borderTextfieldInline20 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l30.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-30.active > .content > input:focus ~ .line-shadow {
     width: 70%; 
     -webkit-animation: borderTextfieldInline30 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline30 200ms var(--sharp-curve);
             animation: borderTextfieldInline30 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l40.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-40.active > .content > input:focus ~ .line-shadow {
     width: 60%; 
     -webkit-animation: borderTextfieldInline40 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline40 200ms var(--sharp-curve);
             animation: borderTextfieldInline40 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l60.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-60.active > .content > input:focus ~ .line-shadow {
     width: 40%; 
     -webkit-animation: borderTextfieldInline60 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline60 200ms var(--sharp-curve);
             animation: borderTextfieldInline60 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l70.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-70.active > .content > input:focus ~ .line-shadow {
     width: 30%; 
     -webkit-animation: borderTextfieldInline70 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline70 200ms var(--sharp-curve);
             animation: borderTextfieldInline70 200ms var(--sharp-curve); }
 
-.autocomplete.inline.l80.active > .content > input:focus ~ .line-shadow {
+.autocomplete.inline.label-80.active > .content > input:focus ~ .line-shadow {
     width: 20%; 
     -webkit-animation: borderTextfieldInline80 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline80 200ms var(--sharp-curve);
             animation: borderTextfieldInline80 200ms var(--sharp-curve); }
+
+.autocomplete.form-mode > .content > .line-shadow {
+    display: none !important; }
 
 .autocomplete > .content > i.action {
     position: absolute;
@@ -971,12 +1023,19 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete.inline > .content > i.action {
     top: 14px; }
 
+.autocomplete.form-mode > .content > i.action {
+    top: 16px;
+    right: 6px; }
+
 .autocomplete > .content > span {
     position: absolute;
     left: 0;
     bottom: 0px;
     width: 100%;
-    font-size: 12px; }
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
 
 .autocomplete:not(.inline) > .content > i.description ~ span {
     left: 40px;
@@ -986,27 +1045,27 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     left: 50%;
     width: 50%; }
 
-.autocomplete.inline.l20 > .content > span {
+.autocomplete.inline.label-20 > .content > span {
     left: 20%;
     width: 80%; }
 
-.autocomplete.inline.l30 > .content > span {
+.autocomplete.inline.label-30 > .content > span {
     left: 30%;
     width: 70%; }
 
-.autocomplete.inline.l40 > .content > span {
+.autocomplete.inline.label-40 > .content > span {
     left: 40%;
     width: 60%; }
 
-.autocomplete.inline.l60 > .content > span {
+.autocomplete.inline.label-60 > .content > span {
     left: 60%;
     width: 40%; }
 
-.autocomplete.inline.l70 > .content > span {
+.autocomplete.inline.label-70 > .content > span {
     left: 70%;
     width: 30%; }
 
-.autocomplete.inline.l80 > .content > span {
+.autocomplete.inline.label-80 > .content > span {
     left: 80%;
     width: 20%; }
 
@@ -1034,22 +1093,22 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     top: 40px;
     left: 50%; }
 
-.autocomplete.inline.l20 > .content > ul {
+.autocomplete.inline.label-20 > .content > ul {
     left: 20%; }
 
-.autocomplete.inline.l30 > .content > ul {
+.autocomplete.inline.label-30 > .content > ul {
     left: 30%; }
 
-.autocomplete.inline.l40 > .content > ul {
+.autocomplete.inline.label-40 > .content > ul {
     left: 40%; }
 
-.autocomplete.inline.l60 > .content > ul {
+.autocomplete.inline.label-60 > .content > ul {
     left: 60%; }
 
-.autocomplete.inline.l70 > .content > ul {
+.autocomplete.inline.label-70 > .content > ul {
     left: 70%; }
 
-.autocomplete.inline.l80 > .content > ul {
+.autocomplete.inline.label-80 > .content > ul {
     left: 80%; }
 
 .autocomplete > .content > ul.active {
@@ -1059,23 +1118,30 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
 .autocomplete.inline > .content > ul.active {
     max-width: 50%; }
 
-.autocomplete.inline.l20 > .content > ul.active {
+.autocomplete.inline.label-20 > .content > ul.active {
     max-width: 80%; }
 
-.autocomplete.inline.l30 > .content > ul.active {
+.autocomplete.inline.label-30 > .content > ul.active {
     max-width: 70%; }
 
-.autocomplete.inline.l40 > .content > ul.active {
+.autocomplete.inline.label-40 > .content > ul.active {
     max-width: 60%; }
 
-.autocomplete.inline.l60 > .content > ul.active {
+.autocomplete.inline.label-60 > .content > ul.active {
     max-width: 40%; }
 
-.autocomplete.inline.l70 > .content > ul.active {
+.autocomplete.inline.label-70 > .content > ul.active {
     max-width: 30%; }
 
-.autocomplete.inline.l80 > .content > ul.active {
+.autocomplete.inline.label-80 > .content > ul.active {
     max-width: 20%; }
+
+.autocomplete.form-mode > .content > ul {
+    top: 44px; }
+
+.autocomplete.form-mode > .content > i.description ~ ul {
+    left: 36px;
+    width: calc(100% - 36px); }
 
 .autocomplete > .content > ul > li {
     padding: 0px 16px;
@@ -3287,22 +3353,22 @@ button.raised:focus:after, button.flat:focus:after {
     top: 12px;
     width: calc(50% - 4px); }
 
-.clockpicker-input.inline.l20 > .content > label {
+.clockpicker-input.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.clockpicker-input.inline.l30 > .content > label {
+.clockpicker-input.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.clockpicker-input.inline.l40 > .content > label {
+.clockpicker-input.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.clockpicker-input.inline.l60 > .content > label {
+.clockpicker-input.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.clockpicker-input.inline.l70 > .content > label {
+.clockpicker-input.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.clockpicker-input.inline.l80 > .content > label {
+.clockpicker-input.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .clockpicker-input > .content > label > span {
@@ -3349,27 +3415,27 @@ button.raised:focus:after, button.flat:focus:after {
     margin-left: 50%;
     padding-top: 0px; }
 
-.clockpicker-input.inline.l20 > .content > .value {
+.clockpicker-input.inline.label-20 > .content > .value {
     margin-left: 20%; 
     width: calc(80% - 24px); }
 
-.clockpicker-input.inline.l30 > .content > .value {
+.clockpicker-input.inline.label-30 > .content > .value {
     margin-left: 30%; 
     width: calc(70% - 24px); }
 
-.clockpicker-input.inline.l40 > .content > .value {
+.clockpicker-input.inline.label-40 > .content > .value {
     margin-left: 40%; 
     width: calc(60% - 24px); }
 
-.clockpicker-input.inline.l60 > .content > .value {
+.clockpicker-input.inline.label-60 > .content > .value {
     margin-left: 60%; 
     width: calc(40% - 24px); }
 
-.clockpicker-input.inline.l70 > .content > .value {
+.clockpicker-input.inline.label-70 > .content > .value {
     margin-left: 70%; 
     width: calc(30% - 24px); }
 
-.clockpicker-input.inline.l80 > .content > .value {
+.clockpicker-input.inline.label-80 > .content > .value {
     margin-left: 80%; 
     width: calc(20% - 24px); }
 
@@ -3391,27 +3457,27 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%; 
     width: 50%; }
 
-.clockpicker-input.inline.l20 > .content > .line-bordered {
+.clockpicker-input.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.clockpicker-input.inline.l30 > .content > .line-bordered {
+.clockpicker-input.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.clockpicker-input.inline.l40 > .content > .line-bordered {
+.clockpicker-input.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.clockpicker-input.inline.l60 > .content > .line-bordered {
+.clockpicker-input.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.clockpicker-input.inline.l70 > .content > .line-bordered {
+.clockpicker-input.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.clockpicker-input.inline.l80 > .content > .line-bordered {
+.clockpicker-input.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
 
@@ -3448,27 +3514,27 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%; 
     width: 50%; }
 
-.clockpicker-input.inline.l20 > .content > span {
+.clockpicker-input.inline.label-20 > .content > span {
     left: 20%; 
     width: 80%; }
 
-.clockpicker-input.inline.l30 > .content > span {
+.clockpicker-input.inline.label-30 > .content > span {
     left: 30%; 
     width: 70%; }
 
-.clockpicker-input.inline.l40 > .content > span {
+.clockpicker-input.inline.label-40 > .content > span {
     left: 40%; 
     width: 60%; }
 
-.clockpicker-input.inline.l60 > .content > span {
+.clockpicker-input.inline.label-60 > .content > span {
     left: 60%; 
     width: 40%; }
 
-.clockpicker-input.inline.l70 > .content > span {
+.clockpicker-input.inline.label-70 > .content > span {
     left: 70%; 
     width: 30%; }
 
-.clockpicker-input.inline.l80 > .content > span {
+.clockpicker-input.inline.label-80 > .content > span {
     left: 80%; 
     width: 20%; }
 
@@ -3953,22 +4019,22 @@ button.raised:focus:after, button.flat:focus:after {
     top: 12px;
     width: calc(50% - 4px); }
 
-.datepicker-input.inline.l20 > .content > label {
+.datepicker-input.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.datepicker-input.inline.l30 > .content > label {
+.datepicker-input.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.datepicker-input.inline.l40 > .content > label {
+.datepicker-input.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.datepicker-input.inline.l60 > .content > label {
+.datepicker-input.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.datepicker-input.inline.l70 > .content > label {
+.datepicker-input.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.datepicker-input.inline.l80 > .content > label {
+.datepicker-input.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .datepicker-input > .content > label > span {
@@ -4015,27 +4081,27 @@ button.raised:focus:after, button.flat:focus:after {
     margin-left: 50%;
     padding-top: 0px; }
 
-.datepicker-input.inline.l20 > .content > .value {
+.datepicker-input.inline.label-20 > .content > .value {
     margin-left: 20%; 
     width: calc(80% - 24px); }
 
-.datepicker-input.inline.l30 > .content > .value {
+.datepicker-input.inline.label-30 > .content > .value {
     margin-left: 30%; 
     width: calc(70% - 24px); }
 
-.datepicker-input.inline.l40 > .content > .value {
+.datepicker-input.inline.label-40 > .content > .value {
     margin-left: 40%; 
     width: calc(60% - 24px); }
 
-.datepicker-input.inline.l60 > .content > .value {
+.datepicker-input.inline.label-60 > .content > .value {
     margin-left: 60%; 
     width: calc(40% - 24px); }
 
-.datepicker-input.inline.l70 > .content > .value {
+.datepicker-input.inline.label-70 > .content > .value {
     margin-left: 70%; 
     width: calc(30% - 24px); }
 
-.datepicker-input.inline.l80 > .content > .value {
+.datepicker-input.inline.label-80 > .content > .value {
     margin-left: 80%; 
     width: calc(20% - 24px); }
 
@@ -4057,27 +4123,27 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%; 
     width: 50%; }
 
-.datepicker-input.inline.l20 > .content > .line-bordered {
+.datepicker-input.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.datepicker-input.inline.l30 > .content > .line-bordered {
+.datepicker-input.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.datepicker-input.inline.l40 > .content > .line-bordered {
+.datepicker-input.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.datepicker-input.inline.l60 > .content > .line-bordered {
+.datepicker-input.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.datepicker-input.inline.l70 > .content > .line-bordered {
+.datepicker-input.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.datepicker-input.inline.l80 > .content > .line-bordered {
+.datepicker-input.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
 
@@ -4115,27 +4181,27 @@ button.raised:focus:after, button.flat:focus:after {
     left: 50%; 
     width: 50%; }
 
-.datepicker-input.inline.l20 > .content > span {
+.datepicker-input.inline.label-20 > .content > span {
     left: 20%; 
     width: 80%; }
 
-.datepicker-input.inline.l30 > .content > span {
+.datepicker-input.inline.label-30 > .content > span {
     left: 30%; 
     width: 70%; }
 
-.datepicker-input.inline.l40 > .content > span {
+.datepicker-input.inline.label-40 > .content > span {
     left: 40%; 
     width: 60%; }
 
-.datepicker-input.inline.l60 > .content > span {
+.datepicker-input.inline.label-60 > .content > span {
     left: 60%; 
     width: 40%; }
 
-.datepicker-input.inline.l70 > .content > span {
+.datepicker-input.inline.label-70 > .content > span {
     left: 70%; 
     width: 30%; }
 
-.datepicker-input.inline.l80 > .content > span {
+.datepicker-input.inline.label-80 > .content > span {
     left: 80%; 
     width: 20%; }
 
@@ -5798,6 +5864,166 @@ body.show-keyboard .fab-speed-dial {
 .form > .actions > button.action > .badge {
     top: 2px;
     right: 0px; }
+
+/** FORMFIELD */
+
+.formfield {
+    position: relative;
+    float: left;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.formfield.align-right { 
+    text-align: initial !important; }
+
+.formfield > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    padding: 8px 0px 16px 0px; }
+
+.formfield > .content.disabled {
+    pointer-events: none; }
+
+.formfield > .content > i.description {
+    position: absolute;
+    left: 1px;
+    top: 9px;
+    width: 35px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px 0px 0px 4px; }
+
+.formfield > .content > input {
+    width: 100%;
+    cursor: text;
+    height: 36px;
+    line-height: 36px;
+    border: none;
+    outline: none; 
+    padding: 4px 8px;
+    box-sizing: border-box !important;
+    background-color: transparent;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.formfield.align-center > .content > input { 
+    text-align: center; }
+
+.formfield.align-right > .content > input { 
+    text-align: right; }
+
+.formfield > .content > i.description ~ input { 
+    padding-left: 44px; }
+
+.formfield > .content > input.iconaction {
+    padding-right: 44px; }
+
+.formfield > .content > input::-webkit-input-placeholder {
+    visibility: hidden;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.formfield.active > .content > input::-webkit-input-placeholder {
+    visibility: visible; }
+
+.formfield > .content > input.holderhide::-webkit-input-placeholder {
+    visibility: hidden; }
+
+.formfield > .content > .value {
+    position: absolute;
+    top: 8px;
+    margin: 0px 8px;
+    width: calc(100% - 16px);
+    height: 36px;
+    line-height: 36px;
+    cursor: text;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.formfield.align-center > .content > .value { 
+    text-align: center; }
+
+.formfield.align-right > .content > .value { 
+    text-align: right; }
+
+.formfield > .content > i.description ~ .value { 
+    padding-left: 36px; }
+
+.formfield > .content > input.iconaction ~ .value {
+    margin-right: 36px;
+    width: calc(100% - 48px); }
+
+.formfield > .content > i.description ~ input.iconaction ~ .value {
+    width: calc(100% - 52px); }
+
+.formfield.active > .content > input:focus ~ .value {
+    display: none; }
+
+.formfield > .content > .line-bordered {
+    position: absolute;
+    top: 8px; 
+    left: 0; 
+    width: 100%;
+    height: 36px;
+    z-index: -1;
+    border-radius: 4px;
+    box-sizing: border-box; }
+
+.formfield > .content > i.action {
+    position: absolute;
+    top: 15px;
+    right: 8px; 
+    padding: 0px;
+    cursor: pointer; 
+    z-index: 2; }
+
+.formfield.inline > .content > i.action {
+    top: 12px; }
+
+.formfield > .content > input:disabled ~ i.action {
+    cursor: not-allowed; }
+
+.formfield > .content > .checkbox-control {
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    margin: 0px; }
+
+.formfield > .content > span {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
+
+.formfield > .content > i.description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.formfield > .content > span.counter {
+    width: auto;
+    left: initial !important;
+    padding-left: 2px;
+    right: 0px !important; }
+
+.formfield > .content > i.description ~ span.counter {
+    width: auto;
+    left: initial; }
 
 /** FORM NAVIGATION */
 
@@ -7871,6 +8097,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     float: left;
     padding: 8px 0px 12px 0px; }
 
+.select.form-mode > .content {
+    padding: 8px 0px 16px 0px; }
+
 .select > .content.disabled {
     pointer-events: none; }
 
@@ -7881,6 +8110,18 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     padding: 0px;
     z-index: 2;
     cursor: pointer; }
+
+.select.form-mode > .content > i.description {
+    position: absolute;
+    left: 1px;
+    top: 9px;
+    width: 35px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px 0px 0px 4px; }
 
 .select.inline > .content > i.description {
     display: none; }
@@ -7900,6 +8141,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
        -moz-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
+.select.form-mode > .content > label {
+    display: none !important; }
+
 .select:not(.inline) > .content > i.description ~ label {
     left: 40px;
     width: calc(100% - 40px); }
@@ -7908,22 +8152,22 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 4px); }
 
-.select.inline.l20 > .content > label {
+.select.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.select.inline.l30 > .content > label {
+.select.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.select.inline.l40 > .content > label {
+.select.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.select.inline.l60 > .content > label {
+.select.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.select.inline.l70 > .content > label {
+.select.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.select.inline.l80 > .content > label {
+.select.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .select > .content > label.active {
@@ -7967,32 +8211,42 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .select.inline > .content > input {
     padding-top: 0px;
-    width: calc(50% - 36px);
-    margin-left: 50%; }
+    margin-left: 50%;
+    width: calc(50% - 36px); }
 
-.select.inline.l20 > .content > input {
-    width: calc(80% - 36px);
-    margin-left: 20%; }
+.select.inline.label-20 > .content > input {
+    margin-left: 20%;
+    width: calc(80% - 36px); }
 
-.select.inline.l30 > .content > input {
-    width: calc(70% - 36px);
-    margin-left: 30%; }
+.select.inline.label-30 > .content > input {
+    margin-left: 30%;
+    width: calc(70% - 36px); }
 
-.select.inline.l40 > .content > input {
-    width: calc(60% - 36px);
-    margin-left: 40%; }
+.select.inline.label-40 > .content > input {
+    margin-left: 40%;
+    width: calc(60% - 36px); }
 
-.select.inline.l60 > .content > input {
-    width: calc(40% - 36px);
-    margin-left: 60%; }
+.select.inline.label-60 > .content > input {
+    margin-left: 60%;
+    width: calc(40% - 36px); }
 
-.select.inline.l70 > .content > input {
-    width: calc(30% - 36px);
-    margin-left: 70%; }
+.select.inline.label-70 > .content > input {
+    margin-left: 70%;
+    width: calc(30% - 36px); }
 
-.select.inline.l80 > .content > input {
-    width: calc(20% - 36px);
-    margin-left: 80%; }
+.select.inline.label-80 > .content > input {
+    margin-left: 80%;
+    width: calc(20% - 36px); }
+
+.select.form-mode > .content > input {
+    height: 36px;
+    line-height: 36px;
+    padding: 0px 8px;
+    box-sizing: border-box !important; }
+
+.select.form-mode > .content > i.description ~ input {
+    padding-left: 48px;
+    width: calc(100% - 24px); }
 
 .select > .content > input:disabled {
     cursor: not-allowed; }
@@ -8020,29 +8274,39 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 8px; 
     left: 50%; }
 
-.select.inline.l20 > .content > .value {
+.select.inline.label-20 > .content > .value {
     left: 20%; 
     width: calc(80% - 36px); }
 
-.select.inline.l30 > .content > .value {
+.select.inline.label-30 > .content > .value {
     left: 30%; 
     width: calc(70% - 36px); }
 
-.select.inline.l40 > .content > .value {
+.select.inline.label-40 > .content > .value {
     left: 40%; 
     width: calc(60% - 36px); }
 
-.select.inline.l60 > .content > .value {
+.select.inline.label-60 > .content > .value {
     left: 60%; 
     width: calc(40% - 36px); }
 
-.select.inline.l70 > .content > .value {
+.select.inline.label-70 > .content > .value {
     left: 70%; 
     width: calc(30% - 36px); }
 
-.select.inline.l80 > .content > .value {
+.select.inline.label-80 > .content > .value {
     left: 80%; 
     width: calc(20% - 36px); }
+
+.select.form-mode > .content > .value {
+    width: calc(100% - 40px);
+    top: 8px;
+    margin: 0px 8px;
+    height: 36px;
+    line-height: 36px; }
+
+.select.form-mode > .content > i.description ~ .value {
+    width: calc(100% - 80px); }
 
 .select > .content > .line-bordered {
     position: absolute;
@@ -8059,29 +8323,42 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.select.inline.l20 > .content > .line-bordered {
+.select.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.select.inline.l30 > .content > .line-bordered {
+.select.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.select.inline.l40 > .content > .line-bordered {
+.select.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.select.inline.l60 > .content > .line-bordered {
+.select.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.select.inline.l70 > .content > .line-bordered {
+.select.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.select.inline.l80 > .content > .line-bordered {
+.select.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
+
+.select.form-mode > .content > .line-bordered {
+    width: 100%;
+    top: 8px;
+    left: 0;
+    height: 36px;
+    z-index: -1;
+    border-radius: 4px;
+    box-sizing: border-box; }
+
+.select.form-mode > .content > i.description ~ .line-bordered {
+    left: 0px;
+    width: 100%; }
 
 .select > .content > button.action {
     position: absolute;
@@ -8111,6 +8388,15 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
        -moz-transform: rotate(180deg);
             transform: rotate(180deg); }
 
+.select.form-mode > .content > button.action {
+    top: 14px;
+    right: 2px; }
+
+.select.form-mode > .content > button.action:not(:active):before {
+    -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
+       -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+            animation: rippleSquarecenter 1000ms var(--standard-curve); }
+
 .select > .content > span {
     position: absolute;
     left: 0;
@@ -8129,27 +8415,27 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.select.inline.l20 > .content > span {
+.select.inline.label-20 > .content > span {
     left: 20%; 
     width: 80%; }
 
-.select.inline.l30 > .content > span {
+.select.inline.label-30 > .content > span {
     left: 30%; 
     width: 70%; }
 
-.select.inline.l40 > .content > span {
+.select.inline.label-40 > .content > span {
     left: 40%; 
     width: 60%; }
 
-.select.inline.l60 > .content > span {
+.select.inline.label-60 > .content > span {
     left: 60%; 
     width: 40%; }
 
-.select.inline.l70 > .content > span {
+.select.inline.label-70 > .content > span {
     left: 70%; 
     width: 30%; }
 
-.select.inline.l80 > .content > span {
+.select.inline.label-80 > .content > span {
     left: 80%; 
     width: 20%; }
 
@@ -8183,22 +8469,22 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 12px;
     left: 50%; }
 
-.select.inline.l20 > .content > ul {
+.select.inline.label-20 > .content > ul {
     left: 20%; }
 
-.select.inline.l30 > .content > ul {
+.select.inline.label-30 > .content > ul {
     left: 30%; }
 
-.select.inline.l40 > .content > ul {
+.select.inline.label-40 > .content > ul {
     left: 40%; }
 
-.select.inline.l60 > .content > ul {
+.select.inline.label-60 > .content > ul {
     left: 60%; }
 
-.select.inline.l70 > .content > ul {
+.select.inline.label-70 > .content > ul {
     left: 70%; }
 
-.select.inline.l80 > .content > ul {
+.select.inline.label-80 > .content > ul {
     left: 80%; }
 
 .select > .content > ul.hide {
@@ -8217,23 +8503,30 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .select.inline > .content > ul.show {
     max-width: 50%; }
 
-.select.inline.l20 > .content > ul.show {
+.select.inline.label-20 > .content > ul.show {
     max-width: 80%; }
 
-.select.inline.l30 > .content > ul.show {
+.select.inline.label-30 > .content > ul.show {
     max-width: 70%; }
 
-.select.inline.l40 > .content > ul.show {
+.select.inline.label-40 > .content > ul.show {
     max-width: 60%; }
 
-.select.inline.l60 > .content > ul.show {
+.select.inline.label-60 > .content > ul.show {
     max-width: 40%; }
 
-.select.inline.l70 > .content > ul.show {
+.select.inline.label-70 > .content > ul.show {
     max-width: 30%; }
 
-.select.inline.l80 > .content > ul.show {
+.select.inline.label-80 > .content > ul.show {
     max-width: 20%; }
+
+.select.form-mode > .content > ul {
+    top: 44px; }
+
+.select.form-mode > .content > i.description ~ ul {
+    left: 36px;
+    width: calc(100% - 36px); }
 
 .select > .content > ul > li {
     padding: 0px 16px;
@@ -8304,22 +8597,22 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 4px); }
 
-.select-multiple.inline.l20 > .content > label {
+.select-multiple.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.select-multiple.inline.l30 > .content > label {
+.select-multiple.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.select-multiple.inline.l40 > .content > label {
+.select-multiple.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.select-multiple.inline.l60 > .content > label {
+.select-multiple.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.select-multiple.inline.l70 > .content > label {
+.select-multiple.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.select-multiple.inline.l80 > .content > label {
+.select-multiple.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .select-multiple > .content > label.active {
@@ -8367,27 +8660,27 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     width: calc(50% - 36px);
     margin-left: 50%; }
 
-.select-multiple.inline.l20 > .content > input {
+.select-multiple.inline.label-20 > .content > input {
     margin-left: 20%;
     width: calc(80% - 36px); }
 
-.select-multiple.inline.l30 > .content > input {
+.select-multiple.inline.label-30 > .content > input {
     margin-left: 30%;
     width: calc(70% - 36px); }
 
-.select-multiple.inline.l40 > .content > input {
+.select-multiple.inline.label-40 > .content > input {
     width: calc(60% - 36px);
     margin-left: 40%; }
 
-.select-multiple.inline.l60 > .content > input {
+.select-multiple.inline.label-60 > .content > input {
     margin-left: 60%;
     width: calc(40% - 36px); }
 
-.select-multiple.inline.l70 > .content > input {
+.select-multiple.inline.label-70 > .content > input {
     margin-left: 70%;
     width: calc(30% - 36px); }
 
-.select-multiple.inline.l80 > .content > input {
+.select-multiple.inline.label-80 > .content > input {
     margin-left: 80%;
     width: calc(20% - 36px); }
 
@@ -8414,27 +8707,27 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: 50%; 
     width: calc(50% - 28px); }
 
-.select-multiple.inline.l20 > .content > .chips {
+.select-multiple.inline.label-20 > .content > .chips {
     left: 20%; 
     width: calc(80% - 28px); }
 
-.select-multiple.inline.l30 > .content > .chips {
+.select-multiple.inline.label-30 > .content > .chips {
     left: 30%; 
     width: calc(70% - 28px); }
 
-.select-multiple.inline.l40 > .content > .chips {
+.select-multiple.inline.label-40 > .content > .chips {
     left: 40%; 
     width: calc(60% - 28px); }
 
-.select-multiple.inline.l60 > .content > .chips {
+.select-multiple.inline.label-60 > .content > .chips {
     left: 60%; 
     width: calc(40% - 28px); }
 
-.select-multiple.inline.l70 > .content > .chips {
+.select-multiple.inline.label-70 > .content > .chips {
     left: 70%; 
     width: calc(30% - 28px); }
 
-.select-multiple.inline.l80 > .content > .chips {
+.select-multiple.inline.label-80 > .content > .chips {
     left: 80%; 
     width: calc(20% - 28px); }
 
@@ -8480,27 +8773,27 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.select-multiple.inline.l20 > .content > .line-bordered {
+.select-multiple.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.select-multiple.inline.l30 > .content > .line-bordered {
+.select-multiple.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.select-multiple.inline.l40 > .content > .line-bordered {
+.select-multiple.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.select-multiple.inline.l60 > .content > .line-bordered {
+.select-multiple.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.select-multiple.inline.l70 > .content > .line-bordered {
+.select-multiple.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.select-multiple.inline.l80 > .content > .line-bordered {
+.select-multiple.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
 
@@ -8550,27 +8843,27 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.select-multiple.inline.l20 > .content > span {
+.select-multiple.inline.label-20 > .content > span {
     left: 20%; 
     width: 80%; }
 
-.select-multiple.inline.l30 > .content > span {
+.select-multiple.inline.label-30 > .content > span {
     left: 30%; 
     width: 70%; }
 
-.select-multiple.inline.l40 > .content > span {
+.select-multiple.inline.label-40 > .content > span {
     left: 40%; 
     width: 60%; }
 
-.select-multiple.inline.l60 > .content > span {
+.select-multiple.inline.label-60 > .content > span {
     left: 60%; 
     width: 40%; }
 
-.select-multiple.inline.l70 > .content > span {
+.select-multiple.inline.label-70 > .content > span {
     left: 70%; 
     width: 30%; }
 
-.select-multiple.inline.l80 > .content > span {
+.select-multiple.inline.label-80 > .content > span {
     left: 80%; 
     width: 20%; }
 
@@ -8602,22 +8895,22 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 40px;
     left: 50%; }
 
-.select-multiple.inline.l20 > .content > ul {
+.select-multiple.inline.label-20 > .content > ul {
     left: 20%; }
 
-.select-multiple.inline.l30 > .content > ul {
+.select-multiple.inline.label-30 > .content > ul {
     left: 30%; }
 
-.select-multiple.inline.l40 > .content > ul {
+.select-multiple.inline.label-40 > .content > ul {
     left: 40%; }
 
-.select-multiple.inline.l60 > .content > ul {
+.select-multiple.inline.label-60 > .content > ul {
     left: 60%; }
 
-.select-multiple.inline.l70 > .content > ul {
+.select-multiple.inline.label-70 > .content > ul {
     left: 70%; }
 
-.select-multiple.inline.l80 > .content > ul {
+.select-multiple.inline.label-80 > .content > ul {
     left: 80%; }
 
 .select-multiple > .content > ul.hide {
@@ -8636,22 +8929,22 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .select-multiple.inline > .content > ul.show {
     max-width: 50%; }
 
-.select-multiple.inline.l20 > .content > ul.show {
+.select-multiple.inline.label-20 > .content > ul.show {
     max-width: 80%; }
 
-.select-multiple.inline.l30 > .content > ul.show {
+.select-multiple.inline.label-30 > .content > ul.show {
     max-width: 70%; }
 
-.select-multiple.inline.l40 > .content > ul.show {
+.select-multiple.inline.label-40 > .content > ul.show {
     max-width: 60%; }
 
-.select-multiple.inline.l60 > .content > ul.show {
+.select-multiple.inline.label-60 > .content > ul.show {
     max-width: 40%; }
 
-.select-multiple.inline.l70 > .content > ul.show {
+.select-multiple.inline.label-70 > .content > ul.show {
     max-width: 30%; }
 
-.select-multiple.inline.l80 > .content > ul.show {
+.select-multiple.inline.label-80 > .content > ul.show {
     max-width: 20%; }
 
 .select-multiple > .content > ul > li {
@@ -10410,22 +10703,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 12px); }
 
-.textbox.inline.l20 > .content > .box > label {
+.textbox.inline.label-20 > .content > .box > label {
     width: calc(20% - 12px); }
 
-.textbox.inline.l30 > .content > .box > label {
+.textbox.inline.label-30 > .content > .box > label {
     width: calc(30% - 12px); }
 
-.textbox.inline.l40 > .content > .box > label {
+.textbox.inline.label-40 > .content > .box > label {
     width: calc(40% - 12px); }
 
-.textbox.inline.l60 > .content > .box > label {
+.textbox.inline.label-60 > .content > .box > label {
     width: calc(60% - 12px); }
 
-.textbox.inline.l70 > .content > .box > label {
+.textbox.inline.label-70 > .content > .box > label {
     width: calc(70% - 12px); }
 
-.textbox.inline.l80 > .content > .box > label {
+.textbox.inline.label-80 > .content > .box > label {
     width: calc(80% - 12px); }
 
 .textbox > .content > .box > label.active {
@@ -10468,27 +10761,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin-left: 50%;
     padding: 0px 16px 0px 8px; }
 
-.textbox.inline.l20 > .content > .box > input {
+.textbox.inline.label-20 > .content > .box > input {
     width: calc(80% - 24px);
     margin-left: 20%; }
 
-.textbox.inline.l30 > .content > .box > input {
+.textbox.inline.label-30 > .content > .box > input {
     width: calc(70% - 24px);
     margin-left: 30%; }
 
-.textbox.inline.l40 > .content > .box > input {
+.textbox.inline.label-40 > .content > .box > input {
     width: calc(60% - 24px);
     margin-left: 40%; }
 
-.textbox.inline.l60 > .content > .box > input {
+.textbox.inline.label-60 > .content > .box > input {
     width: calc(40% - 24px);
     margin-left: 60%; }
 
-.textbox.inline.l70 > .content > .box > input {
+.textbox.inline.label-70 > .content > .box > input {
     width: calc(30% - 24px);
     margin-left: 70%; }
 
-.textbox.inline.l80 > .content > .box > input {
+.textbox.inline.label-80 > .content > .box > input {
     width: calc(20% - 24px);
     margin-left: 80%; }
 
@@ -10499,22 +10792,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: calc(50% - 52px);
     padding: 0px 44px 0px 8px; }
 
-.textbox.inline.l20 > .content > .box > input.iconaction {
+.textbox.inline.label-20 > .content > .box > input.iconaction {
     width: calc(80% - 52px); }
 
-.textbox.inline.l30 > .content > .box > input.iconaction {
+.textbox.inline.label-30 > .content > .box > input.iconaction {
     width: calc(70% - 52px); }
 
-.textbox.inline.l40 > .content > .box > input.iconaction {
+.textbox.inline.label-40 > .content > .box > input.iconaction {
     width: calc(60% - 52px); }
 
-.textbox.inline.l60 > .content > .box > input.iconaction {
+.textbox.inline.label-60 > .content > .box > input.iconaction {
     width: calc(40% - 52px); }
 
-.textbox.inline.l70 > .content > .box > input.iconaction {
+.textbox.inline.label-70 > .content > .box > input.iconaction {
     width: calc(30% - 52px); }
 
-.textbox.inline.l80 > .content > .box > input.iconaction {
+.textbox.inline.label-80 > .content > .box > input.iconaction {
     width: calc(20% - 52px); }
 
 .textbox > .content > .box > input::-webkit-input-placeholder {
@@ -10553,27 +10846,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 8px;
     left: calc(50% + 8px); }
 
-.textbox.inline.l20 > .content > .box > .value {
+.textbox.inline.label-20 > .content > .box > .value {
     left: calc(20% + 8px);
     width: calc(80% - 24px); }
 
-.textbox.inline.l30 > .content > .box > .value {
+.textbox.inline.label-30 > .content > .box > .value {
     left: calc(30% + 8px);
     width: calc(70% - 24px); }
 
-.textbox.inline.l40 > .content > .box > .value {
+.textbox.inline.label-40 > .content > .box > .value {
     left: calc(40% + 8px);
     width: calc(60% - 24px); }
 
-.textbox.inline.l60 > .content > .box > .value {
+.textbox.inline.label-60 > .content > .box > .value {
     left: calc(60% + 8px);
     width: calc(40% - 24px); }
 
-.textbox.inline.l70 > .content > .box > .value {
+.textbox.inline.label-70 > .content > .box > .value {
     left: calc(70% + 8px);
     width: calc(30% - 24px); }
 
-.textbox.inline.l80 > .content > .box > .value {
+.textbox.inline.label-80 > .content > .box > .value {
     left: calc(80% + 8px);
     width: calc(20% - 24px); }
 
@@ -10586,22 +10879,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textbox.inline > .content > .box > input.iconaction ~ .value {
     width: calc(50% - 52px); }
 
-.textbox.inline.l20 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-20 > .content > .box > input.iconaction ~ .value {
     width: calc(80% - 52px); }
 
-.textbox.inline.l30 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-30 > .content > .box > input.iconaction ~ .value {
     width: calc(70% - 52px); }
 
-.textbox.inline.l40 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-40 > .content > .box > input.iconaction ~ .value {
     width: calc(60% - 52px); }
 
-.textbox.inline.l60 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-60 > .content > .box > input.iconaction ~ .value {
     width: calc(40% - 52px); }
 
-.textbox.inline.l70 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-70 > .content > .box > input.iconaction ~ .value {
     width: calc(30% - 52px); }
 
-.textbox.inline.l80 > .content > .box > input.iconaction ~ .value {
+.textbox.inline.label-80 > .content > .box > input.iconaction ~ .value {
     width: calc(20% - 52px); }
 
 .textbox > .content > .box > i.action {
@@ -10832,22 +11125,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 4px); }
 
-.textfield.inline.l20 > .content > label {
+.textfield.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.textfield.inline.l30 > .content > label {
+.textfield.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.textfield.inline.l40 > .content > label {
+.textfield.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.textfield.inline.l60 > .content > label {
+.textfield.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.textfield.inline.l70 > .content > label {
+.textfield.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.textfield.inline.l80 > .content > label {
+.textfield.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .textfield > .content > label.active {
@@ -10901,27 +11194,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 50%;
     margin-left: 50%; }
 
-.textfield.inline.l20 > .content > input {
+.textfield.inline.label-20 > .content > input {
     width: 80%;
     margin-left: 20%; }
 
-.textfield.inline.l30 > .content > input {
+.textfield.inline.label-30 > .content > input {
     width: 70%;
     margin-left: 30%; }
 
-.textfield.inline.l40 > .content > input {
+.textfield.inline.label-40 > .content > input {
     width: 60%;
     margin-left: 40%; }
 
-.textfield.inline.l60 > .content > input {
+.textfield.inline.label-60 > .content > input {
     width: 40%;
     margin-left: 60%; }
 
-.textfield.inline.l70 > .content > input {
+.textfield.inline.label-70 > .content > input {
     width: 30%;
     margin-left: 70%; }
 
-.textfield.inline.l80 > .content > input {
+.textfield.inline.label-80 > .content > input {
     width: 20%;
     margin-left: 80%; }
 
@@ -10934,22 +11227,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield.inline > .content > input.iconaction {
     width: calc(50% - 28px); }
 
-.textfield.inline.l20 > .content > input.iconaction {
+.textfield.inline.label-20 > .content > input.iconaction {
     width: calc(80% - 28px); }
 
-.textfield.inline.l30 > .content > input.iconaction {
+.textfield.inline.label-30 > .content > input.iconaction {
     width: calc(70% - 28px); }
 
-.textfield.inline.l40 > .content > input.iconaction {
+.textfield.inline.label-40 > .content > input.iconaction {
     width: calc(60% - 28px); }
 
-.textfield.inline.l60 > .content > input.iconaction {
+.textfield.inline.label-60 > .content > input.iconaction {
     width: calc(40% - 28px); }
 
-.textfield.inline.l70 > .content > input.iconaction {
+.textfield.inline.label-70 > .content > input.iconaction {
     width: calc(30% - 28px); }
 
-.textfield.inline.l80 > .content > input.iconaction {
+.textfield.inline.label-80 > .content > input.iconaction {
     width: calc(20% - 28px); }
 
 .textfield > .content > input::-webkit-input-placeholder {
@@ -11002,49 +11295,49 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.textfield.inline.l20 > .content > .value {
+.textfield.inline.label-20 > .content > .value {
     left: 20%; 
     width: 80%; }
 
-.textfield.inline.l30 > .content > .value {
+.textfield.inline.label-30 > .content > .value {
     left: 30%; 
     width: 70%; }
 
-.textfield.inline.l40 > .content > .value {
+.textfield.inline.label-40 > .content > .value {
     left: 40%; 
     width: 60%; }
 
-.textfield.inline.l60 > .content > .value {
+.textfield.inline.label-60 > .content > .value {
     left: 60%; 
     width: 40%; }
 
-.textfield.inline.l70 > .content > .value {
+.textfield.inline.label-70 > .content > .value {
     left: 70%; 
     width: 30%; }
 
-.textfield.inline.l80 > .content > .value {
+.textfield.inline.label-80 > .content > .value {
     left: 80%; 
     width: 20%; }
 
 .textfield.inline > .content > input.iconaction ~ .value {
     width: calc(50% - 28px); }
 
-.textfield.inline.l20 > .content > input.iconaction ~ .value {
+.textfield.inline.label-20 > .content > input.iconaction ~ .value {
     width: calc(80% - 28px); }
 
-.textfield.inline.l30 > .content > input.iconaction ~ .value {
+.textfield.inline.label-30 > .content > input.iconaction ~ .value {
     width: calc(70% - 28px); }
 
-.textfield.inline.l40 > .content > input.iconaction ~ .value {
+.textfield.inline.label-40 > .content > input.iconaction ~ .value {
     width: calc(60% - 28px); }
 
-.textfield.inline.l60 > .content > input.iconaction ~ .value {
+.textfield.inline.label-60 > .content > input.iconaction ~ .value {
     width: calc(40% - 28px); }
 
-.textfield.inline.l70 > .content > input.iconaction ~ .value {
+.textfield.inline.label-70 > .content > input.iconaction ~ .value {
     width: calc(30% - 28px); }
 
-.textfield.inline.l80 > .content > input.iconaction ~ .value {
+.textfield.inline.label-80 > .content > input.iconaction ~ .value {
     width: calc(20% - 28px); }
 
 .textfield.active > .content > input:focus ~ .value {
@@ -11065,27 +11358,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.textfield.inline.l20 > .content > .line-bordered {
+.textfield.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.textfield.inline.l30 > .content > .line-bordered {
+.textfield.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.textfield.inline.l40 > .content > .line-bordered {
+.textfield.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.textfield.inline.l60 > .content > .line-bordered {
+.textfield.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.textfield.inline.l70 > .content > .line-bordered {
+.textfield.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.textfield.inline.l80 > .content > .line-bordered {
+.textfield.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
 
@@ -11105,22 +11398,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield.inline > .content > .line-shadow {
     left: 75%; }
 
-.textfield.inline.l20 > .content > .line-shadow {
+.textfield.inline.label-20 > .content > .line-shadow {
     left: 60%; }
 
-.textfield.inline.l30 > .content > .line-shadow {
+.textfield.inline.label-30 > .content > .line-shadow {
     left: 65%; }
 
-.textfield.inline.l40 > .content > .line-shadow {
+.textfield.inline.label-40 > .content > .line-shadow {
     left: 70%; }
 
-.textfield.inline.l60 > .content > .line-shadow {
+.textfield.inline.label-60 > .content > .line-shadow {
     left: 80%; }
 
-.textfield.inline.l70 > .content > .line-shadow {
+.textfield.inline.label-70 > .content > .line-shadow {
     left: 85%; }
 
-.textfield.inline.l80 > .content > .line-shadow {
+.textfield.inline.label-80 > .content > .line-shadow {
     left: 90%; }
 
 .textfield.active > .content > input:focus ~ .line-shadow {
@@ -11141,37 +11434,37 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
        -moz-animation: borderTextfieldInline 200ms var(--sharp-curve);
             animation: borderTextfieldInline 200ms var(--sharp-curve); }
 
-.textfield.inline.l20.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-20.active > .content > input:focus ~ .line-shadow {
     width: 80%; 
     -webkit-animation: borderTextfieldInline20 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline20 200ms var(--sharp-curve);
             animation: borderTextfieldInline20 200ms var(--sharp-curve); }
 
-.textfield.inline.l30.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-30.active > .content > input:focus ~ .line-shadow {
     width: 70%; 
     -webkit-animation: borderTextfieldInline30 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline30 200ms var(--sharp-curve);
             animation: borderTextfieldInline30 200ms var(--sharp-curve); }
 
-.textfield.inline.l40.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-40.active > .content > input:focus ~ .line-shadow {
     width: 60%; 
     -webkit-animation: borderTextfieldInline40 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline40 200ms var(--sharp-curve);
             animation: borderTextfieldInline40 200ms var(--sharp-curve); }
 
-.textfield.inline.l60.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-60.active > .content > input:focus ~ .line-shadow {
     width: 40%; 
     -webkit-animation: borderTextfieldInline60 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline60 200ms var(--sharp-curve);
             animation: borderTextfieldInline60 200ms var(--sharp-curve); }
 
-.textfield.inline.l70.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-70.active > .content > input:focus ~ .line-shadow {
     width: 30%; 
     -webkit-animation: borderTextfieldInline70 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline70 200ms var(--sharp-curve);
             animation: borderTextfieldInline70 200ms var(--sharp-curve); }
 
-.textfield.inline.l80.active > .content > input:focus ~ .line-shadow {
+.textfield.inline.label-80.active > .content > input:focus ~ .line-shadow {
     width: 20%; 
     -webkit-animation: borderTextfieldInline80 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldInline80 200ms var(--sharp-curve);
@@ -11215,27 +11508,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 50%;
     width: 50%; }
 
-.textfield.inline.l20 > .content > span {
+.textfield.inline.label-20 > .content > span {
     left: 20%;
     width: 80%; }
 
-.textfield.inline.l30 > .content > span {
+.textfield.inline.label-30 > .content > span {
     left: 30%;
     width: 70%; }
 
-.textfield.inline.l40 > .content > span {
+.textfield.inline.label-40 > .content > span {
     left: 40%;
     width: 60%; }
 
-.textfield.inline.l60 > .content > span {
+.textfield.inline.label-60 > .content > span {
     left: 60%;
     width: 40%; }
 
-.textfield.inline.l70 > .content > span {
+.textfield.inline.label-70 > .content > span {
     left: 70%;
     width: 30%; }
 
-.textfield.inline.l80 > .content > span {
+.textfield.inline.label-80 > .content > span {
     left: 80%;
     width: 20%; }
 
@@ -11301,22 +11594,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 12px); }
 
-.textfield-bordered.inline.l20 > .content > .box > label {
+.textfield-bordered.inline.label-20 > .content > .box > label {
     width: calc(20% - 12px); }
 
-.textfield-bordered.inline.l30 > .content > .box > label {
+.textfield-bordered.inline.label-30 > .content > .box > label {
     width: calc(30% - 12px); }
 
-.textfield-bordered.inline.l40 > .content > .box > label {
+.textfield-bordered.inline.label-40 > .content > .box > label {
     width: calc(40% - 12px); }
 
-.textfield-bordered.inline.l60 > .content > .box > label {
+.textfield-bordered.inline.label-60 > .content > .box > label {
     width: calc(60% - 12px); }
 
-.textfield-bordered.inline.l70 > .content > .box > label {
+.textfield-bordered.inline.label-70 > .content > .box > label {
     width: calc(70% - 12px); }
 
-.textfield-bordered.inline.l80 > .content > .box > label {
+.textfield-bordered.inline.label-80 > .content > .box > label {
     width: calc(80% - 12px); }
 
 .textfield-bordered > .content > .box > label.active {
@@ -11368,27 +11661,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     margin-left: 50%;
     padding: 0px 16px 0px 8px; }
 
-.textfield-bordered.inline.l20 > .content > .box > input {
+.textfield-bordered.inline.label-20 > .content > .box > input {
     margin-left: 20%;
     width: calc(80% - 24px); }
 
-.textfield-bordered.inline.l30 > .content > .box > input {
+.textfield-bordered.inline.label-30 > .content > .box > input {
     margin-left: 30%;
     width: calc(70% - 24px); }
 
-.textfield-bordered.inline.l40 > .content > .box > input {
+.textfield-bordered.inline.label-40 > .content > .box > input {
     margin-left: 40%;
     width: calc(60% - 24px); }
 
-.textfield-bordered.inline.l60 > .content > .box > input {
+.textfield-bordered.inline.label-60 > .content > .box > input {
     margin-left: 60%;
     width: calc(40% - 24px); }
 
-.textfield-bordered.inline.l70 > .content > .box > input {
+.textfield-bordered.inline.label-70 > .content > .box > input {
     margin-left: 70%;
     width: calc(30% - 24px); }
 
-.textfield-bordered.inline.l80 > .content > .box > input {
+.textfield-bordered.inline.label-80 > .content > .box > input {
     margin-left: 80%;
     width: calc(20% - 24px); }
 
@@ -11399,22 +11692,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: calc(50% - 52px);
     padding: 0px 44px 0px 8px; }
 
-.textfield-bordered.inline.l20 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-20 > .content > .box > input.iconaction {
     width: calc(80% - 52px); }
 
-.textfield-bordered.inline.l30 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-30 > .content > .box > input.iconaction {
     width: calc(70% - 52px); }
 
-.textfield-bordered.inline.l40 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-40 > .content > .box > input.iconaction {
     width: calc(60% - 52px); }
 
-.textfield-bordered.inline.l60 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-60 > .content > .box > input.iconaction {
     width: calc(40% - 52px); }
 
-.textfield-bordered.inline.l70 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-70 > .content > .box > input.iconaction {
     width: calc(30% - 52px); }
 
-.textfield-bordered.inline.l80 > .content > .box > input.iconaction {
+.textfield-bordered.inline.label-80 > .content > .box > input.iconaction {
     width: calc(20% - 52px); }
 
 .textfield-bordered > .content > .box > input::-webkit-input-placeholder {
@@ -11454,27 +11747,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: calc(50% + 8px);
     line-height: 30px; }
 
-.textfield-bordered.inline.l20 > .content > .box > .value {
+.textfield-bordered.inline.label-20 > .content > .box > .value {
     left: calc(20% + 8px);
     width: calc(80% - 24px); }
 
-.textfield-bordered.inline.l30 > .content > .box > .value {
+.textfield-bordered.inline.label-30 > .content > .box > .value {
     left: calc(30% + 8px);
     width: calc(70% - 24px); }
 
-.textfield-bordered.inline.l40 > .content > .box > .value {
+.textfield-bordered.inline.label-40 > .content > .box > .value {
     left: calc(40% + 8px);
     width: calc(60% - 24px); }
 
-.textfield-bordered.inline.l60 > .content > .box > .value {
+.textfield-bordered.inline.label-60 > .content > .box > .value {
     left: calc(60% + 8px);
     width: calc(40% - 24px); }
 
-.textfield-bordered.inline.l70 > .content > .box > .value {
+.textfield-bordered.inline.label-70 > .content > .box > .value {
     left: calc(70% + 8px);
     width: calc(30% - 24px); }
 
-.textfield-bordered.inline.l80 > .content > .box > .value {
+.textfield-bordered.inline.label-80 > .content > .box > .value {
     left: calc(80% + 8px);
     width: calc(20% - 24px); }
 
@@ -11487,22 +11780,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield-bordered.inline > .content > .box > input.iconaction ~ .value {
     width: calc(50% - 52px); }
 
-.textfield-bordered.inline.l20 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-20 > .content > .box > input.iconaction ~ .value {
     width: calc(80% - 52px); }
 
-.textfield-bordered.inline.l30 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-30 > .content > .box > input.iconaction ~ .value {
     width: calc(70% - 52px); }
 
-.textfield-bordered.inline.l40 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-40 > .content > .box > input.iconaction ~ .value {
     width: calc(60% - 52px); }
 
-.textfield-bordered.inline.l60 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-60 > .content > .box > input.iconaction ~ .value {
     width: calc(40% - 52px); }
 
-.textfield-bordered.inline.l70 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-70 > .content > .box > input.iconaction ~ .value {
     width: calc(30% - 52px); }
 
-.textfield-bordered.inline.l80 > .content > .box > input.iconaction ~ .value {
+.textfield-bordered.inline.label-80 > .content > .box > input.iconaction ~ .value {
     width: calc(20% - 52px); }
 
 .textfield-bordered > .content > .box > i.action {
@@ -11764,22 +12057,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     top: 12px;
     width: calc(50% - 4px); }
 
-.textfield-readonly.inline.l20 > .content > label {
+.textfield-readonly.inline.label-20 > .content > label {
     width: calc(20% - 4px); }
 
-.textfield-readonly.inline.l30 > .content > label {
+.textfield-readonly.inline.label-30 > .content > label {
     width: calc(30% - 4px); }
 
-.textfield-readonly.inline.l40 > .content > label {
+.textfield-readonly.inline.label-40 > .content > label {
     width: calc(40% - 4px); }
 
-.textfield-readonly.inline.l60 > .content > label {
+.textfield-readonly.inline.label-60 > .content > label {
     width: calc(60% - 4px); }
 
-.textfield-readonly.inline.l70 > .content > label {
+.textfield-readonly.inline.label-70 > .content > label {
     width: calc(70% - 4px); }
 
-.textfield-readonly.inline.l80 > .content > label {
+.textfield-readonly.inline.label-80 > .content > label {
     width: calc(80% - 4px); }
 
 .textfield-readonly > .content > label.active {
@@ -11821,27 +12114,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 50%;
     margin-left: 50%; }
 
-.textfield-readonly.inline.l20 > .content > input {
+.textfield-readonly.inline.label-20 > .content > input {
     width: 80%;
     margin-left: 20%; }
 
-.textfield-readonly.inline.l30 > .content > input {
+.textfield-readonly.inline.label-30 > .content > input {
     width: 70%;
     margin-left: 30%; }
 
-.textfield-readonly.inline.l40 > .content > input {
+.textfield-readonly.inline.label-40 > .content > input {
     width: 60%;
     margin-left: 40%; }
 
-.textfield-readonly.inline.l60 > .content > input {
+.textfield-readonly.inline.label-60 > .content > input {
     width: 40%;
     margin-left: 60%; }
 
-.textfield-readonly.inline.l70 > .content > input {
+.textfield-readonly.inline.label-70 > .content > input {
     width: 30%;
     margin-left: 70%; }
 
-.textfield-readonly.inline.l80 > .content > input {
+.textfield-readonly.inline.label-80 > .content > input {
     width: 20%;
     margin-left: 80%; }
 
@@ -11851,22 +12144,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textfield-readonly.inline > .content > input.iconaction {
     width: calc(50% - 28px); }
 
-.textfield-readonly.inline.l20 > .content > input.iconaction {
+.textfield-readonly.inline.label-20 > .content > input.iconaction {
     width: calc(80% - 28px); }
 
-.textfield-readonly.inline.l30 > .content > input.iconaction {
+.textfield-readonly.inline.label-30 > .content > input.iconaction {
     width: calc(70% - 28px); }
 
-.textfield-readonly.inline.l40 > .content > input.iconaction {
+.textfield-readonly.inline.label-40 > .content > input.iconaction {
     width: calc(60% - 28px); }
 
-.textfield-readonly.inline.l60 > .content > input.iconaction {
+.textfield-readonly.inline.label-60 > .content > input.iconaction {
     width: calc(40% - 28px); }
 
-.textfield-readonly.inline.l70 > .content > input.iconaction {
+.textfield-readonly.inline.label-70 > .content > input.iconaction {
     width: calc(30% - 28px); }
 
-.textfield-readonly.inline.l80 > .content > input.iconaction {
+.textfield-readonly.inline.label-80 > .content > input.iconaction {
     width: calc(20% - 28px); }
 
 .textfield-readonly.align-right > .content > input { 
@@ -11883,27 +12176,27 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     left: 50%; 
     width: 50%; }
 
-.textfield-readonly.inline.l20 > .content > .line-bordered {
+.textfield-readonly.inline.label-20 > .content > .line-bordered {
     left: 20%; 
     width: 80%; }
 
-.textfield-readonly.inline.l30 > .content > .line-bordered {
+.textfield-readonly.inline.label-30 > .content > .line-bordered {
     left: 30%; 
     width: 70%; }
 
-.textfield-readonly.inline.l40 > .content > .line-bordered {
+.textfield-readonly.inline.label-40 > .content > .line-bordered {
     left: 40%; 
     width: 60%; }
 
-.textfield-readonly.inline.l60 > .content > .line-bordered {
+.textfield-readonly.inline.label-60 > .content > .line-bordered {
     left: 60%; 
     width: 40%; }
 
-.textfield-readonly.inline.l70 > .content > .line-bordered {
+.textfield-readonly.inline.label-70 > .content > .line-bordered {
     left: 70%; 
     width: 30%; }
 
-.textfield-readonly.inline.l80 > .content > .line-bordered {
+.textfield-readonly.inline.label-80 > .content > .line-bordered {
     left: 80%; 
     width: 20%; }
 

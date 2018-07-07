@@ -5,7 +5,7 @@
  http://material.softtion.com
  License: MIT
  Created: 19/Nov/2016
- Updated: 26/Jun/2018
+ Updated: 07/Jul/2018
 */
 
 ((factory) => {
@@ -100,6 +100,8 @@
                 FilechooserPerfil: Directives.create(Directives.FilechooserPerfil),
 
                 FlexibleBox: Directives.create(Directives.FlexibleBox),
+
+                FormField: Directives.create(Directives.FormField),
                 
                 FormNavigation: Directives.create(Directives.FormNavigation),
 
@@ -302,6 +304,7 @@
             case (Directives.FilechooserMultiple.NAME): return Directives.FilechooserMultiple;
             case (Directives.FilechooserPerfil.NAME): return Directives.FilechooserPerfil;
             case (Directives.FlexibleBox.NAME): return Directives.FlexibleBox;
+            case (Directives.FormField.NAME): return Directives.FormField;
             case (Directives.FormNavigation.NAME): return Directives.FormNavigation;
             case (Directives.FullwidthField.NAME): return Directives.FullwidthField;
             case (Directives.Gallery.NAME): return Directives.Gallery;
@@ -742,7 +745,9 @@
     
     Directives.AutoComplete.HTML = function () {
         var content = softtion.html("div").addClass("content").
-                addAttribute("ng-class", "{disabled: ngDisabled}");
+                addAttribute(
+                    "ng-class", "{disabled: ngDisabled, active: inputActive}"
+                );
 
         var iconDescription = softtion.html("i").
             addAttribute("ng-click", "clickIconDescription($event)").
@@ -4948,6 +4953,115 @@
                     detail.children(".subtitle").css("font-size", fontSizeSubTitle);
                     detail.children(".title").css("font-size", fontSizeTitle);
                 });
+            }
+        };
+    }
+    
+    // Directiva: FormField
+    // Version: 1.0.0
+    // Update: 07/Jul/2018
+    
+    Directives.FormField = FormFieldDirective;
+    
+    Directives.FormField.NAME = "FormField";
+    Directives.FormField.VERSION = "1.0.0";
+    Directives.FormField.KEY = "formfield";
+    Directives.FormField.ROUTE = "softtion/template/formfield.html";
+    
+    Directives.FormField.HTML = function () {
+        var content = softtion.html("div").addClass("content").
+            addAttribute(
+                "ng-class", "{disabled: ngDisabled, active: inputActive}"
+            );
+
+        var iconDescription = softtion.html("i").
+            addAttribute("ng-click", "clickIconDescription($event)").
+            addAttribute("ng-if", "isIconDescription()").
+            addClass("description").setText("{{iconDescription}}");
+
+        var input = softtion.html("input", false).
+            addAttribute("type", "{{typeInput}}").
+            addAttribute("autocomplete", "{{autocompleteValue}}").
+            addAttribute("ng-model", "input").
+            addAttribute("ng-click", "clickInput($event)").
+            addAttribute("ng-blur", "blurInput($event)").
+            addAttribute("ng-focus", "focusInput($event)").
+            addAttribute("ng-keydown", "keydownInput($event)").
+            addAttribute("ng-keyup", "keyupInput($event)").
+            addAttribute("ng-readonly", "ngReadonly").
+            addAttribute("ng-disabled", "ngDisabled").
+            addAttribute("ng-class", 
+                "{holderhide: isPlaceholder(), iconaction: isIconAction || checkboxActive}"
+            ).addAttribute("ng-trim", "ngTrim").
+            addAttribute("focused-element", "focusedInput").
+            addAttribute("placeholder", "{{placeholder}}");
+
+        var lineShadow = softtion.html("div").addClass("line-bordered");
+
+        var value = softtion.html("pre").addClass(["value"]).
+            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
+            addAttribute("ng-click", "clickLabel($event)").
+            addAttribute("ng-class", "{holderactive: isHolderActive()}");
+
+        var iconAction = softtion.html("i").addClass(Classes.ACTION).
+            setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+            addAttribute("ng-click", "clickAction($event)");
+
+        var checkBox = softtion.html("div").addClass("checkbox-control").
+            addAttribute("ng-if", "checkboxActive").
+            addAttribute("ng-model", "checkboxModel").
+            addAttribute("ng-listener", "checkboxListener($model)");
+
+        var spanError = softtion.html("span").addClass(["error", "truncate"]).
+            setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
+
+        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
+
+        var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
+            setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
+
+        content.addChildren(iconDescription).
+            addChildren(input).addChildren(lineShadow).
+            addChildren(value).addChildren(iconAction).
+            addChildren(checkBox).addChildren(spanHelper).
+            addChildren(spanError).addChildren(spanCounter);
+
+        return content.create(); // Componente
+    };
+                    
+    function FormFieldDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.FormField.ROUTE,
+            scope: {
+                value: "=ngModel", 
+                label: "@", 
+                type: "@",
+                autocomplete: "=?",
+                required: "=?",
+                optional: "=?",
+                ngTrim: "=?",
+                ngUppercase: "=?",
+                ngDisabled: "=?",
+                ngReadonly: "=?",
+                minLength: "=?",
+                maxLength: "=?",
+                counterVisible: "=?",
+                iconDescription: "@",
+                iconAction: "@",
+                placeholder: "@",
+                helperText: "@",
+                keyDisabled: "=?",
+                focusedInput: "=?",
+                clearModel: "=?",
+                ngFormatValue: "&",
+                checkboxModel: "=?ngModelCheckbox",
+                checkboxActive: "=?",
+                ngListener: "&"
+            },
+            link: function ($scope, $element, $attrs) {
+                defineInputComponent($scope, $element, $attrs);
             }
         };
     }
@@ -9974,6 +10088,8 @@
                     
                     $scope.input = (softtion.isUndefined(newValue)) ? "" : newValue;
                 } else {
+                    if (softtion.isUndefined(newValue)) return;
+                    
                     if (!(newValue === $scope.input)) $scope.input = newValue;
                 } // Verificando si el texto del input es diferente
             });
@@ -9993,6 +10109,10 @@
         if ($scope.type === "password") {
             $scope.iconAction = "visibility"; $scope.isIconAction = true;
         } // Se debe activar el icono de acción para password
+
+        $scope.isLabel = function () {
+            return softtion.isText($scope.label);
+        };
 
         $scope.isActiveLabel = function () {
             if ($scope.inputActive) return true; // Input enfocado
@@ -10102,11 +10222,13 @@
         };
 
         $scope.keyupInput = function ($event) {
-            $scope.input = softtion.getValueString($scope.type, $scope.input);
-            
-            if (!isNaN($scope.maxLength)) {
-                $scope.input = $scope.input.substr(0, $scope.maxLength);
-            } // Reestringiendo nuevo caracter
+            if (softtion.isDefined($scope.input)) {
+                $scope.input = softtion.getValueString($scope.type, $scope.input);
+                
+                if (!isNaN($scope.maxLength)) {
+                    $scope.input = $scope.input.substr(0, $scope.maxLength);
+                } // Reestringiendo nuevo caracter
+            } // El valor está definido en el componente
             
             defineModelKeyupInput(); listener.launch(Listeners.KEY_UP, { $event: $event });
         };
@@ -10116,13 +10238,16 @@
             
             var value = (softtion.isDefined($scope.value)) ? $scope.value : $scope.input;
             
-            if (($scope.type === "password") && !$scope.viewPassword) {
-                value = convertToPassword(value.length);
-            } else if (softtion.isDefined(value)) {
-                var format = $scope.ngFormatValue({$model: value, $value: String(value)});
-                
-                if (softtion.isDefined(format)) value = format;
-            } // Se establecio formato para el componente de texto
+            if (softtion.isDefined(value)) {
+                if (($scope.type === "password") && !$scope.viewPassword) {
+                    value = convertToPassword(value.length);
+                } else {
+                    var format = $scope.
+                            ngFormatValue({$model: value, $value: String(value)});
+
+                    if (softtion.isDefined(format)) value = format;
+                } // Verificando formato establecido en el componente de texto
+            } else { value = ""; } // Valor indefinido 
 
             return value; // Retornando el valor a mostrar
         };
@@ -10291,6 +10416,8 @@
                         $scope.area = newValue; // Nuevo valor
                     }
                 }  else {
+                    if (softtion.isUndefined(newValue)) return;
+                    
                     if (!(newValue === $scope.area)) $scope.area = newValue;
                 } // Verificando si el texto del input es diferente
             });
