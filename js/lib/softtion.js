@@ -5,7 +5,7 @@
  http://www.softtion.com.co
  License: MIT
  Create: 24/May/2015
- Update: 05/May/2018
+ Update: 15/Jul/2018
  */
 
 class Softtion {
@@ -41,7 +41,7 @@ class Softtion {
             
             DAYS_OF_MONTHS: [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
         };
-    };
+    }
     
     static get CODES_KEYBOARD() {
         return {
@@ -499,6 +499,20 @@ class Softtion {
         } // Se establecio un solo prefijo para URL
         
         return URL; // Retornando url generada para recurso
+    }
+    
+    copyToClipboard(text) {
+        if (this.isUndefined(this.inputClipBoard)) {
+            this.inputClipBoard = document.createElement("input");
+            
+            this.inputClipBoard.className = "input-clipboard";
+            document.body.appendChild(this.inputClipBoard); // Insertando
+        } // Instanciando elemento que contiene texto copiado
+        
+        this.inputClipBoard.setAttribute("value", text);
+        
+        // Selecciona el contenido del campo
+        this.inputClipBoard.select(); document.execCommand("copy");
     }
     
     encode(value, keyPassword) {
