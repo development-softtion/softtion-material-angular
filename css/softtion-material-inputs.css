@@ -630,12 +630,6 @@
 .textfield-readonly > .content > input:focus::-webkit-input-placeholder {
     visibility: visible; }
 
-.autocomplete > .content > input.holder-hide::-webkit-input-placeholder,
-.chip-input > .content > input.holder-hide::-webkit-input-placeholder,
-.textfield > .content > input.holder-hide::-webkit-input-placeholder,
-.textfield-readonly > .content > input.holder-hide::-webkit-input-placeholder {
-    visibility: hidden; }
-
 .autocomplete > .content > .value,
 .clockpicker-input > .content > .value,
 .datepicker-input > .content > .value,
@@ -1665,11 +1659,14 @@
     padding: 0px 16px;
     cursor: pointer;
     height: 48px;
-    line-height: 48px;
     font-family: var(--body-2-font);
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
+
+.select > .content > ul > li,
+.select-multiple > .content > ul > li {
+    line-height: 48px; }
 
 .select > .content > ul > li.clear-suggestion {
     box-sizing: border-box;
@@ -1695,6 +1692,9 @@
     margin-left: 0px; 
     margin-right: 8px; }
 
+.autocomplete.avatar-hidden > .content > ul > li > .detail > .avatars {
+    display: none; }
+
 .autocomplete > .content > ul > li > .detail > .avatars > .avatar {
     width: 32px;
     height: 32px;
@@ -1712,6 +1712,9 @@
 .autocomplete > .content > ul > li > .detail.record > .content {
     width: calc(100% - 40px); }
 
+.autocomplete.avatar-hidden > .content > ul > li > .detail.record > .content {
+    width: 100%; }
+
 .autocomplete > .content > ul > li > .detail .title {
     font-family: var(--body-2-font);
     font-size: var(--body-2-size);
@@ -1723,3 +1726,72 @@
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
+
+/** INPUTS IN DATATABLE */
+
+.datatable > .content tbody .clockpicker-input,
+.datatable > .content tbody .datepicker-input,
+.datatable > .content tbody .textfield,
+.datatable > .content tbody .textfield-readonly {
+    width: 100%;
+    overflow-y: hidden; }
+
+.datatable > .content tbody .clockpicker-input > .content,
+.datatable > .content tbody .datepicker-input > .content,
+.datatable > .content tbody .textfield > .content,
+.datatable > .content tbody .textfield-readonly > .content {
+    padding: 0px; }
+
+.datatable > .content tbody .clockpicker-input > .content > label,
+.datatable > .content tbody .datepicker-input > .content > label,
+.datatable > .content tbody .textfield > .content > label,
+.datatable > .content tbody .textfield-readonly > .content > label {
+    display: none !important; }
+
+.datatable > .content tbody .textfield > .content > input,
+.datatable > .content tbody .textfield-readonly > .content > input {
+    padding: 8px 0px 8px 0px;
+    font-family: var(--body-2-font);
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
+
+.datatable.condense > .content tbody .textfield > .content > input,
+.datatable.condense > .content tbody .textfield-readonly > .content > input {
+    padding: 4px 0px 4px 0px; }
+
+.datatable > .content tbody .clockpicker-input > .content > .value,
+.datatable > .content tbody .datepicker-input > .content > .value,
+.datatable > .content tbody .textfield > .content > .value {
+    font-family: var(--body-2-font);
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
+
+.datatable > .content tbody .clockpicker-input > .content > .value,
+.datatable > .content tbody .datepicker-input > .content > .value {
+    padding: 8px 0px 8px 0px; }
+
+.datatable > .content tbody .textfield > .content > .value {
+    top: 8px; }
+
+.datatable.condense > .content tbody .clockpicker-input > .content > .value,
+.datatable.condense > .content tbody .datepicker-input > .content > .value {
+    padding: 4px 0px 4px 0px; }
+
+.datatable.condense > .content tbody .textfield > .content > .value {
+    top: 4px; }
+
+.datatable > .content tbody .textfield > .content > .line-shadow {
+    bottom: 8px; }
+
+.datatable.condense > .content tbody .textfield > .content > .line-shadow {
+    bottom: 6px; }
+
+.datatable > .content tbody .clockpicker-input > .content > i.action,
+.datatable > .content tbody .datepicker-input > .content > i.action {
+    top: 14px; }
+
+.datatable.condense > .content tbody .clockpicker-input > .content > i.action,
+.datatable.condense > .content tbody .datepicker-input > .content > i.action {
+    top: 10px; }

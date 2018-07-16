@@ -2747,42 +2747,6 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable .switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(0, 0, 0, 0.3); }
 
-.datatable > .content tbody .textfield {
-    width: 100%;
-    overflow-y: hidden; }
-
-.datatable > .content tbody .textfield > .content {
-    padding: 0px; }
-
-.datatable > .content tbody .textfield > .content > label {
-    display: none !important; }
-
-.datatable > .content tbody .textfield > .content > input {
-    padding: 8px 0px 8px 0px;
-    font-family: var(--body-2-font);
-    font-size: var(--body-2-size);
-    letter-spacing: var(--body-2-letterspacing);
-    font-weight: var(--body-2-weight); }
-
-.datatable.condense > .content tbody .textfield > .content > input {
-    padding: 4px 0px 4px 0px; }
-
-.datatable > .content tbody .textfield > .content > .value {
-    top: 8px;
-    font-family: var(--body-2-font);
-    font-size: var(--body-2-size);
-    letter-spacing: var(--body-2-letterspacing);
-    font-weight: var(--body-2-weight); }
-
-.datatable.condense > .content tbody .textfield > .content > .value {
-    top: 4px; }
-
-.datatable > .content tbody .textfield > .content > .line-shadow {
-    bottom: 8px; }
-
-.datatable.condense > .content tbody .textfield > .content > .line-shadow {
-    bottom: 6px; }
-
 .datatable > .content > table > tbody > tr > td > span.poster {
     display: block;
     width: 100%;

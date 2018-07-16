@@ -1123,9 +1123,6 @@ button.floating.theme-secondary:before {
 .datatable > .content > table > tbody > tr > td > i {
     color: var(--secondary-font); }
 
-.datatable > .content tbody .textfield > .content > .line-bordered {
-    border-bottom: none !important; }
-
 .datatable table > tbody td > span.poster {
     color: var(--primary-font);
     background-color: var(--background-statusbar); }
@@ -4031,12 +4028,15 @@ button.floating.theme-secondary:before {
     color: var(--theme-secondary-font-primary-500);
     background-color: var(--theme-secondary-500); }
 
+.autocomplete > .content > .value.holder-active,
 .textfield > .content > .value.holder-active {
     color: var(--secondary-font); }
 
+.theme-primary .autocomplete.contrast > .content > .value.holder-active,
 .theme-primary .textfield.contrast > .content > .value.holder-active {
     color: var(--theme-primary-font-secondary-500); }
 
+.theme-secondary .autocomplete.contrast > .content > .value.holder-active,
 .theme-secondary .textfield.contrast > .content > .value.holder-active {
     color: var(--theme-secondary-font-secondary-500); }
 
@@ -4348,6 +4348,10 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-600);
     color: var(--theme-secondary-font-primary-600); }
 
+.autocomplete > .content > ul.autoselection > li > .detail .avatar > span { 
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
+
 .autocomplete > .content > ul > li > .detail .title > b { 
     color: var(--secondary-font); }
 
@@ -4359,3 +4363,11 @@ button.floating.theme-secondary:before {
 
 .select-multiple > .content > ul > li > .checkbox-select > label:after {
     border: 2px solid var(--theme-primary-font-primary-500); }
+
+/** INPUTS IN DATATABLE */
+
+.datatable > .content tbody .clockpicker-input > .content > .line-bordered,
+.datatable > .content tbody .datepicker-input > .content > .line-bordered,
+.datatable > .content tbody .textfield > .content > .line-bordered,
+.datatable > .content tbody .textfield-readonly > .content > .line-bordered {
+    border-bottom: none !important; }

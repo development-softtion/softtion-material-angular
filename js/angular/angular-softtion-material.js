@@ -745,19 +745,19 @@
     Directives.AutoComplete.HTML = function () {
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
-                    "{active: inputActive, disabled: ngDisabled, \"icon-action\": isIconAction()}"
+                    "{active: inputActive, disabled: ngDisabled, \"icon-action\": isIconAction}"
                 );
 
         var iconImg = softtion.html("div").addClass("img-icon").
                 addAttribute("ng-click", "clickIconDescription($event)").
-                addAttribute("ng-if", "isIconImg()").
+                addAttribute("ng-if", "isIconImg").
                 addChildren(
                     softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
                 );
 
         var iconDescription = softtion.html("i").
                 addAttribute("ng-click", "clickIconDescription($event)").
-                addAttribute("ng-if", "isIconDescription()").
+                addAttribute("ng-if", "isIconDescription").
                 addClass("description").setText("{{iconDescription}}");
 
         var input = softtion.html("input", false).
@@ -768,7 +768,6 @@
                 addAttribute("ng-keyup", "keyupInput($event)").
                 addAttribute("ng-blur", "blurInput($event)").
                 addAttribute("ng-disabled", "ngDisabled").
-                addAttribute("ng-class", "{hide: !hideValue, \"holder-hide\": isHaveSelection()}").
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("placeholder", "{{placeholder}}");
 
@@ -786,21 +785,20 @@
                 );
 
         var value = softtion.html("pre").addClass(["value"]).
-                setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
+                setText("{{getValueModel()}}").
+                addAttribute("ng-class", "{\"holder-active\": isHolderActive()}").
                 addAttribute("ng-click", "clickLabel()");
 
         var buttonAction = softtion.html("i").addClass([Classes.ACTION]).
-                setText("{{iconAction}}").addAttribute("ng-if", "isIconAction()").
-                addAttribute("ng-click", "clickAction($event)").
-                addAttribute("ng-class", "{disabled: ngDisabled}");
+                setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
+                addAttribute("ng-click", "clickAction($event)");
 
         var buttonClear = softtion.html("i").addClass([Classes.ACTION]).
                 setText("close").addAttribute("ng-hide", "isActiveClear()").
-                addAttribute("ng-click", "clearAutocomplet()").
-                addAttribute("ng-class", "{disabled: ngDisabled}");
+                addAttribute("ng-click", "clearAutocomplet()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
     
         var detail = softtion.html("div").addClass("detail").
                 addAttribute("ng-class", "{record: record}").
@@ -863,7 +861,7 @@
             restrict: "C",
             templateUrl: Directives.AutoComplete.ROUTE,
             scope: {
-                select: "=ngModel",
+                ngModel: "=",
                 suggestions: "=",
                 countVisible: "=?",
                 label: "@",
@@ -893,7 +891,7 @@
                 ngFormatDescription: "&",
                 ngListener: "&"
             },
-            link: function ($scope, $element) {
+            link: function ($scope, $element, $attrs) {
                     // Componentes
                 var list = $element.find("ul");
 
@@ -924,7 +922,7 @@
                         $scope.instance = !$scope.instance; // Intercalando
                     });
 
-                $scope.$watch(() => { return $scope.select; }, 
+                $scope.$watch(() => { return $scope.ngModel; }, 
                     (newValue) => {
                         if (softtion.isUndefined(newValue)) $scope.input = ""; 
                     });
@@ -938,67 +936,41 @@
                 $scope.$watch(() => { return $scope.clearModel; }, 
                     (newValue) => {
                         if (newValue === true) {
-                            $scope.select = undefined; // Indefinido
+                            $scope.ngModel = undefined; // Indefinido
                             $scope.input = ""; $scope.clearModel = false;
                         }
                     });
+                    
+                defineInputField($scope, $element, $attrs, listener);
 
                 $scope.isActiveLabel = function () {
                     return ($scope.inputActive || 
-                        softtion.isDefined($scope.select)) ||
+                        softtion.isDefined($scope.ngModel)) ||
                         softtion.isText($scope.input);
                 };
 
-                $scope.isIconDescription = function () {
-                    return softtion.isText($scope.iconDescription);
-                };
-                
-                $scope.isIconImg = function () {
-                    return softtion.isText($scope.iconImg);
-                };
-                
-                $scope.isIconAction = function () {
-                    return softtion.isText($scope.iconAction);
-                };
-
-                $scope.helperActive = function () {
-                    return softtion.isUndefined($scope.select) || $scope.helperPermanent;
-                };
-
-                $scope.isHaveSelection = function () {
-                    return softtion.isText($scope.input) || softtion.isDefined($scope.select);
+                $scope.isHelperActive = function () {
+                    return softtion.isUndefined($scope.ngModel) || $scope.helperPermanent;
                 };
                 
                 $scope.getTextSubtitle = function (suggestion) {
-                    return (typeof suggestion === "string") ? "" :
+                    return softtion.isString(suggestion) ? "" :
                         !softtion.isText($scope.keySubtitle) ? "" : suggestion[$scope.keySubtitle];
                 };
                 
                 $scope.isAvatarImg = function (suggestion) {
-                    return (typeof suggestion === "string") ? false : softtion.isText($scope.keyImg);
+                    return (softtion.isString(suggestion)) ? false : softtion.isText($scope.keyImg);
                 };
 
                 $scope.getTextAvatar = function (suggestion) {
-                    return getValueSuggestion(suggestion)[1];
+                    return getValueSuggestion(suggestion)[0];
                 };
 
                 $scope.clickLabel = function () { $scope.focusedInput = true; };
 
-                $scope.clickIconDescription = function ($event) {
-                    if ($scope.ngDisabled) return; // Componente inactivo
-                    
-                    listener.launch(Listeners.ICON, { $event: $event });
-                };
-                
-                $scope.clickAction  = function ($event) {
-                    if ($scope.ngDisabled) return; // Componente inactivo
-                    
-                    listener.launch(Listeners.ACTION, { $event: $event });
-                };
-
                 $scope.focusInput = function ($event) {
-                    if (softtion.isDefined($scope.select)) 
-                        $scope.input = describeSuggestion($scope.select);
+                    if (softtion.isDefined($scope.ngModel)) 
+                        $scope.input = describeSuggestion($scope.ngModel);
 
                     $scope.inputActive = true; // Elemento activo
 
@@ -1009,7 +981,7 @@
                 $scope.blurInput = function ($event) { 
                     if (focusLi) {
                         if ($scope.inputMode && softtion.isText($scope.input)) {
-                            $scope.select = $scope.input; $scope.input = "";
+                            $scope.ngModel = $scope.input; $scope.input = "";
                         } // Modo input activo, tiene un valor definido el Componente
                         
                         focusLi = false; return; // Se ha enfocado Lista
@@ -1017,10 +989,10 @@
                     
                     if ($scope.inputMode && !selection) {
                         if (softtion.isText($scope.input)) {
-                            $scope.select = $scope.input; $scope.input = "";
+                            $scope.ngModel = $scope.input; $scope.input = "";
                         } // Asignando valor digitado
                     } else if ($scope.coincidences.isEmpty())
-                        $scope.select = undefined; // No hay opciones
+                        $scope.ngModel = undefined; // No hay opciones
                     
                     $scope.input = ""; selection = false; 
                     $scope.inputActive = false; $scope.showList = false;
@@ -1046,7 +1018,7 @@
                         
                         case (KeysBoard.TAB): 
                             if ($scope.ngAutoselection && !$scope.coincidences.isEmpty())
-                                $scope.select = $scope.coincidences[0]; // Primero
+                                $scope.ngModel = $scope.coincidences[0]; // Primero
                         break;
                     }
                 };
@@ -1085,19 +1057,19 @@
                 };
 
                 $scope.selectSuggestion = function (suggestion) {
-                    $scope.old = $scope.select; $scope.inputActive = false;
+                    $scope.old = $scope.ngModel; $scope.inputActive = false;
                     $scope.showList = false; selection = true;
 
-                    $scope.select = suggestion; // Estableciendo Selección
-                    var pattern = describeSuggestion($scope.select);
+                    $scope.ngModel = suggestion; // Estableciendo Selección
+                    var pattern = describeSuggestion($scope.ngModel);
                     
                     setSuggestions(pattern, $scope.coincidences); // Asignando temporales
 
                     if (!$scope.searchMode) {
-                        if ($scope.old !== $scope.select) listener.launch(Listeners.CHANGED);
+                        if ($scope.old !== $scope.ngModel) listener.launch(Listeners.CHANGED);
                     } else {
                         $scope.focusedInput = true; listener.launch(Listeners.SELECT);
-                        $scope.select = undefined; // Limpiando selección
+                        $scope.ngModel = undefined; // Limpiando selección
                     }
                 };
 
@@ -1126,21 +1098,23 @@
                 };
 
                 $scope.isActiveClear = function () {
-                    return !softtion.isDefined($scope.select);
+                    return !softtion.isDefined($scope.ngModel);
                 };
 
                 $scope.clearAutocomplet = function () {
                     if ($scope.ngDisabled) return; // Componente inactivo
                     
                     $scope.temporal = rebootSuggestions(); selection = false;
-                    $scope.select = undefined; listener.launch(Listeners.CLEAR);
+                    $scope.ngModel = undefined; listener.launch(Listeners.CLEAR);
 
                     if (!$scope.disabledFocusclear) $scope.focusedInput = true;
                 };
 
                 $scope.getValueModel = function () {
-                    return (softtion.isDefined($scope.select)) ?
-                        getDescribeSuggestion($scope.select) :
+                    if ($scope.isHolderActive()) return $scope.placeholder; // Placeholder
+                    
+                    return (softtion.isDefined($scope.ngModel)) ?
+                        getDescribeSuggestion($scope.ngModel) :
                         (softtion.isText($scope.input)) ? $scope.input : undefined;
                 };
 
@@ -2287,7 +2261,7 @@
                 setText("{{label}}").addClass("truncate");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         content.addChildren(iconImg).addChildren(iconDescription).
             addChildren(chips).addChildren(input).
@@ -2370,7 +2344,7 @@
                     return softtion.isText($scope.iconImg);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return this.isEmpty() || $scope.helperPermanent;
                 };
 
@@ -2882,7 +2856,7 @@
                 addAttribute("ng-click", "clearTime()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var dialog = softtion.html("div").addClass("clockpicker-dialog").
                 addAttribute("ng-model", "timePicker").
@@ -2966,7 +2940,7 @@
                     return softtion.isText($scope.iconImg);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.time) || $scope.helperPermanent;
                 };
 
@@ -3688,7 +3662,7 @@
                 addAttribute("ng-click", "clearDate()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var dialog = softtion.html("div").addClass("datepicker-dialog").
                 addAttribute("ng-model", "date").
@@ -3779,7 +3753,7 @@
                     return softtion.isText($scope.iconImg);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.date) || $scope.helperPermanent;
                 };
 
@@ -5954,7 +5928,7 @@
                 addAttribute("ng-click", "toggleSuggestions()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var list = softtion.html("ul").
                 addAttribute("ng-class", "{show: showList, hide: !showList && startShow, orientation: orientation}").
@@ -6054,7 +6028,7 @@
                     return (suggestion === $scope.select);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.select) || $scope.helperPermanent;
                 };
 
@@ -6229,7 +6203,7 @@
                 addAttribute("ng-click", "toggleSuggestions()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var list = softtion.html("ul").
                 addAttribute("ng-class", "{show: showList, hide: !showList && startShow, orientation: orientation}").
@@ -6334,7 +6308,7 @@
                     return softtion.isText($scope.iconImg);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return softtion.isArrayEmpty($scope.selects) || $scope.helperPermanent;
                 };
 
@@ -7716,7 +7690,7 @@
                 );
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-                setText("{{helperText}}").addAttribute("ng-hide", "!helperActive()");
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         content.addChildren(iconDescription).
             addChildren(iconImg).addChildren(input).
@@ -7765,7 +7739,7 @@
                     return softtion.isText($scope.iconImg);
                 };
 
-                $scope.helperActive = function () {
+                $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.value) || $scope.helperPermanent;
                 };
 
@@ -10056,6 +10030,38 @@
         }
     }
     
+    function defineInputField($scope, $element, $attrs, listener) {
+                    
+        $attrs.$observe("iconDescription", () => {
+            $scope.isIconDescription = softtion.isText($attrs.iconDescription);
+        });
+                    
+        $attrs.$observe("iconImg", () => {
+            $scope.isIconImg = softtion.isText($attrs.iconImg);
+        });
+                    
+        $attrs.$observe("iconAction", () => {
+            $scope.isIconAction = softtion.isText($attrs.iconAction);
+        });
+        
+        $scope.isHolderActive = function () {
+            return $scope.inputActive ? false : softtion.isText($scope.label) ? 
+                false : softtion.isUndefined($scope.ngModel);
+        };
+
+        $scope.clickIconDescription = function ($event) {
+            if ($scope.ngDisabled) return; // Componente inactivo
+
+            listener.launch(Listeners.ICON, { $event: $event });
+        };
+                
+        $scope.clickAction  = function ($event) {
+            if ($scope.ngDisabled) return; // Componente inactivo
+
+            listener.launch(Listeners.ACTION, { $event: $event });
+        };
+    }
+    
     function defineInputComponent($scope, $element, $attrs) {
             // Componentes
         var input = $element.find("input");
@@ -10633,7 +10639,7 @@
     
     Listener.KEYS = {
         AUTOCOMPLETE: [
-            { key: "$model", value:"select" }, 
+            { key: "$model", value:"ngModel" }, 
             { key: "$old", value:"old" }, 
             { key: "$value", value:"input" }
         ],

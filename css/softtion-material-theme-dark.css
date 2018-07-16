@@ -4359,6 +4359,10 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-600);
     color: var(--theme-secondary-font-primary-600); }
 
+.autocomplete > .content > ul.autoselection > li > .detail .avatar > span { 
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
+
 .autocomplete > .content > ul > li > .detail .title > b { 
     color: var(--secondary-font); }
 
