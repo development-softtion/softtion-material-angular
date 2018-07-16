@@ -899,8 +899,8 @@
                 var list = $element.find("ul");
 
                     // Atributos
-                var $orderBy = $filter("orderBy"), selection = false,
-                    focusLi = false, searchStart = false,
+                var $orderBy = $filter("orderBy"), searchStart = false, 
+                    selection = false, focusLi = false, clear = false,
                     listener = new Listener($scope, Listener.KEYS.AUTOCOMPLETE);
 
                 $scope.coincidences = []; $scope.old = undefined; 
@@ -926,8 +926,28 @@
                     });
 
                 $scope.$watch(() => { return $scope.ngModel; }, 
-                    (newValue) => {
-                        if (softtion.isUndefined(newValue)) $scope.input = ""; 
+                    (newValue, oldValue) => {
+                        if (newValue !== oldValue) {
+                            if (!$scope.inputActive) $scope.input = "";
+                            
+                            if (clear) {
+                                listener.launch(Listeners.CLEAR);
+
+                                if (!$scope.disabledFocusclear) 
+                                    $scope.focusedInput = true;
+                                
+                                clear = false; return; // Retornando
+                            } // Se limpio contenido del elemento
+
+                            if (!$scope.searchMode) {
+                                listener.launch(Listeners.CHANGED);
+                            } else {
+                                if (selection) {
+                                    $scope.focusedInput = true; 
+                                    listener.launch(Listeners.SELECT);
+                                }
+                            }
+                        } // Ocurrio un cambio en el componente 
                     });
 
                 $scope.$watch(() => { return $scope.input; }, 
@@ -939,41 +959,42 @@
                 $scope.$watch(() => { return $scope.clearModel; }, 
                     (newValue) => {
                         if (newValue === true) {
-                            $scope.ngModel = undefined; // Indefinido
-                            $scope.input = ""; $scope.clearModel = false;
-                        }
+                            $scope.ngModel = undefined; $scope.clearModel = false;
+                        } // Se debe limpiar el componente
                     });
                     
                 defineInputField($scope, $element, $attrs, listener);
 
                 $scope.isActiveLabel = function () {
-                    return ($scope.inputActive || 
-                        softtion.isDefined($scope.ngModel)) ||
-                        softtion.isText($scope.input);
+                    return ($scope.inputActive || softtion.isDefined($scope.ngModel)) || softtion.isText($scope.input);
                 };
 
                 $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.ngModel) || $scope.helperPermanent;
                 };
                 
-                $scope.getTextSubtitle = function (suggestion) {
-                    return softtion.isString(suggestion) ? "" :
-                        !softtion.isText($scope.keySubtitle) ? "" : suggestion[$scope.keySubtitle];
-                };
-                
                 $scope.isAvatarImg = function (suggestion) {
                     return (softtion.isString(suggestion)) ? false : softtion.isText($scope.keyImg);
                 };
 
+                $scope.isActiveClear = function () {
+                    return !softtion.isDefined($scope.ngModel);
+                };
+
                 $scope.getTextAvatar = function (suggestion) {
                     return getValueSuggestion(suggestion)[0];
+                };
+                
+                $scope.getTextSubtitle = function (suggestion) {
+                    return softtion.isString(suggestion) ? "" :
+                        !softtion.isText($scope.keySubtitle) ? "" : suggestion[$scope.keySubtitle];
                 };
 
                 $scope.clickLabel = function () { $scope.focusedInput = true; };
 
                 $scope.focusInput = function ($event) {
                     if (softtion.isDefined($scope.ngModel)) 
-                        $scope.input = describeSuggestion($scope.ngModel);
+                        $scope.input = getSuggestion($scope.ngModel);
 
                     $scope.inputActive = true; // Elemento activo
 
@@ -982,23 +1003,23 @@
                 };
 
                 $scope.blurInput = function ($event) { 
+                    var isText = softtion.isText($scope.input), // Tiene texto
+                        isAssign = $scope.inputMode && isText && !$scope.ngAutoselection;
+                    
                     if (focusLi) {
-                        if ($scope.inputMode && softtion.isText($scope.input)) {
-                            $scope.ngModel = $scope.input; $scope.input = "";
-                        } // Modo input activo, tiene un valor definido el Componente
+                        if (isAssign) 
+                            $scope.ngModel = $scope.input; // Asignando
                         
-                        focusLi = false; return; // Se ha enfocado Lista
-                    } 
+                        focusLi = false; return; // Enfocando item de Lista
+                    } // Se enfocó item de la lista para seleccionar
                     
-                    if ($scope.inputMode && !selection) {
-                        if (softtion.isText($scope.input)) {
-                            $scope.ngModel = $scope.input; $scope.input = "";
-                        } // Asignando valor digitado
-                    } else if ($scope.coincidences.isEmpty())
-                        $scope.ngModel = undefined; // No hay opciones
+                    isAssign = $scope.inputMode && isText && $scope.ngAutoselection;
                     
-                    $scope.input = ""; selection = false; 
-                    $scope.inputActive = false; $scope.showList = false;
+                    if (isAssign && !selection && $scope.coincidences.isEmpty()) 
+                        $scope.ngModel = $scope.input; // Asignando
+                    
+                    selection = false; $scope.inputActive = false; 
+                    $scope.showList = false; // Ocultando la lista
 
                     listener.launch(Listeners.BLUR, { $event: $event });
                 };
@@ -1016,8 +1037,10 @@
                         break;
                         
                         case (KeysBoard.ENTER):
-                            if ($scope.ngAutoselection && !$scope.coincidences.isEmpty())
-                                $scope.ngModel = $scope.coincidences[0]; // Primero
+                            if ($scope.ngAutoselection && !$scope.coincidences.isEmpty()) {
+                                $scope.ngModel = $scope.coincidences[0]; 
+                                $scope.input = getDescriptionSuggestion($scope.ngModel);
+                            } // Se debe establecer el nuevo elemento seleccionado
                             
                             listener.launch(Listeners.ENTER, { $event: $event });
                         break;
@@ -1063,27 +1086,28 @@
                 };
 
                 $scope.selectSuggestion = function (suggestion) {
-                    $scope.old = $scope.ngModel; $scope.inputActive = false;
                     $scope.showList = false; selection = true;
+                    $scope.inputActive = false; // Inactivando
 
-                    $scope.ngModel = suggestion; // Estableciendo Selección
-                    var pattern = describeSuggestion($scope.ngModel);
+                    var pattern = getSuggestion(suggestion);
                     
-                    setSuggestions(pattern, $scope.coincidences); // Asignando temporales
+                    setSuggestions(pattern, $scope.coincidences);
+                    
+                    $scope.ngModel = (!$scope.searchMode) ? suggestion : undefined;
+                };
 
-                    if (!$scope.searchMode) {
-                        if ($scope.old !== $scope.ngModel) listener.launch(Listeners.CHANGED);
-                    } else {
-                        $scope.focusedInput = true; listener.launch(Listeners.SELECT);
-                        $scope.ngModel = undefined; // Limpiando selección
-                    }
+                $scope.clearAutocomplet = function () {
+                    if ($scope.ngDisabled) return; // Componente inactivo
+                    
+                    $scope.temporal = rebootSuggestions(); clear = true;
+                    selection = false; $scope.ngModel = undefined; 
                 };
 
                 $scope.renderSuggestion = function (suggestion) {
                     var value = $scope.ngFormatDescription({ $suggestion: suggestion });
                     
                     if (softtion.isUndefined(value)) // No se definió descripción
-                        value = describeSuggestion(suggestion);
+                        value = getSuggestion(suggestion);
 
                     // Valor digitado para filtrar
                     var filter = $scope.input.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -1103,24 +1127,11 @@
                     return $scope.input + ", no existen resultados.";
                 };
 
-                $scope.isActiveClear = function () {
-                    return !softtion.isDefined($scope.ngModel);
-                };
-
-                $scope.clearAutocomplet = function () {
-                    if ($scope.ngDisabled) return; // Componente inactivo
-                    
-                    $scope.temporal = rebootSuggestions(); selection = false;
-                    $scope.ngModel = undefined; listener.launch(Listeners.CLEAR);
-
-                    if (!$scope.disabledFocusclear) $scope.focusedInput = true;
-                };
-
                 $scope.getValueModel = function () {
                     if ($scope.isHolderActive()) return $scope.placeholder; // Placeholder
                     
                     return (softtion.isDefined($scope.ngModel)) ?
-                        getDescribeSuggestion($scope.ngModel) :
+                        getDescriptionSuggestion($scope.ngModel) :
                         (softtion.isText($scope.input)) ? $scope.input : undefined;
                 };
 
@@ -1130,14 +1141,13 @@
                         softtion.findKey(suggestion, $scope.key);
                 }
 
-                function getDescribeSuggestion(suggestion) {
+                function getDescriptionSuggestion(suggestion) {
                     var value = $scope.ngFormatDescription({ $suggestion: suggestion });
                     
-                    return (softtion.isDefined(value)) ? 
-                        value : describeSuggestion(suggestion);
+                    return (softtion.isDefined(value)) ? value : getSuggestion(suggestion);
                 }
 
-                function describeSuggestion(suggestion) {
+                function getSuggestion(suggestion) {
                     return (softtion.isText(suggestion)) ? 
                         suggestion : getValueSuggestion(suggestion);
                 }
