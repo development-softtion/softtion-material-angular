@@ -213,7 +213,7 @@
     --theme-secondary-font-primary-200: rgba(0, 0, 0, 0.87);
     --theme-secondary-font-primary-300: rgba(0, 0, 0, 0.87);
     --theme-secondary-font-primary-400: rgba(0, 0, 0, 0.87);
-    --theme-secondary-font-primary-500: rgba(0, 0, 0, 0.87);
+    --theme-secondary-font-primary-500: rgba(255, 255, 255, 1);
     --theme-secondary-font-primary-600: rgba(255, 255, 255, 1);
     --theme-secondary-font-primary-700: rgba(255, 255, 255, 1);
     --theme-secondary-font-primary-800: rgba(255, 255, 255, 1);
@@ -224,7 +224,7 @@
     --theme-secondary-font-secondary-200: rgba(0, 0, 0, 0.54);
     --theme-secondary-font-secondary-300: rgba(0, 0, 0, 0.54);
     --theme-secondary-font-secondary-400: rgba(0, 0, 0, 0.54);
-    --theme-secondary-font-secondary-500: rgba(0, 0, 0, 0.54);
+    --theme-secondary-font-secondary-500: rgba(255, 255, 255, 0.7);
     --theme-secondary-font-secondary-600: rgba(255, 255, 255, 0.7);
     --theme-secondary-font-secondary-700: rgba(255, 255, 255, 0.7);
     --theme-secondary-font-secondary-800: rgba(255, 255, 255, 0.7);
@@ -235,7 +235,7 @@
     --theme-secondary-font-disabled-200: rgba(0, 0, 0, 0.38);
     --theme-secondary-font-disabled-300: rgba(0, 0, 0, 0.38);
     --theme-secondary-font-disabled-400: rgba(0, 0, 0, 0.38);
-    --theme-secondary-font-disabled-500: rgba(0, 0, 0, 0.38);
+    --theme-secondary-font-disabled-500: rgba(255, 255, 255, 0.5);
     --theme-secondary-font-disabled-600: rgba(255, 255, 255, 0.5);
     --theme-secondary-font-disabled-700: rgba(255, 255, 255, 0.5);
     --theme-secondary-font-disabled-800: rgba(255, 255, 255, 0.5);
@@ -248,7 +248,7 @@
     --theme-secondary-border-200: rgba(0, 0, 0, 0.12);
     --theme-secondary-border-300: rgba(0, 0, 0, 0.12);
     --theme-secondary-border-400: rgba(0, 0, 0, 0.12);
-    --theme-secondary-border-500: rgba(0, 0, 0, 0.12);
+    --theme-secondary-border-500: rgba(255, 255, 255, 0.12);
     --theme-secondary-border-600: rgba(255, 255, 255, 0.12);
     --theme-secondary-border-700: rgba(255, 255, 255, 0.12);
     --theme-secondary-border-800: rgba(255, 255, 255, 0.12);
@@ -261,7 +261,7 @@
     --theme-secondary-ripple-200: rgba(0, 0, 0, 0.38);
     --theme-secondary-ripple-300: rgba(0, 0, 0, 0.38);
     --theme-secondary-ripple-400: rgba(0, 0, 0, 0.38);
-    --theme-secondary-ripple-500: rgba(0, 0, 0, 0.38);
+    --theme-secondary-ripple-500: rgba(255, 255, 255, 0.5);
     --theme-secondary-ripple-600: rgba(255, 255, 255, 0.5);
     --theme-secondary-ripple-700: rgba(255, 255, 255, 0.5);
     --theme-secondary-ripple-800: rgba(255, 255, 255, 0.5);

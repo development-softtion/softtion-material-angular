@@ -2630,8 +2630,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .content > table > thead,
 .datatable > .content > table > tbody {
-    display: block;
-    cursor: pointer; }
+    display: block; }
 
 .datatable > .content > table > tbody {
     overflow-y: auto;
@@ -2643,6 +2642,10 @@ button.raised:focus:after, button.flat:focus:after {
     display: flex;
     padding: 0px 16px; 
     box-sizing: border-box; }
+
+.datatable > .content > table > tbody > tr.disabled {
+    opacity: 0.75;
+    pointer-events: none; }
 
 .datatable.condense > .content > table > thead > tr, 
 .datatable.condense > .content > table > tbody > tr {

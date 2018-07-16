@@ -1114,14 +1114,17 @@ button.floating.theme-secondary:before {
 .datatable.raised > .content > table > tbody > tr:nth-last-of-type(1) {
     border-bottom: 1px solid transparent; }
 
-.datatable > .content > table > tbody > tr:hover {
+.datatable > .content > table > tbody > tr.actionable:hover {
     background-color: var(--background-hover); }
+
+.datatable > .content > table > tbody > tr > td.actionable:hover {
+    color: var(--theme-secondary-300); }
 
 .datatable > .content > table > tbody > tr.active {
     background-color: var(--theme-secondary-100);
     color: var(--theme-secondary-font-secondary-100); }
 
-.datatable > .content > table > tbody > tr.active:hover {
+.datatable > .content > table > tbody > tr.active.actionable:hover {
     background-color: var(--theme-secondary-50);
     color: var(--theme-secondary-font-primary-50); }
 
