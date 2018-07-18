@@ -149,8 +149,6 @@
 
                 TextArea: Directives.create(Directives.TextArea),
 
-                TextBox: Directives.create(Directives.TextBox),
-
                 TextBoxMultiline: Directives.create(Directives.TextBoxMultiline),
 
                 TextField: Directives.create(Directives.TextField),
@@ -328,7 +326,6 @@
             case (Directives.Switch.NAME): return Directives.Switch;
             case (Directives.Tabs.NAME): return Directives.Tabs;
             case (Directives.TextArea.NAME): return Directives.TextArea;
-            case (Directives.TextBox.NAME): return Directives.TextBox;
             case (Directives.TextBoxMultiline.NAME): return Directives.TextBoxMultiline;
             case (Directives.TextField.NAME): return Directives.TextField;
             case (Directives.TextFieldBordered.NAME): return Directives.TextFieldBordered;
@@ -743,11 +740,13 @@
     Directives.AutoComplete.ROUTE = "softtion/template/autocomplete.html";
     
     Directives.AutoComplete.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
                     "{active: inputActive, \"icon-action\": isIconAction," +
                     " disabled: ngDisabled, \"label-inactive\": !isLabel}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -778,6 +777,7 @@
         var lineActive = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
                 addClass("truncate").addAttribute("ng-click", "clickLabel()").
                 addChildren(
@@ -791,6 +791,10 @@
                 setText("{{getValueModel()}}").
                 addAttribute("ng-class", "{\"holder-active\": isHolderActive()}").
                 addAttribute("ng-click", "clickLabel()");
+
+        var uniqueSelection = softtion.html("pre").addClass(["unique-selection"]).
+                addAttribute("ng-if", "ngUniqueSelection").
+                addAttribute("ng-bind-html", "getValueUniqueSelection()");
 
         var buttonAction = softtion.html("i").addClass([Classes.ACTION]).
                 setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
@@ -835,6 +839,7 @@
 
         var list = softtion.html("ul").
                 addAttribute("ng-class", "{active: showList, \"autoselection\": ngAutoselection}").
+                addAttribute("ng-if", "!ngUniqueSelection").
                 addChildren(
                     softtion.html("li").addClass(["truncate"]).
                         addAttribute("tabindex", "-1").
@@ -848,12 +853,12 @@
                         setText("{{descriptionNotFoundResult()}}")
                 );
 
-        content.addChildren(description).addChildren(input).
+        box.addChildren(description).addChildren(value).
+            addChildren(uniqueSelection).addChildren(input).
             addChildren(lineShadow).addChildren(lineActive).
-            addChildren(label).addChildren(value).
-            addChildren(buttonAction).addChildren(buttonClear).
-            addChildren(spanHelper).addChildren(list);
-
+            addChildren(label).addChildren(buttonAction).
+            addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
+    
         return content.create(); // Componente
     };
                     
@@ -890,14 +895,12 @@
                 patternMethod: "@",
                 patternForce: "=?",
                 ngAutoselection: "=?",
+                ngUniqueSelection: "=?",
                 ngDefineCoincidences: "&",
                 ngFormatDescription: "&",
                 ngListener: "&"
             },
             link: function ($scope, $element, $attrs) {
-                    // Componentes
-                var list = $element.find("ul");
-
                     // Atributos
                 var $orderBy = $filter("orderBy"), searchStart = false, 
                     selection = false, focusLi = false, clear = false,
@@ -1005,18 +1008,21 @@
                 $scope.blurInput = function ($event) { 
                     var isText = softtion.isText($scope.input), // Tiene texto
                         isAssign = $scope.inputMode && isText && !$scope.ngAutoselection;
-                    
+                        
                     if (focusLi) {
-                        if (isAssign) 
-                            $scope.ngModel = $scope.input; // Asignando
+                        if (isAssign) $scope.ngModel = $scope.input; // Asignando
                         
                         focusLi = false; return; // Enfocando item de Lista
                     } // Se enfocó item de la lista para seleccionar
                     
-                    isAssign = $scope.inputMode && isText && $scope.ngAutoselection;
+                    isAssign = $scope.inputMode && isText && !selection;
                     
-                    if (isAssign && !selection && $scope.coincidences.isEmpty()) 
-                        $scope.ngModel = $scope.input; // Asignando
+                    if ($scope.ngAutoselection) {
+                        if (isAssign && $scope.coincidences.isEmpty()) 
+                            $scope.ngModel = $scope.input; // Asignando
+                    } else {
+                        if (isAssign) $scope.ngModel = $scope.input; // Asignando
+                    }
                     
                     selection = false; $scope.inputActive = false; 
                     $scope.showList = false; // Ocultando la lista
@@ -1029,7 +1035,7 @@
                         case (KeysBoard.ESC): $scope.showList = false; break;
 
                         case (KeysBoard.ARROW_DOWN): 
-                            var options = list.find("li"); // Opciones
+                            var options = $element.find("ul").find("li");
 
                             if (options.exists()) { 
                                 focusLi = true; options.first().focus(); 
@@ -1037,17 +1043,15 @@
                         break;
                         
                         case (KeysBoard.ENTER):
-                            if ($scope.ngAutoselection && !$scope.coincidences.isEmpty()) {
+                            var isAutoselection = $scope.ngAutoselection && 
+                                    !$scope.coincidences.isEmpty();
+                            
+                            if (isAutoselection) {
                                 $scope.ngModel = $scope.coincidences[0]; 
                                 $scope.input = getDescriptionSuggestion($scope.ngModel);
                             } // Se debe establecer el nuevo elemento seleccionado
                             
                             listener.launch(Listeners.ENTER, { $event: $event });
-                        break;
-                        
-                        case (KeysBoard.TAB): 
-                            if ($scope.ngAutoselection && !$scope.coincidences.isEmpty())
-                                $scope.ngModel = $scope.coincidences[0]; // Primero
                         break;
                     }
                 };
@@ -1108,12 +1112,12 @@
                     
                     if (softtion.isUndefined(value)) // No se definió descripción
                         value = getSuggestion(suggestion);
-
+                    
                     // Valor digitado para filtrar
                     var filter = $scope.input.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-
+                    
                     // Expresión RegExp
-                    var expReg = new RegExp("(" + filter.split(" ").join("|") + ")", "gi");
+                    var expReg = new RegExp("(" + filter + ")", "i");
 
                     return value.replace(expReg, "<b>$1</b>"); // Valor final
                 };
@@ -1133,6 +1137,27 @@
                     return (softtion.isDefined($scope.ngModel)) ?
                         getDescriptionSuggestion($scope.ngModel) :
                         (softtion.isText($scope.input)) ? $scope.input : undefined;
+                };
+                
+                $scope.getValueUniqueSelection = function () {
+                    if (!softtion.isString($scope.input)) return ""; // No ha digitado
+                    
+                    if ($scope.coincidences.isEmpty()) return ""; // Sin resultados
+                    
+                    var suggestion = $scope.coincidences[0]; // Primera opción
+                    
+                    var value = $scope.ngFormatDescription({ $suggestion: suggestion });
+                    
+                    if (softtion.isUndefined(value)) // No se definió descripción
+                        value = getSuggestion(suggestion);
+                    
+                    // Valor digitado para filtrar
+                    var filter = $scope.input.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+                    
+                    // Expresión RegExp
+                    var expReg = new RegExp("(" + filter + ")", "i");
+                    
+                    return value.replace(expReg, "<b>" + filter + "</b>"); // Valor final
                 };
 
                 function getValueSuggestion(suggestion) {
@@ -2223,11 +2248,13 @@
     Directives.ChipInput.ROUTE = "softtion/template/chip-input.html",
                     
     Directives.ChipInput.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute(
                     "ng-class", "{active: inputActive, disabled: ngDisabled," +
                     " empty: ngModel.isEmpty(), \"label-inactive\": !isLabel}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -2276,6 +2303,7 @@
         var lineActive = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-click", "clickActiveElement($event)").
                 addAttribute("ng-class", "{active: isLabelActive()}").
                 setText("{{label}}").addClass("truncate");
@@ -2283,7 +2311,7 @@
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
-        content.addChildren(description).addChildren(chips).
+        box.addChildren(description).addChildren(chips).
             addChildren(input).addChildren(lineShadow).addChildren(lineActive).
             addChildren(label).addChildren(spanHelper);
 
@@ -2822,6 +2850,8 @@
     Directives.ClockPickerInput.ROUTE = "softtion/template/clockpicker-input.html",
                     
     Directives.ClockPickerInput.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute("tabindex", "0").
                 addAttribute("ng-focus", "focusContent()").
@@ -2830,7 +2860,7 @@
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("ng-class", 
                     "{active: contentActive, disabled: ngDisabled, \"label-inactive\": !isLabel}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -2855,6 +2885,7 @@
 
         var label = softtion.html("label").
                 setText("{{label}}").addClass("truncate").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
                 addAttribute("ng-click", "showDialog($event)").
                 addChildren(
@@ -2877,7 +2908,7 @@
                 addAttribute("ng-listener", "clockDialogListener($model, $listener)").
                 addAttribute("parent", "{{parent}}");
 
-        content.addChildren(description).addChildren(value).
+        box.addChildren(description).addChildren(value).
             addChildren(lineShadow).addChildren(label).
             addChildren(buttonClear).addChildren(spanHelper);
 
@@ -3623,6 +3654,8 @@
     Directives.DatePickerInput.ROUTE = "softtion/template/datepicker-input.html",
                     
     Directives.DatePickerInput.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute("tabindex", "0").
                 addAttribute("ng-focus", "focusContent()").
@@ -3631,7 +3664,7 @@
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("ng-class", 
                     "{active: contentActive, disabled: ngDisabled, \"label-inactive\": !isLabel}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -3656,6 +3689,7 @@
 
         var label = softtion.html("label").
                 setText("{{label}}").addClass("truncate").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
                 addAttribute("ng-click", "showDialog($event)").
                 addChildren(
@@ -3683,7 +3717,7 @@
                 addAttribute("ng-disabled-date", "ngDisabledDateDialog($date)").
                 addAttribute("year-range", "yearRange");
 
-        content.addChildren(description).addChildren(value).
+        box.addChildren(description).addChildren(value).
             addChildren(lineBordered).addChildren(label).
             addChildren(buttonClear).addChildren(spanHelper);
 
@@ -5881,10 +5915,12 @@
     Directives.Select.ROUTE = "softtion/template/select.html";
     
     Directives.Select.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
                     "{active: selectActive, disabled: ngDisabled, \"label-inactive\": !isLabel}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -5915,6 +5951,7 @@
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]).
                 addChildren(
                     softtion.html("span").setText("*").addAttribute("ng-if", "required")
@@ -5958,7 +5995,7 @@
                         setText("{{describeSuggestion(suggestion)}}")
                 );
 
-        content.addChildren(description).addChildren(input).
+        box.addChildren(description).addChildren(input).
             addChildren(lineShadow).addChildren(label).
             addChildren(value).addChildren(button).
             addChildren(spanHelper).addChildren(list);
@@ -6142,11 +6179,13 @@
     Directives.SelectMultiple.ROUTE = "softtion/template/select-multiple.html";
     
     Directives.SelectMultiple.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
                     "{active: selectActive, \"label-inactive\": !isLabel," +
                     " disabled: ngDisabled, empty: ngModel.isEmpty()}"
-                );
+                ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -6179,6 +6218,7 @@
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-click", "clickLabel($event)").addClass(["truncate"]).
                 addChildren(
                     softtion.html("span").setText("*").addAttribute("ng-if", "required")
@@ -6233,7 +6273,7 @@
                         )
                 );
 
-        content.addChildren(description).addChildren(input).
+        box.addChildren(description).addChildren(input).
             addChildren(lineShadow).addChildren(label).addChildren(chips).
             addChildren(spanHelper).addChildren(button).addChildren(list);
 
@@ -7098,110 +7138,6 @@
         };
     }
     
-    // Directiva: TextBox
-    // Version: 1.1.6
-    // Update: 27/Feb/2018
-    
-    Directives.TextBox = TextBoxDirective;
-    
-    Directives.TextBox.NAME = "TextBox";
-    Directives.TextBox.VERSION = "1.1.6";
-    Directives.TextBox.KEY = "textbox";
-    Directives.TextBox.ROUTE = "softtion/template/textbox.html";
-    
-    Directives.TextBox.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{focused: inputActive, disabled: ngDisabled}");
-
-        var box = softtion.html("div").addClass("box");
-
-        var input = softtion.html("input", false).
-            addAttribute("type", "{{typeInput}}").
-            addAttribute("autocomplete", "{{autocompleteValue}}").
-            addAttribute("ng-model", "input").
-            addAttribute("ng-click", "clickInput($event)").
-            addAttribute("ng-blur", "blurInput($event)").
-            addAttribute("ng-focus", "focusInput($event)").
-            addAttribute("ng-keydown", "keydownInput($event)").
-            addAttribute("ng-keyup", "keyupInput($event)").
-            addAttribute("ng-readonly", "ngReadonly").
-            addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isPlaceholder(), \"icon-action\": isIconAction}").
-            addAttribute("ng-trim", "ngTrim").
-            addAttribute("focused-element", "focusedInput").
-            addAttribute("placeholder", "{{placeholder}}");
-
-        var value = softtion.html("pre").addClass(["value"]).
-            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{holderactive: isHolderActive()}");
-
-        var iconAction = softtion.html("i").addClass(Classes.ACTION).
-            setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
-            addAttribute("ng-click", "clickAction($event)");
-
-        var label = softtion.html("label").
-            setText("{{label}}").addClass("truncate").
-            addAttribute("ng-class", "{active: isActiveLabel()}").
-            addAttribute("ng-click", "clickLabel($event)").
-            addChildren(
-                softtion.html("span").setText("*").addAttribute("ng-if", "required")
-            ).addChildren(
-                softtion.html("span").addClass("optional").
-                    setText("(opcional)").addAttribute("ng-if", "optional")
-            );
-
-        var spanError = softtion.html("span").addClass(["error", "truncate"]).
-            setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
-
-        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
-
-        var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
-            setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
-
-        box.addChildren(input).addChildren(value).
-            addChildren(label).addChildren(iconAction);
-
-        content.addChildren(box).addChildren(spanHelper).
-            addChildren(spanError).addChildren(spanCounter);
-
-        return content.create(); // Componente
-    };
-    
-    function TextBoxDirective() {
-        return {
-            restrict: "C",
-            templateUrl: Directives.TextBox.ROUTE,
-            scope: {
-                value: "=ngModel", 
-                label: "@", 
-                type: "@",
-                autocomplete: "=?",
-                required: "=?",
-                optional: "=?",
-                ngTrim: "=?",
-                uppercase: "=?",
-                ngDisabled: "=?",
-                ngReadonly: "=?",
-                minLength: "=?",
-                maxLength: "=?",
-                counterVisible: "=?",
-                iconAction: "@",
-                placeholder: "@",
-                helperText: "@",
-                focusedInput: "=?",
-                keyDisabled: "=?",
-                clearModel: "=?",
-                ngFormatValue: "&",
-                ngListener: "&"
-            },
-            link: function ($scope, $element, $attrs) {
-                defineInputComponent($scope, $element, $attrs);
-            }
-        };
-    }
-    
     // Directiva: TextBoxMultiline
     // Version: 1.1.6
     // Update: 27/Feb/2018
@@ -7312,11 +7248,13 @@
     Directives.TextField.ROUTE = "softtion/template/textfield.html";
     
     Directives.TextField.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
             addAttribute("ng-class",
-                "{disabled: ngDisabled, \"label-inactive\": !isLabel," +
-                " \"icon-action\": isIconAction || checkboxActive}"
-            );
+                "{active: inputActive, \"label-inactive\": !isLabel," +
+                " disabled: ngDisabled, \"icon-action\": isIconAction || checkboxActive}"
+            ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
@@ -7366,6 +7304,7 @@
 
         var label = softtion.html("label").
                 setText("{{label}}").addClass("truncate").
+                addAttribute("ng-if", "isLabel").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
                 addAttribute("ng-click", "clickLabel($event)").
                 addChildren(
@@ -7384,11 +7323,10 @@
         var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
                 setText("{{getTextCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
 
-        content.addChildren(description).
+        box.addChildren(description).addChildren(value).
             addChildren(input).addChildren(lineShadow).
-            addChildren(lineActive).addChildren(value).
-            addChildren(iconAction).addChildren(checkBox).
-            addChildren(label).addChildren(spanHelper).
+            addChildren(lineActive).addChildren(iconAction).
+            addChildren(checkBox).addChildren(label).addChildren(spanHelper).
             addChildren(spanError).addChildren(spanCounter);
 
         return content.create(); // Componente
@@ -7653,20 +7591,26 @@
     Directives.TextFieldReadonly.ROUTE = "softtion/template/textfield-readonly.html";
     
     Directives.TextFieldReadonly.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-                addAttribute("ng-class", "{\"icon-action\": isIconAction}");
-
-        var iconImg = softtion.html("div").addClass("img-icon").
-                addAttribute("ng-click", "clickIconDescription($event)").
-                addAttribute("ng-if", "isIconImg()").
-                addChildren(
-                    softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
+        var box = softtion.html("div").addClass("box");
+        
+        var content = softtion.html("div").addClass("content").addChildren(box).
+                addAttribute("ng-class", 
+                    "{\"icon-action\": isIconAction, \"label-inactive\": !isLabel}"
                 );
-
-        var iconDescription = softtion.html("i").
+        
+        var description = softtion.html("div").addClass("description").
                 addAttribute("ng-click", "clickIconDescription($event)").
-                addAttribute("ng-if", "isIconDescription()").
-                addClass("description").setText("{{iconDescription}}");
+                addAttribute("ng-if", "isIconDescription || isIconImg").
+                addChildren(
+                    softtion.html("div").addClass("img-icon").
+                        addAttribute("ng-if", "isIconImg").
+                        addChildren(
+                            softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
+                        )
+                ).addChildren(
+                    softtion.html("i").addAttribute("ng-if", "isIconDescription").
+                        setText("{{iconDescription}}")
+                );
 
         var input = softtion.html("input", false).
                 addAttribute("type", "text").
@@ -7682,6 +7626,7 @@
 
         var label = softtion.html("label").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
+                addAttribute("ng-if", "isLabel").
                 setText("{{label}}").addClass("truncate").
                 addChildren(
                     softtion.html("span").setText("*").addAttribute("ng-if", "required")
@@ -7690,8 +7635,7 @@
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
-        content.addChildren(iconDescription).
-            addChildren(iconImg).addChildren(input).
+        box.addChildren(description).addChildren(input).
             addChildren(iconAction).addChildren(lineShadow).
             addChildren(label).addChildren(spanHelper);
 
@@ -7716,33 +7660,19 @@
             link: function ($scope, $element, $attrs) {
                     // Atributos
                 var listener = new Listener($scope, []);
-            
-                $attrs.$observe("iconAction", (value) => {
-                    $scope.isIconAction = softtion.isText(value);
-                });
                 
                 $element.on("click", ($event) => {
                     $scope.$apply(() => { listener.launch(Listeners.CLICK, { $event: $event }); });
                 });
                 
+                defineInputField($scope, $element, $attrs, listener);
+                
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);
                 };
 
-                $scope.isIconDescription = function () {
-                    return softtion.isText($scope.iconDescription);
-                };
-
-                $scope.isIconImg = function () {
-                    return softtion.isText($scope.iconImg);
-                };
-
                 $scope.isHelperActive = function () {
                     return softtion.isUndefined($scope.value) || $scope.helperPermanent;
-                };
-
-                $scope.clickIconDescription = function ($event) {
-                    listener.launch(Listeners.ICON, { $event: $event }); $event.stopPropagation();
                 };
                 
                 $scope.clickAction = function ($event) {
