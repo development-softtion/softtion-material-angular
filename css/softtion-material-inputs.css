@@ -1062,7 +1062,7 @@
 .textfield.filled > .content.icon-action > .box > .description ~ .value {
     width: calc(100% - 78px); }
 
-.autocomplete > .content.active > .box > .value,
+.autocomplete > .content.focused > .box > .value,
 .textfield > .content.active > .box > .value {
     display: none; }
 
@@ -1075,7 +1075,6 @@
     line-height: 32px;
     cursor: text;
     overflow: hidden;
-    z-index: -1;
     visibility: hidden;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);

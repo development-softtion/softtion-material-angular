@@ -1273,9 +1273,19 @@ button.floating.theme-secondary:before {
 
 /** EXPANSION PANEL */
 
+.datatable > .expansion-panel {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .expansion-panel {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel {
+    background-color: var(--theme-secondary-500); }
+
 .expansion-panel.active {
     border-bottom: 1px solid var(--background-border); }
 
+.datatable > .expansion-panel.active,
 .card .expansion-panel.active, 
 .form .expansion-panel.active, 
 .item-list .expansion-panel.active {
@@ -1284,6 +1294,15 @@ button.floating.theme-secondary:before {
 .expansion-panel > .header {
     border-bottom: 1px solid var(--background-border);
     background-color: var(--background-component); }
+
+.datatable > .expansion-panel > .header {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .expansion-panel > .header {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header {
+    background-color: var(--theme-secondary-500); }
 
 .card > .expansion-panel:last-child > .header,
 .form > .expansion-panel:last-child > .header {
@@ -1298,6 +1317,7 @@ button.floating.theme-secondary:before {
 .item-list .expansion-panel.active > .header {
     background-color: transparent; }
 
+.datatable > .expansion-panel > .header,
 .expansion-panel.active > .header,
 .card .expansion-panel > .header,
 .item-list .expansion-panel > .header {
@@ -1310,11 +1330,60 @@ button.floating.theme-secondary:before {
 .expansion-panel > .header > .detail > .content > .subtitle {
     color: var(--secondary-font); }
 
+.datatable.theme-primary > .expansion-panel > .header > .title,
+.datatable.theme-primary > .expansion-panel > .header > .detail .title {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > .title,
+.datatable.theme-secondary > .expansion-panel > .header > .detail .title {
+    color: var(--theme-secondary-font-primary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > .subtitle,
+.datatable.theme-primary > .expansion-panel > .header > .detail .subtitle {
+    color: var(--theme-primary-font-secondary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > .subtitle,
+.datatable.theme-secondary > .expansion-panel > .header > .detail .subtitle {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action {
+    color: var(--theme-secondary-font-primary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action:before {
+    background-color: var(--theme-primary-ripple-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action:before {
+    background-color: var(--theme-secondary-ripple-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action:disabled {
+    color: var(--theme-primary-font-disabled-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action:disabled {
+    color: var(--theme-secondary-font-disabled-500); }
+
 .expansion-panel > .body {
     background-color: var(--background-component); }
 
 .item-list .expansion-panel > .body {
     background-color: transparent; }
+
+.datatable > .expansion-panel > .body {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .expansion-panel > .body {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .body {
+    background-color: var(--theme-secondary-500); }
+
+.datatable.theme-primary > .expansion-panel > .body > .content {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .body > .content {
+    color: var(--theme-secondary-font-primary-500); }
 
 /** FAB DIALOG */
 

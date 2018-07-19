@@ -744,8 +744,8 @@
         
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
-                    "{active: inputActive, \"icon-action\": isIconAction," +
-                    " disabled: ngDisabled, \"label-inactive\": !isLabel}"
+                    "{active: inputActive, disabled: ngDisabled, focused: inputFocused," +
+                    " \"icon-action\": isIconAction, \"label-inactive\": !isLabel}"
                 ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
@@ -854,7 +854,7 @@
                 );
 
         box.addChildren(description).addChildren(value).
-            addChildren(uniqueSelection).addChildren(input).
+            addChildren(input).addChildren(uniqueSelection).
             addChildren(lineShadow).addChildren(lineActive).
             addChildren(label).addChildren(buttonAction).
             addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
@@ -999,7 +999,7 @@
                     if (softtion.isDefined($scope.ngModel)) 
                         $scope.input = getSuggestion($scope.ngModel);
 
-                    $scope.inputActive = true; // Elemento activo
+                    $scope.inputActive = true; $scope.inputFocused = true;
 
                     listener.launch(Listeners.FOCUS, { $event: $event });
                     openListSuggestions($scope.input); // Buscar sugerencias
@@ -1008,6 +1008,8 @@
                 $scope.blurInput = function ($event) { 
                     var isText = softtion.isText($scope.input), // Tiene texto
                         isAssign = $scope.inputMode && isText && !$scope.ngAutoselection;
+                        
+                    $scope.inputFocused = false; // Input desenfocado
                         
                     if (focusLi) {
                         if (isAssign) $scope.ngModel = $scope.input; // Asignando
@@ -3974,11 +3976,8 @@
     Directives.ExpansionPanel.KEY = "expansionPanel";
     
     Directives.ExpansionPanel.BUTTON_ACTION = function () {
-        return softtion.html("button").
-            addClass([ Classes.ACTION, "action-expansion" ]).
-            addChildren(
-                softtion.html("i").setText("expand_more")
-            );
+        return softtion.html("button").addClass([ Classes.ACTION, "action-expansion" ]).
+            addChildren(softtion.html("i").setText("expand_more")).create();
     };
                     
     function ExpansionPanelDirective() {
@@ -3986,52 +3985,46 @@
         
         return {
             restrict: "C",
+            scope: {
+              ngExpand: "=?"  
+            },
             link: function ($scope, $element) {
                 var header = $element.children(".header"),
                     body = $element.children(".body");
-
-                if (body.exists()) {
-                    var content = body.children(".content"),
-                        actions = body.children(".actions"),
-                        button = angular.element(directive.BUTTON_ACTION().create());
-
-                    header.append(button); // Botón de expansión
-
-                    header.click(() => {
-                        var collapsibles = $element.siblings(".collapsible");
-
-                        collapsibles.removeClass(Classes.ACTIVE); // Desactivando
-                        collapsibles.children(".body").css("max-height", "0px");
-
-                        $element.toggleClass(Classes.ACTIVE); // Cambiando estado
-
-                        if ($element.hasClass(Classes.ACTIVE)) {
-                            var heightActions = actions.innerHeight(),
-                                heightContent = content.innerHeight(),
-
-                                heightBody = // Calculando alto del Body
-                                    ((isNaN(heightContent)) ? 0 : heightContent) + 
-                                    ((isNaN(heightActions)) ? 0 : heightActions);
-
-                            body.css("max-height", heightBody + "px");
-                        } else {
+            
+                $scope.$watch(() => { return $scope.ngExpand; },
+                    (newValue) => {
+                        if (newValue) {
+                            expandElement(); $element.addClass(Classes.ACTIVE);
+                        } else { 
                             body.css("max-height", "0px");
-                        } // Se debe recoger el contenido del elemento
+                            $element.removeClass(Classes.ACTIVE);
+                        } // Elemento comprimido
                     });
+
+                if (!body.exists()) return; // Componente no tiene contenido
                     
-                    content.resize(() => {
-                        if ($element.hasClass(Classes.ACTIVE)) {
-                            var heightActions = actions.innerHeight(),
-                                heightContent = content.innerHeight(),
+                var content = body.children(".content");
+                
+                // Agregando botón de expansión
+                header.append(angular.element(directive.BUTTON_ACTION())); 
 
-                                heightBody = // Calculando alto del Body
-                                    ((isNaN(heightContent)) ? 0 : heightContent) + 
-                                    ((isNaN(heightActions)) ? 0 : heightActions);
+                header.click(() => {
+                    $scope.$apply(() => { $scope.ngExpand = !$scope.ngExpand; });
+                });
 
-                            body.css("max-height", heightBody + "px");
-                        } // Elemento activado y cambio de tamaño
-                    });
-                } // El componente no tiene contenedor
+                content.resize(() => { if ($scope.ngExpand) expandElement(); });
+                
+                function expandElement() {
+                    var heightActions = body.children(".actions").innerHeight(),
+                        heightContent = content.innerHeight(),
+
+                        heightBody = // Calculando alto del Body
+                            ((isNaN(heightContent)) ? 0 : heightContent) + 
+                            ((isNaN(heightActions)) ? 0 : heightActions);
+
+                    body.css("max-height", heightBody + "px");
+                }
             }
         };
     }

@@ -3228,6 +3228,12 @@ button.raised:focus:after, button.flat:focus:after {
 .list.flat > .expansion-panel.active {
     margin: 0px; }
 
+.datatable > .expansion-panel {
+    padding: 0px 8px; }
+
+.datatable.condense > .expansion-panel {
+    padding: 0px; }
+
 .expansion-panel > .header {
     display: flex;
     position: relative;
@@ -3236,6 +3242,9 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0 16px;
     overflow: hidden;
     box-sizing: border-box; }
+
+.datatable:not(.condense) > .expansion-panel > .header {
+    height: 56px; } 
 
 .expansion-panel > .header > .avatar {
     width: 36px;
@@ -3264,16 +3273,32 @@ button.raised:focus:after, button.flat:focus:after {
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
 
+.datatable:not(.condense) > .expansion-panel > .header > .title,
+.datatable:not(.condense) > .expansion-panel > .header > .subtitle {
+    line-height: 56px; } 
+
 .expansion-panel > .header > .detail {
     display: flex;
     float: left;
     width: 100%; }
+
+.datatable:not(.condense) > .expansion-panel > .header > .detail {
+    height: 56px; } 
 
 .expansion-panel > .header > .detail > .content {
     float: left;
     width: 100%;
     margin: auto;
     padding: 0px; }
+
+.expansion-panel > .header > .detail > .content > .title {
+    height: 20px;
+    line-height: 20px; }
+
+.expansion-panel > .header > .detail > .content > .subtitle {
+    margin-top: 0px;
+    height: 16px;
+    line-height: 16px; }
 
 .expansion-panel > .header > .title + .subtitle,
 .expansion-panel > .header > .title + .detail,
@@ -3290,6 +3315,9 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: content-box;
     height: 24px;
     padding: 12px 0px 12px 16px; }
+
+.datatable:not(.condense) > .expansion-panel > .header > button.action {
+    padding: 16px 0px 16px 16px; } 
 
 .expansion-panel > .header > button.action:before {
     left: calc(50% + 8px); }
@@ -3316,8 +3344,9 @@ button.raised:focus:after, button.flat:focus:after {
             transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
-    overflow-y: auto;
     padding: 8px 16px;
+    display: table;
+    overflow-y: auto;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
