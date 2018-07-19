@@ -1159,6 +1159,28 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-primary-500); }
 
+.datatable > .content > table > tbody > tr > td.buttons {
+    background-color: var(--background-appbar);
+    border-right: 1px dashed var(--background-border); }
+
+.datatable > .content > table > tbody > tr > td.buttons.right {
+    border-right: none;
+    border-left: 1px dashed var(--background-border); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast {
+    border-right: none;
+    border-left: none;
+    background-color: rgba(255, 255, 255, 0.75); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action {
+    color: var(--alternative-primary-font); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action:before {
+    background-color: var(--alternative-ripple); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action:disabled {
+    color: var(--alternative-disabled-font); }
+
 /** DATEPICKER */
 
 .datepicker {
@@ -1340,9 +1362,6 @@ button.floating.theme-secondary:before {
 .card .expansion-panel > .header,
 .item-list .expansion-panel > .header {
     border-bottom: none !important; }
-
-.expansion-panel > .header:hover {
-    background-color: #8f8f8f; }
 
 .expansion-panel > .header > .subtitle,
 .expansion-panel > .header > .detail > .content > .subtitle {

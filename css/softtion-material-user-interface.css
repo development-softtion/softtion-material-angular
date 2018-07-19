@@ -2764,6 +2764,58 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 28px;
     height: calc(100% - 12px); }
 
+.datatable > .content > table > tbody > tr > td.buttons {
+    position: absolute;
+    top: 0px;
+    left: 0px; 
+    -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+            transform: translateX(-100%);
+    -webkit-transition: -webkit-transform 125ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 125ms 0ms var(--standard-curve); 
+            transition: transform 125ms 0ms var(--standard-curve); }
+
+.datatable > .content > table > tbody > tr > td.buttons.right {
+    left: initial;
+    right: 0px;
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+            transform: translateX(100%); }
+
+.datatable > .content > table > tbody > tr.buttons-deploy:hover > td.buttons,
+.datatable > .content > table > tbody > tr > td.buttons-deploy:hover ~ td.buttons,
+.datatable > .content > table > tbody > tr > td.buttons:hover {
+    -webkit-transform: translateX(0%);
+       -moz-transform: translateX(0%);
+            transform: translateX(0%); }
+
+.datatable > .content > table > tbody td.buttons .actions {
+    height: 48px; }
+
+.datatable.condense > .content > table > tbody td.buttons .actions {
+    height: 40px; }
+
+.datatable > .content > table > tbody td.buttons button.action {
+    margin-right: 4px;
+    width: 40px;
+    height: 48px;
+    padding: 12px 8px; }
+
+.datatable.condense > .content > table > tbody td.buttons button.action {
+    height: 40px;
+    width: 36px;
+    padding: 8px 6px; }
+
+.datatable > .content > table > tbody td.buttons button.action:last-child {
+    margin-right: 0px; }
+
+.datatable > .content > table > tbody td.buttons.right button.action {
+    margin-left: 4px;
+    margin-right: 0px; }
+
+.datatable > .content > table > tbody td.buttons.right button.action:first-child {
+    margin-left: 0px; }
+
 /** DATEPICKER */
 
 .datepicker {
@@ -3209,7 +3261,6 @@ button.raised:focus:after, button.flat:focus:after {
 .expansion-panel {
     position: relative;
     width: 100%;
-    overflow: hidden;
     box-sizing: border-box; }
 
 .list > .expansion-panel {
@@ -3337,20 +3388,26 @@ button.raised:focus:after, button.flat:focus:after {
 
 .expansion-panel > .body {
     box-sizing: border-box;
+    width: 100%;
     max-height: 0px;
-    overflow: hidden;
     -webkit-transition: max-height 160ms 0ms var(--deceleration-curve);
        -moz-transition: max-height 160ms 0ms var(--deceleration-curve);
             transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
-    padding: 8px 16px;
     display: table;
+    width: 100%;
+    padding: 8px 16px;
     overflow-y: auto;
+    box-sizing: border-box;
+    visibility: hidden;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight); }
+
+.expansion-panel.active > .body > .content {
+    visibility: visible; }
 
 .expansion-panel > .body > .actions {
     float: left;
