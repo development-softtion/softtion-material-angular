@@ -1410,7 +1410,7 @@
     top: 8px;
     left: 0;
     height: 36px;
-    z-index: -1;
+    z-index: 0;
     border-radius: 4px;
     box-sizing: border-box; }
 
@@ -2018,6 +2018,7 @@
 
 /** INPUTS IN DATATABLE */
 
+.datatable > .content tbody .autocomplete,
 .datatable > .content tbody .clockpicker-input,
 .datatable > .content tbody .datepicker-input,
 .datatable > .content tbody .textfield,
@@ -2025,18 +2026,21 @@
     width: 100%;
     overflow-y: hidden; }
 
+.datatable > .content tbody .autocomplete > .content,
 .datatable > .content tbody .clockpicker-input > .content,
 .datatable > .content tbody .datepicker-input > .content,
 .datatable > .content tbody .textfield > .content,
 .datatable > .content tbody .textfield-readonly > .content {
     padding: 0px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > label,
 .datatable > .content tbody .clockpicker-input > .content > .box > label,
 .datatable > .content tbody .datepicker-input > .content > .box > label,
 .datatable > .content tbody .textfield > .content > .box > label,
 .datatable > .content tbody .textfield-readonly > .content > .box > label {
     display: none !important; }
 
+.datatable > .content tbody .autocomplete > .content > .box > input,
 .datatable > .content tbody .textfield > .content > .box > input,
 .datatable > .content tbody .textfield-readonly > .content > .box > input {
     padding: 8px 0px 8px 0px;
@@ -2045,10 +2049,12 @@
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
+.datatable.condense > .content tbody .autocomplete > .content > .box > input,
 .datatable.condense > .content tbody .textfield > .content > .box > input,
 .datatable.condense > .content tbody .textfield-readonly > .content > .box > input {
     padding: 4px 0px 4px 0px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > .value,
 .datatable > .content tbody .clockpicker-input > .content > .box > .value,
 .datatable > .content tbody .datepicker-input > .content > .box > .value,
 .datatable > .content tbody .textfield > .content > .box > .value {
@@ -2061,6 +2067,7 @@
 .datatable > .content tbody .datepicker-input > .content > .box > .value {
     padding: 8px 0px 8px 0px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > .value,
 .datatable > .content tbody .textfield > .content > .box > .value {
     top: 8px; }
 
@@ -2068,12 +2075,15 @@
 .datatable.condense > .content tbody .datepicker-input > .content > .box > .value {
     padding: 4px 0px 4px 0px; }
 
+.datatable.condense > .content tbody .autocomplete > .content > .box > .value,
 .datatable.condense > .content tbody .textfield > .content > .box > .value {
     top: 4px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > .line-shadow,
 .datatable > .content tbody .textfield > .content > .box > .line-shadow {
     bottom: 8px; }
 
+.datatable.condense > .content tbody .autocomplete > .content > .box > .line-shadow,
 .datatable.condense > .content tbody .textfield > .content > .box > .line-shadow {
     bottom: 6px; }
 

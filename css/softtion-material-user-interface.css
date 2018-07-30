@@ -5605,14 +5605,19 @@ img.center-content {
 /** LINK */
 
 .link {
+    cursor: pointer;
+    outline: none;
     float: left;
     height: 20px;
     line-height: 20px;
-    cursor: pointer;
+    text-decoration: none;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight); }
+
+.link:hover {
+    text-decoration: initial; }
 
 .link.disabled {
     pointer-events: none; }

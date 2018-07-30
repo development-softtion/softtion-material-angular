@@ -854,8 +854,8 @@
                 );
 
         box.addChildren(description).addChildren(value).
-            addChildren(input).addChildren(uniqueSelection).
-            addChildren(lineShadow).addChildren(lineActive).
+            addChildren(lineShadow).addChildren(input).
+            addChildren(lineActive).addChildren(uniqueSelection).
             addChildren(label).addChildren(buttonAction).
             addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
     
@@ -7317,7 +7317,7 @@
                 setText("{{getTextCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
 
         box.addChildren(description).addChildren(value).
-            addChildren(input).addChildren(lineShadow).
+            addChildren(lineShadow).addChildren(input).
             addChildren(lineActive).addChildren(iconAction).
             addChildren(checkBox).addChildren(label).addChildren(spanHelper).
             addChildren(spanError).addChildren(spanCounter);
@@ -8502,7 +8502,7 @@
                 setFontSubtitle1(fontFamily).setFontSubtitle2(fontFamily).
                 setFontBody1(fontFamily).setFontBody2(fontFamily).
                 setFontButton(fontFamily).setFontCaption(fontFamily).
-                setFontOverline(fontFamily);
+                setFontOverline(fontFamily).setFontFamily(fontFamily);
             
             return this; // Retornando interfaz fluida, Servicio Font
         };

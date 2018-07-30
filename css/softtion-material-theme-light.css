@@ -774,35 +774,85 @@ button.floating.theme-secondary:before {
 .checkbox > label {
     color: var(--primary-font); }
 
+.theme-primary .checkbox.contrast > label {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label {
+    color: var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:disabled + label {
     color: var(--disabled-font); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label {
+    color: var(--theme-secondary-font-disabled-500); }
 
 .checkbox > label:before {
     background-color: var(--theme-secondary-500); }
 
+.theme-primary .checkbox.contrast > label:before {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label:before {
+    background-color: var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:disabled + label:before {
     background-color: var(--background-disabled); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--theme-secondary-font-disabled-500); }
 
 .checkbox > label:after {
     border: 2px solid rgba(0, 0, 0, 0.54); }
 
+.theme-primary .checkbox.contrast > label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label:after {
+    border: 2px solid var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:checked + label:after {
     border: 2px solid var(--theme-secondary-font-primary-500); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-primary-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-secondary-500); }
+
+.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--theme-secondary-font-disabled-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--theme-primary-font-disabled-500); }
+
+.checkbox > input[type="checkbox"]:checked:disabled + label:after {
+    border: 2px solid var(--background-core); }
 
 .checkbox > input[type="checkbox"]:checked + label:after,
 .checkbox > input[type="checkbox"]:disabled:checked + label:after {
     border-top: 2px solid transparent !important;
     border-left: 2px solid transparent !important; }
 
-.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after {
-    border: 2px solid var(--background-disabled); }
-
-.checkbox > input[type="checkbox"]:checked:disabled + label:after {
-    border: 2px solid var(--background-core); }
-
 .checkbox > input[type="checkbox"]:checked ~ .ripple-content > .box,
 .checkbox > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
     background-color: var(--ripple); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.theme-primary .checkbox.contrast > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-secondary-ripple-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-primary-ripple-500); }
 
 /** CHECKBOX CONTROL */
 
@@ -2008,8 +2058,20 @@ button.floating.theme-secondary:before {
 .link {
     color: var(--theme-primary-500); }
 
+.theme-primary .link.contrast {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .link.contrast {
+    color: var(--theme-secondary-font-primary-500); }
+
 .link.disabled {
     color: var(--theme-primary-100); }
+
+.theme-primary .link.disabled.contrast {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .link.disabled.contrast {
+    color: var(--theme-secondary-font-disabled-500); }
 
 /** LIST */
 
@@ -3689,15 +3751,55 @@ button.floating.theme-secondary:before {
 .textfield-readonly.capsule > .content > .box > .description {
     background-color: var(--background-border); }
 
+.theme-primary .autocomplete.capsule.contrast > .content > .box > .description,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .description,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .description,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .description,
+.theme-primary .select.capsule.contrast > .content > .box > .description,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content > .box > .description,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .select.capsule.contrast > .content > .box > .description,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-secondary-font-secondary-500); }
+
 .autocomplete.capsule > .content.active > .box >  .description,
 .chip-input.capsule > .content.active > .box >  .description,
 .clockpicker-input.capsule > .content.active > .box >  .description,
 .datepicker-input.capsule > .content.active > .box >  .description,
 .select.capsule > .content.active > .box >  .description,
 .select-multiple.capsule > .content.active > .box >  .description,
-.textfield.capsule.active > .content > .box > .description,
-.textfield-readonly.capsule.active > .content > .box > .description {
+.textfield.capsule > .content.active > .box > .description,
+.textfield-readonly.capsule > .content.active > .box > .description {
     background-color: var(--theme-secondary-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .chip-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .clockpicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .datepicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .select.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .select-multiple.contrast.capsule > .content.active > .box >  .description,
+.theme-primary .textfield.capsule.contrast > .content.active > .box > .description,
+.theme-primary .textfield-readonly.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .chip-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .datepicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .select.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .select-multiple.contrast.capsule > .content.active > .box >  .description,
+.theme-secondary .textfield.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .textfield-readonly.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-secondary-font-primary-500); }
 
 .autocomplete > .content > .box > .description > i,
 .chip-input > .content > .box > .description > i,
@@ -3719,6 +3821,16 @@ button.floating.theme-secondary:before {
 .theme-primary .textfield-readonly.contrast > .content > .box > .description > i {
     color: var(--theme-primary-font-secondary-500); }
 
+.theme-primary .autocomplet.capsule.contrast > .content > .box > .description > i,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-primary-500); }
+
 .theme-secondary .autocomplete.contrast > .content > .box > .description > i,
 .theme-secondary .chip-input.contrast > .content > .box > .description > i,
 .theme-secondary .clockpicker-input.contrast > .content > .box > .description > i,
@@ -3728,6 +3840,16 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield.contrast > .content > .box > .description > i,
 .theme-secondary .textfield-readonly.contrast > .content > .box > .description > i {
     color: var(--theme-secondary-font-secondary-500); }
+
+.theme-secondary .autocomplet.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-secondary-500); }
 
 .autocomplete > .content.disabled > .box >  .description > i,
 .chip-input > .content.disabled > .box >  .description > i,
@@ -3747,6 +3869,15 @@ button.floating.theme-secondary:before {
 .theme-primary .textfield.contrast > .content.disabled > .box >  .description > i {
     color: var(--theme-primary-font-disabled-500); }
 
+.theme-primary .autocomplete.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .chip-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .datepicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select-multiple.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .textfield.capsule.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-primary-200); }
+
 .theme-secondary .autocomplete.contrast > .content.disabled > .box >  .description > i,
 .theme-secondary .chip-input.contrast > .content.disabled > .box >  .description > i,
 .theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  .description > i,
@@ -3755,6 +3886,15 @@ button.floating.theme-secondary:before {
 .theme-secondary .select-multiple.contrast > .content.disabled > .box >  .description > i,
 .theme-secondary .textfield.contrast > .content.disabled > .box >  .description > i {
     color: var(--theme-secondary-font-disabled-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .chip-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .datepicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select-multiple.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .textfield.capsule.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-secondary-200); }
 
 .autocomplete.capsule > .content.disabled > .box >  .description > i,
 .chip-input.capsule > .content.disabled > .box >  .description > i,
@@ -4133,24 +4273,98 @@ button.floating.theme-secondary:before {
 .textfield-readonly.capsule:hover > .content > .box > .line-bordered {
     border: 1px solid var(--background-border); }
 
-.autocomplete.capsule > .content > .box > input:focus ~ .line-bordered,
+.theme-primary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .select.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .select.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.capsule > .content.active > .box > .line-bordered,
 .chip-input.capsule > .content > .box > input:focus ~ .line-bordered,
 .clockpicker-input.capsule > .content.active > .box >  .line-bordered,
 .datepicker-input.capsule > .content.active > .box >  .line-bordered,
 .select.capsule > .content.active > .box >  .line-bordered,
 .select-multiple.capsule > .content.active > .box >  .line-bordered,
-.textfield.capsule > .content > .box > input:focus ~ .line-bordered,
+.textfield.capsule > .content.active > .box > .line-bordered,
 .textfield-readonly.capsule > .content > .box > input:focus ~ .line-bordered {
     border: 1px solid var(--theme-secondary-border); }
 
-.autocomplete.capsule > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .autocomplete.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > input:focus ~ .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .select.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > input:focus ~ .line-bordered {
+    border: 1px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > input:focus ~ .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .select.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > input:focus ~ .line-bordered {
+    border: 1px solid var(--theme-secondary-font-primary-500); }
+
+.autocomplete.capsule > .content.disabled > .box > .line-bordered,
 .chip-input.capsule > .content > .box > input:disabled ~ .line-bordered,
 .clockpicker-input.capsule > .content.disabled > .box >  .line-bordered,
 .datepicker-input.capsule > .content.disabled > .box >  .line-bordered,
 .select.capsule > .content > .box > input:disabled ~ .line-bordered,
 .select-multiple.capsule > .content > .box > input:disabled ~ .line-bordered,
-.textfield.capsule > .content > .box > input:disabled ~ .line-bordered {
+.textfield.capsule > .content.disabled > .box > .line-bordered {
     border: 1px dashed var(--background-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.disabled > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .select.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content.disabled > .box > .line-bordered {
+    border: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.disabled > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .select.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content.disabled > .box > .line-bordered {
+    border: 1px dashed var(--theme-secondary-font-disabled-500); }
 
 .autocomplete > .content > .box > .line-shadow,
 .chip-input > .content > .box > .line-shadow,
