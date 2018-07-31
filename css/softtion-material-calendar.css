@@ -75,6 +75,7 @@
     opacity: 0.32;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .calendar > .header > .actions > i.dragover:before {
@@ -84,6 +85,7 @@
 .calendar > .header > .actions > i.dragover:before {
     -webkit-animation: rippleWaiting 425ms var(--standard-curve) infinite;
        -moz-animation: rippleWaiting 425ms var(--standard-curve) infinite;
+         -o-animation: rippleWaiting 425ms var(--standard-curve) infinite;
             animation: rippleWaiting 425ms var(--standard-curve) infinite; }
 
 @media only screen and (max-width : 360px) {

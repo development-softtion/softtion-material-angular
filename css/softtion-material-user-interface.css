@@ -7,12 +7,16 @@
  */
 
 [draggable] {
-    -moz-user-select: none;
-    -khtml-user-select: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
     user-select: none;
-    -khtml-user-drag: element;
-    -webkit-user-drag: element; }
+    -khtml-user-select: none;
+    -webkit-user-drag: element;
+    -moz-user-drag: element;
+    -o-user-drag: element;
+    user-drag: element;
+    -khtml-user-drag: element; }
 
 html, body, input, textarea, pre {
     font-family: var(--font-family-base);
@@ -32,10 +36,7 @@ body {
 input:not([type="image"]), textarea {
     box-sizing: initial !important; }
 
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-    background-image: none !important; }
-
-h1, h2, h3, h4, h5, h6, b {
+.bold, b {
     font-weight: 700; }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -180,12 +181,14 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 50%;
     pointer-events: none;
     -webkit-transform: translate(-50%, -50%); 
-       -moz-transform: translate(-50%, -50%); 
+       -moz-transform: translate(-50%, -50%);  
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .ripple-box.animated > .effect {
     -webkit-animation: ripple 325ms var(--standard-curve);
        -moz-animation: ripple 325ms var(--standard-curve);
+         -o-animation: ripple 325ms var(--standard-curve);
             animation: ripple 325ms var(--standard-curve); }
 
 /** COMPONENTS GLOBALS */
@@ -230,8 +233,8 @@ input[type=number]::-webkit-outer-spin-button {
 .display-block {
     display: block !important; }
 
-.bold {
-    font-weight: 700 !important; }
+.display-table {
+    display: table !important; }
 
 /** ALERT */
 
@@ -296,6 +299,8 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-transition: left 200ms 0ms var(--standard-curve), 
                 width 200ms 0ms var(--standard-curve);
        -moz-transition: left 200ms 0ms var(--standard-curve), 
+                width 200ms 0ms var(--standard-curve);
+         -o-transition: left 200ms 0ms var(--standard-curve), 
                 width 200ms 0ms var(--standard-curve);
             transition: left 200ms 0ms var(--standard-curve), 
                 width 200ms 0ms var(--standard-curve); }
@@ -541,6 +546,7 @@ body.body-overflow-none-sidenav > .app-body > .app-content {
     background-size: 24px 24px;
     -webkit-animation: progressAudioStripe 325ms linear infinite;
        -moz-animation: progressAudioStripe 325ms linear infinite;
+         -o-animation: progressAudioStripe 325ms linear infinite;
             animation: progressAudioStripe 325ms linear infinite; }
 
 .audio > .content > .box > label {
@@ -688,10 +694,11 @@ button.action > .badge {
     height: 56px;
     z-index: 8;
     user-select: none;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-tranform;
     box-shadow: var(--shadow-8-inv);
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve);
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 @media only screen and (min-width: 641px) {
@@ -718,11 +725,13 @@ button.action > .badge {
 body:not(.show-bottom-navigation) .bottom-navigation {
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
+         -o-transform: translateY(100%);
             transform: translateY(100%); }
 
 body.show-keyboard .bottom-navigation {
     -webkit-transform: translateY(100%) !important;
        -moz-transform: translateY(100%) !important;
+         -o-transform: translateY(100%) !important;
             transform: translateY(100%) !important; }
 
 .bottom-navigation > ul {
@@ -734,6 +743,7 @@ body.show-keyboard .bottom-navigation {
     width: 100%;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 .bottom-navigation > ul.three-options {
@@ -808,6 +818,7 @@ body.show-keyboard .bottom-navigation {
     text-overflow: ellipsis;
     -webkit-transition: all 100ms 0ms var(--standard-curve);
        -moz-transition: all 100ms 0ms var(--standard-curve);
+         -o-transition: all 100ms 0ms var(--standard-curve);
             transition: all 100ms 0ms var(--standard-curve); }
 
 .bottom-navigation > ul > li.active > .content > p {
@@ -834,9 +845,11 @@ body.show-keyboard .bottom-navigation {
     left: 50%;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%);
     -webkit-transition: all 100ms 0ms var(--standard-curve);
        -moz-transition: all 100ms 0ms var(--standard-curve);
+         -o-transition: all 100ms 0ms var(--standard-curve);
             transition: all 100ms 0ms var(--standard-curve); }
 
 .bottom-navigation > ul.four-options > li > .content > i,
@@ -857,21 +870,25 @@ body.show-keyboard .bottom-navigation {
 .bottom-navigation > ul.three-options + .ripple-box.animated > .effect {
     -webkit-animation: rippleBottomNavThree 325ms var(--standard-curve);
        -moz-animation: rippleBottomNavThree 325ms var(--standard-curve);
+         -o-animation: rippleBottomNavThree 325ms var(--standard-curve);
             animation: rippleBottomNavThree 325ms var(--standard-curve); }
 
 .bottom-navigation > ul.four-options + .ripple-box.animated > .effect {
     -webkit-animation: rippleBottomNavFour 325ms var(--standard-curve);
        -moz-animation: rippleBottomNavFour 325ms var(--standard-curve);
+         -o-animation: rippleBottomNavFour 325ms var(--standard-curve);
             animation: rippleBottomNavFour 325ms var(--standard-curve); }
 
 .bottom-navigation > ul.five-options + .ripple-box.animated > .effect {
     -webkit-animation: rippleBottomNavFive 325ms var(--standard-curve);
        -moz-animation: rippleBottomNavFive 325ms var(--standard-curve);
+         -o-animation: rippleBottomNavFive 325ms var(--standard-curve);
             animation: rippleBottomNavFive 325ms var(--standard-curve); }
 
 .bottom-navigation > ul.shifting + .ripple-box.animated > .effect {
     -webkit-animation: ripple 525ms var(--standard-curve);
        -moz-animation: ripple 525ms var(--standard-curve);
+         -o-animation: ripple 525ms var(--standard-curve);
             animation: ripple 525ms var(--standard-curve); }
 
 @media only screen and (min-width : 504px) {
@@ -933,6 +950,7 @@ body.show-keyboard .bottom-navigation {
     opacity: 0;
     -webkit-transition: opacity 120ms 0ms var(--acceleration-curve);
        -moz-transition: opacity 120ms 0ms var(--acceleration-curve);
+         -o-transition: opacity 120ms 0ms var(--acceleration-curve);
             transition: opacity 120ms 0ms var(--acceleration-curve); }
 
 .bottom-sheet.show > .backdrop {
@@ -940,6 +958,7 @@ body.show-keyboard .bottom-navigation {
     bottom: 0;
     -webkit-transition: opacity 120ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 120ms 0ms var(--deceleration-curve);
+         -o-transition: opacity 120ms 0ms var(--deceleration-curve);
             transition: opacity 120ms 0ms var(--deceleration-curve); }
 
 .bottom-sheet > .content {
@@ -953,13 +972,15 @@ body.show-keyboard .bottom-navigation {
     visibility: hidden;
     overflow-y: auto;
     overflow-x: hidden;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-tranform;
     box-shadow: 0px 4px 16px 6px rgba(0, 0, 0, 0.12);
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
+         -o-transform: translateY(100%);
             transform: translateY(100%);
     -webkit-transition: all 120ms 0ms var(--acceleration-curve);
        -moz-transition: all 120ms 0ms var(--acceleration-curve);
+         -o-transition: all 120ms 0ms var(--acceleration-curve);
             transition: all 120ms 0ms var(--acceleration-curve); }
 
 @media only screen and (min-width : 961px) {
@@ -981,9 +1002,11 @@ body.show-keyboard .bottom-navigation {
     visibility: visible;
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
+         -o-transform: translateY(0%);
             transform: translateY(0%);
     -webkit-transition: all 120ms 0ms var(--deceleration-curve);
        -moz-transition: all 120ms 0ms var(--deceleration-curve);
+         -o-transition: all 120ms 0ms var(--deceleration-curve);
             transition: all 120ms 0ms var(--deceleration-curve); }
 
 /** BREADCRUMB */
@@ -1005,10 +1028,10 @@ body.not-touch .breadcrumb::-webkit-scrollbar, .breadcrumb::-webkit-scrollbar {
 
 .app-bar.floating > .breadcrumb {
     width: calc(100% - 16px);
+    margin: 0px 8px;
     min-height: 48px; 
     max-height: 48px; 
-    line-height: 48px;
-    margin: 0px 8px; }
+    line-height: 48px; }
 
 .app-bar.floating > .breadcrumb:first-child {
     margin-top: 8px; }
@@ -1142,9 +1165,11 @@ button.floating {
     box-shadow: var(--shadow-6);
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve); 
+         -o-transition: all 160ms 0ms var(--standard-curve); 
             transition: all 160ms 0ms var(--standard-curve);
     -webkit-animation: buttonFloating 120ms 0ms var(--standard-curve);
        -moz-animation: buttonFloating 120ms 0ms var(--standard-curve);
+         -o-animation: buttonFloating 120ms 0ms var(--standard-curve);
             animation: buttonFloating 120ms 0ms var(--standard-curve); }
 
 button.floating.left {
@@ -1156,6 +1181,7 @@ button.floating.center {
     right: initial;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 body.show-bottom-navigation button.floating {
@@ -1211,6 +1237,7 @@ button.raised:before, button.flat:before, button.floating:before {
     visibility: hidden;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 button.action {
@@ -1243,6 +1270,7 @@ button.action:before {
     visibility: hidden;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 button.action.progress > i {
@@ -1266,6 +1294,7 @@ button.raised:not(:active):before, button.flat:not(:active):before,
 button.floating:not(:active):before, button.action:not(:active):before {
     -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenter 1000ms var(--standard-curve);
             animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 button.raised:focus:before, button.flat:focus:before, 
@@ -1337,6 +1366,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: var(--shadow-2); 
     -webkit-transition: box-shadow 120ms 0ms var(--sharp-curve);
        -moz-transition: box-shadow 120ms 0ms var(--sharp-curve);
+         -o-transition: box-shadow 120ms 0ms var(--sharp-curve);
             transition: box-shadow 120ms 0ms var(--sharp-curve); }
 
 .card.actionable:hover {
@@ -1495,6 +1525,7 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .rich-media > .content > .actions > .action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .rich-media > .content > .actions > .action.right {
@@ -1675,6 +1706,7 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .media-area > .actions > button:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .media-area > .actions > button > .badge {
@@ -1731,6 +1763,7 @@ button.raised:focus:after, button.flat:focus:after {
 .card > .actions > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .card > .actions > button.action.right {
@@ -1800,6 +1833,7 @@ button.raised:focus:after, button.flat:focus:after {
     overflow: hidden;
     -webkit-transition: left 1000ms var(--standard-curve);
        -moz-transition: left 1000ms var(--standard-curve);
+         -o-transition: left 1000ms var(--standard-curve);
             transition: left 1000ms var(--standard-curve); }
 
 .carousel > .slide.active {
@@ -1837,6 +1871,7 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 3; 
     -webkit-transform: translate(0%, -50%);
        -moz-transform: translate(0%, -50%);
+         -o-transform: translate(0%, -50%);
             transform: translate(0%, -50%); }
 
 .carousel > .slide > .description {
@@ -1848,6 +1883,7 @@ button.raised:focus:after, button.flat:focus:after {
     top: 16px;
     -webkit-transform: none;
        -moz-transform: none;
+         -o-transform: none;
             transform: none; }
 
 .carousel > .slide > .description.bottom {
@@ -1855,6 +1891,7 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 16px;
     -webkit-transform: none;
        -moz-transform: none;
+         -o-transform: none;
             transform: none; }
 
 .carousel > .slide > .description > .title,
@@ -1903,6 +1940,7 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 3; 
     -webkit-transform: translate(0%, -50%);
        -moz-transform: translate(0%, -50%);
+         -o-transform: translate(0%, -50%);
             transform: translate(0%, -50%); }
 
 .carousel > .arrow.disabled {
@@ -1913,6 +1951,7 @@ button.raised:focus:after, button.flat:focus:after {
     top: 16px;
     -webkit-transform: none;
        -moz-transform: none;
+         -o-transform: none;
             transform: none; }
 
 .carousel > .arrow.bottom {
@@ -1920,6 +1959,7 @@ button.raised:focus:after, button.flat:focus:after {
     bottom: 16px;
     -webkit-transform: none;
        -moz-transform: none;
+         -o-transform: none;
             transform: none; }
 
 .carousel > .arrow > i {
@@ -1955,6 +1995,7 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 50%;
     -webkit-transform: translate(0, -50%);
        -moz-transform: translate(0, -50%);
+         -o-transform: translate(0, -50%);
             transform: translate(0, -50%); }
 
 .catalog:hover > .arrow {
@@ -1991,9 +2032,11 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box;
     -webkit-transition: transform 325ms 0ms var(--standard-curve);
        -moz-transition: transform 325ms 0ms var(--standard-curve);
+         -o-transition: transform 325ms 0ms var(--standard-curve);
             transition: transform 325ms 0ms var(--standard-curve);
     -webkit-transform: translateX(0);
        -moz-transform: translateX(0);
+         -o-transform: translateX(0);
             transform: translateX(0); }
 
 .catalog > .container > .content {
@@ -2022,9 +2065,11 @@ button.raised:focus:after, button.flat:focus:after {
     height: auto;
     -webkit-transition: width 325ms 0ms var(--standard-curve);
        -moz-transition: width 325ms 0ms var(--standard-curve);
+         -o-transition: width 325ms 0ms var(--standard-curve);
             transition: width 325ms 0ms var(--standard-curve);
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .catalog > .container > .content.active > img {
@@ -2038,6 +2083,7 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0;
     -webkit-transition: opacity 500ms 0ms var(--standard-curve);
        -moz-transition: opacity 500ms 0ms var(--standard-curve);
+         -o-transition: opacity 500ms 0ms var(--standard-curve);
             transition: opacity 500ms 0ms var(--standard-curve); }
 
 .catalog > .container > .content.active > .description {
@@ -2153,12 +2199,15 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0);
     -webkit-transform-origin: 50% 50%;
        -moz-transform-origin: 50% 50%;
+         -o-transform-origin: 50% 50%;
             transform-origin: 50% 50%;
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve);
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox > label:after {
@@ -2179,11 +2228,13 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-backface-visibility: hidden;
     -webkit-transform: rotate(40deg);
        -moz-transform: rotate(40deg);
+         -o-transform: rotate(40deg);
             transform: rotate(40deg); }
 
 .checkbox > input[type="checkbox"]:checked ~ label:before {
     -webkit-transform: scale(1);
        -moz-transform: scale(1);
+         -o-transform: scale(1);
             transform: scale(1); }
 
 .checkbox > .ripple-content {
@@ -2196,6 +2247,7 @@ button.raised:focus:after, button.flat:focus:after {
     background: transparent;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
             transform: translateY(-50%); }
 
 .checkbox.flex-pd > .ripple-content {
@@ -2209,11 +2261,13 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 0.45;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 .checkbox > input[type="checkbox"]:focus ~ .ripple-content > .box {
     -webkit-animation: rippleSquarecenter 750ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 750ms var(--standard-curve);
+         -o-animation: rippleSquarecenter 750ms var(--standard-curve);
             animation: rippleSquarecenter 750ms var(--standard-curve); }
 
 /** CHECKBOX CONTROL */
@@ -2256,6 +2310,7 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .checkbox-control > input[type="checkbox"]:checked + label:after {
@@ -2266,6 +2321,7 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
        -moz-transform: translate(-50%, -65%) rotate(40deg);
+         -o-transform: translate(-50%, -65%) rotate(40deg);
             transform: translate(-50%, -65%) rotate(40deg); }
 
 .checkbox-control > label:before {
@@ -2279,17 +2335,21 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0);
     -webkit-transform-origin: 50% 50%;
        -moz-transform-origin: 50% 50%;
+         -o-transform-origin: 50% 50%;
             transform-origin: 50% 50%;
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve);
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox-control > input[type="checkbox"]:checked ~ label:before {
     -webkit-transform: scale(1);
        -moz-transform: scale(1);
+         -o-transform: scale(1);
             transform: scale(1); }
 
 /** CHECKBOX SELECT */
@@ -2326,6 +2386,7 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .checkbox-select.active > label:after {
@@ -2336,6 +2397,7 @@ button.raised:focus:after, button.flat:focus:after {
     -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
        -moz-transform: translate(-50%, -65%) rotate(40deg);
+         -o-transform: translate(-50%, -65%) rotate(40deg);
             transform: translate(-50%, -65%) rotate(40deg); }
 
 .checkbox-select > label:before {
@@ -2349,17 +2411,21 @@ button.raised:focus:after, button.flat:focus:after {
     border-radius: 2px;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0);
     -webkit-transform-origin: 50% 50%;
        -moz-transform-origin: 50% 50%;
+         -o-transform-origin: 50% 50%;
             transform-origin: 50% 50%;
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve);
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 .checkbox-select.active > label:before {
     -webkit-transform: scale(1);
        -moz-transform: scale(1);
+         -o-transform: scale(1);
             transform: scale(1); }
 
 /** CHIP */
@@ -2369,7 +2435,6 @@ button.raised:focus:after, button.flat:focus:after {
     height: 32px;
     line-height: 32px;
     padding: 0 12px;
-    font-weight: 300;
     border-radius: 16px;
     font-family: var(--caption-font);
     font-size: var(--caption-size);
@@ -2377,6 +2442,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-weight: var(--caption-weight); 
     -webkit-transition: all 160ms 0ms var(--sharp-curve);
        -moz-transition: all 160ms 0ms var(--sharp-curve);
+         -o-transition: all 160ms 0ms var(--sharp-curve);
             transition: all 160ms 0ms var(--sharp-curve); }
 
 .chip.bordered {
@@ -2420,10 +2486,10 @@ button.raised:focus:after, button.flat:focus:after {
     height: 16px;
     width: 16px;
     font-size: 12px;
-    border-radius: 50%;
     cursor: pointer;
     font-weight: 800;
-    text-align: center; }
+    text-align: center;
+    border-radius: 50%; }
 
 /** CLOCKPICKER */
 
@@ -2503,6 +2569,7 @@ button.raised:focus:after, button.flat:focus:after {
     visibility: visible;
     -webkit-animation: changedClock 375ms var(--standard-curve);
        -moz-animation: changedClock 375ms var(--standard-curve);
+         -o-animation: changedClock 375ms var(--standard-curve);
             animation: changedClock 375ms var(--standard-curve); }
 
 .clockpicker > .content > .plate > .hours > .tick,
@@ -2660,6 +2727,7 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr {
     -webkit-transition: background-color 160ms 0ms var(--sharp-curve);
        -moz-transition: background-color 160ms 0ms var(--sharp-curve);
+         -o-transition: background-color 160ms 0ms var(--sharp-curve);
             transition: background-color 160ms 0ms var(--sharp-curve); }
 
 .datatable > .content > table > thead > tr > th, 
@@ -2770,9 +2838,11 @@ button.raised:focus:after, button.flat:focus:after {
     left: 0px; 
     -webkit-transform: translateX(-100%);
        -moz-transform: translateX(-100%);
+         -o-transform: translateX(-100%);
             transform: translateX(-100%);
     -webkit-transition: -webkit-transform 125ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 125ms 0ms var(--standard-curve); 
+         -o-transition: -o-transform 125ms 0ms var(--standard-curve); 
             transition: transform 125ms 0ms var(--standard-curve); }
 
 .datatable > .content > table > tbody > tr > td.buttons.right {
@@ -2780,6 +2850,7 @@ button.raised:focus:after, button.flat:focus:after {
     right: 0px;
     -webkit-transform: translateX(100%);
        -moz-transform: translateX(100%);
+         -o-transform: translateX(100%);
             transform: translateX(100%); }
 
 .datatable > .content > table > tbody > tr.buttons-deploy:hover > td.buttons,
@@ -2787,6 +2858,7 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td.buttons:hover {
     -webkit-transform: translateX(0%);
        -moz-transform: translateX(0%);
+         -o-transform: translateX(0%);
             transform: translateX(0%); }
 
 .datatable > .content > table > tbody td.buttons .actions {
@@ -2895,6 +2967,7 @@ button.raised:focus:after, button.flat:focus:after {
     font-weight: var(--subtitle-1-weight);
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%); 
+         -o-transform: translateX(-50%); 
             transform: translateX(-50%); }
 
 .datepicker > .content > .days-month {
@@ -3117,6 +3190,8 @@ button.raised:focus:after, button.flat:focus:after {
                 bottom 120ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 120ms 0ms var(--deceleration-curve),
                 bottom 120ms 0ms var(--deceleration-curve);
+         -o-transition: opacity 120ms 0ms var(--deceleration-curve),
+                bottom 120ms 0ms var(--deceleration-curve);
             transition: opacity 120ms 0ms var(--deceleration-curve),
                 bottom 120ms 0ms var(--deceleration-curve); }
 
@@ -3133,15 +3208,19 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 2;
     visibility: hidden;
     box-shadow: var(--shadow-24);
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -0-transform;
     -webkit-transform: translateY(150px) scale(0.6);
        -moz-transform: translateY(150px) scale(0.6);
+         -o-transform: translateY(150px) scale(0.6);
             transform: translateY(150px) scale(0.6);
     -webkit-transition: opacity 125ms 0ms var(--deceleration-curve),
                 -webkit-transform 125ms 0ms var(--deceleration-curve),
                 visibility 125ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 125ms 0ms var(--deceleration-curve),
                 -moz-transform 125ms 0ms var(--deceleration-curve),
+                visibility 125ms 0ms var(--deceleration-curve);
+         -o-transition: opacity 125ms 0ms var(--deceleration-curve),
+                -o-transform 125ms 0ms var(--deceleration-curve),
                 visibility 125ms 0ms var(--deceleration-curve);
             transition: opacity 125ms 0ms var(--deceleration-curve),
                 transform 125ms 0ms var(--deceleration-curve),
@@ -3171,6 +3250,7 @@ button.raised:focus:after, button.flat:focus:after {
     opacity: 1;
     -webkit-transform: translateY(0) scale(1);
        -moz-transform: translateY(0) scale(1);
+         -o-transform: translateY(0) scale(1);
             transform: translateY(0) scale(1); }
 
 .dialog > .box > .title {
@@ -3226,25 +3306,31 @@ button.raised:focus:after, button.flat:focus:after {
     will-change: opacity, transform;
     -webkit-transform: scale(0, 0);
        -moz-transform: scale(0, 0);
+         -o-transform: scale(0, 0);
             transform: scale(0, 0);
     -webkit-transform-origin: 0 0;
        -moz-transform-origin: 0 0;
+         -o-transform-origin: 0 0;
             transform-origin: 0 0;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve),
                 opacity 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve),
+                opacity 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve),
                 opacity 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve),
                 opacity 160ms 0ms var(--standard-curve); }
 
 .dropdown.show {
     opacity: 1;
-    -moz-transform: scale(1, 1);
-    transform: scale(1, 1);
     -webkit-transform: scale(1, 1);
-    -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
-    transition: transform 160ms 0ms var(--standard-curve);
-    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve); }
+       -moz-transform: scale(1, 1);
+         -o-transform: scale(1, 1);
+            transform: scale(1, 1);
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve);
+            transition: transform 160ms 0ms var(--standard-curve); }
 
 .dropdown.fixed {
     position: fixed;
@@ -3267,6 +3353,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-shadow: var(--shadow-2);
     -webkit-transition: margin 160ms 0ms var(--deceleration-curve);
        -moz-transition: margin 160ms 0ms var(--deceleration-curve);
+         -o-transition: margin 160ms 0ms var(--deceleration-curve);
             transition: margin 160ms 0ms var(--deceleration-curve); }
 
 .list > .expansion-panel.active {
@@ -3376,14 +3463,17 @@ button.raised:focus:after, button.flat:focus:after {
 .expansion-panel > .header > button.action-expansion > i {
     -webkit-transform: rotate(0deg);
        -moz-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
             transform: rotate(0deg);
     -webkit-transition: transform 160ms 0ms var(--standard-curve);
        -moz-transition: transform 160ms 0ms var(--standard-curve);
+         -o-transition: transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
 .expansion-panel.active  > .header > button.action-expansion > i {
     -webkit-transform: rotate(180deg);
        -moz-transform: rotate(180deg);
+         -o-transform: rotate(180deg);
             transform: rotate(180deg); }
 
 .expansion-panel > .body {
@@ -3392,6 +3482,7 @@ button.raised:focus:after, button.flat:focus:after {
     max-height: 0px;
     -webkit-transition: max-height 160ms 0ms var(--deceleration-curve);
        -moz-transition: max-height 160ms 0ms var(--deceleration-curve);
+         -o-transition: max-height 160ms 0ms var(--deceleration-curve);
             transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
@@ -3449,6 +3540,7 @@ button.raised:focus:after, button.flat:focus:after {
     z-index: 10; 
     -webkit-transition: all 125ms 0ms var(--standard-curve);
        -moz-transition: all 125ms 0ms var(--standard-curve); 
+         -o-transition: all 125ms 0ms var(--standard-curve);
             transition: all 125ms 0ms var(--standard-curve); }
 
 body.show-bottom-navigation .fab-dialog {
@@ -3464,6 +3556,7 @@ body.show-keyboard .fab-dialog {
     opacity: 0;
     -webkit-transition: opacity 125ms 0ms var(--standard-curve);
        -moz-transition: opacity 125ms 0ms var(--standard-curve);
+         -o-transition: opacity 125ms 0ms var(--standard-curve);
             transition: opacity 125ms 0ms var(--standard-curve); }
 
 .fab-dialog.active > .backdrop {
@@ -3471,6 +3564,7 @@ body.show-keyboard .fab-dialog {
     bottom: 0;
     -webkit-transition: opacity 125ms 0ms var(--standard-curve);
        -moz-transition: opacity 125ms 0ms var(--standard-curve);
+         -o-transition: opacity 125ms 0ms var(--standard-curve);
             transition: opacity 125ms 0ms var(--standard-curve); }
 
 .fab-dialog > .box {
@@ -3486,6 +3580,7 @@ body.show-keyboard .fab-dialog {
     border-radius: 50%;
     -webkit-transition: all 125ms 0ms var(--standard-curve);
        -moz-transition: all 125ms 0ms var(--standard-curve); 
+         -o-transition: all 125ms 0ms var(--standard-curve);
             transition: all 125ms 0ms var(--standard-curve); }
 
 .fab-dialog.active > .box {
@@ -3509,6 +3604,7 @@ body.show-keyboard .fab-dialog {
     z-index: 2;
     -webkit-transition: opacity 125ms 0ms var(--standard-curve);
        -moz-transition: opacity 125ms 0ms var(--standard-curve); 
+         -o-transition: opacity 125ms 0ms var(--standard-curve);
             transition: opacity 125ms 0ms var(--standard-curve); }
 
 .fab-dialog.active > .box > .button {
@@ -3535,12 +3631,14 @@ body.show-keyboard .fab-dialog {
     z-index: 1; 
     opacity: 0;
     box-shadow: var(--shadow-2);
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     -webkit-transition: opacity 125ms 0ms var(--standard-curve);
        -moz-transition: opacity 125ms 0ms var(--standard-curve); 
+         -o-transition: opacity 125ms 0ms var(--standard-curve); 
             transition: opacity 125ms 0ms var(--standard-curve); }
 
 .fab-dialog.active > .box > .content {
@@ -3558,6 +3656,7 @@ body.show-keyboard .fab-dialog {
     height: 0px; 
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve); 
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 body.show-bottom-navigation .fab-menu {
@@ -3576,14 +3675,17 @@ body.show-keyboard .fab-menu {
 .fab-menu.start:not(.active) > .orbit-content {
     -webkit-animation: fabMenuOrbitReverse 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuOrbitReverse 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuOrbitReverse 225ms 0ms var(--deceleration-curve);
             animation: fabMenuOrbitReverse 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu.start.active > .orbit-content  {
     -webkit-transform: rotate(90deg);
        -moz-transform: rotate(90deg);
+         -o-transform: rotate(90deg);
             transform: rotate(90deg);
     -webkit-animation: fabMenuOrbit 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuOrbit 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuOrbit 225ms 0ms var(--deceleration-curve);
             animation: fabMenuOrbit 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu > .orbit-content > .button {
@@ -3596,9 +3698,10 @@ body.show-keyboard .fab-menu {
     cursor: pointer;
     border-radius: 50%;
     box-shadow: var(--shadow-6);
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-animation: buttonFloating 120ms 0ms var(--standard-curve);
        -moz-animation: buttonFloating 120ms 0ms var(--standard-curve);
+         -o-animation: buttonFloating 120ms 0ms var(--standard-curve);
             animation: buttonFloating 120ms 0ms var(--standard-curve); }
 
 .fab-menu > .orbit-content > .button.disabled {
@@ -3607,6 +3710,7 @@ body.show-keyboard .fab-menu {
 .fab-menu.start:not(.active) > .orbit-content > .button {
     -webkit-animation: fabMenuHideButton 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuHideButton 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuHideButton 225ms 0ms var(--deceleration-curve);
             animation: fabMenuHideButton 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu.start.active > .orbit-content > .button {
@@ -3618,9 +3722,11 @@ body.show-keyboard .fab-menu {
     box-shadow: none;
     -webkit-transform: rotate(-90deg);
        -moz-transform: rotate(-90deg);
+         -o-transform: rotate(-90deg);
             transform: rotate(-90deg);
     -webkit-animation: fabMenuShowButton 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuShowButton 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuShowButton 225ms 0ms var(--deceleration-curve);
             animation: fabMenuShowButton 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu > .orbit-content > .button > i {
@@ -3644,6 +3750,7 @@ body.show-keyboard .fab-menu {
 .fab-menu.start:not(.active) > .content {
     -webkit-animation: fabMenuHideContent 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuHideContent 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuHideContent 225ms 0ms var(--deceleration-curve);
             animation: fabMenuHideContent 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu.start.active > .content {
@@ -3651,6 +3758,7 @@ body.show-keyboard .fab-menu {
     opacity: 1;
     -webkit-animation: fabMenuShowContent 225ms 0ms var(--deceleration-curve);
        -moz-animation: fabMenuShowContent 225ms 0ms var(--deceleration-curve);
+         -o-animation: fabMenuShowContent 225ms 0ms var(--deceleration-curve);
             animation: fabMenuShowContent 225ms 0ms var(--deceleration-curve); }
 
 .fab-menu > .content > .menu {
@@ -3675,6 +3783,8 @@ body.show-keyboard .fab-menu {
                 bottom 160ms 0ms var(--standard-curve);
        -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
                 bottom 160ms 0ms var(--standard-curve);
+         -o-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
             transition: margin-bottom 160ms 0ms var(--standard-curve),
                 bottom 160ms 0ms var(--standard-curve); }
 
@@ -3687,6 +3797,7 @@ body.show-keyboard .fab-menu {
     right: initial;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 body.show-bottom-navigation .fab-speed-dial {
@@ -3704,11 +3815,13 @@ body.show-keyboard .fab-speed-dial {
 .fab-speed-dial > button.floating.active > i {
     -webkit-animation: changeRestoreIcon 160ms 0ms var(--standard-curve);
        -moz-animation: changeRestoreIcon 160ms 0ms var(--standard-curve);
+         -o-animation: changeRestoreIcon 160ms 0ms var(--standard-curve);
             animation: changeRestoreIcon 160ms 0ms var(--standard-curve); }
 
 .fab-speed-dial.active > button.floating.active > i {
     -webkit-animation: changeNewIcon 160ms 0ms var(--standard-curve);
        -moz-animation: changeNewIcon 160ms 0ms var(--standard-curve);
+         -o-animation: changeNewIcon 160ms 0ms var(--standard-curve);
             animation: changeNewIcon 160ms 0ms var(--standard-curve); }
 
 .fab-speed-dial > ul {
@@ -3736,12 +3849,14 @@ body.show-keyboard .fab-speed-dial {
     will-change: opacity;
     -webkit-animation: closeFabSpeeddial 120ms 0ms var(--standard-curve);
        -moz-animation: closeFabSpeeddial 120ms 0ms var(--standard-curve);
+         -o-animation: closeFabSpeeddial 120ms 0ms var(--standard-curve);
             animation: closeFabSpeeddial 120ms 0ms var(--standard-curve); }
 
 .fab-speed-dial.active > ul > li > button.floating {
     opacity: 1;
     -webkit-animation: openFabSpeeddial 120ms 0ms var(--standard-curve);
        -moz-animation: openFabSpeeddial 120ms 0ms var(--standard-curve);
+         -o-animation: openFabSpeeddial 120ms 0ms var(--standard-curve);
             animation: openFabSpeeddial 120ms 0ms var(--standard-curve); }
 
 .fab-speed-dial > ul > li > button.floating > i {
@@ -3836,6 +3951,7 @@ body.show-keyboard .fab-speed-dial {
     height: inherit;
     -webkit-transition: width 10ms 0ms var(--standard-curve);
        -moz-transition: width 10ms 0ms var(--standard-curve);
+         -o-transition: width 10ms 0ms var(--standard-curve);
             transition: width 10ms 0ms var(--standard-curve); }
 
 .filechooser > .content > .files {
@@ -3888,6 +4004,7 @@ body.show-keyboard .fab-speed-dial {
     visibility: hidden;
     -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
        -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+         -o-transition: opacity 160ms 0ms var(--sharp-curve);
             transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .filechooser .view-preview:hover > .delete {
@@ -3900,6 +4017,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser .view-preview > .icon {
@@ -3911,6 +4029,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser .view-preview > .icon > i {
@@ -3924,6 +4043,7 @@ body.show-keyboard .fab-speed-dial {
     font-size: 56px;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser .content > .description {
@@ -3974,6 +4094,7 @@ body.show-keyboard .fab-speed-dial {
 .filechooser .content > .description > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .filechooser .content > .description.actionable > button.action {
@@ -4119,6 +4240,7 @@ body.show-keyboard .fab-speed-dial {
     visibility: hidden;
     -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
        -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+         -o-transition: opacity 160ms 0ms var(--sharp-curve);
             transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple .file .view-preview:hover > .delete {
@@ -4131,6 +4253,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .view-preview > .icon {
@@ -4142,6 +4265,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .view-preview > .icon > i {
@@ -4155,6 +4279,7 @@ body.show-keyboard .fab-speed-dial {
     font-size: 120px;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser-multiple .file .description {
@@ -4202,6 +4327,7 @@ body.show-keyboard .fab-speed-dial {
     opacity: 0.5;
     -webkit-transition: all 160ms 0ms var(--sharp-curve);
        -moz-transition: all 160ms 0ms var(--sharp-curve);
+         -o-transition: all 160ms 0ms var(--sharp-curve);
             transition: all 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple > .action-add.disabled {
@@ -4214,6 +4340,7 @@ body.show-keyboard .fab-speed-dial {
     text-align: center;
     -webkit-transition: all 160ms 0ms var(--sharp-curve);
        -moz-transition: all 160ms 0ms var(--sharp-curve);
+         -o-transition: all 160ms 0ms var(--sharp-curve);
             transition: all 160ms 0ms var(--sharp-curve); }
 
 .filechooser-multiple > .action-add:hover {
@@ -4265,6 +4392,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .filechooser-perfil > .actions {
@@ -4370,6 +4498,7 @@ body.show-keyboard .fab-speed-dial {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .flexible-box > .box {
@@ -4452,12 +4581,14 @@ body.show-keyboard .fab-speed-dial {
     display: block;
     width: 100%;
     height: 20px;
-    font-size: 18px;
     overflow: hidden;
     text-align: center;
-    font-weight: 500;
     white-space: nowrap;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
 
 .flexible-content > .banner > .detail > .logo + .title {
     margin-top: 12px; }
@@ -4467,11 +4598,14 @@ body.show-keyboard .fab-speed-dial {
     width: 100%;
     height: 16px;
     margin-top: 4px;
-    font-size: 12px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    text-align: center; }
+    text-align: center;
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
 
 @media only screen and (min-width: 641px) {
     
@@ -4550,6 +4684,7 @@ body.show-keyboard .fab-speed-dial {
     top: 50%;
     -webkit-transform: translateY(calc(-50%));
        -moz-transform: translateY(calc(-50%));
+         -o-transform: translateY(calc(-50%));
             transform: translateY(calc(-50%)); }
 
 .form > .header > .nav-icon > button {
@@ -4658,6 +4793,7 @@ body.show-keyboard .fab-speed-dial {
 .form > .actions > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .form > .actions > button.action.right {
@@ -4695,6 +4831,8 @@ body.show-keyboard .fab-speed-dial {
                 bottom 200ms 0ms var(--standard-curve);
        -moz-transition: opacity 200ms 0ms var(--standard-curve),
                 bottom 200ms 0ms var(--standard-curve);
+         -o-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
             transition: opacity 200ms 0ms var(--standard-curve),
                 bottom 200ms 0ms var(--standard-curve); }
 
@@ -4713,12 +4851,14 @@ body.show-keyboard .fab-speed-dial {
     overflow-x: hidden;
     z-index: 2;
     box-shadow: var(--shadow-16);
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translateX(100%);
        -moz-transform: translateX(100%);
+         -o-transform: translateX(100%);
             transform: translateX(100%);
     -webkit-transition: -webkit-transform 200ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 200ms 0ms var(--standard-curve);
             transition: transform 200ms 0ms var(--standard-curve); }
 
 .form-navigation.x2 > .content {
@@ -4733,6 +4873,7 @@ body.show-keyboard .fab-speed-dial {
 .form-navigation.show > .content {
     -webkit-transform: translateX(0%);
        -moz-transform: translateX(0%);
+         -o-transform: translateX(0%);
             transform: translateX(0%); }
 
 /** FOOTER BUTTONS */
@@ -4746,19 +4887,22 @@ body.show-keyboard .fab-speed-dial {
     width: 100%;
     height: 48px;
     box-sizing: border-box;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
 body.show-bottom-navigation .footer-buttons {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
+         -o-transform: translateY(-56px);
             transform: translateY(-56px); }
 
 body.show-keyboard .footer-buttons {
     -webkit-transform: translateY(0px);
        -moz-transform: translateY(0px);
+         -o-transform: translateY(0px);
             transform: translateY(0px); }
 
 .footer-buttons > button {
@@ -4781,6 +4925,7 @@ body.show-keyboard .footer-buttons {
 .footer-buttons > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 .footer-buttons > .rating {
@@ -4827,6 +4972,7 @@ body.show-keyboard .footer-buttons {
     font-weight: var(--body-1-weight);
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
 
 .fullwidth-field > .content > textarea::-webkit-input-placeholder {
@@ -4894,9 +5040,9 @@ body.show-keyboard .footer-buttons {
     width: 100%;
     height: 224px;
     padding: 8px 6px;
-    box-sizing: border-box;
     overflow-y: hidden;
-    border-radius: 4px; }
+    border-radius: 4px;
+    box-sizing: border-box; }
 
 .gallery > .content::-webkit-scrollbar { 
     display: none; }
@@ -4910,9 +5056,9 @@ body.show-keyboard .footer-buttons {
     height: 200px;
     float: left;
     padding: 4px;
-    box-sizing: border-box;
     cursor: pointer; 
-    outline: none; }
+    outline: none;
+    box-sizing: border-box; }
 
 .gallery > .content > .images > .image::before {
     content: "";
@@ -4925,9 +5071,9 @@ body.show-keyboard .footer-buttons {
     top: 4px;
     width: calc(100% - 8px);
     height: calc(100% - 8px);
+    border-radius: 2px;
     box-sizing: border-box;
-    box-shadow: var(--shadow-1);
-    border-radius: 2px; }
+    box-shadow: var(--shadow-1); }
 
 .gallery > .content > .images > .image > .content:hover {
     box-shadow: var(--shadow-4); }
@@ -4950,6 +5096,7 @@ body.show-keyboard .footer-buttons {
     visibility: hidden;
     -webkit-transition: opacity 160ms 0ms var(--sharp-curve);
        -moz-transition: opacity 160ms 0ms var(--sharp-curve);
+         -o-transition: opacity 160ms 0ms var(--sharp-curve);
             transition: opacity 160ms 0ms var(--sharp-curve); }
 
 .gallery .image .view-preview:hover > .delete {
@@ -4962,6 +5109,7 @@ body.show-keyboard .footer-buttons {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .gallery .image .view-preview > .icon {
@@ -4973,6 +5121,7 @@ body.show-keyboard .footer-buttons {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .gallery .image .view-preview > .icon > i {
@@ -4986,6 +5135,7 @@ body.show-keyboard .footer-buttons {
     font-size: 120px;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 .gallery .image .description {
@@ -5014,10 +5164,13 @@ body.show-keyboard .footer-buttons {
     float: left;
     height: 32px;
     line-height: 32px;
-    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; }
+    white-space: nowrap;
+    font-family: var(--headline-6-font);
+    font-size: var(--headline-6-size);
+    letter-spacing: var(--headline-6-letterspacing);
+    font-weight: var(--headline-6-weight); }
 
 /** GRID LIST */
 
@@ -5149,6 +5302,7 @@ body.show-keyboard .footer-buttons {
     height: 48px;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 .grid-sheet > .item > i.icon {
@@ -5199,6 +5353,7 @@ img.center.density-width {
     top: 50%;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%); 
+         -o-transform: translateY(-50%); 
             transform: translateY(-50%); }
 
 img.density-height {
@@ -5209,6 +5364,7 @@ img.center.density-height {
     left: 50%; 
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%); 
+         -o-transform: translateX(-50%); 
             transform: translateX(-50%); }
 
 img.center-content {
@@ -5217,6 +5373,7 @@ img.center-content {
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
        -moz-transform: translate(-50%, -50%);
+         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
 /** ITEM-LIST */
@@ -5228,6 +5385,7 @@ img.center-content {
     box-sizing: border-box;
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
 
 .item-list > .box {
@@ -5569,10 +5727,12 @@ img.center-content {
     will-change: transform;
     -webkit-transform: translateY(calc(100% + 4px));
        -moz-transform: translateY(calc(100% + 4px));
+         -o-transform: translateY(calc(100% + 4px));
             transform: translateY(calc(100% + 4px));
     -webkit-transition: transform 120ms 0ms var(--standard-curve);
        -moz-transition: transform 120ms 0ms var(--standard-curve);
-            transition: transform 120ms 0ms var(--standard-curve);}
+         -o-transition: transform 120ms 0ms var(--standard-curve);
+            transition: transform 120ms 0ms var(--standard-curve); }
 
 .item-list.two-line > .actions.floating,
 .two-line > .item-list > .actions.floating,
@@ -5584,6 +5744,7 @@ img.center-content {
 .item-list:hover > .actions.floating {
     -webkit-transform: translateY(0%); 
        -moz-transform: translateY(0%); 
+         -o-transform: translateY(0%); 
             transform: translateY(0%); }
 
 .item-list > .actions > button {
@@ -5927,13 +6088,16 @@ p.link > a {
     width: 100%;
     max-width: 288px;
     box-shadow: var(--shadow-2);
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translateY(calc(-100% - 8px));
        -moz-transform: translateY(calc(-100% - 8px));
+         -o-transform: translateY(calc(-100% - 8px));
             transform: translateY(calc(-100% - 8px));
-    -webkit-transition: transform 160ms 0ms var(--standard-curve), 
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve), 
                         top 160ms 0ms var(--standard-curve);
-       -moz-transition: transform 160ms 0ms var(--standard-curve), 
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve), 
+                        top 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve), 
                         top 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve), 
                         top 160ms 0ms var(--standard-curve); }
@@ -5942,6 +6106,7 @@ p.link > a {
     top: 8px;
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
+         -o-transform: translateY(0%);
             transform: translateY(0%); }
 
 .app-bar > .notification-floating {
@@ -5953,10 +6118,12 @@ p.link > a {
     width: 100%;
     max-width: 288px;
     box-shadow: var(--shadow-2);
-    will-change: transform, -webkit-transform, -moz-transform;
-    -webkit-transition: transform 160ms 0ms var(--standard-curve), 
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
+    -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve), 
                         bottom 160ms 0ms var(--standard-curve);
-       -moz-transition: transform 160ms 0ms var(--standard-curve), 
+       -moz-transition: -moz-transform 160ms 0ms var(--standard-curve), 
+                        bottom 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve), 
                         bottom 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve), 
                         bottom 160ms 0ms var(--standard-curve); }
@@ -5965,6 +6132,7 @@ p.link > a {
     bottom: 0px;
     -webkit-transform: translateY(calc(100% + 12px));
        -moz-transform: translateY(calc(100% + 12px));
+         -o-transform: translateY(calc(100% + 12px));
             transform: translateY(calc(100% + 12px)); }
 
 .notification-floating > .content {
@@ -6061,14 +6229,17 @@ p.link > a {
 .progress-bar.visible > .bar {
     -webkit-transition: width 160ms 0ms var(--sharp-curve);
        -moz-transition: width 160ms 0ms var(--sharp-curve); 
+         -o-transition: width 160ms 0ms var(--sharp-curve);
             transition: width 160ms 0ms var(--sharp-curve); }
 
 .progress-bar.show > .bar {
     -webkit-animation-name: progressDeterminate;
        -moz-animation-name: progressDeterminate;
+         -o-animation-name: progressDeterminate;
             animation-name: progressDeterminate;
     -webkit-animation-timing-function: var(--sharp-curve);
        -moz-animation-timing-function: var(--sharp-curve);
+         -o-animation-timing-function: var(--sharp-curve);
             animation-timing-function: var(--sharp-curve); }
 
 .progress-bar.indeterminate:after, .progress-bar.indeterminate:before {
@@ -6080,22 +6251,26 @@ p.link > a {
 
 .progress-bar.show.indeterminate:after {
     -webkit-animation: progressIndeterminateAfter 2000ms infinite; 
-       -moz-animation: progressIndeterminateAfter 2000ms infinite;
+       -moz-animation: progressIndeterminateAfter 2000ms infinite; 
+         -o-animation: progressIndeterminateAfter 2000ms infinite;
             animation: progressIndeterminateAfter 2000ms infinite; }
 
 .progress-bar.show.indeterminate.reverse:after {
     -webkit-animation: progressIndeterminateReverseAfter 2000ms infinite;
        -moz-animation: progressIndeterminateReverseAfter 2000ms infinite;
+         -o-animation: progressIndeterminateReverseAfter 2000ms infinite;
             animation: progressIndeterminateReverseAfter 2000ms infinite; }
 
 .progress-bar.show.indeterminate:before {
     -webkit-animation: progressIndeterminateBefore 2000ms infinite;
        -moz-animation: progressIndeterminateBefore 2000ms infinite;
+         -o-animation: progressIndeterminateBefore 2000ms infinite;
             animation: progressIndeterminateBefore 2000ms infinite; }
 
 .progress-bar.show.indeterminate.reverse:before {
     -webkit-animation: progressIndeterminateReverseBefore 2000ms infinite;
        -moz-animation: progressIndeterminateReverseBefore 2000ms infinite;
+         -o-animation: progressIndeterminateReverseBefore 2000ms infinite;
             animation: progressIndeterminateReverseBefore 2000ms infinite; }
 
 .progress-bar.buffering {
@@ -6112,6 +6287,7 @@ p.link > a {
     z-index: 2;  
     -webkit-transition: width 160ms 0ms var(--sharp-curve);
        -moz-transition: width 160ms 0ms var(--sharp-curve); 
+         -o-transition: width 160ms 0ms var(--sharp-curve);
             transition: width 160ms 0ms var(--sharp-curve); }
 
 .progress-bar.buffering.reverse > .buffer {
@@ -6125,11 +6301,13 @@ p.link > a {
     background-size: 10px 4px;
     -webkit-animation: progressBuffering 200ms infinite linear;
        -moz-animation: progressBuffering 200ms infinite linear;
+         -o-animation: progressBuffering 200ms infinite linear;
             animation: progressBuffering 200ms infinite linear; }
 
 .progress-bar.buffering.reverse:after {
     -webkit-animation: progressBufferingReverse 250ms infinite linear;
        -moz-animation: progressBufferingReverse 250ms infinite linear;
+         -o-animation: progressBufferingReverse 250ms infinite linear;
             animation: progressBufferingReverse 250ms infinite linear; }
 
 .progress-bar.buffering > .bar {
@@ -6161,6 +6339,8 @@ p.link > a {
                 bottom 160ms 0ms var(--standard-curve);
        -moz-transition: margin-bottom 160ms 0ms var(--standard-curve),
                 bottom 160ms 0ms var(--standard-curve); 
+         -o-transition: margin-bottom 160ms 0ms var(--standard-curve),
+                bottom 160ms 0ms var(--standard-curve);
             transition: margin-bottom 160ms 0ms var(--standard-curve),
                 bottom 160ms 0ms var(--standard-curve); }
 
@@ -6182,6 +6362,7 @@ body.show-keyboard .progress-button-floating {
 .progress-button-floating.start > .progress-circular > svg {
     -webkit-animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear;
        -moz-animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear;
+         -o-animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear;
             animation: progressDeterminateDashFab var(--time-fab-progress-circular) linear; }
 
 .progress-button-floating > .progress-circular > svg {
@@ -6189,33 +6370,39 @@ body.show-keyboard .progress-button-floating {
     height: 80px;
     -webkit-transform: rotate(var(--round-fab-progress-circular));
        -moz-transform: rotate(var(--round-fab-progress-circular));
+         -o-transform: rotate(var(--round-fab-progress-circular));
             transform: rotate(var(--round-fab-progress-circular)); }
 
 .progress-button-floating.start > .progress-circular > svg > circle {
     -webkit-animation: progressDeterminateRotate var(--time-fab-progress-circular) linear;
        -moz-animation: progressDeterminateRotate var(--time-fab-progress-circular) linear;
+         -o-animation: progressDeterminateRotate var(--time-fab-progress-circular) linear;
             animation: progressDeterminateRotate var(--time-fab-progress-circular) linear; }
 
 .progress-button-floating.show > .progress-circular.indeterminate > svg {
     -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
        -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+         -o-animation: progressIndeterminateRotate 3500ms linear infinite;
             animation: progressIndeterminateRotate 3500ms linear infinite; }
 
 .progress-button-floating.finish > .progress-circular.indeterminate > svg {
     -webkit-animation: none;
        -moz-animation: none;
+         -o-animation: none;
             animation: none; }
 
 .progress-button-floating.show > .progress-circular.indeterminate > svg > circle {
     opacity: 1;
     -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
        -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+         -o-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
             animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
 .progress-button-floating.finish > .progress-circular.indeterminate > svg > circle {
     opacity: 0;
     -webkit-animation: none;
        -moz-animation: none;
+         -o-animation: none;
             animation: none; }
 
 .progress-button-floating > .button-result {
@@ -6230,6 +6417,7 @@ body.show-keyboard .progress-button-floating {
     visibility: hidden;
     -webkit-transition: all 275ms 0ms var(--deceleration-curve);
        -moz-transition: all 275ms 0ms var(--deceleration-curve);
+         -o-transition: all 275ms 0ms var(--deceleration-curve);
             transition: all 275ms 0ms var(--deceleration-curve); }
 
 .progress-button-floating.start > .button-result {
@@ -6295,11 +6483,13 @@ body.show-keyboard .progress-button-floating {
     visibility: hidden;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 .progress-button-floating > button:not(:active):before { 
     -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenter 1000ms var(--standard-curve);
             animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 .progress-button-floating > button:focus:before {
@@ -6319,11 +6509,13 @@ body.show-keyboard .progress-button-floating {
     height: 48px;
     -webkit-transform: rotate(var(--round-progress-circular));
        -moz-transform: rotate(var(--round-progress-circular));
+         -o-transform: rotate(var(--round-progress-circular));
             transform: rotate(var(--round-progress-circular)); }
 
 .progress-circular.show > svg {
     -webkit-animation: progressDeterminateDash var(--time-progress-circular) linear;
        -moz-animation: progressDeterminateDash var(--time-progress-circular) linear;
+         -o-animation: progressDeterminateDash var(--time-progress-circular) linear;
             animation: progressDeterminateDash var(--time-progress-circular) linear; }
 
 .progress-circular > svg > circle {
@@ -6338,16 +6530,19 @@ body.show-keyboard .progress-button-floating {
 .progress-circular.show > svg > circle {
     -webkit-animation: progressDeterminateRotate var(--time-progress-circular) linear;
        -moz-animation: progressDeterminateRotate var(--time-progress-circular) linear;
+         -o-animation: progressDeterminateRotate var(--time-progress-circular) linear;
             animation: progressDeterminateRotate var(--time-progress-circular) linear; }
 
 .progress-circular.indeterminate > svg {
     -webkit-animation: none;
        -moz-animation: none;
+         -o-animation: none;
             animation: none; }
 
 .progress-circular.indeterminate.show > svg {
     -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
        -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+         -o-animation: progressIndeterminateRotate 3500ms linear infinite;
             animation: progressIndeterminateRotate 3500ms linear infinite; }
 
 .progress-circular.indeterminate > svg > circle {
@@ -6358,6 +6553,7 @@ body.show-keyboard .progress-button-floating {
     opacity: 1;
     -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
        -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+         -o-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
             animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
 .refresh-progress-circular {
@@ -6369,6 +6565,7 @@ body.show-keyboard .progress-button-floating {
     box-shadow: var(--shadow-4);
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 .app-bar > .refresh-progress-circular {
@@ -6376,6 +6573,7 @@ body.show-keyboard .progress-button-floating {
     bottom: 300px; 
     -webkit-transition: bottom 450ms 0ms var(--standard-curve);
        -moz-transition: bottom 450ms 0ms var(--standard-curve);
+         -o-transition: bottom 450ms 0ms var(--standard-curve);
             transition: bottom 450ms 0ms var(--standard-curve); }
 
 .app-bar > .refresh-progress-circular.show {
@@ -6388,6 +6586,7 @@ body.show-keyboard .progress-button-floating {
     z-index: 24;
     -webkit-transition: top 450ms 0ms var(--standard-curve);
        -moz-transition: top 450ms 0ms var(--standard-curve);
+         -o-transition: top 450ms 0ms var(--standard-curve);
             transition: top 450ms 0ms var(--standard-curve); }
 
 .app-content > .refresh-progress-circular.show {
@@ -6404,12 +6603,14 @@ body.show-keyboard .progress-button-floating {
 .refresh-progress-circular.show > .progress-circular.indeterminate > svg {
     -webkit-animation: progressIndeterminateRotate 3500ms linear infinite;
        -moz-animation: progressIndeterminateRotate 3500ms linear infinite;
+         -o-animation: progressIndeterminateRotate 3500ms linear infinite;
             animation: progressIndeterminateRotate 3500ms linear infinite; }
 
 .refresh-progress-circular.show > .progress-circular.indeterminate > svg > circle {
     opacity: 1;
     -webkit-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
        -moz-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
+         -o-animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite;
             animation: progressIndeterminateDash 1750ms var(--standard-curve) infinite; }
 
 /** PROGRESS PANE */
@@ -6439,11 +6640,13 @@ body.show-keyboard .progress-button-floating {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    font-size: 16px;
-    font-weight: 700;
     height: 20px;
     line-height: 20px;
-    margin-bottom: 8px; }
+    margin-bottom: 8px;
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
 
 /** RADIOBUTTON */
 
@@ -6487,12 +6690,15 @@ body.show-keyboard .progress-button-floating {
     border-radius: 50%;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0);
     -webkit-transform-origin: 50% 50%;
        -moz-transform-origin: 50% 50%;
+         -o-transform-origin: 50% 50%;
             transform-origin: 50% 50%;
     -webkit-transition: all 160ms 0ms var(--standard-curve);
        -moz-transition: all 160ms 0ms var(--standard-curve);
+         -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
 .radiobutton > label:after {
@@ -6520,6 +6726,7 @@ body.show-keyboard .progress-button-floating {
     background: transparent;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
             transform: translateY(-50%); }
 
 .radiobutton.flex-pd > .ripple-content {
@@ -6533,11 +6740,13 @@ body.show-keyboard .progress-button-floating {
     opacity: 0.45;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 .radiobutton > input[type="radio"]:focus ~ .ripple-content > .box {
     -webkit-animation: rippleSquarecenter 750ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 750ms var(--standard-curve);
+         -o-animation: rippleSquarecenter 750ms var(--standard-curve);
             animation: rippleSquarecenter 750ms var(--standard-curve); }
 
 /** RATING */
@@ -6570,6 +6779,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .rating > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
 
 /** SCORE */
@@ -6625,6 +6835,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     box-shadow: none;
     -webkit-transition: all 250ms 0ms var(--deceleration-curve);
        -moz-transition: all 250ms 0ms var(--deceleration-curve);
+         -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.flat > .search-box {
@@ -6753,9 +6964,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .app-body > .sidenav {
     z-index: 5;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transition: -webkit-transform 250ms 0ms var(--deceleration-curve);
        -moz-transition: -moz-transform 250ms 0ms var(--deceleration-curve);
+         -o-transition: -o-transform 250ms 0ms var(--deceleration-curve);
             transition: transform 250ms 0ms var(--deceleration-curve); }
 
 .app-body > .app-bar.element-hidden.hide ~ .sidenav {
@@ -6796,6 +7008,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     .app-body > .app-bar.element-hidden.hide ~ .sidenav {
         -webkit-transform: translateY(-64px);
            -moz-transform: translateY(-64px);
+             -o-transform: translateY(-64px);
                 transform: translateY(-64px); }
 }
 
@@ -6826,6 +7039,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     -webkit-transition: opacity 200ms 0ms var(--standard-curve),
                 bottom 200ms 0ms var(--standard-curve);
        -moz-transition: opacity 200ms 0ms var(--standard-curve),
+                bottom 200ms 0ms var(--standard-curve);
+         -o-transition: opacity 200ms 0ms var(--standard-curve),
                 bottom 200ms 0ms var(--standard-curve);
             transition: opacity 200ms 0ms var(--standard-curve),
                 bottom 200ms 0ms var(--standard-curve); }
@@ -6874,12 +7089,14 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     z-index: 2;
     box-shadow: var(--shadow-16);
     box-sizing: border-box;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translateX(-100%);
        -moz-transform: translateX(-100%);
+         -o-transform: translateX(-100%);
             transform: translateX(-100%);
     -webkit-transition: -webkit-transform 200ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 200ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 200ms 0ms var(--standard-curve);
             transition: transform 200ms 0ms var(--standard-curve); }
 
 .sidenav.condense > .content {
@@ -6889,6 +7106,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     box-shadow: var(--shadow-16);
     -webkit-transform: translateX(0%);
        -moz-transform: translateX(0%);
+         -o-transform: translateX(0%);
             transform: translateX(0%); }
 
 @media only screen and (min-width : 961px) {
@@ -6901,6 +7119,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
         width: 320px;
         -webkit-transform: translateX(0%);
            -moz-transform: translateX(0%);
+             -o-transform: translateX(0%);
                 transform: translateX(0%); }
     
     .app-body > .sidenav > .content {
@@ -6910,6 +7129,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
         box-shadow: none;
         -webkit-transform: translateX(0%);
            -moz-transform: translateX(0%);
+             -o-transform: translateX(0%);
                 transform: translateX(0%); }
 }
 
@@ -6924,6 +7144,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
         box-shadow: none;
         -webkit-transform: translateX(0%);
            -moz-transform: translateX(0%);
+             -o-transform: translateX(0%);
                 transform: translateX(0%); }
 }
 
@@ -6947,6 +7168,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     max-height: 64px;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
             transform: translateY(-50%); }
 
 @media only screen and (max-width : 960px) {
@@ -6959,9 +7181,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     position: relative;
     width: 100%;
     height: 64px; 
-    box-sizing: border-box;
     padding-left: 16px;
-    overflow: hidden; }
+    overflow: hidden;
+    box-sizing: border-box; }
 
 .sidenav > .content > .banner-perfil > .avatar {
     float: left;
@@ -7031,12 +7253,14 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     top: 50%;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%); 
+         -o-transform: translateY(-50%);
             transform: translateY(-50%); }
 
 .sidenav > .content > .banner > img.background.density-height {
     left: 50%;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%); 
+         -o-transform: translateX(-50%); 
             transform: translateX(-50%); }
 
 .sidenav > .content > .banner > .description {
@@ -7185,19 +7409,23 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .sidenav > .content .sidenav-item > .description > a > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
+         -o-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
             animation: rippleSquarecenterHigh 750ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .description > a > button.action > i {
     -webkit-transform: rotate(0deg);
        -moz-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
             transform: rotate(0deg);
     -webkit-transition: -webkit-transform 175ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 175ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 175ms 0ms var(--standard-curve);
             transition: transform 175ms 0ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item.displayed > .description > a > button.action > i {
     -webkit-transform: rotate(180deg);
        -moz-transform: rotate(180deg);
+         -o-transform: rotate(180deg);
             transform: rotate(180deg); }
 
 .sidenav > .content .sidenav-item > .options {
@@ -7208,6 +7436,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .sidenav > .content .sidenav-item > .options {
     -webkit-transition: max-height 175ms 0ms var(--standard-curve);
        -moz-transition: max-height 175ms 0ms var(--standard-curve);
+         -o-transition: max-height 175ms 0ms var(--standard-curve);
             transition: max-height 175ms 0ms var(--standard-curve); }
 
 .sidenav > .content .sidenav-item > .options > ul > li.disabled {
@@ -7358,12 +7587,14 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     z-index: 2;
     -webkit-transition: width 200ms 0ms var(--standard-curve);
        -moz-transition: width 200ms 0ms var(--standard-curve);
+         -o-transition: width 200ms 0ms var(--standard-curve);
             transition: width 200ms 0ms var(--standard-curve); }
 
 .slider > .content.deslice > .track > .track-on {
-    -moz-transition: none;
-    transition: none;
-    -webkit-transition: none; }
+    -webkit-transition: none;
+       -moz-transition: none;
+         -o-transition: none;
+            transition: none; }
 
 .slider > .content.full > .track > .track-on {
     width: 100% !important; }
@@ -7379,6 +7610,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     border-radius: 50%;
     -webkit-transition: left 200ms 0ms var(--standard-curve);
        -moz-transition: left 200ms 0ms var(--standard-curve);
+         -o-transition: left 200ms 0ms var(--standard-curve);
             transition: left 200ms 0ms var(--standard-curve); }
 
 .slider > .content.disabled > .track > .thumb {
@@ -7405,9 +7637,10 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     visibility: visible; }
 
 .slider > .content.deslice > .track > .thumb {
-    -moz-transition: none;
-    transition: none;
-    -webkit-transition: none; }
+    -webkit-transition: none;
+       -moz-transition: none;
+         -o-transition: none;
+            transition: none; }
 
 .slider > .content > .track > .thumb.off {
     width: 8px; 
@@ -7415,9 +7648,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     left: -6px !important; }
 
 .slider > .content > .track > .thumb.active {
+    width: 16px;
     top: 8px;
-    height: 16px;
-    width: 16px; }
+    height: 16px; }
 
 .slider > .content > .track > .thumb.off.active {
     width: 12px; 
@@ -7430,6 +7663,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .slider.discrete > .content.full > .track > .thumb {
     -webkit-transition: none;
        -moz-transition: none;
+         -o-transition: none;
             transition: none; }
 
 .slider.discrete > .content > .track > .thumb.off {
@@ -7438,6 +7672,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     width: 12px;
     -webkit-transition: none;
        -moz-transition: none;
+         -o-transition: none;
             transition: none; }
 
 .slider.discrete > .content > .track > .thumb.active {
@@ -7447,9 +7682,11 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     height: 24px;
     -webkit-transform-origin: left bottom;
        -moz-transform-origin: left bottom;
+         -o-transform-origin: left bottom;
             transform-origin: left bottom;
     -webkit-transform: translate(0, -120%) rotate(-45deg);
        -moz-transform: translate(0, -120%) rotate(-45deg);
+         -o-transform: translate(0, -120%) rotate(-45deg);
             transform: translate(0, -120%) rotate(-45deg); }
 
 .slider.discrete > .content > .track > .thumb.off.active {
@@ -7466,6 +7703,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     font-size: 12px;
     -webkit-transform: translate(-50%, -50%) rotate(45deg);
        -moz-transform: translate(-50%, -50%) rotate(45deg);
+         -o-transform: translate(-50%, -50%) rotate(45deg);
             transform: translate(-50%, -50%) rotate(45deg); }
 
 .slider.discrete > .content > .track > .thumb.active > span {
@@ -7477,8 +7715,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     right: 0px;
     width: 28px; 
     height: 24px;
-    visibility: hidden;
-    padding: 0px; }
+    padding: 0px;
+    visibility: hidden; }
 
 .slider:not(.discrete) > .content.showcase > .showcase-input {
     visibility: visible; }
@@ -7505,27 +7743,32 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     z-index: 6;
     padding: 0px 24px;
     box-sizing: border-box;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
+         -o-transform: translateY(100%);
             transform: translateY(100%);
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
 .snackbar.show {
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
+         -o-transform: translateY(0%);
             transform: translateY(0%); }
 
 body.show-bottom-navigation .snackbar.show {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
+         -o-transform: translateY(-56px);
             transform: translateY(-56px); } 
 
 body.show-keyboard .snackbar.show {
     -webkit-transform: translateY(0px);
        -moz-transform: translateY(0px);
+         -o-transform: translateY(0px);
             transform: translateY(0px); } 
 
 @media only screen and (min-width : 641px) and (max-width: 720px) {
@@ -7575,8 +7818,8 @@ body.show-keyboard .snackbar.show {
 
 .snackbar > .body.two-line {
     margin: 24px 0px;
-    line-height: 16px; 
-    max-height: 32px; }
+    max-height: 32px;
+    line-height: 16px; }
 
 .snackbar > .action {
     position: relative;
@@ -7590,10 +7833,14 @@ body.show-keyboard .snackbar.show {
     position: absolute;
     top: 50%;
     cursor: pointer;
-    font-weight: 500;
     text-transform: uppercase;
+    font-family: var(--button-font);
+    font-size: var(--button-size);
+    letter-spacing: var(--button-letterspacing);
+    font-weight: var(--button-weight);
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
             transform: translateY(-50%); }
 
 /** STEPPER HORIZONTAL */
@@ -7603,9 +7850,9 @@ body.show-keyboard .snackbar.show {
     width: 100%;
     height: 72px;
     overflow: hidden; 
-    box-sizing: border-box;
-    box-shadow: var(--shadow-2); 
-    user-select: none; }
+    box-sizing: border-box; 
+    user-select: none;
+    box-shadow: var(--shadow-2); }
 
 .app-bar > .stepper-horizontal, 
 .stepper-horizontal.flat,
@@ -7672,6 +7919,7 @@ body.show-keyboard .snackbar.show {
 .stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
     -webkit-animation: rippleStepper 200ms var(--deceleration-curve);
        -moz-animation: rippleStepper 200ms var(--deceleration-curve);
+         -o-animation: rippleStepper 200ms var(--deceleration-curve);
             animation: rippleStepper 200ms var(--deceleration-curve); }
 
 .stepper-horizontal > ul > li:first-child > .content { 
@@ -7794,19 +8042,22 @@ body.show-keyboard .snackbar.show {
     width: 100%;
     height: 48px;
     z-index: 5;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
 body.show-bottom-navigation .stepper-mobile {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
+         -o-transform: translateY(-56px);
             transform: translateY(-56px); }
 
 body.show-keyboard .stepper-mobile {
     -webkit-transform: translateY(0px);
        -moz-transform: translateY(0px);
+         -o-transform: translateY(0px);
             transform: translateY(0px); }
 
 .stepper-mobile > .back, .stepper-mobile > .next {
@@ -7868,6 +8119,7 @@ body.show-keyboard .stepper-mobile {
     visibility: hidden; 
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 .stepper-mobile > .back > button:focus:after, 
@@ -7878,6 +8130,7 @@ body.show-keyboard .stepper-mobile {
 .stepper-mobile > .next > button:not(:active):before {
     -webkit-animation: rippleSquarecenter 1000ms var(--standard-curve);
        -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
+         -o-animation: rippleSquarecenter 1000ms var(--standard-curve);
             animation: rippleSquarecenter 1000ms var(--standard-curve); }
 
 .stepper-mobile > .back > button:before {
@@ -7911,9 +8164,9 @@ body.show-keyboard .stepper-mobile {
 
 .stepper-mobile > .content > .dots,
 .stepper-mobile > .content > .progress-bar-stepper {
+    padding: 0px 12px; 
     display: flex;
-    box-sizing: border-box;
-    padding: 0px 12px; }
+    box-sizing: border-box; }
 
 .stepper-mobile > .content > .dots > .dot {
     width: 100%;
@@ -7951,6 +8204,7 @@ body.show-keyboard .stepper-mobile {
     height: 4px;
     -webkit-transition: width 200ms 0ms var(--standard-curve);
        -moz-transition: width 200ms 0ms var(--standard-curve);
+         -o-transition: width 200ms 0ms var(--standard-curve);
             transition: width 200ms 0ms var(--standard-curve); }
 
 /** SUBHEADER */
@@ -7996,10 +8250,10 @@ body.show-keyboard .stepper-mobile {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 500;
     font-family: var(--subtitle-1-font);
     font-size: var(--subtitle-1-size);
-    letter-spacing: var(--subtitle-1-letterspacing);
-    font-weight: 500; }
+    letter-spacing: var(--subtitle-1-letterspacing); }
 
 .subheader > .avatar + span {
     padding-left: 8px; }
@@ -8028,14 +8282,19 @@ body.show-keyboard .stepper-mobile {
     margin-top: 6px;
     height: 20px;
     line-height: 20px;
-    font-size: 15px;
-    font-weight: 600; }
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
 
 .subheader > .detail > .subtitle { 
     float: left;
     height: 16px;
     line-height: 16px;
-    font-size: 13px; }
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
 
 .subheader > button.action {
     width: 36px;
@@ -8098,6 +8357,7 @@ body.show-keyboard .stepper-mobile {
     border-radius: 16px;
     -webkit-transition: background 200ms 0ms var(--standard-curve);
        -moz-transition: background 200ms 0ms var(--standard-curve);
+         -o-transition: background 200ms 0ms var(--standard-curve);
             transition: background 200ms 0ms var(--standard-curve); }
 
 .switch > label > .track:after { 
@@ -8115,6 +8375,9 @@ body.show-keyboard .stepper-mobile {
                 box-shadow 100ms 0ms var(--standard-curve), 
                 background 200ms 0ms var(--standard-curve);
        -moz-transition: left 200ms 0ms var(--standard-curve),
+                box-shadow 100ms 0ms var(--standard-curve), 
+                background 200ms 0ms var(--standard-curve);
+         -o-transition: left 200ms 0ms var(--standard-curve),
                 box-shadow 100ms 0ms var(--standard-curve), 
                 background 200ms 0ms var(--standard-curve);
             transition: left 200ms 0ms var(--standard-curve),
@@ -8204,20 +8467,22 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: absolute;
     left: 50%;
     top: 50%;
+    border-radius: 50%;
+    opacity: 0.35;
+    visibility: hidden;
     padding-top: calc(100%);
     padding-left: calc(100%);
     margin-top: calc(-50%);
     margin-left: calc(-50%);
-    border-radius: 50%;
-    opacity: 0.35;
-    visibility: hidden;
     -webkit-transform: scale(0);
        -moz-transform: scale(0);
+         -o-transform: scale(0);
             transform: scale(0); }
 
 .tabs > .tab.active:not(:active):before {
     -webkit-animation: rippleTab 750ms var(--standard-curve);
        -moz-animation: rippleTab 750ms var(--standard-curve);
+         -o-animation: rippleTab 750ms var(--standard-curve);
             animation: rippleTab 750ms var(--standard-curve); }
 
 .tabs > .tab:focus:before {
@@ -8228,8 +8493,8 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     display: none;
     content: "";
     width: 100%;
-    left: 0;
-    bottom: 0;
+    left: 0px;
+    bottom: 0px;
     height: 2px; }
 
 .app-bar.floating > .tabs > .tab:after {
@@ -8250,6 +8515,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     text-decoration: none;
     -webkit-user-drag: none;
        -moz-user-drag: none;
+         -o-user-drag: none;
             user-drag: none; }
 
 .tabs > .stripe {
@@ -8260,6 +8526,8 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     -webkit-transition: left 160ms 0ms var(--standard-curve),
                 width 160ms 0ms var(--standard-curve);
        -moz-transition: left 160ms 0ms var(--standard-curve), 
+                width 160ms 0ms var(--standard-curve);
+         -o-transition: left 160ms 0ms var(--standard-curve), 
                 width 160ms 0ms var(--standard-curve);
             transition: left 160ms 0ms var(--standard-curve), 
                 width 160ms 0ms var(--standard-curve); }
@@ -8313,6 +8581,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight);
     -webkit-transition: all 120ms 0ms var(--sharp-curve);
        -moz-transition: all 120ms 0ms var(--sharp-curve);
+         -o-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
 .textarea > .content > .box > label.active {
@@ -8345,6 +8614,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight);
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
 
 .textarea > .content.focused > .box > textarea {
@@ -8460,6 +8730,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight); 
     -webkit-transition: all 120ms 0ms var(--sharp-curve);
        -moz-transition: all 120ms 0ms var(--sharp-curve);
+         -o-transition: all 120ms 0ms var(--sharp-curve);
             transition: all 120ms 0ms var(--sharp-curve); }
 
 .textbox-multiline > .content > .box > label.active {
@@ -8492,6 +8763,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight); 
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
 
 .textbox-multiline > .content > .box > textarea::-webkit-input-placeholder {
@@ -8564,292 +8836,6 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
 .textbox-multiline.align-center > .content > .box > .textarea-hidden {
     text-align: center; }
 
-/** TEXTFIELD BORDERED */
-
-.textfield-bordered {
-    position: relative;
-    float: left;
-    overflow-y: auto; 
-    overflow-x: hidden; }
-
-.textfield-bordered.align-right { 
-    text-align: initial !important; }
-
-.textfield-bordered > .content {
-    position: relative;
-    width: 100%;
-    float: left;
-    overflow: hidden;
-    padding: 8px 0px 20px 0px; }
-
-.textfield-bordered > .content.disabled {
-    pointer-events: none; }
-
-.textfield-bordered > .content > .box {
-    padding-bottom: 2px;
-    border-radius: 4px; }
-
-.textfield-bordered:hover > .content:not(.disabled) > .box {
-    padding-bottom: 0px; }
-
-.textfield-bordered:hover > .content:not(.disabled).focused > .box,
-.textfield-bordered > .content.focused > .box {
-    padding-bottom: 0px; }
-
-.textfield-bordered > .content > .box > label {
-    position: absolute;
-    top: 25px;
-    left: 16px;
-    width: calc(100% - 32px);
-    height: 24px;
-    line-height: 24px;
-    cursor: text;
-    font-family: var(--body-1-font);
-    font-size: var(--body-1-size);
-    letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight);
-    -webkit-transition: all 120ms 0ms var(--sharp-curve);
-       -moz-transition: all 120ms 0ms var(--sharp-curve);
-            transition: all 120ms 0ms var(--sharp-curve); }
-
-.textfield-bordered.inline > .content > .box > label {
-    top: 12px;
-    width: calc(50% - 12px); }
-
-.textfield-bordered.inline.label-20 > .content > .box > label {
-    width: calc(20% - 12px); }
-
-.textfield-bordered.inline.label-30 > .content > .box > label {
-    width: calc(30% - 12px); }
-
-.textfield-bordered.inline.label-40 > .content > .box > label {
-    width: calc(40% - 12px); }
-
-.textfield-bordered.inline.label-60 > .content > .box > label {
-    width: calc(60% - 12px); }
-
-.textfield-bordered.inline.label-70 > .content > .box > label {
-    width: calc(70% - 12px); }
-
-.textfield-bordered.inline.label-80 > .content > .box > label {
-    width: calc(80% - 12px); }
-
-.textfield-bordered > .content > .box > label.active {
-    cursor: none;
-    top: 14px;
-    height: 16px;
-    line-height: 16px;
-    font-family: var(--caption-font);
-    font-size: var(--caption-size);
-    letter-spacing: var(--caption-letterspacing);
-    font-weight: var(--caption-weight); }
-
-.textfield-bordered.inline > .content > .box > label.active {
-    line-height: 24px;
-    top: 12px;
-    height: 24px;
-    font-family: var(--body-1-font);
-    font-size: var(--body-1-size);
-    letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight); }
-
-.textfield-bordered > .content > .box > label > span {
-    margin-left: 2px; }
-
-.textfield-bordered > .content > .box > input {
-    width: calc(100% - 30px);
-    height: 30px;
-    line-height: 30px;
-    border: none;
-    outline: none; 
-    cursor: text;
-    background-color: transparent;
-    padding: 20px 15px 0px 15px;
-    font-family: var(--body-1-font);
-    font-size: var(--body-1-size);
-    letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight); }
-
-.textfield-bordered.align-right > .content > .box > input { 
-    text-align: right !important; }
-
-.textfield-bordered > .content.focused > .box > input {
-    width: calc(100% - 28px);
-    padding: 20px 14px 0px 14px; }
-
-.textfield-bordered.inline > .content > .box > input {
-    width: calc(50% - 24px);
-    box-sizing: border-box;
-    margin-left: 50%;
-    padding: 0px 16px 0px 8px; }
-
-.textfield-bordered.inline.label-20 > .content > .box > input {
-    margin-left: 20%;
-    width: calc(80% - 24px); }
-
-.textfield-bordered.inline.label-30 > .content > .box > input {
-    margin-left: 30%;
-    width: calc(70% - 24px); }
-
-.textfield-bordered.inline.label-40 > .content > .box > input {
-    margin-left: 40%;
-    width: calc(60% - 24px); }
-
-.textfield-bordered.inline.label-60 > .content > .box > input {
-    margin-left: 60%;
-    width: calc(40% - 24px); }
-
-.textfield-bordered.inline.label-70 > .content > .box > input {
-    margin-left: 70%;
-    width: calc(30% - 24px); }
-
-.textfield-bordered.inline.label-80 > .content > .box > input {
-    margin-left: 80%;
-    width: calc(20% - 24px); }
-
-.textfield-bordered > .content > .box > input.iconaction {
-    width: calc(100% - 60px); }
-
-.textfield-bordered.inline > .content > .box > input.iconaction {
-    width: calc(50% - 52px);
-    padding: 0px 44px 0px 8px; }
-
-.textfield-bordered.inline.label-20 > .content > .box > input.iconaction {
-    width: calc(80% - 52px); }
-
-.textfield-bordered.inline.label-30 > .content > .box > input.iconaction {
-    width: calc(70% - 52px); }
-
-.textfield-bordered.inline.label-40 > .content > .box > input.iconaction {
-    width: calc(60% - 52px); }
-
-.textfield-bordered.inline.label-60 > .content > .box > input.iconaction {
-    width: calc(40% - 52px); }
-
-.textfield-bordered.inline.label-70 > .content > .box > input.iconaction {
-    width: calc(30% - 52px); }
-
-.textfield-bordered.inline.label-80 > .content > .box > input.iconaction {
-    width: calc(20% - 52px); }
-
-.textfield-bordered > .content > .box > input::-webkit-input-placeholder {
-    visibility: hidden;
-    font-family: var(--body-1-font);
-    font-size: var(--body-1-size);
-    letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight); }
-
-.textfield-bordered.active > .content > .box > input::-webkit-input-placeholder {
-    visibility: visible; }
-
-.textfield-bordered > .content > .box > input.holderhide::-webkit-input-placeholder {
-    visibility: hidden; }
-
-.textfield-bordered > .content > .box > .value {
-    position: absolute;
-    top: 30px;
-    left: 16px;
-    width: calc(100% - 32px);
-    height: 30px;
-    line-height: 30px;
-    margin: 0px;
-    overflow: hidden; 
-    cursor: text;
-    font-family: var(--body-1-font);
-    font-size: var(--body-1-size);
-    letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight); }
-
-.textfield-bordered.align-right > .content > .box > .value { 
-    text-align: right !important; }
-
-.textfield-bordered.inline > .content > .box > .value {
-    width: calc(50% - 24px);
-    top: 10px;
-    left: calc(50% + 8px);
-    line-height: 30px; }
-
-.textfield-bordered.inline.label-20 > .content > .box > .value {
-    left: calc(20% + 8px);
-    width: calc(80% - 24px); }
-
-.textfield-bordered.inline.label-30 > .content > .box > .value {
-    left: calc(30% + 8px);
-    width: calc(70% - 24px); }
-
-.textfield-bordered.inline.label-40 > .content > .box > .value {
-    left: calc(40% + 8px);
-    width: calc(60% - 24px); }
-
-.textfield-bordered.inline.label-60 > .content > .box > .value {
-    left: calc(60% + 8px);
-    width: calc(40% - 24px); }
-
-.textfield-bordered.inline.label-70 > .content > .box > .value {
-    left: calc(70% + 8px);
-    width: calc(30% - 24px); }
-
-.textfield-bordered.inline.label-80 > .content > .box > .value {
-    left: calc(80% + 8px);
-    width: calc(20% - 24px); }
-
-.textfield-bordered.active > .content > .box > input:focus ~ .value {
-    display: none; }
-
-.textfield-bordered > .content > .box > input.iconaction ~ .value {
-    width: calc(100% - 64px); }
-
-.textfield-bordered.inline > .content > .box > input.iconaction ~ .value {
-    width: calc(50% - 52px); }
-
-.textfield-bordered.inline.label-20 > .content > .box > input.iconaction ~ .value {
-    width: calc(80% - 52px); }
-
-.textfield-bordered.inline.label-30 > .content > .box > input.iconaction ~ .value {
-    width: calc(70% - 52px); }
-
-.textfield-bordered.inline.label-40 > .content > .box > input.iconaction ~ .value {
-    width: calc(60% - 52px); }
-
-.textfield-bordered.inline.label-60 > .content > .box > input.iconaction ~ .value {
-    width: calc(40% - 52px); }
-
-.textfield-bordered.inline.label-70 > .content > .box > input.iconaction ~ .value {
-    width: calc(30% - 52px); }
-
-.textfield-bordered.inline.label-80 > .content > .box > input.iconaction ~ .value {
-    width: calc(20% - 52px); }
-
-.textfield-bordered > .content > .box > i.action {
-    position: absolute;
-    top: 32px;
-    right: 16px; 
-    padding: 0px;
-    cursor: pointer; 
-    z-index: 2; }
-
-.textfield-bordered.inline > .content > .box > i.action {
-    top: 13px; }
-
-.textfield-bordered > .content > .box > input:disabled ~ i.action {
-    cursor: not-allowed; }
-
-.textfield-bordered > .content > span {
-    position: absolute;
-    left: 16px;
-    bottom: 0px;
-    width: calc(100% - 32px);
-    font-family: var(--caption-font);
-    font-size: var(--caption-size);
-    letter-spacing: var(--caption-letterspacing);
-    font-weight: var(--caption-weight); }
-
-.textfield-bordered > .content > span.counter {
-    right: 16px;
-    left: initial;
-    width: auto;
-    padding-left: 2px; }
-
 /** TEXTFIELD MULTILINE */
 
 .textfield-multiline {
@@ -8880,9 +8866,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight);
-    -moz-transition: all 120ms 0ms var(--sharp-curve);
-    transition: all 120ms 0ms var(--sharp-curve);
-    -webkit-transition: all 120ms 0ms var(--sharp-curve); }
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+         -o-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
 
 .textfield-multiline > .content > label.active {
     cursor: none;
@@ -8914,6 +8901,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-weight: var(--body-1-weight);
     -webkit-transition: height 160ms 0ms var(--standard-curve);
        -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
             transition: height 160ms 0ms var(--standard-curve); }
 
 .textfield-multiline > .content > textarea::-webkit-input-placeholder {
@@ -8962,12 +8950,14 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     z-index: 2;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 .textfield-multiline.active > .content > textarea:focus ~ .line-shadow {
     width: 100%; 
     -webkit-animation: borderTextfield 200ms var(--sharp-curve);
        -moz-animation: borderTextfield 200ms var(--sharp-curve);
+         -o-animation: borderTextfield 200ms var(--sharp-curve);
             animation: borderTextfield 200ms var(--sharp-curve); }
 
 .textfield-multiline > .content > span {
@@ -9040,6 +9030,7 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: calc(100% - 40px); 
     -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
        -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+         -o-animation: borderTextfieldIcon 200ms var(--sharp-curve);
             animation: borderTextfieldIcon 200ms var(--sharp-curve); }
 
 /** TOAST */
@@ -9052,27 +9043,32 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 100%;
     padding: 16px;
     box-sizing: border-box;
-    will-change: transform, -webkit-transform, -moz-transform;
+    will-change: transform, -webkit-transform, -moz-transform, -o-transform;
     -webkit-transform: translateY(100%);
        -moz-transform: translateY(100%);
+         -o-transform: translateY(100%);
             transform: translateY(100%);
     -webkit-transition: -webkit-transform 160ms 0ms var(--standard-curve);
        -moz-transition: -moz-transform 160ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
 .toast.show {
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
+         -o-transform: translateY(0%);
             transform: translateY(0%); } 
 
 body.show-bottom-navigation .toast.show {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
+         -o-transform: translateY(-56px);
             transform: translateY(-56px); } 
 
 body.show-keyboard .toast.show {
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
+         -o-transform: translateY(0%);
             transform: translateY(0%); } 
 
 @media only screen and (min-width : 641px) and (max-width: 720px) {
@@ -9119,6 +9115,7 @@ body.show-keyboard .toast.show {
     user-select: none;
     -webkit-transition: all 250ms 0ms var(--deceleration-curve);
        -moz-transition: all 250ms 0ms var(--deceleration-curve);
+         -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
 .toolbar::-webkit-scrollbar {
@@ -9264,6 +9261,7 @@ body.show-keyboard .toast.show {
     font-weight: var(--headline-4-weight);
     -webkit-transition: all 250ms 0ms var(--deceleration-curve);
        -moz-transition: all 250ms 0ms var(--deceleration-curve);
+         -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.floating > .toolbar.flexible > .title { 
@@ -9301,6 +9299,7 @@ body.show-keyboard .toast.show {
     max-height: 72px;
     -webkit-transition: margin-top 250ms 0ms var(--deceleration-curve);
        -moz-transition: margin-top 250ms 0ms var(--deceleration-curve);
+         -o-transition: margin-top 250ms 0ms var(--deceleration-curve);
             transition: margin-top 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.floating > .toolbar.flexible > .detail {
@@ -9333,6 +9332,7 @@ body.show-keyboard .toast.show {
     font-weight: var(--headline-5-weight);
     -webkit-transition: all 250ms 0ms var(--deceleration-curve);
        -moz-transition: all 250ms 0ms var(--deceleration-curve);
+         -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.hide > .toolbar.flexible > .detail > .content .title {
@@ -9351,6 +9351,7 @@ body.show-keyboard .toast.show {
     font-weight: var(--subtitle-2-weight);
     -webkit-transition: all 250ms 0ms var(--deceleration-curve);
        -moz-transition: all 250ms 0ms var(--deceleration-curve);
+         -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
 .app-bar.hide > .toolbar.flexible > .detail > .content .subtitle {
@@ -9380,6 +9381,8 @@ body.show-keyboard .toast.show {
     -webkit-transition: margin-top 250ms 0ms var(--deceleration-curve),
                 height 250ms 0ms var(--deceleration-curve);
        -moz-transition: margin-top 250ms 0ms var(--deceleration-curve),
+                height 250ms 0ms var(--deceleration-curve);
+         -o-transition: margin-top 250ms 0ms var(--deceleration-curve),
                 height 250ms 0ms var(--deceleration-curve);
             transition: margin-top 250ms 0ms var(--deceleration-curve),
                 height 250ms 0ms var(--deceleration-curve); }
@@ -9424,6 +9427,7 @@ body.show-keyboard .toast.show {
     height: 40px;
     -webkit-transform: translateX(-50%);
        -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
             transform: translateX(-50%); }
 
 .app-bar.floating > .toolbar > .logo:first-child:last-child > img {
@@ -9548,16 +9552,16 @@ body.show-keyboard .toast.show {
     position: fixed;
     top: -100%;
     opacity: 0;
-    font-weight: 500;
-    height: 0px;
+    height: 0px; 
+    z-index: 24;
     line-height: 32px;
     padding: 0px 16px;
-    border-radius: 3px; 
-    z-index: 24;
+    border-radius: 3px;
     max-width: calc(100% - 56px);
     will-change: opacity;
     -webkit-transition: opacity 200ms 0ms var(--deceleration-curve);
        -moz-transition: opacity 200ms 0ms var(--deceleration-curve);
+         -o-transition: opacity 200ms 0ms var(--deceleration-curve);
             transition: opacity 200ms 0ms var(--deceleration-curve); }
 
 .tooltip-element > p {
@@ -9565,10 +9569,14 @@ body.show-keyboard .toast.show {
     width: 100%;
     height: 0px;
     opacity: 0;
-    overflow: hidden;
     margin: 0px;
+    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; }
+    white-space: nowrap;
+    font-family: var(--body-2-font);
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
 
 .tooltip-element.show, .tooltip-element.show > p {
     opacity: 1; 
@@ -9577,10 +9585,13 @@ body.show-keyboard .toast.show {
 @media only screen and (min-width : 641px) {
     
     .tooltip-element {
+        max-width: calc(100% - 48px);
         padding: 0px 8px;
         line-height: 24px;
-        font-size: 11px;
-        max-width: calc(100% - 48px); }
+        font-family: var(--caption-font);
+        font-size: var(--caption-size);
+        letter-spacing: var(--caption-letterspacing);
+        font-weight: var(--caption-weight); }
     
     .tooltip-element.show {
         height: 24px; }
@@ -9624,6 +9635,7 @@ body.show-keyboard .toast.show {
     display: table;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
+         -o-animation: fadeIn 120ms var(--sharp-curve);
             animation: fadeIn 120ms var(--sharp-curve); }
 
 /** VIEWS TAB */
@@ -9641,6 +9653,7 @@ body.show-keyboard .toast.show {
 .views-content-tab > .views-tab.transition {
     -webkit-transition: left 120ms 0ms var(--standard-curve);
        -moz-transition: left 120ms 0ms var(--standard-curve);
+         -o-transition: left 120ms 0ms var(--standard-curve);
             transition: left 120ms 0ms var(--standard-curve); }
 
 .views-content-tab > .views-tab.overflow-none {

@@ -3303,184 +3303,6 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-secondary-500); }
 
-/** TEXTFIELD BORDERED */
-
-.textfield-bordered > .content > .box {
-    border: 1px solid var(--background-border); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box {
-    border: 1px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box {
-    border: 1px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered:hover > .content > .box {
-    border: 2px solid var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast:hover > .content > .box {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast:hover > .content > .box {
-    border: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textfield-bordered.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered.active.error > .content.focused > .box {
-    border: 2px solid var(--theme-error-500); }
-
-.textfield-bordered > .content.disabled > .box {
-    background-color: rgba(56, 56, 56, 1);
-    border: 1px dashed var(--background-border); }
-
-.theme-primary .textfield-bordered.contrast > .content.disabled > .box {
-    background-color: var(--theme-primary-200);
-    border: 1px dashed var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content.disabled > .box {
-    background-color: var(--theme-secondary-200);
-    border: 1px dashed var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered.active > .content > .box > input:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textfield-bordered.contrast.active > .content > .box > input:focus ~ label {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast.active > .content > .box > input:focus ~ label {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered.active.error > .content > .box > input:focus ~ label, 
-.textfield-bordered.error > .content > .box > label,
-.textfield-bordered.active > .content > .box > input:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textfield-bordered > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > input {
-    color: transparent;
-    background-color: transparent; }
-
-.textfield-bordered.active > .content > .box > input:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast.active > .content > .box > input:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast.active > .content > .box > input:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content > .box > input::selection { 
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input::selection {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.textfield-bordered > .content > .box > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > .box > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content > .box > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered.active > .content > .box > input:focus ~ .value {
-    color: transparent; }
-
-.textfield-bordered > .content > .box > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > i {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > i {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > i {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > .box > input:disabled ~ i {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input:disabled ~ i {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered > .content.contrast > .box > input:disabled ~ i {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textfield-bordered > .content > span.counter {
-    color: var(--secondary-font);
-    background-color: var(--background-core); }
-
-.theme-primary .textfield-bordered.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500); 
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
 /** TEXTFIELD MULTILINE */
 
 .textfield-multiline > .content > label {
@@ -3754,6 +3576,26 @@ button.floating.theme-secondary:before {
     border-bottom: 2px solid var(--background-border);
     background-color: var(--background-box); }
 
+.theme-primary .autocomplete.filled.contrast > .content > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content > .box,
+.theme-primary .datepicker-input.filled.contrast > .content > .box,
+.theme-primary .select.filled.contrast > .content > .box,
+.theme-primary .select-multiple.filled.contrast > .content > .box,
+.theme-primary .textfield.filled.contrast > .content > .box,
+.theme-primary .textfield-readonly.filled.contrast > .content > .box {
+    background-color: var(--theme-primary-300);
+    border-bottom: 2px solid var(--theme-primary-font-secondary-300); }
+
+.theme-secondary .autocomplete.filled.contrast > .content > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content > .box,
+.theme-secondary .select.filled.contrast > .content > .box,
+.theme-secondary .select-multiple.filled.contrast > .content > .box,
+.theme-secondary .textfield.filled.contrast > .content > .box,
+.theme-secondary .textfield-readonly.filled.contrast > .content > .box {
+    background-color: var(--theme-secondary-300);
+    border-bottom: 2px solid var(--theme-secondary-font-secondary-300); }
+
 .autocomplete.filled > .content.active > .box,
 .clockpicker-input.filled > .content.active > .box,
 .datepicker-input.filled > .content.active > .box,
@@ -3762,6 +3604,24 @@ button.floating.theme-secondary:before {
 .textfield.filled > .content.active > .box,
 .textfield-readonly.filled > .content.active > .box {
     border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.filled.contrast > .content.active > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content.active > .box,
+.theme-primary .datepicker-input.filled.contrast > .content.active > .box,
+.theme-primary .select.filled.contrast > .content.active > .box,
+.theme-primary .select-multiple.filled.contrast > .content.active > .box,
+.theme-primary .textfield.filled.contrast > .content.active > .box,
+.theme-primary .textfield-readonly.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .autocomplete.filled.contrast > .content.active > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content.active > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content.active > .box,
+.theme-secondary .select.filled.contrast > .content.active > .box,
+.theme-secondary .select-multiple.filled.contrast > .content.active > .box,
+.theme-secondary .textfield.filled.contrast > .content.active > .box,
+.theme-secondary .textfield-readonly.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
 
 .textfield.filled.error > .content.active > .box {
     border-bottom: 2px solid var(--theme-error-500); }
@@ -3774,6 +3634,112 @@ button.floating.theme-secondary:before {
 .textfield.filled > .content.disabled > .box {
     border-bottom: 2px solid transparent;
     background-color: var(--background-box-disabled); } 
+
+.theme-primary .autocomplete.filled.contrast > .content.disabled > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content.disabled > .box,
+.theme-primary .datepicker-input.filled.contrast > .content.disabled > .box,
+.theme-primary .select.filled.contrast > .content.disabled > .box,
+.theme-primary .select-multiple.filled.contrast > .content.disabled > .box,
+.theme-primary .textfield.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-primary-200); } 
+
+.theme-secondary .autocomplete.filled.contrast > .content.disabled > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content.disabled > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content.disabled > .box,
+.theme-secondary .select.filled.contrast > .content.disabled > .box,
+.theme-secondary .select-multiple.filled.contrast > .content.disabled > .box,
+.theme-secondary .textfield.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-secondary-200); } 
+
+.autocomplete.outline > .content > .box,
+.clockpicker-input.outline > .content > .box,
+.datepicker-input.outline > .content > .box,
+.select.outline > .content > .box,
+.select-multiple.outline > .content > .box,
+.textfield.outline > .content > .box,
+.textfield-readonly.outline > .content > .box {
+    border: 1px solid var(--background-border); }
+
+.theme-primary .autocomplete.outline.contrast > .content > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content > .box,
+.theme-primary .datepicker-input.outline.contrast > .content > .box,
+.theme-primary .select.outline.contrast > .content > .box,
+.theme-primary .select-multiple.outline.contrast > .content > .box,
+.theme-primary .textfield.outline.contrast > .content > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content > .box,
+.theme-secondary .select.outline.contrast > .content > .box,
+.theme-secondary .select-multiple.outline.contrast > .content > .box,
+.theme-secondary .textfield.outline.contrast > .content > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.outline > .content.active > .box,
+.clockpicker-input.outline > .content.active > .box,
+.datepicker-input.outline > .content.active > .box,
+.select.outline > .content.active > .box,
+.select-multiple.outline > .content.active > .box,
+.textfield.outline > .content.active > .box,
+.textfield-readonly.outline > .content.active > .box {
+    border: 1px solid var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.outline.contrast > .content.active > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content.active > .box,
+.theme-primary .datepicker-input.outline.contrast > .content.active > .box,
+.theme-primary .select.outline.contrast > .content.active > .box,
+.theme-primary .select-multiple.outline.contrast > .content.active > .box,
+.theme-primary .textfield.outline.contrast > .content.active > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content.active > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content.active > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content.active > .box,
+.theme-secondary .select.outline.contrast > .content.active > .box,
+.theme-secondary .select-multiple.outline.contrast > .content.active > .box,
+.theme-secondary .textfield.outline.contrast > .content.active > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-secondary-font-primary-500); }
+
+.textfield.outline.error > .content.active > .box {
+    border-bottom: 1px solid var(--theme-error-500); }
+
+.theme-primary .textfield.outline.error.contrast > .content.active > .box {
+    border-bottom: 1px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield.outline.error > .content.active > .box {
+    border-bottom: 1px solid var(--theme-secondary-font-primary-300); }
+
+.autocomplete.outline > .content.disabled > .box,
+.clockpicker-input.outline > .content.disabled > .box,
+.datepicker-input.outline > .content.disabled > .box,
+.select.outline > .content.disabled > .box,
+.select-multiple.outline > .content.disabled > .box,
+.textfield.outline > .content.disabled > .box,
+.textfield-readonly.outline > .content.disabled > .box {
+    border: 1px dashed var(--background-disabled); }
+
+.theme-primary .autocomplete.outline.contrast > .content.disabled > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content.disabled > .box,
+.theme-primary .datepicker-input.outline.contrast > .content.disabled > .box,
+.theme-primary .select.outline.contrast > .content.disabled > .box,
+.theme-primary .select-multiple.outline.contrast > .content.disabled > .box,
+.theme-primary .textfield.outline.contrast > .content.disabled > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content.disabled > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content.disabled > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content.disabled > .box,
+.theme-secondary .select.outline.contrast > .content.disabled > .box,
+.theme-secondary .select-multiple.outline.contrast > .content.disabled > .box,
+.theme-secondary .textfield.outline.contrast > .content.disabled > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-secondary-font-disabled-500); }
 
 .autocomplete.capsule > .content > .box > .description,
 .chip-input.capsule > .content > .box > .description,
@@ -4047,6 +4013,9 @@ button.floating.theme-secondary:before {
 .textfield-readonly > .content > .box > input {
     color: transparent;
     background-color: transparent; }
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 26px var(--background-core) inset; }
 
 .autocomplete > .content > .box > input:focus,
 .chip-input > .content > .box > input:focus,
@@ -4469,50 +4438,47 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield.contrast > .content > .box > input:disabled ~ i.action {
     color: var(--theme-secondary-font-disabled-500); }
 
-.autocomplete > .content > .box > span.help,
-.chip-input > .content > .box > span.help,
-.clockpicker-input > .content > .box > span.help,
-.datepicker-input > .content > .box > span.help,
-.select > .content > .box > span.help,
-.select-multiple > .content > .box > span.help,
-.textfield > .content > .box > span.help,
-.textfield-readonly > .content > .box > span.help {
+.autocomplete > .content > .box > span,
+.chip-input > .content > .box > span,
+.clockpicker-input > .content > .box > span,
+.datepicker-input > .content > .box > span,
+.select > .content > .box > span,
+.select-multiple > .content > .box > span,
+.textfield > .content > .box > span,
+.textfield-readonly > .content > .box > span {
     color: var(--secondary-font); }
-
-.theme-primary .autocomplete.contrast > .content > .box > span.help,
-.theme-primary .chip-input.contrast > .content > .box > span.help,
-.theme-primary .clockpicker-input.contrast > .content > .box > span.help,
-.theme-primary .datepicker-input.contrast > .content > .box > span.help,
-.theme-primary .select.contrast > .content > .box > span.help,
-.theme-primary .select-multiple.contrast > .content > .box > span.help,
-.theme-primary .textfield.contrast > .content > .box > span.help,
-.theme-primary .textfield-readonly.contrast > .content > .box > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .autocomplete.contrast > .content > .box > span.help,
-.theme-secondary .chip-input.contrast > .content > .box > span.help,
-.theme-secondary .clockpicker-input.contrast > .content > .box > span.help,
-.theme-secondary .datepicker-input.contrast > .content > .box > span.help,
-.theme-secondary .select.contrast > .content > .box > span.help,
-.theme-secondary .select-multiple.contrast > .content > .box > span.help,
-.theme-secondary .textfield.contrast > .content > .box > span.help,
-.theme-secondary .textfield-readonly.contrast > .content > .box > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
 
 .textfield > .content > .box > span.error {
     color: var(--theme-error-500); }
 
 .textfield > .content > .box > span.counter {
-    color: var(--secondary-font);
     background-color: var(--background-core); }
 
+.theme-primary .autocomplete.contrast > .content > .box > span,
+.theme-primary .chip-input.contrast > .content > .box > span,
+.theme-primary .clockpicker-input.contrast > .content > .box > span,
+.theme-primary .datepicker-input.contrast > .content > .box > span,
+.theme-primary .select.contrast > .content > .box > span,
+.theme-primary .select-multiple.contrast > .content > .box > span,
+.theme-primary .textfield.contrast > .content > .box > span,
+.theme-primary .textfield-readonly.contrast > .content > .box > span {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > span,
+.theme-secondary .chip-input.contrast > .content > .box > span,
+.theme-secondary .clockpicker-input.contrast > .content > .box > span,
+.theme-secondary .datepicker-input.contrast > .content > .box > span,
+.theme-secondary .select.contrast > .content > .box > span,
+.theme-secondary .select-multiple.contrast > .content > .box > span,
+.theme-secondary .textfield.contrast > .content > .box > span,
+.theme-secondary .textfield-readonly.contrast > .content > .box > span {
+    color: var(--theme-secondary-font-secondary-500); }
+
 .theme-primary .textfield.contrast > .content > .box > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500);  }
+    background-color: var(--theme-primary-500); }
 
 .theme-secondary .textfield.contrast > .content > .box > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
+    background-color: var(--theme-secondary-500); }
 
 .autocomplete > .content > .box > ul,
 .select > .content > .box > ul,

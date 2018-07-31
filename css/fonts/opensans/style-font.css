@@ -1,7 +1,8 @@
+
 /*!
- * StyleFont OpenSans
- * author: Softtion Developers
+ * StyleFont: Open Sans
  * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
  */
 
 @font-face {
@@ -17,14 +18,14 @@
 @font-face {
     font-family: "opensans";
     src: url("OpenSans-SemiBold.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "opensans";
+    src: url("OpenSans-SemiBold.ttf") format("truetype");
     font-weight: 600; }
 
 @font-face {
     font-family: "opensans";
     src: url("OpenSans-Bold.ttf") format("truetype");
     font-weight: 700; }
-
-@font-face {
-    font-family: "opensans";
-    src: url("OpenSans-ExtraBold.ttf") format("truetype");
-    font-weight: 800; }

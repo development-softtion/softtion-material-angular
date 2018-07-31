@@ -2,7 +2,7 @@
 /*
  Angular Softtion Material v2.0.0
  (c) 2016 - 2018 Softtion Developers
- http://material.softtion.com
+ http://material.softtion.com.co
  License: MIT
  Created: 19/Nov/2016
  Updated: 15/Jul/2018
@@ -764,6 +764,7 @@
 
         var input = softtion.html("input", false).
                 addAttribute("type", "text").
+                addAttribute("autocomplete", "off").
                 addAttribute("ng-model", "input").
                 addAttribute("ng-focus", "focusInput($event)").
                 addAttribute("ng-keydown", "keydownInput($event)").
@@ -5931,6 +5932,7 @@
 
         var input = softtion.html("input", false).
                 addAttribute("type", "text").
+                addAttribute("autocomplete", "off").
                 addAttribute("ng-model", "valueInput").
                 addAttribute("ng-blur", "blurInput($event)").
                 addAttribute("ng-focus", "focusInput($event)").
@@ -6196,6 +6198,7 @@
 
         var input = softtion.html("input", false).
                 addAttribute("type", "text").
+                addAttribute("autocomplete", "off").
                 addAttribute("ng-model", "valueInput").
                 addAttribute("ng-click", "toggleSuggestions()").
                 addAttribute("ng-blur", "blurInput($event)").
@@ -10025,6 +10028,11 @@
                     
                     if (!(newValue === $scope.input)) $scope.input = newValue;
                 } // Verificando si el texto del input es diferente
+            });
+            
+        $scope.$watch(() => { return $scope.input; }, 
+            (newValue) => {
+                if (!$scope.inputStart) $scope.ngModel = newValue;
             });
             
         defineInputField($scope, $element, $attrs, listener);
