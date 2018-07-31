@@ -1,13 +1,9 @@
-/*!
- * StyleFont Myriad SetPro
- * author: Softtion Developers
- * development: Daniel Andres Castillo Pedroza
- */
 
-@font-face {
-    font-family: "myriad";
-    src: url("MyriadSetPro-Thin.ttf") format("truetype");
-    font-weight: 100; }
+/*!
+ * StyleFont: Myriad
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
 
 @font-face {
     font-family: "myriad";
@@ -27,9 +23,9 @@
 @font-face {
     font-family: "myriad";
     src: url("MyriadSetPro-Bold.ttf") format("truetype");
-    font-weight: 700; }
+    font-weight: 600; }
 
 @font-face {
     font-family: "myriad";
-    src: url("MyriadSetPro-Black.ttf") format("truetype");
-    font-weight: 900; }
+    src: url("MyriadSetPro-Bold.ttf") format("truetype");
+    font-weight: 700; }

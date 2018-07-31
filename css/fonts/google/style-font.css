@@ -1,8 +1,14 @@
+
 /*!
- * StyleFont Google Sans
- * author: Softtion Developers
+ * StyleFont: Google Sans
  * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
  */
+
+@font-face {
+    font-family: "google";
+    src: url("GoogleSans-Regular.ttf") format("truetype");
+    font-weight: 300; }
 
 @font-face {
     font-family: "google";
@@ -13,6 +19,11 @@
     font-family: "google";
     src: url("GoogleSans-Medium.ttf") format("truetype");
     font-weight: 500; }
+
+@font-face {
+    font-family: "google";
+    src: url("GoogleSans-Bold.ttf") format("truetype");
+    font-weight: 600; }
 
 @font-face {
     font-family: "google";

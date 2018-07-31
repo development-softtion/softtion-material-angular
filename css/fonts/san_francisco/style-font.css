@@ -1,13 +1,9 @@
-/*!
- * StyleFont San Francisco Display
- * author: Softtion Developers
- * development: Daniel Andres Castillo Pedroza
- */
 
-@font-face {
-    font-family: "san_francisco";
-    src: url("SanFranciscoDisplay-Thin.otf") format("opentype");
-    font-weight: 100; }
+/*!
+ * StyleFont: San Francisco
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
 
 @font-face {
     font-family: "san_francisco";
@@ -27,9 +23,9 @@
 @font-face {
     font-family: "san_francisco";
     src: url("SanFranciscoDisplay-Bold.otf") format("opentype");
-    font-weight: 700; }
+    font-weight: 600; }
 
 @font-face {
     font-family: "san_francisco";
-    src: url("SanFranciscoDisplay-Black.otf") format("opentype");
-    font-weight: 900; }
+    src: url("SanFranciscoDisplay-Bold.otf") format("opentype");
+    font-weight: 700; }

@@ -4,12 +4,15 @@
  * @license MIT
  * Author: Softtion Developers
  * Created: 15/May/2018
- * Updated: 15/May/2018
+ * Updated: 14/Jul/2018
  */
+
 :root {
     
     /* #000000: black */
     --background-statusbar: rgba(0, 0, 0, 1);
+    /* No palette */
+    --background-box: rgba(29, 29, 29, 1);
     /* #f5f5f5: 100 grey */
     --background-appbar: rgba(33, 33, 33, 1);
     /* #fafafa: 50 grey */
@@ -22,6 +25,7 @@
     --background-disabled: rgba(255, 255, 255, 0.24);
     --background-border: rgba(255, 255, 255, 0.18);
     --background-border-active: rgba(255, 255, 255, 0.38);
+    --background-box-disabled: rgba(31, 31, 31, 1);
     
     --background-border-alternative: rgba(0, 0, 0, 0.12);
     
@@ -200,110 +204,6 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 
 .audio > .content > .box > .progress-audio > .bar {
     background-color: var(--theme-secondary-500); }
-
-/** AUTOCOMPLETE */
-
-.autocomplete > .content > label {
-    color: var(--secondary-font); }
-
-.autocomplete.active > .content > input:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.autocomplete.active > .content > input:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.autocomplete > .content > i {
-    color: var(--secondary-font); }
-
-.autocomplete.form-mode > .content > i.description {
-    background-color: var(--background-border); }
-
-.autocomplete.form-mode > .content.active > i.description {
-    background-color: var(--theme-secondary-border); }
-
-.autocomplete.form-mode > .content.disabled > i.description {
-    color: var(--disabled-font); }
-
-.autocomplete > .content > input {
-    color: transparent; }
-
-.autocomplete.active > .content > input:focus {
-    color: var(--primary-font); }
-
-.autocomplete > .content > input::selection {
-    color: var(--theme-secondary-font-primary-500);
-    background-color: var(--theme-secondary-500); }
-
-.autocomplete > .content > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.autocomplete.active > .content > input:focus ~ .value {
-    color: transparent; }
-
-.autocomplete > .content > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.autocomplete > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.autocomplete:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--primary-font); }
-
-.autocomplete > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.autocomplete.form-mode > .content > .line-bordered,
-.autocomplete.form-mode:hover > .content > .line-bordered {
-    border: 1px solid var(--background-border); }
-
-.autocomplete.form-mode > .content > input:disabled ~ .line-bordered {
-    border: 1px dashed var(--background-border); }
-
-.autocomplete.form-mode > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-secondary-border); }
-
-.autocomplete > .content > .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.autocomplete.active > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.autocomplete.active.error > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-error-500); }
-
-.autocomplete > .content > input:disabled ~ .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.autocomplete > .content > i.action {
-    color: var(--secondary-font); }
-
-.autocomplete > .content > i.action.disabled {
-    color: var(--disabled-font); }
-
-.autocomplete > .content > span.help {
-    color: var(--secondary-font); }
-
-.autocomplete > .content > ul { 
-    background-color: var(--background-component); }
-
-.autocomplete > .content > ul > li { 
-    color: var(--primary-font); }
-
-.autocomplete > .content > ul > li:focus {
-    background-color: var(--background-focus); }
-
-.autocomplete > .content > ul > li:hover {
-    background-color: var(--background-hover); }
-
-.autocomplete > .content > ul > li.not-found {
-    color: var(--theme-error-500); }
-
-.autocomplete > .content > ul > li > .detail .avatar > span { 
-    background-color: var(--theme-secondary-600);
-    color: var(--theme-secondary-font-primary-600); }
-
-.autocomplete > .content > ul > li > .detail .title > b { 
-    color: var(--secondary-font); }
 
 /** AVATAR */
 
@@ -876,35 +776,85 @@ button.floating.theme-secondary:before {
 .checkbox > label {
     color: var(--primary-font); }
 
+.theme-primary .checkbox.contrast > label {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label {
+    color: var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:disabled + label {
     color: var(--disabled-font); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label {
+    color: var(--theme-secondary-font-disabled-500); }
 
 .checkbox > label:before {
     background-color: var(--theme-secondary-500); }
 
+.theme-primary .checkbox.contrast > label:before {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label:before {
+    background-color: var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:disabled + label:before {
     background-color: var(--background-disabled); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:disabled + label:before {
+    background-color: var(--theme-secondary-font-disabled-500); }
 
 .checkbox > label:after {
     border: 2px solid rgba(255, 255, 255, 0.54); }
 
+.theme-primary .checkbox.contrast > label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .checkbox.contrast > label:after {
+    border: 2px solid var(--theme-secondary-font-primary-500); }
+
 .checkbox > input[type="checkbox"]:checked + label:after {
     border: 2px solid var(--theme-secondary-font-primary-500); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-primary-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:checked + label:after {
+    border: 2px solid var(--theme-secondary-500); }
+
+.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--theme-secondary-font-disabled-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:not(:checked):disabled + label:after {
+    border: 2px solid var(--theme-primary-font-disabled-500); }
+
+.checkbox > input[type="checkbox"]:checked:disabled + label:after {
+    border: 2px solid var(--background-core); }
 
 .checkbox > input[type="checkbox"]:checked + label:after,
 .checkbox > input[type="checkbox"]:disabled:checked + label:after {
     border-top: 2px solid transparent !important;
     border-left: 2px solid transparent !important; }
 
-.checkbox > input[type="checkbox"]:not(:checked):disabled + label:after {
-    border: 2px solid var(--background-disabled); }
-
-.checkbox > input[type="checkbox"]:checked:disabled + label:after {
-    border: 2px solid var(--background-core); }
-
 .checkbox > input[type="checkbox"]:checked ~ .ripple-content > .box,
 .checkbox > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
     background-color: var(--ripple); }
+
+.theme-primary .checkbox.contrast > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.theme-primary .checkbox.contrast > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-secondary-ripple-500); }
+
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:checked ~ .ripple-content > .box,
+.theme-secondary .checkbox.contrast > input[type="checkbox"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-primary-ripple-500); }
 
 /** CHECKBOX CONTROL */
 
@@ -1109,45 +1059,6 @@ button.floating.theme-secondary:before {
     color: var(--theme-primary-font-disabled-300);
     background-color: var(--theme-primary-300); }
 
-/** CHIP INPUT */
-
-.chip-input > .content > label {
-    color: var(--secondary-font); }
-
-.chip-input > .content.active > .box.focused ~ label {
-    color: var(--theme-secondary-500); }
-
-.chip-input > .content > .box.disabled ~ label {
-    color: var(--disabled-font); }
-
-.chip-input > .content > i {
-    color: var(--secondary-font); }
-
-.chip-input > .content > input::selection {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-active); }
-
-.chip-input > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.chip-input:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--primary-font); }
-
-.chip-input > .content > .box.disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.chip-input > .content > .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.chip-input > .content.active > .box.focused ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.chip-input > .content > .box.disabled ~ .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.chip-input > .content > span.help {
-    color: var(--secondary-font); }
-
 /** CLOCKPICKER */
 
 .clockpicker {
@@ -1188,36 +1099,6 @@ button.floating.theme-secondary:before {
 .clockpicker > .content > .plate > .canvas .bearing {
     stroke-width: 1;
     fill: var(--theme-primary-600); }
-
-.clockpicker-input > .content > label {
-    color: var(--secondary-font); }
-
-.clockpicker-input > .content.active > label.active {
-    color: var(--theme-secondary-500); }
-
-.clockpicker-input > .content.disabled > label {
-    color: var(--disabled-font); }
-
-.clockpicker-input > .content > i {
-    color: var(--secondary-font); }
-
-.clockpicker-input > .content > .value.disabled {
-    color: var(--disabled-font); }
-
-.clockpicker-input > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.clockpicker-input > .content.active > .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.clockpicker-input > .content > .line-bordered.disabled {
-    border-bottom: 1px dashed var(--background-border); }
-
-.clockpicker-input > .content > i.action {
-    color: var(--secondary-font); }
-
-.clockpicker-input > .content > span.help {
-    color: var(--secondary-font); }
 
 .clockpicker-input > .content > .dialog > .box {
     background-color: transparent !important; }
@@ -1286,14 +1167,17 @@ button.floating.theme-secondary:before {
 .datatable.raised > .content > table > tbody > tr:nth-last-of-type(1) {
     border-bottom: 1px solid transparent; }
 
-.datatable > .content > table > tbody > tr:hover {
+.datatable > .content > table > tbody > tr.actionable:hover {
     background-color: var(--background-hover); }
+
+.datatable > .content > table > tbody > tr > td.actionable:hover {
+    color: var(--theme-secondary-300); }
 
 .datatable > .content > table > tbody > tr.active {
     background-color: var(--theme-secondary-100);
     color: var(--theme-secondary-font-secondary-100); }
 
-.datatable > .content > table > tbody > tr.active:hover {
+.datatable > .content > table > tbody > tr.active.actionable:hover {
     background-color: var(--theme-secondary-50);
     color: var(--theme-secondary-font-primary-50); }
 
@@ -1324,6 +1208,28 @@ button.floating.theme-secondary:before {
 .datatable table > tbody td > span.poster.theme-secondary {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-primary-500); }
+
+.datatable > .content > table > tbody > tr > td.buttons {
+    background-color: var(--background-appbar);
+    border-right: 1px dashed var(--background-border); }
+
+.datatable > .content > table > tbody > tr > td.buttons.right {
+    border-right: none;
+    border-left: 1px dashed var(--background-border); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast {
+    border-right: none;
+    border-left: none;
+    background-color: rgba(255, 255, 255, 0.75); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action {
+    color: var(--alternative-primary-font); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action:before {
+    background-color: var(--alternative-ripple); }
+
+.datatable > .content > table > tbody > tr > td.buttons.contrast button.action:disabled {
+    color: var(--alternative-disabled-font); }
 
 /** DATEPICKER */
 
@@ -1369,36 +1275,6 @@ button.floating.theme-secondary:before {
 .datepicker > .content > .months > ul > li.active,
 .datepicker > .content > .year > ul > li.active {
     color: var(--base-primary-font); }
-
-.datepicker-input > .content > label {
-    color: var(--secondary-font); }
-
-.datepicker-input > .content.active > label.active {
-    color: var(--theme-secondary-500); }
-
-.datepicker-input > .content.disabled > label {
-    color: var(--disabled-font); }
-
-.datepicker-input > .content > i {
-    color: var(--secondary-font); }
-
-.datepicker-input > .content > .value.disabled {
-    color: var(--disabled-font); }
-
-.datepicker-input > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.datepicker-input > .content.active > .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.datepicker-input > .content > .line-bordered.disabled {
-    border-bottom: 1px dashed var(--background-border); }
-
-.datepicker-input > .content > i.action {
-    color: var(--secondary-font); }
-
-.datepicker-input > .content > span.help {
-    color: var(--secondary-font); }
 
 .datepicker-input > .dialog > .box {
     background-color: transparent !important; }
@@ -1480,9 +1356,19 @@ button.floating.theme-secondary:before {
 
 /** EXPANSION PANEL */
 
+.datatable > .expansion-panel {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .expansion-panel {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel {
+    background-color: var(--theme-secondary-500); }
+
 .expansion-panel.active {
     border-bottom: 1px solid var(--background-border); }
 
+.datatable > .expansion-panel.active,
 .card .expansion-panel.active, 
 .form .expansion-panel.active, 
 .item-list .expansion-panel.active {
@@ -1499,19 +1385,92 @@ button.floating.theme-secondary:before {
 .expansion-panel.active > .header {
     background-color: var(--background-appbar); }
 
-.expansion-panel.active > .header,
-.card .expansion-panel > .header {
-    border-bottom: none !important; }
+.datatable > .expansion-panel > .header {
+    background-color: var(--background-appbar); }
 
-.expansion-panel > .header:hover {
-    background-color: #8f8f8f; }
+.datatable.theme-primary > .expansion-panel > .header {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header {
+    background-color: var(--theme-secondary-500); }
+
+.card > .expansion-panel:last-child > .header,
+.form > .expansion-panel:last-child > .header {
+    border-bottom: none; }
+
+.item-list .expansion-panel > .header {
+    background: transparent; }
+
+.expansion-panel.active > .header {
+    background-color: var(--background-appbar); }
+
+.item-list .expansion-panel.active > .header {
+    background-color: transparent; }
+
+.datatable > .expansion-panel > .header,
+.expansion-panel.active > .header,
+.card .expansion-panel > .header,
+.item-list .expansion-panel > .header {
+    border-bottom: none !important; }
 
 .expansion-panel > .header > .subtitle,
 .expansion-panel > .header > .detail > .content > .subtitle {
     color: var(--secondary-font); }
 
+.datatable.theme-primary > .expansion-panel > .header > .title,
+.datatable.theme-primary > .expansion-panel > .header > .detail .title {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > .title,
+.datatable.theme-secondary > .expansion-panel > .header > .detail .title {
+    color: var(--theme-secondary-font-primary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > .subtitle,
+.datatable.theme-primary > .expansion-panel > .header > .detail .subtitle {
+    color: var(--theme-primary-font-secondary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > .subtitle,
+.datatable.theme-secondary > .expansion-panel > .header > .detail .subtitle {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action {
+    color: var(--theme-secondary-font-primary-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action:before {
+    background-color: var(--theme-primary-ripple-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action:before {
+    background-color: var(--theme-secondary-ripple-500); }
+
+.datatable.theme-primary > .expansion-panel > .header > button.action:disabled {
+    color: var(--theme-primary-font-disabled-500); }
+
+.datatable.theme-secondary > .expansion-panel > .header > button.action:disabled {
+    color: var(--theme-secondary-font-disabled-500); }
+
 .expansion-panel > .body {
     background-color: var(--background-component); }
+
+.item-list .expansion-panel > .body {
+    background-color: transparent; }
+
+.datatable > .expansion-panel > .body {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .expansion-panel > .body {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .body {
+    background-color: var(--theme-secondary-500); }
+
+.datatable.theme-primary > .expansion-panel > .body > .content {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .expansion-panel > .body > .content {
+    color: var(--theme-secondary-font-primary-500); }
 
 /** FAB DIALOG */
 
@@ -1928,152 +1887,6 @@ button.floating.theme-secondary:before {
 .form.theme-secondary > .actions > button:before {
     background-color: var(--theme-secondary-ripple-500); }
 
-/** FORMFIELD */
-
-.formfield > .content > i.description {
-    background-color: var(--background-border); }
-
-.formfield > .content.active > i.description {
-    background-color: var(--theme-secondary-border); }
-
-.formfield.error > .content.active > i.description {
-    background-color: var(--theme-error-500);
-    color: var(--theme-error-font-primary-500); }
-
-.formfield > .content.disabled > i.description {
-    color: var(--disabled-font); }
-
-.formfield > .content > i {
-    color: var(--secondary-font); }
-
-.theme-primary .formfield.contrast > .content > i {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .formfield.contrast > .content > i {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.formfield > .content > input:disabled ~ i {
-    color: var(--disabled-font); }
-
-.theme-primary .formfield.contrast > .content > input:disabled ~ i {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .formfield.contrast > .content > input:disabled ~ i {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.formfield > .content > input {
-    color: transparent; }
-
-.formfield.active > .content > input:focus {
-    color: var(--primary-font); }
-
-.theme-primary .formfield.contrast.active > .content > input:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .formfield.contrast.active > .content > input:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.formfield > .content > input::selection { 
-    color: var(--theme-secondary-font-primary-500);
-    background-color: var(--theme-secondary-500); }
-
-.theme-secondary .formfield.contrast > .content > input::selection { 
-    background-color: var(--theme-primary-500); 
-    color: var(--theme-primary-font-primary-500); }
-
-.formfield > .content > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .formfield.contrast > .content > input::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .formfield.contrast > .content > input::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.formfield > .content > .value {
-    color: var(--primary-font); }
-
-.theme-primary .formfield.contrast > .content > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .formfield.contrast > .content > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.formfield > .content > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .formfield.contrast > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .formfield.contrast > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.formfield.active > .content > input:focus ~ .value {
-    color: transparent; }
-
-.formfield > .content > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .formfield.contrast > .content > input:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .formfield.contrast > .content > input:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.formfield > .content > .line-bordered {
-    border: 1px solid var(--background-border); }
-
-.theme-primary .formfield.contrast > .content > .line-bordered {
-    border: 1px solid var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .formfield.contrast > .content > .line-bordered {
-    border: 1px solid var(--theme-secondary-font-disabled-500); }
-
-.formfield > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-secondary-border); }
-
-.formfield.error > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-error-500); }
-
-.theme-primary .formfield.contrast > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .formfield.contrast > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-secondary-font-primary-500); }
-
-.formfield > .content > input:disabled ~ .line-bordered {
-    border: 1px dashed var(--background-border); }
-
-.theme-primary .formfield.contrast > .content > input:disabled ~ .line-bordered {
-    border: 1px dashed var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .formfield.contrast > .content > input:disabled ~ .line-bordered {
-    border: 1px dashed var(--theme-secondary-font-disabled-500); }
-
-.formfield > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .formfield.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .formfield.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.formfield > .content > span.error {
-    color: var(--theme-error-500); }
-
-.formfield > .content > span.counter {
-    color: var(--secondary-font);
-    background-color: var(--background-core); }
-
-.theme-primary .formfield.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500);  }
-
-.theme-secondary .formfield.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
 /** FORM NAVIGATION */
 
 .form-navigation > .content {
@@ -2273,8 +2086,20 @@ button.floating.theme-secondary:before {
 .link {
     color: var(--theme-primary-500); }
 
+.theme-primary .link.contrast {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .link.contrast {
+    color: var(--theme-secondary-font-primary-500); }
+
 .link.disabled {
     color: var(--theme-primary-100); }
+
+.theme-primary .link.disabled.contrast {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .link.disabled.contrast {
+    color: var(--theme-secondary-font-disabled-500); }
 
 /** LIST */
 
@@ -2671,131 +2496,6 @@ button.floating.theme-secondary:before {
 
 .datatable.theme-secondary .search-box.contrast button.action:disabled {
     color: var(--theme-secondary-font-disabled-200); }
-
-
-/** SELECT */
-
-.select > .content > label {
-    color: var(--secondary-font); }
-
-.select.active > .content > label.active {
-    color: var(--theme-secondary-500); }
-
-.select.active > .content > label.active > span {
-    color: var(--theme-error-500); }
-
-.select > .content > i {
-    color: var(--secondary-font); }
-
-.select.form-mode > .content > i.description {
-    background-color: var(--background-border); }
-
-.select.form-mode > .content.active > i.description {
-    background-color: var(--theme-secondary-border); }
-
-.select.form-mode > .content.disabled > i.description {
-    color: var(--disabled-font); }
-
-.select > .content > input {
-    color: transparent; }
-
-.select > .content > .value::selection {
-    color: var(--theme-secondary-font-primary-500);
-    background-color: var(--theme-secondary-500); }
-
-.select > .content > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.select > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.select.active > .content > .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.select > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.select.form-mode > .content > .line-bordered,
-.select.form-mode:hover > .content > .line-bordered {
-    border: 1px solid var(--background-border); }
-
-.select.form-mode > .content > input:disabled ~ .line-bordered {
-    border: 1px dashed var(--background-border); }
-
-.select.form-mode > .content > input:focus ~ .line-bordered {
-    border: 1px solid var(--theme-secondary-border); }
-
-.select > .content > span.help {
-    color: var(--secondary-font); }
-
-.select > .content > ul { 
-    background-color: var(--background-component); }
-
-.select > .content > ul > li.active {
-    color: var(--secondary-font); }
-
-.select > .content > ul > li.clear-suggestion {
-    color: var(--theme-primary-500);
-    border-bottom: 1px solid var(--background-border); }
-
-.select > .content > ul > li:focus {
-    background-color: var(--background-focus); }
-
-.select > .content > ul > li:hover {
-    background-color: var(--background-hover); }
-
-/** SELECT MULTIPLE */
-
-.select-multiple > .content > label {
-    color: var(--secondary-font); }
-
-.select-multiple.active > .content > label.active {
-    color: var(--theme-secondary-500); }
-
-.select-multiple.active > .content > label.active > span {
-    color: var(--theme-error-500); }
-
-.select-multiple > .content > i {
-    color: var(--secondary-font); }
-
-.select-multiple > .content > input {
-    color: transparent; }
-
-.select-multiple > .content > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.select-multiple > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.select-multiple.active > .content > .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.select-multiple > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.select-multiple > .content > span.help {
-    color: var(--secondary-font); }
-
-.select-multiple > .content > ul { 
-    background-color: var(--background-component); }
-
-.select-multiple > .content > ul > li.active {
-    color: var(--secondary-font); }
-
-.select-multiple > .content > ul > li:focus {
-    background-color: var(--background-focus); }
-
-.select-multiple > .content > ul > li:hover {
-    background-color: var(--background-hover); }
-
-.select-multiple > .content > ul > li > .checkbox-select > label:before {
-    background-color: var(--theme-primary-500); }
-
-.select-multiple > .content > ul > li > .checkbox-select:not(.active) > label:after {
-    border: 2px solid var(--secondary-font); }
-
-.select-multiple > .content > ul > li > .checkbox-select > label:after {
-    border: 2px solid var(--theme-primary-font-secondary-500); }
 
 /** SIDENAV */
 
@@ -3447,186 +3147,6 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-secondary-500); }
 
-/** TEXTBOX */
-
-.textbox > .content > .box {
-    border-bottom: 2px solid var(--background-border);
-    background-color: rgba(48, 48, 48, 1); }
-
-.theme-primary .textbox.contrast > .content > .box {
-    background-color: var(--theme-primary-300);
-    border-bottom: 2px solid var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box {
-    background-color: var(--theme-secondary-300);
-    border-bottom: 2px solid var(--theme-secondary-font-secondary-300); }
-
-.textbox:hover > .content > .box {
-    border-bottom: 2px solid var(--primary-font); }
-
-.theme-primary .textbox.contrast:hover > .content > .box {
-    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox.contrast:hover > .content > .box {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
-
-.textbox > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textbox.contrast > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox.contrast > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
-
-.textbox.active.error > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-error-500); }
-
-.textbox > .content.disabled > .box {
-    border-bottom: 2px solid var(--disabled-font);
-    background-color: rgba(56, 56, 56, 1); }
-
-.theme-primary .textbox.contrast > .content.disabled > .box {
-    background-color: var(--theme-primary-200);
-    border-bottom: 2px solid var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox.contrast > .content.disabled > .box {
-    background-color: var(--theme-secondary-200);
-    border-bottom: 2px solid var(--theme-secondary-font-disabled-200); }
-
-.textbox > .content > .box > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .content > .box > label {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box > label {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox > .content > .box > input:focus ~ label.active {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textbox.contrast > .content > .box > input:focus ~ label.active {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box > input:focus ~ label.active {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox.contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox.contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textbox.error > .content > .box > input:focus ~ label.active, 
-.textbox.error > .content > .box > label,
-.textbox.active > .content > .box > input:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textbox > .content > .box > input {
-    color: transparent; }
-
-.textbox.active > .content > .box > input:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textbox.contrast.active > .content > .box > input:focus {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox.contrast.active > .content > .box > input:focus {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox > .content > .box > input::selection { 
-    color: var(--theme-secondary-font-primary-500);
-    background-color: var(--theme-secondary-500); }
-
-.theme-secondary .textbox.contrast > .content > .box > input::selection { 
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.textbox > .content > .box > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox > .content > .box > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textbox.contrast > .content > .box > .value {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box > .value {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox > .content > .box > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox.active > .content > .box > input:focus ~ .value {
-    color: transparent; }
-
-.textbox > .content > .box > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textbox > .content > .box > i {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .content > .box > i {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox.contrast > .content > .box > i {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox > .content > .box > input:disabled ~ i {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox.contrast > .content > .box > input:disabled ~ i {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox > .content.contrast > .box > input:disabled ~ i {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textbox > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textbox.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textbox > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textbox > .content > span.counter {
-    background-color: var(--background-core);
-    color: var(--secondary-font); }
-
-.theme-primary .textbox.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textbox.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
 /** TEXTBOX MULTILINE */
 
 .textbox-multiline > .content > .box {
@@ -3781,364 +3301,6 @@ button.floating.theme-secondary:before {
     color: var(--theme-primary-font-secondary-500); }
 
 .theme-secondary .textbox-multiline.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
-/** TEXTFIELD */
-
-.textfield > .content > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield.contrast > .content > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield > .content > input:focus ~ label.active {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textfield.contrast > .content > input:focus ~ label.active {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield.contrast > .content > input:focus ~ label.active {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield > .content > input:disabled ~ label {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield.contrast > .content > input:disabled ~ label {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > input:disabled ~ label {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.textfield.error > .content > input:focus ~ label.active, 
-.textfield.error > .content > label,
-.textfield.active > .content > input:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textfield > .content > i {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield.contrast > .content > i {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > i {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield > .content > input:disabled ~ i {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield.contrast > .content > input:disabled ~ i {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > input:disabled ~ i {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.textfield > .content > input {
-    color: transparent; }
-
-.textfield.active > .content > input:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textfield.contrast.active > .content > input:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield.contrast.active > .content > input:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield > .content > input::selection { 
-    color: var(--theme-secondary-font-primary-500);
-    background-color: var(--theme-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > input::selection { 
-    background-color: var(--theme-primary-500); 
-    color: var(--theme-primary-font-primary-500); }
-
-.textfield > .content > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield.contrast > .content > input::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > input::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield > .content > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textfield.contrast > .content > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield.contrast > .content > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield > .content > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield.contrast > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield.active > .content > input:focus ~ .value {
-    color: transparent; }
-
-.textfield > .content > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield.contrast > .content > input:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > input:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.textfield > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.theme-primary .textfield.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-secondary-font-disabled-500); }
-
-.textfield:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--primary-font); }
-
-.theme-primary .textfield.contrast:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.theme-primary .textfield.contrast > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield.contrast > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
-
-.textfield > .content > .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.textfield.active > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textfield.contrast.active > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield.contrast.active > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield.active.error > .content > input:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-error-500); }
-
-.textfield > .content > input:disabled ~ .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.textfield > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textfield > .content > span.counter {
-    color: var(--secondary-font);
-    background-color: var(--background-core); }
-
-.theme-primary .textfield.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500);  }
-
-.theme-secondary .textfield.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
-/** TEXTFIELD BORDERED */
-
-.textfield-bordered > .content > .box {
-    border: 1px solid var(--background-border); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box {
-    border: 1px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box {
-    border: 1px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered:hover > .content > .box {
-    border: 2px solid var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast:hover > .content > .box {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast:hover > .content > .box {
-    border: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textfield-bordered.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered.active.error > .content.focused > .box {
-    border: 2px solid var(--theme-error-500); }
-
-.textfield-bordered > .content.disabled > .box {
-    background-color: rgba(56, 56, 56, 1);
-    border: 1px dashed var(--background-border); }
-
-.theme-primary .textfield-bordered.contrast > .content.disabled > .box {
-    background-color: var(--theme-primary-200);
-    border: 1px dashed var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content.disabled > .box {
-    background-color: var(--theme-secondary-200);
-    border: 1px dashed var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered.active > .content > .box > input:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textfield-bordered.contrast.active > .content > .box > input:focus ~ label {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast.active > .content > .box > input:focus ~ label {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered.active.error > .content > .box > input:focus ~ label, 
-.textfield-bordered.error > .content > .box > label,
-.textfield-bordered.active > .content > .box > input:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textfield-bordered > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > input {
-    color: transparent;
-    background-color: transparent; }
-
-.textfield-bordered.active > .content > .box > input:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast.active > .content > .box > input:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast.active > .content > .box > input:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content > .box > input::selection { 
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input::selection {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.textfield-bordered > .content > .box > input::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > .box > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-bordered > .content > .box > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .box > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered.active > .content > .box > input:focus ~ .value {
-    color: transparent; }
-
-.textfield-bordered > .content > .box > input:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > input:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > .box > i {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > i {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > .box > i {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > .box > input:disabled ~ i {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > .box > input:disabled ~ i {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textfield-bordered > .content.contrast > .box > input:disabled ~ i {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textfield-bordered > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-bordered.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-bordered > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textfield-bordered > .content > span.counter {
-    color: var(--secondary-font);
-    background-color: var(--background-core); }
-
-.theme-primary .textfield-bordered.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500); 
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-bordered.contrast > .content > span.counter {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-secondary-500); }
 
@@ -4308,88 +3470,6 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-secondary-500);
     color: var(--theme-secondary-font-secondary-500); }
 
-/** TEXTFIELD READONLY */
-
-.textfield-readonly > .content > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-readonly.contrast > .content > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-readonly > .content > input:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textfield-readonly.contrast > .content > input:focus ~ label {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > input:focus ~ label {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-readonly > .content > i {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-readonly.contrast > .content > i {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > i {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-readonly > .content > input::selection {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > input::selection {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.textfield-readonly > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.theme-primary .textfield-readonly.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-readonly:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--primary-font); }
-
-.theme-primary .textfield-readonly.contrast:hover .line-bordered {
-    border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-readonly.contrast:hover .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-readonly > .content > input:focus ~ .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textfield-readonly.contrast input:focus ~ .line-bordered {
-    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-readonly.contrast input:focus ~ .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-readonly > .content > input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.theme-primary .textfield-readonly.contrast input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield-readonly.contrast input:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
-
-.textfield-readonly > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-readonly.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-readonly.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
 /** TOAST */
 
 .toast > .body { 
@@ -4484,3 +3564,979 @@ button.floating.theme-secondary:before {
 .app-bar.theme-secondary > .toolbar > .nav-icon > button.action:before,
 .toolbar.theme-secondary > .actions > button:before {
     background-color: var(--theme-secondary-ripple-700); }
+
+/** INPUT COMPONENTS */
+
+.autocomplete.filled > .content > .box,
+.clockpicker-input.filled > .content > .box,
+.datepicker-input.filled > .content > .box,
+.select.filled > .content > .box,
+.select-multiple.filled > .content > .box,
+.textfield.filled > .content > .box,
+.textfield-readonly.filled > .content > .box {
+    border-bottom: 2px solid var(--background-border);
+    background-color: var(--background-box); }
+
+.theme-primary .autocomplete.filled.contrast > .content > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content > .box,
+.theme-primary .datepicker-input.filled.contrast > .content > .box,
+.theme-primary .select.filled.contrast > .content > .box,
+.theme-primary .select-multiple.filled.contrast > .content > .box,
+.theme-primary .textfield.filled.contrast > .content > .box,
+.theme-primary .textfield-readonly.filled.contrast > .content > .box {
+    background-color: var(--theme-primary-300);
+    border-bottom: 2px solid var(--theme-primary-font-secondary-300); }
+
+.theme-secondary .autocomplete.filled.contrast > .content > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content > .box,
+.theme-secondary .select.filled.contrast > .content > .box,
+.theme-secondary .select-multiple.filled.contrast > .content > .box,
+.theme-secondary .textfield.filled.contrast > .content > .box,
+.theme-secondary .textfield-readonly.filled.contrast > .content > .box {
+    background-color: var(--theme-secondary-300);
+    border-bottom: 2px solid var(--theme-secondary-font-secondary-300); }
+
+.autocomplete.filled > .content.active > .box,
+.clockpicker-input.filled > .content.active > .box,
+.datepicker-input.filled > .content.active > .box,
+.select.filled > .content.active > .box,
+.select-multiple.filled > .content.active > .box,
+.textfield.filled > .content.active > .box,
+.textfield-readonly.filled > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.filled.contrast > .content.active > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content.active > .box,
+.theme-primary .datepicker-input.filled.contrast > .content.active > .box,
+.theme-primary .select.filled.contrast > .content.active > .box,
+.theme-primary .select-multiple.filled.contrast > .content.active > .box,
+.theme-primary .textfield.filled.contrast > .content.active > .box,
+.theme-primary .textfield-readonly.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .autocomplete.filled.contrast > .content.active > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content.active > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content.active > .box,
+.theme-secondary .select.filled.contrast > .content.active > .box,
+.theme-secondary .select-multiple.filled.contrast > .content.active > .box,
+.theme-secondary .textfield.filled.contrast > .content.active > .box,
+.theme-secondary .textfield-readonly.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
+
+.textfield.filled.error > .content.active > .box {
+    border-bottom: 2px solid var(--theme-error-500); }
+
+.autocomplete.filled > .content.disabled > .box,
+.clockpicker-input.filled > .content.disabled > .box,
+.datepicker-input.filled > .content.disabled > .box,
+.select.filled > .content.disabled > .box,
+.select-multiple.filled > .content.disabled > .box,
+.textfield.filled > .content.disabled > .box {
+    border-bottom: 2px solid transparent;
+    background-color: var(--background-box-disabled); } 
+
+.theme-primary .autocomplete.filled.contrast > .content.disabled > .box,
+.theme-primary .clockpicker-input.filled.contrast > .content.disabled > .box,
+.theme-primary .datepicker-input.filled.contrast > .content.disabled > .box,
+.theme-primary .select.filled.contrast > .content.disabled > .box,
+.theme-primary .select-multiple.filled.contrast > .content.disabled > .box,
+.theme-primary .textfield.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-primary-200); } 
+
+.theme-secondary .autocomplete.filled.contrast > .content.disabled > .box,
+.theme-secondary .clockpicker-input.filled.contrast > .content.disabled > .box,
+.theme-secondary .datepicker-input.filled.contrast > .content.disabled > .box,
+.theme-secondary .select.filled.contrast > .content.disabled > .box,
+.theme-secondary .select-multiple.filled.contrast > .content.disabled > .box,
+.theme-secondary .textfield.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-secondary-200); } 
+
+.autocomplete.outline > .content > .box,
+.clockpicker-input.outline > .content > .box,
+.datepicker-input.outline > .content > .box,
+.select.outline > .content > .box,
+.select-multiple.outline > .content > .box,
+.textfield.outline > .content > .box,
+.textfield-readonly.outline > .content > .box {
+    border: 1px solid var(--background-border); }
+
+.theme-primary .autocomplete.outline.contrast > .content > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content > .box,
+.theme-primary .datepicker-input.outline.contrast > .content > .box,
+.theme-primary .select.outline.contrast > .content > .box,
+.theme-primary .select-multiple.outline.contrast > .content > .box,
+.theme-primary .textfield.outline.contrast > .content > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content > .box,
+.theme-secondary .select.outline.contrast > .content > .box,
+.theme-secondary .select-multiple.outline.contrast > .content > .box,
+.theme-secondary .textfield.outline.contrast > .content > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.outline > .content.active > .box,
+.clockpicker-input.outline > .content.active > .box,
+.datepicker-input.outline > .content.active > .box,
+.select.outline > .content.active > .box,
+.select-multiple.outline > .content.active > .box,
+.textfield.outline > .content.active > .box,
+.textfield-readonly.outline > .content.active > .box {
+    border: 1px solid var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.outline.contrast > .content.active > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content.active > .box,
+.theme-primary .datepicker-input.outline.contrast > .content.active > .box,
+.theme-primary .select.outline.contrast > .content.active > .box,
+.theme-primary .select-multiple.outline.contrast > .content.active > .box,
+.theme-primary .textfield.outline.contrast > .content.active > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content.active > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content.active > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content.active > .box,
+.theme-secondary .select.outline.contrast > .content.active > .box,
+.theme-secondary .select-multiple.outline.contrast > .content.active > .box,
+.theme-secondary .textfield.outline.contrast > .content.active > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-secondary-font-primary-500); }
+
+.textfield.outline.error > .content.active > .box {
+    border-bottom: 1px solid var(--theme-error-500); }
+
+.theme-primary .textfield.outline.error.contrast > .content.active > .box {
+    border-bottom: 1px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield.outline.error > .content.active > .box {
+    border-bottom: 1px solid var(--theme-secondary-font-primary-300); }
+
+.autocomplete.outline > .content.disabled > .box,
+.clockpicker-input.outline > .content.disabled > .box,
+.datepicker-input.outline > .content.disabled > .box,
+.select.outline > .content.disabled > .box,
+.select-multiple.outline > .content.disabled > .box,
+.textfield.outline > .content.disabled > .box,
+.textfield-readonly.outline > .content.disabled > .box {
+    border: 1px dashed var(--background-disabled); }
+
+.theme-primary .autocomplete.outline.contrast > .content.disabled > .box,
+.theme-primary .clockpicker-input.outline.contrast > .content.disabled > .box,
+.theme-primary .datepicker-input.outline.contrast > .content.disabled > .box,
+.theme-primary .select.outline.contrast > .content.disabled > .box,
+.theme-primary .select-multiple.outline.contrast > .content.disabled > .box,
+.theme-primary .textfield.outline.contrast > .content.disabled > .box,
+.theme-primary .textfield-readonly.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.outline.contrast > .content.disabled > .box,
+.theme-secondary .clockpicker-input.outline.contrast > .content.disabled > .box,
+.theme-secondary .datepicker-input.outline.contrast > .content.disabled > .box,
+.theme-secondary .select.outline.contrast > .content.disabled > .box,
+.theme-secondary .select-multiple.outline.contrast > .content.disabled > .box,
+.theme-secondary .textfield.outline.contrast > .content.disabled > .box,
+.theme-secondary .textfield-readonly.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-secondary-font-disabled-500); }
+
+.autocomplete.capsule > .content > .box > .description,
+.chip-input.capsule > .content > .box > .description,
+.clockpicker-input.capsule > .content > .box > .description,
+.datepicker-input.capsule > .content > .box > .description,
+.select.capsule > .content > .box > .description,
+.select-multiple.capsule > .content > .box > .description,
+.textfield.capsule > .content > .box > .description,
+.textfield-readonly.capsule > .content > .box > .description {
+    background-color: var(--background-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content > .box > .description,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .description,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .description,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .description,
+.theme-primary .select.capsule.contrast > .content > .box > .description,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content > .box > .description,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .description,
+.theme-secondary .select.capsule.contrast > .content > .box > .description,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.capsule > .content.active > .box >  .description,
+.chip-input.capsule > .content.active > .box >  .description,
+.clockpicker-input.capsule > .content.active > .box >  .description,
+.datepicker-input.capsule > .content.active > .box >  .description,
+.select.capsule > .content.active > .box >  .description,
+.select-multiple.capsule > .content.active > .box >  .description,
+.textfield.capsule > .content.active > .box > .description,
+.textfield-readonly.capsule > .content.active > .box > .description {
+    background-color: var(--theme-secondary-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .chip-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .clockpicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .datepicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .select.capsule.contrast > .content.active > .box >  .description,
+.theme-primary .select-multiple.contrast.capsule > .content.active > .box >  .description,
+.theme-primary .textfield.capsule.contrast > .content.active > .box > .description,
+.theme-primary .textfield-readonly.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .chip-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .datepicker-input.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .select.capsule.contrast > .content.active > .box >  .description,
+.theme-secondary .select-multiple.contrast.capsule > .content.active > .box >  .description,
+.theme-secondary .textfield.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .textfield-readonly.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-secondary-font-primary-500); }
+
+.autocomplete > .content > .box > .description > i,
+.chip-input > .content > .box > .description > i,
+.clockpicker-input > .content > .box > .description > i,
+.datepicker-input > .content > .box > .description > i,
+.select > .content > .box > .description > i,
+.select-multiple > .content > .box > .description > i,
+.textfield > .content > .box > .description > i,
+.textfield-readonly > .content > .box > .description > i {
+    color: var(--secondary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > .description > i,
+.theme-primary .chip-input.contrast > .content > .box > .description > i,
+.theme-primary .clockpicker-input.contrast > .content > .box > .description > i,
+.theme-primary .datepicker-input.contrast > .content > .box > .description > i,
+.theme-primary .select.contrast > .content > .box > .description > i,
+.theme-primary .select-multiple.contrast > .content > .box > .description > i,
+.theme-primary .textfield.contrast > .content > .box > .description > i,
+.theme-primary .textfield-readonly.contrast > .content > .box > .description > i {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-primary .autocomplet.capsule.contrast > .content > .box > .description > i,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-primary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > .description > i,
+.theme-secondary .chip-input.contrast > .content > .box > .description > i,
+.theme-secondary .clockpicker-input.contrast > .content > .box > .description > i,
+.theme-secondary .datepicker-input.contrast > .content > .box > .description > i,
+.theme-secondary .select.contrast > .content > .box > .description > i,
+.theme-secondary .select-multiple.contrast > .content > .box > .description > i,
+.theme-secondary .textfield.contrast > .content > .box > .description > i,
+.theme-secondary .textfield-readonly.contrast > .content > .box > .description > i {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.theme-secondary .autocomplet.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-secondary-500); }
+
+.autocomplete > .content.disabled > .box >  .description > i,
+.chip-input > .content.disabled > .box >  .description > i,
+.clockpicker-input > .content.disabled > .box >  .description > i,
+.datepicker-input > .content.disabled > .box >  .description > i,
+.select > .content.disabled > .box >  .description > i,
+.select-multiple > .content.disabled > .box >  .description > i,
+.textfield > .content.disabled > .box >  .description > i {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .chip-input.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select-multiple.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .textfield.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .chip-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .datepicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .select-multiple.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-primary .textfield.capsule.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-primary-200); }
+
+.theme-secondary .autocomplete.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .chip-input.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select-multiple.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .textfield.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .chip-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .datepicker-input.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .select-multiple.capsule.contrast > .content.disabled > .box >  .description > i,
+.theme-secondary .textfield.capsule.contrast > .content.disabled > .box >  .description > i {
+    color: var(--theme-secondary-200); }
+
+.autocomplete.capsule > .content.disabled > .box >  .description > i,
+.chip-input.capsule > .content.disabled > .box >  .description > i,
+.clockpicker-input.capsule > .content.disabled > .box >  .description > i,
+.datepicker-input.capsule > .content.disabled > .box >  .description > i,
+.select.capsule > .content.disabled > .box >  .description > i,
+.select-multiple.capsule > .content.disabled > .box >  .description > i,
+.textfield.capsule > .content.disabled > .box >  .description > i {
+    color: var(--disabled-font); }
+
+.autocomplete > .content > .box > label,
+.chip-input > .content > .box > label,
+.datepicker-input > .content > .box > label,
+.clockpicker-input > .content > .box > label,
+.select > .content > .box > label,
+.select-multiple > .content > .box > label,
+.textfield > .content > .box > label,
+.textfield-readonly > .content > .box > label {
+    color: var(--secondary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > label,
+.theme-primary .chip-input.contrast > .content > .box > label,
+.theme-primary .clockpicker-input.contrast > .content > .box > label,
+.theme-primary .datepicker-input.contrast > .content > .box > label,
+.theme-primary .select.contrast > .content > .box > label,
+.theme-primary .select-multiple.contrast > .content > .box > label,
+.theme-primary .textfield.contrast > .content > .box > label,
+.theme-primary .textfield-readonly.contrast > .content > .box > label {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > label,
+.theme-secondary .chip-input.contrast > .content > .box > label,
+.theme-secondary .clockpicker-input.contrast > .content > .box > label,
+.theme-secondary .datepicker-input.contrast > .content > .box > label,
+.theme-secondary .select.contrast > .content > .box > label,
+.theme-secondary .select-multiple.contrast > .content > .box > label,
+.theme-secondary .textfield.contrast > .content > .box > label,
+.theme-secondary .textfield-readonly.contrast > .content > .box > label {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete > .content > .box > input:focus ~ label,
+.chip-input > .content > .box > input:focus ~ label,
+.clockpicker-input > .content.active > .box >  label.active,
+.datepicker-input > .content.active > .box >  label.active,
+.select > .content.active > .box >  label.active,
+.select-multiple > .content.active > .box >  label.active,
+.textfield > .content > .box > input:focus ~ label,
+.textfield-readonly > .content > .box > input:focus ~ label {
+    color: var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:focus ~ label.active,
+.theme-primary .chip-input.contrast > .content > .box > input:focus ~ label.active,
+.theme-primary .clockpicker-input.contrast > .content.active > .box >  label.active,
+.theme-primary .datepicker-input.contrast > .content.active > .box >  label.active,
+.theme-primary .select.contrast > .content.active > .box >  label.active,
+.theme-primary .select-multiple.contrast > .content.active > .box >  label.active,
+.theme-primary .textfield.contrast > .content > .box > input:focus ~ label.active,
+.theme-primary .textfield-readonly.contrast > .content > .box > input:focus ~ label.active {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:focus ~ label.active,
+.theme-secondary .chip-input.contrast > .content > .box > input:focus ~ label.active,
+.theme-secondary .clockpicker-input.contrast > .content.active > .box >  label.active,
+.theme-secondary .datepicker-input.contrast > .content.active > .box >  label.active,
+.theme-secondary .select.contrast > .content.active > .box >  label.active,
+.theme-secondary .select-multiple.contrast > .content.active > .box >  label.active,
+.theme-secondary .textfield.contrast > .content > .box > input:focus ~ label.active,
+.theme-secondary .textfield-readonly.contrast > .content > .box > input:focus ~ label.active {
+    color: var(--theme-secondary-font-primary-500); }
+
+.autocomplete > .content > .box > input:disabled ~ label,
+.chip-input > .content > .box > input:disabled ~ label,
+.datepicker-input > .content.disabled > .box >  label,
+.clockpicker-input > .content.disabled > .box >  label,
+.select > .content.disabled > .box >  label,
+.select-multiple > .content.disabled > .box >  label,
+.textfield > .content > .box > input:disabled ~ label {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:disabled ~ label,
+.theme-primary .chip-input.contrast > .content > .box > input:disabled ~ label,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  label,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box >  label,
+.theme-primary .select.contrast > .content.disabled > .box >  label,
+.theme-primary .select-multiple.contrast > .content.disabled > .box >  label,
+.theme-primary .textfield.contrast > .content > .box > input:disabled ~ label {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:disabled ~ label,
+.theme-secondary .chip-input.contrast > .content > .box > input:disabled ~ label,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  label,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  label,
+.theme-secondary .select.contrast > .content.disabled > .box >  label,
+.theme-secondary .select-multiple.contrast > .content.disabled > .box >  label,
+.theme-secondary .textfield.contrast > .content > .box > input:disabled ~ label {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.textfield.error > .content > .box > label,
+.textfield.error > .content > .box > input:focus ~ label.active {
+    color: var(--theme-error-500); }
+
+.autocomplete > .content > .box > input:focus ~ label > span,
+.chip-input > .content > .box > input:focus ~ label > span,
+.clockpicker-input > .content.active > .box >  label.active > span,
+.datepicker-input > .content.active > .box >  label.active > span,
+.select > .content.active > .box >  label.active > span,
+.select-multiple > .content.active > .box >  label.active > span,
+.textfield > .content > .box > input:focus ~ label > span {
+    color: var(--theme-error-500); }
+
+.autocomplete > .content > .box > input,
+.chip-input > .content > .box > input,
+.select > .content > .box > input,
+.select-multiple > .content > .box > input,
+.textfield > .content > .box > input,
+.textfield-readonly > .content > .box > input {
+    color: transparent;
+    background-color: transparent; }
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 26px var(--background-core) inset; }
+
+.autocomplete > .content > .box > input:focus,
+.chip-input > .content > .box > input:focus,
+.textfield > .content > .box > input:focus,
+.textfield-readonly > .content > .box > input {
+    color: var(--primary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:focus,
+.theme-primary .chip-input.contrast > .content > .box > input:focus,
+.theme-primary .textfield.contrast > .content > .box > input:focus,
+.theme-primary .textfield-readonly.contrast > .content > .box > input {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:focus,
+.theme-secondary .chip-input.contrast > .content > .box > input:focus,
+.theme-secondary .textfield.contrast > .content > .box > input:focus,
+.theme-secondary .textfield-readonly.contrast > .content > .box > input {
+    color: var(--theme-secondary-font-primary-500); }
+
+.autocomplete > .content > .box > input::selection,
+.chip-input > .content > .box > input::selection,
+.textfield > .content > .box > input::selection,
+.textfield-readonly > .content > .box > input::selection {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input::selection,
+.theme-secondary .chip-input.contrast > .content > .box > input::selection,
+.theme-secondary .textfield.contrast > .content > .box > input::selection,
+.theme-secondary .textfield-readonly.contrast > .content > .box > input::selection { 
+    background-color: var(--theme-primary-500); 
+    color: var(--theme-primary-font-primary-500); }
+
+.autocomplete > .content > .box > input::-webkit-input-placeholder,
+.chip-input > .content > .box > input::-webkit-input-placeholder,
+.select-multiple > .content > .box > input::-webkit-input-placeholder,
+.textfield > .content > .box > input::-webkit-input-placeholder,
+.textfield-readonly > .content > .box > input::-webkit-input-placeholder {
+    color: var(--secondary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-primary .chip-input.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-primary .select-multiple.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-primary .textfield.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-primary .textfield-readonly.contrast > .content > .box > input::-webkit-input-placeholder {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-secondary .chip-input.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-secondary .select-multiple.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-secondary .textfield.contrast > .content > .box > input::-webkit-input-placeholder,
+.theme-secondary .textfield-readonly.contrast > .content > .box > input::-webkit-input-placeholder {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete > .content > .box > .value,
+.clockpicker-input > .content > .box > .value,
+.datepicker-input > .content > .box > .value,
+.select > .content > .box > .value,
+.textfield > .content > .box > .value {
+    color: var(--primary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > .value,
+.theme-primary .clockpicker-input.contrast > .content > .box > .value,
+.theme-primary .datepicker-input.contrast > .content > .box > .value,
+.theme-primary .select.contrast > .content > .box > .value,
+.theme-primary .textfield.contrast > .content > .box > .value {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > .value,
+.theme-secondary .clockpicker-input.contrast > .content > .box > .value,
+.theme-secondary .datepicker-input.contrast > .content > .box > .value,
+.theme-secondary .select.contrast > .content > .box > .value,
+.theme-secondary .textfield.contrast > .content > .box > .value {
+    color: var(--theme-secondary-font-primary-500); }
+
+.select > .content > .box > .value::selection {
+    color: var(--theme-secondary-font-primary-500);
+    background-color: var(--theme-secondary-500); }
+
+.autocomplete > .content > .box > .value.holder-active,
+.clockpicker-input > .content > .box > .value.holder-active,
+.datepicker-input > .content > .box > .value.holder-active,
+.select > .content > .box > .value.holder-active,
+.select-multiple > .content > .box > .value.holder-active,
+.textfield > .content > .box > .value.holder-active {
+    color: var(--secondary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > .value.holder-active,
+.theme-primary .clockpicker-input.contrast > .content > .box > .value.holder-active,
+.theme-primary .datepicker-input.contrast > .content > .box > .value.holder-active,
+.theme-primary .select.contrast > .content > .box > .value.holder-active,
+.theme-primary .select-multiple.contrast > .content > .box > .value.holder-active,
+.theme-primary .textfield.contrast > .content > .box > .value.holder-active {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > .value.holder-active,
+.theme-secondary .clockpicker-input.contrast > .content > .box > .value.holder-active,
+.theme-secondary .datepicker-input.contrast > .content > .box > .value.holder-active,
+.theme-secondary .select.contrast > .content > .box > .value.holder-active,
+.theme-secondary .select-multiple.contrast > .content > .box > .value.holder-active,
+.theme-secondary .textfield.contrast > .content > .box > .value.holder-active {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete > .content.disabled > .box > .value,
+.clockpicker-input > .content.disabled > .box >  .value,
+.datepicker-input > .content.disabled > .box >  .value,
+.select > .content.disabled > .box > .value,
+.textfield > .content.disabled > .box > .value {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.contrast > .content.disabled > .box > .value,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  .value,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box >  .value,
+.theme-primary .select.contrast > .content.disabled > .box > .value,
+.theme-primary .textfield.contrast > .content.disabled > .box > .value {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.contrast > .content.disabled > .box > .value,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  .value,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  .value,
+.theme-secondary .select.contrast > .content.disabled > .box > .value,
+.theme-secondary .textfield.contrast > .content.disabled > .box > .value {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.autocomplete > .content > .box > input:focus ~ .value,
+.textfield > .content > .box > input:focus ~ .value {
+    color: transparent; }
+
+.autocomplete > .content > .box > .unique-selection {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > .unique-selection {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > .unique-selection {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.autocomplete > .content > .box > .unique-selection > b {
+    color: transparent; }
+
+.autocomplete > .content > .box > .line-bordered,
+.chip-input > .content > .box > .line-bordered,
+.clockpicker-input > .content > .box > .line-bordered,
+.datepicker-input > .content > .box > .line-bordered,
+.select > .content > .box > .line-bordered,
+.select-multiple > .content > .box > .line-bordered,
+.textfield > .content > .box > .line-bordered,
+.textfield-readonly > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--background-border); }
+
+.theme-primary .autocomplete.contrast > .content > .box > .line-bordered,
+.theme-primary .chip-input.contrast > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.contrast > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.contrast > .content > .box > .line-bordered,
+.theme-primary .select.contrast > .content > .box > .line-bordered,
+.theme-primary .select-multiple.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.contrast > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > .line-bordered,
+.theme-secondary .chip-input.contrast > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.contrast > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.contrast > .content > .box > .line-bordered,
+.theme-secondary .select.contrast > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.contrast > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.autocomplete:hover > .content > .box > .line-bordered,
+.chip-input:hover > .content > .box > .line-bordered,
+.clockpicker-input:hover > .content > .box > .line-bordered,
+.datepicker-input:hover > .content > .box > .line-bordered,
+.select:hover > .content > .box > .line-bordered,
+.select-multiple:hover > .content > .box > .line-bordered,
+.textfield:hover > .content > .box > .line-bordered,
+.textfield-readonly:hover > .content > .box > .line-bordered {
+    border-bottom: 2px solid var(--primary-font); }
+
+.theme-primary .autocomplete.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .chip-input.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select-multiple.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.contrast:hover > .content > .box > .line-bordered {
+    border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .chip-input.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.contrast:hover > .content > .box > .line-bordered {
+    border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
+
+.clockpicker-input > .content.active > .box > .line-bordered,
+.datepicker-input > .content.active > .box > .line-bordered,
+.textfield-readonly > .content > .box > input:focus ~ .line-bordered {
+    border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .clockpicker-input.contrast input:focus ~ .line-bordered,
+.theme-primary .datepicker-input.contrast input:focus ~ .line-bordered,
+.theme-primary .textfield-readonly.contrast input:focus ~ .line-bordered {
+    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .clockpicker-input.contrast input:focus ~ .line-bordered,
+.theme-secondary .datepicker-input.contrast input:focus ~ .line-bordered,
+.theme-secondary .textfield-readonly.contrast input:focus ~ .line-bordered {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
+
+.autocomplete > .content > .box > input:disabled ~ .line-bordered,
+.chip-input > .content > .box > input:disabled ~ .line-bordered,
+.clockpicker-input > .content.disabled > .box >  .line-bordered,
+.datepicker-input > .content.disabled > .box >  .line-bordered,
+.select > .content > .box > input:disabled ~ .line-bordered,
+.select-multiple > .content > .box > input:disabled ~ .line-bordered,
+.textfield > .content > .box > input:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--background-border); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .chip-input.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .select.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .select-multiple.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .textfield.contrast > .content > .box > input:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .chip-input.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .select.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .select-multiple.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .textfield.contrast > .content > .box > input:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
+
+.autocomplete.capsule > .content > .box > .line-bordered,
+.chip-input.capsule > .content > .box > .line-bordered,
+.clockpicker-input.capsule > .content > .box > .line-bordered,
+.datepicker-input.capsule > .content > .box > .line-bordered,
+.select.capsule > .content > .box > .line-bordered,
+.select-multiple.capsule > .content > .box > .line-bordered,
+.textfield.capsule > .content > .box > .line-bordered,
+.textfield-readonly.capsule > .content > .box > .line-bordered,
+.autocomplete.capsule:hover > .content > .box > .line-bordered,
+.chip-input.capsule:hover > .content > .box > .line-bordered,
+.clockpicker-input.capsule:hover > .content > .box > .line-bordered,
+.datepicker-input.capsule:hover > .content > .box > .line-bordered,
+.select.capsule:hover > .content > .box > .line-bordered,
+.select-multiple.capsule:hover > .content > .box > .line-bordered,
+.textfield.capsule:hover > .content > .box > .line-bordered,
+.textfield-readonly.capsule:hover > .content > .box > .line-bordered {
+    border: 1px solid var(--background-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .select.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
+.theme-primary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .select.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
+.theme-secondary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.capsule > .content.active > .box > .line-bordered,
+.chip-input.capsule > .content > .box > input:focus ~ .line-bordered,
+.clockpicker-input.capsule > .content.active > .box >  .line-bordered,
+.datepicker-input.capsule > .content.active > .box >  .line-bordered,
+.select.capsule > .content.active > .box >  .line-bordered,
+.select-multiple.capsule > .content.active > .box >  .line-bordered,
+.textfield.capsule > .content.active > .box > .line-bordered,
+.textfield-readonly.capsule > .content > .box > input:focus ~ .line-bordered {
+    border: 1px solid var(--theme-secondary-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > input:focus ~ .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .select.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast > .content > .box > input:focus ~ .line-bordered {
+    border: 1px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > input:focus ~ .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .select.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content.active > .box >  .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content.active > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast > .content > .box > input:focus ~ .line-bordered {
+    border: 1px solid var(--theme-secondary-font-primary-500); }
+
+.autocomplete.capsule > .content.disabled > .box > .line-bordered,
+.chip-input.capsule > .content > .box > input:disabled ~ .line-bordered,
+.clockpicker-input.capsule > .content.disabled > .box >  .line-bordered,
+.datepicker-input.capsule > .content.disabled > .box >  .line-bordered,
+.select.capsule > .content > .box > input:disabled ~ .line-bordered,
+.select-multiple.capsule > .content > .box > input:disabled ~ .line-bordered,
+.textfield.capsule > .content.disabled > .box > .line-bordered {
+    border: 1px dashed var(--background-border); }
+
+.theme-primary .autocomplete.capsule.contrast > .content.disabled > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-primary .select.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content.disabled > .box > .line-bordered {
+    border: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.capsule.contrast > .content.disabled > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content.disabled > .box >  .line-bordered,
+.theme-secondary .select.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content > .box > input:disabled ~ .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content.disabled > .box > .line-bordered {
+    border: 1px dashed var(--theme-secondary-font-disabled-500); }
+
+.autocomplete > .content > .box > .line-shadow,
+.chip-input > .content > .box > .line-shadow,
+.textfield > .content > .box > .line-shadow {
+    border-bottom: 2px solid transparent; }
+
+.autocomplete > .content > .box > input:focus ~ .line-shadow,
+.chip-input > .content > .box > input:focus ~ .line-shadow,
+.textfield > .content > .box > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:focus ~ .line-shadow,
+.theme-primary .chip-input.contrast > .content > .box > input:focus ~ .line-shadow,
+.theme-primary .textfield.contrast > .content > .box > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:focus ~ .line-shadow,
+.theme-secondary .chip-input.contrast > .content > .box > input:focus ~ .line-shadow,
+.theme-secondary .textfield.contrast > .content > .box > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
+
+.autocomplete.error > .content > .box > input:focus ~ .line-shadow,
+.chip-input.error > .content > .box > input:focus ~ .line-shadow,
+.textfield.error > .content > .box > input:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-error-500); }
+
+.autocomplete > .content > .box > input:disabled ~ .line-shadow,
+.chip-input > .content > .box > input:disabled ~ .line-shadow,
+.textfield > .content > .box > input:disabled ~ .line-shadow {
+    border-bottom: 2px solid transparent; }
+
+.autocomplete > .content > .box > i.action,
+.clockpicker-input > .content > .box > i.action,
+.datepicker-input > .content > .box > i.action,
+.textfield > .content > .box > i.action,
+.textfield-readonly > .content > .box > i.action {
+    color: var(--secondary-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > i.action,
+.theme-primary .clockpicker-input.contrast > .content > .box > i.action,
+.theme-primary .datepicker-input.contrast > .content > .box > i.action,
+.theme-primary .textfield.contrast > .content > .box > i.action,
+.theme-primary .textfield-readonly.contrast > .content > .box > i.action {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > i.action,
+.theme-secondary .clockpicker-input.contrast > .content > .box > i.action,
+.theme-secondary .datepicker-input.contrast > .content > .box > i.action,
+.theme-secondary .textfield.contrast > .content > .box > i.action,
+.theme-secondary .textfield-readonly.contrast > .content > .box > i.action {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete > .content > .box > input:disabled ~ i.action,
+.clockpicker-input > .content.disabled > .box >  i.action,
+.datepicker-input > .content.disabled > .box >  i.action,
+.textfield > .content > .box > input:disabled ~ i.action {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.contrast > .content > .box > input:disabled ~ i.action,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  i.action,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box >  i.action,
+.theme-primary .textfield.contrast > .content > .box > input:disabled ~ i.action {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > input:disabled ~ i.action,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  i.action,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  i.action,
+.theme-secondary .textfield.contrast > .content > .box > input:disabled ~ i.action {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.autocomplete > .content > .box > span,
+.chip-input > .content > .box > span,
+.clockpicker-input > .content > .box > span,
+.datepicker-input > .content > .box > span,
+.select > .content > .box > span,
+.select-multiple > .content > .box > span,
+.textfield > .content > .box > span,
+.textfield-readonly > .content > .box > span {
+    color: var(--secondary-font); }
+
+.textfield > .content > .box > span.error {
+    color: var(--theme-error-500); }
+
+.textfield > .content > .box > span.counter {
+    background-color: var(--background-core); }
+
+.theme-primary .autocomplete.contrast > .content > .box > span,
+.theme-primary .chip-input.contrast > .content > .box > span,
+.theme-primary .clockpicker-input.contrast > .content > .box > span,
+.theme-primary .datepicker-input.contrast > .content > .box > span,
+.theme-primary .select.contrast > .content > .box > span,
+.theme-primary .select-multiple.contrast > .content > .box > span,
+.theme-primary .textfield.contrast > .content > .box > span,
+.theme-primary .textfield-readonly.contrast > .content > .box > span {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.contrast > .content > .box > span,
+.theme-secondary .chip-input.contrast > .content > .box > span,
+.theme-secondary .clockpicker-input.contrast > .content > .box > span,
+.theme-secondary .datepicker-input.contrast > .content > .box > span,
+.theme-secondary .select.contrast > .content > .box > span,
+.theme-secondary .select-multiple.contrast > .content > .box > span,
+.theme-secondary .textfield.contrast > .content > .box > span,
+.theme-secondary .textfield-readonly.contrast > .content > .box > span {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.theme-primary .textfield.contrast > .content > .box > span.counter {
+    background-color: var(--theme-primary-500); }
+
+.theme-secondary .textfield.contrast > .content > .box > span.counter {
+    background-color: var(--theme-secondary-500); }
+
+.autocomplete > .content > .box > ul,
+.select > .content > .box > ul,
+.select-multiple > .content > .box > ul { 
+    background-color: var(--background-component); }
+
+.autocomplete > .content > .box > ul > li { 
+    color: var(--primary-font); }
+
+.select > .content > .box > ul > li.active,
+.select-multiple > .content > .box > ul > li.active {
+    color: var(--secondary-font); }
+
+.autocomplete > .content > .box > ul.autoselection > li:not(.not-found):first-child {
+    background-color: var(--theme-secondary-100); }
+
+.select > .content > .box > ul > li.clear-suggestion {
+    color: var(--theme-primary-500);
+    border-bottom: 1px solid var(--background-border); }
+
+.autocomplete > .content > .box > ul > li:focus,
+.select > .content > .box > ul > li:focus,
+.select-multiple > .content > .box > ul > li:focus {
+    background-color: var(--background-focus); }
+
+.autocomplete > .content > .box > ul > li:hover,
+.select > .content > .box > ul > li:hover,
+.select-multiple > .content > .box > ul > li:hover {
+    background-color: var(--background-hover); }
+
+.autocomplete > .content > .box > ul > li.not-found {
+    color: var(--theme-error-500); }
+
+.autocomplete > .content > .box > ul > li > .detail .avatar > span { 
+    background-color: var(--theme-secondary-600);
+    color: var(--theme-secondary-font-primary-600); }
+
+.autocomplete > .content > .box > ul.autoselection > li > .detail .avatar > span { 
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
+
+.autocomplete > .content > .box > ul > li > .detail .title > b { 
+    color: var(--secondary-font); }
+
+.select-multiple > .content > .box > ul > li > .checkbox-select > label:before {
+    background-color: var(--theme-primary-500); }
+
+.select-multiple > .content > .box > ul > li > .checkbox-select:not(.active) > label:after {
+    border: 2px solid var(--secondary-font); }
+
+.select-multiple > .content > .box > ul > li > .checkbox-select > label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+/** INPUTS IN DATATABLE */
+
+.datatable > .content tbody .clockpicker-input > .content > .box > .line-bordered,
+.datatable > .content tbody .datepicker-input > .content > .box > .line-bordered,
+.datatable > .content tbody .textfield > .content > .box > .line-bordered,
+.datatable > .content tbody .textfield-readonly > .content > .box > .line-bordered {
+    border-bottom: none !important; }

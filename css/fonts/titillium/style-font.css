@@ -1,13 +1,9 @@
-/*!
- * StyleFont Titillium Web
- * author: Softtion Developers
- * development: Daniel Andres Castillo Pedroza
- */
 
-@font-face {
-    font-family: "titillium";
-    src: url("TitilliumWeb-ExtraLight.ttf") format("truetype");
-    font-weight: 200; }
+/*!
+ * StyleFont: Titillium
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
 
 @font-face {
     font-family: "titillium";
@@ -22,14 +18,14 @@
 @font-face {
     font-family: "titillium";
     src: url("TitilliumWeb-SemiBold.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "titillium";
+    src: url("TitilliumWeb-SemiBold.ttf") format("truetype");
     font-weight: 600; }
 
 @font-face {
     font-family: "titillium";
     src: url("TitilliumWeb-Bold.ttf") format("truetype");
     font-weight: 700; }
-
-@font-face {
-    font-family: "titillium";
-    src: url("TitilliumWeb-Black.ttf") format("truetype");
-    font-weight: 900; }

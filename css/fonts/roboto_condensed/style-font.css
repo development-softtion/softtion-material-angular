@@ -1,7 +1,8 @@
+
 /*!
- * StyleFont Roboto Condensed
- * author: Softtion Developers
+ * StyleFont: Roboto Condensed
  * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
  */
 
 @font-face {
@@ -13,6 +14,16 @@
     font-family: "roboto_condensed";
     src: url("RobotoCondensed-Regular.ttf") format("truetype");
     font-weight: 400; }
+
+@font-face {
+    font-family: "roboto_condensed";
+    src: url("RobotoCondensed-Regular.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "roboto_condensed";
+    src: url("RobotoCondensed-Bold.ttf") format("truetype");
+    font-weight: 600; }
 
 @font-face {
     font-family: "roboto_condensed";
