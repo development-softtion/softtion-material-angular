@@ -2832,11 +2832,9 @@ button.floating.theme-secondary:before {
 .sidenav > .content > .banner > .description {
     color: var(--theme-secondary-font-primary-500); }
 
-.sidenav > .content > .banner.contrast > .description {
+.sidenav > .content > .banner > .description.contrast {
+    background-color: rgba(0, 0, 0, 0.54);
     color: var(--alternative-primary-font); }
-
-.sidenav > .content > .banner.contrast.invert > .description {
-    color: var(--primary-font); }
 
 .sidenav > .content .sidenav-item > .description > a {
     color: var(--primary-font); }

@@ -5800,6 +5800,19 @@ body.show-keyboard .fab-speed-dial {
 .form > .header > .actions > button + button {
     margin-left: 2px; }
 
+.form > .header > .switch {
+    height: 48px;
+    margin: 0px 4px; }
+
+.form > .header > .switch:first-child {
+    margin-left: 0px; }
+
+.form > .header > .switch:last-child {
+    margin-right: 0px; }
+
+.form > .header > .switch > label {
+    margin: 12px 0px; }
+
 .form > .content {
     position: relative;
     width: 100%;
@@ -9285,6 +9298,12 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     padding: 0px 16px;
     box-sizing: border-box; }
 
+.sidenav > .content > .banner > .description.contrast {
+    width: calc(100% - 32px);
+    padding: 8px;
+    margin: 0px 16px; 
+    border-radius: 4px; }
+
 .sidenav > .content > .banner > .description > .title {
     width: 100%;
     margin: 0px; 
@@ -12539,6 +12558,10 @@ body.show-keyboard .toast.show {
 .sidenav.permanent.show ~ .app-body > .app-bar > .toolbar > .nav-icon + .detail > .content {
     padding: 0px 16px; }
 
+.toolbar > .detail > .content > .title {
+    height: 20px;
+    line-height: 20px; }
+
 .toolbar.flexible > .detail > .content > .title {
     line-height: 28px;
     height: 28px;
@@ -12558,8 +12581,14 @@ body.show-keyboard .toast.show {
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
 
+.toolbar > .detail > .content > .subtitle {
+    margin-top: 0px;
+    height: 18px;
+    line-height: 18px; }
+
 .toolbar.flexible > .detail > .content > .subtitle {
     height: 16px;
+    line-height: 16px;
     font-family: var(--subtitle-2-font);
     font-size: var(--subtitle-2-size);
     letter-spacing: var(--subtitle-2-letterspacing);

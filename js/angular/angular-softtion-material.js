@@ -10416,7 +10416,7 @@
                         $scope.area = newValue; // Nuevo valor
                     }
                 }  else {
-                    if (softtion.isUndefined(newValue)) return;
+                    if (softtion.isUndefined(newValue)) $scope.countEnter = 0;
                     
                     if (!(newValue === $scope.area)) $scope.area = newValue;
                 } // Verificando si el texto del input es diferente
