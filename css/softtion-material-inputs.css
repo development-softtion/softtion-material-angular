@@ -114,9 +114,9 @@
     padding: 0px;
     width: 24px;
     height: 24px;
-    line-height: 24px;
     z-index: 2;
-    cursor: pointer; }
+    cursor: pointer;
+    line-height: 24px; }
 
 .autocomplete.outline > .content > .box > .description,
 .clockpicker-input.outline > .content > .box > .description,
@@ -166,6 +166,16 @@
 .select-multiple.filled > .content > .box > .description,
 .textfield.filled > .content > .box > .description,
 .textfield-readonly.filled > .content > .box > .description {
+    left: 8px;
+    bottom: 21px; }
+
+.autocomplete.outline > .content > .box > .description,
+.clockpicker-input.outline > .content > .box > .description,
+.datepicker-input.outline > .content > .box > .description,
+.select.outline > .content > .box > .description,
+.select-multiple.outline > .content > .box > .description,
+.textfield.outline > .content > .box > .description,
+.textfield-readonly.outline > .content > .box > .description {
     left: 8px;
     bottom: 21px; }
 
@@ -794,7 +804,7 @@
 .select-multiple.outline > .content > .box > input,
 .textfield.outline > .content > .box > input,
 .textfield-readonly.outline > .content > .box > input {
-    width: calc(100% - 24px);
+    width: calc(100% - 22px);
     height: 32px;
     line-height: 32px;
     padding: 14px 11px 0px 11px; }
@@ -2382,3 +2392,284 @@
 .datatable.condense > .content tbody .clockpicker-input > .content > .box > i.action,
 .datatable.condense > .content tbody .datepicker-input > .content > .box > i.action {
     top: 10px; }
+
+/** TEXTFIELD MULTILINE */
+
+.textfield-multiline {
+    position: relative;
+    float: left;
+    overflow-y: auto; 
+    overflow-x: hidden; }
+
+.textfield-multiline.align-center {
+    text-align: initial !important; }
+
+.textfield-multiline > .content {
+    position: relative;
+    width: 100%;
+    float: left;
+    overflow-y: hidden;
+    padding: 8px 0px 11px 0px; }
+
+.textfield-multiline > .content.disabled {
+    pointer-events: none; }
+
+.textfield-multiline > .content > .box {
+    width: 100%;
+    float: left; }
+
+.textfield-multiline.outline > .content > .box { 
+    border-radius: 4px;
+    margin-bottom: 5px;
+    box-sizing: border-box; }
+
+.textfield-multiline > .content > .box > .description {
+    position: absolute;
+    top: 24px;
+    left: 0px; 
+    padding: 0px;
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+    cursor: pointer;
+    line-height: 24px; }
+
+.textfield-multiline.outline > .content > .box > .description {
+    left: 8px;
+    top: 28px; }
+
+.textfield-multiline > .content > .box > .description > i {
+    height: inherit;
+    width: inherit;
+    line-height: inherit; }
+
+.textfield-multiline > .content.disabled > .box > .description > .img-icon > img {
+    opacity: 0.45; }
+
+.textfield-multiline > .content > .box > label {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    cursor: text;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight);
+    -webkit-transition: all 120ms 0ms var(--sharp-curve);
+       -moz-transition: all 120ms 0ms var(--sharp-curve);
+         -o-transition: all 120ms 0ms var(--sharp-curve);
+            transition: all 120ms 0ms var(--sharp-curve); }
+
+.textfield-multiline > .content > .box > .description ~ label {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline.outline > .content > .box > label {
+    left: 12px;
+    top: 27px;
+    width: calc(100% - 24px); }
+
+.textfield-multiline.outline > .content > .box > .description ~ label {
+    left: 40px;
+    width: calc(100% - 52px); }
+
+.textfield-multiline > .content > .box > label.active {
+    cursor: none;
+    top: 6px;
+    height: 16px;
+    line-height: 16px;
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
+
+.textfield-multiline.outline > .content > .box > label.active {
+    top: 12px; }
+
+.textfield-multiline > .content > .box > label > span {
+    margin-left: 2px; }
+
+.textfield-multiline > .content > .box > textarea {
+    position: relative;
+    display: block;
+    width: 100%;
+    cursor: text;
+    border: none;
+    outline: none;
+    resize: none;
+    height: 21px;
+    line-height: 21px;
+    min-height: 21px;
+    overflow-y: hidden;
+    padding: 18px 0px 14px 0px;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight);
+    -webkit-transition: height 160ms 0ms var(--standard-curve);
+       -moz-transition: height 160ms 0ms var(--standard-curve);
+         -o-transition: height 160ms 0ms var(--standard-curve);
+            transition: height 160ms 0ms var(--standard-curve); }
+
+.textfield-multiline > .content > .box > .description ~ textarea { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline.outline > .content > .box > textarea {
+    width: calc(100% - 22px);
+    padding: 20px 11px 5px 11px; }
+
+.textfield-multiline.outline > .content > .box > .description ~ textarea {
+    width: calc(100% - 51px);
+    padding: 20px 11px 5px 40px; }
+
+.textfield-multiline > .content > .box > textarea::-webkit-input-placeholder {
+    visibility: hidden;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.textfield-multiline > .content > .box > textarea:focus::-webkit-input-placeholder {
+    visibility: visible; }
+
+.textfield-multiline > .content > .box > .value {
+    position: absolute;
+    bottom: 25px;
+    margin: 0px;
+    line-height: 21px;
+    cursor: text;
+    width: 100%;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.textfield-multiline > .content > .box > .description ~ .value { 
+    padding-left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline.outline > .content > .box > .value {
+    bottom: 22px;
+    left: 12px;
+    width: calc(100% - 24px); }
+
+.textfield-multiline.outline > .content > .box > .description ~ .value {
+    padding-left: 29px;
+    width: calc(100% - 53px); }
+
+.textfield-multiline > .content.active > .box > .value {
+    display: none; }
+
+.textfield-multiline > .content > .box > .line-bordered {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 18px; }
+
+.textfield-multiline.outline > .content > .box > .line-bordered {
+    display: none !important; }
+
+.textfield-multiline > .content > .box > .description ~ .line-bordered {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline > .content > .box > .line-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    width: 0%;
+    z-index: 2;
+    -webkit-transform: translateX(-50%);
+       -moz-transform: translateX(-50%);
+         -o-transform: translateX(-50%);
+            transform: translateX(-50%); }
+
+.textfield-multiline.outline > .content > .box > .line-shadow {
+    display: none !important; }
+
+.textfield-multiline > .content > .box > .description ~ .line-shadow {
+    left: calc(50% + 20px); }
+
+.textfield-multiline > .content > .box > textarea:focus ~ .line-shadow {
+    width: 100%; 
+    -webkit-animation: borderTextfield 200ms var(--sharp-curve);
+       -moz-animation: borderTextfield 200ms var(--sharp-curve);
+         -o-animation: borderTextfield 200ms var(--sharp-curve);
+            animation: borderTextfield 200ms var(--sharp-curve); }
+
+.textfield-multiline > .content > .box > .description ~ textarea:focus ~ .line-shadow {
+    width: calc(100% - 40px); 
+    -webkit-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+       -moz-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+         -o-animation: borderTextfieldIcon 200ms var(--sharp-curve);
+            animation: borderTextfieldIcon 200ms var(--sharp-curve); }
+
+.textfield-multiline > .content > .box > span {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 16px;
+    line-height: 16px;
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
+
+.textfield-multiline > .content > .box > .description ~ span {
+    left: 40px;
+    width: calc(100% - 40px); }
+
+.textfield-multiline.outline > .content > .box > span {
+    left: 12px;
+    width: calc(100% - 24px); }
+
+.textfield-multiline > .content > .box > span.counter {
+    left: initial;
+    right: 0px;
+    width: auto;
+    padding-left: 2px; }
+
+.textfield-multiline > .content > .box > .description ~ span.counter {
+    width: auto;
+    left: initial; }
+
+.textfield-multiline.outline > .content > .box > span.counter {
+    right: 12px !important; }
+
+.textfield-multiline > .content > .box > .textarea-hidden {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    font-family: inherit;
+    line-height: 21px;
+    visibility: hidden;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.textfield-multiline > .content > .box > .description ~ .textarea-hidden { 
+    width: calc(100% - 40px); }
+
+.textfield-multiline.outline > .content > .box > .textarea-hidden {
+    width: calc(100% - 24px); }
+
+.textfield-multiline.outline > .content > .box > .description ~ .textarea-hidden {
+    width: calc(100% - 52px); }
+
+.textfield-multiline.align-center > .content > .box > textarea,
+.textfield-multiline.align-center > .content > .box > .value,
+.textfield-multiline.align-center > .content > .box > .textarea-hidden {
+    text-align: center; }

@@ -1898,71 +1898,6 @@ button.floating.theme-secondary:before {
     border-top: 1px solid var(--background-border);
     background-color: var(--background-component); }
 
-/** FULLWIDTH FIELD */
-
-.fullwidth-field > .content > textarea {
-    color: transparent;
-    background-color: transparent; }
-
-.fullwidth-field > .content > textarea:focus {
-    color: var(--primary-font); }
-
-.theme-primary .fullwidth-field.contrast > .content > textarea:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .fullwidth-field.contrast > .content > textarea:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.fullwidth-field > .content > textarea::selection {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.theme-secondary .fullwidth-field.contrast > .content > textarea::selection {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.fullwidth-field > .content > textarea::-webkit-input-placeholder {
-    color: transparent; }
-
-.fullwidth-field > .content > textarea:focus::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .fullwidth-field.contrast textarea:focus::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .fullwidth-field.contrast textarea:focus::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.fullwidth-field > .content > .value {
-    color: var(--primary-font); }
-
-.theme-primary .fullwidth-field.contrast > .content > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .fullwidth-field.contrast > .content > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.fullwidth-field > .content > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .fullwidth-field.contrast > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .fullwidth-field.contrast > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.fullwidth-field > .content > textarea:focus ~ .value {
-    color: transparent; }
-
-.fullwidth-field > .content > textarea:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .fullwidth-field.contrast textarea:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .fullwidth-field.contrast textarea:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-500); }
-
 /** GALLERY */
 
 .gallery > .content {
@@ -3000,476 +2935,6 @@ button.floating.theme-secondary:before {
 .app-bar.theme-secondary > .toolbar > .tabs > .stripe {
     background-color: var(--theme-secondary-font-primary-700); }
 
-/** TEXTAREA */
-
-.textarea > .content > .box {
-    border: 1px solid var(--background-border); }
-
-.theme-primary .textarea.contrast > .content > .box {
-    border: 1px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast > .content > .box {
-    border: 1px solid var(--theme-secondary-font-secondary-500); }
-
-.textarea > .content:hover > .box {
-    border: 2px solid var(--primary-font); }
-
-.theme-primary .textarea.contrast > .content:hover > .box {
-    border: 2px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast > .content:hover > .box {
-    border: 2px solid var(--theme-secondary-font-secondary-500); }
-
-.textarea > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textarea.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textarea.contrast > .content.focused > .box {
-    border: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textarea.active.error > .content.focused > .box {
-    border: 2px solid var(--theme-error-500); }
-
-.textarea > .content.disabled > .box {
-    border: 1px dashed var(--background-border);
-    background-color: rgba(56, 56, 56, 1); }
-
-.theme-primary .textarea.contrast > .content.disabled > .box {
-    background-color: var(--theme-primary-200);
-    border: 1px dashed var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textarea.contrast > .content.disabled > .box {
-    background-color: var(--theme-secondary-200);
-    border: 1px dashed var(--theme-secondary-font-disabled-200); }
-
-.textarea > .content > .box > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textarea.contrast > .content > .box > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast > .content > .box > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textarea > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textarea.contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textarea.contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textarea > .content > .box > textarea:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textarea.contrast .box > textarea:focus ~ label {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textarea.contrast .box > textarea:focus ~ label {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textarea.active.error > .content > .box > textarea:focus ~ label, 
-.textarea.error > .content > .box > label,
-.textarea.active > .content > .box > textarea:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textarea > .content > .box > textarea {
-    color: transparent;
-    background-color: transparent; }
-
-.textarea > .content > .box > textarea:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textarea.contrast > .content > .box > textarea:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textarea.contrast > .content > .box > textarea:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textarea > .content > .box > textarea::selection {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.textarea > .content > .box > textarea::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textarea.contrast .box > textarea::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast .box > textarea::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textarea > .content > .box > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textarea.contrast > .content > .box > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textarea.contrast > .content > .box > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textarea > .content > .box > textarea:focus ~ .value {
-    color: transparent; }
-
-.textarea > .content > .box > textarea:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textarea.contrast .box > textarea:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textarea.contrast .box > textarea:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textarea > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textarea.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textarea > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textarea > .content > span.counter {
-    background-color: var(--background-core);
-    color: var(--secondary-font); }
-
-.theme-primary .textarea.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textarea.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
-/** TEXTBOX MULTILINE */
-
-.textbox-multiline > .content > .box {
-    border-bottom: 2px solid var(--background-border);
-    background-color: rgba(48, 48, 48, 1); }
-
-.theme-primary .textbox-multiline.contrast > .content > .box {
-    background-color: var(--theme-primary-300);
-    border-bottom: 2px solid var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox-multiline.contrast > .content > .box {
-    background-color: var(--theme-secondary-300);
-    border-bottom: 2px solid var(--theme-secondary-font-secondary-300); }
-
-.textbox-multiline > .content:hover > .box {
-    border-bottom: 2px solid var(--primary-font); }
-
-.theme-primary .textbox-multiline.contrast > .content:hover > .box {
-    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox-multiline.contrast > .content:hover > .box {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
-
-.textbox-multiline > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.textbox-multiline > .content.disabled > .box {
-    background-color: rgba(56, 56, 56, 1);
-    border-bottom: 2px solid var(--disabled-font); }
-
-.theme-primary .textbox-multiline.contrast > .content.disabled > .box {
-    background-color: var(--theme-primary-200);
-    border-bottom: 2px solid var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox-multiline.contrast > .content.disabled > .box {
-    background-color: var(--theme-secondary-200);
-    border-bottom: 2px solid var(--theme-secondary-font-disabled-200); }
-
-.textbox-multiline.active.error > .content.focused > .box {
-    border-bottom: 2px solid var(--theme-error-500); }
-
-.textbox-multiline > .content > .box > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox-multiline.contrast > .content > .box > label {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox-multiline.contrast > .content > .box > label {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox-multiline.active > .content > .box > textarea:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textbox-multiline.contrast .box > textarea:focus ~ label {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea:focus ~ label {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox-multiline > .content.disabled > .box > label {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox-multiline.contrast > .content.disabled > .box > label {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox-multiline.contrast > .content.disabled > .box > label {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textbox-multiline.error > .content > .box > textarea:focus ~ label, 
-.textbox-multiline.error > .content > .box > label,
-.textbox-multiline > .content > .box > textarea:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textbox-multiline > .content > .box > textarea {
-    color: transparent;
-    background-color: transparent; }
-
-.textbox-multiline > .content > .box > textarea:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textbox-multiline.contrast .box > textarea:focus {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea:focus {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox-multiline > .content > .box > textarea::selection {
-    color: var(--theme-secondary-active);
-    background-color: var(--theme-secondary-500); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea::selection {
-    color: var(--theme-primary-active);
-    background-color: var(--theme-primary-500); }
-
-.textbox-multiline .box > textarea::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox-multiline.contrast .box > textarea::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox-multiline > .content > .box > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textbox-multiline.contrast > .content > .box > .value {
-    color: var(--theme-primary-font-primary-300); }
-
-.theme-secondary .textbox-multiline.contrast > .content > .box > .value {
-    color: var(--theme-secondary-font-primary-300); }
-
-.textbox-multiline .box > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox-multiline.contrast .box > .value.holderactive {
-    color: var(--theme-primary-font-secondary-300); }
-
-.theme-secondary .textbox-multiline.contrast .box > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-300); }
-
-.textbox-multiline > .content > .box > textarea:focus ~ .value {
-    color: transparent; }
-
-.textbox-multiline > .content > .box > textarea:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textbox-multiline.contrast .box > textarea:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-200); }
-
-.theme-secondary .textbox-multiline.contrast .box > textarea:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-200); }
-
-.textbox-multiline > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textbox-multiline.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textbox-multiline.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textbox-multiline > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textbox-multiline > .content > span.counter {
-    color: var(--secondary-font);
-    background-color: var(--background-core); }
-
-.theme-primary .textbox-multiline.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textbox-multiline.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
-/** TEXTFIELD MULTILINE */
-
-.textfield-multiline > .content > label {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > label {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > label {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline.active > .content > textarea:focus ~ label {
-    color: var(--theme-secondary-500); }
-
-.theme-primary .textfield-multiline.contrast.active textarea:focus ~ label {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-multiline.contrast.active textarea:focus ~ label {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-multiline > .content > textarea:disabled ~ label {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-multiline.contrast textarea:disabled ~ label {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield-multiline.contrast textarea:disabled ~ label {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.textfield-multiline.active.error > .content > textarea:focus ~ label, 
-.textfield-multiline.error > .content > label,
-.textfield-multiline.active > .content > textarea:focus ~ label > span {
-    color: var(--theme-error-500); }
-
-.textfield-multiline > .content > i {
-    color: var(--secondary-font); }
-
-.textfield-multiline > .content > textarea {
-    color: transparent;
-    background-color: transparent; }
-
-.textfield-multiline > .content > textarea:focus {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > textarea:focus {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > textarea:focus {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-multiline > .content > textarea::selection {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-primary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > textarea::selection {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-primary-500); }
-
-.textfield-multiline > .content > textarea::-webkit-input-placeholder {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-multiline.contrast textarea::-webkit-input-placeholder {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast textarea::-webkit-input-placeholder {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline > .content > .value {
-    color: var(--primary-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > .value {
-    color: var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > .value {
-    color: var(--theme-secondary-font-primary-500); }
-
-.textfield-multiline > .content > .value.holderactive {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > .value.holderactive {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > .value.holderactive {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline > .content > textarea:focus ~ .value {
-    color: transparent; }
-
-.textfield-multiline > .content > textarea:disabled ~ .value {
-    color: var(--disabled-font); }
-
-.theme-primary .textfield-multiline.contrast textarea:disabled ~ .value {
-    color: var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .value {
-    color: var(--theme-secondary-font-disabled-500); }
-
-.textfield-multiline > .content > .line-bordered {
-    border-bottom: 1px solid var(--background-border); }
-
-.theme-primary .textfield-multiline.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > .line-bordered {
-    border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline:hover > .content > .line-bordered {
-    border-bottom: 2px solid var(--primary-font); }
-
-.theme-primary .textfield-multiline.contrast:hover .line-bordered {
-    border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast:hover .line-bordered {
-    border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline > .content > textarea:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--background-border); }
-
-.theme-primary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
-
-.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
-    border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
-
-.textfield-multiline > .content > .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.textfield-multiline > .content > textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-500); }
-
-.theme-primary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
-
-.theme-secondary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
-
-.textfield-multiline.active.error > .content > textarea:focus ~ .line-shadow {
-    border-bottom: 2px solid var(--theme-error-500); }
-
-.textfield-multiline > .content > textarea:disabled ~ .line-shadow {
-    border-bottom: 2px solid transparent; }
-
-.textfield-multiline > .content > span.help {
-    color: var(--secondary-font); }
-
-.theme-primary .textfield-multiline.contrast > .content > span.help {
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > span.help {
-    color: var(--theme-secondary-font-secondary-500); }
-
-.textfield-multiline > .content > span.error {
-    color: var(--theme-error-500); }
-
-.textfield-multiline > .content > span.counter {
-    color: var(--secondary-font); 
-    background-color: var(--background-core); }
-
-.theme-primary .textfield-multiline.contrast > .content > span.counter {
-    background-color: var(--theme-primary-500);
-    color: var(--theme-primary-font-secondary-500); }
-
-.theme-secondary .textfield-multiline.contrast > .content > span.counter {
-    background-color: var(--theme-secondary-500);
-    color: var(--theme-secondary-font-secondary-500); }
-
 /** TOAST */
 
 .toast > .body { 
@@ -3707,13 +3172,13 @@ button.floating.theme-secondary:before {
     border: 1px solid var(--theme-secondary-font-primary-500); }
 
 .textfield.outline.error > .content.active > .box {
-    border-bottom: 1px solid var(--theme-error-500); }
+    border: 1px solid var(--theme-error-500); }
 
 .theme-primary .textfield.outline.error.contrast > .content.active > .box {
-    border-bottom: 1px solid var(--theme-primary-font-primary-300); }
+    border: 1px solid var(--theme-primary-font-primary-300); }
 
-.theme-secondary .textfield.outline.error > .content.active > .box {
-    border-bottom: 1px solid var(--theme-secondary-font-primary-300); }
+.theme-secondary .textfield.outline.error.contrast > .content.active > .box {
+    border: 1px solid var(--theme-secondary-font-primary-300); }
 
 .autocomplete.outline > .content.disabled > .box,
 .clockpicker-input.outline > .content.disabled > .box,
@@ -4540,3 +4005,220 @@ input:-webkit-autofill {
 .datatable > .content tbody .textfield > .content > .box > .line-bordered,
 .datatable > .content tbody .textfield-readonly > .content > .box > .line-bordered {
     border-bottom: none !important; }
+
+/** TEXTFIELD MULTILINE */
+
+.textfield-multiline.outline > .content > .box {
+    border: 1px solid var(--background-border); }
+
+.theme-primary .textfield-multiline.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.outline.contrast > .content > .box {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline.outline > .content.active > .box {
+    border: 1px solid var(--theme-secondary-500); }
+
+.theme-primary .textfield-multiline.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.outline.contrast > .content.active > .box {
+    border: 1px solid var(--theme-secondary-font-primary-500); }
+
+.textfield-multiline.outline.error > .content.active > .box {
+    border: 1px solid var(--theme-error-500); }
+
+.theme-primary .textfield-multiline.outline.error.contrast > .content.active > .box {
+    border: 1px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield-multiline.outline.error.contrast > .content.active > .box {
+    border: 1px solid var(--theme-secondary-font-primary-300); }
+
+.textfield-multiline.outline > .content.disabled > .box {
+    border: 1px dashed var(--background-border); }
+
+.theme-primary .textfield-multiline.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .textfield-multiline.outline.contrast > .content.disabled > .box {
+    border: 1px dashed var(--theme-secondary-font-disabled-500); }
+
+.textfield-multiline > .content > .box > .description > i {
+    color: var(--secondary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > .description > i {
+    border: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box .description > i {
+    border: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content.disabled > .box > .description > i {
+    color: var(--disabled-font); }
+
+.theme-primary .textfield-multiline.contrast > .content.disabled > .box > .description > i {
+    border: 1px solid var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content.disabled > .box .description > i {
+    border: 1px solid var(--theme-secondary-font-disabled-500); }
+
+.textfield-multiline > .content > .box > label {
+    color: var(--secondary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > label {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > label {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content > .box > textarea:focus ~ label {
+    color: var(--theme-secondary-500); }
+
+.theme-primary .textfield-multiline.contrast.active textarea:focus ~ label {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.contrast.active textarea:focus ~ label {
+    color: var(--theme-secondary-font-primary-500); }
+
+.textfield-multiline > .content > .box > textarea:disabled ~ label {
+    color: var(--disabled-font); }
+
+.theme-primary .textfield-multiline.contrast textarea:disabled ~ label {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .textfield-multiline.contrast textarea:disabled ~ label {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.textfield-multiline.error > .content > .box > textarea:focus ~ label, 
+.textfield-multiline.error > .content > .box > label,
+.textfield-multiline > .content > .box > textarea:focus ~ label > span {
+    color: var(--theme-error-500); }
+
+.textfield-multiline > .content > .box > textarea {
+    color: transparent;
+    background-color: transparent; }
+
+.textfield-multiline > .content > .box > textarea:focus {
+    color: var(--primary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > textarea:focus {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > textarea:focus {
+    color: var(--theme-secondary-font-primary-500); }
+
+.textfield-multiline > .content > .box > textarea::selection {
+    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > textarea::selection {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-500); }
+
+.textfield-multiline > .content > .box > textarea::-webkit-input-placeholder {
+    color: var(--secondary-font); }
+
+.theme-primary .textfield-multiline.contrast textarea::-webkit-input-placeholder {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast textarea::-webkit-input-placeholder {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content > .box > .value {
+    color: var(--primary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > .value {
+    color: var(--theme-primary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > .value {
+    color: var(--theme-secondary-font-primary-500); }
+
+.textfield-multiline > .content > .box > .value.holderactive {
+    color: var(--secondary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > .value.holderactive {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > .value.holderactive {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content > .box > textarea:focus ~ .value {
+    color: transparent; }
+
+.textfield-multiline > .content.disabled > .box > .value {
+    color: var(--disabled-font); }
+
+.theme-primary .textfield-multiline.contrast textarea:disabled ~ .value {
+    color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .value {
+    color: var(--theme-secondary-font-disabled-500); }
+
+.textfield-multiline > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--background-border); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > .line-bordered {
+    border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline:hover > .content > .box > .line-bordered {
+    border-bottom: 2px solid var(--primary-font); }
+
+.theme-primary .textfield-multiline.contrast:hover .line-bordered {
+    border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast:hover .line-bordered {
+    border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content > .box > textarea:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--background-border); }
+
+.theme-primary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .textfield-multiline.contrast textarea:disabled ~ .line-bordered {
+    border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
+
+.textfield-multiline > .content > .box > .line-shadow {
+    border-bottom: 2px solid transparent; }
+
+.textfield-multiline > .content > .box > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
+
+.theme-secondary .textfield-multiline.contrast textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-500); }
+
+.textfield-multiline.error > .content > .box > textarea:focus ~ .line-shadow {
+    border-bottom: 2px solid var(--theme-error-500); }
+
+.textfield-multiline > .content > .box > textarea:disabled ~ .line-shadow {
+    border-bottom: 2px solid transparent; }
+
+.textfield-multiline > .content > .box > span.help {
+    color: var(--secondary-font); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > span.help {
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > span.help {
+    color: var(--theme-secondary-font-secondary-500); }
+
+.textfield-multiline > .content > .box > span.error {
+    color: var(--theme-error-500); }
+
+.textfield-multiline > .content > .box > span.counter {
+    color: var(--secondary-font); 
+    background-color: var(--background-core); }
+
+.theme-primary .textfield-multiline.contrast > .content > .box > span.counter {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .textfield-multiline.contrast > .content > .box > span.counter {
+    background-color: var(--theme-secondary-500);
+    color: var(--theme-secondary-font-secondary-500); }

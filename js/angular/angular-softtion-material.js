@@ -103,8 +103,6 @@
                 
                 FormNavigation: Directives.create(Directives.FormNavigation),
 
-                FullwidthField: Directives.create(Directives.FullwidthField),
-
                 Gallery: Directives.create(Directives.Gallery),
 
                 Grid: Directives.create(Directives.Grid),
@@ -147,13 +145,7 @@
 
                 Tabs: Directives.create(Directives.Tabs),
 
-                TextArea: Directives.create(Directives.TextArea),
-
-                TextBoxMultiline: Directives.create(Directives.TextBoxMultiline),
-
                 TextField: Directives.create(Directives.TextField),
-
-                TextFieldBordered: Directives.create(Directives.TextFieldBordered),
 
                 TextFieldMultiline: Directives.create(Directives.TextFieldMultiline),
 
@@ -303,7 +295,6 @@
             case (Directives.FilechooserPerfil.NAME): return Directives.FilechooserPerfil;
             case (Directives.FlexibleBox.NAME): return Directives.FlexibleBox;
             case (Directives.FormNavigation.NAME): return Directives.FormNavigation;
-            case (Directives.FullwidthField.NAME): return Directives.FullwidthField;
             case (Directives.Gallery.NAME): return Directives.Gallery;
             case (Directives.Grid.NAME): return Directives.Grid;
             case (Directives.GridSheet.NAME): return Directives.GridSheet;
@@ -325,10 +316,7 @@
             case (Directives.StepperHorizontal.NAME): return Directives.StepperHorizontal;
             case (Directives.Switch.NAME): return Directives.Switch;
             case (Directives.Tabs.NAME): return Directives.Tabs;
-            case (Directives.TextArea.NAME): return Directives.TextArea;
-            case (Directives.TextBoxMultiline.NAME): return Directives.TextBoxMultiline;
             case (Directives.TextField.NAME): return Directives.TextField;
-            case (Directives.TextFieldBordered.NAME): return Directives.TextFieldBordered;
             case (Directives.TextFieldMultiline.NAME): return Directives.TextFieldMultiline;
             case (Directives.TextFieldReadonly.NAME): return Directives.TextFieldReadonly;
             case (Directives.Tooltip.NAME): return Directives.Tooltip;
@@ -5075,77 +5063,6 @@
         };
     }
     
-    // Directiva: FullwidthField
-    // Version: 1.0.0
-    // Update: 26/Feb/2018
-    
-    Directives.FullwidthField = FullwidthFieldDirective;
-    
-    Directives.FullwidthField.NAME = "FullwidthField";
-    Directives.FullwidthField.VERSION = "1.0.0";
-    Directives.FullwidthField.KEY = "fullwidthField";
-    Directives.FullwidthField.ROUTE = "softtion/template/fullwidth-field.html",
-                    
-    Directives.FullwidthField.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{disabled: ngDisabled}");
-
-        var textArea = softtion.html("textarea").
-            addAttribute("ng-model", "area").
-            addAttribute("ng-click", "clickArea($event)").
-            addAttribute("ng-blur", "blurArea($event)").
-            addAttribute("ng-focus", "focusArea($event)").
-            addAttribute("ng-keydown", "keydownArea($event)").
-            addAttribute("ng-keyup", "keyupArea($event)").
-            addAttribute("ng-readonly", "ngReadonly").
-            addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isHaveText()}").
-            addAttribute("ng-trim", "ngTrim").
-            addAttribute("focused-element", "focusedArea").
-            addAttribute("style", "{{heightStyle()}}").
-            addAttribute("placeholder", "{{placeholder}}");
-
-        var value = softtion.html("p").addClass(["value"]).
-            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{holderactive: isHolderActive()}");
-
-        var textHidden = softtion.html("div").
-            addClass("textarea-hidden").setText("{{valueHidden}}");
-
-        content.addChildren(textArea).
-            addChildren(value).addChildren(textHidden);
-
-        return content.create(); // Componente TextArea
-    };
-    
-    function FullwidthFieldDirective() {
-        return {
-            restrict: "C",
-            templateUrl: Directives.FullwidthField.ROUTE,
-            scope: {
-                value: "=ngModel", 
-                required: "=?",
-                ngTrim: "=?",
-                ngUppercase: "=?",
-                ngLowercase: "=?",
-                ngDisabled: "=?",
-                ngReadonly: "=?",
-                minLength: "=?",
-                maxLength: "=?",
-                counterVisible: "=?",
-                placeholder: "@",
-                focusedArea: "=?",
-                keyDisabled: "=?",
-                clearModel: "=?",
-                ngListener: "&"
-            },
-            link: function ($scope, $element) {
-                defineAreaComponent($scope, $element);
-            }
-        };
-    }
-    
     // Directiva: Gallery
     // Version: 1.0.0
     // Update: 26/Feb/2018
@@ -6039,10 +5956,6 @@
                 $scope.old = undefined; // Seleccion anterior nula
                 
                 defineInputField($scope, $element, $attrs, listener);
-
-                $scope.isHaveText = function () {
-                    return softtion.isDefined($scope.ngModel);
-                };
 
                 $scope.isActiveLabel = function () {
                     return (softtion.isDefined($scope.ngModel));
@@ -7036,202 +6949,6 @@
         };
     }
     
-    // Directiva: TextArea
-    // Version: 1.1.6
-    // Update: 27/Feb/2018
-    
-    Directives.TextArea = TextAreaDirective;
-    
-    Directives.TextArea.NAME = "TextArea";
-    Directives.TextArea.VERSION = "1.1.6";
-    Directives.TextArea.KEY = "textarea";
-    Directives.TextArea.ROUTE = "softtion/template/textarea.html";
-    
-    Directives.TextArea.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{focused: areaActive, disabled: ngDisabled}");
-
-        var box = softtion.html("div").addClass("box");
-
-        var textArea = softtion.html("textarea").
-            addAttribute("ng-model", "area").
-            addAttribute("ng-click", "clickArea($event)").
-            addAttribute("ng-blur", "blurArea($event)").
-            addAttribute("ng-focus", "focusArea($event)").
-            addAttribute("ng-keydown", "keydownArea($event)").
-            addAttribute("ng-keyup", "keyupArea($event)").
-            addAttribute("ng-readonly", "ngReadonly").
-            addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isHaveText()}").
-            addAttribute("ng-trim", "ngTrim").
-            addAttribute("focused-element", "focusedArea").
-            addAttribute("style", "{{heightStyle()}}").
-            addAttribute("placeholder", "{{placeholder}}");
-
-        var label = softtion.html("label").setText("{{label}}").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{active: isActiveLabel()}").
-            addChildren(
-                softtion.html("span").setText("*").addAttribute("ng-if", "required")
-            ).addChildren(
-                softtion.html("span").addClass("optional").
-                    setText("(opcional)").addAttribute("ng-if", "optional")
-            );
-
-        var value = softtion.html("p").addClass(["value"]).
-            setText("{{getValueModel()}}").
-            addAttribute("ng-hide", "hideValue").
-            addAttribute("ng-click", "clickLabel($event)");
-
-        var spanError = softtion.html("span").addClass(["error", "truncate"]).
-            setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
-
-        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
-
-        var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
-            setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
-
-        var textHidden = softtion.html("div").
-            addClass("textarea-hidden").setText("{{valueHidden}}");
-
-        box.addChildren(textArea).addChildren(label).
-            addChildren(value).addChildren(textHidden);
-
-        content.addChildren(box).addChildren(spanError).
-            addChildren(spanHelper).addChildren(spanCounter);
-
-        return content.create(); // Componente
-    };
-    
-    function TextAreaDirective() {
-        return {
-            restrict: "C",
-            templateUrl: Directives.TextArea.ROUTE,
-            scope: {
-                value: "=ngModel", 
-                label: "@", 
-                required: "=?",
-                optional: "=?",
-                ngTrim: "=?",
-                ngUppercase: "=?",
-                ngLowercase: "=?",
-                ngDisabled: "=?",
-                ngReadonly: "=?",
-                minLength: "=?",
-                maxLength: "=?",
-                counterVisible: "=?",
-                placeholder: "@",
-                helperText: "@",
-                focusedArea: "=?",
-                keyDisabled: "=?",
-                clearModel: "=?",
-                ngListener: "&"
-            },
-            link: function ($scope, $element) {
-                defineAreaComponent($scope, $element);
-            }
-        };
-    }
-    
-    // Directiva: TextBoxMultiline
-    // Version: 1.1.6
-    // Update: 27/Feb/2018
-    
-    Directives.TextBoxMultiline = TextBoxMultilineDirective;
-    
-    Directives.TextBoxMultiline.NAME = "TextBoxMultiline";
-    Directives.TextBoxMultiline.VERSION = "1.1.6";
-    Directives.TextBoxMultiline.KEY = "textboxMultiline";
-    Directives.TextBoxMultiline.ROUTE = "softtion/template/textbox-multiline.html";
-    
-    Directives.TextBoxMultiline.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{focused: areaActive, disabled: ngDisabled}");
-
-        var box = softtion.html("div").addClass("box");
-
-        var textArea = softtion.html("textarea").
-            addAttribute("ng-model", "area").
-            addAttribute("ng-click", "clickArea($event)").
-            addAttribute("ng-blur", "blurArea($event)").
-            addAttribute("ng-focus", "focusArea($event)").
-            addAttribute("ng-keydown", "keydownArea($event)").
-            addAttribute("ng-keyup", "keyupArea($event)").
-            addAttribute("ng-readonly", "ngReadonly").
-            addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isPlaceholder()}").
-            addAttribute("ng-trim", "ngTrim").
-            addAttribute("focused-element", "focusedArea").
-            addAttribute("style", "{{heightStyle()}}").
-            addAttribute("placeholder", "{{placeholder}}");
-
-        var label = softtion.html("label").setText("{{label}}").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{active: isActiveLabel()}").
-            addChildren(
-                softtion.html("span").setText("*").addAttribute("ng-if", "required")
-            ).addChildren(
-                softtion.html("span").addClass("optional").
-                    setText("(opcional)").addAttribute("ng-if", "optional")
-            );
-
-        var value = softtion.html("p").addClass(["value"]).
-            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{holderactive: isHolderActive()}");
-
-        var spanError = softtion.html("span").addClass(["error", "truncate"]).
-            setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
-
-        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
-
-        var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
-            setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
-
-        var textHidden = softtion.html("div").
-            addClass("textarea-hidden").setText("{{valueHidden}}");
-
-        box.addChildren(textArea).addChildren(label).
-            addChildren(value).addChildren(textHidden);
-
-        content.addChildren(box).addChildren(spanError).
-            addChildren(spanHelper).addChildren(spanCounter);
-
-        return content.create(); // Componente
-    };
-                    
-    function TextBoxMultilineDirective() {
-        return {
-            restrict: "C",
-            templateUrl: Directives.TextBoxMultiline.ROUTE,
-            scope: {
-                value: "=ngModel", 
-                label: "@", 
-                required: "=?",
-                optional: "=?",
-                ngTrim: "=?",
-                ngUppercase: "=?",
-                ngLowercase: "=?",
-                ngDisabled: "=?",
-                ngReadonly: "=?",
-                minLength: "=?",
-                maxLength: "=?",
-                counterVisible: "=?",
-                placeholder: "@",
-                helperText: "@",
-                focusedArea: "=?",
-                keyDisabled: "=?",
-                clearModel: "=?",
-                ngListener: "&"
-            },
-            link: function ($scope, $element) {
-                defineAreaComponent($scope, $element);
-            }
-        };
-    }
-    
     // Directiva: TextField
     // Version: 1.1.6
     // Update: 27/Feb/2018
@@ -7365,111 +7082,6 @@
         };
     }
     
-    // Directiva: TextFieldBordered
-    // Version: 1.1.6
-    // Update: 27/Feb/2018
-    
-    Directives.TextFieldBordered = TextFieldBorderedDirective;
-    
-    Directives.TextFieldBordered.NAME = "TextFieldBordered";
-    Directives.TextFieldBordered.VERSION = "1.1.6";
-    Directives.TextFieldBordered.KEY = "textfieldBordered";
-    Directives.TextFieldBordered.ROUTE = "softtion/template/textfield-bordered.html";
-    
-    Directives.TextFieldBordered.HTML = function () {
-        var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{focused: inputActive, disabled: ngDisabled}");
-
-        var box = softtion.html("div").addClass("box");
-
-        var input = softtion.html("input", false).
-            addAttribute("type", "{{typeInput}}").
-            addAttribute("autocomplete", "{{autocompleteValue}}").
-            addAttribute("ng-model", "input").
-            addAttribute("ng-click", "clickInput($event)").
-            addAttribute("ng-blur", "blurInput($event)").
-            addAttribute("ng-focus", "focusInput($event)").
-            addAttribute("ng-keydown", "keydownInput($event)").
-            addAttribute("ng-keyup", "keyupInput($event)").
-            addAttribute("ng-readonly", "ngReadonly").
-            addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isPlaceholder(), \"icon-action\": isIconAction}").
-            addAttribute("ng-trim", "ngTrim").
-            addAttribute("focused-element", "focusedInput").
-            addAttribute("placeholder", "{{placeholder}}");
-
-        var value = softtion.html("pre").addClass(["value"]).
-            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
-            addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{holderactive: isHolderActive()}");
-
-        var iconAction = softtion.html("i").addClass(Classes.ACTION).
-            setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
-            addAttribute("ng-click", "clickAction($event)");
-
-        var label = softtion.html("label").
-            setText("{{label}}").addClass("truncate").
-            addAttribute("ng-class", "{active: isActiveLabel()}").
-            addAttribute("ng-click", "clickLabel($event)").
-            addChildren(
-                softtion.html("span").setText("*").addAttribute("ng-if", "required")
-            ).addChildren(
-                softtion.html("span").addClass("optional").
-                    setText("(opcional)").addAttribute("ng-if", "optional")
-            );
-
-        var spanError = softtion.html("span").addClass(["error", "truncate"]).
-            setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
-
-        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
-            setText("{{helperText}}").addAttribute("ng-hide", "hideHelperText()");
-
-        var spanCounter = softtion.html("span").addClass(["counter", "truncate"]).
-            setText("{{textCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
-
-        box.addChildren(input).addChildren(value).
-            addChildren(iconAction).addChildren(label);
-
-        content.addChildren(box).addChildren(spanHelper).
-            addChildren(spanError).addChildren(spanCounter);
-
-        return content.create(); // Componente
-    };
-                    
-    function TextFieldBorderedDirective() {
-        return {
-            restrict: "C",
-            templateUrl: Directives.TextFieldBordered.ROUTE,
-            scope: {
-                value: "=ngModel", 
-                label: "@", 
-                type: "@",
-                autocomplete: "=?",
-                required: "=?",
-                optional: "=?",
-                ngTrim: "=?",
-                uppercase: "=?",
-                ngDisabled: "=?",
-                ngReadonly: "=?",
-                minLength: "=?",
-                maxLength: "=?",
-                counterVisible: "=?",
-                iconDescription: "@",
-                iconAction: "@",
-                placeholder: "@",
-                helperText: "@",
-                focusedInput: "=?",
-                keyDisabled: "=?",
-                clearModel: "=?",
-                ngFormatValue: "&",
-                ngListener: "&"
-            },
-            link: function ($scope, $element, $attrs) {
-                defineInputComponent($scope, $element, $attrs);
-            }
-        };
-    }
-    
     // Directiva: TextFieldMultiline
     // Version: 1.1.6
     // Update: 27/Feb/2018
@@ -7482,16 +7094,31 @@
     Directives.TextFieldMultiline.ROUTE = "softtion/template/textfield-multiline.html";
     
     Directives.TextFieldMultiline.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
         var content = softtion.html("div").addClass("content").
-            addAttribute("ng-class", "{disabled: ngDisabled}");
-
-        var iconDescription = softtion.html("i").
-            addAttribute("ng-click", "clickIconDescription($event)").
-            addAttribute("ng-if", "isIconDescription()").
-            addClass("description").setText("{{iconDescription}}");
+            addAttribute("ng-class",
+                "{active: areaActive, \"label-inactive\": !isLabel," +
+                " disabled: ngDisabled, \"icon-action\": isIconAction || checkboxActive}"
+            ).addChildren(box);
+        
+        var description = softtion.html("div").addClass("description").
+                addAttribute("ng-click", "clickIconDescription($event)").
+                addAttribute("ng-if", "isIconDescription || isIconImg").
+                addChildren(
+                    softtion.html("div").addClass("img-icon").
+                        addAttribute("ng-if", "isIconImg").
+                        addChildren(
+                            softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
+                        )
+                ).addChildren(
+                    softtion.html("i").addAttribute("ng-if", "isIconDescription").
+                        setText("{{iconDescription}}")
+                );
 
         var textArea = softtion.html("textarea").
             addAttribute("ng-model", "area").
+            addAttribute("autocomplete", "off").
             addAttribute("ng-click", "clickArea($event)").
             addAttribute("ng-blur", "blurArea($event)").
             addAttribute("ng-focus", "focusArea($event)").
@@ -7499,8 +7126,8 @@
             addAttribute("ng-keyup", "keyupArea($event)").
             addAttribute("ng-readonly", "ngReadonly").
             addAttribute("ng-disabled", "ngDisabled").
-            addAttribute("ng-class", "{holderhide: isPlaceholder()}").
             addAttribute("ng-trim", "ngTrim").
+            addAttribute("ng-paste", "pasteArea($event)").
             addAttribute("focused-element", "focusedArea").
             addAttribute("style", "{{heightStyle()}}").
             addAttribute("placeholder", "{{placeholder}}");
@@ -7519,9 +7146,9 @@
             );
 
         var value = softtion.html("p").addClass(["value"]).
-            setText("{{getValueModel()}}").addAttribute("ng-hide", "hideValue").
+            setText("{{getValueModel()}}").
             addAttribute("ng-click", "clickLabel($event)").
-            addAttribute("ng-class", "{holderactive: isHolderActive()}");
+            addAttribute("ng-class", "{\"holder-active\": isHolderActive()}");
 
         var spanError = softtion.html("span").addClass(["error", "truncate"]).
             setText("{{errorText}}").addAttribute("ng-hide", "!errorActive");
@@ -7535,9 +7162,9 @@
         var textHidden = softtion.html("div").
             addClass("textarea-hidden").setText("{{valueHidden}}");
 
-        content.addChildren(iconDescription).addChildren(textArea).
-            addChildren(lineShadow).addChildren(lineActive).
-            addChildren(label).addChildren(value).
+        box.addChildren(description).addChildren(value).
+            addChildren(textArea).addChildren(lineShadow).
+            addChildren(lineActive).addChildren(label).
             addChildren(spanError).addChildren(spanHelper).
             addChildren(spanCounter).addChildren(textHidden);
 
@@ -7562,6 +7189,7 @@
                 maxLength: "=?",
                 counterVisible: "=?",
                 iconDescription: "@",
+                iconImg: "@",
                 placeholder: "@",
                 helperText: "@",
                 focusedArea: "=?",
@@ -7569,8 +7197,8 @@
                 clearModel: "=?",
                 ngListener: "&"
             },
-            link: function ($scope, $element) {
-                defineAreaComponent($scope, $element);
+            link: function ($scope, $element, $attrs) {
+                defineAreaComponent($scope, $element, $attrs);
             }
         };
     }
@@ -10067,6 +9695,8 @@
         $scope.getTextCounter = function () {
             var text = ($scope.inputActive) ? $scope.input : (isDefinedModel()) ? 
                     $scope.ngModel.toString() : $scope.input;
+                    
+            if (softtion.isUndefined(text)) text = "";
 
             return text.length + "/" + $scope.maxLength; // Descripción
         };
@@ -10283,7 +9913,7 @@
         }
     }
     
-    function defineAreaComponent($scope, $element) {
+    function defineAreaComponent($scope, $element, $attrs) {
             // Componentes
         var hidden = $element.find(".textarea-hidden"),
             area = $element.find("textarea");
@@ -10301,9 +9931,19 @@
         $scope.areaStart = false; $scope.heightEnd = 0;
         
         $scope.pressEnter = false; $scope.countEnter = 0;
-
-        if (softtion.isText($scope.value)) $element.addClass(Classes.ACTIVE); 
-
+                    
+        $attrs.$observe("iconDescription", () => {
+            $scope.isIconDescription = softtion.isText($attrs.iconDescription);
+        });
+                    
+        $attrs.$observe("iconImg", () => {
+            $scope.isIconImg = softtion.isText($attrs.iconImg);
+        });
+        
+        $attrs.$observe("label", () => {
+            $scope.isLabel = softtion.isText($attrs.label);
+        });
+        
         $scope.$watch(() => { return $scope.clearModel; }, 
             (newValue) => {
                 if (newValue === true) {
@@ -10361,34 +10001,22 @@
                 (softtion.isDefined($scope.value) && softtion.isText($scope.value));
         };
 
-        $scope.isIconDescription = function () {
-            return softtion.isText($scope.iconDescription);
-        };
-
         $scope.isCounterAllowed = function () {
             return $scope.counterVisible && (!isNaN($scope.maxLength)) && ($scope.maxLength > 0);
         };
 
         $scope.textCounter = function () {
             var text = ($scope.areaActive) ? $scope.area : 
-                (softtion.isDefined($scope.value)) ? 
-                    $scope.value.toString() : $scope.area;
+                    (softtion.isText($scope.value)) ? $scope.value.toString() : $scope.area;
+                    
+            if (softtion.isUndefined(text)) text = "";
 
             return text.length + "/" + $scope.maxLength; 
         };
-
-        $scope.isHaveText = function () {
-            return softtion.isText($scope.area) || softtion.isDefined($scope.value);
-        };
-
-        $scope.isPlaceholder = function () {
-            return ($scope.areaActive) ? 
-                softtion.isText($scope.area) : softtion.isDefined($scope.value);
-        };
         
         $scope.isHolderActive = function () {
-            return $scope.areaActive ? false : softtion.isText($scope.label) ? 
-                false : !softtion.isText($scope.value);
+            return $scope.areaActive ? false : $scope.isLabel ? 
+                false : softtion.isUndefined($scope.ngModel);
         };
         
         $scope.hideHelperText = function () {
@@ -10400,6 +10028,8 @@
         };
 
         $scope.clickIconDescription = function ($event) {
+            if ($scope.ngDisabled) return; // Componente inactivo
+
             listener.launch(Listeners.ICON, { $event: $event });
         };
 
@@ -10449,6 +10079,10 @@
 
         $scope.keyupArea = function ($event) {
             defineModelKeyupArea(); listener.launch(Listeners.KEY_UP, { $event: $event });
+        };
+        
+        $scope.pasteArea = function ($event) {
+            listener.launch(Listeners.PASTE, { $event: $event });
         };
 
         $scope.getValueModel = function () {
