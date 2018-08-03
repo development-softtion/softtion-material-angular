@@ -469,6 +469,24 @@ button.theme-secondary.flat:disabled {
 button.flat:before {
     background-color: var(--ripple); }
 
+button.flat.outline {
+    border: 2px solid var(--primary-font); }
+
+button.theme-primary.flat.outline {
+    border: 2px solid var(--theme-secondary-500); }
+
+button.theme-secondary.flat.outline {
+    border: 2px solid var(--theme-primary-500); }
+
+button.flat.outline:disabled {
+    border: 2px dashed var(--disabled-font); }
+
+button.theme-primary.flat.outline:disabled {
+    border: 2px dashed var(--theme-secondary-200); }
+
+button.theme-secondary.flat.outline:disabled {
+    border: 2px dashed var(--theme-primary-200); }
+
 /** BUTTON RAISED */
 
 button.raised { 
@@ -2825,6 +2843,17 @@ button.floating.theme-secondary:before {
 
 /** SWITCH */
 
+.switch.capsule > label {
+    border: 2px solid var(--background-border); }
+
+.switch.capsule > input[type=checkbox]:checked + label {
+    background-color: var(--theme-secondary-500);
+    border: 2px solid var(--theme-secondary-500); }
+
+.switch.capsule > input[type=checkbox]:checked:disabled + label {
+    background-color: var(--theme-secondary-300);
+    border: 2px solid var(--theme-secondary-300); }
+
 .switch > label > .track:before {
     opacity: 0.38;
     background-color: #ffffff; }
@@ -2843,11 +2872,23 @@ button.floating.theme-secondary:before {
 .switch > input[type=checkbox]:checked + label > .track:after {
     background-color: var(--theme-secondary-400); }
 
+.switch.capsule > label > span:after {
+    background-color: var(--disabled-font); }
+
+.switch.capsule > input[type=checkbox]:checked + label > .track:after {
+    background-color: var(--primary-font); }
+
 .switch > input[type=checkbox]:disabled + label > .track:after {
     background-color: #bdbdbd; }
 
 .switch > input[type=checkbox]:disabled:checked + label > .track:after {
     background-color: var(--theme-secondary-200); }
+
+.switch.capsule > input[type=checkbox]:disabled:checked + label > .track:after {
+    background-color: var(--primary-font); }
+
+.switch.capsule > input[type=checkbox]:not(:checked):disabled + label > .track:after {
+    background-color: transparent; }
 
 /** TABS */
 
@@ -4007,6 +4048,46 @@ input:-webkit-autofill {
     border-bottom: none !important; }
 
 /** TEXTFIELD MULTILINE */
+
+.textfield-multiline.filled > .content > .box {
+    border-bottom: 2px solid var(--background-border);
+    background-color: var(--background-box); }
+
+.theme-primary .textfield-multiline.filled.contrast > .content > .box {
+    background-color: var(--theme-primary-300);
+    border-bottom: 2px solid var(--theme-primary-font-secondary-300); }
+
+.theme-secondary .textfield-multiline.filled.contrast > .content > .box {
+    background-color: var(--theme-secondary-300);
+    border-bottom: 2px solid var(--theme-secondary-font-secondary-300); }
+
+.textfield-multiline.filled > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-500); }
+
+.theme-primary .textfield-multiline.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield-multiline.filled.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
+
+.textfield-multiline.filled.error > .content.active > .box {
+    border-bottom: 2px solid var(--theme-error-500); }
+
+.theme-primary .textfield-multiline.filled.error.contrast > .content.active > .box {
+    border-bottom: 2px solid var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield-multiline.filled.error > .content.active > .box {
+    border-bottom: 2px solid var(--theme-secondary-font-primary-300); }
+
+.textfield-multiline.filled > .content.disabled > .box {
+    border-bottom: 2px solid transparent;
+    background-color: var(--background-box-disabled); }
+
+.theme-primary .textfield-multiline.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-primary-200); } 
+
+.theme-secondary .textfield-multiline.filled.contrast > .content.disabled > .box {
+    background-color: var(--theme-secondary-200); } 
 
 .textfield-multiline.outline > .content > .box {
     border: 1px solid var(--background-border); }

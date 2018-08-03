@@ -167,7 +167,7 @@
 .textfield.filled > .content > .box > .description,
 .textfield-readonly.filled > .content > .box > .description {
     left: 8px;
-    bottom: 21px; }
+    bottom: 20px; }
 
 .autocomplete.outline > .content > .box > .description,
 .clockpicker-input.outline > .content > .box > .description,
@@ -2418,6 +2418,10 @@
     width: 100%;
     float: left; }
 
+.textfield-multiline.filled > .content > .box {
+    border-radius: 4px;
+    margin-bottom: 5px; }
+
 .textfield-multiline.outline > .content > .box { 
     border-radius: 4px;
     margin-bottom: 5px;
@@ -2433,6 +2437,10 @@
     z-index: 2;
     cursor: pointer;
     line-height: 24px; }
+
+.textfield-multiline.filled > .content > .box > .description {
+    left: 8px;
+    top: 28px; }
 
 .textfield-multiline.outline > .content > .box > .description {
     left: 8px;
@@ -2467,6 +2475,15 @@
     left: 40px;
     width: calc(100% - 40px); }
 
+.textfield-multiline.filled > .content > .box > label {
+    left: 12px;
+    top: 27px;
+    width: calc(100% - 24px); }
+
+.textfield-multiline.filled > .content > .box > .description ~ label {
+    left: 40px;
+    width: calc(100% - 52px); }
+
 .textfield-multiline.outline > .content > .box > label {
     left: 12px;
     top: 27px;
@@ -2485,6 +2502,9 @@
     font-size: var(--caption-size);
     letter-spacing: var(--caption-letterspacing);
     font-weight: var(--caption-weight); }
+
+.textfield-multiline.filled > .content > .box > label.active {
+    top: 12px; }
 
 .textfield-multiline.outline > .content > .box > label.active {
     top: 12px; }
@@ -2517,6 +2537,14 @@
 .textfield-multiline > .content > .box > .description ~ textarea { 
     padding-left: 40px;
     width: calc(100% - 40px); }
+
+.textfield-multiline.filled > .content > .box > textarea {
+    width: calc(100% - 24px);
+    padding: 21px 12px 4px 12px; }
+
+.textfield-multiline.filled > .content > .box > .description ~ textarea {
+    width: calc(100% - 52px);
+    padding: 21px 12px 4px 40px; }
 
 .textfield-multiline.outline > .content > .box > textarea {
     width: calc(100% - 22px);
@@ -2556,6 +2584,15 @@
     padding-left: 40px;
     width: calc(100% - 40px); }
 
+.textfield-multiline.filled > .content > .box > .value {
+    bottom: 22px;
+    left: 12px;
+    width: calc(100% - 24px); }
+
+.textfield-multiline.filled > .content > .box > .description ~ .value {
+    padding-left: 28px;
+    width: calc(100% - 52px); }
+
 .textfield-multiline.outline > .content > .box > .value {
     bottom: 22px;
     left: 12px;
@@ -2574,6 +2611,9 @@
     left: 0px;
     bottom: 18px; }
 
+.textfield-multiline.filled > .content > .box > .line-bordered {
+    display: none !important; }
+
 .textfield-multiline.outline > .content > .box > .line-bordered {
     display: none !important; }
 
@@ -2591,6 +2631,9 @@
        -moz-transform: translateX(-50%);
          -o-transform: translateX(-50%);
             transform: translateX(-50%); }
+
+.textfield-multiline.filled > .content > .box > .line-shadow {
+    display: none !important; }
 
 .textfield-multiline.outline > .content > .box > .line-shadow {
     display: none !important; }
@@ -2628,6 +2671,10 @@
     left: 40px;
     width: calc(100% - 40px); }
 
+.textfield-multiline.filled > .content > .box > span {
+    left: 12px;
+    width: calc(100% - 24px); }
+
 .textfield-multiline.outline > .content > .box > span {
     left: 12px;
     width: calc(100% - 24px); }
@@ -2641,6 +2688,9 @@
 .textfield-multiline > .content > .box > .description ~ span.counter {
     width: auto;
     left: initial; }
+
+.textfield-multiline.filled > .content > .box > span.counter {
+    right: 12px !important; }
 
 .textfield-multiline.outline > .content > .box > span.counter {
     right: 12px !important; }
@@ -2662,6 +2712,12 @@
 
 .textfield-multiline > .content > .box > .description ~ .textarea-hidden { 
     width: calc(100% - 40px); }
+
+.textfield-multiline.filled > .content > .box > .textarea-hidden {
+    width: calc(100% - 24px); }
+
+.textfield-multiline.filled > .content > .box > .description ~ .textarea-hidden {
+    width: calc(100% - 52px); }
 
 .textfield-multiline.outline > .content > .box > .textarea-hidden {
     width: calc(100% - 24px); }

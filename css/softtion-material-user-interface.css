@@ -1133,9 +1133,9 @@ button.raised.bordered {
     line-height: 34px;
     box-sizing: border-box; }
 
-button.raised.round {
-    border-radius: 24px;
-    padding: 0px 12px; }
+button.raised.round, button.flat.round {
+    padding: 0px 12px;
+    border-radius: 24px; }
 
 button.raised > span, button.flat > span {
     display: block;
@@ -1150,6 +1150,9 @@ button.raised.bordered > span {
 
 button.raised > i + span, button.flat > i + span {
     padding-left: 0px; }
+
+button.flat.outline {
+    line-height: 32px; }
 
 button.floating {
     position: fixed;
@@ -2190,9 +2193,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .checkbox > label:before {
     position: absolute;
+    content: "";
     top: 2px;
     left: 2px;
-    content: "";
     width: 20px;
     height: 20px;
     z-index: 1;
@@ -2210,15 +2213,35 @@ button.raised:focus:after, button.flat:focus:after {
          -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
+.checkbox.round > label:before {
+    width: 22px;
+    height: 22px;
+    top: 1px;
+    left: 1px;
+    border-radius: 50%; }
+
+.checkbox > input[type="checkbox"]:checked ~ label:before {
+    -webkit-transform: scale(1);
+       -moz-transform: scale(1);
+         -o-transform: scale(1);
+            transform: scale(1); }
+
 .checkbox > label:after {
     position: absolute;
+    content: "";
     top: 2px;
     left: 2px;
-    content: "";
     width: 16px;
     height: 16px;
     z-index: 1;
     border-radius: 2px; }
+
+.checkbox.round > label:after {
+    width: 18px;
+    height: 18px;
+    top: 1px;
+    left: 1px;
+    border-radius: 50%; }
 
 .checkbox > input[type="checkbox"]:checked + label:after {
     width: 5px;
@@ -2231,11 +2254,12 @@ button.raised:focus:after, button.flat:focus:after {
          -o-transform: rotate(40deg);
             transform: rotate(40deg); }
 
-.checkbox > input[type="checkbox"]:checked ~ label:before {
-    -webkit-transform: scale(1);
-       -moz-transform: scale(1);
-         -o-transform: scale(1);
-            transform: scale(1); }
+.checkbox.round > input[type="checkbox"]:checked + label:after {
+    width: 3px;
+    height: 10px;
+    top: 3px;
+    left: 8px;
+    border-radius: 0%; }
 
 .checkbox > .ripple-content {
     position: absolute;
@@ -3054,6 +3078,7 @@ button.raised:focus:after, button.flat:focus:after {
 .detail {
     display: flex;
     width: 100%;
+    min-width: 0px;
     height: 48px;
     float: left; 
     box-sizing: border-box; }
@@ -3089,29 +3114,34 @@ button.raised:focus:after, button.flat:focus:after {
 
 .detail > .content {
     width: 100%;
+    min-width: 0px;
     padding: 0px 8px;
     float: left;
     margin: auto;
     box-sizing: border-box; }
 
 .detail > .content > .title {
+    display: block;
     width: 100%;
     height: auto;
     margin: 2px 0px;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
     font-family: var(--subtitle-1-font);
     font-size: var(--subtitle-1-size);
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
 
 .detail > .content > .subtitle {
+    display: block;
     width: 100%;
     height: auto;
     margin-top: 4px;
     margin-bottom: 2px;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
     font-family: var(--caption-font);
     font-size: var(--caption-size);
     letter-spacing: var(--caption-letterspacing);
@@ -3498,16 +3528,27 @@ button.raised:focus:after, button.flat:focus:after {
     font-weight: var(--body-1-weight); }
 
 .expansion-panel.active > .body > .content {
-    visibility: visible; }
+    visibility: visible;
+    -webkit-transition: visibility 160ms 0ms var(--deceleration-curve);
+       -moz-transition: visibility 160ms 0ms var(--deceleration-curve);
+         -o-transition: visibility 160ms 0ms var(--deceleration-curve);
+            transition: visibility 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .actions {
-    float: left;
+    visibility: hidden;
+    padding: 6px 16px;
     width: 100%;
     height: 48px;
-    padding: 6px 16px;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box; }
+
+.expansion-panel.active > .body > .actions {
+    visibility: visible;
+    -webkit-transition: visibility 160ms 0ms var(--deceleration-curve);
+       -moz-transition: visibility 160ms 0ms var(--deceleration-curve);
+         -o-transition: visibility 160ms 0ms var(--deceleration-curve);
+            transition: visibility 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content + .actions {
     height: 42px;
@@ -7684,6 +7725,9 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
          -o-transition: -o-transform 160ms 0ms var(--standard-curve);
             transition: transform 160ms 0ms var(--standard-curve); }
 
+.snackbar.round {
+    border-radius: 6px 6px 0px 0px; }
+
 .snackbar.show {
     -webkit-transform: translateY(0%);
        -moz-transform: translateY(0%);
@@ -8266,8 +8310,8 @@ body.show-keyboard .stepper-mobile {
 .switch > input[type=checkbox] {
     position: absolute;
     opacity: 0;
-    width: 0;
-    height: 0; }
+    width: 0px;
+    height: 0px; }
 
 .switch > label {
     position: relative;
@@ -8276,10 +8320,25 @@ body.show-keyboard .stepper-mobile {
     height: 24px;
     cursor: pointer; }
 
+.switch.capsule > label {
+    border-radius: 24px;
+    box-sizing: border-box;
+    -webkit-transition: border 200ms 0ms var(--standard-curve),
+                background-color 200ms 0ms var(--standard-curve);
+       -moz-transition: border 200ms 0ms var(--standard-curve),
+                background-color 200ms 0ms var(--standard-curve);
+         -o-transition: border 200ms 0ms var(--standard-curve),
+                background-color 200ms 0ms var(--standard-curve);
+            transition: border 200ms 0ms var(--standard-curve),
+                background-color 200ms 0ms var(--standard-curve); }
+
+.switch > input[type=checkbox]:disabled + label {
+    pointer-events: none; }
+
 .switch > label > .track:before {
-    content: "";
     display: inline-block;
     position: absolute;
+    content: "";
     left: 0px;
     top: 4px;
     width: 40px;
@@ -8291,10 +8350,13 @@ body.show-keyboard .stepper-mobile {
          -o-transition: background 200ms 0ms var(--standard-curve);
             transition: background 200ms 0ms var(--standard-curve); }
 
+.switch.capsule > label > .track:before {
+    display: none; }
+
 .switch > label > .track:after { 
-    content: "";
     display: inline-block;
     position: absolute;
+    content: "";
     top: 0px;
     left: 0px;
     width: 24px;
@@ -8318,11 +8380,24 @@ body.show-keyboard .stepper-mobile {
 .switch > input[type=checkbox]:checked + label > .track:after {
     left: 16px; }
 
+.switch.capsule > label > span:after {
+    width: 20px;
+    height: 20px; }
+
+.switch.capsule > input[type=checkbox]:disabled + label > .track:after {
+    box-shadow: none; }
+
 .switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px var(--theme-secondary-ripple); }
 
 .switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 12px rgba(0, 0, 0, 0.3); }
+
+.switch.capsule > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.38); }
+
+.switch.capsule > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.38); }
 
 /** TABS */
 
@@ -8472,8 +8547,8 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     position: fixed;
     left: 0px;
     bottom: 0px;
-    z-index: 20;
     width: 100%;
+    z-index: 6;
     padding: 16px;
     box-sizing: border-box;
     will-change: transform, -webkit-transform, -moz-transform, -o-transform;
@@ -8534,6 +8609,9 @@ body.show-keyboard .toast.show {
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
+
+.toast.round > .body {
+    border-radius: 6px; }
 
 /** TOOLBAR */
 

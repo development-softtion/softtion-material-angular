@@ -109,7 +109,8 @@ class Softtion {
             OPTIONABLE: "optionable",
             ACTION: "action",
             
-            TWO_LINE: "two-line"
+            TWO_LINE: "two-line",
+            ROUND: "round"
         };
     }
     

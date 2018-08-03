@@ -8814,6 +8814,14 @@
             return this; // Retornando interfaz fluida
         };
 
+        SnackBar.prototype.setRounded = function (rounded) {
+            (!rounded) ?
+                snackbar.removeClass(Classes.ROUND) :
+                snackbar.addClass(Classes.ROUND);
+            
+            return this; // Retornando interfaz fluida
+        };
+
         function createSnackbar() {
             snackbar = softtion.htmlElement("div", "snackbar");
             body = softtion.htmlElement("p", "body");
@@ -8903,6 +8911,14 @@
 
         Toast.prototype.setDuration = function (duration) {
             $duration = isNaN(duration) ? $duration : duration;
+            return this; // Retornando interfaz fluida
+        };
+
+        Toast.prototype.setRounded = function (rounded) {
+            (!rounded) ?
+                toast.removeClass(Classes.ROUND) :
+                toast.addClass(Classes.ROUND);
+            
             return this; // Retornando interfaz fluida
         };
 
@@ -9931,6 +9947,7 @@
         $scope.areaStart = false; $scope.heightEnd = 0;
         
         $scope.pressEnter = false; $scope.countEnter = 0;
+        $scope.errorActive = false;
                     
         $attrs.$observe("iconDescription", () => {
             $scope.isIconDescription = softtion.isText($attrs.iconDescription);
@@ -10044,16 +10061,14 @@
                 $scope.area = $scope.value.toString();
 
             $scope.areaActive = true; $scope.real = true; 
-            $element.addClass(Classes.ACTIVE); $scope.areaStart = true;
+            $scope.areaStart = true; // Inicio de proceso
             
             listener.launch(Listeners.FOCUS, { $event: $event });
         };
 
         $scope.blurArea = function ($event) {
-            $element.removeClass(Classes.ACTIVE); // Inactivando Componente
-
-            $scope.real = false; $scope.areaActive = false; 
             $scope.pressEnter = false; $scope.countEnter = 0;
+            $scope.real = false; $scope.areaActive = false; 
             
             verifyModelBlur(); listener.launch(Listeners.BLUR, { $event: $event });
         };
@@ -10117,7 +10132,9 @@
             $scope.errorActive = false; $element.removeClass("error"); 
         }
 
-        function setAreaError(message) {
+        function setAreaError(message, disabledError) {
+            if (disabledError) return; // No se requiere activación
+            
             $scope.errorActive = true; $element.addClass("error"); 
             $scope.errorText = message; // Agregando error en componente
         }
