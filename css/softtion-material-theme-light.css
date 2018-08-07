@@ -2200,6 +2200,22 @@ button.floating.theme-secondary:before {
     background-color: var(--theme-primary-300);
     color: var(--theme-primary-font-disabled-300); }
 
+/** PAGINATION */
+
+.datatable > .pagination {
+    background-color: var(--background-component); }
+
+.pagination > .content > .pages > .page {
+    color: var(--theme-primary-font-secondary-200);
+    background-color: var(--theme-primary-200); }
+
+.pagination > .content > .pages > .page.active {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-500); }
+
+.pagination > .content > .description {
+    color: var(--secondary-font); }
+
 /** PROGRESS BAR */
 
 .progress-bar {
@@ -4007,14 +4023,6 @@ input:-webkit-autofill {
 
 .select-multiple > .content > .box > ul > li > .checkbox-select > label:after {
     border: 2px solid var(--theme-primary-font-primary-500); }
-
-/** INPUTS IN DATATABLE */
-
-.datatable > .content tbody .clockpicker-input > .content > .box > .line-bordered,
-.datatable > .content tbody .datepicker-input > .content > .box > .line-bordered,
-.datatable > .content tbody .textfield > .content > .box > .line-bordered,
-.datatable > .content tbody .textfield-readonly > .content > .box > .line-bordered {
-    border-bottom: none !important; }
 
 /** TEXTFIELD MULTILINE */
 

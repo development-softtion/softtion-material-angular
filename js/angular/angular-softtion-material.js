@@ -114,6 +114,8 @@
                 Notification: Directives.create(Directives.Notification),
                 
                 NotificationFloating: Directives.create(Directives.NotificationFloating),
+                
+                Pagination: Directives.create(Directives.Pagination),
 
                 ProgressBar: Directives.create(Directives.ProgressBar),
 
@@ -301,6 +303,7 @@
             case (Directives.Img.NAME): return Directives.Img;
             case (Directives.Notification.NAME): return Directives.Notification;
             case (Directives.NotificationFloating.NAME): return Directives.NotificationFloating;
+            case (Directives.Pagination.NAME): return Directives.Pagination;
             case (Directives.ProgressBar.NAME): return Directives.ProgressBar;
             case (Directives.ProgressButtonFloating.NAME): return Directives.ProgressButtonFloating;
             case (Directives.ProgressCircular.NAME): return Directives.ProgressCircular;
@@ -5365,6 +5368,218 @@
         };
     }
     
+    // Directiva: Pagination
+    // Version: 1.0.0
+    // Update: 06/Ago/2018
+    
+    Directives.Pagination = PaginationDirective;
+    
+    Directives.Pagination.NAME = "Pagination";
+    Directives.Pagination.VERSION = "1.0.0";
+    Directives.Pagination.KEY = "pagination";
+    Directives.Pagination.ROUTE = "softtion/template/pagination.html";
+    
+    Directives.Pagination.HTML = function () {
+        var content = softtion.html("div").addClass("content");
+        
+        var pages = softtion.html("div").addClass("pages").
+                addChildren(
+                    softtion.html("div").addClass("page").
+                        setText("{{getLabelPage(0)}}").
+                        addAttribute("ng-hide", "isHidePage(0)").
+                        addAttribute("ng-class", "{active: isActivePage(0)}").
+                        addAttribute("ng-click", "clickPage(0)")
+                ).addChildren(
+                    softtion.html("div").addClass("page").
+                        setText("{{getLabelPage(1)}}").
+                        addAttribute("ng-hide", "isHidePage(1)").
+                        addAttribute("ng-class", "{active: isActivePage(1)}").
+                        addAttribute("ng-click", "clickPage(1)")
+                ).addChildren(
+                    softtion.html("div").addClass("page").
+                        setText("{{getLabelPage(2)}}").
+                        addAttribute("ng-hide", "isHidePage(2)").
+                        addAttribute("ng-class", "{active: isActivePage(2)}").
+                        addAttribute("ng-click", "clickPage(2)")
+                ).addChildren(
+                    softtion.html("div").addClass("page").
+                        setText("{{getLabelPage(3)}}").
+                        addAttribute("ng-hide", "isHidePage(3)").
+                        addAttribute("ng-class", "{active: isActivePage(3)}").
+                        addAttribute("ng-click", "clickPage(3)")
+                );
+        
+        var description = softtion.html("div").
+                addClass("description").setText("{{getLabelDescription()}}");
+        
+        var actions = softtion.html("div").addClass("actions").
+                addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isFirstPage()").
+                        addAttribute("ng-click", "goFirstPage()").
+                        addChildren(softtion.html("i").setText("first_page"))
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isFirstPage()").
+                        addAttribute("ng-click", "prev()").
+                        addChildren(softtion.html("i").setText("chevron_left"))
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isLastPage()").
+                        addAttribute("ng-click", "next()").
+                        addChildren(softtion.html("i").setText("chevron_right"))
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isLastPage()").
+                        addAttribute("ng-click", "goLastPage()").
+                        addChildren(softtion.html("i").setText("last_page"))
+                );
+        
+        content.addChildren(pages).addChildren(description).addChildren(actions);
+        
+        return content.create(); // Componente
+    };
+    
+    function PaginationDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.Pagination.ROUTE,
+            scope: {
+                ngModel: "=?",
+                ngIndex: "=?",
+                suggestions: "=",
+                ngCount: "=?"
+            },
+            link: function ($scope) {
+                
+                $scope.$watch(() => { return $scope.ngIndex; },
+                    (newValue, oldValue) => {
+                        if (isNaN(newValue)) {
+                            $scope.ngIndex = (softtion.isDefined(oldValue)) ? oldValue : 0; return;
+                        } else {
+                            if (newValue < 0) {
+                                $scope.ngIndex = 0; return;
+                            } // Menor que la inicial
+                            
+                            var maxIndex = getMaxIndexPages(); // Páginas disponibles
+                            
+                            if (newValue > maxIndex) {
+                                $scope.ngIndex = maxIndex; return;
+                            } // Mayor que la final
+                        }
+                        
+                        updatePageList($scope.suggestions); // Actualizando página
+                    });
+                
+                $scope.$watch(() => { return $scope.ngCount; },
+                    (newValue, oldValue) => {
+                        if (isNaN(newValue)) {
+                            $scope.ngCount = (softtion.isDefined(oldValue)) ? oldValue : 5; return;
+                        } else {
+                            var maxIndex = getMaxIndexPages();
+                            
+                            if ($scope.ngIndex > maxIndex) {
+                                $scope.ngIndex = maxIndex; return;
+                            } // Cantidad máxima posible de páginas
+                        }
+                        
+                        updatePageList($scope.suggestions); // Actualizando página
+                    });
+                    
+                $scope.$watch(() => { return $scope.suggestions; },
+                    (newValue, oldValue) => {
+                        if (softtion.isArray(newValue)) {
+                            if (newValue.isEmpty()) {
+                                $scope.ngModel = []; return;
+                            } // Lista de opciones es vacia
+                            
+                            updatePageList(newValue); return;
+                        } // Se ha definido una lista correctamente
+                        
+                        $scope.suggestions = softtion.isDefined(oldValue) ? oldValue : [];
+                    });
+                
+                $scope.getLabelPage = function (page) {
+                    return (getIndexPage(page) + 1); 
+                };
+                
+                $scope.isHidePage = function (page) { 
+                    return (page > getMaxIndexPages()); 
+                };
+                
+                $scope.isActivePage = function (page) {
+                    return (getIndexPage(page) === $scope.ngIndex);
+                };
+                
+                $scope.clickPage = function (page) {
+                    $scope.ngIndex = getIndexPage(page);
+                };
+                
+                $scope.getLabelDescription = function () {
+                    var start = ($scope.ngIndex * $scope.ngCount) + 1,
+                        size = $scope.suggestions.length,
+                        end = ($scope.ngIndex + 1) * $scope.ngCount;
+                
+                    if (end > size) end = size; // No debe superar cantidad
+                    
+                    return start + " - " + end + " de " + size; // Descripción
+                };
+                
+                $scope.goFirstPage = function () { $scope.ngIndex = 0; };
+                
+                $scope.prev = function () { $scope.ngIndex--; };
+                
+                $scope.isFirstPage = function () { return ($scope.ngIndex === 0); };
+                
+                $scope.next = function () { $scope.ngIndex++; };
+                
+                $scope.goLastPage = function () { $scope.ngIndex = getMaxIndexPages(); };
+                
+                $scope.isLastPage = function () { 
+                    return ($scope.ngIndex === getMaxIndexPages()); 
+                };
+                
+                function getMaxIndexPages() {
+                    var maxIndex = parseInt($scope.suggestions.length / $scope.ngCount);
+                    
+                    if (($scope.suggestions.length % $scope.ngCount) > 0) maxIndex++;
+                    
+                    return (maxIndex - 1); // Retornando index máximo de páginas de lista
+                }
+                
+                function updatePageList(list) {
+                    var end = ($scope.ngIndex + 1) * $scope.ngCount,
+                        start = $scope.ngIndex * $scope.ngCount;
+                                
+                    $scope.ngModel = list.extract(start, end); // Página
+                }
+                
+                function getIndexPage(page) {
+                    var maxIndex = getMaxIndexPages(), // Cantidad de páginas
+                        maxPages = (maxIndex > 3) ? 3 : maxIndex;
+                        
+                    return (maxPages < 3 || maxIndex === 3) ?
+                        calculateMinIndexPage(page, maxPages, maxIndex) :
+                        !((maxPages + $scope.ngIndex) > maxIndex) ? 
+                            (page + $scope.ngIndex) :
+                            (calculateMaxIndexPage(page, maxPages, maxIndex));
+                }
+                
+                function calculateMinIndexPage(page, maxPages, maxIndex) {
+                    var diferencial = (maxPages - (maxIndex - $scope.ngIndex)); // Diferencial
+                    
+                    return ($scope.ngIndex + maxIndex) - (maxPages - page) - diferencial;
+                }
+                
+                function calculateMaxIndexPage(page, maxPages, maxIndex) {
+                    var diferencial = (1 - (maxIndex - $scope.ngIndex)); // Diferencial
+                    
+                    return (maxIndex - $scope.ngIndex) + (maxPages + page) + diferencial;
+                }
+            }
+        };
+    }
+    
     // Directiva: ProgressBar
     // Version: 1.0.4
     // Update: 26/Feb/2018
@@ -9676,7 +9891,10 @@
             
         $scope.$watch(() => { return $scope.input; }, 
             (newValue) => {
-                if (!$scope.inputStart) $scope.ngModel = newValue;
+                if ($scope.inputStart) return; // Componente iniciado
+                
+                if (softtion.isUndefined($scope.ngModel) && softtion.isText(newValue)) 
+                    $scope.ngModel = newValue; // Asignando nuevo valor
             });
             
         defineInputField($scope, $element, $attrs, listener);

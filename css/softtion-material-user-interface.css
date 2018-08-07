@@ -2627,6 +2627,8 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 100%; }
 
 .datatable.raised {
+    border-radius: 4px;
+    overflow: hidden;
     box-shadow: var(--shadow-2); }
 
 .datatable > .header {
@@ -2835,6 +2837,13 @@ button.raised:focus:after, button.flat:focus:after {
     width: 20px;
     top: 2px;
     height: 20px; }
+
+.datatable table > thead > tr > th > .switch.capsule .track:after,
+.datatable table > tbody > tr > td > .switch.capsule .track:after {
+    top: 0px; }
+
+.datatable .switch.capsule > input[type=checkbox]:checked + label > .track:after {
+    left: 12px; }
 
 .datatable .switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 3px var(--theme-secondary-ripple); }
@@ -6167,6 +6176,89 @@ p.link > a {
     height: 36px;
     width: 40px;
     padding: 6px 8px; }
+
+/** PAGINATION */
+
+.pagination {
+    position: relative;
+    display: flex;
+    float: left;
+    width: 100%;
+    overflow: hidden; }
+
+.pagination.left, .pagination.right {
+    display: block; }
+
+.pagination > .content {
+    position: relative;
+    float: left;
+    height: 48px;
+    margin: auto;
+    padding: 0px 12px;
+    box-sizing: border-box; }
+
+.pagination.condense > .content {
+    height: 40px; }
+
+.pagination.right > .content {
+    float: right; }
+
+.pagination > .content > .pages {
+    float: left; 
+    margin-right: 12px; }
+
+@media only screen and (max-width : 400px) {
+
+    .pagination > .content > .pages {
+        display: none; }
+}
+
+.pagination > .content > .pages > .page {
+    text-align: center;
+    cursor: pointer;
+    float: left;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    margin: 12px 0px;
+    border-radius: 4px; }
+
+.pagination.condense > .content > .pages > .page {
+    margin: 8px 0px; }
+
+.pagination > .content > .pages > .page + .page {
+    margin-left: 4px; }
+
+.pagination > .content > .description {
+    margin: 0px 8px;
+    float: left;
+    height: 48px;
+    line-height: 48px; }
+
+.pagination.condense > .content > .description {
+    height: 40px;
+    line-height: 40px; }
+
+.pagination > .content > .actions {
+    float: left; }
+
+.pagination > .content > .actions > .action {
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    margin: 4px 0px; }
+
+.pagination.condense > .content > .actions > .action {
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    margin: 2px 0px; }
+
+.pagination > .content > .actions > .action + .action {
+    margin-left: 4px; }
+
+.pagination > .content > .actions > .action > i {
+    font-weight: 700; }
 
 /** PROGRESS BAR */
 

@@ -2377,6 +2377,23 @@
 .datatable.condense > .content tbody .textfield > .content > .box > .value {
     top: 4px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > .unique-selection {
+    top: 8px;
+    font-family: var(--body-2-font);
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
+    font-weight: var(--body-2-weight); }
+
+.datatable.condense > .content tbody .autocomplete > .content > .box > .unique-selection {
+    top: 4px; }
+
+.datatable > .content tbody .autocomplete > .content > .box > .line-bordered,
+.datatable > .content tbody .clockpicker-input > .content > .box > .line-bordered,
+.datatable > .content tbody .datepicker-input > .content > .box > .line-bordered,
+.datatable > .content tbody .textfield > .content > .box > .line-bordered,
+.datatable > .content tbody .textfield-readonly > .content > .box > .line-bordered {
+    display: none !important; }
+
 .datatable > .content tbody .autocomplete > .content > .box > .line-shadow,
 .datatable > .content tbody .textfield > .content > .box > .line-shadow {
     bottom: 8px; }
@@ -2385,10 +2402,12 @@
 .datatable.condense > .content tbody .textfield > .content > .box > .line-shadow {
     bottom: 6px; }
 
+.datatable > .content tbody .autocomplete > .content > .box > i.action,
 .datatable > .content tbody .clockpicker-input > .content > .box > i.action,
 .datatable > .content tbody .datepicker-input > .content > .box > i.action {
     top: 14px; }
 
+.datatable.condense > .content tbody .autocomplete > .content > .box > i.action,
 .datatable.condense > .content tbody .clockpicker-input > .content > .box > i.action,
 .datatable.condense > .content tbody .datepicker-input > .content > .box > i.action {
     top: 10px; }
