@@ -244,6 +244,7 @@
     function $fileHttpService($q, $http, $timeout, $window) {
         
         // Métodos del servicio 
+        this.upload = upload;
         this.download = download;
         this.print = print;
         this.preview = preview;
@@ -253,6 +254,27 @@
                 URL = $window.URL.createObjectURL(blob);
         
             return { blob: blob, url: URL }; // Resultado de archivo
+        }
+        
+        function upload(attrs) {
+            return $q((resolve, reject) => {
+                var config = {
+                    headers: { "Content-Type": undefined },
+                    transformRequest: angular.identity,
+                    eventHandlers: {
+                        progress: ($event) => { 
+                            if (softtion.isFunction(attrs.progress))
+                                attrs.progress($event); // Progreso
+                        }
+                    }
+                };
+                
+                angular.extend(config, attrs.config);
+                
+                $http.post(attrs.url, config).
+                    then((response) => { resolve(response); }).
+                    catch((error) => { reject(error); });
+            });
         }
         
         function download(attrs) {
@@ -278,7 +300,7 @@
                     reject(error); // Error al descargar archivo
                 });
             });
-        };
+        }
         
         function print(attrs) {
             return $q((resolve, reject) => {
@@ -295,7 +317,7 @@
                     reject(error); // Error al imprimir archivo
                 });
             });
-        };
+        }
         
         function preview(attrs) {
             return $q((resolve, reject) => {
@@ -312,7 +334,7 @@
                     reject(error); // Error al visualizar archivo
                 });
             });
-        };
+        }
     };
     
     // VERIFICANDO INSTANCIA PLUGIN SQLITE DE SOFTTION

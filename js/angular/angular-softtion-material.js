@@ -5,7 +5,7 @@
  http://material.softtion.com.co
  License: MIT
  Created: 19/Nov/2016
- Updated: 15/Jul/2018
+ Updated: 08/Ago/2018
 */
 
 ((factory) => {
@@ -765,8 +765,8 @@
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
-        var lineActive = softtion.html("div").addClass("line-shadow");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+        var lineShadow = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-if", "isLabel").
@@ -828,13 +828,35 @@
                                 setText("{{getTextSubtitle(suggestion)}}")
                         )
                 );
+        
+        var detailOption = softtion.html("div").addClass("detail").
+                addChildren(
+                    softtion.html("div").addClass("avatars").
+                        addAttribute("ng-if", "ngOption.icon").
+                        addChildren(
+                            softtion.html("div").addClass("avatar").
+                                addChildren(
+                                    softtion.html("span").addChildren(
+                                        softtion.html("i").setText("{{ngOption.icon}}")
+                                    )
+                                )
+                        )
+                ).addChildren(
+                    softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("title").
+                                setText("{{ngOption.title}}")
+                        ).addChildren(
+                            softtion.html("div").addClass("subtitle").
+                                setText("{{ngOption.subtitle}}")
+                        )
+                );
 
         var list = softtion.html("ul").
                 addAttribute("ng-class", "{active: showList, \"autoselection\": ngAutoselection}").
                 addAttribute("ng-if", "!ngUniqueSelection").
                 addChildren(
-                    softtion.html("li").addClass(["truncate"]).
-                        addAttribute("tabindex", "-1").
+                    softtion.html("li").addAttribute("tabindex", "-1").
                         addAttribute("ng-repeat", "suggestion in coincidences track by $index").
                         addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
                         addAttribute("ng-mousedown", "mousedownSuggestion($event, suggestion)").
@@ -843,11 +865,16 @@
                     softtion.html("li").addClass(["truncate", "not-found"]).
                         addAttribute("ng-if", "notFoundResult()").
                         setText("{{descriptionNotFoundResult()}}")
+                ).addChildren(
+                    softtion.html("li").addClass("option").
+                        addAttribute("ng-if", "isOptionable").
+                        addAttribute("ng-click", "clickOption($event)").
+                        addChildren(detailOption)
                 );
 
         box.addChildren(description).addChildren(value).
-            addChildren(lineShadow).addChildren(input).
-            addChildren(lineActive).addChildren(uniqueSelection).
+            addChildren(lineBordered).addChildren(input).
+            addChildren(lineShadow).addChildren(uniqueSelection).
             addChildren(label).addChildren(buttonAction).
             addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
     
@@ -890,6 +917,7 @@
                 ngUniqueSelection: "=?",
                 ngDefineCoincidences: "&",
                 ngFormatDescription: "&",
+                ngOption: "=?",
                 ngListener: "&"
             },
             link: function ($scope, $element, $attrs) {
@@ -903,8 +931,6 @@
                 
                 $scope.patternMethod = $scope.patternMethod || "start";
                 $scope.patternForce = $scope.patternForce || true;
-                
-                $scope.countVisible = $scope.countVisible || 6;
                 
                 $scope.$watch(() => { return $scope.suggestions; }, 
                     (newValue) => {
@@ -958,6 +984,18 @@
                         } // Se debe limpiar el componente
                     });
                     
+                $scope.$watch(() => { return $scope.ngOption; },
+                    (newValue) => {
+                        $scope.isOptionable = softtion.isDefined(newValue);
+                    });
+                    
+                $scope.$watch(() => { return $scope.countVisible; }, 
+                    (newValue, oldValue) => {
+                        if (isNaN(newValue)) {
+                            $scope.countVisible = softtion.isDefined(oldValue) ? oldValue : 6;
+                        } // No fue definido correctamente el número
+                    });
+                    
                 defineInputField($scope, $element, $attrs, listener);
 
                 $scope.isActiveLabel = function () {
@@ -992,6 +1030,8 @@
                         $scope.input = getSuggestion($scope.ngModel);
 
                     $scope.inputActive = true; $scope.inputFocused = true;
+                    
+                    if ($scope.isOptionable) $scope.showList = true;
 
                     listener.launch(Listeners.FOCUS, { $event: $event });
                     openListSuggestions($scope.input); // Buscar sugerencias
@@ -1082,6 +1122,11 @@
                     
                     $scope.selectSuggestion(suggestion); // Seleccionando
                 };
+                
+                $scope.clickOption = function ($event) { 
+                    $scope.showList = false; // Ocultando la lista
+                    listener.launch(Listeners.OPTION, { $event: $event });
+                };
 
                 $scope.selectSuggestion = function (suggestion) {
                     $scope.showList = false; selection = true;
@@ -1118,7 +1163,7 @@
 
                 $scope.notFoundResult = function () {
                     return (!this.coincidences.isEmpty()) ? false :
-                        (searchStart && softtion.isText($scope.input) && !$scope.inputMode); 
+                        (searchStart && softtion.isText($scope.input) && !$scope.inputMode && !$scope.isOptionable); 
                 };
 
                 $scope.descriptionNotFoundResult = function () {
@@ -1192,9 +1237,13 @@
                     
                     $scope.coincidences = // Lista de coincidencias
                         softtion.isUndefined(coincidences) ? $scope.coincidences : 
-                        coincidences.extract(0, $scope.countVisible); 
+                        coincidences.extract(0, getCountVisible()); 
                         
                     setSuggestions(pattern, coincidences, result); $scope.showList = true;
+                }
+                
+                function getCountVisible() {
+                    return (!$scope.isOptionable) ? $scope.countVisible : ($scope.countVisible - 1);
                 }
                 
                 function rebootSuggestions() {
@@ -5439,8 +5488,10 @@
         
         return content.create(); // Componente
     };
+                    
+    Directives.Pagination.$inject = [ "$filter" ];
     
-    function PaginationDirective() {
+    function PaginationDirective($filter) {
         return {
             restrict: "C",
             templateUrl: Directives.Pagination.ROUTE,
@@ -5448,9 +5499,28 @@
                 ngModel: "=?",
                 ngIndex: "=?",
                 suggestions: "=",
-                ngCount: "=?"
+                ngCount: "=?",
+                label: "@",
+                ngFilter: "@",
+                ngFilterParam: "=?",
+                ngListener: "&"
             },
             link: function ($scope) {
+                
+                $scope.catalog = []; // Lista de items filtrados
+                
+                $scope.$watch(() => { return $scope.ngFilterParam; },
+                    (newValue) => {
+                        $scope.catalog = getCatalog(newValue);
+                        
+                        var maxIndex = getMaxIndexPages();
+                        
+                        if ($scope.ngIndex > maxIndex) {
+                            $scope.ngIndex = maxIndex; return;
+                        } // Se actualiza el index
+                        
+                        updatePageList($scope.catalog); // Actualizando lista
+                    }, true);
                 
                 $scope.$watch(() => { return $scope.ngIndex; },
                     (newValue, oldValue) => {
@@ -5468,7 +5538,7 @@
                             } // Mayor que la final
                         }
                         
-                        updatePageList($scope.suggestions); // Actualizando página
+                        updatePageList($scope.catalog); // Actualizando página
                     });
                 
                 $scope.$watch(() => { return $scope.ngCount; },
@@ -5483,7 +5553,7 @@
                             } // Cantidad máxima posible de páginas
                         }
                         
-                        updatePageList($scope.suggestions); // Actualizando página
+                        updatePageList($scope.catalog); // Actualizando página
                     });
                     
                 $scope.$watch(() => { return $scope.suggestions; },
@@ -5493,7 +5563,9 @@
                                 $scope.ngModel = []; return;
                             } // Lista de opciones es vacia
                             
-                            updatePageList(newValue); return;
+                            $scope.catalog = getCatalog($scope.ngFilterParam);
+                            
+                            updatePageList($scope.catalog); return;
                         } // Se ha definido una lista correctamente
                         
                         $scope.suggestions = softtion.isDefined(oldValue) ? oldValue : [];
@@ -5504,7 +5576,7 @@
                 };
                 
                 $scope.isHidePage = function (page) { 
-                    return (page > getMaxIndexPages()); 
+                    return (page > getMaxIndexPages() || $scope.catalog.isEmpty()); 
                 };
                 
                 $scope.isActivePage = function (page) {
@@ -5516,13 +5588,17 @@
                 };
                 
                 $scope.getLabelDescription = function () {
+                    var count = $scope.suggestions.length; // Cantidad
+                    
+                    if ($scope.catalog.isEmpty()) return count + " " + $scope.label;
+                    
                     var start = ($scope.ngIndex * $scope.ngCount) + 1,
-                        size = $scope.suggestions.length,
+                        size = $scope.catalog.length,
                         end = ($scope.ngIndex + 1) * $scope.ngCount;
                 
                     if (end > size) end = size; // No debe superar cantidad
                     
-                    return start + " - " + end + " de " + size; // Descripción
+                    return start + " - " + end + " de " + count + " " + $scope.label;
                 };
                 
                 $scope.goFirstPage = function () { $scope.ngIndex = 0; };
@@ -5540,18 +5616,13 @@
                 };
                 
                 function getMaxIndexPages() {
-                    var maxIndex = parseInt($scope.suggestions.length / $scope.ngCount);
+                    if ($scope.catalog.isEmpty()) return 0; // No hay listado
                     
-                    if (($scope.suggestions.length % $scope.ngCount) > 0) maxIndex++;
+                    var maxIndex = parseInt($scope.catalog.length / $scope.ngCount);
+                    
+                    if (($scope.catalog.length % $scope.ngCount) > 0) maxIndex++;
                     
                     return (maxIndex - 1); // Retornando index máximo de páginas de lista
-                }
-                
-                function updatePageList(list) {
-                    var end = ($scope.ngIndex + 1) * $scope.ngCount,
-                        start = $scope.ngIndex * $scope.ngCount;
-                                
-                    $scope.ngModel = list.extract(start, end); // Página
                 }
                 
                 function getIndexPage(page) {
@@ -5575,6 +5646,25 @@
                     var diferencial = (1 - (maxIndex - $scope.ngIndex)); // Diferencial
                     
                     return (maxIndex - $scope.ngIndex) + (maxPages + page) + diferencial;
+                }
+                
+                function getCatalog(filters) {
+                    if (!softtion.isText($scope.ngFilter)) 
+                        return $scope.suggestions; // No hay filtro
+                    
+                    if (softtion.isUndefined(filters)) 
+                        return $scope.suggestions; // No hay parametros
+                    
+                    return $filter($scope.ngFilter)($scope.suggestions, $scope.ngFilterParam);
+                }
+                
+                function updatePageList(list) {
+                    if (list.isEmpty()) { $scope.ngModel = []; return; }
+                    
+                    var end = ($scope.ngIndex + 1) * $scope.ngCount,
+                        start = $scope.ngIndex * $scope.ngCount;
+                                
+                    $scope.ngModel = list.extract(start, end); // Página
                 }
             }
         };
