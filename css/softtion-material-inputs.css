@@ -272,7 +272,6 @@
 .select-multiple.inline > .content > .box > label,
 .textfield.inline > .content > .box > label,
 .textfield-readonly.inline > .content > .box > label {
-    text-align: right;
     top: 12px;
     width: calc(50% - 4px); }
 

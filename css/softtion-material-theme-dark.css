@@ -3709,34 +3709,34 @@ input:-webkit-autofill {
 .theme-secondary .textfield-readonly.contrast > .content > .box > .line-bordered {
     border-bottom: 1px solid var(--theme-secondary-font-secondary-500); }
 
-.autocomplete:hover > .content > .box > .line-bordered,
-.chip-input:hover > .content > .box > .line-bordered,
-.clockpicker-input:hover > .content > .box > .line-bordered,
-.datepicker-input:hover > .content > .box > .line-bordered,
-.select:hover > .content > .box > .line-bordered,
-.select-multiple:hover > .content > .box > .line-bordered,
-.textfield:hover > .content > .box > .line-bordered,
-.textfield-readonly:hover > .content > .box > .line-bordered {
+.autocomplete > .content:hover > .box > .line-bordered,
+.chip-input > .content:hover > .box > .line-bordered,
+.clockpicker-input > .content:hover > .box > .line-bordered,
+.datepicker-input > .content:hover > .box > .line-bordered,
+.select > .content:hover > .box > .line-bordered,
+.select-multiple > .content:hover > .box > .line-bordered,
+.textfield > .content:hover > .box > .line-bordered,
+.textfield-readonly > .content:hover > .box > .line-bordered {
     border-bottom: 2px solid var(--primary-font); }
 
-.theme-primary .autocomplete.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .chip-input.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .clockpicker-input.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .datepicker-input.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .select.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .select-multiple.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .textfield.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .textfield-readonly.contrast:hover > .content > .box > .line-bordered {
+.theme-primary .autocomplete.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .chip-input.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .clockpicker-input.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .datepicker-input.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .select.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .select-multiple.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .textfield.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .textfield-readonly.contrast > .content:hover > .box > .line-bordered {
     border-bottom: 2px solid var(--theme-primary-font-secondary-500); }
 
-.theme-secondary .autocomplete.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .chip-input.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .clockpicker-input.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .datepicker-input.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .select.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .select-multiple.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .textfield.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .textfield-readonly.contrast:hover > .content > .box > .line-bordered {
+.theme-secondary .autocomplete.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .chip-input.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .clockpicker-input.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .datepicker-input.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .select.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .select-multiple.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .textfield.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .textfield-readonly.contrast > .content:hover > .box > .line-bordered {
     border-bottom: 2px solid var(--theme-secondary-font-secondary-500); }
 
 .clockpicker-input > .content.active > .box > .line-bordered,
@@ -3760,7 +3760,7 @@ input:-webkit-autofill {
 .datepicker-input > .content.disabled > .box >  .line-bordered,
 .select > .content > .box > input:disabled ~ .line-bordered,
 .select-multiple > .content > .box > input:disabled ~ .line-bordered,
-.textfield > .content > .box > input:disabled ~ .line-bordered {
+.textfield > .content.disabled > .box > .line-bordered {
     border-bottom: 1px dashed var(--background-border); }
 
 .theme-primary .autocomplete.contrast > .content > .box > input:disabled ~ .line-bordered,
@@ -3769,7 +3769,7 @@ input:-webkit-autofill {
 .theme-primary .datepicker-input.contrast > .content.disabled > .box >  .line-bordered,
 .theme-primary .select.contrast > .content > .box > input:disabled ~ .line-bordered,
 .theme-primary .select-multiple.contrast > .content > .box > input:disabled ~ .line-bordered,
-.theme-primary .textfield.contrast > .content > .box > input:disabled ~ .line-bordered {
+.theme-primary .textfield.contrast > .content.disabled > .box > .line-bordered {
     border-bottom: 1px dashed var(--theme-primary-font-disabled-500); }
 
 .theme-secondary .autocomplete.contrast > .content > .box > input:disabled ~ .line-bordered,
@@ -3778,7 +3778,7 @@ input:-webkit-autofill {
 .theme-secondary .datepicker-input.contrast > .content.disabled > .box >  .line-bordered,
 .theme-secondary .select.contrast > .content > .box > input:disabled ~ .line-bordered,
 .theme-secondary .select-multiple.contrast > .content > .box > input:disabled ~ .line-bordered,
-.theme-secondary .textfield.contrast > .content > .box > input:disabled ~ .line-bordered {
+.theme-secondary .textfield.contrast > .content.disabled > .box > .line-bordered {
     border-bottom: 1px dashed var(--theme-secondary-font-disabled-500); }
 
 .autocomplete.capsule > .content > .box > .line-bordered,
@@ -3789,14 +3789,14 @@ input:-webkit-autofill {
 .select-multiple.capsule > .content > .box > .line-bordered,
 .textfield.capsule > .content > .box > .line-bordered,
 .textfield-readonly.capsule > .content > .box > .line-bordered,
-.autocomplete.capsule:hover > .content > .box > .line-bordered,
-.chip-input.capsule:hover > .content > .box > .line-bordered,
-.clockpicker-input.capsule:hover > .content > .box > .line-bordered,
-.datepicker-input.capsule:hover > .content > .box > .line-bordered,
-.select.capsule:hover > .content > .box > .line-bordered,
-.select-multiple.capsule:hover > .content > .box > .line-bordered,
-.textfield.capsule:hover > .content > .box > .line-bordered,
-.textfield-readonly.capsule:hover > .content > .box > .line-bordered {
+.autocomplete.capsule > .content:hover > .box > .line-bordered,
+.chip-input.capsule > .content:hover > .box > .line-bordered,
+.clockpicker-input.capsule > .content:hover > .box > .line-bordered,
+.datepicker-input.capsule > .content:hover > .box > .line-bordered,
+.select.capsule > .content:hover > .box > .line-bordered,
+.select-multiple.capsule > .content:hover > .box > .line-bordered,
+.textfield.capsule > .content:hover > .box > .line-bordered,
+.textfield-readonly.capsule > .content:hover > .box > .line-bordered {
     border: 1px solid var(--background-border); }
 
 .theme-primary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
@@ -3807,14 +3807,14 @@ input:-webkit-autofill {
 .theme-primary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
 .theme-primary .textfield.capsule.contrast > .content > .box > .line-bordered,
 .theme-primary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
-.theme-primary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .select.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-primary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+.theme-primary .autocomplete.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .chip-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .clockpicker-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .datepicker-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .select.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .select-multiple.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .textfield.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-primary .textfield-readonly.capsule.contrast > .content:hover > .box > .line-bordered {
     border: 1px solid var(--theme-primary-font-secondary-500); }
 
 .theme-secondary .autocomplete.capsule.contrast > .content > .box > .line-bordered,
@@ -3825,14 +3825,14 @@ input:-webkit-autofill {
 .theme-secondary .select-multiple.capsule.contrast > .content > .box > .line-bordered,
 .theme-secondary .textfield.capsule.contrast > .content > .box > .line-bordered,
 .theme-secondary .textfield-readonly.capsule.contrast > .content > .box > .line-bordered,
-.theme-secondary .autocomplete.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .chip-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .clockpicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .datepicker-input.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .select.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .select-multiple.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .textfield.capsule.contrast:hover > .content > .box > .line-bordered,
-.theme-secondary .textfield-readonly.capsule.contrast:hover > .content > .box > .line-bordered {
+.theme-secondary .autocomplete.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .chip-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .clockpicker-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .datepicker-input.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .select.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .select-multiple.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .textfield.capsule.contrast > .content:hover > .box > .line-bordered,
+.theme-secondary .textfield-readonly.capsule.contrast > .content:hover > .box > .line-bordered {
     border: 1px solid var(--theme-secondary-font-secondary-500); }
 
 .autocomplete.capsule > .content.active > .box > .line-bordered,

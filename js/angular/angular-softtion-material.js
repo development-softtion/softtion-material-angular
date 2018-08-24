@@ -5556,7 +5556,7 @@
                         updatePageList($scope.catalog); // Actualizando página
                     });
                     
-                $scope.$watch(() => { return $scope.suggestions; },
+                $scope.$watchCollection(() => { return $scope.suggestions; },
                     (newValue, oldValue) => {
                         if (softtion.isArray(newValue)) {
                             if (newValue.isEmpty()) {
@@ -5576,7 +5576,7 @@
                 };
                 
                 $scope.isHidePage = function (page) { 
-                    return (page > getMaxIndexPages() || $scope.catalog.isEmpty()); 
+                    return (page > getMaxIndexPages() || !softtion.isArray($scope.catalog)); 
                 };
                 
                 $scope.isActivePage = function (page) {
@@ -5588,7 +5588,12 @@
                 };
                 
                 $scope.getLabelDescription = function () {
+                    if (!softtion.isArray($scope.suggestions)) return "Sin datos";
+                    
                     var count = $scope.suggestions.length; // Cantidad
+                    
+                    if (!softtion.isArray($scope.catalog)) 
+                        return count + " " + $scope.label;
                     
                     if ($scope.catalog.isEmpty()) return count + " " + $scope.label;
                     
@@ -5616,7 +5621,9 @@
                 };
                 
                 function getMaxIndexPages() {
-                    if ($scope.catalog.isEmpty()) return 0; // No hay listado
+                    if (!softtion.isArray($scope.catalog)) return 0; // Indefinido
+                    
+                    if ($scope.catalog.isEmpty()) return 0; // Sin datos
                     
                     var maxIndex = parseInt($scope.catalog.length / $scope.ngCount);
                     
@@ -5643,9 +5650,7 @@
                 }
                 
                 function calculateMaxIndexPage(page, maxPages, maxIndex) {
-                    var diferencial = (1 - (maxIndex - $scope.ngIndex)); // Diferencial
-                    
-                    return (maxIndex - $scope.ngIndex) + (maxPages + page) + diferencial;
+                    return (maxIndex - (maxPages - page));
                 }
                 
                 function getCatalog(filters) {
@@ -5659,6 +5664,8 @@
                 }
                 
                 function updatePageList(list) {
+                    if (!softtion.isArray(list)) { $scope.ngModel = []; return; }
+                    
                     if (list.isEmpty()) { $scope.ngModel = []; return; }
                     
                     var end = ($scope.ngIndex + 1) * $scope.ngCount,
@@ -11179,9 +11186,8 @@
             } // No soporta eventos Touch
 
             angular.forEach(Material.components, (component) => {
-                if (softtion.isDefined(component.route)) {
+                if (softtion.isDefined(component.route)) 
                     $templateCache.put(component.route, component.html());
-                }
             });
 
             $appContent.attr("tabindex", "-1"); // Haciendo enfocable

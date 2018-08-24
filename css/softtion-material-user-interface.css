@@ -39,6 +39,9 @@ input:not([type="image"]), textarea {
 .bold, b {
     font-weight: 700; }
 
+t {
+    text-decoration: underline; }
+
 h1, h2, h3, h4, h5, h6, p {
     margin: 0px; }
 
@@ -2867,7 +2870,6 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .content > table > tbody > tr > td.buttons {
     position: absolute;
-    top: 0px;
     left: 0px; 
     -webkit-transform: translateX(-100%);
        -moz-transform: translateX(-100%);
@@ -9186,10 +9188,10 @@ body.show-keyboard .toast.show {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: var(--body-2-font);
-    font-size: var(--body-2-size);
-    letter-spacing: var(--body-2-letterspacing);
-    font-weight: var(--body-2-weight); }
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
 
 .tooltip-element.show, .tooltip-element.show > p {
     opacity: 1; 
@@ -9201,10 +9203,10 @@ body.show-keyboard .toast.show {
         max-width: calc(100% - 48px);
         padding: 0px 8px;
         line-height: 24px;
-        font-family: var(--caption-font);
-        font-size: var(--caption-size);
-        letter-spacing: var(--caption-letterspacing);
-        font-weight: var(--caption-weight); }
+        font-family: var(--overline-font);
+        font-size: var(--overline-size);
+        letter-spacing: var(--overline-letterspacing);
+        font-weight: var(--overline-weight); }
     
     .tooltip-element.show {
         height: 24px; }

@@ -285,47 +285,47 @@ class Softtion {
     }
     
     isArray(array, force) {
-        return ((this.isDefined(array, force)) && (array instanceof Array));
+        return (this.isDefined(array, force)) ? (array instanceof Array) : false;
     }
     
     isArrayEmpty(array, force) {
-        return ((this.isArray(array, force)) && (array.isEmpty()));
+        return (this.isArray(array, force)) ? array.isEmpty() : false;
     }
     
     isArrayNotEmpty(array, force) {
-        return ((this.isArray(array, force)) && (!array.isEmpty()));
+        return (this.isArray(array, force)) ? !array.isEmpty() : false;
     }
     
     isFunction(func, force) {
-        return ((this.isDefined(func, force)) && (typeof func === "function"));
+        return (this.isDefined(func, force)) ? (typeof func === "function") : false;
     }
     
     isDate(date, force) {
-        return ((this.isDefined(date, force)) && (date instanceof Date));
+        return (this.isDefined(date, force)) ? (date instanceof Date) : false;
     }
     
     isString(string, force) {
-        return ((this.isDefined(string, force)) && (typeof string === "string"));
+        return (this.isDefined(string, force)) ? (typeof string === "string") : false;
     }
     
     isText(string, force) {
-        return ((this.isString(string, force)) && (string.length > 0));
+        return (this.isString(string, force)) ? (string.length > 0) : false;
     }
     
     isNumber(number, force) {
-        return ((this.isDefined(number, force)) && (!isNaN(number)));
+        return (this.isDefined(number, force)) ? !isNaN(number) : false;
     }
     
     isjQuery(object, force) {
-        return ((this.isDefined(object, force)) && (object instanceof jQuery));
+        return (this.isDefined(object, force)) ? (object instanceof jQuery) : false;
     }
     
     isJson(object, force) {
-        return ((this.isDefined(object, force)) && (Object.keys(object) > 0));
+        return (this.isDefined(object, force)) ? (Object.keys(object) > 0) : false;
     }
     
     isJsonEmpty(object, force) {
-        return ((this.isUndefined(object, force)) || (Object.keys(object) === 0));
+        return (this.isUndefined(object, force)) ? true : (Object.keys(object) === 0);
     }
     
     parseBoolean(value) {
