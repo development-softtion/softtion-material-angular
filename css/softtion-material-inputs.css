@@ -1819,7 +1819,7 @@
 .textfield.filled > .content > .box > i.action,
 .textfield-readonly.filled > .content > .box > i.action {
     right: 8px;
-    bottom: 22px; }
+    bottom: 23px; }
 
 .autocomplete.filled > .content > .box > i.action + i.action {
     right: 32px; }

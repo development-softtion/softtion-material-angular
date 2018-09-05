@@ -2333,27 +2333,77 @@ button.floating.theme-secondary:before {
 .radiobutton > label {
     color: var(--primary-font); }
 
+.datatable.theme-primary > .header > .radiobutton > label {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > label {
+    color: var(--theme-secondary-font-primary-500); }
+
 .radiobutton > input[type="radio"]:disabled + label {
     color: var(--disabled-font); }
+
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:disabled + label {
+    color: var(--theme-primary-font-disabled-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:disabled + label {
+    color: var(--theme-secondary-font-disabled-500); }
 
 .radiobutton > label:before {
     background-color: var(--theme-secondary-500); }
 
+.datatable.theme-primary > .header > .radiobutton > label:before {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > label:before {
+    background-color: var(--theme-secondary-font-primary-500); }
+
 .radiobutton > input[type="radio"]:disabled + label:before {
     background-color: var(--background-disabled); }
+
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:disabled + label:before {
+    background-color: var(--theme-primary-font-disabled-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:disabled + label:before {
+    background-color: var(--theme-secondary-font-disabled-500); }
 
 .radiobutton > label:after {
     border: 2px solid rgba(255, 255, 255, 0.54); }
 
+.datatable.theme-primary > .header > .radiobutton > label:after {
+    border: 2px solid var(--theme-primary-font-secondary-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > label:after {
+    border: 2px solid var(--theme-secondary-font-secondary-500); }
+
 .radiobutton > input[type="radio"]:checked + label:after {
     border: 2px solid var(--theme-secondary-500); }
+
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:checked + label:after {
+    border: 2px solid var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:checked + label:after {
+    border: 2px solid var(--theme-secondary-font-primary-500); }
+
+.radiobutton > input[type="radio"]:disabled + label:after {
+    border: 2px solid var(--background-disabled); }
+
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:disabled + label:after {
+    background-color: var(--theme-primary-font-disabled-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:disabled + label:after {
+    background-color: var(--theme-secondary-font-disabled-500); }
 
 .radiobutton > input[type="radio"]:checked ~ .ripple-content > .box,
 .radiobutton > input[type="radio"]:not(:checked) ~ .ripple-content > .box {
     background-color: var(--ripple); }
 
-.radiobutton > input[type="radio"]:disabled + label:after {
-    border: 2px solid var(--background-disabled); }
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:checked ~ .ripple-content > .box,
+.datatable.theme-primary > .header > .radiobutton > input[type="radio"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-primary-ripple-500); }
+
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:checked ~ .ripple-content > .box,
+.datatable.theme-secondary > .header > .radiobutton > input[type="radio"]:not(:checked) ~ .ripple-content > .box {
+    background-color: var(--theme-secondary-ripple-500); }
 
 /** RATING */
 

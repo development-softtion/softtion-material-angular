@@ -7651,7 +7651,7 @@
             tooltip = params.tooltip,   // Tooltip
             
             left = (element.width/2) - (tooltip.width/2);
-            
+        
         left = left + params.x; // Sumando posición X
         
         if ((left + tooltip.width) > params.window) {
@@ -9284,8 +9284,6 @@
         var widthWindow, instance; // Instancia TooltipContainer        
         
         function TooltipContainer($body) {
-            widthWindow = $body.width(); // Ancho de Window
-            
             this.element = $body.find(".tooltip-container");
             
             if (!this.element.exists()) {
@@ -9314,8 +9312,10 @@
             return widthWindow; // Ancho actual de la ventana
         };
 
-        function fnProvider($body, $windowResize) { 
+        function fnProvider($body, $windowResize, $window) { 
             var tooltipWR = "wr-tooltip-" + softtion.getGUID();
+            
+            widthWindow = $window.innerWidth; // Ancho de Window
             
             $windowResize.addListener(tooltipWR, (window) => {
                 widthWindow = window.width(); // Nuevo ancho
@@ -9324,7 +9324,7 @@
             return (instance = instance || new TooltipContainer($body));
         }       
 
-        this.$get = ["$body", "$windowResize", fnProvider]; // Proveedor
+        this.$get = ["$body", "$windowResize", "$window", fnProvider]; // Proveedor
     }
     
     // Proveedor: MaterialTheme
@@ -10098,8 +10098,7 @@
                 if (($scope.type === "password") && !$scope.viewPassword) {
                     value = convertToPassword(value.length);
                 } else {
-                    var format = $scope.
-                            ngFormatValue({$model: value, $value: String(value)});
+                    var format = $scope.ngFormatValue({$model: value, $value: String(value)});
 
                     if (softtion.isDefined(format)) value = format;
                 } // Verificando formato establecido en el componente de texto

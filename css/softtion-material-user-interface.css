@@ -1366,9 +1366,9 @@ button.raised:focus:after, button.flat:focus:after {
     position: relative;
     float: left;
     width: 100%;
-    border-radius: 2px;
     z-index: 4;
     overflow: hidden;
+    border-radius: 4px;
     box-shadow: var(--shadow-2); 
     -webkit-transition: box-shadow 120ms 0ms var(--sharp-curve);
        -moz-transition: box-shadow 120ms 0ms var(--sharp-curve);
@@ -3527,7 +3527,7 @@ button.raised:focus:after, button.flat:focus:after {
             transition: max-height 160ms 0ms var(--deceleration-curve); }
 
 .expansion-panel > .body > .content {
-    display: table;
+    display: none;
     width: 100%;
     padding: 8px 16px;
     overflow-y: auto;
@@ -3536,30 +3536,33 @@ button.raised:focus:after, button.flat:focus:after {
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
-    font-weight: var(--body-1-weight); }
-
-.expansion-panel.active > .body > .content {
-    visibility: visible;
+    font-weight: var(--body-1-weight);
     -webkit-transition: visibility 160ms 0ms var(--deceleration-curve);
        -moz-transition: visibility 160ms 0ms var(--deceleration-curve);
          -o-transition: visibility 160ms 0ms var(--deceleration-curve);
             transition: visibility 160ms 0ms var(--deceleration-curve); }
 
+.expansion-panel.active > .body > .content {
+    display: table;
+    visibility: visible; }
+
 .expansion-panel > .body > .actions {
+    display: none;
     visibility: hidden;
     padding: 6px 16px;
     width: 100%;
     height: 48px;
     overflow-x: hidden;
     overflow-y: auto;
-    box-sizing: border-box; }
-
-.expansion-panel.active > .body > .actions {
-    visibility: visible;
+    box-sizing: border-box;
     -webkit-transition: visibility 160ms 0ms var(--deceleration-curve);
        -moz-transition: visibility 160ms 0ms var(--deceleration-curve);
          -o-transition: visibility 160ms 0ms var(--deceleration-curve);
             transition: visibility 160ms 0ms var(--deceleration-curve); }
+
+.expansion-panel.active > .body > .actions {
+    display: block;
+    visibility: visible; }
 
 .expansion-panel > .body > .content + .actions {
     height: 42px;
@@ -4711,8 +4714,8 @@ body.show-keyboard .fab-speed-dial {
     position: relative;
     width: 100%;
     float: left;
-    border-radius: 2px;
     z-index: 4;
+    border-radius: 4px;
     box-shadow: var(--shadow-2); }
 
 .form.flat, .form.bordered {
@@ -6716,6 +6719,10 @@ body.show-keyboard .progress-button-floating {
     height: 24px;
     margin: 8px 0; }
 
+.datatable > .header > .radiobutton {
+    margin: auto;
+    padding: 0px 8px; }
+
 .radiobutton > input[type="radio"] {
     position: absolute;
     width: 0px;
@@ -6790,6 +6797,9 @@ body.show-keyboard .progress-button-floating {
             transform: translateY(-50%); }
 
 .radiobutton.flex-pd > .ripple-content {
+    left: 2px; }
+
+.datatable > .header > .radiobutton > .ripple-content {
     left: 2px; }
 
 .radiobutton > .ripple-content > .box {
@@ -8505,6 +8515,9 @@ body.show-keyboard .stepper-mobile {
     overflow-y: hidden;
     user-select: none; }
 
+.tabs.condense {
+    height: 40px; }
+
 body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     width: 0px; 
     height: 0px; }
@@ -8546,6 +8559,10 @@ body.not-touch .tabs::-webkit-scrollbar, .tabs::-webkit-scrollbar {
     font-size: var(--subtitle-1-size);
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
+
+.tabs.condense > .tab {
+    height: 40px;
+    line-height: 40px; }
 
 .app-bar.floating > .tabs > .tab {
     height: 48px;
@@ -8723,6 +8740,12 @@ body.show-keyboard .toast.show {
          -o-transition: all 250ms 0ms var(--deceleration-curve);
             transition: all 250ms 0ms var(--deceleration-curve); }
 
+.card > .toolbar:first-child, .form > .toolbar:first-child {
+    border-radius: 4px 4px 0px 0px; }
+
+.card > .toolbar:last-child, .form > .toolbar:last-child {
+    border-radius: 0px 0px 4px 4px; }
+
 .toolbar::-webkit-scrollbar {
     height: 0px;
     width: 0px; 
@@ -8835,11 +8858,15 @@ body.show-keyboard .toast.show {
 }
 
 .toolbar > .title {
+    display: block;
     width: 100%;
     float: left;
     padding: 0px 16px;
     box-sizing: border-box;
     line-height: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-family: var(--headline-6-font);
     font-size: var(--headline-6-size);
     letter-spacing: var(--headline-6-letterspacing);
@@ -9073,6 +9100,9 @@ body.show-keyboard .toast.show {
     min-height: inherit; 
     max-height: inherit;
     line-height: inherit; }
+
+.toolbar > .actions:last-child {
+    padding-right: 4px; }
 
 .toolbar > .tabs + .actions {
     margin-left: 8px; }

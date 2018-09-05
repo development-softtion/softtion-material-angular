@@ -269,7 +269,7 @@ class Softtion {
     static get REG_EXPRESSION() {
         return {
             EMAIL: /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,8}$/,
-            DECIMAL: /^[-+]?[0-9]+(\.[0-9]+)?$/,
+            DECIMAL: /-?(\d+|\d+\.\d+|\.\d+)([eE][-+]?\d+)?/,
             HEX_TO_RGB: /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i
         };
     }
@@ -544,39 +544,41 @@ class Softtion {
     }
     
     getValueString(format, value) {
+        if (softtion.isUndefined(value)) return; // Valor indefinido
+        
         switch (format) {
             case (Softtion.TEXTCONTROL.ALPHABETIC): 
-                return value.replace(Softtion.REG_CHARACTERS.ALPHABETIC, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.ALPHABETIC, "");
                 
             case (Softtion.TEXTCONTROL.NUMBER):  
-                return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.NUMBER, "");
                 
             case (Softtion.TEXTCONTROL.INTEGER):  
-                return value.replace(Softtion.REG_CHARACTERS.NUMBER, "");
+                return (isNaN(value)) ? "" : String(value).replace(Softtion.REG_CHARACTERS.NUMBER, "");
                 
             case (Softtion.TEXTCONTROL.ALPHANUMBER): 
-                return value.replace(Softtion.REG_CHARACTERS.ALPHANUMBER, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.ALPHANUMBER, "");
                 
             case (Softtion.TEXTCONTROL.ALPHASPACE): 
-                return value.replace(Softtion.REG_CHARACTERS.ALPHASPACE, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.ALPHASPACE, "");
                 
             case (Softtion.TEXTCONTROL.ALPHANUMBERSPACE): 
-                return value.replace(Softtion.REG_CHARACTERS.ALPHANUMBERSPACE, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.ALPHANUMBERSPACE, "");
                 
             case (Softtion.TEXTCONTROL.DECIMAL): 
-                return value.replace(Softtion.REG_CHARACTERS.DECIMAL, "");
+                return (isNaN(value)) ? "" : String(value).replace(Softtion.REG_CHARACTERS.DECIMAL, "");
                 
             case (Softtion.TEXTCONTROL.EMAIL): 
-                return value.replace(Softtion.REG_CHARACTERS.EMAIL, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.EMAIL, "");
                 
             case (Softtion.TEXTCONTROL.PASSWORD): 
-                return value.replace(Softtion.REG_CHARACTERS.PASSWORD, "");
+                return String(value).replace(Softtion.REG_CHARACTERS.PASSWORD, "");
                 
             case (Softtion.TEXTCONTROL.MONEY):  
-                return value.replace(Softtion.REG_CHARACTERS.DECIMAL, "");
+                return (isNaN(value)) ? "" : String(value).replace(Softtion.REG_CHARACTERS.DECIMAL, "");
                 
             case (Softtion.TEXTCONTROL.MATH):  
-                return value.replace(Softtion.REG_CHARACTERS.DECIMAL, "");
+                return (isNaN(value)) ? "" : String(value).replace(Softtion.REG_CHARACTERS.DECIMAL, "");
                 
             default: return value; // No se aplica control de carácteres
         }
@@ -949,30 +951,6 @@ class Softtion {
     // Métodos de Softtion para los objetos 'Date'
         
     ((softtion) => {
-
-        Date.prototype.toJSON = function (option) {
-            switch (option) {
-                case ("date") :
-                    return { 
-                        day : this.getDate(), 
-                        month : this.getMonth() + 1, 
-                        year : this.getFullYear() 
-                    };
-
-                case ("time") : 
-                    return { 
-                        hour : this.getHours(), 
-                        minute : this.getMinutes(), 
-                        second : this.getSeconds() 
-                    };
-
-                default :
-                    return { 
-                        date : this.toJson("date"), 
-                        time : this.toJson("time") 
-                    };
-            }
-        };
 
         Date.prototype.toPHP = function () {
             return parseInt((this.getTime() / 1000));
