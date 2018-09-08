@@ -365,6 +365,10 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 .bottom-navigation.theme-secondary > ul.shifting > li.disabled > .content {
     color: var(--theme-secondary-font-disabled-600); }
 
+.bottom-navigation.theme-secondary > ul > li > .content > i > .badge {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-500); }
+
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--ripple); }
 
@@ -4088,6 +4092,10 @@ input:-webkit-autofill {
 .autocomplete > .content > .box > ul > li > .detail .avatar > span { 
     background-color: var(--theme-secondary-600);
     color: var(--theme-secondary-font-primary-600); }
+
+.autocomplete > .content > .box > ul > li.option > .detail .avatar > span {
+    background-color: var(--theme-primary-600);
+    color: var(--theme-primary-font-primary-600); }
 
 .autocomplete > .content > .box > ul.autoselection > li > .detail .avatar > span { 
     background-color: var(--theme-primary-600);

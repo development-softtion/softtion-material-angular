@@ -863,6 +863,16 @@ body.show-keyboard .bottom-navigation {
 .bottom-navigation > ul.five-options > li.active > .content > i {
     top: 0px; }
 
+.bottom-navigation > ul > li > .content > i > .badge {
+    line-height: 12px;
+    right: -2px;
+    top: -2px;
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+    font-family: var(--caption-font);
+    font-weight: var(--caption-weight); }
+
 .bottom-navigation > .ripple-box {
     width: 0%; 
     opacity: 0.35; }
@@ -1113,6 +1123,9 @@ button.raised, button.flat {
     font-size: var(--button-size);
     letter-spacing: var(--button-letterspacing);
     font-weight: var(--button-weight); }
+
+button.raised.text-normal, button.flat.text-normal {
+    text-transform: none; }
 
 button.raised > i, button.flat > i {
     font-size: 20px;

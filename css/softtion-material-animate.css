@@ -601,102 +601,18 @@
         width: 100%; }
 }
 
-@keyframes borderTextfieldInline20 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 80%; }
-}
-
-@-webkit-keyframes borderTextfieldInline20 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 80%; }
-}
-
-@keyframes borderTextfieldInline30 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 70%; }
-}
-
-@-webkit-keyframes borderTextfieldInline30 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 70%; }
-}
-
-@keyframes borderTextfieldInline40 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 60%; }
-}
-
-@-webkit-keyframes borderTextfieldInline40 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 60%; }
-}
-
 @keyframes borderTextfieldInline {
     0% {
         width: 0%; }
     100% {
-        width: 50%; }
+        width: var(--inline-width); }
 }
 
 @-webkit-keyframes borderTextfieldInline {
     0% {
         width: 0%; }
     100% {
-        width: 50%; }
-}
-
-@keyframes borderTextfieldInline60 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 40%; }
-}
-
-@-webkit-keyframes borderTextfieldInline60 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 40%; }
-}
-
-@keyframes borderTextfieldInline70 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 30%; }
-}
-
-@-webkit-keyframes borderTextfieldInline70 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 30%; }
-}
-
-@keyframes borderTextfieldInline80 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 20%; }
-}
-
-@-webkit-keyframes borderTextfieldInline80 {
-    0% {
-        width: 0%; }
-    100% {
-        width: 20%; }
+        width: var(--inline-width); }
 }
 
 @keyframes borderTextfieldIcon {
@@ -717,24 +633,24 @@
 
 @keyframes closeSelect {
     0% {
-        max-width: 100%;
-        max-height: 288px; 
-        opacity: 1; }
+        max-width: 100%; 
+        opacity: 1;
+        max-height: 252px; }
     100% {
-        max-width: 100%;
-        max-height: 288px;  
-        opacity: 0; }
+        max-width: 100%;  
+        opacity: 0;
+        max-height: 252px; }
 }
 
 @-webkit-keyframes closeSelect {
     0% {
         max-width: 100%;
-        max-height: 288px;
-        opacity: 1; }
+        opacity: 1;
+        max-height: 252px; }
     100% {
         max-width: 100%;
-        max-height: 288px;  
-        opacity: 0; }
+        opacity: 0;
+        max-height: 252px;   }
 }
 
 /** BUTTON FLOATING */

@@ -361,6 +361,10 @@ body.not-touch *::-webkit-scrollbar-thumb:hover {
 .bottom-navigation.theme-secondary > ul.shifting > li.disabled > .content {
     color: var(--theme-secondary-font-disabled-700); }
 
+.bottom-navigation.theme-secondary > ul > li > .content > i > .badge {
+    background-color: var(--theme-primary-500);
+    color: var(--theme-primary-font-primary-500); }
+
 .bottom-navigation > .ripple-box > .effect {
     background-color: var(--ripple); }
 

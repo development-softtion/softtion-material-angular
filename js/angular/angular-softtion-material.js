@@ -1370,7 +1370,12 @@
                     addChildren(
                         softtion.html("div").addClass("content").
                             addChildren(
-                                softtion.html("i").setText("{{option.icon}}")
+                                softtion.html("i").setText("{{option.icon}}").
+                                    addChildren(
+                                        softtion.html("span").addClass("badge").
+                                            addAttribute("ng-if", "isBadgeActive(option)").
+                                            setText("{{option.badge}}")
+                                    )
                             ).addChildren(
                                 softtion.html("p").setText("{{option.label}}")
                             )
@@ -1445,6 +1450,10 @@
                     var views = angular.element($scope.views);  // Vistas
                     $views = (views.exists()) ? views : undefined;
                 });
+                
+                $scope.isBadgeActive = function (option) {
+                    return softtion.isDefined(option.badge); // Badge activo
+                };
                     
                 $scope.clickOption = function (option, $index, $event) {
                     if (option.active) return; // Opción es la activa
@@ -2419,12 +2428,12 @@
                     var isIcon = ($scope.isIconDescription || $scope.isIconImg);
                     
                     if ($scope.ngModel.isEmpty()) // Sin elementos
-                        return isIcon ? "calc(100% - 40px)" : "100%";
+                        return (isIcon) ? "calc(100% - 36px)" : "100%";
                     
                     var isCapsule = $element.hasClass("capsule");
                      
                     if (isIcon)
-                        return (isCapsule) ? "100%" : "calc(100% - 40px)";
+                        return (isCapsule) ? "100%" : "calc(100% - 36px)";
                     
                     var sizeContent = $element.width(), 
                         sizeChips = chips.width();
@@ -6477,7 +6486,7 @@
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var list = softtion.html("ul").
-                addAttribute("ng-class", "{show: showList, hide: !showList && startShow, orientation: orientation}").
+                addAttribute("ng-class", "{show: showList, hide: !showList && startShow}").
                 addChildren(
                     softtion.html("li").addClass(["truncate"]).
                         addAttribute("ng-repeat", "suggestion in suggestions").
@@ -6647,14 +6656,6 @@
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
                     
-                    var sizeSuggestions = $scope.suggestions.length; 
-                    
-                    if (sizeSuggestions > 6) sizeSuggestions = 6; // Max. visibles
-                    
-                    var position = input.offset().top; // Posición en Window
-                        position += (sizeSuggestions * 48) + 24;
-                        
-                    $scope.orientation = (position > $window.innerHeight); 
                     $scope.selectStart = true; $scope.showList = true; 
                     $scope.selectActive = true; listener.launch(Listeners.SHOW);
                 }
