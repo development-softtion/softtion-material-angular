@@ -735,8 +735,9 @@
         
         var content = softtion.html("div").addClass("content").
                 addAttribute("ng-class", 
-                    "{active: inputActive, disabled: ngDisabled, focused: inputFocused," +
-                    " \"icon-action\": isIconAction, \"label-inactive\": !isLabel}"
+                    "{active: inputActive, disabled: ngDisabled, focused:" +
+                    " inputFocused, \"icon-action\": isIconAction, \"label-inactive\":" +
+                    " !isLabel, \"disabled-clear\": isInactiveClear()}"
                 ).addChildren(box);
         
         var description = softtion.html("div").addClass("description").
@@ -793,7 +794,7 @@
                 addAttribute("ng-click", "clickAction($event)");
 
         var buttonClear = softtion.html("i").addClass([Classes.ACTION]).
-                setText("close").addAttribute("ng-hide", "isActiveClear()").
+                setText("close").addAttribute("ng-hide", "isInactiveClear()").
                 addAttribute("ng-click", "clearAutocomplet()");
 
         var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
@@ -903,6 +904,7 @@
                 keySubtitle: "@",
                 keyImg: "@",
                 ngDisabled: "=?",
+                ngDisabledClear: "=?",
                 disabledFocusclear: "=?",
                 helperText: "@",
                 helperPermanent: "=?",
@@ -1010,8 +1012,8 @@
                     return (softtion.isString(suggestion)) ? false : softtion.isText($scope.keyImg);
                 };
 
-                $scope.isActiveClear = function () {
-                    return !softtion.isDefined($scope.ngModel);
+                $scope.isInactiveClear = function () {
+                    return softtion.isUndefined($scope.ngModel) || $scope.ngDisabled || $scope.ngDisabledClear;
                 };
 
                 $scope.getTextAvatar = function (suggestion) {
@@ -1705,7 +1707,8 @@
                 ngDisabled: "=?",
                 icon: "@",
                 tabindex: "@",
-                ngClick: "&"
+                ngClick: "&",
+                tooltip: "@"
             },
             link: function ($scope, $element) {
                     // Componentes
@@ -1715,7 +1718,7 @@
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "buttonClick($event)").
                         addChildren(
-                            softtion.html("i").setText("{{icon}}")
+                            softtion.html("i").setText("{{icon}}").addAttribute("tooltip", "{{tooltip}}")
                         ).addChildren(
                             softtion.html("div").addClass("progress-circular").
                                 addAttribute("indeterminate", "true").
@@ -2884,8 +2887,19 @@
                     });
 
                 $scope.clockListener = function ($model, $listener) {
-                    $scope.ngOpen = false; $scope.ngModel = $model; listener.launch($listener);
+                    $scope.ngModel = getNewInstanceTime($model);
+                    $scope.ngOpen = false; listener.launch($listener);
                 };
+                
+                function getNewInstanceTime($model) {
+                    if (!softtion.isDate($model)) return undefined;
+                    
+                    var newTime = new Date(); // Nuevo time
+                    newTime.setHours($model.getHours());
+                    newTime.setMinutes($model.getMinutes());
+                    
+                    return newTime; // Nuevo datos de tiempo
+                }
             }
         };
     }
@@ -3897,7 +3911,7 @@
         return {
             restrict: "C",
             scope: {
-                persistent: "=?",
+                ngPersistent: "=?",
                 ngOpen: "=?",
                 ngClose: "=?",
                 ngListener: "&"
@@ -3918,7 +3932,7 @@
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
 
                 backdrop.click(() => { 
-                    if (!$scope.persistent) dialog.hide(); 
+                    if (!$scope.ngPersistent) dialog.hide(); 
                 });
                 
                 $scope.$watch(() => { return $scope.ngOpen; },
@@ -5072,6 +5086,7 @@
         return {
             restrict: "C",
             scope: {
+                ngPersistent: "=?",
                 ngOpen: "=?",
                 ngClose: "=?",
                 ngVisible: "=?",
@@ -5106,18 +5121,14 @@
                     $element.append(backdrop); // Agregando Backdrop
                 }  // Backdrop no encontrado, se debe crear nuevo y agregarlo
 
-                backdrop.click(() => { formNavigation.hide(); });
+                backdrop.click(() => { if (!$scope.ngPersistent) formNavigation.hide(); });
                     
                 $element.transitionend((event) => {
                     $scope.$apply(() => {
-                        var transition = event.originalEvent.propertyName,
-                            target = event.originalEvent.target;
+                        var transition = event.originalEvent.propertyName, target = event.originalEvent.target;
                     
                         if (target === content[0] && transition === "transform")
-                            listener.launch(
-                                ($element.hasClass(Classes.SHOW)) ? 
-                                    Listeners.SHOW : Listeners.HIDE
-                            );
+                            listener.launch(($element.hasClass(Classes.SHOW)) ? Listeners.SHOW : Listeners.HIDE);
                     });
                 });
             }
@@ -5441,6 +5452,7 @@
         var content = softtion.html("div").addClass("content");
         
         var pages = softtion.html("div").addClass("pages").
+                addAttribute("ng-hide", "isEmpty()").
                 addChildren(
                     softtion.html("div").addClass("page").
                         setText("{{getLabelPage(0)}}").
@@ -5515,7 +5527,6 @@
                 ngListener: "&"
             },
             link: function ($scope) {
-                
                 $scope.catalog = []; // Lista de items filtrados
                 
                 $scope.$watch(() => { return $scope.ngFilterParam; },
@@ -5582,6 +5593,11 @@
                 
                 $scope.getLabelPage = function (page) {
                     return (getIndexPage(page) + 1); 
+                };
+                
+                $scope.isEmpty = function () {
+                    return (!softtion.isArray($scope.suggestions)) ? 
+                        true : $scope.suggestions.isEmpty(); 
                 };
                 
                 $scope.isHidePage = function (page) { 
@@ -9372,9 +9388,7 @@
                     }
                 },
                 
-                INDEXS: [ 
-                    "50", "100", "200", "300", "400", "500", "600", "700", "800", "900"
-                ]
+                INDEXS: [ "50", "100", "200", "300", "400", "500", "600", "700", "800", "900" ]
             };
 
         function MaterialTheme() { }
@@ -9482,6 +9496,10 @@
         MaterialTheme.prototype.register = function (name, theme) {
             var result = softtion.required(theme, KEYS.INDEXS);
 
+            if (!result.success) return this; // Retornando interfaz fluida
+                
+            result = softtion.required(theme.FONTS, KEYS.INDEXS);    
+                
             if (result.success) themes[name] = theme; // Tema correcto
             
             return this; // Retornando interfaz fluida
@@ -10710,6 +10728,7 @@
                 INDIGO: "INDIGO",
                 BLUE: "BLUE",
                 LIGHT_BLUE: "LIGHT_BLUE",
+                DARK_BLUE: "DARK_BLUE",
                 CYAN: "CYAN",
                 TEAL: "TEAL",
                 GREEN: "GREEN",
@@ -10722,6 +10741,7 @@
                 BROWN: "BROWN",
                 GREY: "GREY",
                 BLUE_GREY: "BLUE_GREY",
+                BLACK: "BLACK",
                 CRANE_PURPLE: "CRANE_PURPLE",
                 CRANE_RED: "CRANE_RED",
                 SHRINE_PINK: "SHRINE_PINK",
@@ -10864,6 +10884,25 @@
                     
                     "A100": "#80d8ff", "A200": "#40c4ff", 
                     "A400": "#00b0ff", "A700": "#0091ea"
+                },
+
+                DARK_BLUE: {
+                    "50" : "#e0ebf6", "100": "#b3cde9", 
+                    "200": "#80acdb", "300": "#4d8bcd", 
+                    "400": "#2672c2", "500": "#0059b7", 
+                    "600": "#0051b0", "700": "#0048a7", 
+                    "800": "#003e9f", "900": "#002e90", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "DARK",  "300": "LIGHT",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    },
+                    
+                    "A100": "#bcccff", "A200": "#89a5ff", 
+                    "A400": "#567eff", "A700": "#3c6aff"
                 },
 
                 CYAN: {
@@ -11079,6 +11118,22 @@
                     FONTS: {
                         "50" : "DARK",  "100": "DARK",
                         "200": "DARK",  "300": "DARK",
+                        "400": "LIGHT", "500": "LIGHT",
+                        "600": "LIGHT", "700": "LIGHT",
+                        "800": "LIGHT", "900": "LIGHT"
+                    }
+                },
+
+                BLACK: {
+                    "50" : "#e0e1e2", "100": "#b3b3b6", 
+                    "200": "#808185", "300": "#4d4e54", 
+                    "400": "#262830", "500": "#00020b", 
+                    "600": "#00020a", "700": "#000108", 
+                    "800": "#000106", "900": "#000103", 
+                    
+                    FONTS: {
+                        "50" : "DARK",  "100": "DARK",
+                        "200": "LIGHT", "300": "LIGHT",
                         "400": "LIGHT", "500": "LIGHT",
                         "600": "LIGHT", "700": "LIGHT",
                         "800": "LIGHT", "900": "LIGHT"

@@ -1098,8 +1098,8 @@
 .select.inline.filled > .content > .box > ul,
 .select-multiple.inline.filled > .content > .box > ul {
     top: 44px;
-    width: calc(var(--inline-left) - 24px);
-    left: calc(var(--inline-left) + 12px); }
+    left: calc(var(--inline-left) + 12px);
+    width: calc(var(--inline-width) - 24px); }
 
 .select.inline.filled > .content > .box > ul {
     top: 16px; }
@@ -1509,6 +1509,7 @@
     position: absolute;
     bottom: 25px;
     margin: 0px;
+    height: auto;
     line-height: 21px;
     cursor: text;
     width: 100%;

@@ -1335,11 +1335,11 @@ button.floating.theme-secondary:before {
 .dropdown.theme-secondary > .menu > .option > i { 
     color: var(--theme-secondary-font-secondary-500); }
 
-.dropdown.theme-primary > .menu > .option:hover { 
+.dropdown.theme-primary > .menu > .option:not(.inactive):hover { 
     background-color: var(--theme-primary-200); 
     color: var(--theme-primary-font-secondary-200); }
 
-.dropdown.theme-secondary > .menu > .option:hover { 
+.dropdown.theme-secondary > .menu > .option:not(.inactive):hover { 
     background-color: var(--theme-secondary-200); 
     color: var(--theme-secondary-font-secondary-200); }
 
@@ -1594,18 +1594,18 @@ button.floating.theme-secondary:before {
 .fab-menu > .content > .menu {
     background-color: var(--background-component); }
 
-.fab-menu.theme-primary > .content > .menu > .option:hover {
+.fab-menu.theme-primary > .content > .menu > .option:not(.inactive):hover {
     background-color: var(--theme-secondary-300);
     color: var(--theme-secondary-font-secondary-300); }
 
-.fab-menu.theme-secondary > .content > .menu > .option:hover {
+.fab-menu.theme-secondary > .content > .menu > .option:not(.inactive):hover {
     background-color: var(--theme-primary-300);
     color: var(--theme-primary-font-secondary-300); }
 
-.fab-menu.theme-primary > .content > .menu > .option:hover > i {
+.fab-menu.theme-primary > .content > .menu > .option:not(.inactive):hover > i {
     color: var(--theme-secondary-font-secondary-300); }
 
-.fab-menu.theme-secondary > .content > .menu > .option:hover > i {
+.fab-menu.theme-secondary > .content > .menu > .option:not(.inactive):hover > i {
     color: var(--theme-primary-font-secondary-300); }
 
 .fab-menu > .content > .menu > .option.disabled {
@@ -2059,7 +2059,7 @@ button.floating.theme-secondary:before {
 .menu > li {
     color: var(--primary-font); }
 
-.menu > .option:hover {
+.menu > .option:not(.inactive):hover {
     background-color: var(--background-hover); }
 
 .menu > li > i {
@@ -2517,8 +2517,14 @@ button.floating.theme-secondary:before {
 .sidenav > .content > .banner {
     background-color: var(--theme-secondary-500); }
 
+.sidenav > .content > .banner.theme-primary {
+    background-color: var(--theme-primary-500); }
+
 .sidenav > .content > .banner > .description {
     color: var(--theme-secondary-font-primary-500); }
+
+.sidenav > .content > .banner.theme-primary > .description {
+    color: var(--theme-primary-font-primary-500); }
 
 .sidenav > .content > .banner > .description.contrast {
     background-color: rgba(0, 0, 0, 0.54);
@@ -3178,8 +3184,8 @@ button.floating.theme-secondary:before {
 .select.filled > .content.disabled > .box,
 .select-multiple.filled > .content.disabled > .box,
 .textfield.filled > .content.disabled > .box {
-    border-bottom: 2px solid transparent;
-    background-color: var(--background-box-disabled); }
+    background-color: var(--background-box-disabled);
+    border-bottom: 2px dashed var(--background-border); }
 
 .theme-primary .autocomplete.filled.contrast > .content.disabled > .box,
 .theme-primary .clockpicker-input.filled.contrast > .content.disabled > .box,

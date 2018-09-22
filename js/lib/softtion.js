@@ -458,6 +458,10 @@ class Softtion {
         return (softtion.isNumber(timestamp)) ? new Date(timestamp * 1000) : undefined; 
     }
     
+    createDateOfTime(time) { 
+        return (softtion.isText(time)) ? new Date("January 01, 1970 " + time) : undefined; 
+    }
+    
     isLeapYear(year) {
         return ((year % 4 === 0) && (year % 100 !== 0 || year % 400 === 0));
     }
@@ -895,13 +899,26 @@ class Softtion {
         Array.prototype.hasItem = function (item) {
             return (this.indexOf(item) !== -1);
         };
+        
+        Array.prototype.haveSomeItem = function (items) {
+            if (!softtion.isArray(items)) return false;
+            
+            var self = this, result = false;
+            
+            softtion.forEach(items, (item) => {
+                return (result = self.hasItem(item));
+            });
+            
+            return result; // Retornando resultado
+        };
 
         Array.prototype.contains = function (count) { 
             return (this.length >= count); 
         };
 
         Array.prototype.remove = function (index) {
-            if (this.contains(index + 1)) this.splice(index, 1); 
+            if (this.contains(index + 1)) 
+                this.splice(index, 1); 
 
             return this; // Retornando interfaz fluida
         };
