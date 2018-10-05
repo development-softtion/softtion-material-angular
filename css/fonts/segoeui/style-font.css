@@ -1,0 +1,31 @@
+
+/*!
+ * StyleFont: Segoe UI
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
+
+@font-face {
+    font-family: "segoeui";
+    src: url("SegoeUI-Light.ttf") format("truetype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: "segoeui";
+    src: url("SegoeUI-Regular.ttf") format("truetype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: "segoeui";
+    src: url("SegoeUI-Regular.ttf") format("truetype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "segoeui";
+    src: url("SegoeUI-Bold.ttf") format("truetype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: "segoeui";
+    src: url("SegoeUI-SemiBold.ttf") format("truetype");
+    font-weight: 700; }

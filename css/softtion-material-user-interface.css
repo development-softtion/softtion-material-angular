@@ -3455,6 +3455,34 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 280px;
     max-height: 280px; }
 
+/** ETIQUETTE */ 
+
+.etiquette {
+    display: block;
+    width: 100%;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 18px;
+    line-height: 18px;
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
+
+.etiquette.low-size {
+    font-family: var(--caption-font);
+    font-size: var(--caption-size);
+    letter-spacing: var(--caption-letterspacing);
+    font-weight: var(--caption-weight); }
+
+.etiquette.high-size {
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
+
 /** EXPANSION PANEL */ 
 
 .expansion-panel {

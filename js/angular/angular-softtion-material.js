@@ -1705,6 +1705,7 @@
             scope: {
                 ngProgress: "=?",
                 ngDisabled: "=?",
+                ngHide: "=?",
                 icon: "@",
                 tabindex: "@",
                 ngClick: "&",
@@ -1716,6 +1717,7 @@
                         addAttribute("ng-class", "{progress: ngProgress}").
                         addAttribute("tabindex", "{{tabindex}}").
                         addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-hide", "ngHide").
                         addAttribute("ng-click", "buttonClick($event)").
                         addChildren(
                             softtion.html("i").setText("{{icon}}").addAttribute("tooltip", "{{tooltip}}")
