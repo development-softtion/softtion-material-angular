@@ -700,6 +700,8 @@ class Softtion {
         return expression.trim(); // Retornando descripción del número
     } 
     
+    simpleThreeRule(key1, key2, value1) { return (key2 * value1) / key1; }
+    
     deviceIs() {
         return {
             get: function () { return Softtion.userAgent; }, // DISPOSITIVO
@@ -832,8 +834,7 @@ class Softtion {
     }
     
     newTabPage(url) {
-        var a = document.createElement("a");
-        a.target = "_blank"; a.href = url; a.click(); 
+        var a = document.createElement("a"); a.target = "_blank"; a.href = url; a.click(); 
     }
     
     nl2br(str, is_xhtml) {

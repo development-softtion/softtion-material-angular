@@ -1252,6 +1252,12 @@ button.floating.theme-secondary:before {
 .datepicker > .title > .year.active, .datepicker > .title > .day.active {
     color: var(--theme-primary-font-secondary-500); }
 
+.datepicker > .content > .days-month > tbody td.today {
+    color: var(--theme-secondary-900); }
+
+.datepicker > .content > .days-month > tbody td.selected {
+    color: var(--theme-primary-900); }
+
 .datepicker > .content > .month > .button-left.disabled,
 .datepicker > .content > .month > .button-right.disabled,
 .datepicker > .content > .days-month > tbody td.disabled {
@@ -1259,12 +1265,6 @@ button.floating.theme-secondary:before {
 
 .datepicker > .content > .days-month > thead th {
     color: var(--disabled-font); }
-
-.datepicker > .content > .days-month > tbody td.today {
-    color: var(--theme-secondary-900); }
-
-.datepicker > .content > .days-month > tbody td.selected {
-    color: var(--theme-primary-900); }
 
 .datepicker > .content > .days-month > tbody td.active,
 .datepicker > .content > .days-month > tbody td.active.selected {
@@ -1275,13 +1275,13 @@ button.floating.theme-secondary:before {
 .datepicker > .content > .year > ul > li {
     color: var(--secondary-font); }
 
-.datepicker > .content > .months > ul > li.disabled,
-.datepicker > .content > .year > ul > li.disabled {
-    color: var(--disabled-font); }
-
 .datepicker > .content > .months > ul > li.active,
 .datepicker > .content > .year > ul > li.active {
     color: var(--base-primary-font); }
+
+.datepicker > .content > .months > ul > li.disabled,
+.datepicker > .content > .year > ul > li.disabled {
+    color: var(--disabled-font); }
 
 .datepicker-input > .dialog > .box {
     background-color: transparent !important; }
@@ -1963,6 +1963,21 @@ button.floating.theme-secondary:before {
 .grid-sheet > .item > .description:hover,
 .grid-sheet > .item > img:hover + .description {
     color: var(--primary-font); }
+
+/** IMAGE EDITOR */
+
+.image-editor > .box > .content {
+    background-color: rgba(0, 0, 0, 0.54); }
+
+.image-editor > .box > .content > .panel > .image > .selection {
+    border: 2px dashed white; }
+
+.image-editor > .box > .content > .panel > .image > .overlay {
+    background-color: rgba(0, 0, 0, 0.54); }
+
+.image-editor > .box > .content > .message > i, 
+.image-editor > .box > .content > .message > p {
+    color: var(--alternative-primary-font); }
 
 /** ITEM LIST */
 

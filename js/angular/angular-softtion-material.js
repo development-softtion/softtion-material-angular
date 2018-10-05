@@ -110,6 +110,8 @@
                 GridSheet: Directives.create(Directives.GridSheet),
 
                 Img: Directives.create(Directives.Img),
+
+                ImageEditor: Directives.create(Directives.ImageEditor),
                 
                 Notification: Directives.create(Directives.Notification),
                 
@@ -221,6 +223,8 @@
 
                 MaterialTheme: Properties.create(Properties.MaterialTheme),
 
+                RatioElement: Properties.create(Properties.RatioElement),
+
                 Sidenav: Properties.create(Properties.Sidenav)
             }
         };
@@ -301,6 +305,7 @@
             case (Directives.Grid.NAME): return Directives.Grid;
             case (Directives.GridSheet.NAME): return Directives.GridSheet;
             case (Directives.Img.NAME): return Directives.Img;
+            case (Directives.ImageEditor.NAME): return Directives.ImageEditor;
             case (Directives.Notification.NAME): return Directives.Notification;
             case (Directives.NotificationFloating.NAME): return Directives.NotificationFloating;
             case (Directives.Pagination.NAME): return Directives.Pagination;
@@ -3323,11 +3328,49 @@
 
                 $scope.$watch(() => { return $scope.ngModel; }, 
                     (newValue, oldValue) => {
-                        if (softtion.isDate(newValue)) {
-                            initDatePicker(newValue); 
-                        } else if (softtion.isDefined(newValue)) {
-                            $scope.ngModel = oldValue;
+                        if (!softtion.isDate(newValue)) {
+                            $scope.ngModel = oldValue; return;
                         } // Valor definido no es una fecha
+                        
+                        initDatePicker(newValue); // Iniciando
+                    });
+
+                $scope.$watch(() => { return $scope.minDate; }, 
+                    (newValue, oldValue) => {
+                        if (softtion.isUndefined(newValue)) return;
+                        
+                        if (!softtion.isDate(newValue)) {
+                            $scope.minDate = oldValue; return;
+                        } // Valor definido no es una fecha
+                        
+                        if (softtion.isDate($scope.ngModel)) {
+                            if (!newValue.isBefore($scope.ngModel)) {
+                                $scope.ngModel = newValue; $scope.selectDate = newValue;
+                            }
+                        } else {
+                            if (!newValue.isBefore(dateStart)) {
+                                initDatePicker(newValue);
+                            } // Se define nueva fecha inicio
+                        }
+                    });
+
+                $scope.$watch(() => { return $scope.maxDate; }, 
+                    (newValue, oldValue) => {
+                        if (softtion.isUndefined(newValue)) return;
+                        
+                        if (!softtion.isDate(newValue)) {
+                            $scope.maxDate = oldValue; return;
+                        } // Valor definido no es una fecha
+                        
+                        if (softtion.isDate($scope.ngModel)) {
+                            if (!newValue.isAfter($scope.ngModel)) {
+                                $scope.ngModel = newValue; $scope.selectDate = newValue;
+                            }
+                        } else {
+                            if (!newValue.isAfter(dateStart)) {
+                                initDatePicker(newValue);
+                            } // Se define nuevo inicio en componente
+                        }
                     });
 
                 $scope.selectYearEnabled = false; $scope.selectMonthEnabled = false;
@@ -3336,20 +3379,6 @@
                     
                 if ($scope.autostart && !softtion.isDate($scope.ngModel))
                     $scope.ngModel = today; // Iniciando model
-                
-                if (softtion.isDate($scope.minDate)) {
-                    $scope.minDate.normalize("date");
-                    
-                    if (!$scope.minDate.isBefore(dateStart))
-                        dateCalendar = $scope.minDate;
-                } // Se ha definido fecha menor en el componente
-                
-                if (softtion.isDate($scope.maxDate)) {
-                    $scope.maxDate.normalize("date");
-                    
-                    if (!$scope.maxDate.isAfter(dateStart))
-                        dateCalendar = $scope.maxDate;
-                } // Se ha definido fecha mayor en el componente
                 
                 initDatePicker(dateCalendar); // Iniciando calendario
 
@@ -5148,42 +5177,42 @@
                     
     Directives.Gallery.HTML = function () {
         var image = softtion.html("div").addClass(["image"]).
-            addAttribute("ng-repeat", "image in images").
-            addAttribute("ng-touchhold", "imageHold(image, $event, $index)").
-            addAttribute("ng-clickright", "imageRight(image, $event, $index)").
-            addAttribute("tabindex", "-1").
-            addChildren(
-                softtion.html("div").addClass("content").
-                    addChildren(
-                        softtion.html("div").addClass("view-preview").
-                            addChildren(
-                                softtion.html("div").addClass("delete").
-                                    addAttribute("ng-if", "!disabledRemove").
-                                    addChildren(
-                                        softtion.html("button").addClass("flat").setText("Remover").
-                                            addAttribute("ng-click", "removeImage($index)")
-                                    )
-                            ).addChildren(
-                                softtion.html("img", false).addClass("center").
-                                addAttribute("ng-src", "{{image.src}}")
-                            )
-                    ).addChildren(
-                        softtion.html("div").addClass("description").
-                            addChildren(
-                                softtion.html("div").addClass("avatar").
+                addAttribute("ng-repeat", "image in images").
+                addAttribute("ng-touchhold", "imageHold(image, $event, $index)").
+                addAttribute("ng-clickright", "imageRight(image, $event, $index)").
+                addAttribute("tabindex", "-1").
+                addChildren(
+                    softtion.html("div").addClass("content").
+                        addChildren(
+                            softtion.html("div").addClass("view-preview").
                                 addChildren(
-                                    softtion.html("i").setText("{{image.icon}}")
+                                    softtion.html("div").addClass("delete").
+                                        addAttribute("ng-if", "!disabledRemove").
+                                        addChildren(
+                                            softtion.html("button").addClass("flat").setText("Remover").
+                                                addAttribute("ng-click", "removeImage($index)")
+                                        )
+                                ).addChildren(
+                                    softtion.html("img", false).addClass("center").
+                                    addAttribute("ng-src", "{{image.src}}")
                                 )
-                            ).addChildren(
-                                softtion.html("label").addClass("name").setText("{{image.name}}")
-                            )
-                    )
-            );
+                        ).addChildren(
+                            softtion.html("div").addClass("description").
+                                addChildren(
+                                    softtion.html("div").addClass("avatar").
+                                    addChildren(
+                                        softtion.html("i").setText("{{image.icon}}")
+                                    )
+                                ).addChildren(
+                                    softtion.html("label").addClass("name").setText("{{image.name}}")
+                                )
+                        )
+                );
 
         var content = softtion.html("div").addClass("content").
-            addChildren(
-                softtion.html("div").addClass("images").addChildren(image)
-            );
+                addChildren(
+                    softtion.html("div").addClass("images").addChildren(image)
+                );
 
         return content.create(); // Componente
     };
@@ -5332,6 +5361,385 @@
                             directive.defineDensity($materialFunction, $element);
                         }) :
                         directive.defineDensity($materialFunction, $element);
+            }
+        };
+    }
+    
+    // Directiva: ImageEditor
+    // Version: 1.0.0
+    // Update: 05/Oct/2018
+    
+    Directives.ImageEditor = ImageEditorDirective;
+    
+    Directives.ImageEditor.NAME = "ImageEditor";
+    Directives.ImageEditor.VERSION = "1.0.0";
+    Directives.ImageEditor.KEY = "imageEditor";
+    Directives.ImageEditor.ROUTE = "softtion/template/image-editor.html",
+                    
+    Directives.ImageEditor.HTML = function () {
+        var box = softtion.html("div").addClass("box"); // Contenedor principal
+        
+        var panel = softtion.html("div").addClass("panel").
+                addAttribute("ng-hide", "!progress.loaded").
+                addChildren(
+                    softtion.html("div").addClass("image").
+                        addAttribute("ng-style", "getStyleImage()").
+                        addChildren(
+                            softtion.html("div").addClass("selection").
+                                addAttribute("ng-style", "getStyleSelection()").
+                                addAttribute("ng-pointerdown", "pointerDownSelection($result)").
+                                addAttribute("ng-pointerup", "pointerUpSelection()").
+                                addAttribute("ng-pointermove", "pointerMoveSelection($result)")
+                        ).addChildren(
+                            softtion.html("div").addClass(["overlay", "top"]).
+                                addAttribute("ng-style", "getStyleOverlay(\"top\")")
+                        ).addChildren(
+                            softtion.html("div").addClass(["overlay", "left"]).
+                                addAttribute("ng-style", "getStyleOverlay(\"left\")")
+                        ).addChildren(
+                            softtion.html("div").addClass(["overlay", "bottom"]).
+                                addAttribute("ng-style", "getStyleOverlay(\"bottom\")")
+                        ).addChildren(
+                            softtion.html("div").addClass(["overlay", "right"]).
+                                addAttribute("ng-style", "getStyleOverlay(\"right\")")
+                        ).addChildren(
+                            softtion.html("canvas").addAttribute("ng-style", "getStyleImage()")
+                        )
+                );
+        
+        var message = softtion.html("div").addClass("message").
+                addAttribute("ng-hide", "progress.loaded").
+                addChildren(softtion.html("i").setText("image_search")).
+                addChildren(softtion.html("p").setText("Cargando imagen a procesar")).
+                addChildren(
+                    softtion.html("div").addClass("progress-bar").
+                        addAttribute("ng-visible", "true").
+                        addAttribute("indeterminate", "true")
+                );
+
+        var content = softtion.html("div").addClass("content").
+                addAttribute("ratio-element", "{{ngRatio}}").
+                addAttribute("ng-mouseleave", "mouseLeaveContent()").
+                addChildren(panel).addChildren(message);
+        
+        var actions = softtion.html("div").addClass("actions").
+                addChildren(
+                    softtion.html("button").addClass(["action", "selector"]).
+                        addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-click", "cropImage()").
+                        addChildren(
+                            softtion.html("i").setText("crop").addAttribute("tooltip", "Seleccionar")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-click", "applyRestore()").
+                        addChildren(
+                            softtion.html("i").setText("restore").addAttribute("tooltip", "Restaurar")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-click", "applyBlackAndWhite()").
+                        addChildren(
+                            softtion.html("i").setText("filter_b_and_w").addAttribute("tooltip", "Blanco/Negro")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-click", "applySepia()").
+                        addChildren(
+                            softtion.html("i").setText("gradient").addAttribute("tooltip", "Sepia")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass("action").
+                        addAttribute("ng-disabled", "isDisabled()").
+                        addAttribute("ng-click", "applyInvert()").
+                        addChildren(
+                            softtion.html("i").setText("exposure").addAttribute("tooltip", "Invertir")
+                        )
+                );
+
+        return box.addChildren(content).
+            addChildren(
+                softtion.html("div").addClass("slider").
+                    addAttribute("icon", "photo_size_select_large").
+                    addAttribute("ng-model", "ngSelection").
+                    addAttribute("ng-disabled", "isDisabled()").
+                    addAttribute("min-value", "25").
+                    addAttribute("max-value", "100").
+                    addAttribute("ng-listener", "sizeSelectionListener($listener)")
+            ).addChildren(
+                softtion.html("div").addClass("slider").
+                    addAttribute("icon", "tonality").
+                    addAttribute("ng-model", "ngContrast").
+                    addAttribute("ng-disabled", "isDisabled()").
+                    addAttribute("min-value", "-255").
+                    addAttribute("max-value", "255").
+                    addAttribute("ng-listener", "contrastListener($listener, $model)")
+            ).addChildren(actions).addChildren(
+                softtion.html("canvas").addClass("processor")
+            ).create(); // Componente
+    };
+    
+    Directives.ImageEditor.$inject = [ "$materialService" ];
+    
+    function ImageEditorDirective($materialService) {
+        return {
+            restrict: "C",
+            templateUrl: Directives.ImageEditor.ROUTE,
+            scope: {
+                ngSrc: "@",
+                ngSelection: "=?",
+                ngMimeType: "@",
+                ngRatio: "@",
+                ngWidth: "=?",
+                ngListener: "&"
+            },
+            link: function ($scope, $element, $attrs) {
+                    // Elementos
+                var IMG = new Image(), // Contenedor real de la Imagen
+
+                    content = $element.find(".content"),
+                    image = $element.find(".image"),
+                    selection = image.children(".selection"),
+
+                    canvasProcessor = $element.find("canvas.processor"),
+                    contextProcessor = canvasProcessor[0].getContext("2d"),
+
+                    canvasContent = image.children("canvas"),
+                    contextContent = canvasContent[0].getContext("2d"),
+
+                     // Atributos
+                    posX, posY, top, left, densityContent, originalData,
+                    attributes = { top: 0, left: 0, active: false };
+
+                $scope.ngMimeType = $scope.ngMimeType || "image/jpeg";
+                $scope.ngContrast = 0; $scope.ngSelection || ($scope.ngSelection = 50);
+                $scope.progress = { loaded: false };
+
+                $attrs.$observe("ngSrc", (value) => { 
+                    IMG.src = value; $scope.progress.loaded = false;
+                });
+
+                $element.resize(() => {
+                    densityContent = (content.width() / content.height()) >= 1;
+                });
+
+                IMG.onload = function () {
+                    $scope.$apply(() => {                    
+                        canvasContent.prop("height", IMG.height); 
+                        canvasContent.prop("width", IMG.width); 
+
+                        contextContent.drawImage(IMG, 0, 0, IMG.width, IMG.height);
+                        originalData = getImageData(); // Imagen original
+
+                        $scope.progress.loaded = true; // Carga exitosa de imagen
+                    });
+                };
+
+                $scope.isDisabled = function () {
+                    return $scope.ngDisabled || !$scope.progress.loaded;
+                };
+
+                $scope.mouseLeaveContent = function () { 
+                    attributes.active = false; 
+                };
+
+                $scope.pointerDownSelection = function ($result) {
+                    if (attributes.active) return; // Ya esta activo
+
+                    posX = $result.offsetX; posY = $result.offsetY;
+                    attributes.active = true; // Activando
+
+                    top = attributes.top; left = attributes.left;
+                };
+
+                $scope.pointerMoveSelection =  function ($result) {
+                    if (!attributes.active) return; // Inactivo
+
+                    var resultX = left + ($result.offsetX - posX),
+                        resultY = top + ($result.offsetY - posY);
+
+                    attributes.top = adjustPosition(resultY, false, 4); 
+                    attributes.left = adjustPosition(resultX, true, 4);
+                };
+
+                $scope.pointerUpSelection = function () { attributes.active = false; };
+
+                $scope.getStyleSelection = function () {
+                    return {
+                        width: $scope.ngSelection + "%",
+                        top: attributes.top,
+                        left: attributes.left,
+                        height: getValueHeightRatio($scope.ngSelection) + "%"
+                    };
+                };
+
+                $scope.getStyleOverlay = function (type) {
+                    switch (type) {
+                        case ("top"):
+                            return {
+                                bottom: "calc(100% - " + attributes.top + "px)",
+                                left: attributes.left,
+                                width: $scope.ngSelection + "%"
+                            };
+
+                        case ("right"):
+                            return {
+                                left: "calc(" + $scope.ngSelection + "% + " + attributes.left + "px)"
+                            };
+
+                        case ("bottom"):
+                            return {
+                                top: "calc(" + getValueHeightRatio($scope.ngSelection) + "% + " + (attributes.top) + "px)",
+                                left: attributes.left,
+                                width: $scope.ngSelection + "%"
+                            };
+
+                        case ("left"):
+                            return {
+                                right: "calc(100% - " + attributes.left + "px)"
+                            };
+                    }
+                };
+
+                $scope.getStyleImage = function () {
+                    return (densityContent) ? { height: "100%" } : { width: "100%" };
+                };
+
+                $scope.cropImage = function () {
+                    var props = getPropertiesCrop(), // Propiedades de imagen final
+
+                        widthCanvas = isNaN($scope.ngWidth) ? props.width : $scope.ngWidth,
+                        heightCanvas = getValueHeightRatio(widthCanvas);
+
+                    canvasProcessor.prop("width", widthCanvas); 
+                    canvasProcessor.prop("height", heightCanvas); 
+
+                    contextProcessor.drawImage(
+                        canvasContent[0], 
+                        props.left, 
+                        props.top, 
+                        props.width, 
+                        props.height, 
+                        0 , 0, widthCanvas, heightCanvas
+                    );
+
+                    var result = new Image(); // Imagen resultante
+                    result.src = canvasProcessor[0].toDataURL();
+
+                    result.onload = function () {
+                        $scope.$apply(() => {
+                            $scope.ngListener({ $img: result });
+                        });
+                    };
+                };
+
+                $scope.applyRestore = function () {
+                    if (softtion.isDefined(originalData)) contextContent.putImageData(originalData, 0, 0);
+                };
+
+                $scope.applyBlackAndWhite = function () {
+                    contextContent.putImageData(setFilterImageData(
+                        getImageData(), // Imagen del Canvas
+                        (pixels, posR, posG, posB) => {
+                            var R = pixels[posR], G = pixels[posG], 
+                                B = pixels[posB], GREY = (R + G + B) / 3;
+
+                            pixels[posR] = GREY; pixels[posG] = GREY; pixels[posB] = GREY;
+                        }), 0, 0); // Aplicando filtro "Blanco y Negro"
+                };
+
+                $scope.applyInvert = function () {
+                    contextContent.putImageData(setFilterImageData(
+                        getImageData(), // Imagen del Canvas
+                        (pixels, posR, posG, posB) => {
+                            var R = pixels[posR], G = pixels[posG], B = pixels[posB];
+
+                            pixels[posR] = 255 - R; pixels[posG] = 255 - G; pixels[posB] = 255 - B;
+                        }), 0, 0); // Aplicando filtro "Invertir"
+                };
+
+                $scope.applySepia = function () {
+                    contextContent.putImageData(setFilterImageData(
+                        getImageData(), // Imagen del Canvas
+                        (pixels, posR, posG, posB) => {
+                            var R = pixels[posR], G = pixels[posG], B = pixels[posB];
+
+                            pixels[posR] = (R * 0.393) + (G * 0.769) + (B * 0.189);
+                            pixels[posG] = (R * 0.349) + (G * 0.686) + (B * 0.168);
+                            pixels[posB] = (R * 0.272) + (G * 0.534) + (B * 0.131);
+                        }), 0, 0); // Aplicando filtro "Sepia"
+                };
+
+                $scope.contrastListener = function ($listener, $model) {
+                    switch ($listener) {
+                        case (Softtion.LISTENERS.CHANGED): applyContrast($model); break;
+                    }
+                };
+
+                $scope.sizeSelectionListener = function ($listener) {
+                    switch ($listener) {
+                        case (Softtion.LISTENERS.CHANGED):
+                            attributes.left = adjustPosition(attributes.left, true, 8);
+                            attributes.top = adjustPosition(attributes.top, false, 8); 
+                        break;
+                    }
+                };
+
+                function adjustPosition(position, isWidth, diff) {
+                    var sel = (isWidth) ? selection.width() : selection.height(),
+                        img = (isWidth) ? image.width() : image.height();
+
+                    return (position < 0) ? 0 : ((position + sel + diff) > img) ?
+                        (img - sel - (diff || 0)) : position; // Posición original
+                }
+
+                function getValueHeightRatio(width) {
+                    return (width * $materialService.getValueRatio($scope.ngRatio));
+                }
+
+                function getImageData() {
+                    return contextContent.getImageData(0, 0, canvasContent[0].width, canvasContent[0].height);
+                }
+
+                function applyContrast(contrast) {
+                    $scope.applyRestore(); // Restaurando la imagen primero
+
+                    contrast || (contrast = 100); // Valor por defecto
+
+                    var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+                    contextContent.putImageData(setFilterImageData(
+                        getImageData(), // Imagen del Canvas
+                        (pixels, posR, posG, posB) => {
+                            var R = pixels[posR], G = pixels[posG], B = pixels[posB];
+
+                            pixels[posR] = factor * (R - 128) + 128;
+                            pixels[posG] = factor * (G - 128) + 128;
+                            pixels[posB] = factor * (B - 128) + 128;
+                        }), 0, 0); // Aplicando filtro "Contraste"
+                }
+
+                function getPropertiesCrop() {
+                    return {
+                        width: softtion.simpleThreeRule(image.width(), IMG.width, selection.width()),
+                        top: softtion.simpleThreeRule(image.height(), IMG.height, attributes.top),
+                        left: softtion.simpleThreeRule(image.width(), IMG.width, attributes.left),
+                        height: softtion.simpleThreeRule(image.height(), IMG.height, selection.height())
+                    };
+                }
+
+                function setFilterImageData(pixels, fnFilter) {
+                    var size = pixels.width * pixels.height;
+
+                    for (var i = 0; i < size; i++) {
+                        fnFilter(pixels.data, (i * 4), (i * 4 + 1), (i * 4 + 2));
+                    } // Aplicando filtro en la imagen
+
+                    return pixels; // Resultado final del filtro
+                }
             }
         };
     }
@@ -6897,7 +7305,8 @@
                 fullIcon: "@",
                 minValue: "=?",
                 maxValue: "=?",
-                showcase: "=?"
+                showcase: "=?",
+                ngListener: "&"
             },
             link: function ($scope, $element) { 
                     // Componentes
@@ -6907,7 +7316,8 @@
                     $trackOn = $content.find(".track-on");
 
                     // Atributos
-                var initialPosition, initialX, finalX, range, promise;
+                var initialPosition, initialX, finalX, range, promise,
+                    listener = new Listener($scope, Listener.KEYS.SLIDER);
 
                 $scope.desliceActive = false;
                 $scope.slideActive = false; 
@@ -6924,19 +7334,20 @@
 
                 $scope.$watch(() => { return $scope.value; }, 
                     (newValue) => {
-                        var between = softtion.isBetween(
-                            newValue, $scope.minValue, $scope.maxValue
-                        );
+                        var between = softtion.isBetween(newValue, $scope.minValue, $scope.maxValue);
 
                         if (!between) {
-                            // Valor es menor que el rango
-                            if (newValue < $scope.minValue) $scope.value = $scope.minValue;
+                            if (newValue < $scope.minValue) {
+                                $scope.value = $scope.minValue; return;
+                            } // Valor es menor que el rango definido
                             
-                            // Valor es mayor que el rango
-                            if (newValue > $scope.maxValue) $scope.value = $scope.maxValue;
+                            if (newValue > $scope.maxValue) { 
+                                $scope.value = $scope.maxValue; return;
+                            } // Valor es mayor que el rango definido
                         }
 
                         $scope.valueInput = Math.round($scope.value);
+                        listener.launch(Listeners.CHANGED); // Notificando cambio
                     });
 
                 $scope.iconActive = function () {
@@ -9602,6 +10013,7 @@
             case (Properties.MaterialColor.NAME): return Properties.MaterialColor;
             case (Properties.MaterialFont.NAME): return Properties.MaterialFont;
             case (Properties.MaterialTheme.NAME): return Properties.MaterialTheme;
+            case (Properties.RatioElement.NAME): return Properties.RatioElement;
             case (Properties.Sidenav.NAME): return Properties.Sidenav;
         }
     }
@@ -9865,6 +10277,32 @@
                         $element.css("color", $colors.FONTS[font].PRIMARY);
                     } // Se encontro la paleta de colores, cargando configuración
                 });
+            }
+        };
+    }
+    
+    // Propiedad: RatioElement
+    // Version: 1.0.0
+    // Update: 22/Sep/2018
+    
+    Properties.RatioElement = RatioElementProperty;
+    
+    Properties.RatioElement.NAME = "RatioElement";
+    Properties.RatioElement.VERSION = "1.0.0";
+    Properties.RatioElement.KEY = "ratioElement";
+    
+    Properties.RatioElement.$inject = [ "$materialService" ];
+    
+    function RatioElementProperty($materialService) {
+        return {
+            restrict: "A",
+            link: function ($scope, $element, $attrs) {
+                
+                $attrs.$observe("ratioElement", () => { $element.css("height", getValueHeight()); });
+                
+                function getValueHeight() {
+                    return $element.width() * $materialService.getValueRatio($attrs.ratioElement);
+                }
             }
         };
     }
@@ -10525,61 +10963,41 @@
     
     Listener.KEYS = {
         AUTOCOMPLETE: [
-            { key: "$model", value:"ngModel" }, 
-            { key: "$old", value:"old" }, 
-            { key: "$value", value:"input" }
+            { key: "$model", value:"ngModel" }, { key: "$old", value:"old" }, { key: "$value", value:"input" }
         ],
         
-        CHECKBOX: [
-            { key: "$model", value: "checked" }
+        CHECKBOX: [ { key: "$model", value: "checked" } ],
+        
+        CHIP_INPUT: [ 
+            { key: "$model", value: "ngModel" }, { key: "$value", value: "input" }
         ],
         
-        CHIP_INPUT: [
-            { key: "$model", value: "ngModel" },
-            { key: "$value", value: "input" }
-        ],
-        
-        CLOCKPICKER: [
-            { key: "$model", value: "ngModel" }
-        ],
+        CLOCKPICKER: [ { key: "$model", value: "ngModel" } ],
 
-        DATEPICKER: [
-            { key: "$model", value: "ngModel" }
-        ],
+        DATEPICKER: [ { key: "$model", value: "ngModel" } ],
 
-        FILECHOOSER: [
-            { key: "$model", value: "file" }
-        ],
+        FILECHOOSER: [ { key: "$model", value: "file" } ],
 
-        FILECHOOSER_MULTIPLE: [
-            { key: "$model", value: "files" }
-        ],
+        FILECHOOSER_MULTIPLE: [ { key: "$model", value: "files" } ],
 
         INPUT: [
-            { key: "$model", value: "ngModel" }, 
-            { key: "$value", value: "input" }
+            { key: "$model", value: "ngModel" }, { key: "$value", value: "input" }
         ],
 
-        RADIOBUTTON: [
-            { key: "$model", value: "model" }
-        ],
+        RADIOBUTTON: [ { key: "$model", value: "model" } ],
 
-        RATING: [
-            { key: "model", value: "value" }
-        ],
+        RATING: [ { key: "$model", value: "value" } ],
 
         SELECT: [
-            { key: "$model", value: "ngModel" }, 
-            { key: "$old", value: "old" }
+            { key: "$model", value: "ngModel" }, { key: "$old", value: "old" }
         ],
 
-        SELECT_MULTIPLE: [
-            { key: "$model", value: "ngModel" }
-        ],
+        SLIDER: [ { key: "$model", value: "value" } ],
 
-        TEXTAREA: [
-            { key: "$model", value: "value" }, 
-            { key: "$value", value: "area" }
+        SELECT_MULTIPLE: [ { key: "$model", value: "ngModel" } ],
+
+        TEXTAREA: [ 
+            { key: "$model", value: "value" }, { key: "$value", value: "area" }
         ]
     };
     
@@ -10601,15 +11019,19 @@
     
     // Servicio: $materialService
     
-    softtionMaterialService.$inject = [ "$window", "$timeout", "$body", "$appContent" ];
+    softtionMaterialService.$inject = [ 
+        "$window", "$timeout", "$body", "$appContent", "$materialConstant"
+    ];
     
-    function softtionMaterialService($window, $timeout, $body, $appContent) {
+    function softtionMaterialService(
+            $window, $timeout, $body, $appContent, $constants) {
         
         var service = this, // Objeto del servicio
             oldHeight = 0,
             enabledKeyBoard = false;
         
         service.enabledKeyboardMobileScroll = enabledKeyboardMobileScroll;
+        service.getValueRatio = getValueRatio;
         
         function enabledKeyboardMobileScroll() {
             if (enabledKeyBoard) return; // Ya se activo el evento
@@ -10642,6 +11064,30 @@
                     }, 25);
                 } // Se debe realizar calculo de posición, teclado emerge
             });
+        }
+        
+        function getValueRatio(ratio) {
+            switch (ratio) {
+                case ($constants.RATIOS.W1_H1.KEY): 
+                    return $constants.RATIOS.W1_H1.VALUE;
+
+                case ($constants.RATIOS.W3_H4.KEY): 
+                    return $constants.RATIOS.W3_H4.VALUE;
+
+                case ($constants.RATIOS.W4_H3.KEY): 
+                    return $constants.RATIOS.W4_H3.VALUE;
+
+                case ($constants.RATIOS.W3_H2.KEY): 
+                    return $constants.RATIOS.W3_H2.VALUE;
+
+                case ($constants.RATIOS.W8_H5.KEY): 
+                    return $constants.RATIOS.W8_H5.VALUE;
+                    
+                case ($constants.RATIOS.W16_H9.KEY): 
+                    return $constants.RATIOS.W16_H9.VALUE;
+
+                default: return $constants.RATIOS.W1_H1.VALUE; 
+            }
         }
 }
     
@@ -10718,6 +11164,15 @@
                         box.addClass(Classes.ANIMATED); // Animando
                     });
                 }
+            },
+            
+            RATIOS: {
+                W1_H1: { KEY: "1:1", VALUE: 1 },
+                W3_H4: { KEY: "3:4", VALUE: 4/3 },
+                W4_H3: { KEY: "4:3", VALUE: 3/4 },
+                W3_H2: { KEY: "3:2", VALUE: 2/3 },
+                W8_H5: { KEY: "8:5", VALUE: 5/8 },
+                W16_H9: { KEY: "16:9", VALUE: 9/16 }
             },
 
             THEMES: {

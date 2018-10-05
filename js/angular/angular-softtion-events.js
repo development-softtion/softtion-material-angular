@@ -384,23 +384,53 @@
             return {
                 restrict: "A",
                 compile: function ($element, $attrs) {
-                    var fnPointer = $parse($attrs[directive.name]); // Función pointer
+                    var fnPointer = $parse($attrs[directive.name]); // Pointer
+
+                    function fnMouseEvent($scope, $element) {
+                        return ($event) => {
+                            $scope.$apply(() => {
+                                fnPointer($scope, { 
+                                    $result: getResultMouseEvent($event), 
+                                    $event: $event, $element: $element
+                                });
+                            }); // Disparando evento
+                        };
+                    }
+                    
+                    function getResultMouseEvent($event) {
+                        return {
+                            offsetX: $event.offsetX,
+                            offsetY: $event.offsetY
+                        };
+                    }
+                    
+                    function fnTouchEvent($scope, $element) {
+                        return ($event) => {
+                            $scope.$apply(() => {
+                                fnPointer($scope, { 
+                                    $result: getResultTouchEvent($event), 
+                                    $event: $event, $element: $element
+                                });
+                            }); // Disparando evento
+                        };
+                    }
+                    
+                    function getResultTouchEvent($event) {
+                        return ($event.targetTouches.length === 0) ? 
+                            { } : {
+                                offsetX: $event.targetTouches[0].clientX,
+                                offsetY: $event.targetTouches[0].clientY
+                            };
+                    }
 
                     return function ($scope, $element) {
-                        var fnEvent = function ($event) {
-                            var callback = function () {
-                                fnPointer($scope, { $event: $event, $element: $element });
-                            };
-
-                            $scope.$apply(callback); // Disparando evento
-                        };
-                        
-                        $element.on(directive.eventTouch, fnEvent).
-                            on(directive.eventMouse, fnEvent);
+                        $element.
+                            on(directive.eventTouch, fnTouchEvent($scope, $element)).
+                            on(directive.eventMouse, fnMouseEvent($scope, $element));
                     
                         if (directive.name === "ngPointermove") {
-                            $element.on("mouseout", fnEvent);
-                            $element.on("mouseleave", fnEvent);
+                            $element.on("mouseleave", fnMouseEvent($scope, $element));
+                            $element.on("mouseout", fnMouseEvent($scope, $element));
                         }
                     };
                 }
