@@ -2453,7 +2453,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 /** CHECKBOX SELECT */
 
-.checkbox-select {
+.checkbox-readonly {
     position: relative;
     float: left;
     width: 24px;
@@ -2461,7 +2461,7 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: 24px;
     margin: 8px 0; }
 
-.checkbox-select > label {
+.checkbox-readonly > label {
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
@@ -2471,10 +2471,10 @@ button.raised:focus:after, button.flat:focus:after {
     line-height: inherit;
     user-select: none; }
 
-.checkbox-select.disabled > label {
+.checkbox-readonly > label.disabled {
     cursor: none; }
 
-.checkbox-select > label:after {
+.checkbox-readonly > label:after {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -2488,24 +2488,22 @@ button.raised:focus:after, button.flat:focus:after {
          -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
 
-.checkbox-select.active > label:after {
-    border-left: 2px solid transparent;
-    border-top: 2px solid transparent;
-    width: 20%;
+.checkbox-readonly > label.active:after {
     height: 50%;
+    width: 20%;
     -webkit-backface-visibility: hidden;
     -webkit-transform: translate(-50%, -65%) rotate(40deg);
        -moz-transform: translate(-50%, -65%) rotate(40deg);
          -o-transform: translate(-50%, -65%) rotate(40deg);
             transform: translate(-50%, -65%) rotate(40deg); }
 
-.checkbox-select > label:before {
+.checkbox-readonly > label:before {
     position: relative;
     display: block;
-    margin: 2px;
     content: "";
     width: calc(100% - 4px);
     height: calc(100% - 4px);
+    margin: 2px;
     z-index: 1;
     border-radius: 2px;
     -webkit-transform: scale(0);
@@ -2521,7 +2519,7 @@ button.raised:focus:after, button.flat:focus:after {
          -o-transition: all 160ms 0ms var(--standard-curve);
             transition: all 160ms 0ms var(--standard-curve); }
 
-.checkbox-select.active > label:before {
+.checkbox-readonly > label.active:before {
     -webkit-transform: scale(1);
        -moz-transform: scale(1);
          -o-transform: scale(1);
@@ -5633,7 +5631,8 @@ img.center-content {
 .item-list.three-line > .box > .avatar > i {
     font-size: 24px; }
 
-.item-list > .box > .checkbox-control {
+.item-list > .box > .checkbox-control,
+.item-list > .box > .checkbox-readonly {
     position: absolute; 
     top: 12px;
     left: 16px;
@@ -5642,7 +5641,11 @@ img.center-content {
 .two-line > .item-list > .box > .checkbox-control, 
 .item-list.two-line  > .box > .checkbox-control,
 .three-line > .item-list > .box > .checkbox-control, 
-.item-list.three-line  > .box > .checkbox-control {
+.item-list.three-line  > .box > .checkbox-control,
+.two-line > .item-list > .box > .checkbox-readonly, 
+.item-list.two-line  > .box > .checkbox-readonly,
+.three-line > .item-list > .box > .checkbox-readonly, 
+.item-list.three-line  > .box > .checkbox-readonly {
     top: 24px; }
 
 .item-list > .box > .radiobutton {
@@ -5689,6 +5692,7 @@ img.center-content {
     height: 74px; }
 
 .item-list > .box > .controls > .checkbox-control,
+.item-list > .box > .controls > .checkbox-readonly,
 .item-list > .box > .controls > .switch,
 .item-list > .box > .controls > .radiobutton,
 .item-list > .box > .controls > button.action {
@@ -5713,6 +5717,8 @@ img.center-content {
 
 .item-list.two-line > .box > .controls > .checkbox-control,
 .two-line > .item-list > .box > .controls > .checkbox-control,
+.item-list.two-line > .box > .controls > .checkbox-readonly,
+.two-line > .item-list > .box > .controls > .checkbox-readonly,
 .item-list.two-line > .box > .controls > .switch,
 .two-line > .item-list > .box > .controls > .switch,
 .item-list.two-line > .box > .controls > .radiobutton,
@@ -5723,6 +5729,8 @@ img.center-content {
 
 .item-list.three-line > .box > .controls > .checkbox-control,
 .three-line > .item-list > .box > .controls > .checkbox-control,
+.item-list.three-line > .box > .controls > .checkbox-readonly,
+.three-line > .item-list > .box > .controls > .checkbox-readonly,
 .item-list.three-line > .box > .controls > .switch,
 .three-line > .item-list > .box > .controls > .switch,
 .item-list.three-line > .box > .controls > .radiobutton,
@@ -5817,6 +5825,7 @@ img.center-content {
     width: calc(100% - 64px); }
 
 .item-list > .box > .checkbox-control ~ .content,
+.item-list > .box > .checkbox-readonly ~ .content,
 .item-list > .box > .radiobutton ~ .content {
     margin-left: 40px;
     width: calc(100% - 40px); }
@@ -5839,6 +5848,7 @@ img.center-content {
     width: calc(100% - 120px); }
 
 .item-list > .box > .checkbox-control + .controls + .content,
+.item-list > .box > .checkbox-readonly + .controls + .content,
 .item-list > .box > .radiobutton + .controls + .content {
     width: calc(100% - 96px); }
 
@@ -5852,7 +5862,7 @@ img.center-content {
     white-space: nowrap;
     width: 100%;
     height: 20px;
-    line-height: 16px;
+    line-height: 20px;
     font-family: var(--subtitle-1-font);
     font-size: var(--subtitle-1-size);
     letter-spacing: var(--subtitle-1-letterspacing);
@@ -5860,12 +5870,6 @@ img.center-content {
 
 .item-list.actionable > .box > .content > .title {
     cursor: pointer; }
-
-.item-list.two-line > .box > .content > .title,
-.two-line > .item-list > .box > .content > .title,
-.item-list.three-line > .box > .content > .title,
-.three-line > .item-list > .box > .content > .title {
-    line-height: 20px; }
 
 .item-list > .box > .content > .description {
     display: none;
@@ -7877,7 +7881,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     position: relative;
     width: 100%; 
     height: 4px;
-    padding: 14px 0px; }
+    padding: 6px 0px;
+    margin: 8px 0px; }
 
 .slider > .content > .track > .track-off {
     position: absolute;
@@ -7907,7 +7912,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .slider > .content > .track > .thumb {
     position: absolute;
-    top: 10px; 
+    top: 2px; 
     left: 0px;
     cursor: pointer;
     width: 12px; 
@@ -7920,8 +7925,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
             transition: left 200ms 0ms var(--standard-curve); }
 
 .slider > .content.disabled > .track > .thumb {
-    top: 8px; 
     height: 16px;
+    top: 0px; 
     width: 16px; }
 
 .slider > .content > .track > .thumb:before {
@@ -7949,13 +7954,13 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
             transition: none; }
 
 .slider > .content > .track > .thumb.off {
-    width: 8px; 
     height: 8px;
+    width: 8px; 
     left: -6px !important; }
 
 .slider > .content > .track > .thumb.active {
     width: 16px;
-    top: 8px;
+    top: 0px;
     height: 16px; }
 
 .slider > .content > .track > .thumb.off.active {
@@ -7973,8 +7978,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
             transition: none; }
 
 .slider.discrete > .content > .track > .thumb.off {
-    top: 10px;
     height: 12px;
+    top: 2px;
     width: 12px;
     -webkit-transition: none;
        -moz-transition: none;

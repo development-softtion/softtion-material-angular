@@ -259,19 +259,19 @@
         function upload(attrs) {
             return $q((resolve, reject) => {
                 var config = {
-                    headers: { "Content-Type": undefined },
-                    transformRequest: angular.identity,
-                    eventHandlers: {
-                        progress: ($event) => { 
-                            if (softtion.isFunction(attrs.progress))
-                                attrs.progress($event); // Progreso
+                        headers: { "Content-Type": undefined },
+                        transformRequest: angular.identity,
+                        eventHandlers: {
+                            progress: ($event) => { 
+                                if (softtion.isFunction(attrs.onProgress))
+                                    attrs.onProgress($event); // Progreso
+                            }
                         }
-                    }
-                };
+                    };
                 
                 angular.extend(config, attrs.config);
                 
-                $http.post(attrs.url, config).
+                $http.post(attrs.url, attrs.data, config).
                     then((response) => { resolve(response); }).
                     catch((error) => { reject(error); });
             });

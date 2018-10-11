@@ -61,7 +61,7 @@
 
                 CheckBoxControl: Directives.create(Directives.CheckboxControl),
 
-                CheckBoxSelect: Directives.create(Directives.CheckboxSelect),
+                CheckboxReadonly: Directives.create(Directives.CheckboxReadonly),
 
                 ChipInput: Directives.create(Directives.ChipInput),
 
@@ -280,7 +280,7 @@
             case (Directives.Catalog.NAME): return Directives.Catalog;
             case (Directives.Checkbox.NAME): return Directives.Checkbox;
             case (Directives.CheckboxControl.NAME): return Directives.CheckboxControl;
-            case (Directives.CheckboxSelect.NAME): return Directives.CheckboxSelect;
+            case (Directives.CheckboxReadonly.NAME): return Directives.CheckboxReadonly;
             case (Directives.ChipInput.NAME): return Directives.ChipInput;
             case (Directives.ClockPicker.NAME): return Directives.ClockPicker;
             case (Directives.ClockPickerDialog.NAME): return Directives.ClockPickerDialog;
@@ -2256,29 +2256,32 @@
         };
     }
     
-    // Directiva: CheckboxSelect
+    // Directiva: CheckboxReadonly
     // Version: 1.0.0
     // Update: 26/Feb/2018
     
-    Directives.CheckboxSelect = CheckboxSelectDirective;
+    Directives.CheckboxReadonly = CheckboxReadonlyDirective;
     
-    Directives.CheckboxSelect.NAME = "CheckboxSelect";
-    Directives.CheckboxSelect.VERSION = "1.0.0";
-    Directives.CheckboxSelect.KEY = "checkboxSelect";
-    Directives.CheckboxSelect.ROUTE = "softtion/template/checkbox-select.html",
+    Directives.CheckboxReadonly.NAME = "CheckboxReadonly";
+    Directives.CheckboxReadonly.VERSION = "1.0.0";
+    Directives.CheckboxReadonly.KEY = "checkboxReadonly";
+    Directives.CheckboxReadonly.ROUTE = "softtion/template/checkbox-readonly.html",
                     
-    Directives.CheckboxSelect.HTML = function () {
+    Directives.CheckboxReadonly.HTML = function () {
         var label = softtion.html("label").
-            addAttribute("ng-click", "clickLabel($event)");
+                addAttribute("ng-class", "{active: ngActive, disabled: ngDisabled}").
+                addAttribute("ng-click", "clickLabel($event)");
 
         return label.create(); // Componente
     };
     
-    function CheckboxSelectDirective() {
+    function CheckboxReadonlyDirective() {
         return {
             restrict: "C",
-            templateUrl: Directives.CheckboxSelect.ROUTE,
+            templateUrl: Directives.CheckboxReadonly.ROUTE,
             scope: {
+                ngDisabled: "=?",
+                ngActive: "=?",
                 preventDefault: "=?",
                 stopPropagation: "=?",
                 ngListener: "&"
@@ -3330,11 +3333,13 @@
 
                 $scope.$watch(() => { return $scope.ngModel; }, 
                     (newValue, oldValue) => {
+                        if (softtion.isUndefined(newValue)) return;
+                        
                         if (!softtion.isDate(newValue)) {
                             $scope.ngModel = oldValue; return;
                         } // Valor definido no es una fecha
                         
-                        initDatePicker(newValue); // Iniciando
+                        initDatePicker(newValue); // Iniciando componente
                     });
 
                 $scope.$watch(() => { return $scope.minDate; }, 
@@ -4896,43 +4901,42 @@
                     
     Directives.FilechooserPerfil.HTML = function () {
         var input = softtion.html("input", false).
-            addAttribute("type", "file");
+                addAttribute("type", "file");
 
         var icon = softtion.html("i").setText("{{icon}}").
-            addAttribute("ng-hide", "isImgDefine()");
+                addAttribute("ng-hide", "isImgDefine()");
 
         var img = softtion.html("img", false).
-            addAttribute("ng-src", "{{ngSrc}}").
-            addAttribute("ng-hide", "!isImgDefine()");
+                addAttribute("ng-src", "{{ngSrc}}").
+                addAttribute("ng-hide", "!isImgDefine()");
 
         var actions = softtion.html("div").addClass("actions").
-            addChildren(
-                softtion.html("label").addClass("truncate").setText("{{getTextLabel()}}")
-            ).addChildren(
-                softtion.html("button").addClass(Classes.ACTION).
-                    addAttribute("ng-disabled", "ngDisabled").
-                    addAttribute("ng-hide", "!isSelectFile()").
-                    addChildren(
-                        softtion.html("i").setText("delete").
-                            addAttribute("ng-click", "deleteFile()")
-                    )
-            ).
-            addChildren(
-                softtion.html("button").addClass(Classes.ACTION).
-                    addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("file_upload").
-                            addAttribute("ng-click", "selectFile($event)")
-                    )
-            ).addChildren(
-                softtion.html("button").addClass(Classes.ACTION).
-                    addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
-                    addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("save").
-                            addAttribute("ng-click", "saveFile()")
-                    )
-            );
+                addChildren(
+                    softtion.html("label").addClass("truncate").setText("{{getTextLabel()}}")
+                ).addChildren(
+                    softtion.html("button").addClass(Classes.ACTION).
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addAttribute("ng-hide", "!isSelectFile()").
+                        addChildren(
+                            softtion.html("i").setText("delete").
+                                addAttribute("ng-click", "deleteFile()")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass(Classes.ACTION).
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addChildren(
+                            softtion.html("i").setText("file_upload").
+                                addAttribute("ng-click", "selectFile($event)")
+                        )
+                ).addChildren(
+                    softtion.html("button").addClass(Classes.ACTION).
+                        addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
+                        addAttribute("ng-disabled", "ngDisabled").
+                        addChildren(
+                            softtion.html("i").setText("save").
+                                addAttribute("ng-click", "saveFile()")
+                        )
+                );
 
         return input + img + icon + actions; // Componente
     };
@@ -5005,8 +5009,7 @@
                 });
                 
                 $scope.getTextLabel = function () {
-                    return (softtion.isUndefined($scope.file)) ? "" : 
-                        (softtion.isText($scope.label)) ? $scope.label : $scope.name;
+                    return (softtion.isText($scope.label)) ? $scope.label : $scope.name;
                 };
 
                 $scope.isSelectFile = function () {
@@ -5491,7 +5494,7 @@
             restrict: "C",
             templateUrl: Directives.ImageEditor.ROUTE,
             scope: {
-                ngSrc: "@",
+                ngSource: "@",
                 ngSelection: "=?",
                 ngMimeType: "@",
                 ngRatio: "@",
@@ -5513,19 +5516,23 @@
                     contextContent = canvasContent[0].getContext("2d"),
 
                      // Atributos
-                    posX, posY, top, left, densityContent, originalData,
+                    posX, posY, top, left, densityContent, originalData, 
                     attributes = { top: 0, left: 0, active: false };
 
                 $scope.ngMimeType = $scope.ngMimeType || "image/jpeg";
                 $scope.ngContrast = 0; $scope.ngSelection || ($scope.ngSelection = 50);
-                $scope.progress = { loaded: false };
+                $scope.progress = { loaded: false }; $scope.start = false;
 
-                $attrs.$observe("ngSrc", (value) => { 
+                $attrs.$observe("ngSource", (value) => {
+                    if (!softtion.isText(value)) return; // SRC Indefinido
+                    
                     IMG.src = value; $scope.progress.loaded = false;
                 });
 
-                $element.resize(() => {
-                    densityContent = (content.width() / content.height()) >= 1;
+                content.resize(() => {
+                    $scope.$apply(() => {
+                        densityContent = ((content.width() / content.height()) >= 1);
+                    });
                 });
 
                 IMG.onload = function () {
@@ -5562,19 +5569,30 @@
 
                     var resultX = left + ($result.offsetX - posX),
                         resultY = top + ($result.offsetY - posY);
-
-                    attributes.top = adjustPosition(resultY, false, 4); 
-                    attributes.left = adjustPosition(resultX, true, 4);
+                
+                    if (resultX < 0) { 
+                        resultX = 0;
+                    } else if ((resultX + selection.width() + 4) > image.width()) {
+                        resultX = image.width() - selection.width() - 4;
+                    } // Se reajusta la posición X, se desbordó en contenedor
+                    
+                    if (resultY < 0) { 
+                        resultY = 0; 
+                    } else if ((resultY + selection.height() + 4) > image.height()) {
+                        resultY = image.height() - selection.height() - 4;
+                    } // Se reajusta la posición Y, se desbordó en contenedor
+                    
+                    attributes.top = resultY; attributes.left = resultX;
                 };
 
                 $scope.pointerUpSelection = function () { attributes.active = false; };
 
                 $scope.getStyleSelection = function () {
                     return {
+                        top: getPositionSelection(false),
+                        left: getPositionSelection(true),
                         width: $scope.ngSelection + "%",
-                        top: attributes.top,
-                        left: attributes.left,
-                        height: getValueHeightRatio($scope.ngSelection) + "%"
+                        height: getHeightSelection() + "px"
                     };
                 };
 
@@ -5594,7 +5612,7 @@
 
                         case ("bottom"):
                             return {
-                                top: "calc(" + getValueHeightRatio($scope.ngSelection) + "% + " + (attributes.top) + "px)",
+                                top: "calc(" + getHeightSelection() + "px + " + (attributes.top) + "px)",
                                 left: attributes.left,
                                 width: $scope.ngSelection + "%"
                             };
@@ -5609,6 +5627,16 @@
                 $scope.getStyleImage = function () {
                     return (densityContent) ? { height: "100%" } : { width: "100%" };
                 };
+                
+                $scope.sizeSelectionListener = function ($listener) {
+                    if (!$scope.start) { 
+                        $scope.start = true; return;
+                    } // Componente no iniciado
+                    
+                    switch ($listener) {
+                        case (Softtion.LISTENERS.CHANGED): adjustPositionOverlay(); break;
+                    }
+                };
 
                 $scope.cropImage = function () {
                     var props = getPropertiesCrop(), // Propiedades de imagen final
@@ -5621,21 +5649,17 @@
 
                     contextProcessor.drawImage(
                         canvasContent[0], 
-                        props.left, 
-                        props.top, 
-                        props.width, 
-                        props.height, 
+                        props.left, props.top, 
+                        props.width, props.height, 
                         0 , 0, widthCanvas, heightCanvas
                     );
 
-                    var result = new Image(); // Imagen resultante
-                    result.src = canvasProcessor[0].toDataURL();
-
-                    result.onload = function () {
-                        $scope.$apply(() => {
-                            $scope.ngListener({ $img: result });
-                        });
-                    };
+                    canvasProcessor[0].toBlob(
+                        (blob) => {
+                            $scope.$apply(() => { $scope.ngListener({ $result: blob }); });
+                        }, 
+                        $scope.ngMimeType, 1 // Quality
+                    );
                 };
 
                 $scope.applyRestore = function () {
@@ -5680,22 +5704,28 @@
                         case (Softtion.LISTENERS.CHANGED): applyContrast($model); break;
                     }
                 };
+                
+                function getHeightSelection() {
+                    return getValueHeightRatio(selection.width());
+                }
 
-                $scope.sizeSelectionListener = function ($listener) {
-                    switch ($listener) {
-                        case (Softtion.LISTENERS.CHANGED):
-                            attributes.left = adjustPosition(attributes.left, true, 8);
-                            attributes.top = adjustPosition(attributes.top, false, 8); 
-                        break;
-                    }
-                };
-
-                function adjustPosition(position, isWidth, diff) {
+                function getPositionSelection(isWidth) {
                     var sel = (isWidth) ? selection.width() : selection.height(),
-                        img = (isWidth) ? image.width() : image.height();
+                        img = (isWidth) ? image.width() : image.height(),
+                        position = (isWidth) ? attributes.left : attributes.top;
 
-                    return (position < 0) ? 0 : ((position + sel + diff) > img) ?
-                        (img - sel - (diff || 0)) : position; // Posición original
+                    return (position < 0) ? 0 : ((position + sel + 4) > img) ?
+                        (img - sel - 4) : position; // Posición original
+                }
+                
+                function adjustPositionOverlay() {
+                    if ((attributes.left + selection.width() + 4) > image.width()) {
+                        attributes.left = image.width() - selection.width() - 4;
+                    } // Cambio de tamaño selector, posición X se desbordó en contenedor
+                    
+                    if ((attributes.top + selection.height() + 4) > image.height()) {
+                        attributes.top = image.height() - selection.height() - 4;
+                    } // Cambio de tamaño selector, posición Y se desbordó en contenedor
                 }
 
                 function getValueHeightRatio(width) {
@@ -6920,8 +6950,8 @@
                         addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
                         addAttribute("ng-click", "checkedSuggestion(suggestion, $event)").
                         addChildren(
-                            softtion.html("div").addClass("checkbox-select").
-                                addAttribute("ng-class", "{active: isItemChecked(suggestion)}").
+                            softtion.html("div").addClass("checkbox-readonly").
+                                addAttribute("ng-active", "isItemChecked(suggestion)").
                                 addAttribute("prevent-default", "true")
                         ).
                         addChildren(
@@ -10300,7 +10330,13 @@
             restrict: "A",
             link: function ($scope, $element, $attrs) {
                 
-                $attrs.$observe("ratioElement", () => { $element.css("height", getValueHeight()); });
+                $attrs.$observe("ratioElement", () => { 
+                    $element.css("height", getValueHeight()); 
+                });
+                
+                $element.resize(() => {
+                    $element.css("height", getValueHeight()); 
+                });
                 
                 function getValueHeight() {
                     return $element.width() * $materialService.getValueRatio($attrs.ratioElement);

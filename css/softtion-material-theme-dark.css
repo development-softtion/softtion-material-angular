@@ -911,28 +911,27 @@ button.floating.theme-secondary:before {
 
 /** CHECKBOX SELECT */
 
-.checkbox-select > label:before {
+.checkbox-readonly > label:before {
     background-color: var(--theme-primary-500); }
 
-.checkbox-select.disabled > label:before {
+.checkbox-readonly > label.disabled:before {
     background-color: var(--background-disabled); }
 
-.checkbox-select > label:after {
+.checkbox-readonly > label:after {
     border: 2px solid rgba(255, 255, 255, 0.54); }
 
-.checkbox-select.active > label:after, 
-.checkbox-select.active.disabled > label:after {
-    border-left: 2px solid transparent !important;
-    border-top: 2px solid transparent !important; }
-
-.checkbox-select.active > label:after {
-    border: 2px solid var(--theme-primary-font-primary-500); }
-
-.checkbox-select.disabled > label:after {
+.checkbox-readonly > label.disabled:not(.active):after {
     border: 2px solid var(--background-disabled); }
 
-.checkbox-select.disabled.active > label:after {
-    border: 2px solid var(--background-core); }
+.checkbox-readonly > label.active:after {
+    border-left: 2px solid transparent;
+    border-top: 2px solid transparent;
+    border-right: 2px solid var(--theme-primary-font-primary-500);
+    border-bottom: 2px solid var(--theme-primary-font-primary-500); }
+
+.checkbox-readonly > label.disabled.active:after {
+    border-right: 2px solid var(--background-core);
+    border-bottom: 2px solid var(--background-core); }
 
 /** CHIP */
 
@@ -4125,13 +4124,13 @@ input:-webkit-autofill {
 .autocomplete > .content > .box > ul > li > .detail .title > b { 
     color: var(--secondary-font); }
 
-.select-multiple > .content > .box > ul > li > .checkbox-select > label:before {
+.select-multiple > .content > .box > ul > li > .checkbox-readonly > label:before {
     background-color: var(--theme-primary-500); }
 
-.select-multiple > .content > .box > ul > li > .checkbox-select:not(.active) > label:after {
+.select-multiple > .content > .box > ul > li > .checkbox-readonly > label:not(.active):after {
     border: 2px solid var(--secondary-font); }
 
-.select-multiple > .content > .box > ul > li > .checkbox-select > label:after {
+.select-multiple > .content > .box > ul > li > .checkbox-readonly > label:after {
     border: 2px solid var(--theme-primary-font-primary-500); }
 
 /** TEXTFIELD MULTILINE */
