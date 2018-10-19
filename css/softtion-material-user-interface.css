@@ -2352,6 +2352,9 @@ button.raised:focus:after, button.flat:focus:after {
 .checkbox.flex-pd > .ripple-content {
     left: 2px; }
 
+.checkbox.flex-pd-16 > .ripple-content {
+    left: 10px; }
+
 .checkbox > .ripple-content > .box {
     position: absolute;
     padding-top: 36px;

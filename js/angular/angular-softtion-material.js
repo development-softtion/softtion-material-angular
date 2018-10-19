@@ -362,7 +362,8 @@
             scope: {
                 duration: "=?",
                 ngOpen: "=?",
-                ngClose: "=?"
+                ngClose: "=?",
+                ngVisible: "=?"
             },
             link: function ($scope, $element) {
                     // Componentes
@@ -384,12 +385,10 @@
                     
                 button.html("close"); $element.append(button);
                 
-                button.click(() => {
-                    $scope.$apply(() => { closeAlert(); });
-                });
+                button.click(() => { $scope.$apply(() => { closeAlert(); }); });
                     
                 function openAlert() {
-                    $element.addClass(Classes.SHOW); // Desplegando
+                    $element.addClass(Classes.SHOW); $scope.ngVisible = true;
                     $scope.ngOpen = false; cancelPromise();
                     
                     promise = $timeout(() => { hideAlert(); }, $scope.duration);
@@ -400,7 +399,7 @@
                 }
                     
                 function hideAlert() {
-                    $element.removeClass(Classes.SHOW); promise = undefined;
+                    $scope.ngVisible = false; $element.removeClass(Classes.SHOW); promise = undefined;
                 }
                 
                 function cancelPromise() {
