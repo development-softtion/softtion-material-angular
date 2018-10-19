@@ -442,6 +442,9 @@ button.action.theme-primary:before {
 button.action.theme-secondary:before {
     background-color: var(--theme-primary-500); }
 
+button.action:after {
+    background-color: rgba(255, 255, 255, 0.1); }
+
 /** BUTTON FLAT */
 
 button.flat {
@@ -1252,6 +1255,12 @@ button.floating.theme-secondary:before {
 .datatable > .content > table > tbody > tr > td.buttons.contrast button.action:disabled {
     color: var(--alternative-disabled-font); }
 
+.datatable .switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 3px var(--theme-secondary-ripple); }
+
+.datatable .switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.3); }
+
 /** DATEPICKER */
 
 .datepicker {
@@ -2013,7 +2022,7 @@ button.floating.theme-secondary:before {
 
 .image-editor > .box > .content > .message > i, 
 .image-editor > .box > .content > .message > p {
-    color: var(--alternative-primary-font); }
+    color: var(--primary-font); }
 
 /** ITEM LIST */
 
@@ -2979,6 +2988,24 @@ button.floating.theme-secondary:before {
 
 .switch.capsule > input[type=checkbox]:not(:checked):disabled + label > .track:after {
     background-color: transparent; }
+
+.switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 12px var(--theme-secondary-ripple); }
+
+.switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 12px rgba(255, 255, 255, 0.3); }
+
+.switch.capsule > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.38); }
+
+.switch.capsule > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.38); }
+
+.item-list > .box > .switch > input[type=checkbox]:checked:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 3px var(--theme-secondary-ripple); }
+
+.item-list > .box > .switch > input[type=checkbox]:not(:disabled) + label > .track:active:after {
+    box-shadow: 0 1px 3px 1px rgba(255, 255, 255, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.3); }
 
 /** TABS */
 
