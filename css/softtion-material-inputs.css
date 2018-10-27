@@ -215,6 +215,8 @@
 .select-multiple.filled, .select-multiple.outline {
     --label-width-default: calc(100% - 52px); }
 
+.autocomplete.filled > .content.disabled-clear,
+.autocomplete.outline  > .content.disabled-clear,
 .textfield.filled, .textfield.outline, 
 .textfield-readonly.filled, .textfield-readonly.outline {
     --label-width-default: calc(100% - 24px); }
@@ -323,12 +325,18 @@
 .autocomplete.filled, .select.filled, .select-multiple.filled {
     --input-width-default: calc(100% - 52px); }
 
+.autocomplete.filled > .content.disabled-clear {
+    --input-width-default: calc(100% - 24px); }
+
 .outline {
     --input-width-default: calc(100% - 22px);
     --input-padding-default: 14px 11px 0px 11px; }
 
 .autocomplete.outline, .select.outline, .select-multiple.outline {
     --input-width-default: calc(100% - 50px); }
+
+.autocomplete.outline > .content.disabled-clear {
+    --input-width-default: calc(100% - 22px); }
 
 * > .content > .box > input {
     position: relative;
@@ -459,6 +467,9 @@
 .autocomplete.filled, .select.filled, .select-multiple.filled {
     --value-width-default: calc(100% - 50px); }
 
+.autocomplete.filled > .content.disabled-clear {
+    --value-width-default: calc(100% - 24px); }
+
 .outline {
     --value-width-default: calc(100% - 24px);
     --value-bottom-default: 17px;
@@ -468,6 +479,9 @@
 
 .autocomplete.outline, .select.outline, .select-multiple.outline {
     --value-width-default: calc(100% - 50px); }
+
+.autocomplete.outline > .content.disabled-clear {
+    --value-width-default: calc(100% - 22px); }
 
 * > .content > .box > .value {
     position: absolute;
@@ -911,7 +925,7 @@
 
 .select.inline > .content > .box > button.action,
 .select-multiple.inline > .content > .box > button.action {
-    bottom: 24px; }
+    bottom: 22px; }
 
 .select > .content > .box > button.action:not(:active):before,
 .select-multiple > .content > .box > button.action:not(:active):before {
@@ -919,6 +933,13 @@
        -moz-animation: rippleSquarecenter 1000ms var(--standard-curve);
          -o-animation: rippleSquarecenter 1000ms var(--standard-curve);
             animation: rippleSquarecenter 1000ms var(--standard-curve); }
+
+.select > .content > .box > button.action:after,
+.select-multiple > .content > .box > button.action:after {
+    width: 24px;
+    height: 24px;
+    margin-top: -12px;
+    margin-left: -12px; }
 
 .select > .content > .box > button.action > i,
 .select-multiple > .content > .box > button.action > i {
@@ -1269,6 +1290,11 @@
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
+.datatable.font-condense > .content tbody .autocomplete > .content > .box > input,
+.datatable.font-condense > .content tbody .textfield > .content > .box > input,
+.datatable.font-condense > .content tbody .textfield-readonly > .content > .box > input {
+    font-size: 13px; }
+
 .datatable.condense > .content tbody .autocomplete > .content > .box > input,
 .datatable.condense > .content tbody .textfield > .content > .box > input,
 .datatable.condense > .content tbody .textfield-readonly > .content > .box > input {
@@ -1282,6 +1308,12 @@
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
+
+.datatable.font-condense > .content tbody .autocomplete > .content > .box > .value,
+.datatable.font-condense > .content tbody .clockpicker-input > .content > .box > .value,
+.datatable.font-condense > .content tbody .datepicker-input > .content > .box > .value,
+.datatable.font-condense > .content tbody .textfield > .content > .box > .value {
+    font-size: 13px; }
 
 .datatable > .content tbody .clockpicker-input > .content > .box > .value,
 .datatable > .content tbody .datepicker-input > .content > .box > .value {
@@ -1305,6 +1337,9 @@
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
+
+.datatable.font-condense > .content tbody .autocomplete > .content > .box > .unique-selection {
+    font-size: var(--body-2-size); }
 
 .datatable.condense > .content tbody .autocomplete > .content > .box > .unique-selection {
     top: 4px; }

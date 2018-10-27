@@ -1723,9 +1723,9 @@
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-hide", "ngHide").
                         addAttribute("ng-click", "buttonClick($event)").
+                        addAttribute("tooltip", "{{tooltip}}").
+                        addChildren(softtion.html("i").setText("{{icon}}")).
                         addChildren(
-                            softtion.html("i").setText("{{icon}}").addAttribute("tooltip", "{{tooltip}}")
-                        ).addChildren(
                             softtion.html("div").addClass("progress-circular").
                                 addAttribute("indeterminate", "true").
                                 addAttribute("ng-visible", "ngProgress")
@@ -8166,14 +8166,12 @@
     Directives.Tooltip.$inject = [ "$tooltipContainer" ];
     
     function TooltipDirective($container) {
-        var directive = Directives.Tooltip; // Directiva
-        
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                var tooltip = $container.add($attrs.tooltip); 
+                var tooltip = $container.add($attrs.tooltip); // Insertando
 
-                $element.on("mouseenter", () => {
+                $element.on("mouseover", () => {
                     if (!softtion.isText($attrs.tooltip)) return;
                     
                     tooltip.addClass(Classes.SHOW); // Desplegando
@@ -8186,21 +8184,17 @@
                             y: $element.offset().top,
                             position: $attrs.tooltipPosition,
                             element: {
-                                width: $element.innerWidth(),
-                                height: $element.innerHeight()   
+                                width: $element.innerWidth(), height: $element.innerHeight()   
                             },
                             tooltip: {
-                                width: tooltip.innerWidth(),
-                                height: tooltip.innerHeight()   
+                                width: tooltip.innerWidth(), height: tooltip.innerHeight()   
                             }
                         };
 
-                    tooltip.css(directive.getPosition(params));  // Posición
+                    tooltip.css(Directives.Tooltip.getPosition(params));  // Posición
                 });
 
-                $element.on("mouseout", () => { 
-                    tooltip.removeClass(Classes.SHOW); // Ocultando
-                });
+                $element.on("mouseout", () => { tooltip.removeClass(Classes.SHOW); });
             
                 $scope.$on("$destroy", () => { tooltip.remove(); }); 
             }
