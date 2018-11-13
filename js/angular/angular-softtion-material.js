@@ -886,15 +886,14 @@
         return content.create(); // Componente
     };
                     
-    Directives.AutoComplete.$inject = [ "$filter" ];
-    
-    function AutoCompleteDirective($filter) {
+    function AutoCompleteDirective() {
         return {
             restrict: "C",
             templateUrl: Directives.AutoComplete.ROUTE,
             scope: {
                 ngModel: "=",
                 suggestions: "=",
+                ngAutostart: "=?",
                 countVisible: "=?",
                 label: "@",
                 required: "=?",
@@ -912,7 +911,6 @@
                 disabledFocusclear: "=?",
                 helperText: "@",
                 helperPermanent: "=?",
-                disabledOrderby: "=?",
                 clearModel: "=?",
                 searchMode: "=?",
                 inputMode: "=?",
@@ -928,15 +926,13 @@
             },
             link: function ($scope, $element, $attrs) {
                     // Atributos
-                var $orderBy = $filter("orderBy"), searchStart = false, 
-                    selection = false, focusLi = false, clear = false,
+                var searchStart = false, selection = false, focusLi = false, clear = false,
                     listener = new Listener($scope, Listener.KEYS.AUTOCOMPLETE);
 
-                $scope.coincidences = []; $scope.old = undefined; 
-                $scope.inputActive = false; $scope.instance = false;
+                $scope.coincidences = []; $scope.old = undefined; $scope.inputActive = false; 
                 
-                $scope.patternMethod = $scope.patternMethod || "start";
                 $scope.patternForce = $scope.patternForce || true;
+                $scope.patternMethod = $scope.patternMethod || "start";
                 
                 $scope.$watch(() => { return $scope.suggestions; }, 
                     (newValue) => {
@@ -946,10 +942,10 @@
                             $scope.suggestions = []; return;
                         } // Los items de seleccion no es un Array
                         
-                        if (!$scope.instance && !$scope.disabledOrderby) 
-                            $scope.suggestions = $orderBy(newValue, $scope.key || "");
+                        if ($scope.suggestions.isEmpty()) return;
                         
-                        $scope.instance = !$scope.instance; // Intercalando
+                        if ($scope.ngAutostart && softtion.isUndefined($scope.ngModel))
+                            $scope.ngModel = $scope.suggestions[0];
                     });
 
                 $scope.$watch(() => { return $scope.ngModel; }, 
@@ -2855,7 +2851,7 @@
     Directives.ClockPickerDialog.HTML = function () {
         var dialog = softtion.html("div").addClass(["dialog", "picker-clock"]).
             addAttribute("ng-class", "{show: ngOpen}").
-            addAttribute("persistent", "true").
+            addAttribute("ng-persistent", "true").
             addChildren(
                 softtion.html("div").addClass("box").addChildren(
                     softtion.html("div").addClass("clockpicker").
@@ -2867,26 +2863,22 @@
         return dialog.create(); // Componente
     };
     
-    Directives.ClockPickerDialog.$inject = [ "$body" ];
+    Directives.ClockPickerDialog.$inject = [ "$body", "$appContent" ];
     
-    function ClockPickerDialogDirective($body) {
+    function ClockPickerDialogDirective($body, $appContent) {
         return {
             restrict: "C",
             templateUrl: Directives.ClockPickerDialog.ROUTE,
             scope: {
                 ngModel: "=",
                 ngOpen: "=",
-                parent: "@",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
-                    // Componentes
-                var parent = angular.element($scope.parent); // Padre
-                
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.CLOCKPICKER);
                 
-                if (parent.exists()) $element.appendTo(parent); 
+                $element.appendTo($appContent); // Agregando en AppContent
 
                 $scope.$watch(() => { return $scope.ngOpen; }, 
                     (newValue) => {
@@ -2909,6 +2901,8 @@
                     
                     return newTime; // Nuevo datos de tiempo
                 }
+                
+                $scope.$on("$destroy", () => { $element.remove(); });
             }
         };
     }
@@ -2980,8 +2974,7 @@
         var dialog = softtion.html("div").addClass("clockpicker-dialog").
                 addAttribute("ng-model", "timePicker").
                 addAttribute("ng-open", "ngOpen").
-                addAttribute("ng-listener", "clockDialogListener($model, $listener)").
-                addAttribute("parent", "{{parent}}");
+                addAttribute("ng-listener", "clockDialogListener($model, $listener)");
 
         box.addChildren(description).addChildren(value).
             addChildren(lineShadow).addChildren(label).
@@ -3007,7 +3000,6 @@
                 placeholder: "@",
                 helperText: "@",
                 helperPermanent: "=?",
-                parent: "@",
                 focusedInput: "=?",
                 ngListener: "&"
             },
@@ -3684,7 +3676,7 @@
     Directives.DatePickerDialog.HTML = function () {
         var dialog = softtion.html("div").addClass(["dialog", "picker-date"]).
             addAttribute("ng-class", "{show: ngOpen}").
-            addAttribute("persistent", "true").
+            addAttribute("ng-persistent", "true").
             addChildren(
                 softtion.html("div").addClass("box").
                     addChildren(
@@ -3701,8 +3693,10 @@
 
         return dialog.create(); // Componente
     };
+    
+    Directives.DatePickerDialog.$inject = [ "$body", "$appContent" ];
                     
-    function DatePickerDialogDirective($body) {
+    function DatePickerDialogDirective($body, $appContent) {
         return {
             restrict: "C",
             templateUrl: Directives.DatePickerDialog.ROUTE,
@@ -3713,18 +3707,14 @@
                 maxDate: "=?",
                 yearRange: "=?",
                 ngOpen: "=",
-                parent: "@",
                 ngDisabledDate: "&",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
-                    // Componentes
-                var parent = angular.element($scope.parent); // Padre
-                
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.DATEPICKER);
                 
-                if (parent.exists()) $element.appendTo(parent); 
+                $element.appendTo($appContent); // Agregando en AppContent
 
                 $scope.$watch(() => { return $scope.ngOpen; }, 
                     (newValue) => {
@@ -3739,6 +3729,8 @@
                 $scope.ngDisabledDatePicker = function ($date) {
                     return $scope.ngDisabledDate({$date: $date});
                 };
+                
+                $scope.$on("$destroy", () => { $element.remove(); });
             }
         };
     }
@@ -3812,7 +3804,6 @@
                 addAttribute("autostart", "autostart").
                 addAttribute("ng-open", "ngOpen").
                 addAttribute("ng-listener", "dateDialogListener($model, $listener)").
-                addAttribute("parent", "{{parent}}").
                 addAttribute("min-date", "minDate").
                 addAttribute("max-date", "maxDate").
                 addAttribute("ng-disabled-date", "ngDisabledDateDialog($date)").
@@ -3847,7 +3838,6 @@
                 minDate: "=?",
                 maxDate: "=?",
                 yearRange: "=?",
-                parent: "@",
                 ngDisabledDate: "&",
                 ngListener: "&"
             },
@@ -3972,7 +3962,7 @@
                 
                 $scope.$watch(() => { return $scope.ngOpen; },
                     (newValue) => {
-                        if (newValue) {
+                        if (newValue) { 
                             dialog.show(); $scope.ngOpen = false;
                         } // Desplegando Dialog
                     });
@@ -3986,14 +3976,10 @@
                     
                 $element.transitionend((event) => {
                     $scope.$apply(() => {
-                        var transition = event.originalEvent.propertyName,
-                            target = event.originalEvent.target;
+                        var transition = event.originalEvent.propertyName, target = event.originalEvent.target;
                     
                         if (target === box[0] && transition === "transform")
-                            listener.launch(
-                                ($element.hasClass(Classes.SHOW)) ? 
-                                    Listeners.SHOW : Listeners.HIDE
-                            );
+                            listener.launch(($element.hasClass(Classes.SHOW)) ? Listeners.SHOW : Listeners.HIDE);
                     });
                 });
             }
@@ -10603,16 +10589,16 @@
         function isDefinedModel() {
             switch ($scope.type) {
                 case (TextType.INTEGER):
-                    return softtion.isDefined($scope.ngModel);
+                    return softtion.isDefined($scope.ngModel) && !isNaN($scope.ngModel);
                 
                 case (TextType.MONEY):
-                    return softtion.isDefined($scope.ngModel);
+                    return softtion.isDefined($scope.ngModel) && !isNaN($scope.ngModel);
                 
                 case (TextType.MATH):
-                    return softtion.isDefined($scope.ngModel);
+                    return softtion.isDefined($scope.ngModel) && !isNaN($scope.ngModel);
 
                 case (TextType.DECIMAL): 
-                    return softtion.isDefined($scope.ngModel);
+                    return softtion.isDefined($scope.ngModel) && !isNaN($scope.ngModel);
 
                 case (TextType.EMAIL): 
                     return softtion.isText($scope.ngModel) || softtion.isText($scope.input);

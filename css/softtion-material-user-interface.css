@@ -8225,6 +8225,12 @@ body.show-keyboard .snackbar.show {
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
 
+.stepper-horizontal.condense > ul > li > .content > .description > .title {
+    font-family: var(--subtitle-2-font);
+    font-size: var(--subtitle-2-size);
+    letter-spacing: var(--subtitle-2-letterspacing);
+    font-weight: var(--subtitle-2-weight); }
+
 .stepper-horizontal > ul > li > .content > .description > .optional {
     margin-top: 2px;
     height: 16px;
