@@ -1163,6 +1163,21 @@ button.floating.theme-secondary:before {
 .datatable.theme-secondary > .header > .actions > button:disabled {
     color: var(--theme-secondary-font-disabled-500); }
 
+.datatable > .title {
+    background-color: var(--background-appbar); }
+
+.datatable.theme-primary > .title {
+    background-color: var(--theme-primary-500); }
+
+.datatable.theme-secondary > .title {
+    background-color: var(--theme-secondary-500); }
+
+.datatable.theme-primary > .title {
+    color: var(--theme-primary-font-primary-500); }
+
+.datatable.theme-secondary > .title {
+    color: var(--theme-secondary-font-primary-500); }
+
 .datatable > .content > table {
     background: var(--background-component); }
 
@@ -3251,7 +3266,7 @@ button.floating.theme-secondary:before {
 .select-multiple.outline > .content > .box,
 .textfield.outline > .content > .box,
 .textfield-readonly.outline > .content > .box {
-    border: 1px solid var(--background-border); }
+    border: 1px solid var(--theme-secondary-100); }
 
 .theme-primary .autocomplete.outline.contrast > .content > .box,
 .theme-primary .clockpicker-input.outline.contrast > .content > .box,
@@ -3530,32 +3545,32 @@ button.floating.theme-secondary:before {
 
 .autocomplete > .content > .box > input:focus ~ label,
 .chip-input > .content > .box > input:focus ~ label,
-.clockpicker-input > .content.active > .box >  label.active,
-.datepicker-input > .content.active > .box >  label.active,
-.select > .content.active > .box >  label.active,
-.select-multiple > .content.active > .box >  label.active,
+.clockpicker-input > .content.active > .box > label,
+.datepicker-input > .content.active > .box > label,
+.select > .content.active > .box > label,
+.select-multiple > .content.active > .box > label,
 .textfield > .content > .box > input:focus ~ label,
 .textfield-readonly > .content > .box > input:focus ~ label {
     color: var(--theme-secondary-500); }
 
-.theme-primary .autocomplete.contrast > .content > .box > input:focus ~ label.active,
-.theme-primary .chip-input.contrast > .content > .box > input:focus ~ label.active,
-.theme-primary .clockpicker-input.contrast > .content.active > .box >  label.active,
-.theme-primary .datepicker-input.contrast > .content.active > .box >  label.active,
-.theme-primary .select.contrast > .content.active > .box >  label.active,
-.theme-primary .select-multiple.contrast > .content.active > .box >  label.active,
-.theme-primary .textfield.contrast > .content > .box > input:focus ~ label.active,
-.theme-primary .textfield-readonly.contrast > .content > .box > input:focus ~ label.active {
+.theme-primary .autocomplete.contrast > .content > .box > input:focus ~ label,
+.theme-primary .chip-input.contrast > .content > .box > input:focus ~ label,
+.theme-primary .clockpicker-input.contrast > .content.active > .box > label,
+.theme-primary .datepicker-input.contrast > .content.active > .box > label,
+.theme-primary .select.contrast > .content.active > .box > label,
+.theme-primary .select-multiple.contrast > .content.active > .box > label,
+.theme-primary .textfield.contrast > .content > .box > input:focus ~ label,
+.theme-primary .textfield-readonly.contrast > .content > .box > input:focus ~ label {
     color: var(--theme-primary-font-primary-500); }
 
-.theme-secondary .autocomplete.contrast > .content > .box > input:focus ~ label.active,
-.theme-secondary .chip-input.contrast > .content > .box > input:focus ~ label.active,
-.theme-secondary .clockpicker-input.contrast > .content.active > .box >  label.active,
-.theme-secondary .datepicker-input.contrast > .content.active > .box >  label.active,
-.theme-secondary .select.contrast > .content.active > .box >  label.active,
-.theme-secondary .select-multiple.contrast > .content.active > .box >  label.active,
-.theme-secondary .textfield.contrast > .content > .box > input:focus ~ label.active,
-.theme-secondary .textfield-readonly.contrast > .content > .box > input:focus ~ label.active {
+.theme-secondary .autocomplete.contrast > .content > .box > input:focus ~ label,
+.theme-secondary .chip-input.contrast > .content > .box > input:focus ~ label,
+.theme-secondary .clockpicker-input.contrast > .content.active > .box > label,
+.theme-secondary .datepicker-input.contrast > .content.active > .box > label,
+.theme-secondary .select.contrast > .content.active > .box > label,
+.theme-secondary .select-multiple.contrast > .content.active > .box > label,
+.theme-secondary .textfield.contrast > .content > .box > input:focus ~ label,
+.theme-secondary .textfield-readonly.contrast > .content > .box > input:focus ~ label {
     color: var(--theme-secondary-font-primary-500); }
 
 .autocomplete > .content > .box > input:disabled ~ label,
@@ -3569,19 +3584,19 @@ button.floating.theme-secondary:before {
 
 .theme-primary .autocomplete.contrast > .content > .box > input:disabled ~ label,
 .theme-primary .chip-input.contrast > .content > .box > input:disabled ~ label,
-.theme-primary .clockpicker-input.contrast > .content.disabled > .box >  label,
-.theme-primary .datepicker-input.contrast > .content.disabled > .box >  label,
-.theme-primary .select.contrast > .content.disabled > .box >  label,
-.theme-primary .select-multiple.contrast > .content.disabled > .box >  label,
+.theme-primary .clockpicker-input.contrast > .content.disabled > .box > label,
+.theme-primary .datepicker-input.contrast > .content.disabled > .box > label,
+.theme-primary .select.contrast > .content.disabled > .box > label,
+.theme-primary .select-multiple.contrast > .content.disabled > .box > label,
 .theme-primary .textfield.contrast > .content > .box > input:disabled ~ label {
     color: var(--theme-primary-font-disabled-500); }
 
 .theme-secondary .autocomplete.contrast > .content > .box > input:disabled ~ label,
 .theme-secondary .chip-input.contrast > .content > .box > input:disabled ~ label,
-.theme-secondary .clockpicker-input.contrast > .content.disabled > .box >  label,
-.theme-secondary .datepicker-input.contrast > .content.disabled > .box >  label,
-.theme-secondary .select.contrast > .content.disabled > .box >  label,
-.theme-secondary .select-multiple.contrast > .content.disabled > .box >  label,
+.theme-secondary .clockpicker-input.contrast > .content.disabled > .box > label,
+.theme-secondary .datepicker-input.contrast > .content.disabled > .box > label,
+.theme-secondary .select.contrast > .content.disabled > .box > label,
+.theme-secondary .select-multiple.contrast > .content.disabled > .box > label,
 .theme-secondary .textfield.contrast > .content > .box > input:disabled ~ label {
     color: var(--theme-secondary-font-disabled-500); }
 
@@ -3591,10 +3606,10 @@ button.floating.theme-secondary:before {
 
 .autocomplete > .content > .box > input:focus ~ label > span,
 .chip-input > .content > .box > input:focus ~ label > span,
-.clockpicker-input > .content.active > .box >  label.active > span,
-.datepicker-input > .content.active > .box >  label.active > span,
-.select > .content.active > .box >  label.active > span,
-.select-multiple > .content.active > .box >  label.active > span,
+.clockpicker-input > .content.active > .box > label > span,
+.datepicker-input > .content.active > .box > label > span,
+.select > .content.active > .box > label > span,
+.select-multiple > .content.active > .box > label > span,
 .textfield > .content > .box > input:focus ~ label > span {
     color: var(--theme-error-500); }
 

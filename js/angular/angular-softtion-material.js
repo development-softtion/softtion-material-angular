@@ -4332,8 +4332,7 @@
     Directives.Filechooser.ROUTE = "softtion/template/filechooser.html",
                     
     Directives.Filechooser.HTML = function () {
-        var input = softtion.html("input", false).
-            addAttribute("type", "file");
+        var input = softtion.html("input", false).addAttribute("type", "file");
 
         var content = softtion.html("div").addClass("content").
             addChildren(
@@ -4575,8 +4574,7 @@
     Directives.FilechooserAudio.ROUTE = "softtion/template/filechooser-audio.html",
                     
     Directives.FilechooserAudio.HTML = function () {
-        var input = softtion.html("input", false).
-            addAttribute("type", "file");
+        var input = softtion.html("input", false).addAttribute("type", "file");
 
         var audio = softtion.html("div").addClass("audio").
             addAttribute("ng-src", "{{ngSrc}}").
@@ -4591,25 +4589,19 @@
                 softtion.html("button").addClass(Classes.ACTION).
                     addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
                     addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("save").
-                            addAttribute("ng-click", "saveFile()")
-                    )
+                    addAttribute("ng-click", "saveFile()").
+                    addChildren(softtion.html("i").setText("save"))
             ).addChildren(
                 softtion.html("button").addClass(Classes.ACTION).
                     addAttribute("ng-hide", "!isSelectFile()").
                     addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("delete").
-                            addAttribute("ng-click", "deleteFile()")
-                    )
+                    addAttribute("ng-click", "deleteFile()").
+                    addChildren(softtion.html("i").setText("delete"))
             ).addChildren(
                 softtion.html("button").addClass(Classes.ACTION).
                     addAttribute("ng-disabled", "ngDisabled").
-                    addChildren(
-                        softtion.html("i").setText("file_upload").
-                            addAttribute("ng-click", "selectFile($event)")
-                    )
+                    addAttribute("ng-click", "selectFile($event)").
+                    addChildren(softtion.html("i").setText("file_upload"))
             );
 
         return input + audio + actions; // Componente 
@@ -4710,8 +4702,7 @@
     Directives.FilechooserMultiple.ROUTE = "softtion/template/filechooser-multiple.html",
                     
     Directives.FilechooserMultiple.HTML = function () {
-        var input = softtion.html("input", false).
-            addAttribute("type", "file");
+        var input = softtion.html("input", false).addAttribute("type", "file");
 
         var actionAdd = softtion.html("div").addClass(["action-add"]).
             addAttribute("ng-click", "selectFile($event)").
@@ -4885,8 +4876,7 @@
     Directives.FilechooserPerfil.ROUTE = "softtion/template/filechooser-perfil.html",
                     
     Directives.FilechooserPerfil.HTML = function () {
-        var input = softtion.html("input", false).
-                addAttribute("type", "file");
+        var input = softtion.html("input", false).addAttribute("type", "file");
 
         var icon = softtion.html("i").setText("{{icon}}").
                 addAttribute("ng-hide", "isImgDefine()");
@@ -4909,18 +4899,14 @@
                 ).addChildren(
                     softtion.html("button").addClass(Classes.ACTION).
                         addAttribute("ng-disabled", "ngDisabled").
-                        addChildren(
-                            softtion.html("i").setText("file_upload").
-                                addAttribute("ng-click", "selectFile($event)")
-                        )
+                        addAttribute("ng-click", "selectFile($event)").
+                        addChildren(softtion.html("i").setText("file_upload"))
                 ).addChildren(
                     softtion.html("button").addClass(Classes.ACTION).
                         addAttribute("ng-hide", "!isSelectFile() || !saveEnabled").
                         addAttribute("ng-disabled", "ngDisabled").
-                        addChildren(
-                            softtion.html("i").setText("save").
-                                addAttribute("ng-click", "saveFile()")
-                        )
+                        addAttribute("ng-click", "saveFile()").
+                        addChildren(softtion.html("i").setText("save"))
                 );
 
         return input + img + icon + actions; // Componente

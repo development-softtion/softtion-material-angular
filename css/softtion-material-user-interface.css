@@ -2812,6 +2812,25 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .header > .actions > button.action:last-child {
     margin-right: 0px; }
 
+.datatable > .title {
+    position: relative;
+    width: 100%;
+    padding: 0px 16px 0px 16px;
+    height: 48px;
+    line-height: 48px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
+
+.datatable.condense > .title {
+    height: 40px;
+    line-height: 40px; }
+
 .datatable > .content {
     position: relative;
     float: left;
@@ -2984,6 +3003,7 @@ button.raised:focus:after, button.flat:focus:after {
 .datatable > .content > table > tbody > tr > td.buttons {
     position: absolute;
     left: 0px; 
+    z-index: 2;
     -webkit-transform: translateX(-100%);
        -moz-transform: translateX(-100%);
          -o-transform: translateX(-100%);
@@ -7158,12 +7178,12 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .sidenav {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: 0px;
     width: 0%;
     height: 100%;
-    overflow: hidden;
     z-index: 16;
+    overflow: hidden;
     visibility: hidden; }
 
 .sidenav.show {
@@ -7184,6 +7204,7 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 .app-body > .app-bar.element-hidden.hide ~ .sidenav {
     -webkit-transform: translateY(-56px);
        -moz-transform: translateY(-56px);
+         -o-transform: translateY(-56px);
             transform: translateY(-56px); }
 
 @media only screen and (min-width : 961px) {
@@ -7290,14 +7311,14 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
 
 .sidenav > .content {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: 0px;
     min-width: 240px;
     width: calc(100% - 56px);
     max-width: 320px;
     height: 100%;
-    overflow-y: auto;
     z-index: 2;
+    overflow-y: auto;
     box-shadow: var(--shadow-16);
     box-sizing: border-box;
     will-change: transform, -webkit-transform, -moz-transform, -o-transform;
@@ -7363,8 +7384,8 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     position: relative;
     width: 100%;
     height: 64px; 
-    box-sizing: border-box;
-    overflow: hidden; }
+    overflow: hidden;
+    box-sizing: border-box; }
 
 @media only screen and (max-width : 960px) {
     
@@ -7541,21 +7562,21 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     width: 100%;
     padding: 8px 0px; }
 
-.sidenav > .content .sidenav-item {
-    position: relative;
+.sidenav .sidenav-menu > .sidenav-item {
     width: 100%;
-    float: left; }
+    float: left;
+    position: relative; }
 
 .sidenav > .content .sidenav-item.disabled {
     pointer-events: none; }
 
-.sidenav > .content .sidenav-item > .description {
+.sidenav .sidenav-menu > .sidenav-item > .description {
     position: relative; }
 
-.sidenav > .content .sidenav-item.disabled > .description {
+.sidenav .sidenav-menu > .sidenav-item.disabled > .description {
     pointer-events: none; }
 
-.sidenav > .content .sidenav-item > .description > a {
+.sidenav .sidenav-menu > .sidenav-item > .description > a {
     position: relative;
     display: flex;
     cursor: pointer;
@@ -7572,38 +7593,50 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     letter-spacing: var(--subtitle-1-letterspacing);
     font-weight: var(--subtitle-1-weight); }
 
-.sidenav.condense > .content .sidenav-item > .description > a {
+.sidenav  .sidenav-menu.condense > .sidenav-item > .description > a {
+    padding: 0px 12px;
+    height: 42px;
+    line-height: 42px;
     font-family: var(--subtitle-2-font);
     font-size: var(--subtitle-2-size);
     letter-spacing: var(--subtitle-2-letterspacing);
     font-weight: var(--subtitle-2-weight); }
 
-.sidenav > .content .sidenav-item > .description > a > i {
-    float: left;
+.sidenav .sidenav-menu > .sidenav-item > .description > a > i {
     padding-right: 16px;
-    height: 48px;
-    line-height: 48px; }
+    float: left;
+    height: inherit;
+    line-height: inherit; }
 
-.sidenav > .content .sidenav-item > .description > a > span {
+.sidenav .sidenav-menu.condense > .sidenav-item > .description > a > i {
+    padding-right: 12px; }
+
+.sidenav .sidenav-menu > .sidenav-item > .description > a > span {
     display: block;
     float: left;
     width: 100%;
-    height: 48px;
-    line-height: 48px;
+    height: inherit;
+    line-height: inherit;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
 
-.sidenav .sidenav-item.optionable > .description > a > span {
+.sidenav .sidenav-menu > .sidenav-item.optionable > .description > a > span {
     width: calc(100% - 32px); }
 
-.sidenav > .content .sidenav-item > .description > a > i + span {
+.sidenav .sidenav-menu > .sidenav-item > .description > a > i + span {
     width: calc(100% - 40px); }
 
-.sidenav .sidenav-item.optionable > .description > a > i + span {
+.sidenav .sidenav-menu.condense > .sidenav-item > .description > a > i + span {
+    width: calc(100% - 36px); }
+
+.sidenav .sidenav-menu > .sidenav-item.optionable > .description > a > i + span {
     width: calc(100% - 68px); }
 
-.sidenav > .content .sidenav-item > .description > a > .badge {
+.sidenav .sidenav-menu.condense > .sidenav-item.optionable > .description > a > i + span {
+    width: calc(100% - 64px); }
+
+.sidenav .sidenav-menu > .sidenav-item > .description > a > .badge {
     position: absolute;
     top: 12px;
     right: 20px;
@@ -7614,22 +7647,31 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     font-size: var(--subtitle-2-size);
     font-weight: var(--subtitle-2-weight); }
 
-.sidenav > .content .sidenav-item.optionable > .description > a > .badge {
+.sidenav .sidenav-menu > .sidenav-item.optionable > .description > a > .badge {
     right: 60px; }
 
-.sidenav > .content .sidenav-item > .description > a > button.action {
+.sidenav .sidenav-menu > .sidenav-item > .description > a > button.action {
+    padding: 0px 4px;
     width: 32px;
     margin-top: 12px;
-    margin-left: 8px;
-    padding: 0px 4px; }
+    margin-left: 8px; }
 
-.sidenav > .content .sidenav-item > .description > a > button.action:not(:active):before {
+.sidenav .sidenav-menu.condense > .sidenav-item > .description > a > button.action {
+    margin-top: 9px; }
+
+.sidenav .sidenav-menu.condense > .sidenav-item button.action:after {
+    height: 32px;
+    width: 32px;
+    margin-top: -16px;
+    margin-left: -16px; }
+
+.sidenav .sidenav-menu > .sidenav-item > .description > a > button.action:not(:active):before {
     -webkit-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
        -moz-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
          -o-animation: rippleSquarecenterHigh 750ms var(--standard-curve);
             animation: rippleSquarecenterHigh 750ms var(--standard-curve); }
 
-.sidenav > .content .sidenav-item > .description > a > button.action > i {
+.sidenav .sidenav-menu > .sidenav-item > .description > a > button.action > i {
     -webkit-transform: rotate(0deg);
        -moz-transform: rotate(0deg);
          -o-transform: rotate(0deg);
@@ -7639,50 +7681,54 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
          -o-transition: -o-transform 175ms 0ms var(--standard-curve);
             transition: transform 175ms 0ms var(--standard-curve); }
 
-.sidenav > .content .sidenav-item.displayed > .description > a > button.action > i {
+.sidenav .sidenav-menu > .sidenav-item.displayed > .description > a > button.action > i {
     -webkit-transform: rotate(180deg);
        -moz-transform: rotate(180deg);
          -o-transform: rotate(180deg);
             transform: rotate(180deg); }
 
-.sidenav > .content .sidenav-item > .options {
+.sidenav .sidenav-menu > .sidenav-item > .options {
     max-height: 0px;
     box-sizing: border-box;
     overflow: hidden; }
 
-.sidenav > .content .sidenav-item > .options {
+.sidenav .sidenav-menu > .sidenav-item > .options {
     -webkit-transition: max-height 175ms 0ms var(--standard-curve);
        -moz-transition: max-height 175ms 0ms var(--standard-curve);
          -o-transition: max-height 175ms 0ms var(--standard-curve);
             transition: max-height 175ms 0ms var(--standard-curve); }
 
-.sidenav > .content .sidenav-item > .options > ul > li.disabled {
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li.disabled {
     pointer-events: none; }
 
-.sidenav > .content .sidenav-item > .options > ul > li > a {
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li > a {
     display: block;
     width: 100%;
+    height: 48px;
+    line-height: 48px;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0px 16px 0px 24px;
-    height: 48px;
-    line-height: 48px;
     text-decoration: none;
+    padding: 0px 16px 0px 24px;
+    box-sizing: border-box;
     font-family: var(--subtitle-2-font);
     font-size: var(--subtitle-2-size);
     letter-spacing: var(--subtitle-2-letterspacing);
     font-weight: var(--subtitle-2-weight); }
 
-.sidenav > .content .sidenav-item > .options > ul > li > a > i {
+.sidenav .sidenav-menu.condense > .sidenav-item > .options > ul > li > a {
+    padding: 0px 12px 0px 20px;
+    height: 40px;
+    line-height: 40px; }
+
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li > a > i {
     color: inherit;
     float: left;
-    height: 48px;
-    line-height: 48px;
-    margin-right: 12px; }
+    margin-right: 12px;
+    height: inherit;
+    line-height: inherit; }
 
 .sidenav > .content .divider {
     margin: 8px 0px; }
@@ -8069,28 +8115,25 @@ body.show-keyboard .snackbar.show {
 .stepper-horizontal {
     position: relative;
     width: 100%;
-    height: 72px;
+    padding: 4px 0px;
+    height: auto;
     overflow: hidden; 
     box-sizing: border-box; 
     user-select: none;
     box-shadow: var(--shadow-2); }
 
-.app-bar > .stepper-horizontal, 
-.stepper-horizontal.flat,
+.app-bar > .stepper-horizontal, .stepper-horizontal.flat, 
 .stepper-horizontal.bordered {
     box-shadow: none; }
 
-.stepper-horizontal.alternative {
-    height: 104px; }
-
 .stepper-horizontal:before {
-    content: "";
     position: absolute;
+    content: "";
     top: 50%;
     right: 24px;
     left: 24px;
-    height: 1px;
-    z-index: 0; }
+    z-index: 0;
+    height: 1px; }
 
 .stepper-horizontal.alternative:before {
     top: 28px; }
@@ -8099,12 +8142,8 @@ body.show-keyboard .snackbar.show {
     display: flex; }
 
 .stepper-horizontal > ul > li {
-    display: flex;
-    width: 100%; 
-    height: 72px; }
-
-.stepper-horizontal.alternative > ul > li {
-    height: 104px; }
+    width: 100%;
+    display: flex; }
 
 .stepper-horizontal > ul > li.disabled {
     pointer-events: none; }
@@ -8116,16 +8155,14 @@ body.show-keyboard .snackbar.show {
     justify-content: center; }
 
 .stepper-horizontal > ul > li > .content { 
-    display: table; 
     position: relative;
-    height: 72px;
-    padding: 0px 8px;
-    cursor: pointer; }
+    display: flex; 
+    cursor: pointer;
+    padding: 8px 8px; }
 
 .stepper-horizontal.alternative > ul > li > .content {
     display: block;
     width: 100%;
-    height: 104px;
     padding: 0px; }
 
 .stepper-horizontal.alternative li:first-child > .content {
@@ -8134,32 +8171,24 @@ body.show-keyboard .snackbar.show {
 .stepper-horizontal.alternative li:last-child > .content {
     padding-right: 0px; }
 
-.stepper-horizontal > ul > li > .content > .ripple-box {
-    opacity: 0.24; }
-
-.stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
-    -webkit-animation: rippleStepper 200ms var(--deceleration-curve);
-       -moz-animation: rippleStepper 200ms var(--deceleration-curve);
-         -o-animation: rippleStepper 200ms var(--deceleration-curve);
-            animation: rippleStepper 200ms var(--deceleration-curve); }
-
 .stepper-horizontal > ul > li:first-child > .content { 
     padding-left: 24px; }
 
 .stepper-horizontal > ul > li:last-child > .content { 
+    padding-right: 24px; 
     float: right;
-    padding-right: 24px; }
+    height: calc(100% - 16px); }
 
 .stepper-horizontal > ul > li > .content > .indicator {
-    margin-right: 8px;
+    text-align: center;
     width: 24px;
-    text-align: center; }
+    margin: auto 8px auto 0px; }
 
 .stepper-horizontal.alternative li > .content > .indicator {
     padding: 0px 8px;
     margin-left: calc(50% - 20px);
-    margin-top: 16px;
-    margin-bottom: 8px; }
+    margin-top: 12px;
+    margin-bottom: 6px; }
 
 .stepper-horizontal.alternative li:first-child > .content > .indicator {
     margin-left: 0px;
@@ -8190,7 +8219,6 @@ body.show-keyboard .snackbar.show {
     display: block;
     width: 24px;
     height: 24px; 
-    margin-top: 24px;
     line-height: 24px; 
     border-radius: 50%;
     font-family: var(--subtitle-2-font);
@@ -8205,14 +8233,7 @@ body.show-keyboard .snackbar.show {
     visibility: hidden; }
 
 .stepper-horizontal > ul > li > .content > .description {
-    display: table-cell; 
-    vertical-align: middle;
-    height: 72px; }
-
-.stepper-horizontal.alternative > ul > li > .content > .description {
-    display: block;
-    width: 100%; 
-    height: auto; }
+    margin: auto; }
 
 .stepper-horizontal > ul > li > .content > .description > p {
     margin: 0px; }
@@ -8243,6 +8264,15 @@ body.show-keyboard .snackbar.show {
 .stepper-horizontal.alternative li > .content > .description > .title,
 .stepper-horizontal.alternative li > .content > .description > .optional {
     text-align: center; }
+
+.stepper-horizontal > ul > li > .content > .ripple-box {
+    opacity: 0.24; }
+
+.stepper-horizontal > ul > li > .content > .ripple-box.animated > .effect {
+    -webkit-animation: rippleStepper 200ms var(--deceleration-curve);
+       -moz-animation: rippleStepper 200ms var(--deceleration-curve);
+         -o-animation: rippleStepper 200ms var(--deceleration-curve);
+            animation: rippleStepper 200ms var(--deceleration-curve); }
 
 @media only screen and (max-width: 360px) {
     
