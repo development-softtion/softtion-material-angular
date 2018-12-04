@@ -1,10 +1,10 @@
 /*
  * Softtion Material Theme Light
- * v1.8.9
+ * v1.9.5
  * @license MIT
  * Author: Softtion Developers
  * Created: 04/Oct/2017
- * Updated: 14/Jul/2018
+ * Updated: 14/Nov/2018
  */
 
 :root {
@@ -2549,6 +2549,14 @@ button.floating.theme-secondary:before {
         border-right: none; }
 }
 
+.sidenav > .content > .title.theme-primary {
+    color: var(--theme-primary-font-primary-700);
+    background-color: var(--theme-primary-700); }
+
+.sidenav > .content > .title.theme-secondary {
+    color: var(--theme-primary-font-secondary-700);
+    background-color: var(--theme-secondary-700); }
+
 .sidenav > .content > .banner-perfil {
     border-bottom: 1px solid var(--background-border); }
 
@@ -2762,17 +2770,6 @@ button.floating.theme-secondary:before {
 
 .stepper-horizontal.alternative > ul > li > .content {
     background-color: transparent !important; }
-
-.stepper-horizontal > ul > li > .content > .ripple-box > .effect {
-    background-color: var(--ripple); }
-
-.app-bar.theme-primary > .stepper-horizontal li > .content > .ripple-box > .effect,
-.stepper-horizontal.theme-primary li > .content > .ripple-box > .effect {
-    background-color: var(--theme-primary-ripple-700); }
-
-.app-bar.theme-secondary > .stepper-horizontal li > .content > .ripple-box > .effect,
-.stepper-horizontal.theme-secondary li > .content > .ripple-box > .effect {
-    background-color: var(--theme-secondary-ripple-700); }
 
 .stepper-horizontal.alternative > ul > li > .content > .indicator {
     background-color: var(--background-core); }
@@ -2993,6 +2990,9 @@ button.floating.theme-secondary:before {
 .tabs, .app-bar > .tabs, .app-bar > .toolbar > .tabs {
     background-color: var(--background-appbar); }
 
+.tabs.alternative {
+    background-color: transparent; }
+
 .tabs.theme-primary, .app-bar.theme-primary > .tabs, 
 .app-bar.theme-primary > .toolbar > .tabs {
     background-color: var(--theme-primary-700); }
@@ -3012,9 +3012,18 @@ button.floating.theme-secondary:before {
 .app-bar.floating > .breadcrumb + .tabs {
     border-top-color: transparent; }
 
-.tabs > .tab, .app-bar > .tabs > .tab, 
-.app-bar > .toolbar > .tabs > .tab {
+.tabs > .tab, .app-bar > .tabs > .tab, .app-bar > .toolbar > .tabs > .tab {
     color: var(--primary-font); }
+
+.tabs.alternative > .tab {
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-bottom: 1px solid var(--background-border); }
+
+.tabs.alternative > .tab.active {
+    border-right: 1px solid var(--background-border);
+    border-bottom: 1px solid transparent;
+    border-left: 1px solid var(--background-border); }
 
 .tabs.theme-primary > .tab, .app-bar.theme-primary > .tabs > .tab, 
 .app-bar.theme-primary > .toolbar > .tabs > .tab {
@@ -3054,6 +3063,9 @@ button.floating.theme-secondary:before {
 .app-bar > .toolbar > .tabs > .tab:after {
     background-color: var(--primary-font); }
 
+.tabs.alternative > .tab:after {
+    background-color: var(--theme-secondary-500); }
+
 .tabs.theme-primary > .tab:after, .app-bar.theme-primary > .tabs > .tab:after, 
 .app-bar.theme-primary > .toolbar > .tabs > .tab:after {
     background-color: var(--theme-primary-font-primary-700); }
@@ -3065,6 +3077,9 @@ button.floating.theme-secondary:before {
 .tabs > .stripe, .app-bar > .tabs > .stripe, 
 .app-bar > .toolbar > .tabs > .stripe {
     background-color: var(--primary-font); }
+
+.tabs.alternative > .stripe {
+    background-color: var(--theme-secondary-500); }
 
 .tabs.theme-primary > .stripe, .app-bar.theme-primary > .tabs > .stripe, 
 .app-bar.theme-primary > .toolbar > .tabs > .stripe {
@@ -4187,7 +4202,7 @@ input:-webkit-autofill {
     background-color: var(--theme-secondary-200); } 
 
 .textfield-multiline.outline > .content > .box {
-    border: 1px solid var(--background-border); }
+    border: 1px solid var(--theme-secondary-100); }
 
 .theme-primary .textfield-multiline.outline.contrast > .content > .box {
     border: 1px solid var(--theme-primary-font-secondary-500); }

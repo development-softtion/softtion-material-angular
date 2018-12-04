@@ -1119,14 +1119,14 @@
 .select.inline.filled > .content > .box > ul,
 .select-multiple.inline.filled > .content > .box > ul {
     top: 44px;
-    left: calc(var(--inline-left) + 12px);
-    width: calc(var(--inline-width) - 24px); }
+    width: calc(var(--inline-width) - 24px);
+    left: calc(var(--inline-left) + 12px); }
 
 .select.inline.filled > .content > .box > ul {
     top: 16px; }
 
 .autocomplete.inline.filled > .content.icon-action > .box > ul {
-    width: calc(var(--inline-left) - 44px); }
+    width: calc(var(--inline-width) - 44px); }
 
 .autocomplete.outline > .content > .box > ul, 
 .select.outline > .content > .box > ul, 
@@ -1160,14 +1160,14 @@
 .select.inline.outline > .content > .box > ul,
 .select-multiple.inline.outline > .content > .box > ul {
     top: 44px;
-    width: calc(var(--inline-left) - 24px);
+    width: calc(var(--inline-width) - 24px);
     left: calc(var(--inline-left) + 12px); }
 
 .select.inline.outline > .content > .box > ul {
     top: 16px; }
 
 .autocomplete.inline.outline > .content.icon-action > .box > ul {
-    width: calc(var(--inline-left) - 44px); }
+    width: calc(var(--inline-width) - 44px); }
 
 .autocomplete > .content > .box > ul > li,
 .select > .content > .box > ul > li,

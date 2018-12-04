@@ -110,7 +110,8 @@ class Softtion {
             ACTION: "action",
             
             TWO_LINE: "two-line",
-            ROUND: "round"
+            ROUND: "round",
+            ALTERNATIVE: "alternative"
         };
     }
     
@@ -868,6 +869,10 @@ class Softtion {
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     ((softtion) => {
+        
+        Array.prototype.size = function () { 
+            return this.length; 
+        };
         
         Array.prototype.isEmpty = function () { 
             return (this.length === 0); 

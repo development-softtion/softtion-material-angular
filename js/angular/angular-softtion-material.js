@@ -159,6 +159,8 @@
 
                 VideoYouTube: Directives.create(Directives.VideoYouTube),
 
+                View: Directives.create(Directives.View),
+
                 ViewsTabs: Directives.create(Directives.ViewsTabs)
             },
 
@@ -225,7 +227,9 @@
 
                 RatioElement: Properties.create(Properties.RatioElement),
 
-                Sidenav: Properties.create(Properties.Sidenav)
+                Sidenav: Properties.create(Properties.Sidenav),
+
+                Visibility: Properties.create(Properties.Visibility)
             }
         };
     }
@@ -329,6 +333,7 @@
             case (Directives.TextFieldReadonly.NAME): return Directives.TextFieldReadonly;
             case (Directives.Tooltip.NAME): return Directives.Tooltip;
             case (Directives.VideoYouTube.NAME): return Directives.VideoYouTube;
+            case (Directives.View.NAME): return Directives.View;
             case (Directives.ViewsTabs.NAME): return Directives.ViewsTabs;
         }
     }
@@ -962,14 +967,8 @@
                                 clear = false; return; // Retornando
                             } // Se limpio contenido del elemento
 
-                            if (!$scope.searchMode) {
+                            if (!$scope.searchMode)
                                 listener.launch(Listeners.CHANGED);
-                            } else {
-                                if (selection) {
-                                    $scope.focusedInput = true; 
-                                    listener.launch(Listeners.SELECT);
-                                }
-                            }
                         } // Ocurrio un cambio en el componente 
                     });
 
@@ -1139,6 +1138,14 @@
                     setSuggestions(pattern, $scope.coincidences);
                     
                     $scope.ngModel = (!$scope.searchMode) ? suggestion : undefined;
+                    
+                    if ($scope.searchMode) {
+                        $scope.ngModel = undefined; $scope.input = "";
+                        $scope.select = suggestion; $scope.focusedInput = true; 
+                        listener.launch(Listeners.SELECT); // Evento selection
+                    } else {
+                        $scope.ngModel = suggestion; // Asignando
+                    }
                 };
 
                 $scope.clearAutocomplet = function () {
@@ -3341,6 +3348,8 @@
                             $scope.minDate = oldValue; return;
                         } // Valor definido no es una fecha
                         
+                        newValue.normalize("date"); // Normalizando fecha
+                        
                         if (softtion.isDate($scope.ngModel)) {
                             if (!newValue.isBefore($scope.ngModel)) {
                                 $scope.ngModel = newValue; $scope.selectDate = newValue;
@@ -3359,6 +3368,8 @@
                         if (!softtion.isDate(newValue)) {
                             $scope.maxDate = oldValue; return;
                         } // Valor definido no es una fecha
+                        
+                        newValue.normalize("date"); // Normalizando fecha
                         
                         if (softtion.isDate($scope.ngModel)) {
                             if (!newValue.isAfter($scope.ngModel)) {
@@ -5487,7 +5498,8 @@
                     contextContent = canvasContent[0].getContext("2d"),
 
                      // Atributos
-                    posX, posY, top, left, densityContent, originalData, 
+                    posX, posY, top, left, originalData, 
+                    densityContent, densityImage,
                     attributes = { top: 0, left: 0, active: false };
 
                 $scope.ngMimeType = $scope.ngMimeType || "image/jpeg";
@@ -5507,9 +5519,10 @@
                 });
 
                 IMG.onload = function () {
-                    $scope.$apply(() => {                    
-                        canvasContent.prop("height", IMG.height); 
+                    $scope.$apply(() => {
+                        densityImage = ((IMG.width / IMG.height) >= 1);
                         canvasContent.prop("width", IMG.width); 
+                        canvasContent.prop("height", IMG.height); 
 
                         contextContent.drawImage(IMG, 0, 0, IMG.width, IMG.height);
                         originalData = getImageData(); // Imagen original
@@ -5596,7 +5609,7 @@
                 };
 
                 $scope.getStyleImage = function () {
-                    return (densityContent) ? { height: "100%" } : { width: "100%" };
+                    return (!densityContent) ? { height: "100%" } : { width: "100%" };
                 };
                 
                 $scope.sizeSelectionListener = function ($listener) {
@@ -6372,7 +6385,7 @@
             addAttribute("ng-model", "model").
             addAttribute("value", "{{value}}").
             addAttribute("name", "{{name}}").
-            addAttribute("ng-click", "clickRadioButton($event)").
+            addAttribute("ng-value", "ngValue").
             addAttribute("ng-disabled", "ngDisabled");
 
         var label = softtion.html("label").setText("{{label}}").
@@ -6393,26 +6406,24 @@
                 value: "@",
                 name: "@",
                 label: "@",
+                ngValue: "=?",
                 ngDisabled: "=?",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
                     // Componentes
                 var input = $element.find("input[type='radio']");
-                    
+                
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.RADIOBUTTON);
-
-                $scope.clickRadioButton = function ($event) { 
-                    if ($scope.ngDisabled) return; // Desactivado
-                    
-                    listener.launch(Listeners.CLICK, { $event: $event });
-                };
 
                 $scope.clickLabel = function ($event) { 
                     if ($scope.ngDisabled) return; // Desactivado
                     
-                    $scope.model = $scope.value; input.focus();
+                    $scope.model = $scope.ngValue || $scope.value; 
+                    
+                    input.focus(); input.click(); // Activando
+                    
                     listener.launch(Listeners.CLICK, { $event: $event });
                 };
             }
@@ -7496,28 +7507,10 @@
     Directives.StepperHorizontal.VERSION = "1.0.0";
     Directives.StepperHorizontal.KEY = "stepperHorizontal";
     
-    Directives.StepperHorizontal.$inject = [ "$materialConstant" ];
-    
-    function StepperHorizontalDirective($material) {
+    function StepperHorizontalDirective() {
         return {
             restrict: "C",
-            $scope: {
-                disabledRipple: "=?"
-            },
             link: function ($scope, $element) {
-                if ($scope.disabledRipple) return; // No Ripple
-
-                var contents = $element.find("li > .content");
-
-                angular.forEach(contents, (content) => {
-                    var element = angular.element(content),
-                        BOX = $material.RIPPLE.BOX(),
-                        EFFECT = $material.RIPPLE.EFFECT();
-
-                    BOX.append(EFFECT); element.append(BOX);
-                    
-                    $material.RIPPLE.DEFINE_EVENT(BOX, EFFECT);
-                });
             }
         };
     }
@@ -7644,7 +7637,10 @@
                     if (tab.hasClass(Classes.ACTIVE)) return; // Esta activo
 
                     var attrs = getAttrsTab(tab); $element.addClass(Classes.ACTIVE);
-
+                    
+                    if ($element.hasClass(Classes.ALTERNATIVE))
+                        attrs.left = attrs.left + 1; // Ajustando posición
+                    
                     stripe.css({ width: attrs.width, left: attrs.left });
                     tabs.removeClass(Classes.ACTIVE); tab.addClass(Classes.ACTIVE);
 
@@ -8207,6 +8203,43 @@
                     });
 
                 iframe.attr("allowfullscreen", $scope.allowfullscreen);
+            }
+        };
+    }
+    
+    // Directiva: View
+    // Version: 1.0.0
+    // Update: 03/Dic/2018
+    
+    Directives.View = ViewDirective;
+    
+    Directives.View.NAME = "View";
+    Directives.View.VERSION = "1.0.0";
+    Directives.View.KEY = "view";
+    
+    function ViewDirective() {
+        return {
+            restrict: "C",
+            scope: {
+                ngActive: "=?",
+                ngModel: "=?",
+                ngVisible: "=?"
+            },
+            link: function ($scope, $element) {
+                $scope.$watch(() => { return $scope.ngModel; }, 
+                    (newValue) => {
+                        if (softtion.isUndefined(newValue)) {
+                            $element.removeClass(Classes.ACTIVE); return;
+                        } // No se conoce parámetro de activación
+                        
+                        $scope.ngActive = ($scope.ngModel === $scope.ngVisible);
+                    });
+                    
+                $scope.$watch(() => { return $scope.ngActive; }, 
+                    (newValue) => {
+                        (newValue) ? $element.addClass(Classes.ACTIVE) :
+                            $element.removeClass(Classes.ACTIVE);
+                    });
             }
         };
     }
@@ -10012,6 +10045,7 @@
             case (Properties.MaterialTheme.NAME): return Properties.MaterialTheme;
             case (Properties.RatioElement.NAME): return Properties.RatioElement;
             case (Properties.Sidenav.NAME): return Properties.Sidenav;
+            case (Properties.Visibility.NAME): return Properties.Visibility;
         }
     }
     
@@ -10329,6 +10363,32 @@
                 var sidenav = $sidenav($attrs.sidenav);
                 
                 $element.on("click", () => { sidenav.show(); });
+            }
+        };
+    }
+    
+    // Propiedad: Visibility
+    // Version: 1.0.0
+    // Update: 19/Nov/2018
+    
+    Properties.Visibility = VisibilityProperty;
+    
+    Properties.Visibility.NAME = "Visibility";
+    Properties.Visibility.VERSION = "1.0.0";
+    Properties.Visibility.KEY = "ngVisibility";
+    
+    function VisibilityProperty($sidenav) {
+        return {
+            restrict: "A",
+            multiElement: true,
+            link: function ($scope, $element, $attrs) {
+                console.log("HOLA");
+                
+                $scope.$watch(() => { 
+                    return $attrs.ngVisibility;
+                }, (newValue) => {
+                    console.log(newValue);
+                });
             }
         };
     }
@@ -10670,7 +10730,9 @@
         function validateTypeText(value) {
             if (!softtion.isText(value)) return { success: true };
             
-            var result = { success: softtion.getSuccessString($scope.type, value) };
+            var result = { 
+                    success: softtion.getSuccessString($scope.type, value) 
+                };
             
             if (!result.success) {
                 switch ($scope.type) {
@@ -10966,7 +11028,8 @@
     
     Listener.KEYS = {
         AUTOCOMPLETE: [
-            { key: "$model", value:"ngModel" }, { key: "$old", value:"old" }, { key: "$value", value:"input" }
+            { key: "$model", value: "ngModel" }, { key: "$old", value: "old" }, 
+            { key: "$value", value: "input" }, { key: "$select", value: "select" }
         ],
         
         CHECKBOX: [ { key: "$model", value: "checked" } ],
