@@ -110,7 +110,8 @@ class Softtion {
             ACTION: "action",
             
             TWO_LINE: "two-line",
-            ROUND: "round"
+            ROUND: "round",
+            ALTERNATIVE: "alternative"
         };
     }
     
@@ -378,29 +379,21 @@ class Softtion {
         delete object[key]; // Eliminando parametro del objeto
     }
     
-    required(object, validationKeys) {
-        var self = this; // Instancia de Softtion
+    required(object, keys) {
+        var keyError = undefined, self = this; // Instancia de Softtion
         
-        if (self.isArray(validationKeys)) {
-            var keyError = undefined; // Clave errada
+        if (!self.isArray(keys)) {
+            var value = self.findKey(object, keys); // Verificando
             
-            var result = self.forEach(validationKeys, (key) => {
-                keyError = key; // Clave a validar
-                
-                var value = self.findKey(object, key);
-                
-                if (!self.isDefined(value)) return true;
-            });
-            
-            return (result) ? { success: true } : // Sin problemas
-                { success: false, key: keyError };
-        } else {
-            var value = self.findKey(object, validationKeys);
-            
-            return (self.isDefined(value)) ?
-                { success: true } : 
-                { success: false, key: validationKeys };
-        } // Se hace validación de clave única
+            return self.isDefined(value) ? 
+                { success: true } : { success: false, key: keys };
+        } // Solo se desea validar una clave
+        
+        var result = self.forEach(keys, (key) => {
+            keyError = key; return (!self.isDefined(self.findKey(object, key)));
+        });
+
+        return (result) ? { success: true } : { success: false, key: keyError };
     }
     
     forEach(array, fn) {
@@ -876,6 +869,10 @@ class Softtion {
     window.softtion = new Softtion(); // Agregando softtion como Global
     
     ((softtion) => {
+        
+        Array.prototype.size = function () { 
+            return this.length; 
+        };
         
         Array.prototype.isEmpty = function () { 
             return (this.length === 0); 
