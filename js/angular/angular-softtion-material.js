@@ -65,19 +65,19 @@
 
                 ChipInput: Directives.create(Directives.ChipInput),
 
-                Clockpicker: Directives.create(Directives.ClockPicker),
+                ClockPicker: Directives.create(Directives.ClockPicker),
 
-                ClockpickerDialog: Directives.create(Directives.ClockPickerDialog),
+                ClockPickerDialog: Directives.create(Directives.ClockPickerDialog),
 
-                ClockpickerInput: Directives.create(Directives.ClockPickerInput),
+                ClockPickerInput: Directives.create(Directives.ClockPickerInput),
                 
                 DataTable: Directives.create(Directives.DataTable),
 
-                Datepicker: Directives.create(Directives.DatePicker),
+                DatePicker: Directives.create(Directives.DatePicker),
 
-                DatepickerDialog: Directives.create(Directives.DatePickerDialog),
+                DatePickerDialog: Directives.create(Directives.DatePickerDialog),
 
-                DatepickerInput: Directives.create(Directives.DatePickerInput),
+                DatePickerInput: Directives.create(Directives.DatePickerInput),
 
                 Dialog: Directives.create(Directives.Dialog),
 
@@ -159,7 +159,13 @@
 
                 VideoYouTube: Directives.create(Directives.VideoYouTube),
 
-                ViewsTabs: Directives.create(Directives.ViewsTabs)
+                ViewsTabs: Directives.create(Directives.ViewsTabs),
+                
+                YearPicker: Directives.create(Directives.YearPicker),
+                
+                YearPickerDialog: Directives.create(Directives.YearPickerDialog),
+                
+                YearPickerInput: Directives.create(Directives.YearPickerInput)
             },
 
             providers: {
@@ -330,6 +336,9 @@
             case (Directives.Tooltip.NAME): return Directives.Tooltip;
             case (Directives.VideoYouTube.NAME): return Directives.VideoYouTube;
             case (Directives.ViewsTabs.NAME): return Directives.ViewsTabs;
+            case (Directives.YearPicker.NAME): return Directives.YearPicker;
+            case (Directives.YearPickerDialog.NAME): return Directives.YearPickerDialog;
+            case (Directives.YearPickerInput.NAME): return Directives.YearPickerInput;
         }
     }
     
@@ -8240,7 +8249,7 @@
     }
     
     // Directiva: ViewsTabs
-    // Version: 1.0.0
+    // Version: 1.0.1
     // Update: 27/Feb/2018
     
     Directives.ViewsTabs = ViewsTabsDirective;
@@ -8255,6 +8264,396 @@
             link: function ($scope, $element) {
                 var count = $element.find(".view").length;
                 $element.css("width", (count * 100) + "%");
+            }
+        };
+    }
+    
+    // Directiva: YearPicker
+    // Version: 1.0.0
+    // Update: 05/Dic/2018
+    
+    Directives.YearPicker = YearPickerDirective;
+    
+    Directives.YearPicker.NAME = "YearPicker";
+    Directives.YearPicker.VERSION = "1.0.0";
+    Directives.YearPicker.KEY = "yearpicker";
+    Directives.YearPicker.ROUTE = "softtion/template/yearpicker.html",
+    
+    Directives.YearPicker.HTML = function () {
+        var list = softtion.html("ul").
+                addChildren(softtion.html("li").setText("{{year}}").
+                    addAttribute("ng-click", "select(year)").
+                    addAttribute("ng-repeat", "year in years").
+                    addAttribute("ng-class", "{active : isActive(year)}")
+                );
+        
+        return list.create(); // Componente
+    };
+    
+    function YearPickerDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.YearPicker.ROUTE,
+            scope: {
+                ngModel: "=",
+                minDate: "=?",
+                maxDate: "=?",
+                ngRangeYear: "=?",
+                ngListener: "&"
+            },
+            link: function ($scope, $element) {
+                    // Atributos
+                var listener = new Listener($scope, Listener.KEYS.YEARPICKER),
+                    topNow = 0, disabledScroll = false; // Control del scroll
+                
+                $scope.ngRangeYear = $scope.ngRangeYear || 5;
+                
+                $scope.$watch(() => { return $scope.ngModel; },
+                    (newValue) => {
+                        if (!softtion.isNumber(newValue)) return;
+                        
+                        disabledScroll = true; $scope.years = defineYears(newValue);
+                        
+                        topNow = ($scope.ngRangeYear - 3) * 40;
+                        
+                        $element.animate({ scrollTop: topNow }, {
+                            duration: 100, complete: () => { disabledScroll = false; }
+                        });
+                    });
+                    
+                $scope.isActive = function (year) { 
+                    return $scope.ngModel === year; // Año esta seleccionado
+                };
+                
+                $scope.select = function (year) {
+                    $scope.ngModel = year; listener.launch(Listeners.SELECT);
+                };
+                
+                $element.scroll(() => {
+                    if (disabledScroll) return; // Función scroll inactiva
+                    
+                    $scope.$apply(() => {
+                        var height = $element[0].clientHeight,
+                            scrollTop = $element.scrollTop(), 
+                            scrollHeight = $element[0].scrollHeight;
+                        
+                        if (scrollTop === (scrollHeight - height)) {
+                            addYearsAfter();
+                        } // Se llego al final de la lista
+                        else if (scrollTop <= 20) {
+                            if (scrollTop < topNow) addYearsBefore();
+                        } // Se llego al comienzo de la lista
+                        
+                        if (scrollTop < 20) {
+                            $element.scrollTop(20); topNow = 20;
+                        } else {
+                            topNow = scrollTop; // Actualizando posición
+                        }
+                    }); 
+                });
+                    
+                function defineYears(year) {
+                    var prevYears = [], nextYears = [],
+                        maxYear = ($scope.maxDate) ? $scope.maxDate.getFullYear() : 10000,
+                        minYear = ($scope.minDate) ? $scope.minDate.getFullYear() : 0;
+
+                    for (var index = 0; index < $scope.ngRangeYear; index++) {
+                        var nextYear = year + (index + 1), // Año siguiente
+                            prevYear = year - $scope.ngRangeYear + index;
+
+                        // Año anterior permitido para selección
+                        if (prevYear >= minYear) prevYears.push(prevYear); 
+                        
+                        // Año siguiente permitido para selección
+                        if (nextYear <= maxYear) nextYears.push(nextYear);
+                    }
+
+                    return prevYears.together([year]).together(nextYears); // Años selección
+                }
+                
+                function addYearsBefore() {
+                    var yearLimit = (softtion.isDate($scope.minDate)) ? 
+                            $scope.minDate.getFullYear() : 0,
+
+                        newYears = [], year = $scope.years.first(); // Primer año
+
+                    for (var index = 0; index < $scope.ngRangeYear; index++) {
+                        if ((year + index - 5) > yearLimit) newYears.push((year + index - 5));
+                    } //  Cargando años anteriores del primero actual
+
+                    if (!newYears.isEmpty()) $scope.years = newYears.together($scope.years);
+                }
+                
+                function addYearsAfter() {
+                    var yearLimit = (softtion.isDate($scope.maxDate)) ? 
+                            $scope.maxDate.getFullYear() : 10000,
+                                    
+                        newYears = [], year = $scope.years.last(); // Ultimo año
+
+                    for (var index = 1; index <= $scope.ngRangeYear; index++) {
+                        if ((year + index) <= yearLimit) newYears.push((year + index));
+                    } // Cargando años posteriores del último actual
+
+                    if (!newYears.isEmpty()) $scope.years.together(newYears);
+                }
+            }
+        };
+    }
+    
+    // Directiva: YearPickerDialog
+    // Version: 1.0.0
+    // Update: 06/Dic/2018
+    
+    Directives.YearPickerDialog = YearPickerDialogDirective;
+    
+    Directives.YearPickerDialog.NAME = "YearPickerDialog";
+    Directives.YearPickerDialog.VERSION = "1.0.0";
+    Directives.YearPickerDialog.KEY = "yearpickerDialog";
+    Directives.YearPickerDialog.ROUTE = "softtion/template/yearpicker-dialog.html",
+                    
+    Directives.YearPickerDialog.HTML = function () {
+        var dialog = softtion.html("div").addClass(["dialog", "picker-year"]).
+            addAttribute("ng-class", "{show: ngOpen}").
+            addAttribute("ng-persistent", "true").
+            addChildren(
+                softtion.html("div").addClass("box").
+                    addChildren(
+                        softtion.html("div").addClass("header").
+                            addChildren(
+                                softtion.html("div").addClass("title").
+                                    setText("{{getTitle()}}")
+                            ).addChildren(
+                                softtion.html("button").addClass("action").
+                                    addAttribute("ng-click", "close()").
+                                    addChildren(softtion.html("i").setText("close"))
+                            )
+                    ).
+                    addChildren(
+                        softtion.html("div").addClass("yearpicker").
+                            addAttribute("ng-model", "ngModel").
+                            addAttribute("ng-listener", "yearListener($model, $listener)").
+                            addAttribute("min-date", "minDate").
+                            addAttribute("max-date", "maxDate").
+                            addAttribute("ng-range-year", "ngRangeYear")
+                    )
+            );
+
+        return dialog.create(); // Componente
+    };
+    
+    Directives.YearPickerDialog.$inject = [ "$body", "$appContent" ];
+                    
+    function YearPickerDialogDirective($body, $appContent) {
+        return {
+            restrict: "C",
+            templateUrl: Directives.YearPickerDialog.ROUTE,
+            scope: {
+                ngModel: "=",
+                ngOpen: "=",
+                minDate: "=?",
+                maxDate: "=?",
+                ngRangeYear: "=?",
+                ngListener: "&"
+            },
+            link: function ($scope, $element) {
+                    // Atributos
+                var listener = new Listener($scope, Listener.KEYS.YEARPICKER);
+                
+                $element.appendTo($appContent); // Agregando en AppContent
+
+                $scope.$watch(() => { return $scope.ngOpen; }, 
+                    (newValue) => {
+                        (!newValue) ? $body.removeClass(Classes.BODY_OVERFLOW_NONE) :
+                            $body.addClass(Classes.BODY_OVERFLOW_NONE);
+                    });
+
+                $scope.getTitle = function () {
+                    return softtion.isNumber($scope.ngModel) ? $scope.ngModel : "Indefinido";
+                };
+
+                $scope.yearListener = function ($model, $listener) {
+                    $scope.ngOpen = false; $scope.ngModel = $model; listener.launch($listener);
+                };
+                
+                $scope.close = function () { $scope.ngOpen = false; };
+                
+                $scope.$on("$destroy", () => { $element.remove(); });
+            }
+        };
+    }
+    
+    // Directiva: YearPickerInput
+    // Version: 1.0.0
+    // Update: 06/Dic/2018
+    
+    Directives.YearPickerInput = YearPickerInputDirective;
+    
+    Directives.YearPickerInput.NAME = "YearPickerInput";
+    Directives.YearPickerInput.VERSION = "1.0.0";
+    Directives.YearPickerInput.KEY = "yearpickerInput";
+    Directives.YearPickerInput.ROUTE = "softtion/template/yearpicker-input.html",
+                    
+    Directives.YearPickerInput.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
+        var content = softtion.html("div").addClass("content").
+                addAttribute("tabindex", "0").
+                addAttribute("ng-focus", "focusContent()").
+                addAttribute("ng-blur", "blurContent()").
+                addAttribute("ng-keypress", "keyPressContent($event)").
+                addAttribute("focused-element", "focusedInput").
+                addAttribute("ng-class", 
+                    "{active: contentActive, disabled: ngDisabled, \"label-inactive\": !isLabel}"
+                ).addChildren(box);
+        
+        var description = softtion.html("div").addClass("description").
+                addAttribute("ng-click", "clickIconDescription($event)").
+                addAttribute("ng-if", "isIconDescription || isIconImg").
+                addChildren(
+                    softtion.html("div").addClass("img-icon").
+                        addAttribute("ng-if", "isIconImg").
+                        addChildren(
+                            softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
+                        )
+                ).addChildren(
+                    softtion.html("i").addAttribute("ng-if", "isIconDescription").
+                        setText("{{iconDescription}}")
+                );
+
+        var value = softtion.html("pre").addClass(["value"]).
+                setText("{{getValueModel()}}").
+                addAttribute("ng-class", "{\"holder-active\": isHolderActive()}").
+                addAttribute("ng-click", "showDialog($event)");
+
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+
+        var label = softtion.html("label").
+                setText("{{label}}").addClass("truncate").
+                addAttribute("ng-if", "isLabel").
+                addAttribute("ng-class", "{active: isActiveLabel()}").
+                addAttribute("ng-click", "showDialog($event)").
+                addChildren(
+                    softtion.html("span").setText("*").addAttribute("ng-if", "required")
+                ).addChildren(
+                    softtion.html("span").addClass("optional").
+                        setText("(opcional)").addAttribute("ng-if", "optional")
+                );
+
+        var buttonClear = softtion.html("i").addClass([Classes.ACTION]).
+                setText("close").addAttribute("ng-hide", "isActiveClear()").
+                addAttribute("ng-click", "clearYear()");
+
+        var spanHelper = softtion.html("span").addClass(["help", "truncate"]).
+                setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
+
+        var dialog = softtion.html("div").addClass("yearpicker-dialog").
+                addAttribute("ng-model", "ngModel").
+                addAttribute("ng-open", "ngOpen").
+                addAttribute("ng-listener", "yearDialogListener($model, $listener)").
+                addAttribute("min-date", "minDate").
+                addAttribute("max-date", "maxDate").
+                addAttribute("ng-range-year", "ngRangeYear");
+
+        box.addChildren(description).addChildren(value).
+            addChildren(lineBordered).addChildren(label).
+            addChildren(buttonClear).addChildren(spanHelper);
+
+        return content + dialog; // Componente
+    };
+    
+    function YearPickerInputDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.YearPickerInput.ROUTE,
+            scope: {
+                ngModel: "=",
+                format: "@",
+                label: "@",
+                required: "=?",
+                optional: "=?",
+                ngDisabled: "=?",
+                iconDescription: "@",
+                iconImg: "@",
+                placeholder: "@",
+                helperText: "@",
+                helperPermanent: "=?",
+                focusedInput: "=?",
+
+                minDate: "=?",
+                maxDate: "=?",
+                ngRangeYear: "=?",
+                ngListener: "&"
+            },
+            link: function ($scope, $element, $attrs) {
+                    // Componentes
+                var content = $element.children(".content");
+                
+                    // Atributos
+                var listener = new Listener($scope, Listener.KEYS.YEARPICKER);
+                
+                $scope.format = $scope.format || "ww, dd de mn del aa";
+                $scope.ngOpen = false; // Dialog inicia oculto
+
+                $scope.$watch(() => { return $scope.ngModel; }, 
+                    (newValue, oldValue) => {
+                        if (softtion.isUndefined(newValue)) return; // Indefindo
+                        
+                        if (!softtion.isDate(newValue)) $scope.ngModel = oldValue;
+                    });
+                    
+                defineInputField($scope, $element, $attrs, listener);
+
+                $scope.isActiveLabel = function () {
+                    return (softtion.isNumber($scope.ngModel));
+                };
+
+                $scope.isHelperActive = function () {
+                    return softtion.isUndefined($scope.ngModel) || $scope.helperPermanent;
+                };
+
+                $scope.isActiveClear = function () {
+                    return !softtion.isDefined($scope.ngModel);
+                };
+                    
+                $scope.focusContent = function () { $scope.contentActive = true; };
+                    
+                $scope.blurContent = function () { $scope.contentActive = false; };
+                
+                $scope.keyPressContent = function ($event) {
+                    if ($event.originalEvent.which === KeysBoard.ENTER) 
+                        showDialog($event); // Presiono ENTER
+                    
+                    if ($event.originalEvent.which === KeysBoard.SPACE) 
+                        showDialog($event); // Presiono SPACE
+                };
+
+                $scope.getValueModel = function () {
+                    if ($scope.isHolderActive()) return $scope.placeholder;
+                    
+                    return (!softtion.isNumber($scope.ngModel)) ? "" : $scope.ngModel;
+                };
+
+                $scope.showDialog = function ($event) { showDialog($event); };
+
+                $scope.clickIconDescription = function ($event) {
+                    listener.launch(Listeners.ICON, { $event: $event });
+                };
+
+                $scope.yearDialogListener = function ($model, $listener) {
+                    content.focus(); $scope.ngModel = $model;
+                    listener.launch($listener); // Reportando listener
+                };
+
+                $scope.clearYear = function () {
+                    $scope.ngModel = undefined; listener.launch(Listeners.CLEAR);
+                };
+                
+                function showDialog($event) {
+                    if ($scope.ngDisabled) return; // Desactivado
+                        
+                    $scope.ngOpen = true; // Desplegando dialog
+                    listener.launch(Listeners.SHOW, { $event: $event });
+                }
             }
         };
     }
@@ -11006,6 +11405,8 @@
         CLOCKPICKER: [ { key: "$model", value: "ngModel" } ],
 
         DATEPICKER: [ { key: "$model", value: "ngModel" } ],
+        
+        YEARPICKER: [ { key: "$model", value: "ngModel" } ],
 
         FILECHOOSER: [ { key: "$model", value: "file" } ],
 

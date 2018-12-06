@@ -91,8 +91,8 @@
     --icon-action-width-lower: 28px; }
 
 .autocomplete, .chip-input, .clockpicker-input, 
-.datepicker-input, .select, .select-multiple,
-.textfield, .textfield-readonly {
+.datepicker-input, .yearpicker-input, .select, 
+.select-multiple, .textfield, .textfield-readonly {
     position: relative;
     float: left;
     overflow-y: auto;
@@ -106,6 +106,7 @@
 
 .autocomplete > .content, .chip-input > .content,
 .clockpicker-input > .content, .datepicker-input > .content,
+.yearpicker-input > .content,
 .select > .content, .select-multiple > .content, 
 .textfield > .content, .textfield-readonly > .content {
     position: relative;
@@ -119,12 +120,14 @@
 .chip-input > .content.label-inactive {
     padding-top: 8px; }
 
-.clockpicker-input > .content:focus, .datepicker-input > .content:focus {
+.clockpicker-input > .content:focus, .datepicker-input > .content:focus,
+.yearpicker-input > .content:focus {
     outline: none; }
 
 .autocomplete.filled > .content,
 .clockpicker-input.filled > .content,
 .datepicker-input.filled > .content,
+.yearpicker-input .filled > .content,
 .select.filled > .content,
 .select-multiple.filled > .content,
 .textfield.filled > .content,
@@ -135,6 +138,7 @@
 .chip-input > .content.disabled,
 .clockpicker-input > .content.disabled,
 .datepicker-input > .content.disabled,
+.yearpicker-input  > .content.disabled,
 .select > .content.disabled,
 .select-multiple > .content.disabled,
 .textfield > .content.disabled {
@@ -144,6 +148,7 @@
 .chip-input > .content > .box,
 .clockpicker-input > .content > .box,
 .datepicker-input > .content > .box,
+.yearpicker-input > .content > .box,
 .select > .content > .box,
 .select-multiple > .content > .box,
 .textfield > .content > .box,
@@ -154,6 +159,7 @@
 .autocomplete.filled > .content > .box,
 .clockpicker-input.filled > .content > .box,
 .datepicker-input.filled > .content > .box,
+.yearpicker-input.filled > .content > .box,
 .select.filled > .content > .box,
 .select-multiple.filled > .content > .box,
 .textfield.filled > .content > .box,
@@ -163,6 +169,7 @@
 .autocomplete.outline > .content > .box,
 .clockpicker-input.outline > .content > .box,
 .datepicker-input.outline > .content > .box,
+.yearpicker-input.outline > .content > .box,
 .select.outline > .content > .box,
 .select-multiple.outline > .content > .box,
 .textfield.outline > .content > .box,
@@ -211,6 +218,7 @@
 .autocomplete.filled, .autocomplete.outline,
 .clockpicker-input.filled, .clockpicker-input.outline,
 .datepicker-input.filled, .datepicker-input.outline,
+.yearpicker-input.filled, .yearpicker-input.outline,
 .select.filled, .select.outline,
 .select-multiple.filled, .select-multiple.outline {
     --label-width-default: calc(100% - 52px); }
@@ -250,6 +258,7 @@
 
 .clockpicker-input > .content > .box > label,
 .datepicker-input > .content > .box > label,
+.yearpicker-input > .content > .box > label,
 .select > .content > .box > label,
 .select-multiple > .content > .box > label {
     cursor: pointer; }
@@ -507,7 +516,8 @@
 
 .clockpicker-input > .content > .box > .value,
 .select > .content > .box > .value,
-.datepicker-input > .content > .box > .value {
+.datepicker-input > .content > .box > .value,
+.yearpicker-input > .content > .box > .value {
     cursor: pointer; }
 
 * > .content.icon-action > .box > .value {
@@ -520,49 +530,57 @@
 *:not(.inline) > .content.icon-action > .box > .description ~ .value {
     width: calc(var(--value-width-default) - var(--icon-action-width-lower) - 36px); }
 
-.clockpicker-input > .content > .box > .value, 
-.datepicker-input > .content > .box > .value {
+.datepicker-input > .content > .box > .value, 
+.yearpicker-input > .content > .box > .value,
+.clockpicker-input > .content > .box > .value {
     position: initial;
     top: 0px;
     cursor: pointer;
     padding: 12px 0px 8px 0px; }
 
-.clockpicker-input.filled > .content > .box > .value,
-.datepicker-input.filled > .content > .box > .value {
+.datepicker-input.filled > .content > .box > .value,
+.yearpicker-input.filled > .content > .box > .value,
+.clockpicker-input.filled > .content > .box > .value {
     width: calc(100% - 56px);
     height: 30px;
     line-height: 30px;
     padding: 16px 12px 0px 12px; }
 
-.clockpicker-input.filled > .content > .box > .description ~ .value, 
-.datepicker-input.filled > .content > .box > .description ~ .value {
+.datepicker-input.filled > .content > .box > .description ~ .value, 
+.yearpicker-input.filled > .content > .box > .description ~ .value,
+.clockpicker-input.filled > .content > .box > .description ~ .value {
     width: calc(100% - 90px); }
 
-.clockpicker-input.outline > .content > .box > .value, 
-.datepicker-input.outline > .content > .box > .value {
+.datepicker-input.outline > .content > .box > .value, 
+.yearpicker-input.outline > .content > .box > .value, 
+.clockpicker-input.outline > .content > .box > .value {
     width: calc(100% - 54px);
     height: 30px;
     line-height: 30px;
     padding: 14px 12px 2px 12px; }
 
-.clockpicker-input.outline > .content > .box > .description ~ .value, 
-.datepicker-input.outline > .content > .box > .description ~ .value {
+.datepicker-input.outline > .content > .box > .description ~ .value,
+.yearpicker-input.outline > .content > .box > .description ~ .value,
+.clockpicker-input.outline > .content > .box > .description ~ .value {
     width: calc(100% - 88px); }
 
-.clockpicker-input > .content.label-inactive > .box > .value,
-.datepicker-input > .content.label-inactive > .box > .value {
+.datepicker-input > .content.label-inactive > .box > .value,
+.yearpicker-input > .content.label-inactive > .box > .value,
+.clockpicker-input > .content.label-inactive > .box > .value {
     padding-top: 0px; }
 
-.clockpicker-input.filled > .content.label-inactive > .box > .value,
-.datepicker-input.filled > .content.label-inactive > .box > .value {
+.datepicker-input.filled > .content.label-inactive > .box > .value,
+.yearpicker-input.filled > .content.label-inactive > .box > .value,
+.clockpicker-input.filled > .content.label-inactive > .box > .value {
     padding-top: 4px; }
 
-.clockpicker-input.outline > .content.label-inactive > .box > .value, 
-.datepicker-input.outline > .content.label-inactive > .box > .value {
+.datepicker-input.outline > .content.label-inactive > .box > .value,
+.yearpicker-input.outline > .content.label-inactive > .box > .value,
+.clockpicker-input.outline > .content.label-inactive > .box > .value  {
     padding-top: 3px; }
 
 .autocomplete.inline, .select.inline, .clockpicker-input.inline,
-.datepicker-input.inline, .select-multiple.inline {
+.datepicker-input.inline, .yearpicker-input.inline, .select-multiple.inline {
     --inline-width-lower-value: 28px; }
 
 .autocomplete.inline > .content.icon-action {
@@ -576,7 +594,7 @@
     --inline-width-lower-value: 24px; }
 
 .autocomplete.inline.filled, .select.inline.filled, 
-.clockpicker-input.inline.filled,
+.clockpicker-input.inline.filled, .yearpicker-input.inline.filled,
 .datepicker-input.inline.filled, .select-multiple.inline.filled {
     --inline-width-lower-value: 52px; }
 
@@ -591,7 +609,7 @@
     --inline-width-lower-value: 23px; }
 
 .autocomplete.inline.outline, .select.inline.outline, 
-.clockpicker-input.inline.outline,
+.clockpicker-input.inline.outline, .yearpicker-input.inline.outline,
 .datepicker-input.inline.outline, .select-multiple.inline.outline {
     --inline-width-lower-value: 51px; }
 
@@ -606,8 +624,9 @@
     left: var(--inline-left);
     width: calc(var(--inline-width) - var(--inline-width-lower-value)); }
 
-.clockpicker-input.inline > .content > .box > .value,
-.datepicker-input.inline > .content > .box > .value { 
+.datepicker-input.inline > .content > .box > .value,
+.yearpicker-input.inline > .content > .box > .value,
+.clockpicker-input.inline > .content > .box > .value { 
     padding-top: 0px;
     margin-left: var(--inline-margin-left); }
 
@@ -615,8 +634,9 @@
     bottom: 20px;
     left: calc(var(--inline-left) + 12px); }
 
-.clockpicker-input.inline.filled > .content > .box > .value,
-.datepicker-input.inline.filled > .content > .box > .value { 
+.datepicker-input.inline.filled > .content > .box > .value,
+.yearpicker-input.inline.filled > .content > .box > .value,
+.clockpicker-input.inline.filled > .content > .box > .value { 
     padding: 2px 0px; 
     margin-left: calc(var(--inline-margin-left) + 12px);
     width: calc(var(--inline-width) - 48px); }
@@ -625,8 +645,9 @@
     bottom: 18px;
     left: calc(var(--inline-left) + 11px); }
 
-.clockpicker-input.inline.outline > .content > .box > .value,
-.datepicker-input.inline.outline > .content > .box > .value { 
+.datepicker-input.inline.outline > .content > .box > .value,
+.yearpicker-input.inline.outline > .content > .box > .value,
+.clockpicker-input.inline.outline > .content > .box > .value { 
     padding: 2px 0px; 
     margin-left: calc(var(--inline-margin-left) + 12px);
     width: calc(var(--inline-width) - 46px); }
@@ -879,7 +900,8 @@
 
 .autocomplete.inline > .content > .box > i.action,
 .clockpicker-input.inline > .content > .box > i.action,
-.datepicker-input.inline > .content > .box > i.action {
+.datepicker-input.inline > .content > .box > i.action,
+.yearpicker-input.inline > .content > .box > i.action {
     bottom: 25px; }
 
 .textfield.inline > .content > .box > i.action,
@@ -898,6 +920,7 @@
     bottom: 22px; }
 
 .datepicker-input.outline > .content > .box > i.action,
+.yearpicker-input.outline > .content > .box > i.action,
 .clockpicker-input.outline > .content > .box > i.action {
     bottom: 24px; }
 
@@ -1262,6 +1285,7 @@
 .datatable > .content tbody .autocomplete,
 .datatable > .content tbody .clockpicker-input,
 .datatable > .content tbody .datepicker-input,
+.datatable > .content tbody .yearpicker-input,
 .datatable > .content tbody .textfield,
 .datatable > .content tbody .textfield-readonly {
     width: 100%;
@@ -1270,6 +1294,7 @@
 .datatable > .content tbody .autocomplete > .content,
 .datatable > .content tbody .clockpicker-input > .content,
 .datatable > .content tbody .datepicker-input > .content,
+.datatable > .content tbody .yearpicker-input > .content,
 .datatable > .content tbody .textfield > .content,
 .datatable > .content tbody .textfield-readonly > .content {
     padding: 0px; }
@@ -1277,6 +1302,7 @@
 .datatable > .content tbody .autocomplete > .content > .box > label,
 .datatable > .content tbody .clockpicker-input > .content > .box > label,
 .datatable > .content tbody .datepicker-input > .content > .box > label,
+.datatable > .content tbody .yearpicker-input > .content > .box > label,
 .datatable > .content tbody .textfield > .content > .box > label,
 .datatable > .content tbody .textfield-readonly > .content > .box > label {
     display: none !important; }
@@ -1303,6 +1329,7 @@
 .datatable > .content tbody .autocomplete > .content > .box > .value,
 .datatable > .content tbody .clockpicker-input > .content > .box > .value,
 .datatable > .content tbody .datepicker-input > .content > .box > .value,
+.datatable > .content tbody .yearpicker-input > .content > .box > .value,
 .datatable > .content tbody .textfield > .content > .box > .value {
     font-family: var(--body-2-font);
     font-size: var(--body-2-size);
@@ -1312,19 +1339,22 @@
 .datatable.font-condense > .content tbody .autocomplete > .content > .box > .value,
 .datatable.font-condense > .content tbody .clockpicker-input > .content > .box > .value,
 .datatable.font-condense > .content tbody .datepicker-input > .content > .box > .value,
+.datatable.font-condense > .content tbody .yearpicker-input > .content > .box > .value,
 .datatable.font-condense > .content tbody .textfield > .content > .box > .value {
     font-size: 13px; }
 
-.datatable > .content tbody .clockpicker-input > .content > .box > .value,
-.datatable > .content tbody .datepicker-input > .content > .box > .value {
+.datatable > .content tbody .datepicker-input > .content > .box > .value,
+.datatable > .content tbody .yearpicker-input > .content > .box > .value,
+.datatable > .content tbody .clockpicker-input > .content > .box > .value {
     padding: 8px 0px 8px 0px; }
 
 .datatable > .content tbody .autocomplete > .content > .box > .value,
 .datatable > .content tbody .textfield > .content > .box > .value {
     top: 8px; }
 
-.datatable.condense > .content tbody .clockpicker-input > .content > .box > .value,
-.datatable.condense > .content tbody .datepicker-input > .content > .box > .value {
+.datatable.condense > .content tbody .datepicker-input > .content > .box > .value,
+.datatable.condense > .content tbody .yearpicker-input > .content > .box > .value,
+.datatable.condense > .content tbody .clockpicker-input > .content > .box > .value {
     padding: 4px 0px 4px 0px; }
 
 .datatable.condense > .content tbody .autocomplete > .content > .box > .value,
@@ -1347,6 +1377,7 @@
 .datatable > .content tbody .autocomplete > .content > .box > .line-bordered,
 .datatable > .content tbody .clockpicker-input > .content > .box > .line-bordered,
 .datatable > .content tbody .datepicker-input > .content > .box > .line-bordered,
+.datatable > .content tbody .yearpicker-input > .content > .box > .line-bordered,
 .datatable > .content tbody .textfield > .content > .box > .line-bordered,
 .datatable > .content tbody .textfield-readonly > .content > .box > .line-bordered {
     display: none !important; }
@@ -1361,12 +1392,14 @@
 
 .datatable > .content tbody .autocomplete > .content > .box > i.action,
 .datatable > .content tbody .clockpicker-input > .content > .box > i.action,
-.datatable > .content tbody .datepicker-input > .content > .box > i.action {
+.datatable > .content tbody .datepicker-input > .content > .box > i.action,
+.datatable > .content tbody .yearpicker-input > .content > .box > i.action {
     top: 14px; }
 
 .datatable.condense > .content tbody .autocomplete > .content > .box > i.action,
 .datatable.condense > .content tbody .clockpicker-input > .content > .box > i.action,
-.datatable.condense > .content tbody .datepicker-input > .content > .box > i.action {
+.datatable.condense > .content tbody .datepicker-input > .content > .box > i.action,
+.datatable.condense > .content tbody .yearpicker-input > .content > .box > i.action {
     top: 10px; }
 
 /** TEXTFIELD MULTILINE */

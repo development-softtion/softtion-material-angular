@@ -3404,6 +3404,10 @@ button.raised:focus:after, button.flat:focus:after {
     width: 280px !important;
     max-width: 280px !important; }
 
+.dialog.picker-year > .box {
+    width: 240px !important;
+    max-width: 240px !important; }
+
 .dialog.show > .box {
     border-radius: 2px;
     visibility: visible;
@@ -9438,3 +9442,67 @@ body.show-keyboard .toast.show {
 .views-content-tab > .views-tab > .view.active { 
     height: 100%; 
     visibility: visible; }
+
+/** YEARPICKER */
+
+.yearpicker {
+    position: relative;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 280px; }
+
+.yearpicker-dialog > .dialog > .box > .yearpicker {
+    display: none; }
+
+.yearpicker-dialog > .dialog.show > .box > .yearpicker {
+    display: block; }
+
+.yearpicker > ul {
+    padding: 0px 8px;
+    margin: 0px;
+    box-sizing: border-box; }
+
+.yearpicker > ul > li {
+    text-align: center;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    font-family: var(--headline-6-font);
+    font-size: var(--headline-6-size);
+    letter-spacing: var(--headline-6-letterspacing);
+    font-weight: var(--headline-6-weight); }
+
+.yearpicker > ul > li.active {
+    font-family: var(--headline-4-font);
+    font-size: var(--headline-4-size);
+    letter-spacing: var(--headline-4-letterspacing);
+    font-weight: var(--headline-4-weight); }
+
+.yearpicker-dialog > .dialog > .box > .header {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 8px 16px;
+    box-sizing: border-box; }
+
+.yearpicker-dialog > .dialog > .box > .header > .title {
+    position: relative;
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    width: calc(100% - 40px);
+    font-family: var(--headline-5-font);
+    font-size: var(--headline-5-size);
+    letter-spacing: var(--headline-5-letterspacing);
+    font-weight: var(--headline-5-weight); }
+
+.yearpicker-dialog > .dialog > .box > .header > .action {
+    position: absolute;
+    top: 12px;
+    right: 16px; }
+
+.yearpicker-dialog > .dialog > .box > .header > .action:after {
+    margin-left: -16px;
+    width: 32px;
+    height: 32px;
+    margin-top: -16px; }
