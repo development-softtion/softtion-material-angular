@@ -233,6 +233,8 @@
 
                 MaterialTheme: Properties.create(Properties.MaterialTheme),
 
+                NgFa: Properties.create(Properties.NgFa),
+
                 RatioElement: Properties.create(Properties.RatioElement),
 
                 Sidenav: Properties.create(Properties.Sidenav),
@@ -10480,6 +10482,7 @@
             case (Properties.MaterialColor.NAME): return Properties.MaterialColor;
             case (Properties.MaterialFont.NAME): return Properties.MaterialFont;
             case (Properties.MaterialTheme.NAME): return Properties.MaterialTheme;
+            case (Properties.NgFa.NAME): return Properties.NgFa;
             case (Properties.RatioElement.NAME): return Properties.RatioElement;
             case (Properties.Sidenav.NAME): return Properties.Sidenav;
             case (Properties.Visibility.NAME): return Properties.Visibility;
@@ -10744,6 +10747,33 @@
                         var font = pallete.FONTS[properties[1]];
                         $element.css("color", $colors.FONTS[font].PRIMARY);
                     } // Se encontro la paleta de colores, cargando configuración
+                });
+            }
+        };
+    }
+    
+    // Propiedad: NgFa
+    // Version: 1.0.0
+    // Update: 10/Dic/2018
+    
+    Properties.NgFa = NgFaProperty;
+    
+    Properties.NgFa.NAME = "NgFa";
+    Properties.NgFa.VERSION = "1.0.0";
+    Properties.NgFa.KEY = "ngFa";
+    
+    function NgFaProperty() {
+        return {
+            restrict: "A",
+            link: function ($scope, $element, $attrs) {
+                var icon = undefined; $element.addClass("fa");
+                
+                $attrs.$observe("ngFa", () => {
+                    if (!softtion.isText($attrs.ngFa)) return;
+                    
+                    if (softtion.isText(icon)) $element.removeClass(icon);
+                    
+                    icon = "fa-" + $attrs.ngFa; $element.addClass(icon);
                 });
             }
         };
