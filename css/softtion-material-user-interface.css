@@ -5716,6 +5716,7 @@ img.center-content {
 .item-list {
     position: relative;
     width: 100%;
+    float: left;
     overflow: hidden;
     box-sizing: border-box;
     -webkit-transition: height 160ms 0ms var(--standard-curve);
@@ -5724,6 +5725,7 @@ img.center-content {
             transition: height 160ms 0ms var(--standard-curve); }
 
 .dropdown > .item-list {
+    float: initial;
     max-width: 280px; }
 
 .item-list > .box {
@@ -5731,10 +5733,10 @@ img.center-content {
     display: flex;
     float: left;
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
     z-index: 2;
-    overflow: hidden; }
+    padding: 8px;
+    overflow: hidden;
+    box-sizing: border-box; }
 
 .item-list.condense > .box {
     padding: 4px 8px; }
@@ -5839,7 +5841,6 @@ img.center-content {
     font-weight: var(--subtitle-1-weight); }
 
 .item-list.condense > .box > .content > .title {
-    font-family: var(--body-2-font);
     font-size: var(--body-2-size);
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
@@ -9605,16 +9606,16 @@ body.show-keyboard .toast.show {
     cursor: pointer;
     height: 40px;
     line-height: 40px;
-    font-family: var(--headline-6-font);
-    font-size: var(--headline-6-size);
-    letter-spacing: var(--headline-6-letterspacing);
-    font-weight: var(--headline-6-weight); }
+    font-family: var(--subtitle-1-font);
+    font-size: var(--subtitle-1-size);
+    letter-spacing: var(--subtitle-1-letterspacing);
+    font-weight: var(--subtitle-1-weight); }
 
 .yearpicker > ul > li.active {
-    font-family: var(--headline-4-font);
-    font-size: var(--headline-4-size);
-    letter-spacing: var(--headline-4-letterspacing);
-    font-weight: var(--headline-4-weight); }
+    font-family: var(--headline-5-font);
+    font-size: var(--headline-5-size);
+    letter-spacing: var(--headline-5-letterspacing);
+    font-weight: var(--headline-5-weight); }
 
 .yearpicker-dialog > .dialog > .box > .header {
     position: relative;

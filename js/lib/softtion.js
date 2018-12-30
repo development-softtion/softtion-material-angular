@@ -1,11 +1,11 @@
 
 /*
- Softtion v1.4.7
+ Softtion v1.5.2
  (c) 2015 - 2018 Softtion Developers
  http://www.softtion.com.co
  License: MIT
  Create: 24/May/2015
- Update: 15/Jul/2018
+ Update: 10/Dic/2018
  */
 
 class Softtion {
@@ -142,7 +142,8 @@ class Softtion {
             DETERMINATE: "determinate",
             SUCCESS: "success",
             ERROR: "error",
-            CHECKBOX: "checkbox"
+            CHECKBOX: "checkbox",
+            OPTION: "option"
         };
     }
     
@@ -174,7 +175,7 @@ class Softtion {
             19: "DIECINUEVE",       //  19
             20: "VEINTE",           //  20
             21: "VIENTIUNO",        //  21
-            22: "VIENTIDOS",        //  22
+            22: "VIENTIDÓS",        //  22
             23: "VEINTITRÉS",       //  23
             24: "VEINTICUATRO",     //  24
             25: "VEINTICINCO",      //  25
@@ -206,11 +207,11 @@ class Softtion {
             1: "MIL",
             10: "MIL",
             2: "MILLÓN",
-            20: "MILLÓNES",
+            20: "MILLONES",
             3: "MIL",
             30: "MIL", 
             4: "BILLÓN", 
-            40: "BILLÓNES",
+            40: "BILLONES",
             5: "MIL", 
             50: "MIL", 
             6: "TRILLÓN", 
@@ -826,8 +827,33 @@ class Softtion {
         file.focus(); file.print(); file.close();
     }
     
+    printFrame(srcURL) {
+        function closePrint() {
+            document.body.removeChild(this.__container__);
+        }
+        
+        function setPrint() {
+            this.contentWindow.__container__ = this;
+            this.contentWindow.onbeforeunload = closePrint;
+            this.contentWindow.onafterprint = closePrint;
+            this.contentWindow.focus(); // Required for IE
+            this.contentWindow.print();
+        }
+        
+        var frame = document.createElement("iframe");
+        frame.src = srcURL; 
+        frame.onload = setPrint;
+        
+        frame.style.visibility = "hidden";
+        frame.style.right = "0";
+        frame.style.bottom = "0";
+        frame.style.position = "fixed";
+        
+        document.body.appendChild(frame); // Desplegando Frame
+    }
+    
     newTabPage(url) {
-        var a = document.createElement("a"); a.target = "_blank"; a.href = url; a.click(); 
+        window.open(url,"_blank"); // Abriendo página nueva
     }
     
     nl2br(str, is_xhtml) {
@@ -855,6 +881,30 @@ class Softtion {
 
     getRgbToHex(r, g, b) {
         return "#" + this.convertToHex(r) + this.convertToHex(g) + this.convertToHex(b);
+    }
+}
+
+class Time {
+    
+    constructor(milliseconds) { 
+        this.setTime(milliseconds);
+    }
+    
+    setTime(milliseconds) {
+        this.milliseconds = milliseconds; return this;
+    }
+    
+    getDescription() {
+        var seconds = Math.roundDecimal(this.milliseconds / 1000);
+        
+        if (seconds < 60) 
+            return "00:" + window.softtion.leadingCharBefore(seconds, "0", 2); 
+        
+        var minutes = parseInt(seconds / 60);
+        seconds = seconds - (minutes * 60); // Recalculando
+        
+        return window.softtion.leadingCharBefore(minutes, "0", 2) + ":"
+            + window.softtion.leadingCharBefore(seconds, "0", 2); 
     }
 }
 

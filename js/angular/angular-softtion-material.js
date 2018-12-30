@@ -5,15 +5,17 @@
  http://material.softtion.com.co
  License: MIT
  Created: 19/Nov/2016
- Updated: 08/Ago/2018
+ Updated: 21/Dic/2018
 */
 
 ((factory) => {
+    
     if (typeof window.softtion === "object" && typeof window.angular === "object") {
         factory(window.softtion, window.angular);
     } else {
         throw new Error("Softtion Material requiere Softtion y Angular cargado en la Aplicación");
     } // No se ha cargado Softtion y Angular
+    
 })((softtion, angular) => {
     
     var ngMaterial = angular.
@@ -863,10 +865,10 @@
                 ).addChildren(
                     softtion.html("div").addClass("content").
                         addChildren(
-                            softtion.html("div").addClass("title").
-                                setText("{{ngOption.title}}")
+                            softtion.html("div").addClass("title").setText("{{ngOption.title}}")
                         ).addChildren(
                             softtion.html("div").addClass("subtitle").
+                                addAttribute("ng-if", "ngOption.subtitle").
                                 setText("{{ngOption.subtitle}}")
                         )
                 );
@@ -6389,8 +6391,17 @@
     Directives.RadioButton.ROUTE = "softtion/template/radiobutton.html";
     
     Directives.RadioButton.HTML = function () {
-        var input = softtion.html("input", false).
+        var inputBasic = softtion.html("input", false).
             addAttribute("type", "radio").
+            addAttribute("ng-if", "!ngAdvanced").
+            addAttribute("ng-model", "model").
+            addAttribute("value", "{{value}}").
+            addAttribute("name", "{{name}}").
+            addAttribute("ng-disabled", "ngDisabled");
+    
+        var inputAdvanced = softtion.html("input", false).
+            addAttribute("type", "radio").
+            addAttribute("ng-if", "ngAdvanced").
             addAttribute("ng-model", "model").
             addAttribute("value", "{{value}}").
             addAttribute("name", "{{name}}").
@@ -6403,7 +6414,7 @@
         var ripple = softtion.html("div").addClass("ripple-content").
             addChildren(softtion.html("div").addClass("box"));
 
-        return input + label + ripple; // Componente
+        return inputBasic + inputAdvanced + label + ripple; // Componente
     };
     
     function RadioButtonDirective() {
@@ -6415,6 +6426,7 @@
                 value: "@",
                 name: "@",
                 label: "@",
+                ngAdvanced: "=?",
                 ngValue: "=?",
                 ngDisabled: "=?",
                 ngListener: "&"
@@ -6704,6 +6716,7 @@
                 helperText: "@",
                 helperPermanent: "=?",
                 focusedInput: "=?",
+                ngAutostart: "=?",
                 ngFormatDescription: "&",
                 ngListener: "&"
             },
@@ -6719,6 +6732,18 @@
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.SELECT),
                     eventID = "click.select-" + softtion.getGUID();
+                
+                $scope.$watch(() => { return $scope.suggestions; }, 
+                    (newValue) => {
+                        if (!softtion.isArray(newValue)) {
+                            $scope.suggestions = []; return;
+                        } // Los items de seleccion no es un Array
+                        
+                        if ($scope.suggestions.isEmpty()) return;
+                        
+                        if ($scope.ngAutostart && softtion.isUndefined($scope.ngModel))
+                            $scope.ngModel = $scope.suggestions[0];
+                    });
 
                 $scope.showList = false; $scope.selectStart = false;
                 $scope.old = undefined; // Seleccion anterior nula
@@ -8020,6 +8045,7 @@
             templateUrl: Directives.TextFieldReadonly.ROUTE,
             scope: {
                 value: "=ngModel", 
+                model: "@",
                 label: "@",
                 required: "=?",
                 iconDescription: "@",
@@ -8038,6 +8064,8 @@
                 });
                 
                 defineInputField($scope, $element, $attrs, listener);
+                
+                $attrs.$observe("model", () => { $scope.value = $attrs.model; });
                 
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);
@@ -8146,7 +8174,10 @@
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                var tooltip = $container.add($attrs.tooltip); // Insertando
+                var tooltip = $container.add($attrs.tooltip),
+                    p = tooltip.children("p"); // Insertando
+
+                $attrs.$observe("tooltip", () => { p.text($attrs.tooltip); });
 
                 $element.on("mouseover", () => {
                     if (!softtion.isText($attrs.tooltip)) return;
@@ -8309,21 +8340,22 @@
             link: function ($scope, $element) {
                     // Atributos
                 var listener = new Listener($scope, Listener.KEYS.YEARPICKER),
-                    topNow = 0, disabledScroll = false; // Control del scroll
+                    topNow = 0, disabledScroll = false; $scope.years = [];
                 
                 $scope.ngRangeYear = $scope.ngRangeYear || 5;
                 
                 $scope.$watch(() => { return $scope.ngModel; },
                     (newValue) => {
-                        if (!softtion.isNumber(newValue)) return;
+                        if (!softtion.isNumber(newValue)) {
+                            if ($scope.years.isEmpty()) {
+                                disabledScroll = true;  
+                                $scope.years = defineYears(new Date().getFullYear()); 
+                            }
+                                
+                            return; // Cargando años de manera predeterminada
+                        } 
                         
                         disabledScroll = true; $scope.years = defineYears(newValue);
-                        
-                        topNow = ($scope.ngRangeYear - 3) * 40;
-                        
-                        $element.animate({ scrollTop: topNow }, {
-                            duration: 100, complete: () => { disabledScroll = false; }
-                        });
                     });
                     
                 $scope.isActive = function (year) { 
@@ -8372,6 +8404,12 @@
                         // Año siguiente permitido para selección
                         if (nextYear <= maxYear) nextYears.push(nextYear);
                     }
+                        
+                    topNow = ($scope.ngRangeYear - 3) * 40;
+
+                    $element.animate({ scrollTop: topNow }, {
+                        duration: 100, complete: () => { disabledScroll = false; }
+                    });
 
                     return prevYears.together([year]).together(nextYears); // Años selección
                 }

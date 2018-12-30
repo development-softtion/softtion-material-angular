@@ -1259,6 +1259,11 @@
     font-size: var(--headline-6-size);
     font-weight: var(--headline-6-weight); }
 
+.autocomplete > .content > .box > ul > li > .detail .avatar > span > i { 
+    font-size: 20px;
+    width: 20px;
+    height: 20px; }
+
 .autocomplete > .content > .box > ul > li > .detail > .content {
     padding: 0px; }
 
