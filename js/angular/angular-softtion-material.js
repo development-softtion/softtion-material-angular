@@ -114,6 +114,8 @@
                 Img: Directives.create(Directives.Img),
 
                 ImageEditor: Directives.create(Directives.ImageEditor),
+
+                LabelField: Directives.create(Directives.LabelField),
                 
                 Notification: Directives.create(Directives.Notification),
                 
@@ -320,6 +322,7 @@
             case (Directives.GridSheet.NAME): return Directives.GridSheet;
             case (Directives.Img.NAME): return Directives.Img;
             case (Directives.ImageEditor.NAME): return Directives.ImageEditor;
+            case (Directives.LabelField.NAME): return Directives.LabelField;
             case (Directives.Notification.NAME): return Directives.Notification;
             case (Directives.NotificationFloating.NAME): return Directives.NotificationFloating;
             case (Directives.Pagination.NAME): return Directives.Pagination;
@@ -789,7 +792,7 @@
                 addAttribute("placeholder", "{{placeholder}}");
 
         var lineBordered = softtion.html("div").addClass("line-bordered");
-        var lineShadow = softtion.html("div").addClass("line-shadow");
+        var lineBordered = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-if", "isLabel").
@@ -897,7 +900,7 @@
 
         box.addChildren(description).addChildren(value).
             addChildren(lineBordered).addChildren(input).
-            addChildren(lineShadow).addChildren(uniqueSelection).
+            addChildren(lineBordered).addChildren(uniqueSelection).
             addChildren(label).addChildren(buttonAction).
             addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
     
@@ -2379,8 +2382,8 @@
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("ng-style", "{width: resizeWidthInput()}");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
-        var lineActive = softtion.html("div").addClass("line-shadow");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+        var lineShadow = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").
                 addAttribute("ng-if", "isLabel").
@@ -2392,7 +2395,7 @@
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         box.addChildren(description).addChildren(chips).
-            addChildren(input).addChildren(lineShadow).addChildren(lineActive).
+            addChildren(input).addChildren(lineBordered).addChildren(lineShadow).
             addChildren(label).addChildren(spanHelper);
 
         return content.create(); // Componente
@@ -2970,7 +2973,7 @@
                 addAttribute("ng-class", "{\"holder-active\": isHolderActive()}").
                 addAttribute("ng-click", "showDialog($event)");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").
                 setText("{{label}}").addClass("truncate").
@@ -2997,7 +3000,7 @@
                 addAttribute("ng-listener", "clockDialogListener($model, $listener)");
 
         box.addChildren(description).addChildren(value).
-            addChildren(lineShadow).addChildren(label).
+            addChildren(lineBordered).addChildren(label).
             addChildren(buttonClear).addChildren(spanHelper);
 
         return content + dialog; // Componente
@@ -5374,7 +5377,7 @@
     Directives.ImageEditor.NAME = "ImageEditor";
     Directives.ImageEditor.VERSION = "1.0.0";
     Directives.ImageEditor.KEY = "imageEditor";
-    Directives.ImageEditor.ROUTE = "softtion/template/image-editor.html",
+    Directives.ImageEditor.ROUTE = "softtion/template/image-editor.html";
                     
     Directives.ImageEditor.HTML = function () {
         var box = softtion.html("div").addClass("box"); // Contenedor principal
@@ -5769,6 +5772,104 @@
 
                     return pixels; // Resultado final del filtro
                 }
+            }
+        };
+    }
+    
+    // Directiva: LabelField
+    // Version: 1.0.0
+    // Update: 30/Dic/2018
+    
+    Directives.LabelField = LabelFieldDirective;
+    
+    Directives.LabelField.NAME = "LabelField";
+    Directives.LabelField.VERSION = "1.0.0";
+    Directives.LabelField.KEY = "labelfield";
+    Directives.LabelField.ROUTE = "softtion/template/labelfield.html";
+    
+    Directives.LabelField.HTML = function () {
+        var box = softtion.html("div").addClass("box");
+        
+        var content = softtion.html("div").addClass("content").
+            addAttribute("ng-class",
+                "{active: inputActive, \"label-inactive\": !isLabel," +
+                " disabled: ngDisabled, \"icon-action\": isIconAction || checkboxActive}"
+            ).addChildren(box);
+        
+        var description = softtion.html("div").addClass("description").
+                addAttribute("ng-click", "clickIconDescription($event)").
+                addAttribute("ng-if", "isIconDescription || isIconImg").
+                addChildren(
+                    softtion.html("div").addClass("img-icon").
+                        addAttribute("ng-if", "isIconImg").
+                        addChildren(
+                            softtion.html("img", false).addAttribute("ng-src", "{{iconImg}}")
+                        )
+                ).addChildren(
+                    softtion.html("i").addAttribute("ng-if", "isIconDescription").
+                        setText("{{iconDescription}}")
+                );
+
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+
+        var value = softtion.html("pre").addClass(["value"]).
+                setText("{{ngText}}").
+                addAttribute("ng-click", "clickLabel($event)").
+                addAttribute("ng-class", "{\"holder-active\": isHolderActive()}");
+
+        var label = softtion.html("label").
+                setText("{{label}}").addClass("truncate").
+                addAttribute("ng-if", "isLabel").
+                addAttribute("ng-class", "{active: isActiveLabel()}").
+                addAttribute("ng-click", "clickLabel($event)").
+                addChildren(
+                    softtion.html("span").setText("*").addAttribute("ng-if", "required")
+                ).addChildren(
+                    softtion.html("span").addClass("optional").
+                        setText("(opcional)").addAttribute("ng-if", "optional")
+                );
+
+        box.addChildren(description).addChildren(value).
+            addChildren(lineBordered).addChildren(label);
+
+        return content.create(); // Componente
+    };
+    
+    function LabelFieldDirective() {
+        return {
+            restrict: "C",
+            templateUrl: Directives.LabelField.ROUTE,
+            scope: {
+                ngText: "@",
+                label: "@",
+                iconDescription: "@",
+                iconImg: "@"
+            },
+            link: function ($scope, $element, $attrs) {
+                    
+                $attrs.$observe("iconDescription", () => {
+                    $scope.isIconDescription = softtion.isText($attrs.iconDescription);
+                });
+
+                $attrs.$observe("iconImg", () => {
+                    $scope.isIconImg = softtion.isText($attrs.iconImg);
+                });
+
+                $attrs.$observe("label", () => {
+                    $scope.isLabel = softtion.isText($attrs.label);
+                });
+
+                $attrs.$observe("ngText", () => {
+                    $scope.inputActive = softtion.isText($scope.ngText);
+                });
+
+                $scope.clickIconDescription = function ($event) {
+                    //listener.launch(Listeners.ICON, { $event: $event });
+                };
+                
+                $scope.isActiveLabel = function () {
+                    return softtion.isText($scope.ngText);
+                };
             }
         };
     }
@@ -6641,7 +6742,7 @@
                 addAttribute("ng-disabled", "ngDisabled").
                 addAttribute("focused-element", "focusedInput");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -6690,7 +6791,7 @@
                 );
 
         box.addChildren(description).addChildren(input).
-            addChildren(lineShadow).addChildren(label).
+            addChildren(lineBordered).addChildren(label).
             addChildren(value).addChildren(button).
             addChildren(spanHelper).addChildren(list);
 
@@ -6918,7 +7019,7 @@
                 addAttribute("placeholder", "{{placeholder}}").
                 addAttribute("focused-element", "focusedInput");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -6978,7 +7079,7 @@
                 );
 
         box.addChildren(description).addChildren(input).
-            addChildren(lineShadow).addChildren(label).addChildren(chips).
+            addChildren(lineBordered).addChildren(label).addChildren(chips).
             addChildren(spanHelper).addChildren(button).addChildren(list);
 
         return content.create(); // Componente
@@ -7773,8 +7874,8 @@
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
-        var lineActive = softtion.html("div").addClass("line-shadow");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+        var lineShadow = softtion.html("div").addClass("line-shadow");
 
         var value = softtion.html("pre").addClass(["value"]).
                 setText("{{getValueModel()}}").
@@ -7812,8 +7913,8 @@
                 setText("{{getTextCounter()}}").addAttribute("ng-if", "isCounterAllowed()");
 
         box.addChildren(description).addChildren(value).
-            addChildren(lineShadow).addChildren(input).
-            addChildren(lineActive).addChildren(iconAction).
+            addChildren(lineBordered).addChildren(input).
+            addChildren(lineShadow).addChildren(iconAction).
             addChildren(checkBox).addChildren(label).addChildren(spanHelper).
             addChildren(spanError).addChildren(spanCounter);
 
@@ -7907,8 +8008,8 @@
             addAttribute("style", "{{heightStyle()}}").
             addAttribute("placeholder", "{{placeholder}}");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
-        var lineActive = softtion.html("div").addClass("line-shadow");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
+        var lineShadow = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
             addAttribute("ng-click", "clickLabel($event)").
@@ -7938,8 +8039,8 @@
             addClass("textarea-hidden").setText("{{valueHidden}}");
 
         box.addChildren(description).addChildren(value).
-            addChildren(textArea).addChildren(lineShadow).
-            addChildren(lineActive).addChildren(label).
+            addChildren(textArea).addChildren(lineBordered).
+            addChildren(lineShadow).addChildren(label).
             addChildren(spanError).addChildren(spanHelper).
             addChildren(spanCounter).addChildren(textHidden);
 
@@ -8021,7 +8122,7 @@
                 setText("{{iconAction}}").addAttribute("ng-if", "isIconAction").
                 addAttribute("ng-click", "clickAction($event)");
 
-        var lineShadow = softtion.html("div").addClass("line-bordered");
+        var lineBordered = softtion.html("div").addClass("line-bordered");
 
         var label = softtion.html("label").
                 addAttribute("ng-class", "{active: isActiveLabel()}").
@@ -8035,7 +8136,7 @@
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         box.addChildren(description).addChildren(input).
-            addChildren(iconAction).addChildren(lineShadow).
+            addChildren(iconAction).addChildren(lineBordered).
             addChildren(label).addChildren(spanHelper);
 
         return content.create(); // Componente

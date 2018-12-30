@@ -90,7 +90,7 @@
 .filled, .outline {
     --icon-action-width-lower: 28px; }
 
-.autocomplete, .chip-input, .clockpicker-input, 
+.autocomplete, .chip-input, .clockpicker-input, .labelfield,
 .datepicker-input, .yearpicker-input, .select, 
 .select-multiple, .textfield, .textfield-readonly {
     position: relative;
@@ -106,13 +106,16 @@
 
 .autocomplete > .content, .chip-input > .content,
 .clockpicker-input > .content, .datepicker-input > .content,
-.yearpicker-input > .content,
+.yearpicker-input > .content, .labelfield > .content,
 .select > .content, .select-multiple > .content, 
 .textfield > .content, .textfield-readonly > .content {
     position: relative;
     width: 100%;
     float: left;
     padding: 8px 0px 12px 0px; }
+
+.labelfield > .content {
+    padding: 4px 0px 4px 0px; }
 
 .chip-input > .content {
     padding: 20px 0px 20px 0px; }
@@ -149,6 +152,7 @@
 .clockpicker-input > .content > .box,
 .datepicker-input > .content > .box,
 .yearpicker-input > .content > .box,
+.labelfield > .content > .box,
 .select > .content > .box,
 .select-multiple > .content > .box,
 .textfield > .content > .box,
@@ -160,6 +164,7 @@
 .clockpicker-input.filled > .content > .box,
 .datepicker-input.filled > .content > .box,
 .yearpicker-input.filled > .content > .box,
+.labelfield.filled > .content > .box,
 .select.filled > .content > .box,
 .select-multiple.filled > .content > .box,
 .textfield.filled > .content > .box,
@@ -170,6 +175,7 @@
 .clockpicker-input.outline > .content > .box,
 .datepicker-input.outline > .content > .box,
 .yearpicker-input.outline > .content > .box,
+.labelfield.outline > .content > .box,
 .select.outline > .content > .box,
 .select-multiple.outline > .content > .box,
 .textfield.outline > .content > .box,
@@ -214,6 +220,9 @@
 
 * > .content.disabled > .description > .img-icon > img {
     opacity: 0.45; }
+
+.labelfield {
+    --label-top-default: 20px; }
 
 .autocomplete.filled, .autocomplete.outline,
 .clockpicker-input.filled, .clockpicker-input.outline,
@@ -290,6 +299,9 @@
     letter-spacing: var(--caption-letterspacing);
     font-weight: var(--caption-weight); }
 
+.labelfield > .content > .box > label.active {
+    top: 4px; }
+
 *:not(.inline) > .content > .box > .description ~ label.active {
     left: calc(var(--label-left-default) + 36px);
     width: calc(var(--label-width-default) - 36px); }
@@ -298,6 +310,10 @@
 .outline:not(.inline) > .content > .box > label.active {
     top: 12px;
     width: calc(100% - 24px); }
+
+.labelfield.filled:not(.inline) > .content > .box > label.active,
+.labelfield.outline:not(.inline) > .content > .box > label.active {
+    top: 6px; }
 
 .filled:not(.inline) > .content > .box > .description ~ label.active,
 .outline:not(.inline) > .content > .box > .description ~ label.active {
@@ -466,12 +482,20 @@
 .autocomplete, .clockpicker-input, .datepicker-input, .select {
     --value-width-default: calc(100% - 28px); }
 
+.labelfield {
+    --value-height-default: 28px;
+    --value-line-height-default: 28px; }
+
 .filled {
     --value-width-default: calc(100% - 24px);
     --value-bottom-default: 18px;
     --value-left-default: 12px;
     --value-height-default: 30px;
     --value-line-height-default: 30px; }
+
+.labelfield.filled {
+    --value-height-default: 28px;
+    --value-line-height-default: 28px; }
 
 .autocomplete.filled, .select.filled, .select-multiple.filled {
     --value-width-default: calc(100% - 50px); }
@@ -492,6 +516,10 @@
 .autocomplete.outline > .content.disabled-clear {
     --value-width-default: calc(100% - 22px); }
 
+.labelfield.outline {
+    --value-height-default: 28px;
+    --value-line-height-default: 28px; }
+
 * > .content > .box > .value {
     position: absolute;
     left: var(--value-left-default);
@@ -507,6 +535,23 @@
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight); }
+
+.labelfield > .content > .box > .value {
+    position: relative;
+    bottom: initial;
+    left: initial;
+    margin-top: 16px; }
+
+.labelfield > .content.label-inactive > .box > .value {
+    margin-top: 0px; }
+
+.labelfield.filled > .content > .box > .value {
+    margin-left: 12px;
+    margin-right: 12px; }
+
+.labelfield.outline > .content > .box > .value {
+    margin-left: 12px;
+    margin-right: 12px; }
 
 .textfield.align-center > .content > .box > .value { 
     text-align: center; }
@@ -825,6 +870,9 @@
     bottom: 18px; 
     z-index: 1;
     width: 100%; }
+
+.labelfield > .content > .box > .line-bordered {
+    bottom: 4px; }
 
 *:not(.inline) > .content > .box > .description ~ .line-bordered {
     left: 36px;
