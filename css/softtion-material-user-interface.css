@@ -9540,21 +9540,26 @@ body.show-keyboard .toast.show {
 
 .views {
     position: relative;
-    display: table;
+    display: block;
     width: 100%;
-    overflow-x: hidden;
-    overflow-y: auto; }
+    overflow-y: auto;
+    overflow-x: hidden; }
 
 .views > .view {
-    display: none;
-    width: 100%; } 
+    width: 100%;
+    display: none; } 
 
 .views > .view.active {
-    display: table;
+    display: block;
+    overflow-y: auto;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
          -o-animation: fadeIn 120ms var(--sharp-curve);
             animation: fadeIn 120ms var(--sharp-curve); }
+
+.views.display-table > .view.active {
+    display: table;
+    overflow: initial; }
 
 /** VIEWS TAB */
 
