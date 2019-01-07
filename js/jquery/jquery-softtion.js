@@ -19,6 +19,10 @@
             return jQuery(this).prop("tagName"); 
         },
         
+        getID: function () { 
+            return jQuery(this).attr("id"); 
+        },
+        
         tagIs: function (tagName) {
             return (jQuery(this).tagName() === tagName);
         },

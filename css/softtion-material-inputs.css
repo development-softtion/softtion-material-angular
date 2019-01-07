@@ -234,6 +234,7 @@
 
 .autocomplete.filled > .content.disabled-clear,
 .autocomplete.outline  > .content.disabled-clear,
+.labelfield.filled, .labelfield.outline,
 .textfield.filled, .textfield.outline, 
 .textfield-readonly.filled, .textfield-readonly.outline {
     --label-width-default: calc(100% - 24px); }
@@ -241,6 +242,9 @@
 .filled, .outline {
     --label-left-default: 12px;
     --label-top-default: 27px; }
+
+.labelfield.filled, .labelfield.outline {
+    --label-top-default: 22px; }
 
 .filled {
     --inline-top-label: 13px; }

@@ -1698,13 +1698,26 @@
         return {
             restrict: "E",
             scope: {
-                disabledRipple: "=?"
+                disabledRipple: "=?",
+                tooltip: "@",
+                ngDisabled: "=?"
             },
             link: function ($scope, $element) {
                 $scope.$watch(() => { return $scope.disabledRipple; },
                     (newValue) => {
                         (newValue) ? $element.addClass("disabled-ripple") :
                             $element.removeClass("disabled-ripple");
+                    });
+                    
+                $scope.$watch(() => { return $scope.ngDisabled; },
+                    (newValue) => {
+                        if (newValue) {
+                            var tooltip = $element.data("tooltip-element");
+                            
+                            if (!softtion.isText(tooltip)) return;
+                            
+                            angular.element("#" + tooltip).removeClass(Classes.SHOW);
+                        } // Se inactivo el botón
                     });
             }
         };
@@ -7726,11 +7739,10 @@
             restrict: "C",
             scope: {
                 elementScroll: "@",
-                disabledPositionStart: "=?",
+                ngListener: "&",
                 disabledOverflow: "=?",
                 positionScroll: "=?",
-                
-                ngListener: "&"
+                disabledPositionStart: "=?"
             },
             link: function ($scope, $element) {
                     // Componentes
@@ -7769,7 +7781,8 @@
                 tabs.on("click.tabs", ($event) => {
                     if (!clickActive) { clickActive = true; return; } // Arrastre
 
-                    var tab = angular.element($event.currentTarget);
+                    var tab = angular.element($event.currentTarget),
+                        position = tab.data("position");
 
                     if (tab.hasClass(Classes.ACTIVE)) return; // Esta activo
 
@@ -7790,6 +7803,9 @@
 
                     if (attrs.left < $element.scrollLeft() || (attrs.width + attrs.left) > $element.width())
                         $element.animate({ scrollLeft: attrs.left }, 175, "standardCurve"); // Reubicando
+                    
+                    if (position === 0) 
+                        $element.animate({ scrollLeft: 0 }, 175, "standardCurve"); // Reubicando
                 });
                 
                 function init() {
@@ -8259,7 +8275,7 @@
         };
     }
     
-    Directives.Tooltip.getPosition = function (params) {
+    function getPositionTooltip(params) {
         switch (params.position) {
             case ("top"): return getPositionTop(params);
                 
@@ -8269,7 +8285,7 @@
                 
             default: return getPositionBottom(params);
         }
-    };
+    }
     
     Directives.Tooltip.$inject = [ "$tooltipContainer" ];
     
@@ -8279,7 +8295,9 @@
             link: function ($scope, $element, $attrs) {
                 var tooltip = $container.add($attrs.tooltip),
                     p = tooltip.children("p"); // Insertando
-
+            
+                $element.data("tooltip-element", tooltip.getID());
+                
                 $attrs.$observe("tooltip", () => { p.text($attrs.tooltip); });
 
                 $element.on("mouseover", () => {
@@ -8302,7 +8320,7 @@
                             }
                         };
 
-                    tooltip.css(Directives.Tooltip.getPosition(params));  // Posición
+                    tooltip.css(getPositionTooltip(params));  // Posición
                 });
 
                 $element.on("mouseout", () => { tooltip.removeClass(Classes.SHOW); });
@@ -10295,7 +10313,9 @@
         }
         
         TooltipContainer.prototype.add = function (text) {
-            var html = softtion.html("div").
+            var ID = "tooltip-" + softtion.getGUID(),
+                html = softtion.html("div").
+                    addAttribute("id", ID).
                     addClass("tooltip-element").
                     addChildren(
                         softtion.html("p").setText(text)

@@ -1,4 +1,4 @@
-/*!
+vi/*!
  * Softtion Material UI
  * v2.0.0
  * @license MIT
@@ -3069,6 +3069,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .content > table > tbody td.buttons button.action {
     margin-right: 4px;
+    float: left;
     width: 40px;
     height: 48px;
     padding: 12px 8px; }
@@ -5005,6 +5006,11 @@ body.show-keyboard .fab-speed-dial {
     height: 32px;
     line-height: 32px; }
 
+.form > .header > .actions > button.action > .far,
+.form > .header > .actions > button.action > .fa,
+.form > .header > .actions > button.action > .fas {
+    line-height: 32px !important; }
+
 .form > .header > .switch {
     height: 48px;
     margin: 0px 4px; }
@@ -5029,12 +5035,12 @@ body.show-keyboard .fab-speed-dial {
     padding-top: 0px; }
 
 .form > .actions {
-    float: left;
     overflow-x: hidden;
     overflow-y: auto;
+    float: left;
     width: 100%;
-    box-sizing: border-box;
-    padding: 4px 8px; }
+    padding: 4px 8px;
+    box-sizing: border-box; }
 
 .form > .content + .actions {
     padding-top: 0px; }
@@ -5054,11 +5060,11 @@ body.show-keyboard .fab-speed-dial {
     margin-top: 0px; }
 
 .form > .actions > button.action {
-    float: left;
     cursor: pointer;
+    float: left;
+    padding: 6px;
     margin: 4px 0px;
     text-align: center;
-    padding: 6px;
     box-sizing: content-box; }
 
 .form > .actions > button.action + button.action {
@@ -6138,6 +6144,10 @@ p.link > a {
     line-height: 72px;
     font-size: 72px;
     margin-left: calc(50% - 36px); }
+
+.message > .fa, .message > .far, .message > .fas {
+    font-size: 54px;
+    line-height: 72px !important; }
 
 .message > img {
     width: 96px;
@@ -7824,6 +7834,11 @@ body.not-touch .rating::-webkit-scrollbar, .rating::-webkit-scrollbar {
     margin-right: 12px;
     height: inherit;
     line-height: inherit; }
+
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li > a > .fa,
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li > a > .far,
+.sidenav .sidenav-menu > .sidenav-item > .options > ul > li > a > .fas {
+    line-height: inherit !important; }
 
 .sidenav > .content .divider {
     margin: 8px 0px; }
@@ -9540,7 +9555,7 @@ body.show-keyboard .toast.show {
 
 .views {
     position: relative;
-    display: block;
+    display: table;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden; }
@@ -9550,16 +9565,15 @@ body.show-keyboard .toast.show {
     display: none; } 
 
 .views > .view.active {
-    display: block;
-    overflow-y: auto;
+    display: table;
     -webkit-animation: fadeIn 120ms var(--sharp-curve);
        -moz-animation: fadeIn 120ms var(--sharp-curve);
          -o-animation: fadeIn 120ms var(--sharp-curve);
             animation: fadeIn 120ms var(--sharp-curve); }
 
-.views.display-table > .view.active {
-    display: table;
-    overflow: initial; }
+.views.display-block > .view.active {
+    display: block;
+    overflow-y: auto; }
 
 /** VIEWS TAB */
 
