@@ -2050,6 +2050,9 @@ button.floating.theme-secondary:before {
 .item-list.actionable:hover {
     background-color: var(--background-active); }
 
+.item-list > .box > i {
+    color: var(--secondary-font); }
+
 .item-list > .box > .avatar > span,
 .item-list > .box > .avatar > i {
     background-color: var(--secondary-font);

@@ -3462,16 +3462,17 @@ button.raised:focus:after, button.flat:focus:after {
     max-width: 240px !important; }
 
 .dialog.show > .box {
-    border-radius: 2px;
-    visibility: visible;
+    border-radius: 4px;
     opacity: 1;
+    visibility: visible;
     -webkit-transform: translateY(0) scale(1);
        -moz-transform: translateY(0) scale(1);
          -o-transform: translateY(0) scale(1);
             transform: translateY(0) scale(1); }
 
 .dialog > .box > .title {
-    padding: 24px 24px 16px 24px;
+    overflow: auto;
+    padding: 16px;
     font-family: var(--headline-5-font);
     font-size: var(--headline-5-size);
     letter-spacing: var(--headline-5-letterspacing);
@@ -3481,16 +3482,19 @@ button.raised:focus:after, button.flat:focus:after {
     padding-top: 0px; }
 
 .dialog > .box > .content {
-    padding: 0px 24px 24px 24px;
+    padding: 16px;
     overflow: auto;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
     letter-spacing: var(--body-1-letterspacing);
     font-weight: var(--body-1-weight); }
 
+.dialog > .box > .title + .content {
+    padding-top: 0px; }
+
 .dialog > .box > .actions {
     height: 36px;
-    padding: 8px 8px 8px 24px; }
+    padding: 8px 16px 8px 16px; }
 
 .dialog > .box > .actions > button.flat {
     padding: 0px 12px;
@@ -5826,6 +5830,9 @@ img.center-content {
 
 .item-list > .box > .radiobutton:not(:first-child) > .ripple-content {
     left: 2px; }
+
+.item-list > .box > i {
+    margin: auto; }
 
 .item-list > .box > .content {
     position: relative;
