@@ -792,7 +792,7 @@
                 addAttribute("placeholder", "{{placeholder}}");
 
         var lineBordered = softtion.html("div").addClass("line-bordered");
-        var lineBordered = softtion.html("div").addClass("line-shadow");
+        var lineShadow = softtion.html("div").addClass("line-shadow");
 
         var label = softtion.html("label").setText("{{label}}").
                 addAttribute("ng-if", "isLabel").
@@ -878,10 +878,10 @@
                         )
                 );
 
-        var list = softtion.html("ul").
-                addAttribute("ng-class", "{active: showList, \"autoselection\": ngAutoselection}").
-                addAttribute("ng-if", "!ngUniqueSelection").
-                addChildren(
+        var list = softtion.html("ul").addAttribute("ng-if", "!ngUniqueSelection").
+                addAttribute(
+                    "ng-class", "{show: showList, hide: !showList, higher: higher, \"autoselection\": ngAutoselection}"
+                ).addChildren(
                     softtion.html("li").addAttribute("tabindex", "-1").
                         addAttribute("ng-repeat", "suggestion in coincidences track by $index").
                         addAttribute("ng-keydown", "keydownSuggestion($event, suggestion)").
@@ -900,14 +900,16 @@
 
         box.addChildren(description).addChildren(value).
             addChildren(lineBordered).addChildren(input).
-            addChildren(lineBordered).addChildren(uniqueSelection).
+            addChildren(lineShadow).addChildren(uniqueSelection).
             addChildren(label).addChildren(buttonAction).
             addChildren(buttonClear).addChildren(spanHelper).addChildren(list);
     
         return content.create(); // Componente
     };
-                    
-    function AutoCompleteDirective() {
+    
+    Directives.AutoComplete.$inject = ["$window"];
+    
+    function AutoCompleteDirective($window) {
         return {
             restrict: "C",
             templateUrl: Directives.AutoComplete.ROUTE,
@@ -915,7 +917,7 @@
                 ngModel: "=",
                 suggestions: "=",
                 ngAutostart: "=?",
-                countVisible: "=?",
+                ngItemsVisible: "=?",
                 label: "@",
                 required: "=?",
                 optional: "=?",
@@ -946,6 +948,9 @@
                 ngListener: "&"
             },
             link: function ($scope, $element, $attrs) {
+                    // Componentes
+                var box = $element.find(".box");
+                
                     // Atributos
                 var searchStart = false, selection = false, focusLi = false, clear = false,
                     listener = new Listener($scope, Listener.KEYS.AUTOCOMPLETE);
@@ -1006,11 +1011,13 @@
                         $scope.isOptionable = softtion.isDefined(newValue);
                     });
                     
-                $scope.$watch(() => { return $scope.countVisible; }, 
+                $scope.$watch(() => { return $scope.ngItemsVisible; }, 
                     (newValue, oldValue) => {
                         if (isNaN(newValue)) {
-                            $scope.countVisible = softtion.isDefined(oldValue) ? oldValue : 6;
+                            $scope.ngItemsVisible = softtion.isDefined(oldValue) ? oldValue : 6; return;
                         } // No fue definido correctamente el número
+                        
+                        $element.find("ul").css("max-height", $scope.ngItemsVisible * 42 + "px");
                     });
                     
                 defineInputField($scope, $element, $attrs, listener);
@@ -1085,7 +1092,19 @@
                     switch ($event.originalEvent.which) {
                         case (KeysBoard.ESC): $scope.showList = false; break;
 
+                        case (KeysBoard.ARROW_UP): 
+                            if (!$scope.higher) return; // No puede hacia arriba
+                            
+                            var options = $element.find("ul").find("li");
+
+                            if (options.exists()) { 
+                                focusLi = true; options.last().focus(); 
+                            } // Seleccionando último elemento
+                        break;
+
                         case (KeysBoard.ARROW_DOWN): 
+                            if ($scope.higher) return; // No puede hacia abajo
+                            
                             var options = $element.find("ul").find("li");
 
                             if (options.exists()) { 
@@ -1124,12 +1143,15 @@
                         case (KeysBoard.ESC): $scope.showList = false; break;
 
                         case (KeysBoard.ARROW_UP):
-                            (option.prev().length) ? 
-                                option.prev().focus() : $scope.focusedInput = true;
+                            (option.prev().length) ?
+                                option.prev().focus() : (!$scope.higher) ?
+                                    $scope.focusedInput = true : null;
                         break;
 
                         case (KeysBoard.ARROW_DOWN):
-                            if (option.next().length) option.next().focus();
+                            (option.next().length) ?
+                                option.next().focus() : ($scope.higher) ?
+                                $scope.focusedInput = true : null;
                         break;
                     }
                 };
@@ -1260,15 +1282,34 @@
                     if (softtion.isUndefined(coincidences))
                         coincidences = getCoincidences(suggestions, pattern);
                     
-                    $scope.coincidences = // Lista de coincidencias
-                        softtion.isUndefined(coincidences) ? $scope.coincidences : 
-                        coincidences.extract(0, getCountVisible()); 
-                        
+                    $scope.coincidences = getCoincidencesVisible(coincidences);
+                
                     setSuggestions(pattern, coincidences, result); $scope.showList = true;
                 }
                 
-                function getCountVisible() {
-                    return (!$scope.isOptionable) ? $scope.countVisible : ($scope.countVisible - 1);
+                function getCoincidencesVisible(coincidences) {
+                    var position = $element.offset(),
+                        items = getItemsVisible(),
+                        boxHeight = box.height(),
+                        height = $window.innerHeight;
+                
+                    var bottomList = position.top + boxHeight + 8,
+                        topList = position.top - 8;
+                
+                    if ((bottomList + items * 42) < height - 8) {
+                        $scope.higher = false;
+                    } else if ((topList - items * 42) > 8) {
+                        $scope.higher = true;
+                    } else {
+                        $scope.higher = false;
+                    }
+                    
+                    return softtion.isUndefined(coincidences) ? 
+                        $scope.coincidences : coincidences.extract(0, items);
+                }
+                
+                function getItemsVisible() {
+                    return (!$scope.isOptionable) ? $scope.ngItemsVisible : ($scope.ngItemsVisible - 1);
                 }
                 
                 function rebootSuggestions() {
@@ -6786,7 +6827,7 @@
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var list = softtion.html("ul").
-                addAttribute("ng-class", "{show: showList, hide: !showList && startShow, orientation: orientation}").
+                addAttribute("ng-class", "{show: showList, hide: !showList, higher: higher}").
                 addChildren(
                     softtion.html("li").addClass(["truncate", "clear-suggestion"]).
                         addAttribute("ng-if", "clearSuggestion").
@@ -6820,6 +6861,7 @@
             scope: {
                 ngModel: "=", 
                 label: "@",
+                ngItemsVisible: "=?",
                 required: "=?",
                 optional: "=?",
                 key: "@keyDescription",
@@ -6838,7 +6880,8 @@
             },
             link: function ($scope, $element, $attrs) {
                     // Componentes
-                var label = $element.find("label"), 
+                var box = $element.find(".box"),
+                    label = $element.find("label"), 
                     input = $element.find("input"),
                     button = $element.find("button"), 
                     buttonIcon = button.find("i"), 
@@ -6859,6 +6902,15 @@
                         
                         if ($scope.ngAutostart && softtion.isUndefined($scope.ngModel))
                             $scope.ngModel = $scope.suggestions[0];
+                    });
+                    
+                $scope.$watch(() => { return $scope.ngItemsVisible; }, 
+                    (newValue, oldValue) => {
+                        if (isNaN(newValue)) {
+                            $scope.ngItemsVisible = softtion.isDefined(oldValue) ? oldValue : 6; return;
+                        } // No fue definido correctamente el número
+                        
+                        $element.find("ul").css("max-height", $scope.ngItemsVisible * 42 + "px");
                     });
 
                 $scope.showList = false; $scope.selectStart = false;
@@ -6962,16 +7014,27 @@
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
                     
-                    var sizeSuggestions = $scope.suggestions.length; 
-                    
-                    if (sizeSuggestions > 6) sizeSuggestions = 6; // Max. visibles
-                    
-                    var position = input.offset().top; // Posición en Window
-                        position += (sizeSuggestions * 48) + 24;
-                        
-                    $scope.orientation = (position > $window.innerHeight); 
-                    $scope.selectStart = true; $scope.showList = true; 
+                    setCoincidencesVisible(); $scope.selectStart = true; $scope.showList = true; 
                     $scope.selectActive = true; listener.launch(Listeners.SHOW);
+                }
+                
+                function setCoincidencesVisible() {
+                    var position = $element.offset(),
+                        maxVisible = $scope.suggestions.length,
+                        boxHeight = box.height(),
+                        height = $window.innerHeight;
+                
+                    var bottomList = position.top + boxHeight + 8,
+                        topList = position.top - 8;
+                    
+                    if (maxVisible > $scope.ngItemsVisible)
+                        maxVisible = $scope.ngItemsVisible;
+                
+                    if ((bottomList + maxVisible * 42) < height - 8) {
+                        $scope.higher = false;
+                    } else if ((topList - maxVisible * 42) > 8) {
+                        $scope.higher = true;
+                    } else { $scope.higher = false; }
                 }
 
                 function closeSelect ($event) {
@@ -7074,7 +7137,7 @@
                 setText("{{helperText}}").addAttribute("ng-hide", "!isHelperActive()");
 
         var list = softtion.html("ul").
-                addAttribute("ng-class", "{show: showList, hide: !showList && startShow}").
+                addAttribute("ng-class", "{show: showList, hide: !showList, higher: higher}").
                 addChildren(
                     softtion.html("li").addClass(["truncate"]).
                         addAttribute("ng-repeat", "suggestion in suggestions").
@@ -7107,6 +7170,7 @@
             scope: {
                 ngModel: "=", 
                 label: "@",
+                ngItemsVisible: "=?",
                 required: "=?",
                 optional: "=?",
                 ngDisabled: "=?",
@@ -7123,7 +7187,8 @@
             },
             link: function ($scope, $element, $attrs) {
                     // Componentes
-                var input = $element.find("input"), 
+                var box = $element.find(".box"), 
+                    input = $element.find("input"), 
                     label = $element.find("label"),
                     button = $element.find("button"), 
                     buttonIcon = button.find("i"),
@@ -7142,6 +7207,15 @@
                     if ($scope.suggestions.hasItem(select) && !temp.hasItem(select)) 
                         temp.push(select);
                 });
+                    
+                $scope.$watch(() => { return $scope.ngItemsVisible; }, 
+                    (newValue, oldValue) => {
+                        if (isNaN(newValue)) {
+                            $scope.ngItemsVisible = softtion.isDefined(oldValue) ? oldValue : 6; return;
+                        } // No fue definido correctamente el número
+                        
+                        $element.find("ul").css("max-height", $scope.ngItemsVisible * 42 + "px");
+                    });
                 
                 chips.displaceLeft(); // Permite deslizarse en Web
 
@@ -7244,8 +7318,28 @@
                             $scope.$apply(() => { closeSelect($event); });
                         }); // Cerrado automatico
                     
+                    setCoincidencesVisible(); // Define orientacion visual
                     $scope.selectStart = true; $scope.showList = true; 
                     $scope.selectActive = true; listener.launch(Listeners.SHOW);
+                }
+                
+                function setCoincidencesVisible() {
+                    var position = $element.offset(),
+                        maxVisible = $scope.suggestions.length,
+                        boxHeight = box.height(),
+                        height = $window.innerHeight;
+                
+                    var bottomList = position.top + boxHeight + 8,
+                        topList = position.top - 8;
+                    
+                    if (maxVisible > $scope.ngItemsVisible)
+                        maxVisible = $scope.ngItemsVisible;
+                
+                    if ((bottomList + maxVisible * 42) < height - 8) {
+                        $scope.higher = false;
+                    } else if ((topList - maxVisible * 42) > 8) {
+                        $scope.higher = true;
+                    } else { $scope.higher = false; }
                 }
 
                 function closeSelect ($event) {
@@ -8441,7 +8535,7 @@
                 addChildren(softtion.html("li").setText("{{year}}").
                     addAttribute("ng-click", "select(year)").
                     addAttribute("ng-repeat", "year in years").
-                    addAttribute("ng-class", "{active : isActive(year)}")
+                    addAttribute("ng-class", "{active : isActive(year), selected: isSelected(year)}")
                 );
         
         return list.create(); // Componente
@@ -8481,6 +8575,10 @@
                     
                 $scope.isActive = function (year) { 
                     return $scope.ngModel === year; // Año esta seleccionado
+                };
+                    
+                $scope.isSelected = function (year) { 
+                    return $scope.selected === year; // Año esta definido
                 };
                 
                 $scope.select = function (year) {
@@ -8526,7 +8624,7 @@
                         if (nextYear <= maxYear) nextYears.push(nextYear);
                     }
                         
-                    topNow = ($scope.ngRangeYear - 3) * 40;
+                    topNow = ($scope.ngRangeYear - 3) * 40; $scope.selected = year;
 
                     $element.animate({ scrollTop: topNow }, {
                         duration: 100, complete: () => { disabledScroll = false; }
@@ -8632,7 +8730,7 @@
                     });
 
                 $scope.getTitle = function () {
-                    return softtion.isNumber($scope.ngModel) ? $scope.ngModel : "Indefinido";
+                    return softtion.isNumber($scope.ngModel) ? $scope.ngModel : "????";
                 };
 
                 $scope.yearListener = function ($model, $listener) {

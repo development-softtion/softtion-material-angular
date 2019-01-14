@@ -4066,7 +4066,9 @@ input:-webkit-autofill {
     border: 2px solid var(--secondary-font); }
 
 .select-multiple > .content > .box > ul > li > .checkbox-readonly > label:after {
-    border: 2px solid var(--theme-primary-font-primary-500); }
+    border: 2px solid var(--theme-primary-font-primary-500);
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent; }
 
 /** TEXTFIELD MULTILINE */
 

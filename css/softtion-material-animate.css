@@ -629,30 +629,6 @@
         width: calc(100% - 40px); }
 }
 
-/** CLOSE SELECT */
-
-@keyframes closeSelect {
-    0% {
-        max-width: 100%; 
-        opacity: 1;
-        max-height: 252px; }
-    100% {
-        max-width: 100%;  
-        opacity: 0;
-        max-height: 252px; }
-}
-
-@-webkit-keyframes closeSelect {
-    0% {
-        max-width: 100%;
-        opacity: 1;
-        max-height: 252px; }
-    100% {
-        max-width: 100%;
-        opacity: 0;
-        max-height: 252px;   }
-}
-
 /** BUTTON FLOATING */
 
 @keyframes buttonFloating {

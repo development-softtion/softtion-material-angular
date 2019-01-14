@@ -1095,31 +1095,57 @@
 .select-multiple > .content > .box > ul {
     position: absolute;
     top: 52px;
-    max-width: 0%;
     z-index: 4;
-    max-height: 0px;
+    opacity: 0;
+    max-width: 100%;
+    max-height: 252px;
     overflow: hidden;
     overflow-y: auto;
     box-shadow: var(--shadow-2); 
-    -webkit-transition: max-height 225ms 0ms var(--sharp-curve), 
-                max-width 225ms 0ms var(--sharp-curve);
-       -moz-transition: max-height 225ms 0ms var(--sharp-curve), 
-                max-width 225ms 0ms var(--sharp-curve);
-         -o-transition: max-height 225ms 0ms var(--sharp-curve), 
-                max-width 225ms 0ms var(--sharp-curve);
-            transition: max-height 225ms 0ms var(--sharp-curve), 
-                max-width 225ms 0ms var(--sharp-curve); }
+    will-change: opacity, transform;
+    -webkit-transform-origin: 0% 0%;
+       -moz-transform-origin: 0% 0%;
+         -o-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
+    -webkit-transition: -webkit-transform 225ms 0ms var(--standard-curve),
+                opacity 225ms 0ms var(--standard-curve);
+       -moz-transition: -moz-transform 225ms 0ms var(--standard-curve),
+                opacity 225ms 0ms var(--standard-curve);
+         -o-transition: -o-transform 225ms 0ms var(--standard-curve),
+                opacity 225ms 0ms var(--standard-curve);
+            transition: transform 225ms 0ms var(--standard-curve),
+                opacity 225ms 0ms var(--standard-curve); }
+
+.select > .content > .box > ul,
+.select-multiple > .content > .box > ul {
+    -webkit-transform-origin: 100% 0%;
+       -moz-transform-origin: 100% 0%;
+         -o-transform-origin: 100% 0%;
+            transform-origin: 100% 0%; }
 
 .select > .content > .box > ul {
     top: 24px; }
 
-.autocomplete > .content.label-inactive > .box > ul,
-.select-multiple > .content.label-inactive > .box > ul { 
-    top: 40px; }
+.autocomplete > .content > .box > ul.higher,
+.select > .content > .box > ul.higher,
+.select-multiple > .content > .box > ul.higher {
+    bottom: 70px;
+    top: initial !important;
+    box-shadow: var(--shadow-2-inv); 
+    -webkit-transform-origin: 0% 100%;
+       -moz-transform-origin: 0% 100%;
+         -o-transform-origin: 0% 100%;
+            transform-origin: 0% 100%; }
 
-.select > .content > .box > ul.orientation {
-    top: initial;
+.select > .content > .box > ul.higher {
     bottom: 18px; }
+
+.select > .content > .box > ul.higher,
+.select-multiple > .content > .box > ul.higher {
+    -webkit-transform-origin: 100% 100%;
+       -moz-transform-origin: 100% 100%;
+         -o-transform-origin: 100% 100%;
+            transform-origin: 100% 100%; }
 
 .autocomplete:not(.inline) > .content > .box > .description ~ ul,
 .select:not(.inline) > .content > .box >  .description ~ ul,
@@ -1127,40 +1153,36 @@
     left: 36px;
     width: calc(100% - 36px); }
 
+.autocomplete > .content.label-inactive > .box > ul,
+.select-multiple > .content.label-inactive > .box > ul { 
+    top: 40px; }
+
+.select > .content.label-inactive > .box > ul { 
+    top: 12px; }
+
+.autocomplete > .content.label-inactive > .box > ul.higher,
+.select-multiple > .content.label-inactive > .box > ul.higher { 
+    bottom: 52px; }
+
+.select > .content.label-inactive > .box > ul.higher { 
+    bottom: 18px; }
+
 .autocomplete.inline > .content > .box > ul,
 .select.inline > .content > .box > ul,
 .select-multiple.inline > .content > .box > ul {
+    max-width: var(--inline-width);
     top: 40px;
     left: var(--inline-left); }
 
 .select.inline > .content > .box > ul {
     top: 12px; }
 
-.select > .content > .box > ul.hide,
-.select-multiple > .content > .box > ul.hide {
-    -webkit-transition: none;
-       -moz-transition: none;
-         -o-transition: none;
-            transition: none;
-    -webkit-animation: closeSelect 200ms var(--acceleration-curve);
-       -moz-animation: closeSelect 200ms var(--acceleration-curve);  
-         -o-animation: closeSelect 200ms var(--acceleration-curve);  
-            animation: closeSelect 200ms var(--acceleration-curve); }
+.autocomplete.inline > .content > .box > ul.higher,
+.select-multiple.inline > .content > .box > ul.higher {
+    bottom: 52px; }
 
-.autocomplete > .content > .box > ul.active,
-.select > .content > .box > ul.show,
-.select-multiple > .content > .box > ul.show {
-    max-width: 100%;
-    max-height: 252px; }
-
-.select > .content > .box > ul.show,
-.select-multiple > .content > .box > ul.show {
-    opacity: 1; }
-
-.autocomplete.inline > .content > .box > ul.active,
-.select.inline > .content > .box > ul.show,
-.select-multiple.inline > .content > .box > ul.show {
-    max-width: var(--inline-width); }
+.select.inline > .content > .box > ul.higher {
+    bottom: 18px; }
 
 .autocomplete.filled > .content > .box > ul,
 .select.filled > .content > .box > ul,
@@ -1172,12 +1194,26 @@
 .select.filled > .content > .box > ul {
     top: 30px; }
 
+.autocomplete.filled > .content > .box > ul.higher,
+.select-multiple.filled > .content > .box > ul.higher {
+    bottom: 64px; }
+
+.select.filled > .content > .box > ul.higher {
+    bottom: 18px; }
+
 .autocomplete.filled > .content.label-inactive > .box > ul,
 .select-multiple.filled > .content.label-inactive > .box > ul {
     top: 44px; }
 
 .select.filled > .content.label-inactive > .box > ul {
     top: 18px; }
+
+.autocomplete.filled > .content.label-inactive > .box > ul.higher,
+.select-multiple.filled > .content.label-inactive > .box > ul.higher {
+    bottom: 52px; }
+
+.select.filled > .content.label-inactive > .box > ul.higher {
+    bottom: 18px; }
 
 .autocomplete:not(.inline).filled > .content > .box > .description ~ ul,
 .select:not(.inline).filled > .content > .box > .description ~ ul,
@@ -1200,6 +1236,10 @@
 .select.inline.filled > .content > .box > ul {
     top: 16px; }
 
+.autocomplete.inline.filled > .content > .box > ul.higher,
+.select-multiple.inline.filled > .content > .box > ul.higher {
+    bottom: 52px; }
+
 .autocomplete.inline.filled > .content.icon-action > .box > ul {
     width: calc(var(--inline-width) - 44px); }
 
@@ -1213,12 +1253,26 @@
 .select.outline > .content > .box > ul {
     top: 30px; }
 
+.autocomplete.outline > .content > .box > ul.higher,
+.select-multiple.outline > .content > .box > ul.higher {
+    bottom: 64px; }
+
+.select.outline > .content > .box > ul.higher {
+    bottom: 18px; }
+
 .autocomplete.outline > .content.label-inactive > .box > ul,
 .select-multiple.outline > .content.label-inactive > .box > ul {
     top: 44px; }
 
 .select.outline > .content.label-inactive > .box > ul {
     top: 18px; }
+
+.autocomplete.outline > .content.label-inactive > .box > ul.higher,
+.select-multiple.outline > .content.label-inactive > .box > ul.higher {
+    bottom: 52px; }
+
+.select.outline > .content.label-inactive > .box > ul.higher {
+    bottom: 18px; }
 
 .autocomplete.outline:not(.inline) > .content > .box > .description ~ ul, 
 .select.outline:not(.inline) > .content > .box > .description ~ ul, 
@@ -1241,8 +1295,30 @@
 .select.inline.outline > .content > .box > ul {
     top: 16px; }
 
+.autocomplete.inline.outline > .content > .box > ul.higher,
+.select-multiple.inline.outline > .content > .box > ul.higher {
+    bottom: 52px; }
+
 .autocomplete.inline.outline > .content.icon-action > .box > ul {
     width: calc(var(--inline-width) - 44px); }
+
+.autocomplete > .content > .box > ul.hide,
+.select > .content > .box > ul.hide,
+.select-multiple > .content > .box > ul.hide {
+    opacity: 0;
+    -webkit-transform: scale(0, 0);
+       -moz-transform: scale(0, 0);
+         -o-transform: scale(0, 0);
+            transform: scale(0, 0); }
+
+.autocomplete > .content > .box > ul.show,
+.select > .content > .box > ul.show,
+.select-multiple > .content > .box > ul.show {
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+       -moz-transform: scale(1, 1);
+         -o-transform: scale(1, 1);
+            transform: scale(1, 1); }
 
 .autocomplete > .content > .box > ul > li,
 .select > .content > .box > ul > li,

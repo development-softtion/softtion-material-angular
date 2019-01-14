@@ -1,4 +1,4 @@
-vi/*!
+/*!
  * Softtion Material UI
  * v2.0.0
  * @license MIT
@@ -3519,11 +3519,11 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dropdown {
     position: absolute;
-    margin: 8px 0px 0px 0px;
     overflow-y: auto;
     z-index: 4;
-    box-shadow: var(--shadow-4);
     opacity: 0;
+    margin: 8px 0px 0px 0px;
+    box-shadow: var(--shadow-4);
     will-change: opacity, transform;
     -webkit-transform: scale(0, 0);
        -moz-transform: scale(0, 0);
@@ -9622,10 +9622,11 @@ body.show-keyboard .toast.show {
     max-height: 280px; }
 
 .yearpicker-dialog > .dialog > .box > .yearpicker {
-    display: none; }
+    padding: 8px 0px;
+    visibility: hidden; }
 
 .yearpicker-dialog > .dialog.show > .box > .yearpicker {
-    display: block; }
+    visibility: visible; }
 
 .yearpicker > ul {
     padding: 0px 8px;
@@ -9637,39 +9638,39 @@ body.show-keyboard .toast.show {
     cursor: pointer;
     height: 40px;
     line-height: 40px;
-    font-family: var(--subtitle-1-font);
-    font-size: var(--subtitle-1-size);
-    letter-spacing: var(--subtitle-1-letterspacing);
-    font-weight: var(--subtitle-1-weight); }
+    font-family: var(--headline-6-font);
+    font-size: var(--headline-6-size);
+    letter-spacing: var(--headline-6-letterspacing);
+    font-weight: var(--headline-6-weight); }
 
-.yearpicker > ul > li.active {
-    font-family: var(--headline-5-font);
-    font-size: var(--headline-5-size);
-    letter-spacing: var(--headline-5-letterspacing);
-    font-weight: var(--headline-5-weight); }
+.yearpicker > ul > li.selected {
+    font-family: var(--headline-4-font);
+    font-size: var(--headline-4-size);
+    letter-spacing: var(--headline-4-letterspacing);
+    font-weight: var(--headline-4-weight); }
 
 .yearpicker-dialog > .dialog > .box > .header {
     position: relative;
     float: left;
     width: 100%;
-    padding: 8px 16px;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    padding: 8px 12px 8px 16px; }
 
 .yearpicker-dialog > .dialog > .box > .header > .title {
     position: relative;
     float: left;
-    height: 32px;
-    line-height: 32px;
+    height: 40px;
+    line-height: 40px;
     width: calc(100% - 40px);
-    font-family: var(--headline-5-font);
-    font-size: var(--headline-5-size);
-    letter-spacing: var(--headline-5-letterspacing);
-    font-weight: var(--headline-5-weight); }
+    font-family: var(--headline-4-font);
+    font-size: var(--headline-4-size);
+    letter-spacing: var(--headline-4-letterspacing);
+    font-weight: var(--headline-4-weight); }
 
 .yearpicker-dialog > .dialog > .box > .header > .action {
     position: absolute;
-    top: 12px;
-    right: 16px; }
+    top: 16px;
+    right: 12px; }
 
 .yearpicker-dialog > .dialog > .box > .header > .action:after {
     margin-left: -16px;

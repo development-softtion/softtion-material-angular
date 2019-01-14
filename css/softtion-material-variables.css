@@ -1,4 +1,3 @@
-
 /*!
  * Softtion Material Variables
  * v2.0.0
@@ -42,7 +41,7 @@
     --shadow-23: 0 11px 14px -7px rgba(0, 0, 0, 0.2), 0 23px 36px 3px rgba(0, 0, 0, 0.14), 0 9px 44px 8px rgba(0, 0, 0, 0.12);
     --shadow-24: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
     
-    --shadow-2-inv: 0 -1px 5px 0 rgba(0, 0, 0, 0.075), 0 -2px 2px 0 rgba(0, 0, 0, 0.105), 0 -3px 1px -2px rgba(0, 0, 0, 0.09);
+    --shadow-2-inv: 0 2px 4px 0.5px rgba(0, 0, 0, 0.005), 2px -1px 2px 0.5px rgba(0, 0, 0, 0.075), -2px -1px 2px 0.5px rgba(0, 0, 0, 0.075);
     --shadow-8-inv: 0 -5px 5px -3px rgba(0, 0, 0, 0.1), 0 -8px 10px 1px rgba(0, 0, 0, 0.07), 0 -3px 14px 2px rgba(0, 0, 0, 0.06);
     --shadow-16-inv: 0 -8px 10px -5px rgba(0, 0, 0, 0.1), 0 -16px 24px 2px rgba(0, 0, 0, 0.07), 0 -6px 30px 5px rgba(0, 0, 0, 0.06);
     
