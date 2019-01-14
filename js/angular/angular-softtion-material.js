@@ -3279,17 +3279,12 @@
                     )
             ).
             addChildren(
-                softtion.html("div").addClass("year").addAttribute("ng-hide", "!selectYearEnabled").
-                    addChildren(
-                        softtion.html("ul").
-                            addChildren(
-                                softtion.html("li").
-                                    addAttribute("ng-repeat", "year in years").
-                                    setText("{{year}}").
-                                    addAttribute("ng-click", "selectYear(year)").
-                                    addAttribute("ng-class", "{active : isActiveYear(year)}")
-                            )
-                    )
+                softtion.html("div").addClass("yearpicker").
+                    addAttribute("ng-class", "{show: selectYearEnabled}").
+                    addAttribute("ng-model", "year").
+                    addAttribute("min-date", "minDate").
+                    addAttribute("max-date", "maxDate").
+                    addAttribute("ng-listener", "listenerSelectYear($listener, $model)")
             );
 
         var actions = softtion.html("div").addClass("actions").
@@ -3339,29 +3334,6 @@
         return calendarMonth; // Retornando calendario
     };
     
-    Directives.DatePicker.createYears = function (year, minDate, maxDate, yearRange) {
-        var yearsPrev = [], yearsNext = [], years = [],
-            yearMax = (maxDate) ? maxDate.getFullYear() : 10000,
-            yearMin = (minDate) ? minDate.getFullYear() : 0;
-
-        for (var count = 1; count <= yearRange; count++) {
-            var valueYearNext = year + count,
-                valueYearPrev = year - (yearRange + 1) + count;
-
-            if (valueYearPrev >= yearMin) {
-                yearsPrev.push(valueYearPrev);
-            } // Año anterior permitido para selección
-
-            if (valueYearNext <= yearMax) {
-                yearsNext.push(valueYearNext);
-            } // Año siguiente permitido para selección
-        }
-
-        years = yearsPrev.together([year]); years = years.together(yearsNext);
-
-        return years; // Retornando años para la selección
-    };
-    
     Directives.DatePicker.$inject = [ "$body" ];
                     
     function DatePickerDirective($body) {
@@ -3382,7 +3354,6 @@
             link: function ($scope, $elememt) {
                     // Componentes
                 var table = $elememt.find(".content table.days-month"),
-                    listYears = $elememt.find(".content .year"),
                     listMonths = $elememt.find(".content .months");
 
                     // Atributos
@@ -3390,9 +3361,6 @@
                     
                     today = new Date().normalize("date"), 
                     dateStart = new Date(), dateCalendar = new Date(),
-                    
-                    yearRange = !isNaN($scope.yearRange) ?
-                        parseInt($scope.yearRange) : 10,
                     
                     DAYS_OF_MONTHS = MANAGER_DATETIME.DAYS_OF_MONTHS,
                     MONTHS_OF_YEAR = MANAGER_DATETIME.MONTHS_OF_YEAR,
@@ -3461,42 +3429,6 @@
                 
                 initDatePicker(dateCalendar); // Iniciando calendario
 
-                listYears.scroll(() => {
-                    function updateYears () {
-                        var scrollHeight = listYears[0].scrollHeight,
-                            scrollTop = listYears.scrollTop(), newYears = [],
-                            clientHeight = listYears[0].clientHeight;
-
-                        if (scrollTop === (scrollHeight - clientHeight)) {
-                            var year = $scope.years.last(),
-                                yearLimit = (softtion.isDefined($scope.maxDate)) ? 
-                                    $scope.maxDate.getFullYear() : 10000;
-
-                            for (var i = 1; i <= 5; i++) {
-                                if ((year + i) <= yearLimit) { 
-                                    newYears.push((year + i));
-                                } // No desborda limite superior
-                            } // Cargando años siguientes de rango
-
-                            $scope.years = $scope.years.together(newYears);
-                        } else if (scrollTop <= 10) {
-                            var year = $scope.years.first(),
-                                yearLimit = (softtion.isDefined($scope.minDate)) ? 
-                                    $scope.minDate.getFullYear() : 0;
-
-                            for (var i = 0; i < 5; i++) {
-                                if ((year + i - 5) > yearLimit) {
-                                    newYears.push((year + i - 5));
-                                } // No desborda limite inferior
-                            } //  Cargando años anteriores de rango
-
-                            $scope.years = newYears.together($scope.years);
-                        }
-                    }
-
-                    $scope.$apply(updateYears); // Agregando años
-                });
-
                 // FUNCIONES PARA CONTROL DE AÑOS
 
                 $scope.isActiveYear = function (year) {
@@ -3506,31 +3438,25 @@
                 $scope.activeYear = function (enabled) {
                     $scope.selectYearEnabled = enabled;  // Estado
 
-                    if ($scope.selectYearEnabled) {
-                        $scope.years = directive.createYears(
-                            $scope.year, $scope.minDate, $scope.maxDate, yearRange
-                        );
-
-                        if ($scope.selectMonthEnabled) {
-                            $scope.activeMonth(false);
-                        } // Desactivando selección del mes
-
-                        var scroll = (yearRange - 3) * 2.5 * fontSize;
-                        listYears.animate({ scrollTop: scroll }, 100);
-                    } // Esta desactivado selección de Año
+                    if ($scope.selectYearEnabled)
+                        $scope.activeMonth(false); // Desactivando selección del mes
                 };
 
-                $scope.selectYear = function (year) {
-                    if ($scope.year !== year) {
-                        $scope.year = year; dateStart.setYear($scope.year);
-                        var countDaysMonth = DAYS_OF_MONTHS[$scope.month];
+                $scope.listenerSelectYear = function ($listener, $model) {
+                    switch ($listener) {
+                        case (Softtion.LISTENERS.SELECT):
+                            if ($scope.year !== $model) {
+                                $scope.year = $model; dateStart.setYear($scope.year);
+                                var countDaysMonth = DAYS_OF_MONTHS[$scope.month];
 
-                        $scope.daysMonth = directive.createCalendar(
-                            $scope.year, $scope.month, dateStart.getDay(), countDaysMonth
-                        );
-                    } // Cambio de año en el Componente
+                                $scope.daysMonth = directive.createCalendar(
+                                    $scope.year, $scope.month, dateStart.getDay(), countDaysMonth
+                                );
+                            } // Cambio de año en el Componente
 
-                    $scope.activeYear(false); // Desactivando selección de Año
+                            $scope.activeYear(false); // Desactivando selección de Año
+                        break;
+                    }
                 };
 
                 // FUNCIONES PARA CONTROL DE MESES

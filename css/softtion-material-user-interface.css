@@ -3103,10 +3103,10 @@ button.raised:focus:after, button.flat:focus:after {
     overflow-y: auto; }
 
 .datepicker-dialog > .dialog > .box > .datepicker {
-    display: none; }
+    visibility: hidden; }
 
 .datepicker-dialog > .dialog.show > .box > .datepicker {
-    display: block; }
+    visibility: visible; }
 
 .datepicker > .title {
     width: 100%; 
@@ -3217,19 +3217,25 @@ button.raised:focus:after, button.flat:focus:after {
 .datepicker > .content > .days-month > tbody td.disabled {
     pointer-events: none; }
 
-.datepicker > .content > .months, .datepicker > .content > .year {
+.datepicker > .content > .months {
     position: relative;
     overflow-y: auto;
     max-height: 240px; }
 
-.datepicker > .content > .months > ul,
-.datepicker > .content > .year > ul {
+.datepicker > .content > .yearpicker {
+    position: absolute;
+    visibility: hidden; }
+
+.datepicker > .content > .yearpicker.show {
+    position: initial;
+    visibility: visible; }
+
+.datepicker > .content > .months > ul {
     box-sizing: border-box;
     margin: 0px;
     padding: 0px 8px; }
 
-.datepicker > .content > .months > ul > li, 
-.datepicker > .content > .year > ul > li {
+.datepicker > .content > .months > ul > li {
     text-align: center;
     cursor: pointer;
     height: 40px;
@@ -3239,8 +3245,7 @@ button.raised:focus:after, button.flat:focus:after {
     letter-spacing: var(--headline-6-letterspacing);
     font-weight: var(--headline-6-weight); }
 
-.datepicker > .content > .months > ul > li.active,
-.datepicker > .content > .year > ul > li.active {
+.datepicker > .content > .months > ul > li.active {
     font-family: var(--headline-4-font);
     font-size: var(--headline-4-size);
     letter-spacing: var(--headline-4-letterspacing);
