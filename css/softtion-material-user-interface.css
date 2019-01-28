@@ -3477,7 +3477,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dialog > .box > .title {
     overflow: auto;
-    padding: 16px;
+    padding: 16px 24px;
     font-family: var(--headline-5-font);
     font-size: var(--headline-5-size);
     letter-spacing: var(--headline-5-letterspacing);
@@ -3487,7 +3487,7 @@ button.raised:focus:after, button.flat:focus:after {
     padding-top: 0px; }
 
 .dialog > .box > .content {
-    padding: 16px;
+    padding: 16px 24px;
     overflow: auto;
     font-family: var(--body-1-font);
     font-size: var(--body-1-size);
@@ -3496,6 +3496,10 @@ button.raised:focus:after, button.flat:focus:after {
 
 .dialog > .box > .title + .content {
     padding-top: 0px; }
+
+.dialog.modal > .box > .content {
+    line-height: 24px;
+    text-align: justify; }
 
 .dialog > .box > .actions {
     height: 36px;
@@ -5880,6 +5884,12 @@ img.center-content {
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
+.item-list.condense > .box > .content > p {
+    font-family: var(--button-font);
+    font-size: var(--button-size);
+    letter-spacing: var(--button-letterspacing);
+    font-weight: var(--button-weight); }
+
 .item-list > .box > .content > .title + p {
     margin-top: 2px; }
 
@@ -8208,15 +8218,10 @@ body.show-keyboard .snackbar.show {
     letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--body-2-weight); }
 
-.snackbar > .body.two-line {
-    margin: 24px 0px;
-    max-height: 32px;
-    line-height: 16px; }
-
 .snackbar > .action {
-    position: relative;
     float: left;
-    width: auto; }
+    width: auto;
+    position: relative; }
 
 .snackbar > .action.hide {
     display: none; }

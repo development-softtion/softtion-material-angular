@@ -1,10 +1,10 @@
 
 /*
- Angular Softtion v1.2.8
+ Angular Softtion v1.3.4
  (c) 2016 - 2018 Softtion Developers
  http://angular.softtion.com.co
  License: MIT
- Updated: 16/Abr/2018
+ Updated: 27/Ene/2019
 */
 
 ((factory) => {
@@ -20,7 +20,7 @@
     var ngSofttion = angular.module("ngSofttion", []);
 
     ngSofttion.service("$restful", $restfulService).
-        service("$fileHttp", $fileHttpService).
+        service("$httpfile", $httpfileService).
         service("$webService", $webServiceService).
         directive("ngIterate", ngIterateDirective);
     
@@ -150,7 +150,7 @@
     function $webServiceService($restful) {
         
             // Atributos
-        var packages = {}; // Contenedor de paquetes
+        var packages = {}, fnSuccess, fnError; // Parámetros globales
         
             // Función del servicio
         var service = function (package) { 
@@ -172,12 +172,18 @@
             return this; // Retornando interfaz fluida
         };
         
+        service.globalSuccess = function ($success) {
+            fnSuccess = $success; return this; // Retornando interfaz fluida
+        };
+        
+        service.globalError = function ($error) {
+            fnError = $error; return this; // Retornando interfaz fluida
+        };
+        
         function Package() { this.resources = {}; }
         
         Package.prototype.addResource = function (name, baseURL) {
-            this.resources[name] = new HttpRequest($restful.create(baseURL)); 
-            
-            return this; // Retornando interfaz fluida
+            this.resources[name] = new HttpRequest($restful.create(baseURL)); return this;
         };
         
         Package.prototype.getResources = function () {
@@ -225,114 +231,138 @@
                 instance.isRequiredPromise = false; return promise;
             } // Se necesita la promesa para el proceso
             
-            return promise.
+            return promise. // Promesa HTTP
                 then((response) => { 
-                    if (softtion.isFunction(params.success)) params.success(response); 
-                }).
-                catch((error) => { 
-                    if (softtion.isFunction(params.error)) params.error(error); 
+                    var result = { break: false, data: undefined }; // Parámetros iniciales
+                    
+                    if (softtion.isFunction(fnSuccess)) result = fnSuccess(response); 
+                    
+                    if (softtion.isDefined(result)) if (result.break) return;
+                    
+                    if (softtion.isFunction(params.success)) params.success(response, result); 
+                }).catch((response) => { 
+                    var result = { break: false, data: undefined }; // Parámetros iniciales
+                    
+                    if (softtion.isFunction(fnError)) result = fnError(response); 
+                    
+                    if (softtion.isDefined(result)) if (result.break) return;
+                    
+                    if (softtion.isFunction(params.error)) params.error(response, result); 
                 });
         }
         
         return service; // Retornando servicio $request
     }
     
-    // SERVICIO: $fileHttp
+    // SERVICIO: $httpfile
     
-    $fileHttpService.$inject = [ "$q", "$http", "$timeout", "$window" ];
+    $httpfileService.$inject = [ "$q", "$http", "$timeout" ];
     
-    function $fileHttpService($q, $http, $timeout, $window) {
+    function $httpfileService($q, $http, $timeout) {
         
-        // Métodos del servicio 
-        this.upload = upload;
-        this.download = download;
-        this.print = print;
-        this.preview = preview;
+        var ACTIONS = {
+            DOWNLOAD: "DOWNLOAD",
+            UPLOAD: "UPLOAD",
+            PRINT: "PRINT",
+            PREVIEW: "PREVIEW"
+        };
         
-        function getDataFile(response, type) {
-            var blob = new Blob([response.data], { type: type }),
-                URL = $window.URL.createObjectURL(blob);
+        this.ACTIONS = ACTIONS;
         
-            return { blob: blob, url: URL }; // Resultado de archivo
+        this.post = fnFilePost;
+        
+        this.get = fnFileGet;
+        
+        this.upload = fnUpload;
+        
+        function fnFilePost(url, data, options) {
+            var defaults = {"Content-type" : "application/json"}; // Predeterminado
+            
+            angular.extend(defaults, options.headers);
+            
+            return $q((resolve, reject) => {
+                $http.post(url, data, { 
+                    params: options.params,
+                    headers: defaults, 
+                    responseType: "arraybuffer"
+                }).then((response) => {
+                    // Archivo generado en la petición
+                    var blob    = new Blob([response.data], {type : options.type});
+                    
+                    // Parametros para generar descarga
+                    var fileURL = URL.createObjectURL(blob);
+                    
+                    switch (options.action) {
+                        case (ACTIONS.DOWNLOAD):
+                            var a       = document.createElement("a");
+                            a.href      = fileURL; 
+                            a.target    = "_blank";
+                            a.download  = options.name;
+
+                            document.body.appendChild(a); a.click();
+                        break;
+                        
+                        case (ACTIONS.PREVIEW): softtion.openFrame(fileURL); break;
+                        case (ACTIONS.PRINT): softtion.openFrame(fileURL, true); break;
+                    }
+                    
+                    $timeout(() => { URL.revokeObjectURL(fileURL); }, 1000);
+                    
+                    resolve(blob, response); // Proceso correcto
+                }).catch((error) => { reject(error); }); // Error al descargar archivo
+            });
         }
         
-        function upload(attrs) {
+        function fnFileGet(url, options) {
             return $q((resolve, reject) => {
-                var config = {
-                        headers: { "Content-Type": undefined },
-                        transformRequest: angular.identity,
-                        eventHandlers: {
-                            progress: ($event) => { 
-                                if (softtion.isFunction(attrs.onProgress))
-                                    attrs.onProgress($event); // Progreso
-                            }
+                $http.get(url, {
+                    params: options.params, responseType: "arraybuffer"
+                }).then((response) => {
+                    // Archivo generado en la petición
+                    var blob    = new Blob([response.data], {type : options.type});
+                    
+                    // Parametros para generar descarga
+                    var fileURL = URL.createObjectURL(blob);
+                    
+                    switch (options.action) {
+                        case (ACTIONS.DOWNLOAD):
+                            var a       = document.createElement("a");
+                            a.href      = fileURL; 
+                            a.target    = "_blank";
+                            a.download  = options.name;
+
+                            document.body.appendChild(a); a.click();
+                        break;
+                        
+                        case (ACTIONS.PREVIEW): softtion.openFrame(fileURL); break;
+                        case (ACTIONS.PRINT): softtion.openFrame(fileURL, true); break;
+                    }
+                    
+                    $timeout(() => { URL.revokeObjectURL(fileURL); }, 1000);
+                    
+                    resolve(blob, response); // Proceso correcto
+                }).catch((error) => { reject(error); }); // Error al descargar archivo
+            });
+        }
+        
+        function fnUpload(url, data, options) {
+            return $q((resolve, reject) => {
+                var defaults = {
+                    headers: { "Content-Type": undefined },
+                    transformRequest: angular.identity,
+                    eventHandlers: {
+                        progress: ($event) => { 
+                            if (softtion.isFunction(options.onProgress))
+                                options.onProgress($event); // Progreso
                         }
-                    };
+                    }
+                };
                 
-                angular.extend(config, attrs.config);
+                angular.extend(defaults, options.config);
                 
-                $http.post(attrs.url, attrs.data, config).
+                $http.post(url, data, defaults).
                     then((response) => { resolve(response); }).
                     catch((error) => { reject(error); });
-            });
-        }
-        
-        function download(attrs) {
-            return $q((resolve, reject) => {
-                $http.get(attrs.url, { 
-                    responseType: "arraybuffer", params: attrs.params
-                }).then((response) => {
-                    // Generar datos para descargar
-                    var file = getDataFile(response, attrs.type);
-                    
-                    var element = "<a/>",
-                        properties = { 
-                            href: file.url, download: attrs.fileName 
-                        };
-
-                    angular.element(element, properties).
-                        appendTo("body")[0].click();
-
-                    $timeout(() => { $window.URL.revokeObjectURL(file.url); }, 10000);
-                    
-                    resolve(file.blob); // Proceso correcto
-                }).catch((error) => { 
-                    reject(error); // Error al descargar archivo
-                });
-            });
-        }
-        
-        function print(attrs) {
-            return $q((resolve, reject) => {
-                $http.get(attrs.url, { 
-                    responseType: "arraybuffer", params: attrs.params
-                }).then((response) => {
-                    // Generar datos para imprimir
-                    var file = getDataFile(response, attrs.type);
-
-                    $window.open(file.url).print(); 
-                    
-                    resolve(file.blob); // Proceso correcto
-                }).catch((error) => { 
-                    reject(error); // Error al imprimir archivo
-                });
-            });
-        }
-        
-        function preview(attrs) {
-            return $q((resolve, reject) => {
-                $http.get(attrs.url, { 
-                    responseType: "arraybuffer", params: attrs.params
-                }).then((response) => {
-                    // Generar datos para visualizar
-                    var file = getDataFile(response, attrs.type);
-
-                    $window.open(file.url); 
-                    
-                    resolve(file.blob); // Proceso correcto
-                }).catch((error) => { 
-                    reject(error); // Error al visualizar archivo
-                });
             });
         }
     };

@@ -203,6 +203,14 @@
     left: 10px;
     bottom: 21px; }
 
+.outline.capsule > .content > .box > .description {
+    line-height: 34px;
+    height: 34px;
+    width: 34px;
+    left: 1px;
+    bottom: 17px;
+    border-radius: 4px 0px 0px 4px; }
+
 .chip-input > .content > .box > .description {
     top: 24px;
     bottom: initial; }
@@ -217,6 +225,9 @@
     height: inherit;
     width: inherit;
     line-height: inherit; }
+
+.outline.capsule > .content > .box > .description > i  {
+    text-align: center; }
 
 * > .content.disabled > .description > .img-icon > img {
     opacity: 0.45; }
@@ -1116,13 +1127,6 @@
             transition: transform 225ms 0ms var(--standard-curve),
                 opacity 225ms 0ms var(--standard-curve); }
 
-.select > .content > .box > ul,
-.select-multiple > .content > .box > ul {
-    -webkit-transform-origin: 100% 0%;
-       -moz-transform-origin: 100% 0%;
-         -o-transform-origin: 100% 0%;
-            transform-origin: 100% 0%; }
-
 .select > .content > .box > ul {
     top: 24px; }
 
@@ -1139,13 +1143,6 @@
 
 .select > .content > .box > ul.higher {
     bottom: 18px; }
-
-.select > .content > .box > ul.higher,
-.select-multiple > .content > .box > ul.higher {
-    -webkit-transform-origin: 100% 100%;
-       -moz-transform-origin: 100% 100%;
-         -o-transform-origin: 100% 100%;
-            transform-origin: 100% 100%; }
 
 .autocomplete:not(.inline) > .content > .box > .description ~ ul,
 .select:not(.inline) > .content > .box >  .description ~ ul,

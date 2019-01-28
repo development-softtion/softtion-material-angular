@@ -827,22 +827,9 @@ class Softtion {
         file.focus(); file.print(); file.close();
     }
     
-    printFrame(srcURL) {
-        function closePrint() {
-            document.body.removeChild(this.__container__);
-        }
-        
-        function setPrint() {
-            this.contentWindow.__container__ = this;
-            this.contentWindow.onbeforeunload = closePrint;
-            this.contentWindow.onafterprint = closePrint;
-            this.contentWindow.focus(); // Required for IE
-            this.contentWindow.print();
-        }
-        
+    openFrame(URL, isPrint) {
         var frame = document.createElement("iframe");
-        frame.src = srcURL; 
-        frame.onload = setPrint;
+        frame.src = URL; frame.onload = onload;
         
         frame.style.visibility = "hidden";
         frame.style.right = "0";
@@ -850,10 +837,23 @@ class Softtion {
         frame.style.position = "fixed";
         
         document.body.appendChild(frame); // Desplegando Frame
+        
+        function onclose() {
+            document.body.removeChild(this.__container__);
+        }
+        
+        function onload() {
+            this.contentWindow.__container__ = this;
+            this.contentWindow.focus(); // Required for IE
+            this.contentWindow.onafterprint = onclose;
+            this.contentWindow.onbeforeunload = onclose;
+            
+            if (isPrint) this.contentWindow.print();
+        }
     }
     
     newTabPage(url) {
-        window.open(url,"_blank"); // Abriendo página nueva
+        window.open(url, "_blank"); // Abriendo página nueva
     }
     
     nl2br(str, is_xhtml) {

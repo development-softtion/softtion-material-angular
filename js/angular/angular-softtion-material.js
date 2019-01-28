@@ -894,7 +894,7 @@
                 ).addChildren(
                     softtion.html("li").addClass("option").
                         addAttribute("ng-if", "isOptionable").
-                        addAttribute("ng-click", "clickOption($event)").
+                        addAttribute("ng-mousedown", "mousedownOption($event)").
                         addChildren(detailOption)
                 );
 
@@ -1162,7 +1162,7 @@
                     $scope.selectSuggestion(suggestion); // Seleccionando
                 };
                 
-                $scope.clickOption = function ($event) { 
+                $scope.mousedownOption = function ($event) { 
                     $scope.showList = false; // Ocultando la lista
                     listener.launch(Listeners.OPTION, { $event: $event });
                 };
@@ -10131,10 +10131,6 @@
                 var width = "100%", right = "0px";
                 
                 body.html(text); snackbar.addClass(Classes.SHOW);
-                
-                (parseInt(body.height()) <= 20) ?  
-                    body.removeClass(Classes.TWO_LINE) :
-                    body.addClass(Classes.TWO_LINE); 
             
                 displaceButtons(true, snackbar.innerHeight()); // Botones
 
@@ -10155,15 +10151,12 @@
             } else {
                 if (softtion.isDefined(promise)) $timeout.cancel(promise); 
                 
-                hideSnackbar(); // Ocultando componente
-                
-                $timeout(() => { self.show(text, options); }, 160);
+                hideSnackbar(); $timeout(() => { self.show(text, options); }, 160);
             }
         };
 
         SnackBar.prototype.setDuration = function (duration) {
-            $duration = isNaN(duration) ? $duration : duration; 
-            return this; // Retornando interfaz fluida
+            $duration = isNaN(duration) ? $duration : duration; return this; 
         };
 
         SnackBar.prototype.setRounded = function (rounded) {

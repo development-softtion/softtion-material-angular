@@ -2365,6 +2365,12 @@ button.floating.theme-secondary:before {
 .progress-circular > svg > circle {
     stroke: var(--theme-secondary-500); }
 
+.toolbar.theme-primary > .progress-circular > svg > circle {
+    stroke: var(--theme-primary-font-primary-500); }
+
+.toolbar.theme-secondary > .progress-circular > svg > circle {
+    stroke: var(--theme-secondary-font-primary-500); }
+
 /** PROGRESS PANE */
 
 .progress-pane {
@@ -2657,10 +2663,10 @@ button.floating.theme-secondary:before {
     background-color: var(--background-hover); }
 
 .sidenav > .content > button.action.close {
-    color: var(--alternative-primary-font); }
+    color: var(--primary-font); }
 
 .sidenav > .content.contrast > button.action.close {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
 
 .sidenav > .content > button.action.close:before {
     background-color: var(--ripple); }
@@ -3464,6 +3470,123 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield-readonly.outline.contrast > .content.disabled > .box {
     border: 1px dashed var(--theme-secondary-font-disabled-500); }
 
+.autocomplete.outline.capsule > .content > .box > .description,
+.chip-input.outline.capsule > .content > .box > .description,
+.clockpicker-input.outline.capsule > .content > .box > .description,
+.datepicker-input.outline.capsule > .content > .box > .description,
+.labelfield.outline.capsule > .content > .box > .description,
+.yearpicker-input.outline.capsule > .content > .box > .description,
+.select.outline.capsule > .content > .box > .description,
+.select-multiple.outline.capsule > .content > .box > .description,
+.textfield.outline.capsule > .content > .box > .description,
+.textfield-readonly.outline.capsule > .content > .box > .description {
+    background-color: var(--theme-secondary-100); }
+
+.theme-primary .autocomplete.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .chip-input.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .clockpicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .datepicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .labelfield.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .yearpicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .select.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .select-multiple.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield.outline.capsule.contrast > .content > .box > .description,
+.theme-primary .textfield-readonly.outline.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-primary-font-secondary-500); }
+
+.theme-secondary .autocomplete.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .chip-input.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .clockpicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .datepicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .labelfield.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .yearpicker-input.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .select.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .select-multiple.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield.outline.capsule.contrast > .content > .box > .description,
+.theme-secondary .textfield-readonly.outline.capsule.contrast > .content > .box > .description {
+    background-color: var(--theme-secondary-font-secondary-500); }
+
+.autocomplete.outline.capsule > .content.active > .box > .description,
+.clockpicker-input.outline.capsule > .content.active > .box > .description,
+.datepicker-input.outline.capsule > .content.active > .box > .description,
+.yearpicker-input.outline.capsule > .content.active > .box > .description,
+.labelfield.outline.capsule > .content.active > .box > .description,
+.select.outline.capsule > .content.active > .box > .description,
+.select-multiple.outline.capsule > .content.active > .box > .description,
+.textfield.outline.capsule > .content.active > .box > .description,
+.textfield-readonly.outline.capsule > .content.active > .box > .description {
+    background-color: var(--theme-secondary-500); }
+
+.labelfield.outline.capsule > .content.active > .box > .description {
+    background-color: var(--theme-secondary-200); }
+
+.theme-primary .autocomplete.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .clockpicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .datepicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .yearpicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .labelfield.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .select.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .select-multiple.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .textfield.outline.capsule.contrast > .content.active > .box > .description,
+.theme-primary .textfield-readonly.outline.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-primary-font-primary-500); }
+
+.theme-primary .labelfield.outline.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-primary-font-primary-200); }
+
+.theme-secondary .autocomplete.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .clockpicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .datepicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .yearpicker-input.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .labelfield.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .select.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .select-multiple.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .textfield.outline.capsule.contrast > .content.active > .box > .description,
+.theme-secondary .textfield-readonly.outline.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-secondary-font-primary-500); }
+
+.theme-secondary .labelfield.outline.capsule.contrast > .content.active > .box > .description {
+    background-color: var(--theme-secondary-font-primary-200); }
+
+.textfield.outline.capsule.error > .content.active > .box > .description {
+    background-color: var(--theme-error-500); }
+
+.theme-primary .textfield.outline.capsule.error.contrast > .content.active > .box > .description {
+    background-color: var(--theme-primary-font-primary-300); }
+
+.theme-secondary .textfield.outline.capsule.error.contrast > .content.active > .box > .description {
+    background-color: var(--theme-secondary-font-primary-300); }
+
+.autocomplete.outline.capsule > .content.disabled > .box > .description,
+.clockpicker-input.outline.capsule > .content.disabled > .box > .description,
+.datepicker-input.outline.capsule > .content.disabled > .box > .description,
+.yearpicker-input.outline.capsule > .content.disabled > .box > .description,
+.select.outline.capsule > .content.disabled > .box > .description,
+.select-multiple.outline.capsule > .content.disabled > .box > .description,
+.textfield.outline.capsule > .content.disabled > .box > .description,
+.textfield-readonly.outline.capsule > .content.disabled > .box > .description {
+    background-color: var(--background-disabled); }
+
+.theme-primary .autocomplete.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .clockpicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .datepicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .yearpicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .select.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .select-multiple.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .textfield.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-primary .textfield-readonly.outline.capsule.contrast > .content.disabled > .box > .description {
+    background-color: var(--theme-primary-font-disabled-500); }
+
+.theme-secondary .autocomplete.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .clockpicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .datepicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .yearpicker-input.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .select.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .select-multiple.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .textfield.outline.capsule.contrast > .content.disabled > .box > .description,
+.theme-secondary .textfield-readonly.outline.capsule.contrast > .content.disabled > .box > .description {
+    background-color: var(--theme-secondary-font-disabled-500); }
+
 .autocomplete > .content > .box > .description > i,
 .chip-input > .content > .box > .description > i,
 .clockpicker-input > .content > .box > .description > i,
@@ -3497,6 +3620,39 @@ button.floating.theme-secondary:before {
 .theme-secondary .textfield-readonly.contrast > .content > .box > .description > i {
     color: var(--theme-secondary-font-secondary-500); }
 
+.autocomplete.outline.capsule > .content > .box > .description > i,
+.chip-input.outline.capsule > .content > .box > .description > i,
+.clockpicker-input.outline.capsule > .content > .box > .description > i,
+.datepicker-input.outline.capsule > .content > .box > .description > i,
+.yearpicker-input.outline.capsule > .content > .box > .description > i,
+.select.outline.capsule > .content > .box > .description > i,
+.select-multiple.outline.capsule > .content > .box > .description > i,
+.textfield.outline.capsule > .content > .box > .description > i,
+.textfield-readonly.outline.capsule > .content > .box > .description > i {
+    color: var(--theme-secondary-font-secondary-100); }
+
+.theme-primary .autocomplete.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .chip-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .clockpicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .datepicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .yearpicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .select-multiple.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield.outline.capsule.contrast > .content > .box > .description > i,
+.theme-primary .textfield-readonly.outline.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-primary-500); }
+
+.theme-secondary .autocomplete.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .chip-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .clockpicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .datepicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .yearpicker-input.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .select-multiple.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield.outline.capsule.contrast > .content > .box > .description > i,
+.theme-secondary .textfield-readonly.outline.capsule.contrast > .content > .box > .description > i {
+    color: var(--theme-secondary-500); }
+
 .autocomplete > .content.disabled > .box >  .description > i,
 .chip-input > .content.disabled > .box >  .description > i,
 .clockpicker-input > .content.disabled > .box >  .description > i,
@@ -3526,6 +3682,39 @@ button.floating.theme-secondary:before {
 .theme-secondary .select-multiple.contrast > .content.disabled > .box >  .description > i,
 .theme-secondary .textfield.contrast > .content.disabled > .box >  .description > i {
     color: var(--theme-secondary-font-disabled-500); }
+
+.autocomplete.outline.capsule > .content.disabled > .box > .description > i,
+.chip-input.outline.capsule > .content.disabled > .box > .description > i,
+.clockpicker-input.outline.capsule > .content.disabled > .box > .description > i,
+.datepicker-input.outline.capsule > .content.disabled > .box > .description > i,
+.yearpicker-input.outline.capsule > .content.disabled > .box > .description > i,
+.select.outline.capsule > .content.disabled > .box > .description > i,
+.select-multiple.outline.capsule > .content.disabled > .box > .description > i,
+.textfield.outline.capsule > .content.disabled > .box > .description > i,
+.textfield-readonly.outline.capsule > .content.disabled > .box > .description > i {
+    color: var(--disabled-font); }
+
+.theme-primary .autocomplete.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .chip-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .clockpicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .datepicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .yearpicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .select.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .select-multiple.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .textfield.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-primary .textfield-readonly.outline.capsule.contrast > .content.disabled > .box > .description > i {
+    color: var(--theme-primary-200); }
+
+.theme-secondary .autocomplete.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .chip-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .clockpicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .datepicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .yearpicker-input.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .select.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .select-multiple.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .textfield.outline.capsule.contrast > .content.disabled > .box > .description > i,
+.theme-secondary .textfield-readonly.outline.capsule.contrast > .content.disabled > .box > .description > i {
+    color: var(--theme-secondary-200); }
 
 .autocomplete > .content > .box > label,
 .chip-input > .content > .box > label,
