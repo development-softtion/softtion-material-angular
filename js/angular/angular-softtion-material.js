@@ -1325,25 +1325,14 @@
                     return getSuggestionsByMethod(pattern); // Sugerencias
                 }
                 
-                function getSuggestionsByMethod($pattern) {
-                    switch ($scope.patternMethod) {
-                        case ("start"):
-                            return getSuggestionsByStart($pattern);
-                        case ("between"):
-                            return getSuggestionsByStart($pattern);
-                        default:
-                            return getSuggestionsByStart($pattern);
-                    }
-                }
-                
-                function getSuggestionsByStart(pattern) {
+                function getSuggestionsByMethod(pattern) {
                     var temporal = $scope.temporal, 
                         stop = softtion.isUndefined(temporal);
                         
                     while (!stop) {
                         var $pattern = temporal.pattern; // Patrón anterior
                         
-                        if (pattern.like("start", $pattern, $scope.patternForce)) {
+                        if (pattern.like($scope.patternMethod, $pattern, $scope.patternForce)) {
                             stop = true;
                         } else {
                             temporal = temporal.before;
@@ -1359,27 +1348,16 @@
                 }
                 
                 function getCoincidences(suggestions, pattern) {
-                    switch ($scope.patternMethod) {
-                        case ("start"):
-                            return getCoincidencesByStart(suggestions, pattern);
-                        case ("between"):
-                            return getCoincidencesByStart(suggestions, pattern);
-                        default:
-                            return getCoincidencesByStart(suggestions, pattern);
-                    }
-                }
-                
-                function getCoincidencesByStart(suggestions, pattern) {
                     var coincidences = []; // Listado de coincidencias
                     
                     angular.forEach(suggestions, (suggestion) => {
                         if (softtion.isText(suggestion)) {
-                            if (suggestion.like("start", pattern, $scope.patternForce)) 
+                            if (suggestion.like($scope.patternMethod, pattern, $scope.patternForce)) 
                                 coincidences.push(suggestion); 
                         } else {
                             var value = getValueSuggestion(suggestion);
                             
-                            if (value.like("start", pattern, $scope.patternForce)) 
+                            if (value.like($scope.patternMethod, pattern, $scope.patternForce)) 
                                 coincidences.push(suggestion); 
                         } // El item es un objeto de tipo JSON, verificando
                     });
@@ -1387,21 +1365,7 @@
                     return coincidences; // Coincidencias encontradas
                 }
                 
-                function setSuggestions($pattern, suggestions, result) {
-                    switch ($scope.patternMethod) {
-                        case ("start"):
-                            setSuggestionsByStart($pattern, suggestions, result);
-                        break;
-                        case ("between"):
-                            setSuggestionsByStart($pattern, suggestions, result);
-                        break;
-                        default:
-                            setSuggestionsByStart($pattern, suggestions, result);
-                        break;
-                    }
-                }
-                
-                function setSuggestionsByStart(pattern, suggestions, result) {
+                function setSuggestions(pattern, suggestions, result) {
                     $scope.temporal = {
                         suggestions: suggestions,
                         pattern: pattern,
@@ -3389,13 +3353,12 @@
                         newValue.normalize("date"); // Normalizando fecha
                         
                         if (softtion.isDate($scope.ngModel)) {
-                            if (!newValue.isBefore($scope.ngModel)) {
+                            if (newValue.isBefore($scope.ngModel)) {
                                 $scope.ngModel = newValue; $scope.selectDate = newValue;
                             }
                         } else {
-                            if (!newValue.isBefore(dateStart)) {
-                                initDatePicker(newValue);
-                            } // Se define nueva fecha inicio
+                            // Se define nueva fecha de inicio en componente
+                            if (newValue.isBefore(dateStart)) initDatePicker(newValue); 
                         }
                     });
 
@@ -3410,13 +3373,12 @@
                         newValue.normalize("date"); // Normalizando fecha
                         
                         if (softtion.isDate($scope.ngModel)) {
-                            if (!newValue.isAfter($scope.ngModel)) {
+                            if (newValue.isAfter($scope.ngModel)) {
                                 $scope.ngModel = newValue; $scope.selectDate = newValue;
                             }
                         } else {
-                            if (!newValue.isAfter(dateStart)) {
-                                initDatePicker(newValue);
-                            } // Se define nuevo inicio en componente
+                            // Se define nueva fecha de inicio en componente
+                            if (newValue.isAfter(dateStart)) initDatePicker(newValue);
                         }
                     });
 
@@ -9133,7 +9095,7 @@
             function show(provider, origin) {
                 var settings = getSettingsDropdown(provider, origin),
                     attrs = getAttributesDropdown(settings, provider, origin);
-
+            
                 if (settings.moveContent) // Desplazando elemento
                     attrs.left -= parseInt($appContent.css("left"));
 
@@ -9141,7 +9103,10 @@
                     attrs.left -= parseInt($appBody.css("left")); 
                     provider.element.removeClass(Classes.FIXED);
 
-                    if (settings.moveScroll) attrs.top += $appContent.scrollTop(); 
+                    if (settings.moveScroll) {
+                        attrs.top -= parseInt($appContent.css("padding-top"));
+                        attrs.top += $appContent.scrollTop(); 
+                    }
                 } else {
                     provider.element.addClass(Classes.FIXED);
                 } // Componente debe moverse con scroll de AppContent
@@ -9171,13 +9136,13 @@
 
             function getSettingsDropdown(provider, origin) {
                 var settings = {
-                    top: 0, left: 0, 
-                    moveContent: false,
-                    moveLeft: true,
-                    moveScroll: false,
-                    width: window.innerWidth, 
-                    height: window.innerHeight
-                }; 
+                        top: 0, left: 0, 
+                        moveContent: false,
+                        moveLeft: true,
+                        moveScroll: false,
+                        width: window.innerWidth, 
+                        height: window.innerHeight
+                    }; 
 
                 if (softtion.isDefined(origin) && origin.exists()) {
                     var formNavigation = origin.parents(".form-navigation");
@@ -9199,7 +9164,7 @@
                     if (origin.parents(".app-content").exists()) settings.moveContent = true;
 
                     if (provider.element.parents(".app-content").exists()) settings.moveScroll = true;
-
+                    
                     return angular.extend(settings, origin.offset()); 
                 } // Se definío elemento que disparó despliegue del dropdown
 
@@ -10163,6 +10128,14 @@
             (!rounded) ?
                 snackbar.removeClass(Classes.ROUND) :
                 snackbar.addClass(Classes.ROUND);
+            
+            return this; // Retornando interfaz fluida
+        };
+        
+        SnackBar.prototype.setElevation = function (elevation) {
+            (!elevation) ?
+                snackbar.removeClass(Classes.ELEVATION) :
+                snackbar.addClass(Classes.ELEVATION);
             
             return this; // Retornando interfaz fluida
         };

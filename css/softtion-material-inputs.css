@@ -101,6 +101,10 @@
 .autocomplete, .select, .select-multiple {
     display: table; }
 
+.autocomplete.align-right, .chip-input.align-right,
+.clockpicker-input.align-right, .datepicker-input.align-right,
+.yearpicker-input.align-right, .labelfield.align-right,
+.select.align-right, .select-multiple.align-right, 
 .textfield.align-right, .textfield-readonly.align-right { 
     text-align: initial !important; }
 

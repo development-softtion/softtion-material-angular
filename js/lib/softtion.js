@@ -111,6 +111,7 @@ class Softtion {
             
             TWO_LINE: "two-line",
             ROUND: "round",
+            ELEVATION: "elevation",
             ALTERNATIVE: "alternative"
         };
     }
@@ -594,11 +595,11 @@ class Softtion {
         }
     }
         
-    getMonetaryExpression(number, decimalsCount) {
+    getMonetaryExpression(number, decimalsCount = 2) {
         if (this.isUndefined(number)) return ""; // Indefinido
         
         var result = "", contador = 0, 
-            fraction = number.toString().split("."),
+            fraction = Math.abs(number).toString().split("."),
             $number = fraction[0],
             length = $number.length, decimals;
     
@@ -611,8 +612,10 @@ class Softtion {
 
             result = $number.charAt(length - index) + result; 
             
-            contador++; // Aumentando
+            contador++; // Aumentando index de recorrido
         } // Recorriendo el número expresarlo monetariamente
+        
+        if (number < 0) result = "-" + result; // Numero negativo
 
         return (this.isUndefined(decimals)) ? // Retornando expresión
             result : result + "," + decimals.substring(0, decimalsCount); 
@@ -652,8 +655,7 @@ class Softtion {
     }
         
     getNumberDescription(number) {
-        if (this.isUndefined(number)) 
-            return undefined; // Excepción encontrada en el número
+        if (this.isUndefined(number)) return undefined; // Excepción
 
         number = isNaN(number) ? parseInt(number) : number;
 
@@ -1221,13 +1223,13 @@ class Time {
         };
         
         Date.prototype.isAfter = function (date) {
-            if (softtion.isDate(date)) return false;
+            if (!softtion.isDate(date)) return false;
             
             return this.getTime() < date.getTime();
         };
         
         Date.prototype.isBefore = function (date) {
-            if (softtion.isDate(date)) return false;
+            if (!softtion.isDate(date)) return false;
             
             return this.getTime() > date.getTime();
         };

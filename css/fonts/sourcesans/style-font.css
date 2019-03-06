@@ -1,0 +1,31 @@
+
+/*!
+ * StyleFont: SourceSansPro
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
+
+@font-face {
+    font-family: "sourcesans";
+    src: url("SourceSansPro-Light.otf") format("opentype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: "sourcesans";
+    src: url("SourceSansPro-Regular.otf") format("opentype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: "sourcesans";
+    src: url("SourceSansPro-Regular.otf") format("opentype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "sourcesans";
+    src: url("SourceSansPro-SemiBold.otf") format("opentype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: "sourcesans";
+    src: url("SourceSansPro-Bold.otf") format("opentype");
+    font-weight: 700; }

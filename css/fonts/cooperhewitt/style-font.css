@@ -1,0 +1,31 @@
+
+/*!
+ * StyleFont: Cooper Hewitt
+ * development: Daniel Andres Castillo Pedroza
+ * https://material.softtion.com.co
+ */
+
+@font-face {
+    font-family: "cooperhewitt";
+    src: url("CooperHewitt-Light.otf") format("opentype");
+    font-weight: 300; }
+
+@font-face {
+    font-family: "cooperhewitt";
+    src: url("CooperHewitt-Regular.otf") format("opentype");
+    font-weight: 400; }
+
+@font-face {
+    font-family: "cooperhewitt";
+    src: url("CooperHewitt-Medium.otf") format("opentype");
+    font-weight: 500; }
+
+@font-face {
+    font-family: "cooperhewitt";
+    src: url("CooperHewitt-SemiBold.otf") format("opentype");
+    font-weight: 600; }
+
+@font-face {
+    font-family: "cooperhewitt";
+    src: url("CooperHewitt-Bold.otf") format("opentype");
+    font-weight: 700; }

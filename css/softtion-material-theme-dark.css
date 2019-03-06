@@ -1340,11 +1340,21 @@ button.floating.theme-secondary:before {
 .dialog > .box > .content {
     color: var(--secondary-font); }
 
+.dialog > .box > .content > tp {
+    color: var(--theme-primary-600); }
+
+.dialog > .box > .content > ts {
+    color: var(--theme-secondary-600); }
+
+.dialog > .box > .content > te {
+    color: var(--theme-error-500); }
+
 .dialog > .box > .actions > button.flat,
 .dialog > .box > .actions > button.flat.theme-primary {
     color: var(--theme-secondary-500); }
 
-.dialog > .box > .actions > button.flat.theme-secondary {
+.dialog > .box > .actions > button.flat.theme-secondary,
+.dialog > .box > .actions > button.flat.positive {
     color: var(--theme-primary-500); }
 
 .dialog > .box > .actions > button.flat:disabled,
@@ -2365,10 +2375,12 @@ button.floating.theme-secondary:before {
 .progress-circular > svg > circle {
     stroke: var(--theme-secondary-500); }
 
-.toolbar.theme-primary > .progress-circular > svg > circle {
+.toolbar.theme-primary .progress-circular > svg > circle,
+.datatable.theme-primary .progress-circular > svg > circle {
     stroke: var(--theme-primary-font-primary-500); }
 
-.toolbar.theme-secondary > .progress-circular > svg > circle {
+.toolbar.theme-secondary .progress-circular > svg > circle,
+.datatable.theme-secondary .progress-circular > svg > circle {
     stroke: var(--theme-secondary-font-primary-500); }
 
 /** PROGRESS PANE */
@@ -2590,11 +2602,27 @@ button.floating.theme-secondary:before {
         border-right: none; }
 }
 
+.sidenav > .content > .title {
+    background-color: var(--background-appbar);
+    color: var(--primary-font); }
+
 .sidenav > .content > .title.theme-primary {
     color: var(--theme-primary-font-primary-700);
     background-color: var(--theme-primary-700); }
 
 .sidenav > .content > .title.theme-secondary {
+    color: var(--theme-primary-font-secondary-700);
+    background-color: var(--theme-secondary-700); }
+
+.sidenav > .content > .logo {
+    background-color: var(--background-appbar);
+    color: var(--primary-font); }
+
+.sidenav > .content > .logo.theme-primary {
+    color: var(--theme-primary-font-primary-700);
+    background-color: var(--theme-primary-700); }
+
+.sidenav > .content > .logo.theme-secondary {
     color: var(--theme-primary-font-secondary-700);
     background-color: var(--theme-secondary-700); }
 
