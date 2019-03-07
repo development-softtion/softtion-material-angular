@@ -575,7 +575,8 @@
 .textfield.align-center > .content > .box > .value { 
     text-align: center; }
 
-.textfield.align-right > .content > .box > .value { 
+.textfield.align-right > .content > .box > .value,
+.select.align-right > .content > .box > .value { 
     text-align: right; }
 
 .clockpicker-input > .content > .box > .value,
