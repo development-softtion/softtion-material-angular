@@ -1485,6 +1485,7 @@ button.raised:focus:after, button.flat:focus:after {
     box-sizing: border-box; }
 
 .card > .rich-media .primary-title > .detail > .content > .title {
+    overflow: initial;
     height: 20px;
     line-height: 18px;
     font-family: var(--headline-5-font);
@@ -1614,6 +1615,9 @@ button.raised:focus:after, button.flat:focus:after {
 
 .card > .optional-header > button.action:before {
     left: calc(50% + 8px); }
+
+.card > .optional-header > button.action:after {
+    margin-left: -12px; }
 
 .card > .optional-header > button.action ~ button.action {
     display: none; }
@@ -2752,6 +2756,7 @@ button.raised:focus:after, button.flat:focus:after {
 
 .datatable > .content {
     position: relative;
+    display: block;
     float: left;
     width: 100%;
     overflow-x: auto; }

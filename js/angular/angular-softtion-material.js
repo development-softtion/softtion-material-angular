@@ -1,11 +1,11 @@
 
 /*
- Angular Softtion Material v2.0.0
- (c) 2016 - 2018 Softtion Developers
+ Angular Softtion Material v2.0.4
+ (c) 2016 - 2019 Softtion Developers
  http://material.softtion.com.co
  License: MIT
  Created: 19/Nov/2016
- Updated: 21/Dic/2018
+ Updated: 12/Mar/2019
 */
 
 ((factory) => {
@@ -19,12 +19,11 @@
 })((softtion, angular) => {
     
     var ngMaterial = angular.
-            module("ngSofttionMaterial", [ "ngSanitize", "ngSofttionEvents" ]).
+            module("ngSofttionMaterial", ["ngSanitize", "ngSofttionEvents"]).
             filter("filterDictionary", filterDictionary).
             service("$materialFunction", softtionMaterialFunction).
             service("$materialService", softtionMaterialService).
-            constant("$materialConstant", softtionMaterialConstant()).
-            constant("$materialColor", getMaterialColors());
+            constant("$materialConstant", softtionMaterialConstant());
     
         // Atributos del framework
     var MANAGER_DATETIME = Softtion.MANAGER_DATETIME,
@@ -227,15 +226,17 @@
 
                 FormNavigation: Properties.create(Properties.FormNavigation),
 
-                MaterialBackground: Properties.create(Properties.MaterialBackground),
+                NgBackground: Properties.create(Properties.NgBackground),
 
-                MaterialColor: Properties.create(Properties.MaterialColor),
-                
-                MaterialFont: Properties.create(Properties.MaterialFont),
-
-                MaterialTheme: Properties.create(Properties.MaterialTheme),
+                NgColor: Properties.create(Properties.NgColor),
 
                 NgFa: Properties.create(Properties.NgFa),
+                
+                NgFont: Properties.create(Properties.NgFont),
+
+                NgMaterial: Properties.create(Properties.NgMaterial),
+
+                NgTheme: Properties.create(Properties.NgTheme),
 
                 RatioElement: Properties.create(Properties.RatioElement),
 
@@ -272,7 +273,7 @@
                 KeysBoard.ARROW_LEFT
             ],
             
-            SELECT: [ 
+            SELECT: [
                 KeysBoard.ENTER, 
                 KeysBoard.SPACE
             ]
@@ -375,13 +376,13 @@
     Directives.Alert.VERSION = "1.0.0";
     Directives.Alert.KEY = "alert";
     
-    Directives.Alert.$inject = [ "$timeout" ];
+    Directives.Alert.$inject = ["$timeout"];
     
     function AlertDirective($timeout) {
         return {
             restrict: "C",
             scope: {
-                duration: "=?",
+                ngDuration: "=?",
                 ngOpen: "=?",
                 ngClose: "=?",
                 ngVisible: "=?"
@@ -393,9 +394,9 @@
                     // Atributos
                 var promise = undefined;
                 
-                $scope.$watch(() => { return $scope.duration; },
+                $scope.$watch(() => { return $scope.ngDuration; },
                     (newValue) => {
-                        if (isNaN(newValue)) $scope.duration = 4000;
+                        if (isNaN(newValue)) $scope.ngDuration = 4000;
                     });
                 
                 $scope.$watch(() => { return $scope.ngOpen; },
@@ -412,7 +413,7 @@
                     $element.addClass(Classes.SHOW); $scope.ngVisible = true;
                     $scope.ngOpen = false; cancelPromise();
                     
-                    promise = $timeout(() => { hideAlert(); }, $scope.duration);
+                    promise = $timeout(() => { hideAlert(); }, $scope.ngDuration);
                 }
                 
                 function closeAlert() {
@@ -440,7 +441,7 @@
     Directives.AppBar.VERSION = "1.0.1";
     Directives.AppBar.KEY = "appBar";
     
-    Directives.AppBar.$inject = [ 
+    Directives.AppBar.$inject = [
         "$window", "$appBody", "$appContent", "$windowResize"  
     ];
     
@@ -458,7 +459,7 @@
         return {
             restrict: "C",
             scope: {
-                fixed: "=?",
+                ngFixed: "=?",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
@@ -482,7 +483,7 @@
                 directive.setClassWidthElement($element, $window.innerWidth);
 
                 $appContent.scroll(() => {
-                    if ($scope.fixed) return; // No debe ocultarse
+                    if ($scope.ngFixed) return; // No debe ocultarse
                     
                     var minHeight = (($window.innerWidth > 960) ? 64 : 56),
                         positionNew = $appContent.scrollTop();
@@ -579,7 +580,7 @@
                                 addAttribute("ng-style", "{width: widthProgress}")
                         )
                 ).addChildren(
-                    softtion.html("label").addClass("name").setText("{{name}}")
+                    softtion.html("label").addClass("name").setText("{{ngName}}")
                 ).addChildren(
                     softtion.html("label").addClass("current-time").
                         setText("{{getCurrentTime()}}")
@@ -604,13 +605,13 @@
             restrict: "C",
             templateUrl: Directives.Audio.ROUTE,
             scope: {
+                ngAudio: "=?",
                 ngSrc: "@",
-                name: "@",
-                audio: "=?ngAudio",
-                playAutomatic: "=?"
+                ngName: "@",
+                ngPlayAutomatic: "=?"
             },
             link: function ($scope, $element, $attrs) {
-                $scope.audio = createInstanceAudio();
+                $scope.ngAudio = createInstanceAudio();
 
                 $scope.isLoadAudio = false;
                 $scope.errorAudio = true;
@@ -619,10 +620,10 @@
                 $scope.duration = 0;
                 $scope.currentTime = 0;
 
-                $scope.$watch(() => { return $scope.audio; },
+                $scope.$watch(() => { return $scope.ngAudio; },
                     (newValue, oldValue) => {
                         if (!(newValue instanceof Audio)) {
-                            $scope.audio = oldValue;
+                            $scope.ngAudio = oldValue;
                         } // No se admite el cambio de objeto
                     });
 
@@ -633,14 +634,14 @@
 
                         restorePlay(); $scope.duration = 0;
 
-                        if ($scope.playAutomatic) {
-                            $scope.audio.src = $scope.ngSrc;
+                        if ($scope.ngPlayAutomatic) {
+                            $scope.ngAudio.src = $scope.ngSrc;
                             
                             if (!softtion.deviceIs().pc())
-                                $scope.audio.play(); // Dispositivo no es un PC
+                                $scope.ngAudio.play(); // Dispositivo no es un PC
                         } // Reproducción automatica
                     } else {
-                        $scope.audio.src = ""; restorePlay(); $scope.duration = 0;
+                        $scope.ngAudio.src = ""; restorePlay(); $scope.duration = 0;
                     } // No ha definido correctamente la ruta
                 });
 
@@ -698,22 +699,22 @@
 
                 function restorePlay(paused) {
                     if ($scope.isPlay && !paused) {
-                        $scope.audio.pause();
+                        $scope.ngAudio.pause();
                     } // La canción se esta reproducciendo
 
-                    $scope.audio.currentTime = 0; $scope.currentTime = 0;
+                    $scope.ngAudio.currentTime = 0; $scope.currentTime = 0;
                     $scope.isPlay = false; // Detener reproducción
                 }
 
                 $scope.play = function () {
                     if (!$scope.isLoadAudio) {
-                        $scope.audio.src = $scope.ngSrc; $scope.isLoading = true;
+                        $scope.ngAudio.src = $scope.ngSrc; $scope.isLoading = true;
 
                         if (!softtion.deviceIs().pc()) 
-                            $scope.audio.play(); // Dispositivo no es un PC
+                            $scope.ngAudio.play(); // Dispositivo no es un PC
                     } else {
                         $scope.isPlay = !$scope.isPlay; // Cambiando estado
-                        ($scope.isPlay) ? $scope.audio.play() : $scope.audio.pause();
+                        ($scope.isPlay) ? $scope.ngAudio.play() : $scope.ngAudio.pause();
                     } // No se ha cargado audio
                 };
 
@@ -722,7 +723,7 @@
                 };
 
                 $scope.muted = function () {
-                    $scope.audio.muted = !$scope.audio.muted;
+                    $scope.ngAudio.muted = !$scope.ngAudio.muted;
                 };
 
                 $scope.getIconPlay = function () {
@@ -730,7 +731,7 @@
                 };
 
                 $scope.getIconMute = function () {
-                    return (!$scope.audio.muted) ? "volume_up" : "volume_off";
+                    return (!$scope.ngAudio.muted) ? "volume_up" : "volume_off";
                 };
 
                 $scope.getCurrentTime = function () {
@@ -1418,7 +1419,7 @@
         return content + ripple; // Componente
     };
     
-    Directives.BottomNavigation.$inject = [ "$body", "$appContent", "$materialTheme" ];
+    Directives.BottomNavigation.$inject = ["$body", "$appContent", "$materialTheme"];
     
     function BottomNavigationDirective($body, $appContent, $themes) {
         return {
@@ -1602,7 +1603,7 @@
     Directives.BottomSheet.VERSION = "1.0.0";
     Directives.BottomSheet.KEY = "bottomSheet";
     
-    Directives.BottomSheet.$inject = [ "$bottomSheet" ];
+    Directives.BottomSheet.$inject = ["$bottomSheet"];
     
     function BottomSheetDirective($bottomSheet) {
         return {
@@ -1738,7 +1739,7 @@
     Directives.ButtonProgress.VERSION = "1.0.0";
     Directives.ButtonProgress.KEY = "buttonprogress";
     
-    Directives.ButtonProgress.$inject = [ "$compile" ];
+    Directives.ButtonProgress.$inject = ["$compile"];
     
     function ButtonProgressDirective($compile) {
         return {
@@ -1840,7 +1841,7 @@
         return content + buttonPrev + buttonNext; // Componente
     };
     
-    Directives.Carousel.$inject = [ "$interval", "$timeout" ];
+    Directives.Carousel.$inject = ["$interval", "$timeout"];
     
     function CarouselDirective($interval, $timeout) {
         return {
@@ -2047,7 +2048,7 @@
         return container + arrowPrev + arrowNext; // Componente
     };
     
-    Directives.Catalog.$inject = [ "$window", "$windowResize" ];
+    Directives.Catalog.$inject = ["$window", "$windowResize"];
     
     function CatalogDirective($window, $windowResize) {
         return {
@@ -2734,7 +2735,7 @@
                     },
                     component = directive.paintSelector(canvas, attributes);
             
-                $scope.clockValues = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+                $scope.clockValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
                 $scope.selection = undefined;
                 $scope.hourValue = undefined;
@@ -2897,6 +2898,7 @@
                 softtion.html("div").addClass("box").addChildren(
                     softtion.html("div").addClass("clockpicker").
                         addAttribute("ng-model", "time").
+                        addAttribute("ng-material", "{{ngMaterial}}").
                         addAttribute("ng-listener", "clockListener($model, $listener)")
                 )
             );
@@ -2904,7 +2906,7 @@
         return dialog.create(); // Componente
     };
     
-    Directives.ClockPickerDialog.$inject = [ "$body", "$appContent" ];
+    Directives.ClockPickerDialog.$inject = ["$body", "$appContent"];
     
     function ClockPickerDialogDirective($body, $appContent) {
         return {
@@ -2913,6 +2915,7 @@
             scope: {
                 ngModel: "=",
                 ngOpen: "=",
+                ngMaterial: "@",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
@@ -3015,6 +3018,7 @@
         var dialog = softtion.html("div").addClass("clockpicker-dialog").
                 addAttribute("ng-model", "timePicker").
                 addAttribute("ng-open", "ngOpen").
+                addAttribute("ng-material", "{{ngMaterial}}").
                 addAttribute("ng-listener", "clockDialogListener($model, $listener)");
 
         box.addChildren(description).addChildren(value).
@@ -3033,6 +3037,7 @@
                 label: "@",
                 required: "=?",
                 optional: "=?",
+                ngMaterial: "@",
                 format: "@",
                 autoStart: "=?",
                 ngDisabled: "=?",
@@ -3298,7 +3303,7 @@
         return calendarMonth; // Retornando calendario
     };
     
-    Directives.DatePicker.$inject = [ "$body" ];
+    Directives.DatePicker.$inject = ["$body"];
                     
     function DatePickerDirective($body) {
         var directive = Directives.DatePicker; // Directiva
@@ -3652,6 +3657,7 @@
                         softtion.html("div").addClass("datepicker").
                             addAttribute("ng-model", "ngModel").
                             addAttribute("autostart", "autostart").
+                            addAttribute("ng-material", "{{ngMaterial}}").
                             addAttribute("ng-disabled-date", "ngDisabledDatePicker($date)").
                             addAttribute("ng-listener", "dateListener($model, $listener)").
                             addAttribute("min-date", "minDate").
@@ -3663,7 +3669,7 @@
         return dialog.create(); // Componente
     };
     
-    Directives.DatePickerDialog.$inject = [ "$body", "$appContent" ];
+    Directives.DatePickerDialog.$inject = ["$body", "$appContent"];
                     
     function DatePickerDialogDirective($body, $appContent) {
         return {
@@ -3676,6 +3682,7 @@
                 maxDate: "=?",
                 yearRange: "=?",
                 ngOpen: "=",
+                ngMaterial: "@",
                 ngDisabledDate: "&",
                 ngListener: "&"
             },
@@ -3772,6 +3779,7 @@
                 addAttribute("ng-model", "ngModel").
                 addAttribute("autostart", "autostart").
                 addAttribute("ng-open", "ngOpen").
+                addAttribute("ng-material", "{{ngMaterial}}").
                 addAttribute("ng-listener", "dateDialogListener($model, $listener)").
                 addAttribute("min-date", "minDate").
                 addAttribute("max-date", "maxDate").
@@ -3794,6 +3802,7 @@
                 autostart: "=?",
                 format: "@",
                 label: "@",
+                ngTheme: "@",
                 required: "=?",
                 optional: "=?",
                 ngDisabled: "=?",
@@ -3803,7 +3812,6 @@
                 helperText: "@",
                 helperPermanent: "=?",
                 focusedInput: "=?",
-
                 minDate: "=?",
                 maxDate: "=?",
                 yearRange: "=?",
@@ -3899,7 +3907,7 @@
     Directives.Dialog.VERSION = "1.0.0";
     Directives.Dialog.KEY = "dialog";
     
-    Directives.Dialog.$inject = [ "$dialog" ];
+    Directives.Dialog.$inject = ["$dialog"];
     
     function DialogDirective($dialog) {
         return {
@@ -4030,7 +4038,7 @@
     Directives.ExpansionPanel.KEY = "expansionPanel";
     
     Directives.ExpansionPanel.BUTTON_ACTION = function () {
-        return softtion.html("button").addClass([ Classes.ACTION, "action-expansion" ]).
+        return softtion.html("button").addClass([Classes.ACTION, "action-expansion"]).
             addChildren(softtion.html("i").setText("expand_more")).create();
     };
                     
@@ -4093,7 +4101,7 @@
     Directives.FabDialog.VERSION = "1.0.0";
     Directives.FabDialog.KEY = "fabDialog";
     
-    Directives.FabDialog.$inject = [ "$compile" ];
+    Directives.FabDialog.$inject = ["$compile"];
     
     function FabDialogDirective($compile) {
         return {
@@ -4372,7 +4380,7 @@
         return input + content; // Componente
     };
                     
-    Directives.Filechooser.$inject = [ "$timeout", "$sce", "$materialConstant" ];
+    Directives.Filechooser.$inject = ["$timeout", "$sce", "$materialConstant"];
                     
     function FileChooserDirective($timeout, $sce, $material) {
         return {
@@ -4547,9 +4555,9 @@
 
         var audio = softtion.html("div").addClass("audio").
             addAttribute("ng-src", "{{ngSrc}}").
-            addAttribute("name", "{{name}}").
+            addAttribute("ng-name", "{{ngName}}").
             addAttribute("ng-audio", "ngAudio").
-            addAttribute("play-automatic", "playAutomatic");
+            addAttribute("ng-play-automatic", "ngPlayAutomatic");
 
         var actions = softtion.html("div").addClass("actions").
             addChildren(
@@ -4576,7 +4584,7 @@
         return input + audio + actions; // Componente 
     };
     
-    Directives.FilechooserAudio.$inject = [ "$timeout", "$sce" ];
+    Directives.FilechooserAudio.$inject = ["$timeout", "$sce"];
     
     function FilechooserAudioDirective($timeout, $sce) {
         return {
@@ -4585,9 +4593,9 @@
             scope: {
                 file: "=ngModel",
                 ngSrc: "@",
-                name: "@",
+                ngName: "@",
                 ngAudio: "=?",
-                playAutomatic: "=?",
+                ngPlayAutomatic: "=?",
 
                 label: "@",
                 ngDisabled: "=?",
@@ -4601,7 +4609,7 @@
 
                 $scope.file = undefined; // Archivos seleccionado
 
-                var audiosTypes = [ "audio/mp3" ];
+                var audiosTypes = ["audio/mp3"];
 
                 function processFile(file) {
                     var reader = new FileReader(); // Procesador de archivo
@@ -4611,7 +4619,7 @@
                             var src = window.URL.createObjectURL(file);
 
                             $scope.ngSrc = $sce.trustAsResourceUrl(src);
-                            $scope.name = file.name; $scope.file = file; 
+                            $scope.ngName = file.name; $scope.file = file; 
 
                             listener.launch(Listeners.CHANGED); // Cambio de archivo
                         });
@@ -4634,7 +4642,7 @@
                 
                 $scope.getTextLabel = function () {
                     return (softtion.isUndefined($scope.file)) ? "" : 
-                        (softtion.isText($scope.label)) ? $scope.label : $scope.name;
+                        (softtion.isText($scope.label)) ? $scope.label : $scope.ngName;
                 };
 
                 $scope.isSelectFile = function () {
@@ -4647,7 +4655,7 @@
 
                 $scope.deleteFile = function () {
                     fileInput[0].value = ""; $scope.ngSrc = ""; 
-                    $scope.file = undefined; $scope.name = "";
+                    $scope.file = undefined; $scope.ngName = "";
 
                     listener.launch(Listeners.REMOVE); // Archivo removido
                 };
@@ -4733,7 +4741,7 @@
         return input + content + actionAdd; // Componente 
     };
     
-    Directives.FilechooserMultiple.$inject = [ "$timeout", "$materialConstant" ];
+    Directives.FilechooserMultiple.$inject = ["$timeout", "$materialConstant"];
     
     function FilechooserMultipleDirective($timeout, $material) {
         return {
@@ -4881,7 +4889,7 @@
         return input + img + icon + actions; // Componente
     };
     
-    Directives.FilechooserPerfil.$inject = [ "$timeout" ];
+    Directives.FilechooserPerfil.$inject = ["$timeout"];
                     
     function FilechooserPerfilDirective($timeout) {
         return {
@@ -5054,7 +5062,7 @@
     Directives.FormNavigation.VERSION = "1.0.0";
     Directives.FormNavigation.KEY = "formNavigation";
     
-    Directives.FormNavigation.$inject = [ "$formNavigation" ];
+    Directives.FormNavigation.$inject = ["$formNavigation"];
     
     function FormNavigationDirective($formNavigation) {
         return {
@@ -5279,7 +5287,7 @@
         $materialFunction.setDensity($element, width, height); // Densidad
     };
     
-    Directives.Img.$inject = [ "$materialFunction" ];
+    Directives.Img.$inject = ["$materialFunction"];
     
     function ImgDirective($materialFunction) {
         var directive = Directives.Img; // Directiva
@@ -5291,7 +5299,7 @@
                 density: "@"
             },
             link: function ($scope, $element) {
-                var densities = [ "width", "height" ], // Densidades
+                var densities = ["width", "height"], // Densidades
                     density = "density-" + $scope.density;
 
                 if ($scope.disabledResponsive) {
@@ -5427,7 +5435,7 @@
             ).create(); // Componente
     };
     
-    Directives.ImageEditor.$inject = [ "$materialService" ];
+    Directives.ImageEditor.$inject = ["$materialService"];
     
     function ImageEditorDirective($materialService) {
         return {
@@ -5826,7 +5834,7 @@
     Directives.Notification.VERSION = "1.0.0";
     Directives.Notification.KEY = "notification";
     
-    Directives.Notification.$inject = [ "$appContent" ];
+    Directives.Notification.$inject = ["$appContent"];
     
     function NotificationDirective($appContent) {
         return {
@@ -5990,7 +5998,7 @@
         return content.create(); // Componente
     };
                     
-    Directives.Pagination.$inject = [ "$filter" ];
+    Directives.Pagination.$inject = ["$filter"];
     
     function PaginationDirective($filter) {
         return {
@@ -6192,7 +6200,7 @@
     Directives.ProgressBar.VERSION = "1.0.4";
     Directives.ProgressBar.KEY = "progressBar";
     
-    Directives.ProgressBar.$inject = [ "$progressBar" ];
+    Directives.ProgressBar.$inject = ["$progressBar"];
     
     function ProgressBarDirective($progressBar) {
         return {
@@ -6287,7 +6295,7 @@
         return circular + success + button; // Componente
     };
     
-    Directives.ProgressButtonFloating.$inject = [ "$progressFAB" ];
+    Directives.ProgressButtonFloating.$inject = ["$progressFAB"];
     
     function ProgressButtonFloatingDirective($progressFAB) {
         return {
@@ -6380,7 +6388,7 @@
             addChildren(softtion.html("circle")).create();
     };
     
-    Directives.ProgressCircular.$inject = [ "$progressCircular" ];
+    Directives.ProgressCircular.$inject = ["$progressCircular"];
     
     function ProgressCircularDirective($progressCircular) {
         return {
@@ -6590,7 +6598,7 @@
     Directives.Ripple.VERSION = "1.0.1";
     Directives.Ripple.KEY = "ripple";
     
-    Directives.Ripple.$inject = [ "$materialConstant" ];
+    Directives.Ripple.$inject = ["$materialConstant"];
     
     function RippleDirective($material) {        
         return {
@@ -6740,7 +6748,7 @@
         return content.create(); // Componente
     };  
     
-    Directives.Select.$inject = [ "$window", "$body" ];
+    Directives.Select.$inject = ["$window", "$body"];
     
     function SelectDirective($window, $body) {
         return {
@@ -7049,7 +7057,7 @@
         return content.create(); // Componente
     };
     
-    Directives.SelectMultiple.$inject = [ "$window", "$body" ];
+    Directives.SelectMultiple.$inject = ["$window", "$body"];
     
     function SelectMultipleDirective($window, $body) {
         return {
@@ -7257,7 +7265,7 @@
             );
     };
     
-    Directives.Sidenav.$inject = [ "$sidenav" ];
+    Directives.Sidenav.$inject = ["$sidenav"];
     
     function SidenavDirective($sidenav) {
         var directive = Directives.Sidenav; // Directiva
@@ -7436,7 +7444,7 @@
         return label + content; // Componente 
     };
     
-    SliderDirective.$inject = [ "$timeout" ];
+    SliderDirective.$inject = ["$timeout"];
     
     function SliderDirective($timeout) {
         return {
@@ -7714,7 +7722,7 @@
     Directives.Tabs.VERSION = "1.0.5";
     Directives.Tabs.KEY = "tabs";
     
-    Directives.Tabs.$inject = [ "$timeout" ];
+    Directives.Tabs.$inject = ["$timeout"];
     
     function TabsDirective($timeout) {
         return {
@@ -8270,7 +8278,7 @@
         }
     }
     
-    Directives.Tooltip.$inject = [ "$tooltipContainer" ];
+    Directives.Tooltip.$inject = ["$tooltipContainer"];
     
     function TooltipDirective($container) {
         return {
@@ -8592,7 +8600,7 @@
         return dialog.create(); // Componente
     };
     
-    Directives.YearPickerDialog.$inject = [ "$body", "$appContent" ];
+    Directives.YearPickerDialog.$inject = ["$body", "$appContent"];
                     
     function YearPickerDialogDirective($body, $appContent) {
         return {
@@ -9048,7 +9056,7 @@
 
         this.$get = DropdownFactory;  // Proveedor Dropdown
         
-        DropdownFactory.$inject = [ "$body", "$appBody", "$appContent" ];
+        DropdownFactory.$inject = ["$body", "$appBody", "$appContent"];
         
         function DropdownFactory($body, $appBody, $appContent) {
             
@@ -9603,7 +9611,7 @@
             return (provider = provider || new Modal());
         };
 
-        this.$get = [ "$rootScope", "$body", fnProvider ];
+        this.$get = ["$rootScope", "$body", fnProvider];
 
         this.setPersistent = function (enabled) {
             provider = provider || new Modal(); return provider.setPersistent(enabled);
@@ -9974,7 +9982,7 @@
     function ProgressPaneProvider() {
         
         var instance, $body, progressPane, label, progressBar, // Atributos
-            classes = [ "progress-bar", Classes.SHOW, Classes.INDETERMINATE ];
+            classes = ["progress-bar", Classes.SHOW, Classes.INDETERMINATE];
 
         function ProgressPane () {
             progressBar = softtion.htmlElement("div", classes);
@@ -10077,7 +10085,7 @@
     Providers.Snackbar.VERSION = "1.1.2";
     Providers.Snackbar.KEY = "$snackbar";
     
-    Providers.Snackbar.$inject = [ "$materialConstant" ];
+    Providers.Snackbar.$inject = ["$materialConstant"];
     
     function SnackbarProvider($material) {
         
@@ -10187,7 +10195,7 @@
             return (provider = provider || new SnackBar());
         };
 
-        this.$get = [ "$rootScope", "$appBody", "$timeout", fnProvider ];
+        this.$get = ["$rootScope", "$appBody", "$timeout", fnProvider];
     }
     
     // Proveedor: Toast
@@ -10200,7 +10208,7 @@
     Providers.Toast.VERSION = "1.0.6";
     Providers.Toast.KEY = "$toast";
     
-    Providers.Toast.$inject = [ "$materialConstant" ];
+    Providers.Toast.$inject = ["$materialConstant"];
     
     function ToastProvider($material) {
         
@@ -10273,7 +10281,7 @@
             return (provider = provider || new Toast());
         };
 
-        this.$get = [ "$appBody", "$timeout", fnProvider ];
+        this.$get = ["$appBody", "$timeout", fnProvider];
     }
     
     // Proveedor: TooltipContainer
@@ -10338,7 +10346,7 @@
     
     // Proveedor: MaterialTheme
     // Version: 1.0.1
-    // Update: 28/Feb/2018
+    // Update: 11/Mar/2019
     
     Providers.MaterialTheme = MaterialThemeProvider;
     
@@ -10346,166 +10354,122 @@
     Providers.MaterialTheme.VERSION = "1.0.1";
     Providers.MaterialTheme.KEY = "$materialTheme";
     
-    Providers.MaterialTheme.$inject = [ "$materialColor" ];
-    
-    function MaterialThemeProvider($materialColor) {
+    function MaterialThemeProvider() {
         
             // Atributos del proveedor
-        var instance = null, themes = $materialColor.THEMES, // Colores de Temas
-            KEYS = {
-                THEMES: {
-                    PRIMARY: {
-                        BASE: "--theme-primary-",
-                        FONT: {
-                            PRIMARY: "--theme-primary-font-primary-",
-                            SECONDARY: "--theme-primary-font-secondary-",
-                            DISABLED: "--theme-primary-font-disabled-"
-                        },
-                        BORDER: "--theme-primary-border-",
-                        BORDER_BASE: "--theme-primary-border",
-                        RIPPLE: "--theme-primary-ripple-",
-                        RIPPLE_BASE: "--theme-primary-ripple"
+        var instance = null, palletes = {}, 
+            properties = {
+                fonts: {
+                    dark: {
+                        primary: "rgba(0, 0, 0, 0.87)",
+                        secondary: "rgba(0, 0, 0, 0.54)",
+                        disabled: "rgba(0, 0, 0, 0.38)"
                     },
-                    SECONDARY: {
-                        BASE: "--theme-secondary-",
-                        FONT: {
-                            PRIMARY: "--theme-secondary-font-primary-",
-                            SECONDARY: "--theme-secondary-font-secondary-",
-                            DISABLED: "--theme-secondary-font-disabled-"
-                        },
-                        BORDER: "--theme-secondary-border-",
-                        BORDER_BASE: "--theme-secondary-border",
-                        RIPPLE: "--theme-secondary-ripple-",
-                        RIPPLE_BASE: "--theme-secondary-ripple"
+                    light: {
+                        primary: "rgba(255, 255, 255, 1)",
+                        secondary: "rgba(255, 255, 255, 0.7)",
+                        disabled: "rgba(255, 255, 255, 0.5)"
                     }
                 },
-                
-                INDEXS: [ "50", "100", "200", "300", "400", "500", "600", "700", "800", "900" ]
+                borders: {
+                    dark: "rgba(0, 0, 0, 0.12)",
+                    light: "rgba(255, 255, 255, 0.12)"
+                },
+                ripples: {
+                    dark: "rgba(0, 0, 0, 0.38)",
+                    light: "rgba(255, 255, 255, 0.5)"
+                }
             };
 
         function MaterialTheme() { }
+        
+        MaterialTheme.prototype.createPallete = function (color) {
+            return createPallete(color);
+        };
+        
+        MaterialTheme.prototype.setPallete = function (key, pallete) { 
+            palletes[key] = pallete; return this; 
+        };
+        
+        MaterialTheme.prototype.getPallete = function (key) { return palletes[key]; };
 
-        MaterialTheme.prototype.setPrimary = function (theme) {
-            var $theme = themes[theme]; // Tema primario
-
-            if (softtion.isUndefined($theme)) return; // No existe Tema
-           
-            var borders = $materialColor.BORDERS, // Borders
-                fonts = $materialColor.FONTS, // Fuente
-                ripples = $materialColor.RIPPLES; // Ripples
+        MaterialTheme.prototype.setTheme = function (theme, color) {
+            var pallete = createPallete(color), keys = getKeys(theme);
+            
+            angular.forEach(pallete, (item, key) => {
+                setPropertyStyle(keys.BASE + key, item.color); // Color base
+                setPropertyStyle(keys.BORDER + key, item.borders);
+                setPropertyStyle(keys.RIPPLE + key, item.ripples);
                 
-            KEYS.INDEXS.forEach((key) => {
-                setPropertyStyle(KEYS.THEMES.PRIMARY.BASE + key, $theme[key]); // Paleta
-                
-                setPropertyStyle( // Color de fuente Primario
-                    KEYS.THEMES.PRIMARY.FONT.PRIMARY + key, fonts[$theme.FONTS[key]].PRIMARY
-                );
-                
-                setPropertyStyle( // Color de fuente Secundario
-                    KEYS.THEMES.PRIMARY.FONT.SECONDARY + key, fonts[$theme.FONTS[key]].SECONDARY
-                );
-                
-                setPropertyStyle( // Color de fuente Inactivo
-                    KEYS.THEMES.PRIMARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
-                );
-                
-                setPropertyStyle( // Border
-                    KEYS.THEMES.PRIMARY.BORDER + key, borders[$theme.FONTS[key]]
-                );
-                
-                setPropertyStyle( // Ripple
-                    KEYS.THEMES.PRIMARY.RIPPLE + key, ripples[$theme.FONTS[key]]
-                );
+                setPropertyStyle(keys.FONT.PRIMARY + key, item.fonts.primary);
+                setPropertyStyle(keys.FONT.SECONDARY + key, item.fonts.secondary);
+                setPropertyStyle(keys.FONT.DISABLED + key, item.fonts.disabled);
             });
-
-            // Color de borde
-            setPropertyStyle(KEYS.THEMES.PRIMARY.BORDER_BASE, getHexToRgba($theme[500]));
+            
+            setPropertyStyle(keys.BORDER_BASE, getHexToRgba(color)); // Color de borde
                         
-            // Color de ripple
-            setPropertyStyle(KEYS.THEMES.PRIMARY.RIPPLE_BASE, getHexToRgba($theme[600]));
+            setPropertyStyle(keys.RIPPLE_BASE, getHexToRgba(color)); // Color de ripple
         };
 
-        MaterialTheme.prototype.setError = function (theme) {
-            var $theme = themes[theme], fonts = $materialColor.FONTS;
-
-            if (softtion.isUndefined($theme)) return; // No existe Tema
-            
-            setPropertyStyle("--theme-error-500", $theme[500]);
-            setPropertyStyle("--theme-error-font-primary-500", fonts[$theme.fonts[500]].PRIMARY);
-            setPropertyStyle("--theme-error-font-secondary-500", fonts[$theme.fonts[500]].SECONDARY);
-            setPropertyStyle("--theme-error-font-disabled-500", fonts[$theme.fonts[500]].DISABLED);
-            
-            setPropertyStyle("--theme-error-100", $theme[100]);
-            setPropertyStyle("--theme-error-font-primary-100", fonts[$theme.fonts[100]].PRIMARY);
-            setPropertyStyle("--theme-error-font-secondary-100", fonts[$theme.fonts[100]].SECONDARY);
-            setPropertyStyle("--theme-error-font-disabled-100", fonts[$theme.fonts[100]].DISABLED);
+        MaterialTheme.prototype.setBase = function (color) {
+            this.setTheme("material", color);
         };
 
-        MaterialTheme.prototype.setSecondary = function (theme) {
-            var $theme = themes[theme]; // Tema primario
-
-            if (softtion.isUndefined($theme)) return; // No existe Tema
-            
-            var borders = $materialColor.BORDERS, // Borders
-                fonts = $materialColor.FONTS, // Fuente
-                ripples = $materialColor.RIPPLES; // Ripples
-                
-            KEYS.INDEXS.forEach((key) => {
-                setPropertyStyle(KEYS.THEMES.SECONDARY.BASE + key, $theme[key]);
-                
-                setPropertyStyle( // Color de fuente Primario
-                    KEYS.THEMES.SECONDARY.FONT.PRIMARY + key, fonts[$theme.FONTS[key]].PRIMARY
-                );
-                
-                setPropertyStyle( // Color de fuente Secundario
-                    KEYS.THEMES.SECONDARY.FONT.SECONDARY + key, fonts[$theme.FONTS[key]].SECONDARY
-                );
-                
-                setPropertyStyle( // Color de fuente Inactivo
-                    KEYS.THEMES.SECONDARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
-                );
-                
-                setPropertyStyle( // Color de fuente Inactivo
-                    KEYS.THEMES.SECONDARY.FONT.DISABLED + key, fonts[$theme.FONTS[key]].DISABLED
-                );
-                
-                setPropertyStyle( // Border
-                    KEYS.THEMES.SECONDARY.BORDER + key, borders[$theme.FONTS[key]]
-                );
-                
-                setPropertyStyle( // Ripple
-                    KEYS.THEMES.SECONDARY.RIPPLE + key, ripples[$theme.FONTS[key]]
-                );
-            });
-
-            // Color de borde
-            setPropertyStyle(KEYS.THEMES.SECONDARY.BORDER_BASE, getHexToRgba($theme[500]));
-                        
-            // Color de ripple
-            setPropertyStyle(KEYS.THEMES.SECONDARY.RIPPLE_BASE, getHexToRgba($theme[600]));
-        };
-
-        MaterialTheme.prototype.register = function (name, theme) {
-            var result = softtion.required(theme, KEYS.INDEXS);
-
-            if (!result.success) return this; // Retornando interfaz fluida
-                
-            result = softtion.required(theme.FONTS, KEYS.INDEXS);    
-                
-            if (result.success) themes[name] = theme; // Tema correcto
-            
-            return this; // Retornando interfaz fluida
+        MaterialTheme.prototype.setError = function (color) {
+            this.setTheme("material", color);
         };
         
-        MaterialTheme.prototype.get = function () { return themes; };
+        function createPallete(color) {
+            var pallete = {}; // Paleta de colores a generar
+            
+            var light = new ColorMaterial("#ffffff");
+            var theme = new ColorMaterial(color);
+            var dark  = ColorMaterial.multiply(theme.toRgb(), theme.toRgb());
+            
+            pallete["50"]  = getStructColor(light, theme, 12);
+            pallete["100"] = getStructColor(light, theme, 24);
+            pallete["200"] = getStructColor(light, theme, 56);
+            pallete["300"] = getStructColor(light, theme, 75);
+            pallete["400"] = getStructColor(light, theme, 87);
+            pallete["500"] = getStructColor(light, theme, 100);
+            pallete["600"] = getStructColor(dark, theme, 87);
+            pallete["700"] = getStructColor(dark, theme, 64);
+            pallete["800"] = getStructColor(dark, theme, 38);
+            pallete["900"] = getStructColor(dark, theme, 12);
+            
+            return pallete; // Retornando paleta de colores generada
+        }
         
-        MaterialTheme.prototype.getPallete = function (pallette) {
-            return themes[pallette.toUpperCase()];
-        };
+        function getStructColor(base, color, value) {
+            var result = ColorMaterial.mix(base._color, color._color, value);
+            
+            var struct = result.isLight() ? {
+                    fonts: properties.fonts.dark,
+                    borders: properties.borders.dark,
+                    ripples: properties.ripples.dark
+                } : {
+                    fonts: properties.fonts.light,
+                    borders: properties.borders.light,
+                    ripples: properties.ripples.light
+                };
+                
+            struct.color = result.toHexString(); return struct; // Resultado
+        }
         
-        MaterialTheme.prototype.getColor = function (pallette, base) {
-            return themes[pallette.toUpperCase()][base];
-        };
+        function getKeys(name) {
+            return {
+                BASE: "--theme-" + name + "-",
+                FONT: {
+                    PRIMARY: "--theme-" + name + "-font-primary-",
+                    SECONDARY: "--theme-" + name + "-font-secondary-",
+                    DISABLED: "--theme-" + name + "-font-disabled-"
+                },
+                BORDER: "--theme-" + name + "-border-",
+                BORDER_BASE: "--theme-" + name + "-border",
+                RIPPLE: "--theme-" + name + "-ripple-",
+                RIPPLE_BASE: "--theme-" + name + "-ripple"
+            };
+        }
         
         function getHexToRgba(hex, opacity) {
             opacity = opacity || "0.5"; // Opacidad del color
@@ -10514,29 +10478,37 @@
             
             return "rgba("+c.r+", "+c.g+", "+c.b+", "+opacity+")" ;
         }
-
-        this.$get = function () { 
+        
+        function getInstance() {
             return (instance = instance || new MaterialTheme());
+        }
+
+        this.$get = function () { return getInstance(); };
+        
+        this.COLORS = getMaterialColors();
+
+        this.setTheme = function (name, color) {
+            instance = getInstance(); instance.setTheme(name, color); return this;
         };
 
-        this.setPrimary = function (theme) {
-            instance = instance || new MaterialTheme();
-            instance.setPrimary(theme); return this;
+        this.setBase = function (color) {
+            instance = getInstance(); instance.setBase(color); return this;
         };
 
-        this.setError = function (theme) {
-            instance = instance || new MaterialTheme();
-            instance.setError(theme); return this;
+        this.setError = function (color) {
+            instance = getInstance(); instance.setError(color); return this;
         };
-
-        this.setSecondary = function (theme) {
-            instance = instance || new MaterialTheme();
-            instance.setSecondary(theme); return this;
+        
+        this.generatePallete = function (color) { 
+            instance = getInstance(); return instance.createPallete(color); 
         };
-
-        this.register = function (name, theme) {
-            instance = instance || new MaterialTheme();
-            instance.register(name, theme); return this;
+        
+        this.setPallete = function (key, pallete) { 
+            instance = getInstance(); instance.setPallete(key, pallete); return this; 
+        };
+        
+        this.getPallete = function (key) { 
+            instance = getInstance(); return instance.getPallete(key); 
         };
     }
     
@@ -10590,11 +10562,12 @@
             case (Properties.Dropdown.NAME): return Properties.Dropdown;
             case (Properties.FocusedElement.NAME): return Properties.FocusedElement;
             case (Properties.FormNavigation.NAME): return Properties.FormNavigation;
-            case (Properties.MaterialBackground.NAME): return Properties.MaterialBackground;
-            case (Properties.MaterialColor.NAME): return Properties.MaterialColor;
-            case (Properties.MaterialFont.NAME): return Properties.MaterialFont;
-            case (Properties.MaterialTheme.NAME): return Properties.MaterialTheme;
+            case (Properties.NgBackground.NAME): return Properties.NgBackground;
+            case (Properties.NgColor.NAME): return Properties.NgColor;
+            case (Properties.NgFont.NAME): return Properties.NgFont;
             case (Properties.NgFa.NAME): return Properties.NgFa;
+            case (Properties.NgMaterial.NAME): return Properties.NgMaterial;
+            case (Properties.NgTheme.NAME): return Properties.NgTheme;
             case (Properties.RatioElement.NAME): return Properties.RatioElement;
             case (Properties.Sidenav.NAME): return Properties.Sidenav;
             case (Properties.Visibility.NAME): return Properties.Visibility;
@@ -10620,7 +10593,7 @@
     Properties.BottomSheet.VERSION = "1.0.0";
     Properties.BottomSheet.KEY = "bottomSheet";
     
-    Properties.BottomSheet.$inject = [ "$bottomSheet" ];
+    Properties.BottomSheet.$inject = ["$bottomSheet"];
     
     function BottomSheetProperty($bottomSheet) {
         return {
@@ -10643,7 +10616,7 @@
     Properties.Dialog.VERSION = "1.0.0";
     Properties.Dialog.KEY = "dialog";
     
-    Properties.Dialog.$inject = [ "$dialog" ];
+    Properties.Dialog.$inject = ["$dialog"];
     
     function DialogProperty($dialog) {
         return {
@@ -10666,7 +10639,7 @@
     Properties.Dropdown.VERSION = "1.0.0";
     Properties.Dropdown.KEY = "dropdown";
     
-    Properties.Dropdown.$inject = [ "$dropdown" ];
+    Properties.Dropdown.$inject = ["$dropdown"];
     
     function DropdownProperty($dropdown) {
         return {
@@ -10697,7 +10670,7 @@
     Properties.FocusedElement.VERSION = "1.0.0";
     Properties.FocusedElement.KEY = "focusedElement";
     
-    Properties.FocusedElement.$inject = [ "$parse" ];
+    Properties.FocusedElement.$inject = ["$parse"];
     
     function FocusedElementProperty($parse) {
         return {
@@ -10724,7 +10697,7 @@
     Properties.FormNavigation.VERSION = "1.0.0";
     Properties.FormNavigation.KEY = "formNavigation";
     
-    Properties.FormNavigation.$inject = [ "$formNavigation" ];
+    Properties.FormNavigation.$inject = ["$formNavigation"];
     
     function FormNavigationProperty($formNavigation) {
         return {
@@ -10737,69 +10710,73 @@
         };
     }
     
-    // Propiedad: MaterialBackground
+    // Propiedad: NgBackground
     // Version: 1.0.2
-    // Update: 28/Feb/2018
+    // Update: 12/Mar/2019
     
-    Properties.MaterialBackground = MaterialBackgroundProperty;
+    Properties.NgBackground = NgBackgroundProperty;
     
-    Properties.MaterialBackground.NAME = "MaterialBackground";
-    Properties.MaterialBackground.VERSION = "1.0.2";
-    Properties.MaterialBackground.KEY = "materialBackground";
+    Properties.NgBackground.NAME = "NgBackground";
+    Properties.NgBackground.VERSION = "1.0.2";
+    Properties.NgBackground.KEY = "ngBackground";
     
-    Properties.MaterialBackground.$inject = [ "$materialTheme" ];
+    Properties.NgBackground.$inject = ["$materialTheme"];
     
-    function MaterialBackgroundProperty($themes) {
+    function NgBackgroundProperty($themes) {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                $attrs.$observe("materialBackground", () => {
-                    var background = $attrs.materialBackground;
-
-                    if (!softtion.isText(background)) return;
+                $attrs.$observe("ngBackground", () => {
+                    if (!softtion.isText($attrs.ngBackground)) return;
                     
-                    var properties = background.split(":");
+                    var properties = $attrs.ngBackground.split(":");
 
-                    if (!properties.has(2)) return;
+                    if (!properties.has(2)) return; // Formato incorrecto
                     
-                    var color = $themes.getColor(properties[0], properties[1]);
-
-                    if (softtion.isText(color)) // Color correcto
-                        $element.css("background-color", color);
+                    var pallete = $themes.getPallete(properties[0]);
+                    
+                    if (softtion.isUndefined(pallete)) {
+                        pallete = $themes.createPallete(properties[0]);
+                        $themes.setPallete(properties[0], pallete);
+                    } // No se encontro la paleta de colores, cargando configuración
+                    
+                    $element.css("background-color", pallete[properties[1]].color); // Color
                 });
             }
         };
     }
     
-    // Propiedad: MaterialColor
+    // Propiedad: NgColor
     // Version: 1.0.2
-    // Update: 28/Feb/2018
+    // Update: 12/Mar/2019
     
-    Properties.MaterialColor = MaterialColorProperty;
+    Properties.NgColor = NgColorProperty;
     
-    Properties.MaterialColor.NAME = "MaterialColor";
-    Properties.MaterialColor.VERSION = "1.0.2";
-    Properties.MaterialColor.KEY = "materialColor";
+    Properties.NgColor.NAME = "NgColor";
+    Properties.NgColor.VERSION = "1.0.2";
+    Properties.NgColor.KEY = "ngColor";
     
-    Properties.MaterialColor.$inject = [ "$materialTheme" ];
+    Properties.NgColor.$inject = ["$materialTheme"];
     
-    function MaterialColorProperty($themes) {
+    function NgColorProperty($themes) {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                $attrs.$observe("materialColor", () => {
-                    var fontColor = $attrs.materialColor;
-
-                    if (!softtion.isText(fontColor)) return;
+                $attrs.$observe("ngColor", () => {
+                    if (!softtion.isText($attrs.ngColor)) return;
                     
-                    var properties = fontColor.split(":");
+                    var properties = $attrs.ngColor.split(":");
 
-                    if (!properties.has(2)) return;
+                    if (!properties.has(2)) return; // Formato incorrecto
                     
-                    var color = $themes.getColor(properties[0], properties[1]);
-
-                    if (softtion.isText(color)) // Color correcto
-                        $element.css("color", color);
+                    var pallete = $themes.getPallete(properties[0]);
+                    
+                    if (softtion.isUndefined(pallete)) {
+                        pallete = $themes.createPallete(properties[0]);
+                        $themes.setPallete(properties[0], pallete);
+                    } // No se encontro la paleta de colores, cargando configuración
+                    
+                    $element.css("color", pallete[properties[1]].color); // Color
                 });
             }
         };
@@ -10807,58 +10784,59 @@
     
     // Propiedad: MaterialFont
     // Version: 1.0.2
-    // Update: 14/Jul/2018
+    // Update: 12/Mar/2019
     
-    Properties.MaterialFont = MaterialFontProperty;
+    Properties.NgFont = NgFontProperty;
     
-    Properties.MaterialFont.NAME = "MaterialFont";
-    Properties.MaterialFont.VERSION = "1.0.0";
-    Properties.MaterialFont.KEY = "materialFont";
+    Properties.NgFont.NAME = "NgFont";
+    Properties.NgFont.VERSION = "1.0.0";
+    Properties.NgFont.KEY = "ngFont";
     
-    function MaterialFontProperty() {
+    function NgFontProperty() {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                $attrs.$observe("materialFont", () => {
-                    $element.css("font-family", $attrs.materialFont);
+                $attrs.$observe("ngFont", () => {
+                    $element.css("font-family", $attrs.ngFont);
                 });
             }
         };
     }
     
-    // Propiedad: MaterialTheme
-    // Version: 1.0.0
-    // Update: 02/Jun/2018
+    // Propiedad: NgTheme
+    // Version: 1.0.4
+    // Update: 12/Mar/2019
     
-    Properties.MaterialTheme = MaterialThemeProperty;
+    Properties.NgTheme = NgThemeProperty;
     
-    Properties.MaterialTheme.NAME = "MaterialTheme";
-    Properties.MaterialTheme.VERSION = "1.0.0";
-    Properties.MaterialTheme.KEY = "materialTheme";
+    Properties.NgTheme.NAME = "NgTheme";
+    Properties.NgTheme.VERSION = "1.0.0";
+    Properties.NgTheme.KEY = "ngTheme";
     
-    Properties.MaterialTheme.$inject = [ "$materialTheme", "$materialColor" ];
+    Properties.NgTheme.$inject = ["$materialTheme"];
     
-    function MaterialThemeProperty($themes, $colors) {
+    function NgThemeProperty($themes) {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
-                $attrs.$observe("materialTheme", () => {
-                    var themeColor = $attrs.materialTheme;
+                $attrs.$observe("ngTheme", () => {
+                    if (!softtion.isText($attrs.ngTheme)) return;
                     
-                    if (!softtion.isText(themeColor)) return;
-                    
-                    var properties = themeColor.split(":");
+                    var properties = $attrs.ngTheme.split(":");
 
-                    if (!properties.has(2)) return;
+                    if (!properties.has(2)) return; // Formato incorrecto
                     
                     var pallete = $themes.getPallete(properties[0]);
                     
-                    if (softtion.isDefined(pallete)) {
-                        $element.css("background-color", pallete[properties[1]]);
-                        
-                        var font = pallete.FONTS[properties[1]];
-                        $element.css("color", $colors.FONTS[font].PRIMARY);
-                    } // Se encontro la paleta de colores, cargando configuración
+                    if (softtion.isUndefined(pallete)) {
+                        pallete = $themes.createPallete(properties[0]);
+                        $themes.setPallete(properties[0], pallete);
+                    } // No se encontro la paleta de colores, cargando configuración
+                    
+                    var theme = pallete[properties[1]]; // Item resultante
+                    
+                    $element.css("color", theme.fonts.primary);
+                    $element.css("background-color", theme.color);
                 });
             }
         };
@@ -10891,6 +10869,29 @@
         };
     }
     
+    // Propiedad: NgMaterial
+    // Version: 1.0.0
+    // Update: 11/Mar/2019
+    
+    Properties.NgMaterial = NgMaterialProperty;
+    
+    Properties.NgMaterial.NAME = "NgMaterial";
+    Properties.NgMaterial.VERSION = "1.0.0";
+    Properties.NgMaterial.KEY = "ngMaterial";
+    
+    function NgMaterialProperty() {
+        return {
+            restrict: "A",
+            link: function ($scope, $element, $attrs) {
+                $attrs.$observe("ngMaterial", () => {
+                    if (!softtion.isText($attrs.ngMaterial)) return; // Definido
+                    
+                    $element.addClass("theme-material " + $attrs.ngMaterial);
+                });
+            }
+        };
+    }
+    
     // Propiedad: RatioElement
     // Version: 1.0.0
     // Update: 22/Sep/2018
@@ -10901,7 +10902,7 @@
     Properties.RatioElement.VERSION = "1.0.0";
     Properties.RatioElement.KEY = "ratioElement";
     
-    Properties.RatioElement.$inject = [ "$materialService" ];
+    Properties.RatioElement.$inject = ["$materialService"];
     
     function RatioElementProperty($materialService) {
         return {
@@ -10933,7 +10934,7 @@
     Properties.Sidenav.VERSION = "1.0.0";
     Properties.Sidenav.KEY = "sidenav";
     
-    Properties.Sidenav.$inject = [ "$sidenav" ];
+    Properties.Sidenav.$inject = ["$sidenav"];
     
     function SidenavProperty($sidenav) {
         return {
@@ -11611,39 +11612,39 @@
             { key: "$value", value: "input" }, { key: "$select", value: "select" }
         ],
         
-        CHECKBOX: [ { key: "$model", value: "checked" } ],
+        CHECKBOX: [{ key: "$model", value: "checked" }],
         
-        CHIP_INPUT: [ 
+        CHIP_INPUT: [
             { key: "$model", value: "ngModel" }, { key: "$value", value: "input" }
         ],
         
-        CLOCKPICKER: [ { key: "$model", value: "ngModel" } ],
+        CLOCKPICKER: [{ key: "$model", value: "ngModel" }],
 
-        DATEPICKER: [ { key: "$model", value: "ngModel" } ],
+        DATEPICKER: [{ key: "$model", value: "ngModel" }],
         
-        YEARPICKER: [ { key: "$model", value: "ngModel" } ],
+        YEARPICKER: [{ key: "$model", value: "ngModel" }],
 
-        FILECHOOSER: [ { key: "$model", value: "file" } ],
+        FILECHOOSER: [{ key: "$model", value: "file" }],
 
-        FILECHOOSER_MULTIPLE: [ { key: "$model", value: "files" } ],
+        FILECHOOSER_MULTIPLE: [{ key: "$model", value: "files" }],
 
         INPUT: [
             { key: "$model", value: "ngModel" }, { key: "$value", value: "input" }
         ],
 
-        RADIOBUTTON: [ { key: "$model", value: "model" } ],
+        RADIOBUTTON: [{ key: "$model", value: "model" }],
 
-        RATING: [ { key: "$model", value: "value" } ],
+        RATING: [{ key: "$model", value: "value" }],
 
         SELECT: [
             { key: "$model", value: "ngModel" }, { key: "$old", value: "old" }
         ],
 
-        SLIDER: [ { key: "$model", value: "value" } ],
+        SLIDER: [{ key: "$model", value: "value" }],
 
-        SELECT_MULTIPLE: [ { key: "$model", value: "ngModel" } ],
+        SELECT_MULTIPLE: [{ key: "$model", value: "ngModel" }],
 
-        TEXTAREA: [ 
+        TEXTAREA: [
             { key: "$model", value: "value" }, { key: "$value", value: "area" }
         ]
     };
@@ -11666,7 +11667,7 @@
     
     // Servicio: $materialService
     
-    softtionMaterialService.$inject = [ 
+    softtionMaterialService.$inject = [
         "$window", "$timeout", "$body", "$appContent", "$materialConstant"
     ];
     
@@ -11854,482 +11855,31 @@
     
     function getMaterialColors() {
         return {
-            THEMES: {
-                RED: {
-                    "50" : "#ffebee", "100": "#ffcdd2", 
-                    "200": "#ef9a9a", "300": "#e57373", 
-                    "400": "#ef5350", "500": "#f44336", 
-                    "600": "#e53935", "700": "#d32f2f",
-                    "800": "#c62828", "900": "#b71c1c",
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ff8a80", "A200": "#ff5252", 
-                    "A400": "#ff1744", "A700": "#d50000"
-                },
-
-                PINK: {
-                    "50" : "#fce4ec", "100": "#f8bbd0",
-                    "200": "#f48fb1", "300": "#f06292",
-                    "400": "#ec407a", "500": "#e91e63",
-                    "600": "#d81b60", "700": "#c2185b", 
-                    "800": "#ad1457", "900": "#880e4f",
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ff80ab", "A200": "#ff4081", 
-                    "A400": "#f50057", "A700": "#c51162"
-                },
-
-                PURPLE: {
-                    "50" : "#f3e5f5", "100": "#e1bee7",
-                    "200": "#ce93d8", "300": "#ba68c8",
-                    "400": "#ab47bc", "500": "#9c27b0", 
-                    "600": "#8e24aa", "700": "#7b1fa2",
-                    "800": "#6a1b9a", "900": "#4a148c",
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ea80fc", "A200": "#e040fb", 
-                    "A400": "#d500f9", "A700": "#aa00ff"
-                },
-
-                DEEP_PURPLE: {
-                    "50" : "#ede7f6", "100": "#d1c4e9", 
-                    "200": "#b39ddb", "300": "#9575cd", 
-                    "400": "#7e57c2", "500": "#673ab7", 
-                    "600": "#5e35b1", "700": "#512da8", 
-                    "800": "#4527a0", "900": "#311b92", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#b388ff", "A200": "#7c4dff", 
-                    "A400": "#651fff", "A700": "#6200ae"
-                },
-
-                INDIGO: {
-                    "50" : "#e8eaf6", "100": "#c5cae9", 
-                    "200": "#9fa8da", "300": "#7986cb", 
-                    "400": "#5c6bc0", "500": "#3f51b5", 
-                    "600": "#3949ab", "700": "#303f9f", 
-                    "800": "#283593", "900": "#1a237e", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#8c9eff", "A200": "#536dfe", 
-                    "A400": "#3d5afe", "A700": "#304ffe"
-                },
-
-                BLUE: {
-                    "50" : "#e3f2fd", "100": "#bbdefb", 
-                    "200": "#90caf9", "300": "#64b5f6", 
-                    "400": "#42a5f5", "500": "#2196f3", 
-                    "600": "#1e88e5", "700": "#1976d2", 
-                    "800": "#1565c0", "900": "#0d47a1", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#82b1ff", "A200": "#448aff", 
-                    "A400": "#2979ff", "A700": "#2962ff"
-                },
-
-                LIGHT_BLUE: {
-                    "50" : "#e1f5fe", "100": "#b3e5fc", 
-                    "200": "#81d4fa", "300": "#4fc3f7", 
-                    "400": "#29b6f6", "500": "#03a9f4", 
-                    "600": "#039be5", "700": "#0288d1", 
-                    "800": "#0277bd", "900": "#01579b", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "DARK",  "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#80d8ff", "A200": "#40c4ff", 
-                    "A400": "#00b0ff", "A700": "#0091ea"
-                },
-
-                DARK_BLUE: {
-                    "50" : "#e0ebf6", "100": "#b3cde9", 
-                    "200": "#80acdb", "300": "#4d8bcd", 
-                    "400": "#2672c2", "500": "#0059b7", 
-                    "600": "#0051b0", "700": "#0048a7", 
-                    "800": "#003e9f", "900": "#002e90", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#bcccff", "A200": "#89a5ff", 
-                    "A400": "#567eff", "A700": "#3c6aff"
-                },
-
-                CYAN: {
-                    "50" : "#e0f7fa", "100": "#b2ebf2", 
-                    "200": "#80deea", "300": "#4dd0e1", 
-                    "400": "#26c6da", "500": "#00bcd4", 
-                    "600": "#00acc1", "700": "#0097a7", 
-                    "800": "#00838f", "900": "#006064", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "DARK",  "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#84ffff", "A200": "#18ffff", 
-                    "A400": "#00e5ff", "A700": "#00b8d4"
-                },
-
-                TEAL: {
-                    "50" : "#e0f2f1", "100": "#b2dfdb", 
-                    "200": "#80cbc4", "300": "#4db6ac", 
-                    "400": "#26a69a", "500": "#009688", 
-                    "600": "#00897b", "700": "#00796b", 
-                    "800": "#00695c", "900": "#004d40", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#a7ffeb", "A200": "#64ffda", 
-                    "A400": "#1de9b6", "A700": "#00bfa5"
-                },
-
-                GREEN: {
-                    "50" : "#e8f5e9", "100": "#c8e6c9", 
-                    "200": "#a5d6a7", "300": "#81c784", 
-                    "400": "#66bb6a", "500": "#4caf50", 
-                    "600": "#43a047", "700": "#388e3c", 
-                    "800": "#2e7d32", "900": "#1b5e20", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#b9f6ca", "A200": "#69f0ae", 
-                    "A400": "#00e676", "A700": "#00c853"
-                },
-
-                LIGHT_GREEN: {
-                    "50" : "#f1f8e9", "100": "#dcedc8", 
-                    "200": "#c5e1a5", "300": "#aed581", 
-                    "400": "#9ccc65", "500": "#8bc34a", 
-                    "600": "#7cb342", "700": "#689f38", 
-                    "800": "#558b2f", "900": "#33691e", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "DARK",  "700": "DARK",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ccff90", "A200": "#b2ff59", 
-                    "A400": "#76ff03", "A700": "#64dd17"
-                },
-
-                LIME: {
-                    "50" : "#f9fbe7", "100": "#f0f4c3", 
-                    "200": "#e6ee9c", "300": "#dce775", 
-                    "400": "#d4e157", "500": "#cddc39", 
-                    "600": "#c0ca33", "700": "#afb42b", 
-                    "800": "#9e9d24", "900": "#827717", 
-                    
-                    FONTS: {
-                        "50" : "DARK", "100": "DARK",
-                        "200": "DARK", "300": "DARK",
-                        "400": "DARK", "500": "DARK",
-                        "600": "DARK", "700": "DARK",
-                        "800": "DARK", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#f4ff81", "A200": "#eeff41", 
-                    "A400": "#c6ff00", "A700": "#aeea00"
-                },
-
-                YELLOW: {
-                    "50" : "#fffde7", "100": "#fff9c4", 
-                    "200": "#fff59d", "300": "#fff176", 
-                    "400": "#ffee58", "500": "#ffeb3b", 
-                    "600": "#fdd835", "700": "#fbc02d", 
-                    "800": "#f9a825", "900": "#f57f17", 
-                    
-                    FONTS: {
-                        "50" : "DARK", "100": "DARK",
-                        "200": "DARK", "300": "DARK",
-                        "400": "DARK", "500": "DARK",
-                        "600": "DARK", "700": "DARK",
-                        "800": "DARK", "900": "DARK"
-                    },
-                    
-                    "A100": "#ffff8d", "A200": "#ffff00", 
-                    "A400": "#ffea00", "A700": "#ffd600"
-                },
-
-                AMBER: {
-                    "50" : "#fff8e1", "100": "#ffecb3", 
-                    "200": "#ffe082", "300": "#ffd54f", 
-                    "400": "#ffca28", "500": "#ffc107", 
-                    "600": "#ffb300", "700": "#ffa000", 
-                    "800": "#ff8f00", "900": "#ff6f00", 
-                    
-                    FONTS: {
-                        "50" : "DARK", "100": "DARK",
-                        "200": "DARK", "300": "DARK",
-                        "400": "DARK", "500": "DARK",
-                        "600": "DARK", "700": "DARK",
-                        "800": "DARK", "900": "DARK"
-                    },
-                    
-                    "A100": "#ffe57f", "A200": "#ffd740",
-                    "A400": "#ffc400", "A700": "#ffab00"
-                },
-
-                ORANGE: {
-                    "50" : "#fff3e0", "100": "#ffe0b2", 
-                    "200": "#ffcc80", "300": "#ffb74d", 
-                    "400": "#ffa726", "500": "#ff9800", 
-                    "600": "#fb8c00", "700": "#f57c00", 
-                    "800": "#ef6c00", "900": "#e65100", 
-                    
-                    FONTS: {
-                        "50" : "DARK", "100": "DARK",
-                        "200": "DARK", "300": "DARK",
-                        "400": "DARK", "500": "DARK",
-                        "600": "DARK", "700": "DARK",
-                        "800": "DARK", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ffd180", "A200": "#ffab40",
-                    "A400": "#ffab40", "A700": "#ff6d00"
-                },
-
-                DEEP_ORANGE: {
-                    "50" : "#fbe9e7", "100": "#ffccbc", 
-                    "200": "#ffab91", "300": "#ff8a65", 
-                    "400": "#ff7043", "500": "#ff5722", 
-                    "600": "#f4511e", "700": "#e64a19", 
-                    "800": "#d84315", "900": "#bf360c", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    },
-                    
-                    "A100": "#ff9e80", "A200": "#ff6e40", 
-                    "A400": "#ff3d00", "A700": "#dd2c00"
-                },
-
-                BROWN: {
-                    "50" : "#efebe9", "100": "#d7ccc8", 
-                    "200": "#bcaaa4", "300": "#a1887f", 
-                    "400": "#8d6e63", "500": "#795548", 
-                    "600": "#6d4c41", "700": "#5d4037", 
-                    "800": "#4e342e", "900": "#3e2723", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                GREY: {
-                    "50" : "#fafafa", "100": "#f5f5f5", 
-                    "200": "#eeeeee", "300": "#e0e0e0", 
-                    "400": "#bdbdbd", "500": "#9e9e9e", 
-                    "600": "#757575", "700": "#616161", 
-                    "800": "#424242", "900": "#212121", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                BLUE_GREY: {
-                    "50" : "#eceff1", "100": "#cfd8dc", 
-                    "200": "#b0bec5", "300": "#90a4ae", 
-                    "400": "#78909c", "500": "#607d8b", 
-                    "600": "#546e7a", "700": "#455a64", 
-                    "800": "#37474f", "900": "#263238", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                BLACK: {
-                    "50" : "#e0e1e2", "100": "#b3b3b6", 
-                    "200": "#808185", "300": "#4d4e54", 
-                    "400": "#262830", "500": "#00020b", 
-                    "600": "#00020a", "700": "#000108", 
-                    "800": "#000106", "900": "#000103", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "LIGHT", "300": "LIGHT",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                CRANE_PURPLE: {
-                    "50" : "#f2e0ea", "100": "#e0b2cc", 
-                    "200": "#ce82ab", "300": "#be538b", 
-                    "400": "#b33174", "500": "#ab035d", 
-                    "600": "#9c0858", "700": "#870b51", 
-                    "800": "#720c49", "900": "#4e0d3a", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                CRANE_RED: {
-                    "50" : "#ffeaee", "100": "#ffcbd1", 
-                    "200": "#f99697", "300": "#f36b6f", 
-                    "400": "#fe4449", "500": "#ff2a2a", 
-                    "600": "#f51b2b", "700": "#e30425", 
-                    "800": "#d6001e", "900": "#c8000e", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "LIGHT", "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                SHRINE_PINK: {
-                    "50" : "#f9efee", "100": "#fedbd0", 
-                    "200": "#ffc2ae", "300": "#ffa988", 
-                    "400": "#ff9369", "500": "#ff814f", 
-                    "600": "#ff7a4a", "700": "#ff7244", 
-                    "800": "#f46b40", "900": "#db5e37", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "DARK",
-                        "600": "DARK",  "700": "DARK",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                },
-
-                RALLY_GREEN: {
-                    "50" : "#e3f5ec", "100": "#bae6d1", 
-                    "200": "#8dd5b3", "300": "#58c596", 
-                    "400": "#1eb980", "500": "#00ac6a", 
-                    "600": "#009d5f", "700": "#008b52", 
-                    "800": "#007a46", "900": "#005b30", 
-                    
-                    FONTS: {
-                        "50" : "DARK",  "100": "DARK",
-                        "200": "DARK",  "300": "DARK",
-                        "400": "DARK",  "500": "LIGHT",
-                        "600": "LIGHT", "700": "LIGHT",
-                        "800": "LIGHT", "900": "LIGHT"
-                    }
-                }
-            }, 
-
-            FONTS: {
-                LIGHT: {
-                    PRIMARY: "rgba(255, 255, 255, 1)",
-                    SECONDARY: "rgba(255, 255, 255, 0.7)",
-                    DISABLED: "rgba(255, 255, 255, 0.5)"
-                },
-
-                DARK: {
-                    PRIMARY: "rgba(0, 0, 0, 0.87)",
-                    SECONDARY: "rgba(0, 0, 0, 0.54)",
-                    DISABLED: "rgba(0, 0, 0, 0.38)"
-                }
-            },
-
-            BORDERS: {
-                LIGHT: "rgba(255, 255, 255, 0.12)",
-                DARK: "rgba(0, 0, 0, 0.12)"
-            },
-
-            RIPPLES: {
-                LIGHT: "rgba(255, 255, 255, 0.5)",
-                DARK: "rgba(0, 0, 0, 0.38)"
-            }
+            RED: "#f44336",
+            PINK: "#e91e63",
+            PURPLE: "#9c27b0", 
+            DEEP_PURPLE: "#673ab7",
+            INDIGO: "#3f51b5", 
+            BLUE: "#2196f3",
+            LIGHT_BLUE: "#03a9f4",
+            DARK_BLUE: "#0059b7", 
+            CYAN: "#00bcd4",
+            TEAL: "#009688",
+            GREEN: "#4caf50", 
+            LIGHT_GREEN: "#8bc34a", 
+            LIME: "#cddc39", 
+            YELLOW: "#ffeb3b", 
+            AMBER: "#ffc107", 
+            ORANGE: "#ff9800", 
+            DEEP_ORANGE: "#ff5722", 
+            BROWN: "#795548", 
+            GREY: "#9e9e9e",
+            BLUE_GREY: "#607d8b", 
+            BLACK: "#00020b", 
+            CRANE_PURPLE: "#ab035d",
+            CRANE_RED: "#ff2a2a",
+            SHRINE_PINK: "#ff814f",
+            RALLY_GREEN: "#00ac6a"
         };
     }
     
