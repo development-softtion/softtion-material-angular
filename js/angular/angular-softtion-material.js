@@ -7868,6 +7868,7 @@
                 addAttribute("ng-keyup", "keyupInput($event)").
                 addAttribute("ng-readonly", "ngReadonly").
                 addAttribute("ng-disabled", "ngDisabled").
+                addAttribute("ng-readonly", "ngReadonly").
                 addAttribute("ng-trim", "ngTrim").
                 addAttribute("focused-element", "focusedInput").
                 addAttribute("placeholder", "{{placeholder}}");
