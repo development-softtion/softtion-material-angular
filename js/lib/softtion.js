@@ -1,11 +1,11 @@
 
 /*
- Softtion v1.5.2
+ Softtion v1.6.4
  (c) 2015 - 2018 Softtion Developers
  http://www.softtion.com.co
  License: MIT
  Create: 24/May/2015
- Update: 10/Dic/2018
+ Update: 12/Mar/2019
  */
 
 class Softtion {
@@ -23,23 +23,15 @@ class Softtion {
                 { name: "Noviembre", value: 10 }, { name: "Diciembre", value: 11 }
             ],
             
-            DAYS_OF_WEEK: [
-                "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" 
-            ],
+            DAYS_OF_WEEK: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
             
-            DAYS_OF_WEEK_MIN: [
-                "Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb" 
-            ],
+            DAYS_OF_WEEK_MIN: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
             
-            MONTHS_OF_YEAR: [
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" 
-            ],
+            MONTHS_OF_YEAR: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
             
-            MONTHS_OF_YEAR_MIN: [ 
-                "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" 
-            ],
+            MONTHS_OF_YEAR_MIN: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
             
-            DAYS_OF_MONTHS: [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
+            DAYS_OF_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         };
     }
     
@@ -876,7 +868,7 @@ class Softtion {
     }
     
     convertToHex(value) {
-        var hex = value.toString(16); // Valor haxacimal
+        var hex = value.toString(16); // Valor hexadecimal
         
         return (hex.length === 1) ? "0" + hex : hex;
     }
@@ -907,6 +899,86 @@ class Time {
         
         return window.softtion.leadingCharBefore(minutes, "0", 2) + ":"
             + window.softtion.leadingCharBefore(seconds, "0", 2); 
+    }
+}
+
+class ColorMaterial {
+
+    constructor(color) {
+        if (typeof color === "string") {
+            this._color = color;
+            this._rgb = softtion.getHexToRgb(color);
+        }
+
+        if (typeof color === "object") {
+            this._rgb = color;
+            this._color = softtion.getRgbToHex(color.r, color.g, color.b);
+        }
+
+        this._r = this._rgb.r;
+        this._g = this._rgb.g;
+        this._b = this._rgb.b;
+    }
+
+    toHexString() {
+        return softtion.getRgbToHex(this._r, this._g, this._b);
+    }
+
+    toRgb() {
+        return {r: this._r, g: this._g, b: this._b};
+    }
+
+    getBrightness() {
+        var rgb = this.toRgb(); // Datos en RGB para determinar luz
+
+        return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+    }
+
+    isDark() {
+        return this.getBrightness() < 128;
+    }
+
+    isLight() {
+        return !this.isDark();
+    }
+
+    static multiply(color1, color2) {
+        var color = {}; // Nuevo color resultante del proceso
+
+        color.r = Math.floor(color1.r * color2.r / 255);
+        color.g = Math.floor(color1.g * color2.g / 255);
+        color.b = Math.floor(color1.b * color2.b / 255);
+
+        return new ColorMaterial({r: color.r, g: color.g, b: color.b});
+    }
+    
+    static mix(color1, color2, amount) {
+        amount = (amount === 0) ? 0 : (amount || 50);
+
+        var rgb1 = new ColorMaterial(color1).toRgb();
+        var rgb2 = new ColorMaterial(color2).toRgb();
+
+        var p = amount / 100;
+        var a = 0, w1;
+        var w = p * 2 - 1;
+
+        if (w * a === -1) {
+            w1 = w;
+        } else {
+            w1 = (w + a) / (1 + w * a);
+        }
+
+        w1 = (w1 + 1) / 2;
+
+        var w2 = 1 - w1;
+
+        var rgb = {
+            r: Math.floor(rgb2.r * w1 + rgb1.r * w2),
+            g: Math.floor(rgb2.g * w1 + rgb1.g * w2),
+            b: Math.floor(rgb2.b * w1 + rgb1.b * w2)
+        };
+
+        return new ColorMaterial(rgb); // Color resultante
     }
 }
 
