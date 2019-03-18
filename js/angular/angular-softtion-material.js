@@ -1,11 +1,11 @@
 
 /*
- Angular Softtion Material v2.0.4
+ Angular Softtion Material v2.0.6
  (c) 2016 - 2019 Softtion Developers
  http://material.softtion.com.co
  License: MIT
  Created: 19/Nov/2016
- Updated: 12/Mar/2019
+ Updated: 18/Mar/2019
 */
 
 ((factory) => {
@@ -5335,29 +5335,13 @@
         var panel = softtion.html("div").addClass("panel").
                 addAttribute("ng-hide", "!progress.loaded").
                 addChildren(
-                    softtion.html("div").addClass("image").
-                        addAttribute("ng-style", "getStyleImage()").
-                        addChildren(
-                            softtion.html("div").addClass("selection").
-                                addAttribute("ng-style", "getStyleSelection()").
-                                addAttribute("ng-pointerdown", "pointerDownSelection($result)").
-                                addAttribute("ng-pointerup", "pointerUpSelection()").
-                                addAttribute("ng-pointermove", "pointerMoveSelection($result)")
-                        ).addChildren(
-                            softtion.html("div").addClass(["overlay", "top"]).
-                                addAttribute("ng-style", "getStyleOverlay(\"top\")")
-                        ).addChildren(
-                            softtion.html("div").addClass(["overlay", "left"]).
-                                addAttribute("ng-style", "getStyleOverlay(\"left\")")
-                        ).addChildren(
-                            softtion.html("div").addClass(["overlay", "bottom"]).
-                                addAttribute("ng-style", "getStyleOverlay(\"bottom\")")
-                        ).addChildren(
-                            softtion.html("div").addClass(["overlay", "right"]).
-                                addAttribute("ng-style", "getStyleOverlay(\"right\")")
-                        ).addChildren(
-                            softtion.html("canvas").addAttribute("ng-style", "getStyleImage()")
-                        )
+                    softtion.html("div").addClass("image").addAttribute("ng-style", "getStyleImage()").
+                        addChildren(softtion.html("div").addClass("selection")).
+                        addChildren(softtion.html("div").addClass(["overlay", "top"])).
+                        addChildren(softtion.html("div").addClass(["overlay", "left"])).
+                        addChildren(softtion.html("div").addClass(["overlay", "bottom"])).
+                        addChildren(softtion.html("div").addClass(["overlay", "right"])).
+                        addChildren(softtion.html("canvas").addAttribute("ng-style", "getStyleImage()"))
                 );
         
         var message = softtion.html("div").addClass("message").
@@ -5419,9 +5403,8 @@
                     addAttribute("icon", "photo_size_select_large").
                     addAttribute("ng-model", "ngSelection").
                     addAttribute("ng-disabled", "isDisabled()").
-                    addAttribute("min-value", "25").
-                    addAttribute("max-value", "100").
-                    addAttribute("ng-listener", "sizeSelectionListener($listener)")
+                    addAttribute("min-value", "0").
+                    addAttribute("max-value", "100")
             ).addChildren(
                 softtion.html("div").addClass("slider").
                     addAttribute("icon", "tonality").
@@ -5451,11 +5434,15 @@
             },
             link: function ($scope, $element, $attrs) {
                     // Elementos
-                var IMG = new Image(), // Contenedor real de la Imagen
+                var originalData, IMG = new Image(), // Contenedor real de la Imagen
 
                     content = $element.find(".content"),
                     image = $element.find(".image"),
                     selection = image.children(".selection"),
+                    overlayTop = image.children(".overlay.top"),
+                    overlayBottom = image.children(".overlay.bottom"),
+                    overlayLeft = image.children(".overlay.left"),
+                    overlayRight = image.children(".overlay.right"),
 
                     canvasProcessor = $element.find("canvas.processor"),
                     contextProcessor = canvasProcessor[0].getContext("2d"),
@@ -5464,29 +5451,57 @@
                     contextContent = canvasContent[0].getContext("2d"),
 
                      // Atributos
-                    posX, posY, top, left, originalData, 
-                    densityContent, densityImage,
-                    attributes = { top: 0, left: 0, active: false };
+                    widthImg = 0, heightImg = 0, widthCont = 0, heightCont = 0;
 
                 $scope.ngMimeType = $scope.ngMimeType || "image/jpeg";
-                $scope.ngContrast = 0; $scope.ngSelection || ($scope.ngSelection = 50);
-                $scope.progress = { loaded: false }; $scope.start = false;
+                $scope.ngSelection = $scope.ngSelection || 50;
+                $scope.ngContrast = 0; $scope.progress = { loaded: false };
 
                 $attrs.$observe("ngSource", (value) => {
                     if (!softtion.isText(value)) return; // SRC Indefinido
                     
                     IMG.src = value; $scope.progress.loaded = false;
                 });
+                
+                $scope.$watch(() => { return $scope.ngSelection; },
+                    (newValue) => { 
+                        updateStyleSelection(newValue); // Redimensionando
+                    });
 
                 content.resize(() => {
                     $scope.$apply(() => {
-                        densityContent = ((content.width() / content.height()) >= 1);
+                        widthCont = content.width(); heightCont = content.height();
                     });
                 });
 
+                image.resize(() => {
+                    updateStyleSelection($scope.ngSelection); // Redimensionando
+                });
+                
+                selection.draggable({
+                    containment: "parent", drag: function () { updateStyleOverlay(); }
+                });
+                
+                function updateStyleOverlay() {
+                    var position = selection.position();    // Posición
+                    var width = selection.outerWidth();     // Ancho
+                    var height = selection.outerHeight();   // Alto
+                    
+                    overlayTop.css("width", width); overlayTop.css("left", position.left);
+                    overlayTop.css("bottom", "calc(100% - " + position.top + "px)");
+                    
+                    overlayRight.css("left", "calc(" + width + "px + " + position.left + "px)");
+                    
+                    overlayLeft.css("right", "calc(100% - " + position.left + "px)");
+                    
+                    overlayBottom.css("top", "calc(" + (height + position.top) + "px)");
+                    overlayBottom.css("left", position.left); overlayBottom.css("width", width);
+                }
+
                 IMG.onload = function () {
                     $scope.$apply(() => {
-                        densityImage = ((IMG.width / IMG.height) >= 1);
+                        widthImg = IMG.width; heightImg = IMG.height;
+                        
                         canvasContent.prop("width", IMG.width); 
                         canvasContent.prop("height", IMG.height); 
 
@@ -5501,91 +5516,19 @@
                     return $scope.ngDisabled || !$scope.progress.loaded;
                 };
 
-                $scope.mouseLeaveContent = function () { 
-                    attributes.active = false; 
-                };
-
-                $scope.pointerDownSelection = function ($result) {
-                    if (attributes.active) return; // Ya esta activo
-
-                    posX = $result.offsetX; posY = $result.offsetY;
-                    attributes.active = true; // Activando
-
-                    top = attributes.top; left = attributes.left;
-                };
-
-                $scope.pointerMoveSelection =  function ($result) {
-                    if (!attributes.active) return; // Inactivo
-
-                    var resultX = left + ($result.offsetX - posX),
-                        resultY = top + ($result.offsetY - posY);
-                
-                    if (resultX < 0) { 
-                        resultX = 0;
-                    } else if ((resultX + selection.width() + 4) > image.width()) {
-                        resultX = image.width() - selection.width() - 4;
-                    } // Se reajusta la posición X, se desbordó en contenedor
-                    
-                    if (resultY < 0) { 
-                        resultY = 0; 
-                    } else if ((resultY + selection.height() + 4) > image.height()) {
-                        resultY = image.height() - selection.height() - 4;
-                    } // Se reajusta la posición Y, se desbordó en contenedor
-                    
-                    attributes.top = resultY; attributes.left = resultX;
-                };
-
-                $scope.pointerUpSelection = function () { attributes.active = false; };
-
-                $scope.getStyleSelection = function () {
-                    return {
-                        top: getPositionSelection(false),
-                        left: getPositionSelection(true),
-                        width: $scope.ngSelection + "%",
-                        height: getHeightSelection() + "px"
-                    };
-                };
-
-                $scope.getStyleOverlay = function (type) {
-                    switch (type) {
-                        case ("top"):
-                            return {
-                                bottom: "calc(100% - " + attributes.top + "px)",
-                                left: attributes.left,
-                                width: $scope.ngSelection + "%"
-                            };
-
-                        case ("right"):
-                            return {
-                                left: "calc(" + $scope.ngSelection + "% + " + attributes.left + "px)"
-                            };
-
-                        case ("bottom"):
-                            return {
-                                top: "calc(" + getHeightSelection() + "px + " + (attributes.top) + "px)",
-                                left: attributes.left,
-                                width: $scope.ngSelection + "%"
-                            };
-
-                        case ("left"):
-                            return {
-                                right: "calc(100% - " + attributes.left + "px)"
-                            };
-                    }
-                };
-
                 $scope.getStyleImage = function () {
-                    return (!densityContent) ? { height: "100%" } : { width: "100%" };
-                };
-                
-                $scope.sizeSelectionListener = function ($listener) {
-                    if (!$scope.start) { 
-                        $scope.start = true; return;
-                    } // Componente no iniciado
+                    if (widthImg <= 0) return { height: "0%", width: "0%" };
                     
-                    switch ($listener) {
-                        case (Softtion.LISTENERS.CHANGED): adjustPositionOverlay(); break;
-                    }
+                    var height = (widthCont * heightImg) / widthImg;
+                    
+                    if (height <= heightCont) 
+                        return { width: "100%", height: height + "px" };
+                    
+                    if (heightImg <= 0) return { height: "0%", width: "0%" };
+                    
+                    var width = (heightCont * widthImg) / heightImg;
+                    
+                    return { height: "100%", width: width + "px" }; // Ancho
                 };
 
                 $scope.cropImage = function () {
@@ -5598,18 +5541,14 @@
                     canvasProcessor.prop("height", heightCanvas); 
 
                     contextProcessor.drawImage(
-                        canvasContent[0], 
-                        props.left, props.top, 
+                        canvasContent[0], props.left, props.top, 
                         props.width, props.height, 
                         0 , 0, widthCanvas, heightCanvas
                     );
 
-                    canvasProcessor[0].toBlob(
-                        (blob) => {
-                            $scope.$apply(() => { $scope.ngListener({ $result: blob }); });
-                        }, 
-                        $scope.ngMimeType, 1 // Quality
-                    );
+                    canvasProcessor[0].toBlob((blob) => {
+                        $scope.$apply(() => { $scope.ngListener({ $result: blob }); });
+                    }, $scope.ngMimeType, 1); // Quality
                 };
 
                 $scope.applyRestore = function () {
@@ -5655,27 +5594,32 @@
                     }
                 };
                 
-                function getHeightSelection() {
-                    return getValueHeightRatio(selection.width());
-                }
-
-                function getPositionSelection(isWidth) {
-                    var sel = (isWidth) ? selection.width() : selection.height(),
-                        img = (isWidth) ? image.width() : image.height(),
-                        position = (isWidth) ? attributes.left : attributes.top;
-
-                    return (position < 0) ? 0 : ((position + sel + 4) > img) ?
-                        (img - sel - 4) : position; // Posición original
-                }
-                
-                function adjustPositionOverlay() {
-                    if ((attributes.left + selection.width() + 4) > image.width()) {
-                        attributes.left = image.width() - selection.width() - 4;
-                    } // Cambio de tamaño selector, posición X se desbordó en contenedor
+                function updateStyleSelection(value) {
+                    if (image.width() === 0 || image.height() === 0) return;
                     
-                    if ((attributes.top + selection.height() + 4) > image.height()) {
-                        attributes.top = image.height() - selection.height() - 4;
-                    } // Cambio de tamaño selector, posición Y se desbordó en contenedor
+                    var ratio = getValueHeightRatio(value); // Ratio
+                    var width = (image.width() * value) / 100;
+                    
+                    var height = (image.height() * ratio) / 100;
+                    
+                    if (height > image.height()) {
+                        height = image.height(); // Tamaño máximo
+                        
+                        width = (height * widthCont) / heightCont;
+                    } // Supera el alto soportado por el componente
+                    
+                    selection.css("width", width + "px");
+                    selection.css("height", height + "px"); 
+                    
+                    var position = selection.position();
+                    
+                    if (position.left + width > image.width()) 
+                        selection.css("left", image.width() - width); 
+                    
+                    if (position.top + height > image.height()) 
+                        selection.css("top", image.height() - height); 
+                    
+                    updateStyleOverlay(); // Actualizando overlays del componente
                 }
 
                 function getValueHeightRatio(width) {
@@ -5707,8 +5651,8 @@
                 function getPropertiesCrop() {
                     return {
                         width: softtion.simpleThreeRule(image.width(), IMG.width, selection.width()),
-                        top: softtion.simpleThreeRule(image.height(), IMG.height, attributes.top),
-                        left: softtion.simpleThreeRule(image.width(), IMG.width, attributes.left),
+                        top: softtion.simpleThreeRule(image.height(), IMG.height, selection.position().top),
+                        left: softtion.simpleThreeRule(image.width(), IMG.width, selection.position().left),
                         height: softtion.simpleThreeRule(image.height(), IMG.height, selection.height())
                     };
                 }
