@@ -682,6 +682,9 @@ button.floating.theme-material:before {
 .checkbox > label:after {
     border: 2px solid rgba(0, 0, 0, 0.54); }
 
+.dark .checkbox > label:after {
+    border: 2px solid rgba(255, 255, 255, 0.54); }
+
 .theme-material .checkbox.contrast > label:after {
     border: 2px solid var(--theme-material-font-primary-500); }
 
@@ -1087,7 +1090,7 @@ button.floating.theme-material:before {
     color: var(--theme-material-500); }
 
 .dialog > .box > .content > ts {
-    color: var(--theme-material-500); }
+    color: var(--theme-tm1-500); }
 
 .dialog > .box > .content > te {
     color: var(--theme-error-500); }
@@ -2271,6 +2274,12 @@ button.floating.theme-material:before {
 .snackbar > .body { 
     color: var(--alternative-primary-font); }
 
+.dark .snackbar {
+    background: #242424; }
+
+.dark .snackbar > .body { 
+    color: var(--primary-font); }
+
 .snackbar > .action > span {
     color: var(--theme-material-500); }
 
@@ -2571,8 +2580,12 @@ button.floating.theme-material:before {
 /** TOAST */
 
 .toast > .body { 
-    color: var(--alternative-primary-font);
-    background: #323232; }
+    background-color: #323232;
+    color: var(--alternative-primary-font); }
+
+.dark .toast > .body { 
+    background-color: #242424;
+    color: var(--primary-font); }
 
 /** TOOLTIP */
 
