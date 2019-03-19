@@ -5356,7 +5356,6 @@
 
         var content = softtion.html("div").addClass("content").
                 addAttribute("ratio-element", "{{ngRatio}}").
-                addAttribute("ng-mouseleave", "mouseLeaveContent()").
                 addChildren(panel).addChildren(message);
         
         var actions = softtion.html("div").addClass("actions").
@@ -5364,37 +5363,37 @@
                     softtion.html("button").addClass(["action", "selector"]).
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "cropImage()").
-                        addChildren(
-                            softtion.html("i").setText("crop").addAttribute("tooltip", "Seleccionar")
-                        )
+                        addAttribute("tooltip", "Seleccionar").
+                        addAttribute("tooltip-position", "left").
+                        addChildren(softtion.html("i").setText("crop"))
                 ).addChildren(
                     softtion.html("button").addClass("action").
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "applyRestore()").
-                        addChildren(
-                            softtion.html("i").setText("restore").addAttribute("tooltip", "Restaurar")
-                        )
+                        addAttribute("tooltip", "Restaurar").
+                        addAttribute("tooltip-position", "right").
+                        addChildren(softtion.html("i").setText("restore"))
                 ).addChildren(
                     softtion.html("button").addClass("action").
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "applyBlackAndWhite()").
-                        addChildren(
-                            softtion.html("i").setText("filter_b_and_w").addAttribute("tooltip", "Blanco/Negro")
-                        )
+                        addAttribute("tooltip", "Blanco/Negro").
+                        addAttribute("tooltip-position", "right").
+                        addChildren(softtion.html("i").setText("filter_b_and_w"))
                 ).addChildren(
                     softtion.html("button").addClass("action").
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "applySepia()").
-                        addChildren(
-                            softtion.html("i").setText("gradient").addAttribute("tooltip", "Sepia")
-                        )
+                        addAttribute("tooltip", "Sepia").
+                        addAttribute("tooltip-position", "right").
+                        addChildren(softtion.html("i").setText("gradient"))
                 ).addChildren(
                     softtion.html("button").addClass("action").
                         addAttribute("ng-disabled", "isDisabled()").
                         addAttribute("ng-click", "applyInvert()").
-                        addChildren(
-                            softtion.html("i").setText("exposure").addAttribute("tooltip", "Invertir")
-                        )
+                        addAttribute("tooltip", "Invertir").
+                        addAttribute("tooltip-position", "right").
+                        addChildren(softtion.html("i").setText("exposure"))
                 );
 
         return box.addChildren(content).
@@ -5599,8 +5598,7 @@
                     
                     var ratio = getValueHeightRatio(value); // Ratio
                     var width = (image.width() * value) / 100;
-                    
-                    var height = (image.height() * ratio) / 100;
+                    var height = (image.width() * ratio) / 100;
                     
                     if (height > image.height()) {
                         height = image.height(); // Tamaño máximo
