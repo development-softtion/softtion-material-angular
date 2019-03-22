@@ -394,7 +394,10 @@ button.action.theme-material:before {
     background-color: var(--theme-material-500); }
 
 button.action:after {
-    background-color: rgba(0, 0, 0, 0.1); }
+    background-color: var(--ripple); }
+
+button.action.theme-material:after {
+    background-color: var(--theme-material-500); }
 
 /** BUTTON FLAT */
 
@@ -2080,10 +2083,18 @@ button.floating.theme-material:before {
 .sidenav > .content {
     background-color: var(--background-core); }
 
+.sidenav.theme-material > .content {
+    background-color: var(--theme-material-900); }
+
 .app-body > .sidenav > .content,
 .sidenav.permanent > .content,
 .sidenav.persistent > .content {
     border-right: 1px solid var(--background-border); }
+
+.app-body > .sidenav.theme-material > .content,
+.sidenav.permanent.theme-material > .content,
+.sidenav.persistent.theme-material > .content {
+    border-right: 1px solid var(--theme-material-border); }
 
 @media only screen and (max-width : 960px) {
     
@@ -2102,6 +2113,7 @@ button.floating.theme-material:before {
     background-color: var(--background-appbar);
     color: var(--primary-font); }
 
+.sidenav.theme-material > .content > .title,
 .sidenav > .content > .title.theme-material {
     color: var(--theme-material-font-primary-700);
     background-color: var(--theme-material-700); }
@@ -2110,6 +2122,7 @@ button.floating.theme-material:before {
     background-color: var(--background-appbar);
     color: var(--primary-font); }
 
+.sidenav.theme-material > .content > .logo,
 .sidenav > .content > .logo.theme-material {
     color: var(--theme-material-font-primary-700);
     background-color: var(--theme-material-700); }
@@ -2120,24 +2133,18 @@ button.floating.theme-material:before {
 .sidenav > .content > .banner {
     background-color: var(--theme-material-500); }
 
-.sidenav > .content > .banner.theme-material {
-    background-color: var(--theme-material-500); }
-
 .sidenav > .content > .banner > .description {
-    color: var(--theme-material-font-primary-500); }
-
-.sidenav > .content > .banner.theme-material > .description {
     color: var(--theme-material-font-primary-500); }
 
 .sidenav > .content > .banner > .description.contrast {
     background-color: rgba(0, 0, 0, 0.54);
     color: var(--alternative-primary-font); }
 
-.sidenav > .content .sidenav-item > .description > a {
+.dark .sidenav > .content > .banner > .description.contrast {
     color: var(--primary-font); }
 
-.sidenav > .content .sidenav-item.active .description > a {
-    color: var(--theme-material-900); }
+.sidenav > .content .sidenav-item > .description > a {
+    color: var(--primary-font); }
 
 .sidenav > .content .sidenav-item.disabled > .description > a {
     color: var(--disabled-font); }
@@ -2145,16 +2152,30 @@ button.floating.theme-material:before {
 .sidenav > .content .sidenav-item > .description > a:hover {
     background-color: var(--background-hover); }
 
+.sidenav.theme-material > .content .sidenav-item > .description > a {
+    color: var(--theme-material-font-primary-900); }
+
+.sidenav.theme-material > .content .sidenav-item.disabled > .description > a {
+    color: var(--theme-material-font-disabled-900); }
+
+.sidenav.theme-material > .content .sidenav-item > .description > a:hover {
+    background-color: var(--theme-material-500); }
+
 .sidenav > .content .sidenav-item > .description > a > button,
 .sidenav > .content .sidenav-item > .description > a > i {
     color: var(--secondary-font); }
 
-.sidenav > .content .sidenav-item.active .description > a > i {
-    color: var(--theme-material-900); }
-
 .sidenav > .content .sidenav-item.disabled > .description > a > button,
 .sidenav > .content .sidenav-item.disabled > .description > a > i {
     color: var(--disabled-font); }
+
+.sidenav > .content .sidenav-item > .description > a > button,
+.sidenav > .content .sidenav-item > .description > a > i {
+    color: var(--theme-material-font-secondary-900); }
+
+.sidenav > .content .sidenav-item.disabled > .description > a > button,
+.sidenav > .content .sidenav-item.disabled > .description > a > i {
+    color: var(--theme-material-font-disabled-900); }
 
 .sidenav > .content .sidenav-item.disabled > .description > a > .badge {
     background-color: var(--theme-material-200);
@@ -2163,11 +2184,17 @@ button.floating.theme-material:before {
 .sidenav > .content .sidenav-item > .description > a > button:before {
     background-color: var(--ripple); }
 
+.sidenav > .content .sidenav-item > .description > a > button:after {
+    background-color: var(--ripple); }
+
+.sidenav.theme-material > .content .sidenav-item > .description > a > button:before {
+    background-color: var(--theme-material-ripple-900); }
+
+.sidenav.theme-material > .content .sidenav-item > .description > a > button:after {
+    background-color: var(--theme-material-ripple-900); }
+
 .sidenav > .content .sidenav-item .options li > a {
     color: var(--secondary-font); }
-
-.sidenav > .content .sidenav-item .options li.active > a {
-    color: var(--theme-material-900); }
 
 .sidenav > .content .sidenav-item .options li.disabled > a {
     color: var(--disabled-font); }
@@ -2175,17 +2202,35 @@ button.floating.theme-material:before {
 .sidenav > .content .sidenav-item .options li > a:hover {
     background-color: var(--background-hover); }
 
+.sidenav.theme-material > .content .sidenav-item .options li > a {
+    color: var(--theme-material-font-secondary-900); }
+
+.sidenav.theme-material > .content .sidenav-item .options li.disabled > a {
+    color: var(--theme-material-font-disabled-900); }
+
+.sidenav.theme-material > .content .sidenav-item .options li > a:hover {
+    background-color: var(--theme-material-500); }
+
 .sidenav > .content > button.action.close {
-    color: var(--alternative-primary-font); }
+    color: var(--primary-font); }
 
 .sidenav > .content.contrast > button.action.close {
-    color: var(--primary-font); }
+    color: var(--alternative-primary-font); }
+
+.sidenav.theme-material > .content > button.action.close {
+    color: var(--theme-material-font-primary-700); }
 
 .sidenav > .content > button.action.close:before {
     background-color: var(--ripple); }
 
 .sidenav > .content.contrast > button.action.close:before {
     background-color: var(--alternative-ripple); }
+
+.sidenav.theme-material > .content > button.action.close:before {
+    background-color: var(--theme-material-ripple-700); }
+
+.sidenav.theme-material > .content > button.action.close:after {
+    background-color: var(--theme-material-ripple-700); }
 
 /** SLIDER */
 
