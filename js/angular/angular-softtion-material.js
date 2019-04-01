@@ -233,6 +233,8 @@
                 NgFa: Properties.create(Properties.NgFa),
                 
                 NgFont: Properties.create(Properties.NgFont),
+                
+                NgInactive: Properties.create(Properties.NgInactive),
 
                 NgMaterial: Properties.create(Properties.NgMaterial),
 
@@ -10506,8 +10508,9 @@
             case (Properties.FormNavigation.NAME): return Properties.FormNavigation;
             case (Properties.NgBackground.NAME): return Properties.NgBackground;
             case (Properties.NgColor.NAME): return Properties.NgColor;
-            case (Properties.NgFont.NAME): return Properties.NgFont;
             case (Properties.NgFa.NAME): return Properties.NgFa;
+            case (Properties.NgFont.NAME): return Properties.NgFont;
+            case (Properties.NgInactive.NAME): return Properties.NgInactive;
             case (Properties.NgMaterial.NAME): return Properties.NgMaterial;
             case (Properties.NgTheme.NAME): return Properties.NgTheme;
             case (Properties.RatioElement.NAME): return Properties.RatioElement;
@@ -10807,6 +10810,30 @@
                     
                     icon = "fa-" + $attrs.ngFa; $element.addClass(icon);
                 });
+            }
+        };
+    }
+    
+    // Propiedad: NgInactive
+    // Version: 1.0.0
+    // Update: 28/Mar/2019
+    
+    Properties.NgInactive = NgInactiveProperty;
+    
+    Properties.NgInactive.NAME = "NgInactive";
+    Properties.NgInactive.VERSION = "1.0.0";
+    Properties.NgInactive.KEY = "ngInactive";
+    
+    function NgInactiveProperty() {
+        return {
+            restrict: "A",
+            link: function ($scope, $element) {
+                $scope.$watch(() => { return $scope.ngInactive; }, 
+                    (newValue) => {
+                        console.log(newValue);
+                        (newValue) ? $element.addClass(Classes.DISABLED) :
+                            $element.removeClass(Classes.DISABLED);
+                    });
             }
         };
     }
