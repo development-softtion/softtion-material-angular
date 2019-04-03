@@ -19,7 +19,9 @@
         return {
             restrict: "A",
             scope: {
+                ngRender: "=?",
                 ngModel: "=?",
+                ngProps: "=?",
                 ngListener: "&"
             },
             link: function ($scope, $element, $attrs) {
@@ -29,6 +31,13 @@
                     if (softtion.isUndefined(Component)) start();
                 });
                 
+                $scope.$watch(() => { return $scope.ngRender; }, 
+                    (newValue) => { 
+                        if (newValue) {
+                            render($scope.ngModel); $scope.ngRender = false;
+                        } // Forzando a repintar componente
+                    });
+                
                 $scope.$watchCollection(() => { return $scope.ngModel; }, 
                     (newValue) => { render(newValue); });
                 
@@ -37,7 +46,7 @@
                 }
                 
                 function render(newValue) {
-                    var props = { data: newValue, listener: $scope.ngListener };
+                    var props = { data: newValue, attrs: $scope.ngProps, scope: $scope };
                     
                     ReactDOM.render(
                         React.createElement(Component, props, null), $element[0]
@@ -49,3 +58,19 @@
     
     angular.module("ngReactDOM", []).directive(NgVDCollection.KEY, NgVDCollection);
 })(window, window.angular, window.softtion);
+
+class ComponentVDOM extends React.Component {
+    
+    constructor(props) {
+        super(props);
+    }
+    
+    callbackListener($event, $data) {
+        var $scope = this.props.scope; // Scope del controlador
+        
+        if (softtion.isDefined($scope))
+            $scope.$apply(() => {
+                $scope.ngListener({$event: $event, $data: $data});
+            });
+    }
+};
