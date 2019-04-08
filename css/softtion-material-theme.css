@@ -1574,6 +1574,9 @@ button.floating.theme-material:before {
 .gallery > .content > .images > .image > .content { 
     background: var(--background-component); }
 
+.gallery .view-preview {
+    background-color: var(--background-statusbar); }
+
 .gallery .view-preview > .delete {
     background-color: rgba(255, 255, 255, 0.78); }
 
