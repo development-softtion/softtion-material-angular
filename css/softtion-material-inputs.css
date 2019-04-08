@@ -1454,7 +1454,7 @@
 .datatable.font-condense > .content tbody .autocomplete > .content > .box > input,
 .datatable.font-condense > .content tbody .textfield > .content > .box > input,
 .datatable.font-condense > .content tbody .textfield-readonly > .content > .box > input {
-    font-size: 13px; }
+    font-size: 0.8125rem; }
 
 .datatable.condense > .content tbody .autocomplete > .content > .box > input,
 .datatable.condense > .content tbody .textfield > .content > .box > input,
@@ -1476,7 +1476,7 @@
 .datatable.font-condense > .content tbody .datepicker-input > .content > .box > .value,
 .datatable.font-condense > .content tbody .yearpicker-input > .content > .box > .value,
 .datatable.font-condense > .content tbody .textfield > .content > .box > .value {
-    font-size: 13px; }
+    font-size: 0.8125rem; }
 
 .datatable > .content tbody .datepicker-input > .content > .box > .value,
 .datatable > .content tbody .yearpicker-input > .content > .box > .value,
