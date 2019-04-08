@@ -1102,9 +1102,17 @@ button.floating.theme-material:before {
 .dialog > .box > .actions > button.flat.theme-material {
     color: var(--theme-material-500); }
 
+.dialog > .box > .actions > button.flat.negative,
+.dialog > .box > .actions > button.flat.negative.theme-material {
+    color: var(--theme-tm1-500); }
+
 .dialog > .box > .actions > button.flat:disabled,
 .dialog > .box > .actions > button.flat.theme-material:disabled {
     color: var(--theme-material-200); }
+
+.dialog > .box > .actions > button.flat.negative:disabled,
+.dialog > .box > .actions > button.flat.negative.theme-material:disabled {
+    color: var(--theme-tm1-200); }
 
 /** DROPDOWN */
 
@@ -2084,7 +2092,7 @@ button.floating.theme-material:before {
     background-color: var(--background-core); }
 
 .sidenav.theme-material > .content {
-    background-color: var(--theme-material-900); }
+    background-color: var(--theme-material-700); }
 
 .app-body > .sidenav > .content,
 .sidenav.permanent > .content,
@@ -2153,13 +2161,13 @@ button.floating.theme-material:before {
     background-color: var(--background-hover); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a {
-    color: var(--theme-material-font-primary-900); }
+    color: var(--theme-material-font-primary-700); }
 
 .sidenav.theme-material > .content .sidenav-item.disabled > .description > a {
-    color: var(--theme-material-font-disabled-900); }
+    color: var(--theme-material-font-disabled-700); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a:hover {
-    background-color: var(--theme-material-500); }
+    background-color: var(--theme-material-900); }
 
 .sidenav > .content .sidenav-item > .description > a > button,
 .sidenav > .content .sidenav-item > .description > a > i {
@@ -2171,11 +2179,11 @@ button.floating.theme-material:before {
 
 .sidenav.theme-material > .content .sidenav-item > .description > a > button,
 .sidenav.theme-material > .content .sidenav-item > .description > a > i {
-    color: var(--theme-material-font-secondary-900); }
+    color: var(--theme-material-font-secondary-700); }
 
 .sidenav.theme-material > .content .sidenav-item.disabled > .description > a > button,
 .sidenav.theme-material > .content .sidenav-item.disabled > .description > a > i {
-    color: var(--theme-material-font-disabled-900); }
+    color: var(--theme-material-font-disabled-700); }
 
 .sidenav > .content .sidenav-item.disabled > .description > a > .badge {
     background-color: var(--theme-material-200);
@@ -2188,10 +2196,10 @@ button.floating.theme-material:before {
     background-color: var(--ripple); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a > button:before {
-    background-color: var(--theme-material-ripple-900); }
+    background-color: var(--theme-material-ripple-700); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a > button:after {
-    background-color: var(--theme-material-ripple-900); }
+    background-color: var(--theme-material-ripple-700); }
 
 .sidenav > .content .sidenav-item .options li > a {
     color: var(--secondary-font); }
@@ -2203,10 +2211,10 @@ button.floating.theme-material:before {
     background-color: var(--background-hover); }
 
 .sidenav.theme-material > .content .sidenav-item .options li > a {
-    color: var(--theme-material-font-secondary-900); }
+    color: var(--theme-material-font-secondary-700); }
 
 .sidenav.theme-material > .content .sidenav-item .options li.disabled > a {
-    color: var(--theme-material-font-disabled-900); }
+    color: var(--theme-material-font-disabled-700); }
 
 .sidenav.theme-material > .content .sidenav-item .options li > a:hover {
     background-color: var(--theme-material-500); }
