@@ -4557,14 +4557,10 @@ body.show-keyboard .fab-speed-dial {
     width: 100%;
     overflow: hidden; }
 
-.filechooser-perfil:before {
+.filechooser-perfil > .content {
     display: block;
-    content: "";
     width: 100%;
     padding-top: 100%; }
-
-.filechooser-perfil.rectangle:before { 
-    padding-top: 56.75%; }
 
 .filechooser-perfil > input[type=file] {
     position: absolute;
@@ -5359,8 +5355,8 @@ body.show-keyboard .footer-buttons {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-family: var(--headline-6-font);
-    font-size: var(--headline-6-size);
-    letter-spacing: var(--headline-6-letterspacing);
+    font-size: var(--body-2-size);
+    letter-spacing: var(--body-2-letterspacing);
     font-weight: var(--headline-6-weight); }
 
 /** GRID LIST */

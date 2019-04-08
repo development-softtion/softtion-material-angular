@@ -4855,6 +4855,8 @@
     Directives.FilechooserPerfil.ROUTE = "softtion/template/filechooser-perfil.html",
                     
     Directives.FilechooserPerfil.HTML = function () {
+        var content = softtion.html("div").addClass("content");
+        
         var input = softtion.html("input", false).addAttribute("type", "file");
 
         var icon = softtion.html("i").setText("{{icon}}").
@@ -4871,10 +4873,8 @@
                     softtion.html("button").addClass(Classes.ACTION).
                         addAttribute("ng-disabled", "ngDisabled").
                         addAttribute("ng-hide", "!isSelectFile()").
-                        addChildren(
-                            softtion.html("i").setText("delete").
-                                addAttribute("ng-click", "deleteFile()")
-                        )
+                        addAttribute("ng-click", "deleteFile()").
+                        addChildren(softtion.html("i").setText("delete"))
                 ).addChildren(
                     softtion.html("button").addClass(Classes.ACTION).
                         addAttribute("ng-disabled", "ngDisabled").
@@ -4888,12 +4888,12 @@
                         addChildren(softtion.html("i").setText("save"))
                 );
 
-        return input + img + icon + actions; // Componente
+        return content + input + img + icon + actions; // Componente
     };
     
-    Directives.FilechooserPerfil.$inject = ["$timeout"];
+    Directives.FilechooserPerfil.$inject = ["$timeout", "$materialService"];
                     
-    function FilechooserPerfilDirective($timeout) {
+    function FilechooserPerfilDirective($timeout, $services) {
         return {
             restrict: "C",
             templateUrl: Directives.FilechooserPerfil.ROUTE,
@@ -4904,6 +4904,7 @@
                 ngDisabled: "=?",
                 ngSrc: "=?",
                 saveEnabled: "=?",
+                ngRatio: "@",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
@@ -4924,6 +4925,18 @@
                     "image/gif", 
                     "image/svg+xml"
                 ];
+                
+                $element.resize(() => { 
+                    var width = $element.width(); // Se cambio el tamaño contenido
+                    
+                    if (!softtion.isText($scope.ngRatio)) return;
+                    
+                    $element.children(".content").css("padding-top", getValueHeight(width));
+                });
+                
+                function getValueHeight(width) {
+                    return width * $services.getValueRatio($scope.ngRatio);
+                }
 
                 function processFile(file) {
                     var reader = new FileReader(); // Procesador de archivo
@@ -5132,7 +5145,7 @@
                     
     Directives.Gallery.HTML = function () {
         var image = softtion.html("div").addClass(["image"]).
-                addAttribute("ng-repeat", "image in images").
+                addAttribute("ng-repeat", "image in ngImages").
                 addAttribute("ng-touchhold", "imageHold(image, $event, $index)").
                 addAttribute("ng-clickright", "imageRight(image, $event, $index)").
                 addAttribute("tabindex", "-1").
@@ -5142,22 +5155,19 @@
                             softtion.html("div").addClass("view-preview").
                                 addChildren(
                                     softtion.html("div").addClass("delete").
-                                        addAttribute("ng-if", "!disabledRemove").
+                                        addAttribute("ng-if", "!ngDisabledRemove").
                                         addChildren(
                                             softtion.html("button").addClass("flat").setText("Remover").
-                                                addAttribute("ng-click", "removeImage($index)")
+                                                addAttribute("ng-click", "removeImage(image, $index)")
                                         )
                                 ).addChildren(
-                                    softtion.html("img", false).addClass("center").
-                                    addAttribute("ng-src", "{{image.src}}")
+                                    softtion.html("img", false).addClass("center").addAttribute("ng-src", "{{image.src}}")
                                 )
                         ).addChildren(
                             softtion.html("div").addClass("description").
                                 addChildren(
                                     softtion.html("div").addClass("avatar").
-                                    addChildren(
-                                        softtion.html("i").setText("{{image.icon}}")
-                                    )
+                                        addChildren(softtion.html("i").setText("{{image.icon}}"))
                                 ).addChildren(
                                     softtion.html("label").addClass("name").setText("{{image.name}}")
                                 )
@@ -5177,8 +5187,9 @@
             restrict: "C",
             templateUrl: Directives.Gallery.ROUTE,
             scope: {
-                images: "=",
-                disabledRemove: "=?",
+                ngImages: "=ngModel",
+                ngDisabledRemove: "=?",
+                ngConfirmRemove: "=?",
                 ngListener: "&"
             },
             link: function ($scope, $element) {
@@ -5190,9 +5201,11 @@
                 
                 content.displaceLeft(); // Haciendo componente scrolleable
                 
-                $scope.removeImage = function ($index) {
-                    $scope.images.remove($index); // Eliminando item de la lista
-                    listener.launch(Listeners.REMOVE, { $item: $scope.images[$index], $index: $index });
+                $scope.removeImage = function (image, $index) {
+                    if (!$scope.ngConfirmRemove)
+                        $scope.ngImages.remove($index); // Eliminando item de la lista
+                    
+                    listener.launch(Listeners.REMOVE, { $item: image, $index: $index });
                 };
 
                 $scope.imageHold = function (item, $event, $index) {
@@ -10873,7 +10886,7 @@
     
     Properties.RatioElement.$inject = ["$materialService"];
     
-    function RatioElementProperty($materialService) {
+    function RatioElementProperty($services) {
         return {
             restrict: "A",
             link: function ($scope, $element, $attrs) {
@@ -10887,7 +10900,7 @@
                 });
                 
                 function getValueHeight() {
-                    return $element.width() * $materialService.getValueRatio($attrs.ratioElement);
+                    return $element.width() * $services.getValueRatio($attrs.ratioElement);
                 }
             }
         };
