@@ -2095,7 +2095,7 @@ button.floating.theme-material:before {
     background-color: var(--background-core); }
 
 .sidenav.theme-material > .content {
-    background-color: var(--theme-material-700); }
+    background-color: var(--theme-material-900); }
 
 .app-body > .sidenav > .content,
 .sidenav.permanent > .content,
@@ -2126,7 +2126,7 @@ button.floating.theme-material:before {
 
 .sidenav.theme-material > .content > .title,
 .sidenav > .content > .title.theme-material {
-    color: var(--theme-material-font-primary-700);
+    color: var(--theme-material-100);
     background-color: var(--theme-material-700); }
 
 .sidenav > .content > .logo {
@@ -2135,7 +2135,7 @@ button.floating.theme-material:before {
 
 .sidenav.theme-material > .content > .logo,
 .sidenav > .content > .logo.theme-material {
-    color: var(--theme-material-font-primary-700);
+    color: var(--theme-material-100);
     background-color: var(--theme-material-700); }
 
 .sidenav > .content > .banner-perfil {
@@ -2164,13 +2164,13 @@ button.floating.theme-material:before {
     background-color: var(--background-hover); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a {
-    color: var(--theme-material-font-primary-700); }
+    color: var(--theme-material-100); }
 
 .sidenav.theme-material > .content .sidenav-item.disabled > .description > a {
-    color: var(--theme-material-font-disabled-700); }
+    color: var(--theme-material-50); }
 
 .sidenav.theme-material > .content .sidenav-item > .description > a:hover {
-    background-color: var(--theme-material-900); }
+    background-color: var(--theme-material-700); }
 
 .sidenav > .content .sidenav-item > .description > a > button,
 .sidenav > .content .sidenav-item > .description > a > i {

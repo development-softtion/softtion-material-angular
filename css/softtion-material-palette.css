@@ -157,7 +157,7 @@
     --theme-material-100   : var(--theme-tm1-100);
     --theme-material-200   : var(--theme-tm1-200);
     --theme-material-300   : var(--theme-tm1-300);
-    --theme-material-400   : var(--theme-tm1-490);
+    --theme-material-400   : var(--theme-tm1-400);
     --theme-material-500   : var(--theme-tm1-500);
     --theme-material-600   : var(--theme-tm1-600);
     --theme-material-700   : var(--theme-tm1-700);
@@ -229,7 +229,7 @@
     --theme-material-100   : var(--theme-tm2-100);
     --theme-material-200   : var(--theme-tm2-200);
     --theme-material-300   : var(--theme-tm2-300);
-    --theme-material-400   : var(--theme-tm2-490);
+    --theme-material-400   : var(--theme-tm2-400);
     --theme-material-500   : var(--theme-tm2-500);
     --theme-material-600   : var(--theme-tm2-600);
     --theme-material-700   : var(--theme-tm2-700);
@@ -301,7 +301,7 @@
     --theme-material-100   : var(--theme-tm3-100);
     --theme-material-200   : var(--theme-tm3-200);
     --theme-material-300   : var(--theme-tm3-300);
-    --theme-material-400   : var(--theme-tm3-490);
+    --theme-material-400   : var(--theme-tm3-400);
     --theme-material-500   : var(--theme-tm3-500);
     --theme-material-600   : var(--theme-tm3-600);
     --theme-material-700   : var(--theme-tm3-700);
@@ -373,7 +373,7 @@
     --theme-material-100   : var(--theme-tm4-100);
     --theme-material-200   : var(--theme-tm4-200);
     --theme-material-300   : var(--theme-tm4-300);
-    --theme-material-400   : var(--theme-tm4-490);
+    --theme-material-400   : var(--theme-tm4-400);
     --theme-material-500   : var(--theme-tm4-500);
     --theme-material-600   : var(--theme-tm4-600);
     --theme-material-700   : var(--theme-tm4-700);
@@ -445,7 +445,7 @@
     --theme-material-100   : var(--theme-tm5-100);
     --theme-material-200   : var(--theme-tm5-200);
     --theme-material-300   : var(--theme-tm5-300);
-    --theme-material-400   : var(--theme-tm5-490);
+    --theme-material-400   : var(--theme-tm5-400);
     --theme-material-500   : var(--theme-tm5-500);
     --theme-material-600   : var(--theme-tm5-600);
     --theme-material-700   : var(--theme-tm5-700);
@@ -517,7 +517,7 @@
     --theme-material-100   : var(--theme-tm6-100);
     --theme-material-200   : var(--theme-tm6-200);
     --theme-material-300   : var(--theme-tm6-300);
-    --theme-material-400   : var(--theme-tm6-490);
+    --theme-material-400   : var(--theme-tm6-400);
     --theme-material-500   : var(--theme-tm6-500);
     --theme-material-600   : var(--theme-tm6-600);
     --theme-material-700   : var(--theme-tm6-700);

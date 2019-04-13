@@ -5712,6 +5712,15 @@ img.center-content {
     height: 48px;
     line-height: 48px; }
 
+.two-line.condense > .item-list > .box > .avatars > .avatar, 
+.two-line > .item-list.condense > .box > .avatars > .avatar,
+.three-line.condense > .item-list > .box > .avatars > .avatar,
+.three-line > .item-list.condense > .box > .avatars > .avatar {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px; }
+
 .two-line > .item-list > .box > .avatars > .avatar > i,
 .item-list.two-line > .box > .avatars > .avatar > i,
 .three-line > .item-list > .box > .avatars > .avatar > i, 
@@ -8605,6 +8614,12 @@ body.show-keyboard .stepper-mobile {
        -moz-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
          -o-animation: rippleSquarecenterHigh 1000ms var(--standard-curve);
             animation: rippleSquarecenterHigh 1000ms var(--standard-curve); }
+
+.subheader.condense > button:after {
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    margin-left: -16px; }
 
 .subheader > .checkbox-control {
     margin: 0px;
