@@ -3140,10 +3140,13 @@
             restrict: "C",
             link: function ($scope, $element) {
                     // Elementos
-                var thead = $element.find("thead"),
-                    tbody = $element.find("tbody");
+                var thead, tbody;
             
-                tbody.resize(() => {
+                $element.resize(() => {
+                    tbody = $element.find("tbody"); thead = $element.find("thead");
+                    
+                    if (!tbody.exists() || !thead.exists()) return;
+                    
                     var difference = tbody.scrollHeight() - tbody.height();
                                         
                     (difference > 1) ? thead.addClass("scrolling") : 
@@ -9025,8 +9028,10 @@
 
                 $body.on(eventID, ($event) => {
                     if (!self.autoclose) return; // Cerrado automatico
-
-                    $event.stopPropagation(); self.hide();
+                    
+                    if (self.isShow()) {
+                        $event.stopPropagation(); self.hide();
+                    } // Se debe ocultar el componente
                 });
             }
 
@@ -9056,6 +9061,10 @@
 
             Dropdown.prototype.hide = function () {
                 this.element.removeClass(Classes.SHOW);
+            };
+            
+            Dropdown.prototype.isShow = function () {
+                return this.element.hasClass(Classes.SHOW);
             };
 
             function show(provider, origin) {

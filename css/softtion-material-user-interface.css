@@ -2772,6 +2772,7 @@ button.raised:focus:after, button.flat:focus:after {
     display: block; }
 
 .datatable > .content > table > tbody {
+    position: relative;
     overflow-y: auto;
     overflow-x: hidden; }
 
@@ -2791,10 +2792,10 @@ button.raised:focus:after, button.flat:focus:after {
     padding: 0px 12px; }
 
 .datatable > .content > table > thead.scrolling > tr {
-    padding: 0px 24px 0px 16px; }
+    padding: 0px 21px 0px 16px; }
 
 .datatable.condense > .content > table > thead.scrolling > tr {
-    padding: 0px 20px 0px 12px; }
+    padding: 0px 17px 0px 12px; }
 
 .datatable > .content > table > tbody > tr {
     -webkit-transition: background-color 160ms 0ms var(--sharp-curve);
