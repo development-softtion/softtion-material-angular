@@ -398,7 +398,7 @@
     color: var(--secondary-font); }
 
 .calendar > .content > .table > .body > .week > .day.today .number { 
-    color: var(--theme-secondary-800); }
+    color: var(--theme-material-800); }
 
 .calendar > .content > .table > .body > .week .number > span {
     color: transparent; }
@@ -407,8 +407,8 @@
     color: var(--theme-material-500); }
 
 .calendar > .content > .table > .body > .week .event {
-    background-color: var(--theme-secondary-500); 
-    color: var(--theme-secondary-font-primary-500); }
+    background-color: var(--theme-material-500); 
+    color: var(--theme-material-font-primary-500); }
 
 .calendar > .list-events.bordered {
     border-bottom: 1px solid var(--background-border); }

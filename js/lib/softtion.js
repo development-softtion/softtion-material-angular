@@ -111,6 +111,7 @@ class Softtion {
     static get LISTENERS() {
         return {
             CLICK: "click",
+            DBLCLICK: "dblclick",
             FOCUS: "focus",
             BLUR: "blur",
             ENTER: "enter",

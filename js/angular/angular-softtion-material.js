@@ -8112,7 +8112,7 @@
             templateUrl: Directives.TextFieldReadonly.ROUTE,
             scope: {
                 value: "=ngModel", 
-                model: "@",
+                ngText: "@",
                 label: "@",
                 required: "=?",
                 iconDescription: "@",
@@ -8132,7 +8132,7 @@
                 
                 defineInputField($scope, $element, $attrs, listener);
                 
-                $attrs.$observe("model", () => { $scope.value = $attrs.model; });
+                $attrs.$observe("ngText", () => { $scope.value = $attrs.ngText; });
                 
                 $scope.isActiveLabel = function () {
                     return softtion.isDefined($scope.value);

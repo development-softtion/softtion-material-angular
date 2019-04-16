@@ -5720,6 +5720,9 @@ img.center-content {
     height: 40px;
     line-height: 40px; }
 
+.item-list > .box > .avatars > .avatar > i {
+    font-size: 20px; }
+
 .two-line > .item-list > .box > .avatars > .avatar > i,
 .item-list.two-line > .box > .avatars > .avatar > i,
 .three-line > .item-list > .box > .avatars > .avatar > i, 
@@ -6109,10 +6112,10 @@ p.link > a {
     box-sizing: border-box;
     text-align: center;
     margin-bottom: 4px;
-    font-family: var(--body-2-font);
-    font-size: var(--body-2-size);
-    letter-spacing: var(--body-2-letterspacing);
-    font-weight: var(--body-2-weight); }
+    font-family: var(--body-1-font);
+    font-size: var(--body-1-size);
+    letter-spacing: var(--body-1-letterspacing);
+    font-weight: var(--body-1-weight); }
 
 .message > i + p {
     margin-top: 8px; }

@@ -266,6 +266,8 @@
 
         return getEvenstOfDayWithParameters(manager, year, month, day);
     }
+    
+    window.ManagerCalendar = ManagerCalendar; // Variable Global
         
     function Directives(name) { 
         switch (name) {
@@ -302,16 +304,12 @@
                         addAttribute("ng-click", "prevMonth()").
                         addAttribute("ng-disabled", "isPrevDisabled()").
                         addAttribute("ng-hide", "viewDayEvents").
-                        addChildren(
-                            softtion.html("i").setText("chevron_left")
-                        )
+                        addChildren(softtion.html("i").setText("chevron_left"))
                 ).addChildren(
                     softtion.html("button").addClass(["action", "back"]).
                         addAttribute("ng-click", "hideDayEvents()").
                         addAttribute("ng-hide", "!viewDayEvents").
-                        addChildren(
-                            softtion.html("i").setText("arrow_back")
-                        )
+                        addChildren(softtion.html("i").setText("arrow_back"))
                 ).addChildren(
                     softtion.html("div").addClass("title").setText("{{getTitle()}}")
                 ).addChildren(
@@ -319,9 +317,7 @@
                         addAttribute("ng-click", "nextMonth()").
                         addAttribute("ng-disabled", "isNextDisabled()").
                         addAttribute("ng-hide", "viewDayEvents").
-                        addChildren(
-                            softtion.html("i").setText("chevron_right")
-                        )
+                        addChildren(softtion.html("i").setText("chevron_right"))
                 ).addChildren(
                     softtion.html("div").addClass("actions").
                         addChildren(
@@ -351,11 +347,9 @@
                     softtion.html("div").addClass("day-week").
                         addAttribute("ng-repeat", "dayWeek in daysWeek").
                         addChildren(
-                            softtion.html("p").addClass("name-day").
-                                setText("{{dayWeek.normal}}")
+                            softtion.html("p").addClass("name-day").setText("{{dayWeek.normal}}")
                         ).addChildren(
-                            softtion.html("p").addClass("name-day-min").
-                                setText("{{dayWeek.min}}")
+                            softtion.html("p").addClass("name-day-min").setText("{{dayWeek.min}}")
                         )
                 );
 
@@ -507,12 +501,6 @@
 
                     // Atributos
                 var today = new Date(), eventSelect, dayEvent;
-
-                $scope.manager = new ManagerCalendar();
-
-                $scope.ngListener({ 
-                    $listener: Softtion.LISTENERS.SHOW, $model: $scope.manager 
-                });
 
                 $scope.$watch(() => { return $scope.manager; },
                     (newValue, oldValue) => {
@@ -836,8 +824,7 @@
                 
                 function showEvent(date, event) {
                     $scope.ngListener({
-                        $listener: Softtion.LISTENERS.SELECT, 
-                        $model: event, $date: { now: date }
+                        $listener: Softtion.LISTENERS.SELECT, $model: event, $date: { now: date }
                     });
                 }
                 
