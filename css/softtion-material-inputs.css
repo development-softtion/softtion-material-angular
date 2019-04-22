@@ -1397,7 +1397,7 @@
 .autocomplete > .content > .box > ul > li > .detail > .content {
     padding: 0px; }
 
-.autocomplete > .content > .box > ul > li > .detail.record > .content {
+.autocomplete > .content > .box > ul > li > .detail.record > .avatar + .content {
     width: calc(100% - 40px); }
 
 .autocomplete.avatar-hidden > .content > .box > ul > li > .detail.record > .content {

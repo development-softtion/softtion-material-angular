@@ -832,7 +832,7 @@
                 addAttribute("ng-class", "{record: record}").
                 addChildren(
                     softtion.html("div").addClass("avatars").
-                        addAttribute("ng-if", "record").
+                        addAttribute("ng-if", "record && !recordAvatarHide").
                         addChildren(
                             softtion.html("div").addClass("avatar").
                                 addChildren(
@@ -930,6 +930,7 @@
                 iconAction: "@",
                 placeholder: "@",
                 record: "=?",
+                recordAvatarHide: "=?",
                 keySubtitle: "@",
                 keyImg: "@",
                 ngDisabled: "=?",
