@@ -1,0 +1,6 @@
+
+// Comando a ejecutar para compilar codigo del proyecto
+
+1. npm init
+2. npm i webpack --save-dev
+3. npm i webpack-cli --save-dev

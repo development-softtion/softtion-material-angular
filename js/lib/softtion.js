@@ -801,27 +801,6 @@ class Softtion {
         }
     }
     
-    print(attrs) {
-        var defaults = {
-            title: "SofttionPrint", width: 600, height: 400
-        };
-        
-        attrs = jQuery.extend({}, defaults, attrs);
-        
-        var title = "<html><head><title>" + attrs.title + "</title>",
-            dimensions = "width=" + attrs.width + ",height=" + attrs.height,
-
-        file = window.open("", "PRINT", dimensions);
-
-        file.document.write(title);
-        file.document.write("</head><body>");
-        file.document.write(attrs.html);
-        file.document.write("</body></html>");
-        file.document.close();
-
-        file.focus(); file.print(); file.close();
-    }
-    
     openFrame(URL, isPrint) {
         var frame = document.createElement("iframe");
         frame.src = URL; frame.onload = onload;
@@ -897,9 +876,13 @@ class Time {
         
         var minutes = parseInt(seconds / 60);
         seconds = seconds - (minutes * 60); // Recalculando
-        
-        return window.softtion.leadingCharBefore(minutes, "0", 2) + ":"
-            + window.softtion.leadingCharBefore(seconds, "0", 2); 
+
+        var minutes = parseInt(seconds / 60);
+        seconds = seconds - (minutes * 60); // Recalculando
+
+        var text = window.softtion.leadingCharBefore(minutes, "0", 2);
+
+        return text + ":" + window.softtion.leadingCharBefore(seconds, "0", 2); 
     }
 }
 
