@@ -3490,6 +3490,9 @@ button.raised:focus:after, button.flat:focus:after {
 .dropdown.condense > .menu {
     max-height: 336px; }
 
+.dropdown > .item-list.header {
+    padding: 0px 12px; }
+
 /** ETIQUETTE */ 
 
 .etiquette {
